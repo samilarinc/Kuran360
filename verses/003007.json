@@ -1,0 +1,225 @@
+{
+  "surah_number": 3,
+  "verse_number": 7,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=3&ayet=7",
+  "arabic_text": "هُوَالَّذ۪ٓياَنْزَلَعَلَيْكَالْكِتَابَمِنْهُاٰيَاتٌمُحْكَمَاتٌهُنَّاُمُّالْكِتَابِوَاُخَرُمُتَشَابِهَاتٌۜفَاَمَّاالَّذ۪ينَف۪يقُلُوبِهِمْزَيْغٌفَيَتَّبِعُونَمَاتَشَابَهَمِنْهُابْتِغَٓاءَالْفِتْنَةِوَابْتِغَٓاءَتَأْو۪يلِه۪ۚوَمَايَعْلَمُتَأْو۪يلَهُٓاِلَّااللّٰهُۢوَالرَّاسِخُونَفِيالْعِلْمِيَقُولُونَاٰمَنَّابِه۪ۙكُلٌّمِنْعِنْدِرَبِّنَاۚوَمَايَذَّكَّرُاِلَّٓااُو۬لُواالْاَلْبَابِ",
+  "transliteration": "Huve-lleżî enzele ‘aleyke-lkitâbe minhu âyâtun muhkemâtun hunne ummu-lkitâbi veuḣaru muteşâbihât(un)(s)feemmâ-lleżîne fîkulûbihim zeyġun feyettebi’ûne mâ teşâbehe minhu-btiġâe-lfitneti vebtiġâe te/vîlih(i)(k)vemâ ya’lemu te/vîlehu illa(A)llâh(u)(k)ve-rrâsiḣûne fî-l’ilmi yekûlûne âmennâ bihi kullun min ‘indi rabbinâ(k)vemâ yeżżekkeru illâ ulû-l-elbâb(i)",
+  "word_translations": [
+    {
+      "arabic": "هُوَ",
+      "turkish": "O"
+    },
+    {
+      "arabic": "اَنْزَلَ",
+      "turkish": "indirdi"
+    },
+    {
+      "arabic": "عَلَيْكَ",
+      "turkish": "sana"
+    },
+    {
+      "arabic": "الْكِتَابَ",
+      "turkish": "Kitabı"
+    },
+    {
+      "arabic": "مِنْهُ",
+      "turkish": "Onun"
+    },
+    {
+      "arabic": "اٰيَاتٌ",
+      "turkish": "(bazı) ayetleri"
+    },
+    {
+      "arabic": "مُحْكَمَاتٌ",
+      "turkish": "muhkemdir (ki)"
+    },
+    {
+      "arabic": "هُنَّ",
+      "turkish": "onlar"
+    },
+    {
+      "arabic": "اُمُّ",
+      "turkish": "anasıdır"
+    },
+    {
+      "arabic": "الْكِتَابِ",
+      "turkish": "Kitabın"
+    },
+    {
+      "arabic": "وَاُخَرُ",
+      "turkish": "ve diğerleri de"
+    },
+    {
+      "arabic": "مُتَشَابِهَاتٌۜ",
+      "turkish": "müteşabihdir"
+    },
+    {
+      "arabic": "فَاَمَّا",
+      "turkish": "olanlar"
+    },
+    {
+      "arabic": "قُلُوبِهِمْ",
+      "turkish": "kalblerinde"
+    },
+    {
+      "arabic": "زَيْغٌ",
+      "turkish": "eğrilik"
+    },
+    {
+      "arabic": "فَيَتَّبِعُونَ",
+      "turkish": "ardına düşerler"
+    },
+    {
+      "arabic": "مَا",
+      "turkish": "olanlarının"
+    },
+    {
+      "arabic": "تَشَابَهَ",
+      "turkish": "müteşabih"
+    },
+    {
+      "arabic": "مِنْهُ",
+      "turkish": "onun"
+    },
+    {
+      "arabic": "ابْتِغَٓاءَ",
+      "turkish": "çıkarmak için"
+    },
+    {
+      "arabic": "الْفِتْنَةِ",
+      "turkish": "fitne"
+    },
+    {
+      "arabic": "وَابْتِغَٓاءَ",
+      "turkish": "ve bulmak için"
+    },
+    {
+      "arabic": "تَأْو۪يلِه۪ۚ",
+      "turkish": "onun te'vilini"
+    },
+    {
+      "arabic": "وَمَا",
+      "turkish": "oysa"
+    },
+    {
+      "arabic": "يَعْلَمُ",
+      "turkish": "bilmez"
+    },
+    {
+      "arabic": "تَأْو۪يلَهُٓ",
+      "turkish": "onun te'vilini"
+    },
+    {
+      "arabic": "اِلَّا",
+      "turkish": "başka kimse"
+    },
+    {
+      "arabic": "اللّٰهُۢ",
+      "turkish": "Allah'tan"
+    },
+    {
+      "arabic": "وَالرَّاسِخُونَ",
+      "turkish": "ileri gidenler"
+    },
+    {
+      "arabic": "الْعِلْمِ",
+      "turkish": "ilimde"
+    },
+    {
+      "arabic": "يَقُولُونَ",
+      "turkish": "derler"
+    },
+    {
+      "arabic": "اٰمَنَّا",
+      "turkish": "inandık"
+    },
+    {
+      "arabic": "بِه۪ۙ",
+      "turkish": "Ona"
+    },
+    {
+      "arabic": "كُلٌّ",
+      "turkish": "hepsi"
+    },
+    {
+      "arabic": "عِنْدِ",
+      "turkish": "katındandır"
+    },
+    {
+      "arabic": "رَبِّنَاۚ",
+      "turkish": "Rabbimiz"
+    },
+    {
+      "arabic": "يَذَّكَّرُ",
+      "turkish": "düşünüp öğüt almaz"
+    },
+    {
+      "arabic": "اِلَّٓا",
+      "turkish": "başkası"
+    },
+    {
+      "arabic": "اُو۬لُوا",
+      "turkish": "sahiplerinden"
+    },
+    {
+      "arabic": "الْاَلْبَابِ",
+      "turkish": "sağduyu"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Öyle bir Tanrı'dır ki sana kitap indirdi. Onun bir kısmı, manasıapaçık ayetlerdir ve bunlar, kitabın temelidir. Diğer kısmıysa çeşitli manalara benzerlik gösterir ayetlerdir. Yüreklerinde eğrilik olanlar, fitne çıkarmak ve onları tevil etmek için manaları açık olmayan ayetlere uyarlar. Halbuki onların tevilini ancak Allah bilir. Bilgide şüpheleri olmayacak kadar kuvvetli olanlarsa derler ki: Biz inandık ona, hepsi de Rabbimizdendir; bunu aklı tam olanlardan başkaları düşünemez.",
+    "Abdullah-Ahmet Akgül Meali": "Sana Kitabı-Kur’an’ı indiren O’dur. Ondan(Kur’an’dan)bir bölümü kitabın anası(temeli ve esası)sayılan muhkem ayetler(açık ve kesin emirler)dir. Diğer bir kısmı da müteşabihtir.(Benzer manalara ve çeşitli yorumlara müsaittir.)Kalplerinde şüphe ve eğrilik olanlar, fitne çıkarmak ve(keyfi)te’villerde bulunmak üzere(açık ve kesin emirleri bırakıp, manası kapalı olan)müteşabih ayetlerin peşine düşmektedirler. Halbuki bunların gerçek te’vilini ancak Allah bilir... İlimde derinleşenler(râsihûn)ise: “Biz ona inandık, tümü Rabbimizin katındandır” derler.(Ve müteşabih -kapalı- ayetlere ise; Kur’an’ın sarih hükümlerine ve Resulüllah’ın sahih hadislerine uygun yorumlar getirirler.)Zaten temiz ve olgun akıl sahiplerinden başkası öğüt alıp-düşünmez.",
+    "Abdullah Parlıyan Meali": "Kitabı sana indiren O'dur. O'nun bazı ayetleri muhkem yani manası apaçık ayetlerdir ki, bunlar kitabın esası ve anasıdır. Diğerleri benzeşen yani müteşabihtirler. Kalpleri gerçeklerden sapmaya meyilli olanlar, sırf kafaları karıştıracak şeyler bulmak için ve ona keyfî anlamlar yüklemek amacıyla kitabın müteşabih denilen kısmına uyarlar. Oysa Allah'tan başka kimse onun kesin yorumunu bilemez. Bu yüzden, bilgide derinleşenler şöyle derler: “Biz ona inanırız, onun tamamı Rabbimizdendir. Derin kavrayış sahipleri dışında kimse bundan ders almasa da.”",
+    "Ahmet Tekin Meali": "O, kitabı, Kur'an'ı sana sorumluluklarını tevdi etmek üzere indirendir. Onun, Kur'an'ın bir kısım âyetleri muhkemdir. Bunlar Kur'an'ın, bütün kutsal kitapların esasıdır, levh-i mahfuzda yazılı temel kurallardır. Diğerleri de insanlığın devamlı çoğalan meselelerine çözüm getirmeye müsait, birden fazla mânaya açık, müteşabih âyetlerdir.Akılları, kalpleri sapmaya meyilli, kötü niyetli olanlar, sırf fitne çıkarmak, ortalık bulandırmak, kelimelere keyfî anlamlar yükleyerek te'vil yapıp kafa karıştırmak arzusunda oldukları için, müteşabih âyetlerin peşine takılırlar. Halbuki onun te'vilini ancak Allah ve ilimde yüksek pâye elde eden âdil, objektif düşünen ilim adamları bilir. Onlar:“- Kur'an'a inandık, muhkem de, müteşabih de hepsi Rabbimiz tarafından indirilmiştir” derler. Bu inceliği ancak akıl ve vicdan sahipleri düşünüp anlar.",
+    "Ahmet Varol Meali": "Sana Kitab'ı indiren O'dur. Ondaki bir kısım ayetler Kitab'ın temelini oluşturan kesin anlamlı ayetlerdir. Diğerleri ise müteşabih (birden fazla anlama gelebilen) ayetlerdir. Kalplerinde bir eğrilik bulunanlar, bozgunculuk yapmak ve kendilerine göre yorumlamak amacıyla müteşabih olan ayetlerin üzerine düşerler. Onların yorumunu (tam ve doğru olarak) Allah'tan başka kimse bilemez. İlimde derinleşmiş olanlar ise \"Bunlara iman ettik. Hepsi Rabbimizin katındandır\" derler. Şu var ki, akıl sahiplerinin dışındakiler bunlardan ibret almazlar.",
+    "Ali Bulaç Meali": "Sana Kitabı indiren O'dur. O'ndan, Kitabın anası (temeli) olan bir kısım ayetler muhkem'dir; diğerleri ise müteşabihtir. Kalplerinde bir kayma olanlar, fitne çıkarmak ve olmadık yorumlarını yapmak için ondan müteşabih olanına uyarlar. Oysa onun tevilini Allah'tan başkası bilmez. İlimde derinleşenler ise: 'Biz ona inandık, tümü Rabbimizin katındandır' derler. Temiz akıl sahiplerinden başkası öğüt alıp-düşünmez.",
+    "Ali Fikri Yavuz Meali": "Sana Kur'anı indiren O'dur. Bunun bir kısım âyetleri açık ve kesindir. Bunlar Kur'ân'ın esasıdır. Diğer bir kısım âyetler de vardır ki, (onların mânası sizce anlaşılmaz) müteşâbihtirler. (1) İşte, kalblerinde şüphe bulunanlar, fitne aramak ve te'viline gitmek için Kur'ân'ın müteşâbih âyetlerine uyarlar. Halbuki, o müteşabihin te'vilini yalnız Allah bilir. İlimde kökleşmiş ve metin olmuş kimseler ise: “- Biz ona (manâsı anlaşılmıyan müteşabihe) inandık; açık ve kapalı bütün âyetler Rabbimiz tarafındandır”, derler. Bunları ancak akılları tam olanlar iyice düşünür.",
+    "Bahaeddin Sağlam Meali": "(Bir hikmete binaen insanlara belli bir serbestiyet ve vehmi bir ortaklık rengini vermiş. O insanları geliştirmek için onları imtihana tabi tutmuştur, peygamber ve kitaplarla onları deniyor:)O’dur, Sana kitabı indiren. O kitabın bir kısım ayetleri muhkemdir (tartışma gerektirmez.) Onlar Kitab’ın ana kısımlarıdır. Diğerleri müteşabih(eş manalı)dirler.(İmtihan gereği) kalbinde kaypaklık olanlar, saptırmak ve fitne çıkarmak için, müteşabih kısmına uyarlar. Hâlbuki onun gerçek manasını ancak Allah ve ilimde kök salmış âlimler bilirler. O âlimler: “Bunlar, hepsi Rabbimizin katındandır (gaybi haberlerdir.) Biz onların tümüne inandık.” derler. Fakat ancak öz sahipleri böyle anlarlar.",
+    "Bayraktar Bayraklı Meali": "Sana kitabı indiren O'dur. Onun bazı âyetleri muhkem/anlamları tam bilinen olduğundan kitabın esasını teşkil ederler; diğerleri de müteşâbihtir/araştırılarak manaları bilinecek olan tabiat kanunlarıdır. Kalplerinde eğrilik olanlar, fitne çıkarmak ve onu açıklamak için ondaki müteşâbih âyetlerin peşine düşerler. Halbuki onun açıklamasını ancak Allah ve “ona inandık, hepsi Rabbimiz tarafındandır” diyen ilimde yüksek payeye erişenler bilir. Ancak akıl sahipleri düşünüp anlar.",
+    "Besim Atalay Meali (1965)": "Sana kitap indiren odur, o kitapta muhkem olan âyetler var, bunlar kitabın temelleridir, bundan başka benzeşenler dahi var, yüreklerinde eğrilik bulunanlar, fitne yapmak, onu te'vil etmek dileğiyle, benzeşene uyarlar, onun te'vilini yalnız Allah bilir; bilginin derinine dalanlar derler ki: «Biz ona inanmışız, hepsi de Tanrımızın katından», bundan ancak akıllılar, öğüt alır",
+    "Cemal Külünkoğlu Meali": "Sana Kitabı indiren O'dur. O'nun bazı âyetlerinin hükmü kesin ve nettir ki bunlar, kitabın anasıdır. Diğer bir kısmı da müteşâbih âyetlerdir (ki onlar da benzer anlamlara ve yoruma açıktır). Kalpleri hakikatten sapmaya meyilli olanlar, fitne çıkarmak ve (kendi isteklerine göre olmadık) yorumlar yapmak için müteşâbih âyetlerin ardına düşerler. Oysa onun kesin anlamını Allah'tan başkası bilmez. Bu yüzden ilimde derinleşenler: “Biz ona inandık, tümü Rabbimizin katındandır” derler. Derin kavrayış sahipleri dışında kimse bundan öğüt alıp düşünmez.",
+    "Cemil Said (1924)": "7, 8.- Bu kitâbı sana inzâl iden odur. Ânın âyâtının ba’zısı esâs kitâb ve âyât-ı muhkemât ve diğerleri müteşâbihâtdır. Kalbleri râh-ı müstakîmden inhirâf idenler fitne veyâ te’vîl arzusıyla müteşâbihâtı ta’kîb idiyorlar lâkin ânın tefsirini Allâh’dan başka kimse bilmez. ’İlm-i metîn sâhibleri \"Bu kitâba îmân ideriz ve münderecâtı kâmilen dinimizden geliyor\" dirler. Filhakika ancak ashâb-ı ’akıl ve iz’ân tefekkür idebilürler ve \"Yâ rabbi sen bizi bir kere tarîk-i hidâyete sevk itdikden sonra kalblerimizin inhirâfına müsâ’ade itme, bizden rahmetini diriğ iyleme. İhsanını âdilâne tevzî’ idersin.",
+    "Diyanet İşleri Meali (Eski)": "Sana Kitap'ı indiren O'dur. Onda Kitap'ın temeli olan kesin anlamlı ayetler vardır, diğerleri de çeşitli anlamlıdırlar. Kalblerinde eğrilik olan kimseler, fitne çıkarmak, kendilerine göre yorumlamak için onların çeşitli anlamlı olanlarına uyarlar. Oysa onların yorumunu ancak Allah bilir. İlimde derinleşmiş olanlar: \"Ona inandık, hepsi Rabbimiz'in katındandır\" derler. Bunu ancak akıl sahipleri düşünür;",
+    "Diyanet İşleri Meali (Yeni)": "O, sana Kitab’ı indirendir. Onun (Kur’an’ın) bazı âyetleri muhkemdir, onlar kitabın anasıdır. Diğerleri de müteşabihtir. Kalplerinde bir eğrilik olanlar, fitne çıkarmak ve onun olmadık yorumlarını yapmak için müteşabih âyetlerinin ardına düşerler. Oysa onun gerçek manasını ancak Allah bilir. İlimde derinleşmiş olanlar, “Ona inandık, hepsi Rabbimiz katındandır” derler. (Bu inceliği) ancak akıl sahipleri düşünüp anlar.",
+    "Kur'an Yolu (Diyanet İşleri)": "Sana kitabı indiren O’dur. Onun (Kur’an) bir kısım âyetleri muhkemdir, ki bunlar kitabın esasıdır, diğerleri ise müteşâbihtir. Kalplerinde sapma meyli bulunanlar, fitne çıkarmak ve onu (kişisel arzularına göre) te’vil etmek için ondaki müteşâbihlerin peşine düşerler. Hâlbuki onun te’vilini ancak Allah bilir; bir de ilimde yüksek pâyeye erişenler. Derler ki: Ona inandık, hepsi rabbimiz katındandır. (Bu inceliği) yalnız aklıselim sahipleri düşünüp anlar.",
+    "Diyanet Vakfı Meali": "Sana Kitab'ı indiren O'dur. Onun (Kur'an'ın) bazı âyetleri muhkemdir ki, bunlar Kitab'ın esasıdır. Diğerleri de müteşâbihtir. Kalplerinde eğrilik olanlar, fitne çıkarmak ve onu tevil etmek için ondaki müteşâbih âyetlerin peşine düşerler. Halbuki Onun tevilini ancak Allah bilir. İlimde yüksek pâyeye erişenler ise: Ona inandık; hepsi Rabbimiz tarafındandır, derler. (Bu inceliği) ancak aklıselim sahipleri düşünüp anlar.",
+    "Edip Yüksel Meali": "O ki sana bu kitabı indirdi. Onun bazı ayetleri kesin anlamlıdır (muhkem), ki bunlar kitabın özüdür. Diğerleri de benzer anlamlıdır (müteşabih). Kalplerinde hastalık bulunanlar, insanları şaşırtmak ve farklı anlam vermek için benzer anlamlı olanlarının ardına düşerler. Onların gerçek anlamını ise kimse bilmez, ancak istisnadır ALLAH ve derin bilgiye sahip olanlar \"Ona inandık, hepsi Rabbimiz katındandır,\" derler. Akıl ve anlayış sahiplerinden başkası öğüt almaz.",
+    "Elmalılı Hamdi Yazır Meali": "Sana bu kitabı indiren O'dur. Bunun âyetlerinden bir kısmı muhkemdir ki, bu âyetler, kitabın anası (aslı) demektir. Diğer bir kısmı da müteşabih âyetlerdir. Kalblerinde kaypaklık olanlar, sırf fitne çıkarmak için, bir de kendi keyflerine göre te'vil yapmak için onun müteşabih olanlarının peşine düşerler. Halbuki onun te'vilini Allah'dan başka kimse bilmez. İlimde uzman olanlar, \"Biz buna inandık, hepsi Rabbimiz katındandır.\" derler. Üstün akıllılardan başkası da derin düşünmez.",
+    "Elmalılı Meali (Orijinal)": "Odur indiren sana bu muazzam kitabı: bunun bir kısım âyatı vardır muhkemat: onlar «ümmülkitab» ana kitab, diğer bir takımları da müteşabihattır, amma kalblerinde bir yamıklık bulunanlar sade onun müteşabih olanlarının ardına düşerler: fitne aramak, te'vilini aramak için, halbuki onun te'vilini ancak Allah bilir, ilimde rüsuhu olanlar da derler ki: amenna hepsi rabbımızdan, maamafih özü temiz olanlardan başkası düşünemez",
+    "Emrah Demiryent Meali": "Sana Kitab’ı (Kur’ân’ı) vahyeden O’dur. Onun (Kur’ân’ın) bazı âyetleri muhkemdir (manası açıktır), onlar Kitab’ın esasıdır. Diğerleri ise müteşâbihtir (manası kapalıdır). Kalplerinde eğrilik (sapkınlığa meyilli) olanlar, fitne çıkarmak ve (kendi bâtıl görüşlerine göre) tevil etmek için, müteşabih âyetlerin peşine düşerler. Hâlbuki onun tevilini (hakiki manasını) ancak Allah bilir. İlimde derinleşmiş olanlar ise, “Ona inandık, hepsi Rabbimiz tarafından (gönderilmiştir)” derler. (Bu hakikati) akl-ı selîm sahiplerinden başkası düşünüp öğüt almaz.",
+    "Erhan Aktaş Meali": "Bu Kitap'ı sana indiren O'dur. O'nun bir kısım âyetleri muhkemdir¹ ki bunlar Kitap'ın anasıdır. Diğer ayetler de muteşâbihtir.² Böyleyken kalbinde eğrilik bulunanlar, fitne çıkarmak ve kendi anlayışlarına uydurmak için muteşâbih ayetlere yönelirler. Oysa onun te'vilini³ ancak Allah bilir. İlimde derinleşmiş olanlar:⁴ “Biz O'na iman ettik, bütün ayetler Rabb'imizdendir.” derler. Bunu ancak selim akıl5 sahibi olanlar düşünüp öğüt alır.",
+    "Hasan Basri Çantay Meali": "(Habîbim) sana Kitabı indiren odur. Ondan bir kısım âyetler muhkemdir ki bunlar Kitabın anası (temeli) dir. Diğer bir kısmı da müteşâbihlerdir. İşte kalblerinde eğrilik bulunanlar sırf fitne aramak (ötekini berikini sapdırmak) ve (kendi arzularına göre) onun te'vîline yeltenmek için onun müteşâbih olanına tâbi olurlar. Halbuki onun te'vilini Allahdan başkası bilmez, ilimde yüksek payeye erenler ise: Biz Ona inandık. Hepsi Rabbimiz katındandır» derler. (Bunları) salim akıllardan başkası iyice düşünmez.",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "O sana kitabı indirendir. Onun bir kısmı muhkem ayetlerdir, bunlar kitabın anasıdır. Diğerleri ise müteşabihlerdir. Zihinlerinde kayma olanlar, fitne çıkarmak ve te’vilini aramak için onun müteşabih olanının peşine düşerler. Oysa onun te’vilini Allah’tan başkası bilmez. İlimde derinleşenler ise: “Biz ona inandık, hepsi Rabbimizin katındandır.”",
+    "Hayrat Neşriyat Meali": "Sana Kitâb'ı (Kur'ân'ı) indiren O'dur; onun bir kısmı muhkem âyetlerdir ki onlar kitâbın anası (esâsı)dır, diğerleri ise müteşâbih (âyetler)dir.(2) Ama kalblerinde bir eğrilik bulunanlar, fitne çıkarmak ve onun te'vîlini aramak için hemen ondan müteşâbih olanının peşine düşerler. Hâlbuki onun te'vîlini ancak Allah bilir. İlimde râsih (derinleşmiş) olanlar da.(Onlar:) “(Biz) ona inandık, hepsi Rabbimiz tarafındandır!” derler (ve o gizli hakikati izhâr ederler). Ve (ondan, selîm) akıl sâhiblerinden başkası ibret almaz.",
+    "İhsan Aktaş Meali": "O ki sana bu kitabı (Kur’an’ı) indirdi. Ondan bir bölüm ayetler (hükümlerimizi ihtiva eden mesajlar) muhkemdir (anlamları açık ve yorum götürmez şekildedir), ki onlar kitabın anası (temeli, özü ve esası)dır. (Hüküm ihtiva etmeyen) diğer bir bölümü ise müteşâbih (birbirine benzer çeşitli manalar taşıyan, yorum isteyen, mecaz ve istiareli ifadeler içeren ve araştırılarak manaları bilinecek olan) ayetlerdir. Ama akıllarında eğrilik olanlar ise, fitne çıkarmak (kafaları karıştırmak) ve kendilerine göre yorumlamak için onun müteşabih (benzer) âyetlerinin ardına düşerler. Oysa onun tevilini (tefsirini) ancak Allah bilir, bir de ilimde derinleşenler. Hâlbuki (o ilimde derinleşenler) \"Ona (o müteşâbih ayetlere de) inandık, hepsi (o muhkem ve demüteşâbih olan bütün ayetler) Rabbimizin katındandır. \"derler. Ama (bu inceliği) aklıselim sahiplerinden başkası gereğince düşünemez. *",
+    "İlyas Yorulmaz Meali": "Sana indirdiği Kitabın içinde açık anlaşılır (muhkem) ayetler, kitabın genelini teşkil ederler. Kitabın diğer az olan bir kısmı da, müteşabih (teşbih, mecaz, deyim ve atasözleri gibi anlatımlar) ayetlerdir. Kalplerinde eğrilik olanlar, fitne çıkarmak ve müteşabih ayetleri istedikleri gibi yorumlamak için, Kur’an içindeki müteşabih ayetleri kullanırlar. Müteşabih ayetlerin tevilini Allah ve ilimde kendini geliştirmiş (Arap dilinde uzmanlaşmış ve dilin özelliklerini bilen) âlimler bilir ve “O’na iman ettik, ayetlerin hepsi Rabbimiz katındandır” derler. Ancak akıl sahipleri böyle düşünürler.",
+    "İsmayıl Hakkı Baltacıoğlu": "Sana Kitap’ı bildiren de Odur. O Kitap’ın bir kısmı açık ayetlerdir. Bunlar Kitap’ın temelidir. Öbürleri ise kapalı ayetleridir. İşte yüreklerinde yamukluk olan kimseler kapalı ayetlere bel bağlarlar. Bu da başkalarını yoldan çıkarmak, o ayetleri kendilerine göre yorumlamak istemelerindendir. Oysa ki o kapalı ayetlerin yorumlanmasını Allah’tan başka kimse bilmez. Bilimce ergin olanlar ise şöyle derler: « Biz bu Kitap’a inanıyoruz. Hepsi de Allah’tan gelmedir.» Allah’ın buyruğuyla öğütlenenler yalnız sağ düşünenlerdir.",
+    "İsmail Hakkı İzmirli": "Sana Kitabı inzâl eden O/dur. Onun bir kısmı muhkem âyetlerdir ki bunlar Kitabın aslıdır, diğer kısmı ise müteşabih âyetlerdir . Kalplerinde! İğrilik bulunan kimseler ise fitne kastiyle tevile saparak Kitabın o müteşabih âyetlerine tâbi olurlar. Müteşabihatın tevilini Allah/tan başka bir kimse bilmez; ilimde rüsuh sahibi olanlar «biz O/na inandık, hepsi de Rabbimiz canibindendir» derler ; Bunları yalnız tam akıllılar yâdederler .",
+    "İsmail Yakıt": "Kitabı sana indiren O’dur. Onun bazı ayetleri kitabın anasını/esasını veren anlamı açık ayetlerdir. Diğerleri ise anlamı kapalı ² ayetlerdir. Kalplerinde sapma eğilimi olanlar, fitne çıkarmak ve (kendince) yorumlamak amacıyla onun müteşabih olanına uyarlar. Onların (gerçek yorumunu) Allah’tan başkası bilemez. İlimde yüksek payeye ermiş/derinleşmiş olanlar “Biz O’na inandık. Hepsi Rabbimizin katındandır.” derler. Derin idrak/basiret sahiplerinden ³ başkası düşünüp anlamaz.",
+    "Kadri Çelik Meali": "Sana kitabı indiren O'dur. Ondan bazısı kitabın temeli olan muhkem ayetlerdir, diğerleri de müteşabihlerdir. Kalplerinde eğrilik olan kimseler, fitne çıkarmak ve tevil etmek için müteşabih olanlarına uyarlar. Oysa onların tevilini ancak Allah bilir. İlimde derince kökleşmiş olanlar ise, “Ona inandık, (muhkem ve müteşabih) hepsi Rabbimizin katındandır” derler. Bunu ancak akıl sahipleri düşünebilir.",
+    "Mahmut Kısa Meali": "Sana bumuhteşemKitabı gönderen, O’dur.Kur’an’ın büyükbir kısmı muhkem ayetlerden oluşmaktadır ki, bunlar Kitabın aslı ve esasıdır. Diğer ayetleri ise, müteşâbihtir.Muhkem: Bozulmaya, yıkılmaya karşı korunmuş, sapasağlam ve dayanıklı şey demektir. Kur’an, hiçbir değişikliğe ve bozulmaya uğramayacak şekilde korunmuş, sağlamlaştırılmış olduğundan, bu anlamda bütün ayetleri muhkemdir. (11. Hûd: 1; 22. Hacc: 52; 47. Muhammed: 20)Müteşâbih: Aralarındaki fark neredeyse seçilemeyecek ölçüde birbirleriyle benzeşen şeyler demektir. Kur’an ayetleri; güzellik, doğruluk, söylem biçimi gibi bir çok yönlerden birbirlerine benzediğinden, bu anlamda da bütün ayetleri müteşâbihtir (39. Zümer: 23).Buradaki anlamıyla; bizden hem iman ve hem de o iman doğrultusunda amel isteyen, yani konusu iman ve amel olan ayetlere muhkem; ama sadece iman isteyen, konusu iman olup bizden bir amel istemeyen ayetlere de müteşabih denir. Mesela; namaz, infak, içki, kumar gibi konuları anlatan ayetler muhkem, Adem’in topraktan yaratılması, Fil olayı, Musa’nın asası ile denizin yarılması gibi konuları anlatan ayetler de müteşa­bihtir.Kur’an’ın asıl varlık sebebi, insan hayatını Allah’ın rızası doğrultusunda düzenleyen muhkem ayetlerdir. Ama onların uygulanabilmesi için müteşabih ayetlerle kazanacağımız iman desteğine gerçekten ihtiyacımız vardır.Fakat,Kur’an ile hayatını düzenleme ve onun dilediği gibi yaşama niyeti olmayankalplerinde eğrilik bulunankötü niyetli veya bilgisiz insanlar,Kur’an’ın bildirdiği gerçekler konusunda insanları şüpheye düşürerekfitne çıkarmak veAllah’ın kitabını keyiflerinceyorumlayıp bâtıl iddia ve önyargılarını Kur’an’a onaylatmak amacıyla,muhkem ayetleri görmezlikten gelirler de, kulluk derdinde olmadıkları için anlamını rahatça çarpıtabileceklerini düşündükleri bumüteşâbih ayetlerin peşine düşerler.Oysa onlarıngerçek anlamını ve doğruyorumunu, sadece Allah bilir.Ve bunu, kitabında size de açıkça bildirmiştir. O hâlde, birkaç anlama gelebilen bu müteşâbih ayetlerin doğru yorumunu Allah’tan, yani onun kitabından ve onları beyan hakkı verilen Elçi’sinden öğrenmelisiniz. Nitekim,ilimde derinleşmiş olanlar:“Biz, onatüm kalbimizleiman etmişiz,muhkem olsun, müteşâbih olsun, Kur’an ayetlerinintümü Rabb’imiz tarafından gönderilmiştir!” derler.Fakat bu hakikati,akıl ve sağduyu sahiplerinden başkası düşünüp öğüt almaz.O temiz yürekli, derin kavrayışlı müminler, şöyle yalvarırlar:",
+    "Mahmut Özdemir Meali": "O’dur ki sana indirdi Kitab’ı! Ondan bir kısmı muhkem âyetlerdir; onlar Kitab’ın anasıdır. Diğerleri müteşâbih / benzeşimli / birbirine benzeyenlerdir. Her neyse kalblerinde yamukluk / eğrilik olanlar, Fitne’yi aramak ve onun te’vîlini aramak üzere ondaki birbirine benzeyenlere / benzeşimlilere tâbi’ oluyorlar. Oysa onun te’vîlini Allah’tan başkası bilmez. İlim’de Derinleşenler de:“Hepsi rabbimizin katındandır; buna inandık” derler. Duyular’ın sahiplerinden başkası düşünüp öğüt almıyor.",
+    "Mehmet Çakır Meali": "Resulüm! Allah'ın sana indirdiği Kitap'ta bazı ayetlerin anlamı son derece açıktır, Bunlar, Kuran’ın özü, diğerleri ise, yoruma elverişli sanatlı cümlelerdir. Farklı yorumla kargaşa peşinde olan kötü niyetli kişiler, hep onun yoruma elverişli cümlelerine takılırlar. Halbuki bu tür ayetlerin gerçek yorumunu bir Allah, bir de bilim adamları yapabilir. Bilim adamları: \"Bunların hepsi Allah'tandır\" diyerek hakkı teslim ederler. Zaten, sadece aklını kullanabilen bilim adamları sağlıklı düşünebilirler.",
+    "Mehmet Çoban Meali": "Allah sana kitabı gönderendir. Kitabın içinde bazı ayetler vardır ki anlamları itibariyle kesindir. Hiçbir şekilde tartışma götürmez. Her okuyan, her duyan aynı şekilde anlar. Üzerinde kimsenin tartışacak sebebi kalmaz. Ancak kalplerinde nifak hastalığı olanlar başkadır. Onlar mutlaka tartışacak bir şey bulur. Ayetlerin anlamları muhkem bile olsa, münafıklar tevil ederek kendi çıkarlarına göre yorumlar. Kitapta muhkem olan kesin anlamlı ayetlerinin dışında müteşabih ayetler de vardır. Müteşabih ayetlerde anlatılan olayların birbirine benzer açılımları veya benzer anlamları vardır. Kalplerinde eğrilik bulunanlar, fitne çıkarmak, insanları şaşırtmak, çıkarlarına bir yol bulmak için, müteşabih ayetler üzerine olmadık yorumlar yapar. Hemen her yerde müteşabih ayetlerden söz ederek bencilliklerini tatmin ederler. Ayetler üzerinde akıl jimnastiği yapıyormuş edasıyla ayetleri özünden saptırırlar. Oysa müteşabih ayetlerin gerçek manasını ancak Allah bilir. İlimde derinleşmiş olanlar:\"Biz Allah’ın gönderdiği Müteşabih ve Muhkem ayetlere inandık! Bütün ayetler Rabbimiz tarafından gönderilmiştir.\"derler. Bu inceliği ancak akıl sahipleri düşünüp anlar. Müteşabih ayetlerin anlamlarını muhkem ayetlerle birleştirirler. Her bir müteşabih ayeti muhkem bir ayetle anlamaya çalışırlar. Birden fazla anlam ortaya çıktığında hükmü Allah’a bırakırlar. Müteşabih ayetlerle benzetilerek anlatılmak istenilen olaylardan gerekli dersi, gerekli hikmeti çıkarırlar. Müteşabih ayetlerden çıkarlarına göre ayrıca bir din çıkıp bu İslam’dır demezler.",
+    "Mehmet Okuyan Meali": "Sana Kitabı indiren O’dur. Onun bazı ayetleri (açık anlamlı)dır ki bunlar Kitabın anasıdır (esasıdır). Diğerleri de (benzeşen anlamlı)lardır. Kalplerinde eğrilik olanlar, Fitne çıkarmak ve onu (arzularına göre) yorumlamak için ondaki ayetlerin peşine düşerler. (Oysa) onun (asıl) yorumunu Allah’tan başkası bilemez. İlimde derinlik sahibi olanlar ise “Ona inandık; hepsi Rabbimizin katındandır.” derler. Öz akıl sahiplerinden başkası (gerçeği) hatırlamaz.",
+    "Mehmet Türk Meali": "O Allah, sana bu kitabı indirendir. Bu kitabın bir kısım âyetlerinin anlamı açıktır ve bunlar, kitabın özüdür.¹ Diğer bir kısmı da benzer anlamlı âyetlerdir.² Kalplerinde yamukluk olanlar, sadece fitne çıkarmak ve keyfi yorumlar yapmak için kitabın benzer anlamlı âyetlerinin peşine düşerler. Hâlbuki onların yorumunu, sadece Allah bilir. İlim erbabı olanlar ise:³ “Biz, bu (Kitab’ın) tamamının, Allah katından geldiğine inandık.” derler. İşte bunu, ancak temiz akıl sahibi olan kimseler, idrak ederler.",
+    "Muhammed Esed Meali": "İlahî kelâmın özü olan açık ve kesin hükümlü mesajlar ile müteşabihleri kapsayan bu ilahî kelâmı sana bahşeden O’dur. ⁵ Kalpleri hakikatten sapmaya meyilli olanlar, sırf kafaları karıştırmak ⁶ için ve ona anlamlar yüklemek amacıyla ilahî kelâmın müteşabih olarak ifade edilen kısmına ⁷ uyarlar; oysa Allah’tan başka kimse onun kesin anlamını bilemez. ⁸ Bu yüzden bilgide derinleşenler şöyle derler: “Biz ona inanırız: tümü Rabbimizdendir; derin kavrayış sahipleri dışında kimse bundan ders almasa da.”",
+    "Mustafa Çavdar Meali": "Bu kitabı Kuran’ı sana indiren O’dur. Bir kısmı muhkem/hüküm içeren ayetlerdir -ki bunlar kitabın özüdür- diğeri de müteşabih/benzeşen ayetlerdir. Kalplerinde eğrilik olanlar, fitne çıkarmak ve bunun tevilini yapmak için bunun müteşabihinin peşine düşerler. Oysa bunun tevilini/ayetler arası bağlantıyı, Allah bilir. Bir de ilimde yüksek derece sahipleri, “Biz buna iman ettik, bunun hepsi Rabbimizin katındandır.” derler. Bunu ancak derin kavrayış sahipleri anlar. 2/10, 5/52, 8/49, 24/49-50, 39/23",
+    "Mustafa İslamoğlu Meali": "Yine O’dur sana İlâhî Kelâm’ı indiren. O’nun âyetlerinden bir kısmının hükmü kesin ve nettir; bunlar İlâhî Kelâm’ın anasıdır. Gerisi de müteşabihlerden oluşmuştur. Kalplerinde yamukluk bulunan kimseler, fitne çıkarmak ve tevil etmek amacıyla, onun müteşabih olan kısmının peşine düşerler. Oysa onun gerçek te’vilini kimse bilmiyor, yalnızca Allah (biliyor); ve ilimde sağlam basanlar derler ki: “Biz ona inanırız, tümü Rabbimizin katındandır. Aktif akıl sahiplerinden başkası bu gerçeği fark edemezler.”",
+    "Orhan Kuntman Meali": "(Ey Muhammed) Sana Kitabı indiren O'dur; onun (Kur'an'ın) ayetlerinin bir kısmı muhkemdir, (hüküm, emir ve yasaklarla ilgilidir, manası kesindir, yoruma gerek yoktur, te'vil edilerek başka bir anlam verilemez, herkes tarafından anlaşılabilir) Ki bu ayetler Kitab'ın anasını (temelini, esasını) teşkil eder. (Hak ile batılı ayıran, ilimde amelde peşine düşülmesi ve uyulması gereken temel ilkeler ve belgeler, hidayet -doğru yolu bulmak- için deliller bunlardır) Ayetlerinin diğer bir kısmı ise, müteşabihlerdir (çeşitli anlamlar verilmesi olasılığı bulunan ayetlerdir. Bu ayetlerin bir çok anlama gelme olasılığı muhkem ayetlerle mukayese edilme sayesinde giderilir, müteşabihâtın muhkemâta dönüşmesi göz önüne alınacak olursa, ayetlerin tümü muhkem demektir. Nitekim Hud suresinin 1. ayetinde: \"Bu öyle bir kitaptır ki ayetleri muhkem kılınmıştır\" buyurulmuştur) Fakat kalblerinde eğrilik olanlar (sapıklığa meyyal olanlar) fitne çıkarmak (halkı kuşkuya düşürüp doğru yoldan çıkarmak) için, bu ayetleri te'vile yeltenirler; (muhkem ayetler yerine) müteşâbih ayetlere tabi olurlar. Oysa onun te'vilini Allah'tan başkası bilmez ve ilimde ileri gidenler de (ancak Onun dilediği kadarını kavrayabilirler) \"Biz ona (Kur’an’a) iman ettik, (muhkemi ve müteşâbihi ile hepsi) Rabbimiz katındadır\" derler, (böyle) Selim akıl sahiplerinden başkası (bu gerçeği) düşünüp kavrayamaz (onlar müteşâbih ayetlere ancak muhkem ayetlerin ışığında mana vermeye çalışırlar, buna rağmen yine de çekinirler ve)",
+    "Osman Fırat Meali": "Kitabı sana O indirdi. Onun bazı âyetleri Muhkemdir (ki) onlar Kitabın anasıdır. Diğerleri de Müteşâbihdir. Kalblerinde eğrilik olanlar, fitne aramak için onun müteşâbih âyetlerinin ardına düşerler. Oysa onun te’vilni Allah’tan başka kimse bilmez. İlimde ileri gidenler (bu konuda ruhsat sahibi olanlar): \"Ona inandık, hepsi Rabbimiz katındandır\" derler. Sağduyu sâhiplerinden başkası düşünüp öğüt almaz. ?",
+    "Ömer Nasuhi Bilmen Meali": "O mabûd-i kadimdir ki, senin üzerine Kur'an'ı indirdi. Ondan bir kısmı muhkem âyetlerdir ki, onlar o kitabın aslıdır. Diğer bir kısmı da müteşâbih âyetlerdir. Artık kalblerinde eğrilik bulunan kimseler fitne aramak ve onu te'vil arzusunda bulunmak için o kitaptan müteşâbih olanına ittiba ederler. Halbuki, onun te'vilini Allah Teâlâ'dan başkası bilemez. İlimde rüsuh sahibi olanlar ise «Biz ona imân ettik, hepsi de Rabbimizin cânibindendir,» derler. (Bunları) Tam akıllı zâtlardan başkası tezekküredemez.",
+    "Suat Yıldırım Meali": "Bu muazzam kitabı sana indiren O'dur. Onun âyetlerinin bir kısmı muhkem olup bunlar Kitabın esasıdır. Âyetlerin bir kısmı ise müteşabihtir. Kalplerinde eğrilik olanlar sırf fitne çıkarmak, insanları saptırmak ve kendi arzularına göre yorumlamak için müteşabih kısmına tutunup onlarla uğraşır dururlar. Halbuki onların hakikatini, gerçek yorumunu Allah'tan başkası bilemez. İlimde ileri gidenler: “Biz ona olduğu gibi inandık. Hepsi de Rabbimizin katından gelmiştir. ” derler. Bunları ancak tam akıl sahipleri düşünüp anlar ve şöyle yalvarırlar: ",
+    "Süleyman Ateş Meali": "Kitabı sana O indirdi. Onun bazı ayetleri muhkemdir (ki) onlar Kitabın anasıdır. Diğerleri de müteşabih(birbirine benzeyen, sonucu tam bilinmeyen)dir. Kalblerinde eğrilik olanlar, fitne çıkarmak, uyardığı sonuca uğra(yıp belalarını bul)mak için onun müteşabih ayetlerinin ardına düşerler. Oysa onun te'vili(uyardığı sonucun ne zaman gerçekleşeceği)ni Allah'tan başka kimse bilmez. İlimde ileri gidenler: \"Ona inandık, hepsi Rabbimiz katındandır\" derler. Sağduyu sahiplerinden başkası düşünüp öğüt almaz.",
+    "Süleyman Tevfik (1927)": "O Allâh Te'âlâdır ki sana kitâbı (Kur'ân'ı) indirdi. Onda ümm-ü kitâb (kitâbın esâsı) olan âyât-ı muhkemât ve bunlardan başka da âyât-ı müteşâbihât vardır. kalblerinde zeyg (şübhe ve tereddüd ve hakdan sapmağa meyil) olanlar fitne koymağı isteyerek ve onları te'vîle yeltenerek bu müteşâbihâta tâbi' olurlar. Halbuki onların te'vîlini ancak Allâhu te'âlâ ve 'ilimde sâhib-i rüsûh olanlar bilirler . 'İlimde râsih olanlar: Onlara îmân itdik, cümlesi rabbimiz tarafındandır dirler. Bunlardan (âyât-ı Kur'âniyeden) ancak akl-ı kâmil sâhibi olanlar va'az ve nasîhat alırlar.",
+    "Süleymaniye Vakfı Meali": "Bu Kitab’ı sana indiren O’dur. Âyetlerinin bir kısmı muhkemdir; onlar kitab’ın ana ayetleridir. Diğerleri müteşâbih (benzeşik) olanlardır. Kalplerinde eğrilik olanlar, istedikleri te’vîli (bağlantıyı) kurup istedikleri fitneyi çıkarmak için Kitap’tan, kendi eğrilikleriyle benzeşen şeye uyarlar. Oysa onun tevilini (ayetleri birbiri ile ilişkilendirmeyi) sadece Allah bilir. Bu ilimde sağlam duruş gösterenler de şöyle derler: “Biz, bu ilme inandık, hepsi (muhkem, müteşâbih ve tevil) Sahibimiz katındandır.” Bu zikre (doğru bilgiye) sadece sağlam duruşlu olanlar ulaşabilirler.",
+    "Şaban Piriş Meali": "Sana kitabı indiren O'dur. Onda bir kısmı, muhkem -ki bunlar kitabın özüdür.- bir kısmı da müteşabih ayetler vardır. Kalplerinde eğrilik olanlar, fitne çıkarmak ve onun tevilini yapmak için onun müteşabih olanlarına uyarlar. Oysa, onun tevilini Allah'tan başkası bilmez. İlimde derinleşenler ise “Biz, ona iman ettik, onun hepsi Rabbimizin katındandır.” derler. Temiz akıl sahiplerinden başkası düşünmez.",
+    "Ümit Şimşek Meali": "Sana kitabı indiren de odur. O kitaptan bir kısmı muhkem âyetlerdir ki, onlar kitabın anasıdır; diğer bir kısmı da müteşabihattır. Kalplerinde eğrilik olanlar, fitne çıkarmak için müteşabih olanın peşine takılır da onu kendince yorumlamaya uğraşır.(4) Oysa onların kesin yorumunu Allah'tan başkası bilemez. İlimde derinlik sahibi olanlar ise, “Biz ona inandık; hepsi Rabbimizin katındandır” derler.(5) Fakat bunu ancak selim akıl sahipleri düşünüp anlar.",
+    "Yaşar Nuri Öztürk Meali": "Kitap'ı sana indiren O'dur: Onun ayetlerinden bir kısmı muhkemlerdir ki; onlar Kitap'ın anasıdır. Diğer ayetlerse müteşâbihlerdir. Şu var ki, kalplerinde bir eğrilik ve bozukluk bulunanlar, fitne aramak, onun teviline öncelik tanımak için Kitap'ın sadece müteşâbih kısmının ardına düşerler. Onun tevilini ise bir Allah bilir, bir de ilimde derinleşmiş olanlar. Bunlar, \"Ona inandık, hepsi Rabbimizin katındandır.\" derler. Gönül ve akıl sahiplerinden başkası gereğince düşünemez.",
+    "Eski Anadolu Türkçesi": "ol oldur kim indürdi üzerüñe ķur’ān’ı. bir nicesi āyetlerdür berk olınmışlar anlar kitāb’uñ aśśıdur. daħı ayruķlar beñdeşlerdür ammā anlar kim göñülleri içinde egilmek vardur ya'nį munāfıķlar yā bid'at ehli, uyarlar aña kim beñdeş oldı andan fitne istemekden ötürü daħı tefsirin istemek içün. daħı bilmez tefsirini anuñ illā Tañrı. daħı ŝabit olmışlar ya'nį berkimişler ilm içinde eydürler “inanduķ aña dükeli çalabumuz ķatındandur.” daħı ögütlenmez illā aķıllar işleri",
+    "Satıraltı Meal (1534)": "Ol Tañrı Ta‘ālā indürdi senüñ üstüñe Ḳur’ānı. Ol kitābuñ ba‘żı āyetlerimuḥkemdür, aṣl kitāb anlardur ve ba‘żı āyetleri müteşābihdür. Ol kişiler kiyüreklerinde şek vardur, uyarlar müteşābih āyetlere Ḳur’āndan istemeg‐içün fitneyi, daḫı istemeg‐içün bāṭıl te’vīl eylemegi. Daḫı bilmez anuñte’vīlini illā Tañrı Ta‘ālā bilür. Daḫı ‘ilmde kāmil olan kişiler eydürler: Bizīmān getürdük aña, ḳamusı ol āyetlerüñ Çalabumuz ḳatındadur, daḫı ögütle‐mez illā ‘aḳlı olan kişiler.",
+    "Bunyadov-Memmedeliyev": "(Ya Rəsulum!) Sənə Kitabı (Qur’anı) nazil edən Odur. Onun (Kitabın) bir hissəsi (Qur’anın əslini, əsasını təşkil edən) möhkəm (mə’nası aydın, hökmü bəlli), digər qismi isə mütəşabih (çətin anlaşılan, dəqiq mə’nası bilinməyən, məğzi bəlli olmayan) ayələrdir. Ürəklərində əyrilik (şəkk-şübhə) olanlar fitnə-fəsad salmaq və istədikləri kimi mə’na vermək məqsədilə mütəşabih ayələrə uyarlar (tabe olarlar). Halbuki onların yozumunu (həqiqi mə’nasını) Allahdan (yaxud Allahdan və elmdə qüvvətli olanlardan) başqa heç kəs bilməz. Elmdə qüvvətli olanlar isə: “ Biz onlara iman gətirdik, onların hamısı Rəbbimizin dərgahındandır”, - deyərlər. Bunları ancaq ağıllı adamlar dərk edərlər.",
+    "M. Pickthall (English)": "He it is Who hath revealed unto thee (Muhammad) the Scripture wherein are clear revelations. They are the substance of the Book. and others (which are) allegorical. But those in whose hearts is doubt pursue, forsooth, that which is allegorical seeking (to cause) dissension by seeking to explain it. None knoweth its explanation save Allah. And those who are of sound instruction say: We believe therein; the whole is from our Lord; but only men of understanding really heed.",
+    "Yusuf Ali (English)": "He it is Who has sent down to thee the Book: In it are verses basic or fundamental (of established meaning); they are the foundation(347) of the Book: others are allegorical. But those in whose hearts is perversity follow the part thereof that is allegorical, seeking discord, and searching for its hidden meanings, but no one knows its hidden meanings except Allah. And those who are firmly grounded(348) in knowledge say: \"We believe in the Book; the whole of it is from our Lord:\" and none will grasp the Message except men of understanding."
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "surah_number": 2,
+  "verse_number": 182,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=2&ayet=182",
+  "arabic_text": "فَمَنْخَافَمِنْمُوصٍجَنَفًااَوْاِثْمًافَاَصْلَحَبَيْنَهُمْفَلَٓااِثْمَعَلَيْهِۜاِنَّاللّٰهَغَفُورٌرَح۪يمٌ۟",
+  "transliteration": "Femen ḣâfe min mûsin cenefen ev iśmen feasleha beynehum felâ iśme ‘aleyh(i)(c)inna(A)llâhe ġafûrun rahîm(un)",
+  "word_translations": [
+    {
+      "arabic": "فَمَنْ",
+      "turkish": "her kim de"
+    },
+    {
+      "arabic": "خَافَ",
+      "turkish": "korkar da"
+    },
+    {
+      "arabic": "مِنْ",
+      "turkish": "-den"
+    },
+    {
+      "arabic": "مُوصٍ",
+      "turkish": "vasiyyet eden-"
+    },
+    {
+      "arabic": "جَنَفًا",
+      "turkish": "hata(sından)"
+    },
+    {
+      "arabic": "اَوْ",
+      "turkish": "veya"
+    },
+    {
+      "arabic": "اِثْمًا",
+      "turkish": "günah(ından)"
+    },
+    {
+      "arabic": "فَاَصْلَحَ",
+      "turkish": "ve düzeltirse"
+    },
+    {
+      "arabic": "بَيْنَهُمْ",
+      "turkish": "aralarını"
+    },
+    {
+      "arabic": "فَلَٓا",
+      "turkish": "yoktur"
+    },
+    {
+      "arabic": "اِثْمَ",
+      "turkish": "günah"
+    },
+    {
+      "arabic": "عَلَيْهِۜ",
+      "turkish": "ona"
+    },
+    {
+      "arabic": "اِنَّ",
+      "turkish": "elbette"
+    },
+    {
+      "arabic": "اللّٰهَ",
+      "turkish": "Allah"
+    },
+    {
+      "arabic": "غَفُورٌ",
+      "turkish": "bağışlayandır"
+    },
+    {
+      "arabic": "رَح۪يمٌ۟",
+      "turkish": "esirgeyendir"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Vasiyet edenin yanılmasından, suç işlemesinden ürküp aralarını bulana suç yok. Şüphe yok ki Allah, suçları örter, rahimdir.",
+    "Abdullah-Ahmet Akgül Meali": "Bunun yanında; kim, vasiyet edenin haksızlığa eğilim göstereceğinden, ya da günaha gireceğinden korkup da ikisinin(vasiyet edenle, vasiyet edilenin veya ilgililerin)arasını bulup-düzeltirse, artık onun üzerinden vebal kalkacaktır. Gerçekten Allah, Bağışlayandır, Esirgeyip Acıyandır.",
+    "Abdullah Parlıyan Meali": "Ama her kim vasiyet edenin bir hata yaptığından veya bilerek bir kusur işlediğinden endişe eder ve bunun üzerine mirasçılar arasında bir uzlaşma sağlarsa, bu nedenle kendisine bir günah yoktur. Şüphesiz Allah çok bağışlayan ve çok acıyandır.",
+    "Ahmet Tekin Meali": "Kim de, vasiyet edenin bir hata işlemesinden veya bilerek bir günaha girmesinden endişe ederek tarafların arasını düzeltir, geliştirirse, ona bir vebal yoktur. Allah çok bağışlayıcı ve engin merhamet sahibidir.",
+    "Ahmet Varol Meali": "Kim vasiyet edenin bir haksızlığa meyledeceğinden veya günaha gireceğinden korkar da, tarafların arasını düzeltirse onun üzerine bir günah yoktur. Allah bağışlayıcıdır, rahmet edicidir.",
+    "Ali Bulaç Meali": "Bunun yanında, kim, vasiyet edenin haksızlığa eğilim göstereceğinden ya da günaha gireceğinden korkup da ikisinin (tarafların) arasını bulup-düzeltirse, artık ona günah yoktur. Gerçekten Allah, bağışlayandır, esirgeyendir.",
+    "Ali Fikri Yavuz Meali": "Kim vasiyyet edenin bir hata etmesinden veya bir günaha girmesinden endişe eder de iki tarafın arasını düzeltirse, ona hiç bir günah yoktur. Allah, hakkı yerine getireni bağışlayıcı ve emrine itaat edene merhamet edicidir.",
+    "Bahaeddin Sağlam Meali": "Kim vasiyet edenin bir haksızlık ve intikam meylinden korkar da araya girip barıştırırsa, ona bir günah yoktur. Hiç şüphesiz Allah, Gafur ve Rahim’dir. (Sabredip de bağışlarsanız bu, sizin Allah’a yakınlaşmanız için daha iyidir. Bu sabrı kazanmak için de:)",
+    "Bayraktar Bayraklı Meali": "Her kim, vasiyet edenin bir hata yaptığından veya bir kusur işlediğinden endişe eder ve bunun üzerine mirasçılar arasında bir uzlaşma sağlarsa, kendisine bir günah yoktur. Doğrusu Allah çok affedicidir; merhamet sahibidir.",
+    "Besim Atalay Meali (1965)": "Bir kimse, vasiyet eyliyenin yanılmasından, ya da günaha girmesinden korkup da, araların bulursa, bir günah gelmez ona, Allah bağışlayıcı, Allah yarlıgayıcı",
+    "Cemal Külünkoğlu Meali": "Bunun yanında kim, vasiyet edenin haksızlığa eğilim göstereceğinden ya da günaha gireceğinden korkup da ikisinin arasını bulursa artık ona günah yoktur. Şüphesiz Allah çok bağışlayan, çok merhamet edendir.",
+    "Cemil Said (1924)": "Vasiyet idenin hatâsından ve yâhud adâletsizliğinden korkub da vârislerin hukûkını adâletle tanzîm iden günâhkâr olmaz. Allâh gafûr ve rahîmdir.",
+    "Diyanet İşleri Meali (Eski)": "Vasiyet edenin yanılacağından veya günaha gireceğinden endişe duyan kimse, ilgililerin arasını düzeltirse ona günah yoktur. Allah şüphesiz bağışlar ve merhamet eder.*",
+    "Diyanet İşleri Meali (Yeni)": "Vasiyet edenin hataya meyletmesinden ve günaha girmesinden korkan bir kimse, (tarafların) aralarını düzeltirse ona hiçbir günah yoktur. Şüphesiz Allah, çok bağışlayandır, çok merhamet edendir.",
+    "Kur'an Yolu (Diyanet İşleri)": "Her kim, bir vasiyette bulunacak kimsenin hakkı çiğnemesinden veya günaha girmesinden korkar da (ilgililerin) aralarını düzeltirse ona bir günah yoktur. Allah elbette bağışlayıcıdır, sonsuz rahmet sahibidir.",
+    "Diyanet Vakfı Meali": "Her kim, vasiyet edenin haksızlığa yahut günaha meyletmesinden endişe eder de (alâkalıların) aralarını bulursa kendisine günah yoktur. Şüphesiz Allah çok bağışlayan hem de esirgeyendir.",
+    "Edip Yüksel Meali": "Vasiyet edenin yanlışlık veya haksız bir paylaşım yapacağını sezen birisi olaya karışıp durumu düzeltirse günah işlemiş olmaz. ALLAH Bağışlayandır, Rahimdir.",
+    "Elmalılı Hamdi Yazır Meali": "Her kim de vasiyet edenin, bir hata işlemesinden veya bir günaha girmesinden endişe eder de tarafların arasını düzeltirse, ona bir vebal yoktur. Şüphesiz ki, Allah çok bağışlayıcıdır, çok merhamet edicidir.",
+    "Elmalılı Meali (Orijinal)": "her kim de vasıyyet edenin bir hata etmesinden veya bir günaha girmesinden endişe eder ve tarafeynin aralarını düzeltirse ona vebal yoktur, şüphesiz Allah gafur, rahîmdir",
+    "Emrah Demiryent Meali": "Her kim de (vasiyetini yazmakta olan birinin yanında hazır bulunur da) vasiyet edenin (şeriata muhalif olarak) haksızlığa yahut günaha meyletmesinden endişe ederse (vasiyet edeni hakka, adalete yönlendirerek, vasiyet edenle vârislerin) aralarını düzeltmesinde ona hiçbir günah yoktur. Şüphesiz Allah çok bağışlayandır, çok merhamet edendir.",
+    "Erhan Aktaş Meali": "Kim, vasiyet edenin yanılacağından veya günaha gireceğinden endişe ederse, taraflar arasında uzlaşma sağlamasında, ona bir günah yoktur. Kuşkusuz Allah Çok Bağışlayıcı'dır, Rahmeti Kesintisiz'dir.",
+    "Hasan Basri Çantay Meali": "Bununla beraber, kim vasıyyet edenin haksızlığa meylinden, yahud günâha gireceğinden endîşe edib de (alâkalıların) aralarını bulursa ona da hiç bir günâh yokdur. Şübhesiz ki Allah çok yarlığayıcı, hakkıyle esirgeyicidir.",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "Bunun yanında kim vasiyet edenin haksızlığa veya günaha yönelmesinden korkar da tarafların arasını bulup düzeltirse bundan dolayı ona bir günah yoktur. Allah bağışlayıcıdır, merhametlidir.",
+    "Hayrat Neşriyat Meali": "Kim de vasiyet edenin bir hatâ etmesinden veya bir günâha girmesinden endîşe edip de (vasiyetle alâkası olanların) aralarını düzeltirse, artık ona bir günah yoktur. Şübhesiz ki Allah, Gafûr (çok bağışlayan)dır, Rahîm (çok merhamet eden)dir.",
+    "İhsan Aktaş Meali": "Ama kim vasiyet edenin yanlış veya haksız bir şey yapacağını sezer ve bunun üzerine olaya karışıp durumu düzeltmişse, ona bir vebâl yoktur. Şüphesiz Allah çok bağışlayan, çok merhamet edendir.",
+    "İlyas Yorulmaz Meali": "Vasiyete şahitlik eden, vasiyet edenin hata yapacağından veya haksızlık yapacağından korkarsa, mirasçılar arasında uzlaşma sağlamasında sakınca yoktur. Allah bağışlayan ve merhametli olandır.",
+    "İsmayıl Hakkı Baltacıoğlu": "Her kim de vasiyet edenin yanıldığından, ya da günaha gireceğinden korkar da mirasçıların arasını bulacak olursa ona günah yoktur. Çünkü, Allah yarlıgayıcıdır, esirgeyicidir.",
+    "İsmail Hakkı İzmirli": "Her kim vasiyet eden kimsenin haktan ayrılmasından veya günaha gireceğinden korkup aralarını bulursa ona günah yoktur. Çünkü Allah gafurdur, rahimdir.",
+    "İsmail Yakıt": "Bununla birlikte kim, vasiyette bulunanın bir hata/haksızlık veya bir günah işlemesinden korkarak tarafların/ mirasçıların aralarını düzeltirse, ona günah yoktur. Muhakkak ki Allah Gafûr’dur, Rahîm’dir.",
+    "Kadri Çelik Meali": "Vasiyet edenin yanılacağından veya günaha gireceğinden korkan kimse onların arasını düzeltirse, ona günah yoktur. Allah şüphesiz bağışlayandır, merhamet edendir.",
+    "Mahmut Kısa Meali": "Fakat her kim vasiyet eden kişinin yanılmış veyaadâletsizlik edipgünaha girmiş olduğundan endişe eder de,bu durumu mirasçılara güzelce izah ederek veya gizlice vasiyette düzeltmeler yaparakaralarında uzlaşma sağlarsa, ona da bir günah yoktur. Çünkü Allah çok bağışlayıcı, çok merhametlidir.İşte size, iyilik ve erdemlilik duygularını pekiştirip yaygınlaştıracak ilâhî bir hediye:",
+    "Mahmut Özdemir Meali": "Kim vasiyet edenin günah işlemesinden veya hata yapmasından korktu da aralarını düzelttiyse, ona günah yoktur. Allah, rahîm gafûrdur.",
+    "Mehmet Çakır Meali": "Bir vasiyetçinin yanılıp şaşırmasından endişe edenlerin, taraflar arasını bulmasında hiçbir sakınca yoktur. Çünkü Allah, engin hoşgorülü bir sevgi selidir...",
+    "Mehmet Çoban Meali": "Vasiyet edenin hataya meyletmesinden ve günaha girmesinden korkan bir kimse, araya girip hataları düzeltirse ona hiçbir günah yoktur. Ona hiç kimse:\"Sana ne? Bizim işimize niye karışıyorsun? Sen kendi işine bak diyemez!\"Mümin olana düşen hataları düzeltmek için aktif olmaktır. Müminler benliklerine düşkün insanlar gibi, kardeşleri hata ediyorsa bana ne, akılları var fikirleri var, koca koca adamlar diyemez. Mümin en azından hak için, hatanın düzeltilmesi için müdahale etmek zorundadır. Buna rağmen insanlar günah işlemekte ısrar ediyorlarsa yapacak bir şey yoktur. Şüphesiz Allah çok bağışlayan ve merhamet edendir. Rabbin hatadan dönenleri af eder.",
+    "Mehmet Okuyan Meali": "Kim vasiyet edenin haksızlığa veya günaha yönelmesinden endişe eder de (ilgililerin) arasını bulursa kendisine herhangi bir günah yoktur. Şüphesiz ki Allah çok bağışlayandır, çok merhametlidir.",
+    "Mehmet Türk Meali": "Bunun yanında, vasiyet edenin haksızlık yaptığından yahut günâha meyletmesinden endişe ederek¹ (tarafların) aralarını bulan kimseye de bir günâh yoktur. Zîrâ Allah, çok bağışlayandır, pek esirgeyendir.",
+    "Muhammed Esed Meali": "Ama her kim, vasiyet edenin bir hata yaptığından veya bir kusur işlediğinden endişe eder ve bunun üzerine mirasçılar arasında bir uzlaşma ¹⁵⁴ sağlarsa kendisine bir günah terettüb etmez. Doğrusu Allah çok affedicidir, rahmet kaynağıdır.",
+    "Mustafa Çavdar Meali": "Kim de vasiyet edenin yanlı davranıp haksızlık yapacağından veya günaha düşeceğinden endişe duyar da onların aralarını düzeltirse, ona günah yoktur. Allah, şüphesiz bağışlayan ve merhamet edendir. 4/7...12, 5/106",
+    "Mustafa İslamoğlu Meali": "Fakat kim vasiyet edenin yanlı ya da kasıtlı davrandığından endişe eder ve (mirasçıların) arasını uzlaştırırsa, bu durumda kendisine herhangi bir vebal yoktur. Elbette Allah tarifsiz bağışlayıcıdır, eşsiz merhamet kaynağıdır.",
+    "Orhan Kuntman Meali": "Kim de; vasiyet edenin bir hata yapmasından veya bir günaha girmesinden endişe ederek tarafların aralarını bulursa; (elbette) onun üzerine bir vebal yoktur, (çünkü o bir hayır işlemiştir) Şüphe yok ki Allah çok bağışlayandır ve çok merhametli olandır!",
+    "Osman Fırat Meali": "Kim de vasiyyet edenin bir hatâ veya günâh işlemesinden korkar da (tarafların) aralarını düzeltirse, ona günâh yoktur, Allâh bağışlayandır, esirgeyendir.",
+    "Ömer Nasuhi Bilmen Meali": "İmdi her kim vasiyette bulunan kimsenin bir hatasından veya bir günaha girmiş olmasından korkar da aralarını ıslah ederse onun üzerine bir günah yoktur. Şüphesiz Allah Teâlâ gafûrdur, rahîmdir.",
+    "Suat Yıldırım Meali": "Vasiyet edenin hataya düşüp haksızlığa kaymasından veya günaha girmesinden endişe edip ilgililerin arasını bulan kimse, hiçbir vebale girmez. Allah çok affedicidir, merhamet ve ihsanı boldur.",
+    "Süleyman Ateş Meali": "Kim de vasiyyet edenin bir hata veya günah işlemesinden korkar da (tarafların) aralarını düzeltirse, ona günah yoktur, Allah bağışlayandır, esirgeyendir.",
+    "Süleyman Tevfik (1927)": "Vasiyet idenin 'adâletden inhirâf itmesinden veyâhud bir hatâ ve günâha düşmesinden korkarak (vasiyet iden ile vasiyet olunan arasında bunı ıslâh idüb düzeldene günâh yokdur. Allâh Te'âlâ (zulümden hazr idene) mağfiret ider ve (emrine itâ'at idene) rahmet iyler.",
+    "Süleymaniye Vakfı Meali": "Mirası paylaştıran kişi, bir tarafa meyletmekten veya günaha girmekten korkar da mirasçıları uzlaştırırsa, yanlış yapmış olmaz. Çokça bağışlayan ve iyiliği bol olan Allah’tır.",
+    "Şaban Piriş Meali": "Vasiyet edenin yanılacağından veya günaha düşeceğinden endişe duyan kimse (ilgililerin) aralarını düzeltirse, ona günah yoktur. Allah, şüphesiz bağışlayan ve merhamet edendir.",
+    "Ümit Şimşek Meali": "Kim vasiyet edenin bilerek veya bilmeyerek haksızlığa meyletmiş olmasından endişelenir de tarafların arasını düzeltirse, onun için(86) bir günah yoktur. Çünkü Allah çok bağışlayıcı, çok merhamet edicidir.",
+    "Yaşar Nuri Öztürk Meali": "Kim vasiyet edenin haksızlığa sapmış veya günah işlemiş olmasından endişelenip de ilgililerin arasını bulursa ona günah yoktur. Allah çok affedici, çok merhamet edicidir.",
+    "Eski Anadolu Türkçesi": "pes her kim bile, vaśi(y)yeti eyleyenden, ya'nį dükeli malını vaśi(y)yet eyleye ya'nį bir nice ħıśımlarına vaśi(y)yet eyleye bir nicesine eylemeye ħaŧā eylemek ya yazuķ pes eylük eyleye anlaruñ arasında: yazuķ yoķdur anuñ üzere. bayıķ Tañrı yarlıġayıcıdur raḥmet ķılıcı.",
+    "Satıraltı Meal (1534)": "Pes her kim ḳorḳsa vaṣiyyet eylegenden meyl eylemek yā yazuḳ işlemek, ıṣlāḥeylese aralarında yazuḳ yoḳdur anuñ üstine. Tañrı Ta‘ālā yazuḳlar baġışla‐yıcıdur, raḥmet idicidür.",
+    "Bunyadov-Memmedeliyev": "Hər kəs vəsiyyət edənin (öz vəsiyyətilə) səhv etməsindən və ya günaha batmasından ehtiyat edib (ədalət naminə vəsiyyətdə dəyişiklik edərək) varislərin arasını düzəltsə, ona heç bir günah yazılmaz. Allah bağışlayandır, rəhm edəndir!",
+    "M. Pickthall (English)": "But he who feareth from a testator some unjust or sinful clause, and maketh peace between the parties, (it shall be) no sin for him. Lo! Allah is Forgiving, Merciful.",
+    "Yusuf Ali (English)": "But if anyone fears partiality or wrongdoing(187) on the part of the testator, and makes peace between (The parties concerned), there is no wrong in him: For Allah is Oft-forgiving, Most Merciful."
+  }
+}

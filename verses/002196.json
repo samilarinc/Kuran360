@@ -1,0 +1,337 @@
+{
+  "surah_number": 2,
+  "verse_number": 196,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=2&ayet=196",
+  "arabic_text": "وَاَتِمُّواالْحَجَّوَالْعُمْرَةَلِلّٰهِۜفَاِنْاُحْصِرْتُمْفَمَااسْتَيْسَرَمِنَالْهَدْيِۚوَلَاتَحْلِقُوارُؤُ۫سَكُمْحَتّٰىيَبْلُغَالْهَدْيُمَحِلَّهُۜفَمَنْكَانَمِنْكُمْمَر۪يضًااَوْبِه۪ٓاَذًىمِنْرَأْسِه۪فَفِدْيَةٌمِنْصِيَامٍاَوْصَدَقَةٍاَوْنُسُكٍۚفَاِذَٓااَمِنْتُمْ۠فَمَنْتَمَتَّعَبِالْعُمْرَةِاِلَىالْحَجِّفَمَااسْتَيْسَرَمِنَالْهَدْيِۚفَمَنْلَمْيَجِدْفَصِيَامُثَلٰثَةِاَيَّامٍفِيالْحَجِّوَسَبْعَةٍاِذَارَجَعْتُمْۜتِلْكَعَشَرَةٌكَامِلَةٌۜذٰلِكَلِمَنْلَمْيَكُنْاَهْلُهُحَاضِرِيالْمَسْجِدِالْحَرَامِۜوَاتَّقُوااللّٰهَوَاعْلَمُٓوااَنَّاللّٰهَشَد۪يدُالْعِقَابِ۟",
+  "transliteration": "Veetimmu-lhacce vel’umrate li(A)llâh(i)(c)fe-in uhsirtum femâ-steysera mine-lhedy(i)(s)velâ tahlikû ruûsekumhattâ yebluġa-lhedyu mehilleh(u)(c)femen kâne minkum merîdan ev bihi eżen min ra/sihi fefidyetun minsiyâmin evsadekatin ev nusuk(in)(c)fe-iżâ emintum femen temette’a bil’umrati ile-lhacci femâ-steysera mine-lhedy(i)(c)femen lem yecid fesiyâmu śelâśeti eyyâmin fi-lhacci veseb’atin iżâ raca’tum(k)tilke ‘aşeratun kâmile(tun)(k)żâlike limen lem yekun ehluhuhâdiri-lmescidi-lharâm(i)(c)vettekû(A)llâhe va’lemû enna(A)llâhe şedîdu-l’ikâb(i)",
+  "word_translations": [
+    {
+      "arabic": "وَاَتِمُّوا",
+      "turkish": "ve tamamlayın"
+    },
+    {
+      "arabic": "الْحَجَّ",
+      "turkish": "haccı"
+    },
+    {
+      "arabic": "وَالْعُمْرَةَ",
+      "turkish": "ve ömreyi"
+    },
+    {
+      "arabic": "لِلّٰهِۜ",
+      "turkish": "Allah için"
+    },
+    {
+      "arabic": "فَاِنْ",
+      "turkish": "eğer"
+    },
+    {
+      "arabic": "اُحْصِرْتُمْ",
+      "turkish": "engellenmiş olursanız"
+    },
+    {
+      "arabic": "فَمَا",
+      "turkish": "şeyi (kesin)"
+    },
+    {
+      "arabic": "اسْتَيْسَرَ",
+      "turkish": "kolayınıza gelen"
+    },
+    {
+      "arabic": "مِنَ",
+      "turkish": "-dan"
+    },
+    {
+      "arabic": "الْهَدْيِۚ",
+      "turkish": "kurban-"
+    },
+    {
+      "arabic": "تَحْلِقُوا",
+      "turkish": "tıraş etmeyin"
+    },
+    {
+      "arabic": "رُؤُ۫سَكُمْ",
+      "turkish": "başlarınızı"
+    },
+    {
+      "arabic": "حَتّٰى",
+      "turkish": "kadar"
+    },
+    {
+      "arabic": "يَبْلُغَ",
+      "turkish": "varıncaya"
+    },
+    {
+      "arabic": "الْهَدْيُ",
+      "turkish": "kurban"
+    },
+    {
+      "arabic": "مَحِلَّهُۜ",
+      "turkish": "yerine"
+    },
+    {
+      "arabic": "فَمَنْ",
+      "turkish": "kim (varsa)"
+    },
+    {
+      "arabic": "كَانَ",
+      "turkish": "olan"
+    },
+    {
+      "arabic": "مِنْكُمْ",
+      "turkish": "içinizden"
+    },
+    {
+      "arabic": "مَر۪يضًا",
+      "turkish": "hasta"
+    },
+    {
+      "arabic": "اَوْ",
+      "turkish": "ya da"
+    },
+    {
+      "arabic": "بِه۪ٓ",
+      "turkish": "bulunan"
+    },
+    {
+      "arabic": "اَذًى",
+      "turkish": "bir rahatsızlığı"
+    },
+    {
+      "arabic": "مِنْ",
+      "turkish": "-ndan"
+    },
+    {
+      "arabic": "رَأْسِه۪",
+      "turkish": "başı-"
+    },
+    {
+      "arabic": "فَفِدْيَةٌ",
+      "turkish": "fidye (versin)"
+    },
+    {
+      "arabic": "صِيَامٍ",
+      "turkish": "oruçtan"
+    },
+    {
+      "arabic": "اَوْ",
+      "turkish": "veya"
+    },
+    {
+      "arabic": "صَدَقَةٍ",
+      "turkish": "sadakadan"
+    },
+    {
+      "arabic": "اَوْ",
+      "turkish": "veya"
+    },
+    {
+      "arabic": "نُسُكٍۚ",
+      "turkish": "kurbandan"
+    },
+    {
+      "arabic": "فَاِذَٓا",
+      "turkish": "zaman"
+    },
+    {
+      "arabic": "اَمِنْتُمْ۠",
+      "turkish": "güvene kavuştuğunuz"
+    },
+    {
+      "arabic": "فَمَنْ",
+      "turkish": "kimse"
+    },
+    {
+      "arabic": "تَمَتَّعَ",
+      "turkish": "faydalanmak isteyen"
+    },
+    {
+      "arabic": "بِالْعُمْرَةِ",
+      "turkish": "ömre ile"
+    },
+    {
+      "arabic": "اِلَى",
+      "turkish": "kadar"
+    },
+    {
+      "arabic": "الْحَجِّ",
+      "turkish": "hac (zamanın)a"
+    },
+    {
+      "arabic": "فَمَا",
+      "turkish": "şeyi (kessin)"
+    },
+    {
+      "arabic": "اسْتَيْسَرَ",
+      "turkish": "kolayına geleni"
+    },
+    {
+      "arabic": "مِنَ",
+      "turkish": "-dan"
+    },
+    {
+      "arabic": "الْهَدْيِۚ",
+      "turkish": "kurban-"
+    },
+    {
+      "arabic": "فَمَنْ",
+      "turkish": "kimse"
+    },
+    {
+      "arabic": "يَجِدْ",
+      "turkish": "(kurban) bulamayan"
+    },
+    {
+      "arabic": "فَصِيَامُ",
+      "turkish": "oruç tutar"
+    },
+    {
+      "arabic": "ثَلٰثَةِ",
+      "turkish": "üç"
+    },
+    {
+      "arabic": "اَيَّامٍ",
+      "turkish": "gün"
+    },
+    {
+      "arabic": "الْحَجِّ",
+      "turkish": "hacda"
+    },
+    {
+      "arabic": "وَسَبْعَةٍ",
+      "turkish": "ve yedi gün"
+    },
+    {
+      "arabic": "اِذَا",
+      "turkish": "zaman"
+    },
+    {
+      "arabic": "رَجَعْتُمْۜ",
+      "turkish": "döndüğünüz"
+    },
+    {
+      "arabic": "تِلْكَ",
+      "turkish": "böylece"
+    },
+    {
+      "arabic": "عَشَرَةٌ",
+      "turkish": "on (gündür)"
+    },
+    {
+      "arabic": "كَامِلَةٌۜ",
+      "turkish": "tamamı"
+    },
+    {
+      "arabic": "ذٰلِكَ",
+      "turkish": "bu"
+    },
+    {
+      "arabic": "لِمَنْ",
+      "turkish": "kimseler içindir"
+    },
+    {
+      "arabic": "يَكُنْ",
+      "turkish": "olmayanlar"
+    },
+    {
+      "arabic": "اَهْلُهُ",
+      "turkish": "ailesi"
+    },
+    {
+      "arabic": "حَاضِرِي",
+      "turkish": "hazır"
+    },
+    {
+      "arabic": "الْمَسْجِدِ",
+      "turkish": "Mescid-i"
+    },
+    {
+      "arabic": "الْحَرَامِۜ",
+      "turkish": "Haram'da"
+    },
+    {
+      "arabic": "وَاتَّقُوا",
+      "turkish": "sakının"
+    },
+    {
+      "arabic": "اللّٰهَ",
+      "turkish": "Allah'tan"
+    },
+    {
+      "arabic": "وَاعْلَمُٓوا",
+      "turkish": "ve bilin ki"
+    },
+    {
+      "arabic": "اَنَّ",
+      "turkish": "gerçekten"
+    },
+    {
+      "arabic": "اللّٰهَ",
+      "turkish": "Allah'ın"
+    },
+    {
+      "arabic": "شَد۪يدُ",
+      "turkish": "şiddetlidir"
+    },
+    {
+      "arabic": "الْعِقَابِ۟",
+      "turkish": "cezası"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Haccı ve umreyi de Allah için tamamlayın. Tamamlayamayacaksanız gücünüz yettiği kadar bir şey kurban edin ve kurbanı, yerinde boğazlayıncaya dek başınızı tıraş ettirmeyin. İçinizde hasta olan, başında bir eziyet bulunan varsa tıraş olur ve karşılığında oruç tutar, sadaka verir, yahut kurban keser. Sonra emin oldunuz, muktedir bulundunuz mu hac zamanına dek umre yapmak isteyen, gücü neye yeterse kurban eder. Buna imkan bulamayan üç gün hacda, yedi gün de dönünce oruç tutar, işte bu, tam on gündür. Bu da ayali Mescidi Haram'da olmayan içindir. Allah'tan sakının ve bilin ki şüphe yok, Allah'ın azabı çok şiddetlidir.",
+    "Abdullah-Ahmet Akgül Meali": "(Size emredildiği ve öğretildiği biçimde)Haccı ve umreyi Allah için tamamlayıverin. Eğer(düşman tehlikesi, hastalık ve buna benzer nedenlerle)kuşatılır, kısıtlanır ve engel olunursanız, artık size kolay gelen kurban(ı gönderin). Kurban yerine varıncaya kadar başlarınızı tıraş etmeyin. Sizden kim hasta ise veya başından şikâyeti varsa, onun ya oruç ya sadaka veya kurban olarak fidye(vermesi yeterlidir). Ne zaman güvenliğe kavuşursanız, hacca kadar umre ile yararlanmak isteyene, kolayına gelen bir kurban(ı kesmek gerekir). Bulamayana da, hacc’da üç gün, döndüğünüzde yedi(gün)olmak üzere, bunlar, tamı tamına on(gün)oruç(tutması tavsiye edilmiştir). Bu, ailesi Mescid-i Haram’da olmayanlar içindir. Allah’tan korkun ve bilin ki, muhakkak Allah’ın cezası pek çetindir.",
+    "Abdullah Parlıyan Meali": "Hac ve umreyi de Allah için tam yapın. Fakat hac ve umre yapmaktan alıkonulursanız, gücünüzün yeteceği bir kurbanı kurban yerine gönderin. Kurban, yerini buluncaya kadar başlarınızı traş etmeyin. Ama içinizden, hasta olan yahut başında rahatsızlık olan kimse bu yüzden daha önce traş olursa, oruç tutarak veya sadaka vererek veya kurban keserek özrünü karşılayacak bir şey yapmalıdır. Sağlıklı ve emniyette olduğunuzda, hac vaktinden önce umre yapan, gücünün yeteceği bir kurban kessin. Kurbanı bulamayan veya almaya gücü yetmeyen kimse ise, hac sırasında üç gün, döndükten sonra da yedi gün, yani tam on gün oruç tutsun. Bütün bunlar Mescidi Haram etrafında yaşamayanlar içindir. Yolunuzu Allah'ın kitabıyla bulun ve iyi bilin ki, Allah'ın cezası pek şiddetlidir.",
+    "Ahmet Tekin Meali": "Başladığınız Hac ve Umreyi de Allah için tamamlayın. İhramdan sonra, mücbir, zorunlu bir sebeple hac ve umreden alıkonursanız kolayınıza gelen bir kurban gönderin. Kurban, yerine ulaşıncaya kadar başlarınızı tıraş etmeyin.Sizden kim hasta olur, yahut başında traş olmayı gerektirecek haşerat oluşur, traş olmak zorunda kalırsa, onun oruç tutması veya imanda sadakatin ve kemalin ifadesi olan sadaka veya kurban cinsinden bir fidye vermesi gerekir.Hac yolculuğu için sağlıklı ve emniyette olduğunuz vakit, kim hac günlerine kadar umre ile sevap kazanmak isterse, kolayına gelen bir kurban kesmesi gerekir. Kurban bulamayan kimse, üç gün hacda, yedi gün de, döndüğünde olmak üzere tam on gün oruç tutmalıdır. Bu hüküm, ailesi Mescid-i Haram civarında oturmayanlar içindir.Allah'a sığınıp emirlerine yapışın, günahlardan arınıp, azaptan korunun. Bilin ki Allah, çiğnenen yasaklarına denk, size âdil ceza verme gücüne sahiptir.",
+    "Ahmet Varol Meali": "Haccı ve umreyi Allah için tamamlayın. Eğer alıkonulursanız kolayınıza gelen bir kurban gönderin. Gönderdiğiniz kurban yerine ulaşıncaya kadar saçlarınızı traş etmeyin. Hasta olan veya başından bir rahatsızlığı olan (bundan dolayı traş olan) kimsenin üzerine ya oruç, ya sadaka veya kurban olarak fidye gerekir. Güvene kavuştuğunuz zaman, her kim hacca kadar umre ile yararlanmak isterse kolayına gelen bir kurban kesmesi gerekir. Kim (kurban kesme imkanı) bulamazsa üç gün hacc esnasında yedi gün de döndükten sonra oruç tutması gerekir. Böylece tam on gün oruç tutar. Bu hüküm ailesi Mescidi Haram yakınında oturmayanlar içindir. Allah'tan korkun ve bilin ki, Allah'ın cezası pek şiddetlidir.",
+    "Ali Bulaç Meali": "Haccı ve umreyi Allah için tamamlayın. Eğer (düşman, hastalık ve buna benzer nedenlerle) kuşatılırsanız, artık size kolay gelen kurban(ı gönderin). Kurban yerine varıncaya kadar başlarınızı traş etmeyin. Kim sizden hasta ise veya başından şikayeti varsa, onun ya oruç ya sadaka veya kurban olarak fidye (vermesi gerekir). Güvenliğe kavuşursanız, hacca kadar umre ile yararlanmak isteyene, kolayına gelen bir kurban(ı kesmek gerekir). Bulamayana da, hacc'da üç gün, döndüğünüzde yedi (gün) olmak üzere, bunlar, tamı tamına on (gün) oruç vardır. Bu, ailesi Mescid-i Haram'da olmayanlar içindir. Allah'tan korkun ve bilin ki Allah, muhakkak cezası pek çetin olandır.",
+    "Ali Fikri Yavuz Meali": "Haccı da, umreyi de Allah için farz ve sünnetleriyle tam yapın. Fakat, herhangi bir sebeple bunlardan alıkonursanız kurbandan (deve, sığır ve davardan) sizin için hangisi kolaysa o vâcib olur; ve kurban mahalli olan Mina'ya varıncaya kadar başlarınızı traş etmeyin. İçinizden hasta veya başından eziyeti olup bundan ötürü traş olan kimseye üç gün oruç, ya altı fakire birer fitre sadaka, yahut bir kurban kesmekle fidye vermek vâcip olur. Hastalık ve yol tehlikesi gibi engellerden emin olduğunuz vakit de, kim umresini bitirip ondan faydalanarak haccı yaparsa, kolayına gelen bir kurban kesmek vâcip olur. Fakat kesecek kurban bulunamazsa veya buna gücü yetmezse, ona hac günlerinde üç gün, vatanına döndüğü zaman yedi gün ki, tam on gün oruç tutmak vâcip olur. Bu hüküm, Mescid-i Harâm'da oturmayanlar içindir. Allah'tan korkun (hac ahkâmını koruyun) ve bilin ki, Allah'ın azâbı cidden çok şiddetlidir.",
+    "Bahaeddin Sağlam Meali": "Hacc ve umreyi de Allah için tamamlayın. Eğer muhasara edilirseniz, gücünüzün yettiği bir kurban verin. Kurban yerine ulaşmadan başınızı traş etmeyin. Kim hasta ise veya başından bir sıkıntısı varsa (traş olması gerekirse,) oruç ile veya fakiri doyurmakla veya kurbanla fidye vermesi gerekir. Güven içinde olduğunuzda hacc zamanı gelinceye kadar, umre ile istifade etmek isteyen olursa, verebildiği bir kurbanı keser. Kurban bulamayanlar, üç gün hacda, yedi gün de evlerine döndüklerinde oruç tutarlar. Bu on gün, o ibadetin yerini tam tutar. Bu, evi Mekke’de olmayanlar içindir. Artık Allah’tan sakının ve bilin ki; Allah’ın cezası ağır ve şiddetlidir.",
+    "Bayraktar Bayraklı Meali": "Haccı ve umreyi Allah için tamamlayınız. Eğer yapmaktan alıkonursanız, gücünüzün yeteceği bir kurban kesiniz ve kurban kesilinceye kadar başlarınızı tıraş etmeyiniz. Fakat içinizden hasta olan, yahut başında rahatsızlık olan kimse oruç tutarak veya sadaka vererek veya başka bir ibadet ile özrünü karşılayacak bir şey yapmalıdır. Sağlıklı ve emniyette olduğunuzda, hacdan önce umre yapan gücünün elverdiği türden bir kurban kessin, ama kurbana gücü yetmeyen, hac sırasında üç gün ve döndükten sonra yedi gün, yani tam on gün oruç tutsun. Bütün bunlar, Mescid-i Harâm civarında yaşamayanlar içindir. Allah'tan sakınınız. Bilin ki, Allah'ın vereceği ceza ağırdır.",
+    "Besim Atalay Meali (1965)": "Allah için haccile, umreyi tümleyin, bir engele uğrayacak olursanız, kolay olan bir kurban; kurbanınız yerine varana değin, siz de başınızı tıraş etmeyin, içinizden biri hastalanırsa, ya da başından dirliksiz ise, imdi onun karşılığı, ya bir oruçtur, ya bir sadaka, ya da bir kurban; emniyete erişince, hac zamanındaki umre ile faydalanan kimseye, kolay olan bir kurban gerek, bir kimse kurbanı bulamaz ise, hac vaktinde üç gün oruç tutmalı, döndüğünüzde de, yedi gün oruç, böylece on tümlenir; bunlar, evi Mekkede olmıyanlar içindir, Allahtan sakınınız, biliniz ki Allahın azabı katı",
+    "Cemal Külünkoğlu Meali": "Haccı da umreyi de Allah (rızası) için yapın. Fakat (düşman, hastalık ve benzer sebeplerle) engellenmiş olursanız Kâbe'ye, güç yetirebileceğiniz nitelikte bir kurban gönderin. Gönderdiğiniz kurban yerine ulaşıncaya kadar başlarınızı tıraş etmeyin. Ancak sizden her kim hasta olur veya başında bir rahatsızlık bulunu(up da tıraş olmak zorunda kalı)rsa ona da fidye gerekir ki o da ya (üç gün) oruç tutmak ya da sadaka (altı fakire fitre) vermek veya bir kurban kesmektir. Sonra emin olduğunuzda kim hac zamanına kadar umreyle faydalanmak (hacc-ı temettü yapmak) isterse kolayına gelen bir kurban keser. Fakat kesecek kurban bulunamazsa veya buna gücü yetmezse ona hac günlerinde üç gün, vatanına döndüğü zaman da yedi gün ki tam on gün oruç tutmak vacip olur. Bu hüküm, Mescid-i Haram civarında yaşamayanlar içindir. Allah'a karşı gelmekten sakının (hac ahkâmını koruyun) ve bilin ki Allah'ın azabı cidden çok şiddetlidir.",
+    "Cemil Said (1924)": "Allâh için hac ve umreyi itmâm idiniz eğer düşmanlar tarafından mahsur oldığından nâşî yapmaz iseniz teberru’âtda bulununuz, teberru’ itdiğiniz hayvân kurbân idileceği mahalle varıncaya kadar başlarınızı traş itmeyiniz. Hasta olanlar ve yâhud traş olmağa mecbûr kalanlar, yâ oruc ile yâ sadaka ile veyâ bir kurbân teberru’ ile telâfi itmelidir. Düşmanlarınızdan korkunız olmadığı vakit mescidi ziyâretle iktifâ ve haccı başka bir zamâna ta’lîk idenler bir teberru’da buluncakdır. Eğer kudreti yetmiyor ise hac zamânında üç gün ve ’avdetde yedi gün cem’an on gün oruc tutarak kefâret idecekdir. Mescidü’l Harâm’da hazır olmıyanlar içün bu kefâret mecbûridir. Allâh’dan korkınız biliniz ki Allâh mücâzâtda şedîddir.",
+    "Diyanet İşleri Meali (Eski)": "Başladığınız hac ve umreyi Allah için tamamlayın. Alıkonursanız, kolayınıza gelen bir kurban gönderin. Kurban, yerine ulaşıncaya kadar, başlarınızı tıraş etmeyin. İçinizde hasta olan veya başından rahatsız bulunan varsa fidye olarak ya oruç tutması,ya sadaka vermesi ya da kurban kesmesi gerekir. Güven içinde olursanız, hacca kadar umreden faydalanabilen kimseye kolayına gelen bir kurban kesmek, bulamayana, hac esnasında üç gün ve döndüğünüzde yedi gün, ki o tam on gündür oruç tutmak gerekir. Bu, ailesi Mescidi Haram'da oturmayan kimseler içindir. Allah'tan sakının ve Allah'ın cezasının şiddetli olacağını bilin.*",
+    "Diyanet İşleri Meali (Yeni)": "Haccı da, umreyi de Allah için tamamlayın. Eğer (düşman, hastalık ve benzer sebeplerle) engellenmiş olursanız artık size kolay gelen kurbanı gönderin. Bu kurban, yerine varıncaya kadar başlarınızı tıraş etmeyin. İçinizden her kim hastalanır veya başından rahatsız olur (da tıraş olmak zorunda kalır)sa fidye olarak ya oruç tutması, ya sadaka vermesi, ya da kurban kesmesi gerekir. Güvende olduğunuz zaman hacca kadar umreyle faydalanmak isteyen kimse, kolayına gelen kurbanı keser. Kurban bulamayan kimse üçü hacda, yedisi de döndüğünüz zaman (olmak üzere) tam on gün oruç tutar. Bu (durum), ailesi Mescid-i Haram civarında olmayanlar içindir. Allah’a karşı gelmekten sakının ve Allah’ın cezasının çetin olduğunu bilin.",
+    "Kur'an Yolu (Diyanet İşleri)": "“Haccı ve umreyi Allah için eksiksiz yerine getirin; engellenirseniz kolayınıza gelen bir kurban gönderin. Kurban, mahalline ulaşıncaya kadar başlarınızı tıraş etmeyin. Fakat içinizden biri hasta ise veya başından bir rahatsızlığı varsa (tıraşını olup) oruç veya sadaka yahut kurban olarak bir fidye ödesin. Güvenlikte olduğunuzda hacdan önce umre yapan kişi, gücünün elverdiği türden bir kurban kessin. Bulamayan ise hac sırasında üç gün, döndükten sonra da yedi gün yani tam on gün oruç tutmalıdır. Bu, ailesi Mescid-i Harâm civarında oturmayanlar içindir. Allah’ın buyruğuna saygılı olun ve bilin ki Allah’ın cezalandırması çok şiddetlidir.",
+    "Diyanet Vakfı Meali": "Haccı ve umreyi Allah için tam yapın. Eğer (bunlardan) alıkonursanız kolayınıza gelen kurbanı gönderin. Kurban, yerine varıncaya kadar başlarınızı tıraş etmeyin. Sizden her kim hasta olursa yahut başından bir rahatsızlığı varsa, oruç veya sadaka veya kurban olmak üzere fidye gerekir. (Hac yolculuğu için) emin olduğunuz vakit kim hac günlerine kadar umre ile faydalanmak isterse, kolayına gelen bir kurban kesmek gerekir. Kurban kesmeyen kimse hac günlerinde üç, memleketine döndüğü zaman yedi olmak üzere oruç tutar ki, hepsi tam on gündür. Bu söylenenler, ailesi Mescid-i Haram civarında oturmayanlar içindir. Allah'tan korkun. Biliniz ki Allah'ın vereceği ceza ağırdır.",
+    "Edip Yüksel Meali": "Hac ve umreyi ALLAH için tamamlayın. Engellenirseniz kolayınıza gelen bir kurban gönderin. Kurban, yerine ulaşıncaya kadar başınızı traş etmeyin; ancak hasta olan veya başından bir rahatsızlığı bulunanlar, oruç, sadaka veya herhangi bir ibadetle fidye vermeli. Güven ortamında, her kim Hac zamanına kadar (ihramdan çıkarak) umreden yararlanırsa, kolayına gelen bir kurban göndermeli. Bunu yerine getiremiyenler, hac anında üç gün, ve döndükten sonra da yedi gün olmak üzere toplam on gün oruç tutmalı. Bu, ailesi Kutsal Mescid civarında oturmayanlar içindir. ALLAH'ı dinleyin ve bilin ki ALLAH'ın azabı çetindir.",
+    "Elmalılı Hamdi Yazır Meali": "Hac ve umreyi de Allah için tamam yapın. Eğer bunlardan alıkonursanız, o zaman kolayınıza gelen bir kurban gönderin. Bununla beraber bu kurban, kesileceği yere varıncaya kadar başlarınızı tıraş etmeyin. İçinizden hasta olana veya başından bir rahatsızlığı bulunana tıraş için oruç veya sadaka yahut da kurbandan ibaret bir fidye gerekir. Engellemeden kurtulduğunuz zaman da her kim hacca kadar umre ile sevab kazanmak isterse, ona da kolayına gelen bir kurban gerekir. Bunu bulamayana ise üç gün hacda, yedi de döndüğünüzde ki tam on gün oruç tutması lazım gelir. Bu hüküm, ailesi Mescidi Haram civarında oturmayanlar içindir. Allah'tan korkun ve bilin ki Allah'ın azabı gerçekten çok şiddetlidir.",
+    "Elmalılı Meali (Orijinal)": "Hacc-ü omreyi de Allah için tamam yapın, eğer ihsara tutulmuşsanız o vakit hedyin kolayınıza geleni, bununla beraber bu hediy mahalline varıncaya kadar başlarınızı tıraş etmeyin, içinizden hasta olana veya başından bir eziyeti bulunana tıraş için oruç veya sadaka veya kurbandan ibaret bir fidye var; ihsardan aman bulduğunuz vakit de her kim hacca kadar omre ile sevab kazanmak isterse ona da hedyin kolay geleni, bunu bulamıyana ise oruç, üç gün hacda yedi de avdet ettiğinizde ki tam on gündür ve şu hüküm, ehli Mescidiharam mukimlerinden olmıyanlar içindir, hasılı Allahdan korkun ve bilin ki Allahın ıkabı cidden çok şiddetlidir",
+    "Emrah Demiryent Meali": "Haccı ve umreyi Allah için tam yapın. (Şayet hac veya umreyi tamamlamaktan sizi alıkoyan, düşman ya da hastalık gibi) bir engel ile karşılaşırsanız (ihramdan çıkmak için) kolayınıza gelen bir kurbanı (Harem bölgesine) gönderin. Kurban, yerine varıncaya kadar başlarınızı tıraş etmeyin. Fakat içinizden hasta olan ya da başından bir rahatsızlığı bulunan (ve bu yüzden saçlarını keserek ihramdan çıkmak zorunda kalan) bir kimsenin (fidye olarak) ya (üç gün) oruç tutması ya sadaka vermesi ya da kurban kesmesi gerekir. (Hac yolculuğu için) emin olduğunuz vakit, kim hac günlerine kadar, umre ile faydalanmak isterse (temettü haccı yaparsa) kolayına gelen bir kurban kesmesi gerekir. Kurban (kesme imkânı) bulamayan kimse (de ihramlı olarak) hac günlerinde üç, döndüğü zaman *yedi gün olmak üzere oruç tutar ki hepsi tam on gündür. Bu (hüküm), ailesi Mescid-i Harâm civarında oturmayanlar (yerleşik olmayanlar) içindir. Allah’tan korkun ve bilin ki Allah’ın cezası gerçekten (çok) şiddetlidir.",
+    "Erhan Aktaş Meali": "Allah için Haccı ve Umreyi tam yapın. Eğer engellenirseniz, o zaman hediyeden¹ kolayınıza gelen şeyi gönderin! Ancak hediye yerine ulaşıncaya kadar başınızı tıraş etmeyin.² Sizden hasta olan veya başından bir rahatsızlığı bulunan; oruç tutmak veya sadaka vermek ya da nusuk³ sayılacak bir fidye⁴ vermeli! Emin olduğunuz vakitte; kim, hac vaktine kadar umre ile faydalanmak isterse, hediyeden kolayına geleni göndermeli! Fakat kim bulamazsa, hac günlerinde üç, döndükten sonra da yedi gün olmak üzere toplam on gün oruç tutsun. Bu, ailesi Mescid-i Harâm çevresinde oturmayanlar içindir. Allah'a karşı takvâlı davranın. Ve bilin ki Allah'ın cezası çok şiddetlidir.",
+    "Hasan Basri Çantay Meali": "Haccı da, umreyi de Allah için, tam yapın. Fakat (herhangi bir sebeble bunlardan) alıkonursanız o halde kolayınıza gelen kurban (ı gönderin. Bununla beraber) kurban yerine (Minâya) varıncaya kadar başlarınızı tıraş etmeyin. Artık içinizden kim hasta olur, yahud başından bir eziyyeti bulunursa ona orucdan, ya sadakadan yahud da kurbandan (biriyle) fidye (vacip olur). Emîn olduğunuz vakit ise kim hacca kadar umre ile fâidelenmek (sevaba girmek) isterse kolayına gelen bir kurban (ı kesmek vacip olur). Fakat (onu) bulamazsa hacc günlerinden (ihramlı olarak) üç, döndüğünüz vakit yedi gün olmak üzere oruç tutmak (vacip olur ki) bunlar tam on (gün eder). Bu, ailesi (ikâmetgâhı) Mescid-i haramda bulunmayanlara âiddir. Allahdan korkun ve bilin ki Allah, cezası cidden çetin olandır.",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "Haccı ve umreyi Allah için tamamlayın. Eğer engellenirseniz artık kolayınıza gelen kesimlik bir hayvan (:hedy) gönderin. Kesimlik hayvan, yerine varıncaya kadar başınızı tıraş etmeyin. Aranızda hasta veya başından rahatsız olan varsa onun fidye olarak oruç tutması veya sadaka vermesi ya da başka bir ibadet yapması gerekir. Güvende olduğunuz zaman ise hacca kadar umre ile yararlanmak isteyene kolayına gelen kesimlik bir hayvan gerekir. Kesimlik hayvan temin edemeyen kimse üç gün hacda, yedi gün de döndükten sonra olmak üzere tam on gün oruç tutsun. Bu, ailesi Mescid-i Haram’da oturmayanlar içindir. Allah’a karşı takvalı olun ve bilin ki Allah, cezası şiddetli olandır.",
+    "Hayrat Neşriyat Meali": "Hac ve umreyi de Allah için tamamlayın!(2) Fakat (başladığınız bu ibâdeti tamamla¬maktan, herhangi bir şekilde) men' olunursanız, artık (size) kolayınıza gelen bir kur ban(borcu) vardır. O hâlde bu kurban yerine varıncaya (ve boğazlanıncaya) kadar baş la rınızı tıraş etmeyin!Fakat içinizden kim hasta olur veya başında bir rahat sızlığı bulunur (da vaktinden önce tıraş olur)sa, bu takdirde (onun üzerine üç gün) oruç veya (altı fakiri doyuracak) sadaka veya kurban dan (biriyle) bir fidye (verme borcu) vardır. Fakat emniyete kavuştuğunuz zaman, artık kim hacca kadar umre ile faydalanırsa, o durumda (ona da) kolayına gelen bir kurban(kesme borcu) vardır.Buna rağmen kim de (kurbana güç) bulamazsa, artık (ona) hacda üç gün, döndüğünüz zaman da yedi (gün) oruç (tutma borcu) vardır. Bunlar tam on (gün)dür. Bu (hüküm), âilesi Mes cid-i Harâm sâkinlerinden olmayanlar içindir. Artık Allah'dan sakının ve bilin ki, şübhesiz Allah, azâbı çok şiddetli olandır!",
+    "İhsan Aktaş Meali": "Haccı ve umreyi (zâtım olan) Allah için tam yapın. Eğer (hac veya umre niyetiyle ihrama girdikten sonra herhangi bir nedenle bunlardan) alıkonursanız (kesilmek ve yoksullara eti dağıtılmak üzere) kolayınıza gelen kurbanı mahalline (mina’ya) gönderin. Gönderdiğiniz kurban yerine ulaşıncaya kadar başlarınızı tıraş etmeyin. Ancak sizden her kim hasta olur veya başında bir rahatsızlık bulunu(up da tıraş olmak zorunda kalı)rsa ona da fidye gerekir ki o da ya oruç tutmak ya da (yoksullara) sadaka vermek veya bir kurban kesmektir. Sonra emin olduğunuzda kim hac zamanına kadar umreyle faydalanmak (hacc-ı temettü yapmak) isterse kolayına gelen bir kurban keser. Kim (kurban kesme imkânı) bulamazsa hac günlerinde üç gün, vatanına döndüğü zaman da yedi gün ki tam on gün oruç tutmak gerekir. Bu (hüküm), ailesi Mescid-i Haram civarında olmayanlar içindir. Ve Allah’a karşı gelmekten (emirlerine muhalefet etmekten) sakının ve bilin ki, (zalimler, azgınlar ve kötü işler yapanlar için) Allah’ın cezası çok çetindir. *",
+    "İlyas Yorulmaz Meali": "Hac görevinizi veya umrenizi Allah için tamamlayın. Eğer (acil başka sebepten dolayı) haccı kısaltırsanız, kolayınıza gelen bir kurban kesin. Kurban kesme mahalline ulaşıncaya kadar, başlarınızı tıraş etmeyin. Sizden kim hasta olur veya saç tıraşı olmakla başından rahatsızlanacaksa, bunun karşılığında oruç tutmak, sadaka vermek veyahut başka bir ibadet yapması gerekir. Güven (barış) içinde olduğunuzda, hacca kadar umreyi tamamlarsanız, sizin için kolayınıza gelen bir kurban kesmek vardır. Kurban kesmeye maddi gücü yetmeyen için, hacda üç gün oruç tutmalı, evine döndüğünde de yedi gün oruç tutarak, tam on güne tamamlamalıdır. Bu uygulama Mescidi Haram (Mekke) dışında ikamet edenler içindir. Allah’dan sakının. Bilin ki (hacla ilgili bu emirleri yerine getirmezseniz) Allah’ın cezası çok şiddetlidir.",
+    "İsmayıl Hakkı Baltacıoğlu": "Kabe’ye yüz sürmeyi de, Umre’yi de yalnız Allah için,eksiksiz olarak yerine getirin. Ancak, bundan alıkonacak olursanız, kolayınıza gelen kurbanı gönderin. Kurban yerine varıncaya kadar da saçınızı kestirmeyin. Bir de içinizden her kim hastalanır, ya da başından rahatsız olursa, onun için kurtulmalık olarak oruç tutmak, ya sadaka vermek, ya da kurban kesmek gerektir. Güvenlik içinde olunca da herkesin yüz sürme gününe kadar Umre’den yararlanmak isterse onun kolayına gelen kurbanı kesmesi gerektir. Ancak bunu bulamazsa, yüz sürme sırasında üç, geri döndükten sonra da yedi gün oruç tutmak gerektir. Hepsi tam on gün eder. Bu, çoluğu çocuğu, Mescid-i Haram’da bulunmayanlar içindir. Allah’tan sakının. Bilin ki gerçekten Allah’ın vereceği ceza çok ağır olacaktır.",
+    "İsmail Hakkı İzmirli": "Allah için Hac ve Umre amellerini tamamlayın. Eğer alıkonursanız size kolay gelen bir hacı kurbanı vacip olur. Kurban boğazlanacak yere kadar başlarınızı traş etmeyin. İçinizden her kim keyifsiz veya başından rahatsız ise ona fidye olarak oruç tutmak veya sadaka vermek veya kurban kesmek vacip olur. Emin olduğunuz zaman hac zamanına kadar Umre ile mütemetti olan kimseye kolay gelen bir kurban vaciptir. Kurban bulamayan kimseye hac günlerinde üç gün, geri döndükten sonra yedi gün oruç tutmak vaciptir. İşte bu, tam on gün eder. Bu Mescid-i Haram/da ehl-ü iyâli mukîm olmayanlara mahsustur. Allah/tan sakının, biliniz ki Allah/ın ukubeti şiddetlidir.",
+    "İsmail Yakıt": "Haccı ve umreyi Allah için tamamlayınız. Eğer alıkonursanız kolayınıza gelen bir kurban ¹²⁹ gönderiniz. Kurban yerine ulaşıncaya kadar başlarınızı tıraş etmeyiniz. İçinizden hasta olan veya başından bir rahatsızlığı bulunan kimse olursa, oruç veya sadaka ya da kurbandan bir fidye vermesi gerekir. Güvende olduğunuzda¹³⁰, hac zamanına kadar umreden faydalanmak isteyen kimse kolayına gelen kurbanı keser. Kurban bulamayan da hacda üç gün oruç tutar, yedi gün de döndüğü zaman tutar. Böylece tam on gün olur. Bu hüküm ancak ailesi Mescid-i Harâm’da oturmayanlar içindir. Allah’a karşı sorumluluk bilincinde olunuz. Biliniz ki, Allah’ın azabı çok çetindir.",
+    "Kadri Çelik Meali": "Hac ve umreyi Allah için sona erdirin. Ama eğer alı-konursanız, kolayınıza gelen bir kurban (gönderin). Kurban, yerine ulaşıncaya kadar, başlarınızı tıraş etmeyin. İçinizde hasta olan veya başından rahatsız bulunan (ve bu yüzden de başını tıraş eden) varsa; fidye olarak ya oruç tutması, ya sadaka vermesi ya da kurban kesmesi gerekir. Güvenliğe kavuşursanız, umreden sonra hacca başlayan kimseye, kolayına gelen bir kurban kesmek, bulamayana da hac esnasında üç gün ve döndüğünüzde yedi gün oruç tutmak gerekir ki o (toplam olarak) tam on gündür. Bu (hüküm), ailesi Mescid-i Haram'da oturmayan kimseler içindir. Allah'tan sakının ve Allah'ın cezasının şiddetli olacağını bilin.",
+    "Mahmut Kısa Meali": "Haccı ve Umreyi Allah için tamamlayın.İbâdetler başta olmak üzere, başladığınız her işi en güzel biçimde bitirmeye çalışın. Fakateğerbaşladığınız hac veya umreyi tamamlamaktan sizi alıkoyan, düşman, hastalık ya da doğal afet gibibir engelle karşılaşırsanız, bu durumda gücünüzün yeteceği bir kurbankesmeli veya mümkünse kesilmek üzere Kâbe’ye göndermelisiniz. Kurbanlık hayvan bulamazsanız, onun bedelini göndermeli veya bulunduğunuz yerdeki yoksullara vermelisiniz.Bu arada,kurbanlık hayvan kesileceği yere ulaşıncaya kadar başınızı tıraş etmeyin.Çünkü hacı adayı, ihrama girdikten sonra, kurban kesip ihramdan çıkıncaya kadar tıraş olmamalı, koku sürünmemeli, tırnağını kesmemelidir.Fakat içinizden, hastalığa yakalanan veya başından bir rahatsızlığı bulunanve bu yüzden saçlarını keserek ihramdan çıkmak zorunda kalankimseler,ya üç günoruç tutarak,ya da gücü ölçüsündesadaka vererek,yâhut durumuna göre bir deve, sığır, koyun veya keçikurban ederek fidye ödemelidir.Eğerhaccınızı tamamlamanıza mani olan hastalık, kaza, düşman gibi engellerden kurtulupgüvene kavuşursanız, hac mevsimine kadar umreden yararlanmak isteyen,yani hem Kâbe’ye gelmişken umre yapıp sevabını kazanmak, hem de umreden sonra ihramdan çıkarak, hac başlayana dek ihram yasaklarından muaf kalmak isteyen kişi, kurban günlerindegücünün yettiği bir kurban kesmelidir.Kurbanlık hayvanbulamayan ise, üç gün hacda, yedi gün dememleketinedöndüğü zaman olmak üzere, toplam on gün oruç tutmalıdır.Bu hükümler,kendisi veyaailesi Mescid-i Haram’da oturmayan kimseler içindir.Çünkü Mekke’deki kutsal harem bölgesi civarında yaşayanlar için hacdan önce umre yapma yani temettu haccı yoktur. Dolayısıyla onlara fidye ve oruç da yoktur. Ayrıca, onların sürekli olarak ihramlı hâlde bulunmaları da mümkün değildir.İşte bütün bu hükümler, size şu bilinci kazandırmak içindir:Allah’a karşı gelmekten sakının ve Allah’ın azâbının çok şiddetli olduğunu bilin.Gelelim, hac ile ilgili ayrıntılara:",
+    "Mahmut Özdemir Meali": "Allah için Hacc’ı ve Umre’yi tamamlayın! Engelle karşılaştıysanız, Kurban türünden kolayınıza geleni gönderin! Kurban, mahalline ulaşıncaya kadar başlarınızı tıraş etmeyin! Sizden kim hasta olduysa veya başından bir rahatsızlık olduysa, oruç veya sadaka veya kurban türlerinden bir fidye / kurtulma bedeli gerekir; kısıtlılıktan güvenliğe kavuştuğunuz zaman... Kim Umreyi Hacc’a birleştirdiyse, Kurban türünden kolayına geleni kesmek gerekir. Kim bulamadıysa, Hacc günlerinde üç gün, döndüğünüz zaman yedi daha olmak üzere toplam on gün oruçtur. Bu, ailesi Mescid ül-Harâm’da hazır bulunmamış kimse içindir. Allah’tan sakınıp korunun! Bilin ki Allah, Cezalandırması şiddetli olandır.",
+    "Mehmet Çakır Meali": "Allah için yapacağınız hac ve umre ziyaretlerini hakkıyla yapın. Hacca bir engeliniz varsa, bütçenize uygun bir kurban kesin. Kurbanlıklar kesim mahalline / Mina’ya varana kadar, saçınızı tıraş etmeyin. Hasta olanlar, ya da başındaki bir sorundan dolayı tıraş olamayanlar bunu, oruç, sadaka ya da adakla telafi etsinler. Hac güvenliğiniz sağlandığında, biri kalkar da hacdan önce bir de umre yapayım derse, yine bütçesine uygun bir kurban kessin. Bunu yapamazsa, üçü hac esnasında yedisi de yurda döndükten sora olmak üzere toplam on gün oruç tutsun. Bu yükümlülükler, ailesi Mekke'de oturmayanlar içindir. Kendinizi Allah'a karşı sağlama alın. Çünkü Allah'ın cezası çok sert olur.",
+    "Mehmet Çoban Meali": "Haccı ve umreyi Allah için tamamlayın! Eğer hac yolunda engellenmiş iseniz veya hacca gitmek için niyet edip yola çıkmadan engelle karşılaşmışsanız, size kolay gelen, sizi zorlamayacak olan kurbanı gönderin! Kurban yerine varıncaya kadar başınızı tıraş etmeyin! İçinizden her kim hastalanır veya başından rahatsız olursa, bundan dolayı niyet ettiği hacca gidememişse fidye olarak ya orucu (sıyamı) yerine getirmesi ya sadaka vermesi ya da kurban kesmesi gerekir. Güvende olduğunuz zaman, hac ibadetinin vakti gelinceye kadar umreyle faydalanmak isteyen kimse, kolayına gelen kurbanı keser. Kurban bulamayan kimse üçü hacda yedisi evine dönünce olmak üzere tam on gün oruç tutar. Bu hüküm evi, ailesi Mescid-i Haram civarında olmayanlar içindir! Allah’a karşı gelmekten sakının! Yasalara aykırı davranırsanız Allah’ın cezasının çetin olduğunu bilin!",
+    "Mehmet Okuyan Meali": "Allah için haccı ve umreyi tam yapın! (Bunlardan) alıkonulursanız kolayınıza gelen kurbanı (gönderip kestirin)! Kurban, yerine varıncaya kadar başlarınızı (saçınızı) tıraş etmeyin! Sizden kim hasta olursa veya başından bir rahatsızlığı varsa, oruç veya veya kurban olmak üzere fidye (vermesi) gerekir. Güvende olduğunuz zaman kim hacca (hac günlerine) kadar umre ile yararlanmak isterse, kolayına gelen bir kurban (kesmesi gerekir). (Kurban kesmeye) imkân bulamayan kişi, hac günlerinde üç gün, (memleketine) döndüğü zaman yedi (gün) olmak üzere oruç tutar ki hepsi tam on (gün)dür. İşte şu (hüküm), ailesi Mescid-i Haram civarında oturmayanlar içindir. Allah’a karşı lı (duyarlı) olun! Bilin ki Allah, cezası şiddetli olandır.",
+    "Mehmet Türk Meali": "(Ey îman edenler!) Haccı¹ ve Umreyi Allah için tam olarak yerine getirin.² Eğer (ihramdan sonra bir şekilde) yoldan alıkonulursanız, gücünüzün yeteceği bir kurbanı³ kesin ve o kurban, yerine varıp kesilinceye kadar da başlarınızı tıraş etmeyin. Fakat içinizden hasta ya da başından rahatsızlığı olanlar, (tıraş olurlarsa fidye olarak) ya oruç tutsun ya sadaka versin ya da kurban kessin. Eğer güvene kavuşursanız hacca kadar umre yaparak yararlanmak isteyenler,⁴ gücünün yeteceği bir kurban kessin. Kurban kesmeye gücü yetmeyenler ise üç günü Hacc’da, yedi günü de evinize döndüğünüz zaman olmak üzere toplam on gün oruç tutsun. Bu hükümler ailesi Mescid-i Haram civarında oturmayanlar içindir. Allah’a karşı hata etmekten sakının. Bilin ki Allah’ın cezâsı çok şiddetlidir.",
+    "Muhammed Esed Meali": "HACCI ve Umreyi ¹⁷⁴ Allah için ifa edin; fakat yapmaktan alıkonursanız gücünüzün yeteceği bir kurban kesin ve kurban kesilinceye kadar ¹⁷⁵ başlarınızı traş etmeyin; ama içinizden hasta olan yahut başında rahatsızlık olan kimse, oruç tutarak veya sadaka vererek veya bir ibadet ile (vaktinden önce tıraş olma) özrünü karşılayacak bir şey yapmalıdır. Sağlıklı ve emniyette olduğunuzda, ¹⁷⁶ hac den önce umre yapan, gücünün elverdiği türden bir kurban kessin; ¹⁷⁷ ama kurbana gücü yetmeyen, hac sırasında üç gün ve döndükten sonra yedi gün, yani tam on oruç tutsun. Bütün bunlar, Mescid-i Harâm civarında yaşamayanlar ¹⁷⁸ içindir. Allah’a karşı sorumluluğunuzun bilincinde olun ve bilin ki Allah karşılık vermede şiddetlidir. ¹⁷⁹",
+    "Mustafa Çavdar Meali": "Haccı da umreyi de Allah için tam yapın. Eğer hac yapmaktan alıkonursanız, oraya kolayınıza gelen bir kurban gönderin. Kurban yerine ulaşıncaya kadar da başlarınızı tıraş etmeyin. İçinizden hasta olan ya da başından bir rahatsızlığı bulunan bir kimsenin fidye olarak ya oruç tutması ya sadaka vermesi ya da kurban kesmesi gerekir. Güven içinde olursanız, hacca kadar umre ile faydalanmak isteyen kimseye, kolayına gelen bir kurban kesmek; bulamayana hac esnasında üç gün, döndüğünüz vakit de yedi gün -ki bu tam on gün eder- oruç tutmak gerekir. Bu, ailesi Mescid-i Haram’da oturmayan kimseler içindir. Allah’tan sakının, Allah’ın cezasının şiddetli olacağını bilin. 3/97, 22/25...37",
+    "Mustafa İslamoğlu Meali": "Haccı da umreyi de Allah rızası için tamamlayın. Eğer yerine getirmekten alıkonursanız gücünüzün yeteceği bir kurban verin ve kurban yerine ulaşıncaya kadar başlarınızı tıraş etmeyin! İçinizden hasta ya da başından bir rahatsızlığı olan kimse fidye olarak oruç tutmalı veya sadaka vermeli ya da kurban kesmelidir. Güvenli bir ortamda (hac yapıyorsanız), hacdan önce umre yapacak kimse maddi gücüne uygun türden bir kurban kessin! Fakat kurbana gücü yetmeyen üç günü hacda yedi günü döndükten sonra olmak üzere toplam on gün oruç tutsun! Bunlar ailece Mescid-i Haram civarında oturmayanlar içindir. Allah’a karşı sorumluluğunuzun bilincinde olun ve Allah’ın cezalandırmada çok şiddetli olduğunu bilin!",
+    "Orhan Kuntman Meali": "Haccı ve umreyi de Allah için tam yapın. (Her ikisini de tamamlayın eksik bırakmayın) Fakat (bunlara başladıktan -ihramdan- sonra, düşman tarafından) bunlardan alıkonulursanız (deve, sığır, davar cinsinden) kurbandan kolayınıza geleni (Mina'ya gönderin) ve kurban yerine varıncaya kadar başlarınızı tıraş etmeyin, (ihramdan çıkmayın) Ancak sizden her kim (ihramda iken) hasta olursa veya başında (yara ve bit gibi) bir eziyet bulunursa (bundan kurtulmak için daha evvel tıraş olursa) ona da oruçtan, sadakadan veya kurbandan bir fidye vacip olur, (umreyi hacla birleştirerek kıran haccı yapmak veya umre ihramından çıkmakla hac ihramına kadar serbest kalmak ve ihram yasaklarından yararlanmak suretiyle) temettü' haccı yapmak isterse, kolayına gelen bir kurban kesmek icap eder, (yanı kıran haccı veya temettü1 haccı yapanların, kurbanlık gönderip, sonunda kurban kesmeleri vaciptir.) Fakat her kim kurban bulamazsa üç gün hac esnasında, yedi gün de memleketine döndüğünde oruç tutması gerekir ki toplamı on gün eder. Bu hükümler ailesi (ikametgahı) Mescid-i Haram'da bulunmayan kimseler içindir. (Ey iman edenler işte hac ve umreyi Allah için böyle tamamlayın) ve Allah'tan korkun! (da günahkar olmayın) Biliniz ki, Allah'ın azabı çok şiddetlidir.",
+    "Osman Fırat Meali": "Allâh için haccı ve ömreyi tamamlayın. Eğer (engellenmiş olursanız kolayınıza gelen kurbanı (gönderin); kurban yerine varıncaya kadar başlarınızı tıraş etmeyin. İçinizden hasta olan, ya da başından bir rahatsızlığı bulunan (bundan ötürü tıraş olmak zorunda kalan) kimse, oruçtan, sadakadan veya kurbandan (biriyle) fidye (versin). Güvene kavuştuğunuzda, hac (zamanın)a kadar ömre ile faydalanmak isteyen kimse, kolayına gelen kurbanı keser. (Kurban) Bulamayan kimse üç gün hacda, yedi gün de döndüğünüz zaman (olmak üzere) tam on gün oruç tutar. Bu, âilesi Mescidi Harâm (civarın)da oturmayanlar içindir. Allah’tan korkun ve Allâh’ın cezâsının çetin olduğunu bilin.",
+    "Ömer Nasuhi Bilmen Meali": "Ve Allah için haccı da umreyi de tamam yapınız. Fakat men olunursanız kurbandan kolaya geleni (Mina'ya gönderirsiniz). Ve bu kurban mahalline varıncaya kadar başlarınızı tıraş etmeyiniz. Ancak sizden her kim hasta olur veya başında bir eziyet bulunursa ona da oruçtan veya sadakadan veya kurbandan bir fidye (vacip olur). Sonra emin olduğunuzda kim hacc zamanına kadar umre ile istifade etmiş olursa kolayına gelen bir kurban kesmek icap eder. Fakat her kim bulamazsa üç gün hacc esnâsında, yedi günde döndüğünüz vakit oruç vacip olur ki bunlar tam on gündür. Bu, ailesi Mescid-i Haram'da bulunmayan kimseler hakkındadır. Ve Allah'tan korkunuz ve biliniz ki Allah Teâlâ'nın azabı pek şiddetlidir.",
+    "Suat Yıldırım Meali": "Haccı da, umreyi de Allah rızası için tamamlayın. Eğer engellenecek olursanız, o durumda kolayınıza gelen bir kurban gönderin. Kurbanlık, yerine varıncaya kadar başınızı tıraş etmeyin. Aranızda hasta, yahut başından rahatsız olan varsa, ona fidye olarak; oruç tutmak, sadaka vermek, yahut kurban kesmek gerekir. Hastalık veya yol emniyeti olmaması gibi sebeplerle haccınızın engellenmesinden emin olduğunuz zaman ise, her kim hacca kadar umre (Temettu) yaparak sevap kazanmak isterse, onun da kolayına gelen bir kurban kesmesi gerekir. Kurbanlık temin edemeyen kimse, üç gün hacda yedi gün de döndüğünüz zaman memleketinde olmak üzere tam on gün oruç tutar. Bu (temettu' ve kurban), Harem bölgesinde (Mekke'de) ikamet etmeyenler içindir. Allah'a karşı gelmekten sakının ve Allah'ın cezasının çetin olduğunu iyi bilin.",
+    "Süleyman Ateş Meali": "Allah için haccı ve ömreyi tamamlayın. Eğer (engellenmiş olursanız kolayınıza gelen kurbanı (gönderin); kurban yerine varıncaya kadar başlarınızı tıraş etmeyin. İçinizden hasta olan, ya da başından bir rahatsızlığı bulunan (bundan ötürü tıraş olmak zorunda kalan) kimse, oruçtan, sadakadan veya kurbandan (biriyle) fidye (versin). Güvene kavuştuğunuzda, hac (zamanın)a kadar ömre ile faydalanmak isteyen kimse, kolayına gelen kurbanı keser. (Kurban) Bulamayan kimse üç gün hacda, yedi gün de döndüğünüz zaman (olmak üzere) tam on gün oruç tutar. Bu, ailesi Mescid-i Haram (civarın)da oturmayanlar içindir. Allah'tan korkun ve Allah'ın cezasının çetin olduğunu bilin.",
+    "Süleyman Tevfik (1927)": "Haccı ve 'umreyi (ziyâreti) Allâh içün itmâm idiniz (menâsik ve erkân ve şe'âiri yerine getiriniz) (Eğer Beyt-i Şerîfe vusûlden) men' olunsanız üzerinize bulabileceğiniz bir kurbân vâcib olur. Bu kurbân mahalline (kesilecek yere) vâsıl olunca ve yâhud zebh idilinceye kadar başınızı tıraş itmeyiniz Sizden biriniz hasta olur veyâhud başında bir ezâ bulunur ise (ihrâmdan çıkması ve tıraş olması lâzım gelirse) onun içün, emn hâsıl olunca oruc veyâ sadaka veyâ kurbân ile fidye vardır Zamân-ı hacca kadar 'umreyi icrâ ile istifâde iden kimseye kurbândan müyeseser olanın zebhi vâcib olur Kurbânı bulamayan (yâhud vakti müsâ'id olmadığından tedârik idemeyen) içün hacda üç ve 'avdet iylediğinizde yedi gün ki temâm on gün ider oruc tutmak lâzımdır Bu hüküm ehli (çoluk çocuğı ve ikâmetgâhı) Mescid-i harâm'da hâzır olmayanlar içündir. (Evâmir ve nevâhînin muhâfazasında) Allâh'dan korkub sakınınız ve biliniz ki Allâh'ın 'ikâbı şiddetlidir.",
+    "Süleymaniye Vakfı Meali": "Haccı ve umreyi Allah için tamamlayın. Eğer engellenecek olursanız, kolayınızda olan bir hedy kesin. Hedy, mahilline varıncaya kadar da başlarınızı tıraş etmeyin. İçinizden biri hasta olur yahut başında bir rahatsızlığı bulunur da tıraş olursa, fidye olarak ya oruç ya sadaka ya da kurban gerekir. Güven içinde olursanız, hacca kadar umreden yararlanan kişi, kolayında olan bir hedy keser. Bulamayan, üç gün hacda, yedi gün de geri döndüğünde oruç tutar. Toplamı on gün eder. Bu, ailesi Mescid-i Haram civarında oturmayanlar içindir. Allah’tan çekinerek kendinizi koruyun. Bilin ki Allah, vereceği sevap ile yapılan iş arasında sıkı bir bağ kurar.",
+    "Şaban Piriş Meali": "Haccı da, umreyi de Allah için tam yapın, eğer hac yapmaktan alıkonursanız, oraya kolayınıza gelen bir kurban gönderin. Kurban yerine ulaşıncaya kadar da başlarınızı tıraş etmeyin. İçinizden hasta olan ya da başından bir rahatsızlığı bulunan bir kimsenin fidye olarak; ya oruç tutması, ya sadaka vermesi, ya da kurban kesmesi gerekir. Güven içinde olursanız, hacca kadar umre ile faydalanmak isteyen kimseye, kolayına gelen bir kurban kesmek; bulamayana hac esnasında üç gün, döndüğünüz vakit de yedi gün -ki bu tam on gün eder.- oruç tutmak gerekir. Bu, ailesi Mecsid-i Haram'da oturmayan kimseler içindir. Allah'tan sakının, Allah'ın cezasının şiddetli olacağını bilin.",
+    "Ümit Şimşek Meali": "Haccı da, umreyi de Allah için tamamlayın. Bunlardan alıkonacak olursanız, kolayınıza gelen bir kurban kesin; kurban yerine ulaşıncaya kadar da başınızı tıraş etmeyin. Hasta olanlarınız veya başından rahatsız olanlarınız için ise, fidye olarak oruç, sadaka veya kurban gerekir. Hastalık ve düşman tehlikesinden emin olduğunuzda, kim hacca kadar umre yapacak olursa, kolayına gelen bir kurban kessin. Bunu bulamayan, hacda üç gün, dönünce de yedi gün oruç tutar ki, bu da tam on gün eder. Bu, Mescid-i Haram civarında oturmayanlar içindir. Allah'tan korkun; ve bilin ki, Allah'ın cezası pek çetindir.",
+    "Yaşar Nuri Öztürk Meali": "Haccı da umreyi de Allah için tamamlayın. Eğer engellenirseniz, esir veya köle âzatlamak, Kâbe'ye kurbanlık hayvan veya başka bir şey sunmak şeklinde bağışta bulunmanın kolayınıza geleni yeterlidir. Bağış, kendi yerine varıncaya kadar başlarınızı tıraş etmeyin. İçinizden hasta olan yahut başından rahatsızlığı bulunan oruç tutarak yahut sadaka vererek veya kurban keserek/Allah'a yakınlık için Kâbe'ye bir şey bağışlayarak fidye yoluna gitsin. Güvene kavuştuğunuzda, hacca kadar umreden yararlanmak isteyen, esir veya köle âzatlamak, Kâbe'ye kurbanlık hayvan veya başka bir şey sunmak türünden kolayına gelen bir bağışta bulunsun! Bunu bulamayan oruç tutsun: Bu, üç günü hacda, yedi günü döndüğünüzde, tam on gündür. Bu, ailesi Mescid-i Haram'da oturmayan kişi içindir. Allah'tan sakının ve bilin ki, Allah'ın azabı çok şiddetlidir.",
+    "Eski Anadolu Türkçesi": "daħı tamām eyleñ ḥaccı daħı umrayı. Tañrı-içün. pes eger yıġlınursañuz, pes ne kim geñez oldı ķurbandan kim ka'be’ye viribirler. daħı yülimeñ başlaruñuzı; tā ire ķurban, ḥelāl olduġı yire boġazlamaġı. pes her kim ola sizden śayru, ya olsa anuñ incinmegi başından; fidā virmekdür. oruçdan yā śadaķadan, yā ķurbandan. pes ķaçan imin olasız pes her kim gönene yā menfa'at dapa ne, kim geñez oldı ķurbandan pes her kim bulmaya ķurbanı, üç günler oruçtur ḥac vaķtında daħı yidi, ķaçan kim döndüñüz şol ondur tamām. şol ya'nį temettü eylemek, anuñdur kim olmadı ķavmi mescidi’l ḥarām’a ḥāżır daħı śaķınuñ Tañrı’dan daħı bilüñ kim bayıķ Tañrı ķatı 'aźābludur.",
+    "Satıraltı Meal (1534)": "Daḫı tamām eyleñüz ḥacc‐ıla ‘umreyi Tañrı‐çun. Eger men‘ olsañuz iḥrāmdan her neye ki güçüñüz yitse ḳurbān idüñüz, daḫı başlaruñuzı yülütmeñüzḳurbān yitişmeyince. Pes kim ki sizden ḫasta olsa yā zaḥmeti olsa başındanfidā virsün oruç dutmaġ‐ıla yā ṣadaḳa‐y‐ıla yā ḳurbān bile. Pes ḳaçanimin olsañuz kim temettu‘ eylese ‘umre‐y‐ile ḥacca pes neye ki güci yitseḳurbān eylesün, kim ki ḳurbān eyleyecek bulmasa üç gün oruç dutsun ḥacgünlerinde ve yidi gün ehline döngende. Ol on gün tamām olur. Ol temettu‘ḳırān añadur kim ehli anuñ Mekkede ḥāżır olmayalar. Allāhdan ḳorḳuñuz,daḫı bilüñüz kim Tañrı Ta‘ālā ‘iḳābı ḳatıdur.",
+    "Bunyadov-Memmedeliyev": "Allahdan ötrü həcc və ümrə (kiçik həcc) əməllərini tam yerinə yetirin, əgər arada sizə maneçilik olarsa, (sizə) müyəssər olan bir qurbanlıq göndərin, qurbanlıq öz yerinə (Minaya) çatıncaya qədər başınızı qırxdırmayın. Əgər (ihramda ikən, ziyarət zamanı) sizdən xəstələnən və yaxud baş ağrısına tutulub əziyyət çəkən olarsa, belə şəxs (başını qırxdırmağın əvəzində) fidyə olaraq (üç gün) oruc tutmalı və ya sədəqə verməli, yaxud da bir qurban kəsməlidir. (Maneçiliyin aradan qalxmasına) əmin olduqda isə həcc vaxtına qədər ümrə ziyarətindən istifadə edən şəxs müyəssər etdiyi bir heyvan kəsməlidir. Qurbanlıq tapmayanlar bunun əvəzində həcc ziyarəti günlərində üç gün və (vətəninə) qayıdandan sonra yeddi gün oruc tutmalıdırlar ki, bu da tam on gün edir. Bu (ümrə ziyarəti) ailəsi Məscidülhəramda (Məkkədə və ətrafında) sakin olmayanlara aiddir.Allahdan qorxun və bilin ki, Allahın əzabı şiddətlidir.",
+    "M. Pickthall (English)": "Perform the pilgrimage and the visit (to Mecca) for Allah. And if ye are prevented, then send such gifts as can be obtained with ease, and shave not your heads until the gifts have reached their destination. And whoever among you is sick or hath an ailment of the head must pay a ransom of fasting or alms giving or offering. And if ye are in safety, then whosoever contenteth himself with the Visit for the Pilgrimage (shall give) such gifts as can be had with ease. And whosoever cannot find (such gifts, then a fast of three days while on the pilgrimage, and of seven when ye have returned; that is, ten in all. That is for him whose folk are not present at the Inviolable Place of Worship. Observe your duty to Allah, and know that Allah is severe in punishment.",
+    "Yusuf Ali (English)": "And complete the Hajj or Umrah(212) in the service of Allah. But if ye are prevented (From completing it), send an offering for sacrifice, such as ye may find, and do not shave your heads until the offering reaches the place of sacrifice. And if any of you is ill(213), or has an ailment in his scalp, (Necessitating shaving), (He should) in compensation either fast, or feed the poor, or offer sacrifice; and when ye are in peaceful conditions (again)(214), if any one wishes to continue the ´Umrah on to the Hajj, He must make an offering, such as he can afford, but if he cannot afford it, He should fast three days during the Hajj and seven days on his return, Making ten days in all. This is for those whose household is not in (the precincts(215) of) the Sacred Mosque. And fear Allah, and know that Allah Is strict in punishment(216)."
+  }
+}

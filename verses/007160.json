@@ -1,0 +1,233 @@
+{
+  "surah_number": 7,
+  "verse_number": 160,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=7&ayet=160",
+  "arabic_text": "وَقَطَّعْنَاهُمُاثْنَتَيْعَشْرَةَاَسْبَاطًااُمَمًاۜوَاَوْحَيْنَٓااِلٰىمُوسٰٓىاِذِاسْتَسْقٰيهُقَوْمُهُٓاَنِاضْرِبْبِعَصَاكَالْحَجَرَۚفَانْبَجَسَتْمِنْهُاثْنَتَاعَشْرَةَعَيْنًاۜقَدْعَلِمَكُلُّاُنَاسٍمَشْرَبَهُمْۜوَظَلَّلْنَاعَلَيْهِمُالْغَمَامَوَاَنْزَلْنَاعَلَيْهِمُالْمَنَّوَالسَّلْوٰىۜكُلُوامِنْطَيِّبَاتِمَارَزَقْنَاكُمْۜوَمَاظَلَمُونَاوَلٰكِنْكَانُٓوااَنْفُسَهُمْيَظْلِمُونَ",
+  "transliteration": "Vekatta’nâhumu-śnetey ‘aşrate esbâtan umemâ(en)(c)veevhaynâ ilâ mûsâ iżi-steskâhukavmuhu eni-drib bi’asâke-lhacer(a)(s)fenbeceset minhu-śnetâ ‘aşrate ‘aynâ(en)(s)kad ‘alime kullu unâsin meşrabehum(c)vezallelnâ ‘aleyhimu-lġamâme veenzelnâ ‘aleyhimu-lmenne ve-sselvâ(s)kulû mintayyibâti mâ razeknâkum(c)vemâzalemûnâ velâkin kânû enfusehum yazlimûn(e)",
+  "word_translations": [
+    {
+      "arabic": "وَقَطَّعْنَاهُمُ",
+      "turkish": "ve biz onları ayırdık"
+    },
+    {
+      "arabic": "اثْنَتَيْ",
+      "turkish": "iki (oniki)"
+    },
+    {
+      "arabic": "عَشْرَةَ",
+      "turkish": "on (oniki)"
+    },
+    {
+      "arabic": "اَسْبَاطًا",
+      "turkish": "kabileye"
+    },
+    {
+      "arabic": "اُمَمًاۜ",
+      "turkish": "ümmetler halinde"
+    },
+    {
+      "arabic": "وَاَوْحَيْنَٓا",
+      "turkish": "vahyettik"
+    },
+    {
+      "arabic": "مُوسٰٓى",
+      "turkish": "Musa'ya"
+    },
+    {
+      "arabic": "اِذِ",
+      "turkish": "zaman"
+    },
+    {
+      "arabic": "اسْتَسْقٰيهُ",
+      "turkish": "su istediği"
+    },
+    {
+      "arabic": "قَوْمُهُٓ",
+      "turkish": "kavmin"
+    },
+    {
+      "arabic": "اَنِ",
+      "turkish": "diye"
+    },
+    {
+      "arabic": "اضْرِبْ",
+      "turkish": "vur"
+    },
+    {
+      "arabic": "بِعَصَاكَ",
+      "turkish": "asanla"
+    },
+    {
+      "arabic": "الْحَجَرَۚ",
+      "turkish": "taşa"
+    },
+    {
+      "arabic": "فَانْبَجَسَتْ",
+      "turkish": "ve fışkırdı"
+    },
+    {
+      "arabic": "مِنْهُ",
+      "turkish": "ondan (taştan)"
+    },
+    {
+      "arabic": "اثْنَتَا",
+      "turkish": "iki (oniki)"
+    },
+    {
+      "arabic": "عَشْرَةَ",
+      "turkish": "on (oniki)"
+    },
+    {
+      "arabic": "عَيْنًاۜ",
+      "turkish": "göze"
+    },
+    {
+      "arabic": "قَدْ",
+      "turkish": "şüphesiz"
+    },
+    {
+      "arabic": "عَلِمَ",
+      "turkish": "bildi"
+    },
+    {
+      "arabic": "كُلُّ",
+      "turkish": "her"
+    },
+    {
+      "arabic": "اُنَاسٍ",
+      "turkish": "kabile"
+    },
+    {
+      "arabic": "مَشْرَبَهُمْۜ",
+      "turkish": "içeceği yeri"
+    },
+    {
+      "arabic": "وَظَلَّلْنَا",
+      "turkish": "ve gölge yaptık"
+    },
+    {
+      "arabic": "عَلَيْهِمُ",
+      "turkish": "üzerlerine"
+    },
+    {
+      "arabic": "الْغَمَامَ",
+      "turkish": "bulutla"
+    },
+    {
+      "arabic": "وَاَنْزَلْنَا",
+      "turkish": "ve indirdik"
+    },
+    {
+      "arabic": "عَلَيْهِمُ",
+      "turkish": "onlara"
+    },
+    {
+      "arabic": "الْمَنَّ",
+      "turkish": "kudret helvası"
+    },
+    {
+      "arabic": "وَالسَّلْوٰىۜ",
+      "turkish": "ve bıldırcın eti"
+    },
+    {
+      "arabic": "كُلُوا",
+      "turkish": "yeyin"
+    },
+    {
+      "arabic": "مِنْ",
+      "turkish": "-dan"
+    },
+    {
+      "arabic": "طَيِّبَاتِ",
+      "turkish": "güzel olanlar-"
+    },
+    {
+      "arabic": "مَا",
+      "turkish": "şeylerden"
+    },
+    {
+      "arabic": "رَزَقْنَاكُمْۜ",
+      "turkish": "sizi rızıklandırdığımız"
+    },
+    {
+      "arabic": "وَمَا",
+      "turkish": "ama"
+    },
+    {
+      "arabic": "ظَلَمُونَا",
+      "turkish": "onlar bize zulmetmediler"
+    },
+    {
+      "arabic": "وَلٰكِنْ",
+      "turkish": "fakat"
+    },
+    {
+      "arabic": "كَانُٓوا",
+      "turkish": "onlar"
+    },
+    {
+      "arabic": "اَنْفُسَهُمْ",
+      "turkish": "kendi kendilerine"
+    },
+    {
+      "arabic": "يَظْلِمُونَ",
+      "turkish": "zulmediyorlardı"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Onları on iki kabileye, on iki topluluğa böldük ve kavmi, Musa'dan su isteyince ona, sopanla taşa vur diye vahyettik, derken o taştan on iki kaynak aktı. Her topluluk, su içecekleri kaynağı belledi ve onları bulutla gölgelendirdik, onlara kudret helvasıyla bıldırcın kuşu indirdik. Size rızık olarak verdiğimiz şeylerin temizlerini yiyin dedik. Onlar bize zulmedemediler, ancak kendilerine zulmettiler.",
+    "Abdullah-Ahmet Akgül Meali": "Biz onları(İsrailoğullarını)ayrı ayrı oymaklar(kabile ve torunlar)halinde on iki topluluk(ümmet-aşiret)olarak ayırdık. Kavmi kendisinden(ihtiyaç duydukları)su(yu)istediğinde ise Musa’ya: \"Asan’la taşa vur!\" diye vahyedip(uyardık). Ondan hemen on iki pınar sızıp-fışkırdı; böylece her bir insan topluluğu kendi su içecekleri yeri(çeşmeyi)öğrenmiş durumdaydı.(Ayrıca İsrailoğullarının)Üzerlerine bulutla gölge çekip(aşırı sıcaktan rahatlattık)ve onlara(gökten her gün iki öğün)kudret helvası ile(hazır pişmiş)bıldırcın(kızartması)indirip(hayatlarını kolaylaştırdık.Sonra da onlara:)\"Size rızık olarak verdiklerimizin(helâl ve)temiz olanlarından yiyin(sakın nankörlük etmeyin)” diye hatırlattık.(Ama yine de itiraz ve isyan etmekle)Onlar Bize zulmetmedi, ancak kendi nefislerine zulmediyorlardı.",
+    "Abdullah Parlıyan Meali": "Derken biz İsrailoğullarını, oniki oymağa ayırdık. Ve halkı Musa'dan su istediğinde, ona asanla taşa vur, diye vahyettik. Ve o taştan oniki göze fışkırdı da, her topluluk, kendi su içeceği yeri bildi. Ve onları bulutlarla, çölde gölgelendirdik, üzerlerine kudret helvası ve bıldırcın indirdik. Ve onlara: “Size sağladığımız rızıkların, temiz ve hoş olanlarından yararlanın” dedik. Ve o günahkar davranışlarıyla, bize bir zarar vermiyorlar, ama yalnızca kendilerine yazık etmiş oluyorlardı.",
+    "Ahmet Tekin Meali": "Biz İsrâiloğulları'nı Yâkub'un torunlarından çoğalarak meydana gelen, tutkun, yetişmiş, organize cemaatler halinde on iki boya ayırdık. Kavmi kendisinden su isteyince:\"Asânı taşa vur.\" diye Mûsâ'ya vahyettik. Vurunca, hemen o taştan on iki pınar kaynayıp akmaya başladı. Her bir boy, su alacağı, su içeceği yeri belledi. Bulutları üzerlerine gönderdik, gölge yaptık. Onlara, sebeplerini-şartlarını oluşturarak hazırladığımız kudret helvası, bıldırcın indirdik.\"Size rızık olarak ihsan ettiğimiz nimetlerin temizinden, iyisinden, sağlıklısından, helalinden, lezizinden yeyiniz\" dedik. Emirlerimizi dinlememekle onlar bize zulmetmediler. Fakat kendilerine yazık etmeyi, birbirlerine zulmü alışkanlık haline getirdiler.",
+    "Ahmet Varol Meali": "Biz onları oymaklar halinde on iki topluluğa ayırdık. Kavmi kendisinden su istediğinde biz Musa'ya: \"Asanla taşa vur\" diye vahyettik. Ondan on iki göze fışkırdı. Her topluluk su içeceği yeri (gözeyi) öğrendi. Onların üzerlerine bulutları gölge ettik ve kendilerine kudret helvası ile bıldırcın eti indirdik. \"Size rızk olarak verdiklerimizin temizlerinden yiyin.\" Onlar bize haksızlık etmediler, ancak kendi kendilerine haksızlık ediyorlardı.",
+    "Ali Bulaç Meali": "Biz onları (İsrailoğullarını) ayrı ayrı oymaklar olarak on iki topluluk (ümmet) olarak ayırdık. Kavmi kendisinden su istediğinde Musa'ya: 'Asan'la taşa vur' diye vahyettik. Ondan on iki pınar sızıp-fışkırdı; böylece her bir insantopluluğu su içeceği yeri öğrenmiş oldu. Üzerlerine bulutla gölge çektik ve onlara kudret helvası ile bıldırcın indirdik. (Sonra da şöyle dedik:) 'Size rızık olarak verdiklerimizin temiz olanlarından yiyin.' Onlar bize zulmetmedi, ancak kendi nefislerine zulmediyorlardı.",
+    "Ali Fikri Yavuz Meali": "Biz, israîloğullarını on iki kabileye, o kadar ümmete ayırdık. Mûsa'ya, Tih çölünde susayan kavmi kendisinden su istediği zaman: “- Asânı taşa vur” diye vahyettik. Vurunca, o taştan hemen on iki göze kaynayıp akmağa başladı. Her kabile, su alacağı yeri bildi ve belledi. Bulutu da üzerlerine gölgelik yaptık, kendilerine kudret helvasiyle bıldırcın indirdik. Onlara: “- size rızık olarak verdiğimiz en temizlerinden yeyin” dedik (fakat onlar nimetleri inkâr etmekle) bize zulmetmediler, ancak kendi nefislerine zulmediyorlardı.",
+    "Bahaeddin Sağlam Meali": "Biz onları oymaklar halinde on iki topluluğa ayırdık. Musa’ya da, kavmi ondan su istedikleri zaman “Asanı taşa vur” diye vahyettik. (Asasını taşa vurunca) ondan on iki göz fışkırdı, her bir grup insan, içecekleri yeri öğrendiler. Ve bulutu onların üzerinde gölgelik yaptık. Kudret helvası ile bıldırcın (etini) onların üzerine indirdik. “Allah’ın size verdiği güzel ve temiz rızıktan yiyin” dedik. (Fakat şükretmediler.) Bize değil, asıl olarak kendi nefislerine zulmettiler.",
+    "Bayraktar Bayraklı Meali": "Biz İsrâiloğulları'nı, on iki kabileye ayırdık. Kavmi kendisinden su isteyince, Mûsâ'ya, “Asânı taşa vur!” diye vahyettik. Ondan on iki pınar fışkırdı. Her oymak su içeceği yeri belledi. Onların üzerlerine bulutları gölgelik yaptık, kendilerine kudret helvası ve bıldırcın indirdik. Size verdiğimiz rızıkların temizlerinden yiyiniz! Fakat onlar emirlerimizi dinlememekle bize değil, kendilerine zulmediyorlardı.",
+    "Besim Atalay Meali (1965)": "Birer ümmet olarak, biz onları, on iki oymağa ayırmıştık, Musa'dan ulusu su isteyince: «Değneğini yere vur!» diye ona vahi eyledik, hemen ordan on iki pınar fışkırmış idi, herkes bildi içmeyerin, onları bulutla gölgelendirdik, biz onlara, kudrethelvası, bıldırcın gönderdik, «Verdiğimiz azığın arısından yiyiniz», onlar bize zulmetmedi, ancak zulümleri kendilerine",
+    "Cemal Külünkoğlu Meali": "Biz onları (İsrailoğullarını) ayrı topluluk halinde on iki kabileye ayırdık. (Tih Çölünde) kavmi kendisinden su isteyince, Musa'ya: “Asanı taşa vur!” diye vahyettik. (Musa asasıyla kayaya vurur vurmaz) derhal on iki pınar fışkırdı. (Bu sayede on iki kabileden) her biri su alacağı yeri öğrendi. (Ayrıca çölün kavurucu sıcağından korumak için) üzerlerine bulutla gölge çektik ve onlara kudret helvası ile bıldırcın indirdik. (Sonra da onlara şöyle dedik:) “Size rızık olarak verdiklerimizin temiz olanlarından yiyin.” Ama onlar (buna rağmen emirlerimizi dinlemediler. Böyle yapmakla) bize bir zarar vermiyorlar, sadece kendilerine yazık ediyorlardı.",
+    "Cemil Said (1924)": "Biz ânları oniki kabîleye ayırdık ki her biri bir ümmet-i ’azîme idi, kavmi içün yağmur dıa iden Mûsâ’ya \"’Âsânı taşa ur\" diyü vahy iyledik taş yarıldı oniki su menba’ı husûle geldi her kabîle hangi menba’dan içecceğini biliyor idi ândan sonra ânların üzerinde bulut gezdirdik ve kudret helvası ve bıldırcın gönderdik, size bahş itdiğimiz et’ıme-i nefsiyeyi ekl idiniz\" didik bize zulüm itmediler kendi nefîslerine zulüm itdiler.",
+    "Diyanet İşleri Meali (Eski)": "Biz İsrailoğullarını oymaklar halinde on iki topluluğa ayırdık. Milleti Musa'dan su isteyince ona: \"Asanla taşa vur\" diye bildirdik; ondan on iki pınar fışkırdı. Herkes içeceği yeri öğrendi. Bulutla üzerlerine gölge yaptık, onlara kudret helvası ve bıldırcın indirdik, \"Size verdiğimiz rızıkların temiz olanlarından yiyin\" dedik. Onlar, karşı gelmekle, Bize değil kendilerine zulmediyorlardı.",
+    "Diyanet İşleri Meali (Yeni)": "Biz onları on iki kabile hâlinde topluluklara ayırdık. (Tîh sahrasında susuzluktan sıkılan) kavmi Mûsâ’dan su istediğinde biz ona, “Asânı taşa vur” diye vahyettik. (Vurunca) taştan on iki pınar fışkırdı. Herkes (kendi) su içeceği yeri bildi. Üzerlerine bulutu da gölgelik yaptık ve onlara kudret helvası ve bıldırcın indirdik. “Size rızık olarak verdiğimiz şeylerin iyi ve temiz olanlarından yiyin” (dedik). Onlar bize zulmetmediler, fakat kendi nefislerine zulmediyorlardı.",
+    "Kur'an Yolu (Diyanet İşleri)": "İsrâiloğulları’nı nesillere göre on iki topluluğa ayırdık. Halkı kendisinden su istediğinde Mûsâ’ya, “Asânı taşa vur!” diye vahyettik. Taştan on iki göze fışkırdı. Her kabile içeceği yeri belledi. Üzerlerine de buluttan gölgelik yaptık; onlara kudret helvasıyla bıldırcın eti indirdik. “Size verdiğimiz rızıkların temizlerinden yiyin” (dedik). Onlar (nankörlükleriyle) bize değil fakat kendilerine kötülük -ediyorlardı.",
+    "Diyanet Vakfı Meali": "Biz İsrailoğullarını oymaklar halinde oniki kabileye ayırdık. Kavmi kendisinden su isteyince, Musa'ya, «Asanı taşa vur!» diye vahyettik. Derhal ondan oniki pınar fışkırdı. Her kabile içeceği yeri belledi. Sonra üzerlerine bulutla gölge yaptık, onlara kudret helvası ve bıldırcın eti indirdik. (Onlara dedik ki) «Size verdiğimiz rızıkların temizlerinden yeyin.» Ama onlar (emirlerimizi dinlememekle) bize değil kendilerine zulmediyorlardı.",
+    "Edip Yüksel Meali": "Onları on iki kabile halinde topluluklara ayırdık. Halkı kendisinden su istediği zaman Musa'ya, \"Asan ile taşa vur,\" diye vahyettik. Ondan on iki göze fışkırdı ve her kabile içeceği yeri bildi. Ayrıca onları bulutlarla gölgelendirdik ve üzerlerine menna ve bıldırcın indirdik: \"Size verdiğim rızıklardan yeyin.\" Onlar bize haksızlık etmiyorlardı, kendi kendilerine haksızlık ediyorlardı.",
+    "Elmalılı Hamdi Yazır Meali": "Biz onları oniki kabileye, o kadar ümmete ayırdık. Ve kavmi kendisinden su istediği zaman Musa'ya, elindeki asâ ile taşa vur, diye vahyettik, vurunca hemen o taştan oniki pınar akmaya başladı. Halkın her biri su alacağı yeri iyice öğrendi. Bulutu da üzerlerine gönderdik, gölgeledik. Onlara kudret helvası ve bıldırcın indirdik. Size rızık olarak ihsan ettiğimiz nimetlerin temizinden yiyiniz, dedik. Onlar zulmü bize yapmadılar, lakin kendi kendilerine zulmediyorlardı.",
+    "Elmalılı Meali (Orijinal)": "Maamafih biz onları on iki sıbta, o kadar ümmetle ayırdık ve Musâya kavmi kendisinden su istediği vakit şöyle vahy ettik: «Vur asan ile taşa» o vakit ondan on iki göz akmağa başladı, nâsın her kısmı kendi su alacağı yeri belledi, bulutu da üzerlerine gölgelik çektik, kendilerine kudret helvasiyle bıldırcın da indirdik, ki size merzuk kıldığımız ni'metlerin temizlerinden yiyin diye, bununla beraber zulmü bize etmediler ve lâkin kendi nefislerine zulm ediyorlardı",
+    "Emrah Demiryent Meali": "Biz onları (İsrâiloğullarını) ayrı topluluklar hâlinde on iki kabileye ayırdık. (Tîh çölünde) kavmi kendisinden su isteyince, Mûsâ’ya, “Asânı taşa vur!” diye vahyettik. (Mûsâ asasıyla taşa vurur vurmaz) derhal on iki pınar fışkırdı. (Bu sayede on iki kabileden) her biri su alacağı yeri öğrendi. (Ayrıca çölün kavurucu sıcağından korumak için) üzerlerine bulutla gölge yaptık ve onlara kudret helvası ile bıldırcın gönderdik. (Sonra da onlara şöyle buyurduk:) “Size verdiğimiz temiz rızıklardan yiyin.” Ama onlar (buna rağmen emirlerimizi dinlemediler. Böyle yapmakla) bize değil, kendi kendilerine zulmediyorlardı.",
+    "Erhan Aktaş Meali": "Biz, onları oymaklar halinde on iki topluluğa ayırdık. Halkı ondan su isteyince, Musa'ya, “Asanı taşa vur!” diye vahyettik. Ondan on iki pınar fışkırdı. Her topluluk su alacağı kaynağı bildi. Üzerlerine buluttan gölgelik yaptık, onlara menn¹ ve bıldırcın bağışladık². Size rızık olarak verdiklerimizin temiz olanlarından yiyin. Onlar, bize zulmetmediler, fakat kendilerine zulmediyorlardı.",
+    "Hasan Basri Çantay Meali": "Biz onları on ikiye, (o kadar) torunlara (kabileye), ümmetlere ayırdık. («Tîh» de susayan) kavmi, (Mûsâdan) su istediği zaman «Âsaanı taşa vur» diye (vahyetdik de) ondan on iki pınar kaynayıb akdı. İnsanların her kısmı su içecekleri yeri iyice belledi; Onları üstlerindeki bulutla gölgelendirdik, onlara kudret helvasıyle bıldırcın indirdik. «Size rızk olarak verdiğimiz en temiz ve güzellerinden yeyin» (dedik) Onlar bize zulmetmediler, fakat kendi kendilerine zulmediyorlardı.",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "Onları on iki kabile halinde topluluklara ayırdık. Kavmi kendisinden su isteyince, Musa’ya: “Asanla taşa vur!” diye vahyettik. Ondan on iki pınar fışkırdı, böylece her bir insan topluluğu su içeceği yeri öğrenmiş oldu. Bulutları üzerlerine gölge kıldık ve onlara kudret helvası ile bıldırcın bahşettik. Sonra da şöyle dedik: “Size rızık olarak verdiklerimizin temiz olanlarından yiyin.” Onlar bize zulmetmedi ancak kendilerine zulmettiler.",
+    "Hayrat Neşriyat Meali": "Onları (İsrâiloğullarını) on iki kabîleye, ümmetlere ayırdık. (Tîh çölünde) kavmi kendisinden su isteyince Mûsâ'ya: “Asânla taşa vur!” diye vahyettik. (Taşa vurunca)hemen ondan on iki pınar fışkırdı!(1) Her kabîle (su) içeceği yeri iyice bildi! Hem üzerlerini bulutlarla gölgeledik ve onlara kudret helvası ile bıldırcın indirdik. “Sizi rızıklandırdığımız temiz şeylerden yiyin!” (dedik). Hâlbuki (onlar, nankörlük etmekle) bize zulmetmediler; fakat kendilerine zulmediyorlardı.",
+    "İhsan Aktaş Meali": "Ve biz İsrailoğullarını oymaklar halinde on iki topluluğa ayırdık. (Tîh çölünde susuzluktan sıkılan) kavmi Musa’dan su istediğinde biz ona, ’’Değneğini (altında su bulunan) şu taşa (kayaya) vur” diye vahyettik. (Musa değneğiyle kayaya vurunca) ondan on iki su gözesi fışkırdı da, bu sayede her topluluk su içeceği yeri (su gözesini) hakikaten öğrenmiş oldu. Yine, (çölün kavurucu sıcağından korumak için) üzerlerine bulutu gölge yaptık ve (yiyecek hiçbir şeyleri yokken lütfu nimet olarak kendilerine) menn (bol rızık ve ürün) ile (bol ve rahatça avlayabilmeleri için diğer bölgelerden sert esen rüzgârlar vasıtasıyla sürü halinde kendi bölgelerine) bıldırcın (kuşları) gönderdik. (Sonra da Musa’ya gönderdiğimiz vahiy yoluyla onlara şöyle dedik:) ’’Size rızık olarak verdiklerimizin temiz (hoş ve sağlığa zararsız) olanlarından yiyin.” Ama onlar (buna rağmen yine haddi aşıyor, zahmetsiz ayaklarına gelen bu tür yiyecekler konusunda bile hükümlerimizi dinlemiyor ve böyle yapmakla) bize değil, sadece kendilerine haksızlık (yazık) ediyorlardı.*",
+    "İlyas Yorulmaz Meali": "Onları on iki ayrı kabileye ayırdık. Kavmi Musa dan su istediğinde, ona “Asanı taşa vur” diye vahyettik ve taşın on iki ayrı yerinden su fışkırdı. Bundan sonra her kabile mensubu nereden su içeceğini öğrenmiş oldu. Bulutları onların üzerine gölge yaptık, onlara helva ve bıldırcın eti indirdik. “Size verdiğimiz rızıkların temiz olanlarından yiyin” dedik. Buna rağmen biz onlara haksızlık yapmadık ama onlar kendi nefislerine haksızlık ettiler.",
+    "İsmayıl Hakkı Baltacıoğlu": "Biz İsrailoğullarını on iki oymağa, topluluğa ayırdık. Ulusu kendisinden su isteyince : \"Değneğini taşa vur\" diye gönlüne bildirdik. Derken taştan on iki pınar fışkırdı. Her oymak içeceği yeri bildi. Sonra onların üzerine bulutların gölgesini düşürdük. Onlara kudret helvası ile, bıldırcın da gönderdik. \"Size verdiğimiz azıkların iyilerini yiyin.\" Dedik. Onlar Bize kıymadılar, ancak kendi kendilerine kıymış oldular.",
+    "İsmail Hakkı İzmirli": "Onları ayrı ayrı cemaat olarak on iki sıpta ayırdık. Onlar Tih sahrasında Musa/dan su istedikleri zaman biz ona «— Asayı taşa vur» diye vahyettik. O asayı vurunca taştan on iki pınar kaynayıp aktı. Herbir sipt içeceği pınarı bildi. Biz üzerlerine bulutu gölgelik yaptık. Onlara Kudret helvası ile Yelve kuşunu indirdik. Verdiğimiz rızkın paklarından yiyin dedik. Onlar bize zulüm etmediler, fakat öz nefislerine zulüm ettiler.",
+    "İsmail Yakıt": "Biz onları on iki oymağa/kabileye⁵⁴ ayırdık. Kavmi kendisinden su isteyince, Musa’ya, “Asanı kayaya/taşa vur!”⁵⁵ diye vahyettik. Taştan on iki pınar/göze fışkırdı. Böylece herkes kendi su içeceği yeri bildi. Üzerlerine bulutları gölgelik yaptık. Onlara kudret helvası ve bıldırcın indirdik; “Size verdiğimiz rızıkların temizlerinden yiyiniz.”⁵⁶ (dedik). Onlar Bize zulm/haksızlık etmediler, lakin kendi kendilerine zulmediyorlardı.",
+    "Kadri Çelik Meali": "Biz İsrail oğullarını ayrı ayrı oymaklar olarak on iki topluluk (ümmet) olarak ayırdık. Kavmi kendisinden su istediğinde Musa'ya, “Asanla taşa vur” diye vahyettik de böylece (asasıyla taşa vurunca) ondan on iki pınar fışkırdı. Herkes içeceği yeri belledi. Bulutla üzerlerine gölge yaptık ve onlara kudret helvası ve bıldırcın indirdik. “Size verdiğimiz rızıkların temiz olanlarından yiyin (dedik).” Onlar, (nankörlük etmekle) bize değil, aslında kendilerine zulmediyorlardı.",
+    "Mahmut Kısa Meali": "Biz İsrail Oğulları’nı,Yakup Peygamberin on iki oğlundan türeyenoymaklar hâlinde on iki kabîleye ayırdık.Çölde giderlerken,halkı Mûsâ’dan su isteyince ona, “Âsanla şu kayaya vur!” diye emrettik.Mûsâ âsasıyla kayaya vurur vurmaz,derhâl oradan on iki pınar fışkırdı veon iki boydanher biri,bir başkasının hakkına saldırmaksızınkendi su içeceği yerikolaycaöğrendi.Ayrıca, çöllerin kavurucu sıcağından sizi korumak için,bulutları üzerinize gölgelik yaptık ve “Size verdiğimiz güzel nîmetlerden yiyin!” diyerek üzerinize kudret helvası ve bıldırcın gönderdik.Verimsiz çöllerde, gökten çiğ damlası gibi dökülen, yerden mantar gibi biten tatlı bir gıdayla sizi besledik ve gelip ayaklarınızın dibine düşen bıldırcın sürülerini size gönderdik. Ama bunca nîmetlere karşılık nankörlük ettiler. Ancakonlar,böyle yapmaklabize değil, yalnızca kendilerine kötülük ediyorlardı.Şöyle ki:",
+    "Mahmut Özdemir Meali": "Onları torun ümmetler olarak onikiye ayırdık. Kavmi ondan su istediği anda Musa’ya “Asân ile Taş’a vur!” diye vahyettik. Oradan oniki su gözesi fışkırdı. İnsanlar’ın her biri içeceği yeri bildi. Üzerlerine Bulut’u gölge yaptık. Onlara Menn (Kudret Helvası) ve Selvâ (Bıldırcın) indirdik. Sizi rızıklandırdığımız şeylerin temizlerinden yiyin! Onlar bize zulmetmediler; ama kendi nefislerine zulmediyorlardı.",
+    "Mehmet Çakır Meali": "İsrailoğullarısoyunu on iki boya ayırdık. Halkı kendisinden su isteyince Musa'ya fısıldadık: \"deyneğinle kayaya dokun \"dedik. Kayadan on iki göz patladı. Her boy, kendi çeşmesini / içemeğini belledi. Biz kendilerine güneşten yana gölge (soğuktan yana dulda)olduk. Üzerlerine adeta tahıl ve bıldırcın yağdırdık. Size verdiğimiz gıda maddelerinin sağlıklı olanlarından yiyin dedik. Onlar bize değil, kendilerine yazık ettiler.",
+    "Mehmet Çoban Meali": "Biz İsrailoğullarını gruplar halinde on iki kabileye ayırmıştık! Kabileler Musa’dan su isteyince, Musa’ya\"Bilginle (asanla) doğada araştırma yap! Taşların arasını incele! Oralardan su bulacaksın!\"diye vahyettik. Musa yaptığı araştırmalar sonunda on iki su pınarı keşfetti. Pınarları kabileler arasında taksim etti. Artık her kabile kendi pınarından su ihtiyacını giderecek, kimse diğer kabilenin hakkına tecavüz etmeyecekti. Yaşadıkları yerler çok güzel yerlerdi. Dağlık, serin bölgelerdi. Üzerlerinde sürekli yağmur yüklü kara bulutlar dolaşırdı. Yaşadıkları dağlarda kudret helvası dedikleri meyvelerden ve bıldırcın dedikleri kuşlardan vardı. Onları yiyerek beslenirlerdi. Onlar için kudret helvası ve bıldırcın eti tertemiz yiyeceklerdi. Buna rağmen içlerinden emirlerimizi çiğneyip haddi aşanlar, bu nedenle yasalarımıza uymayarak kendilerine zulmedenler vardı.",
+    "Mehmet Okuyan Meali": "Biz İsrailoğullarını topluluk olarak on iki boya (oymağa) ayırmıştık. Kavmi kendisinden su isteyince, Musa’ya “Asanla taşa vur!” diye vahyetmiştik. Derhal ondan on iki pınar fışkırmıştı. Her kabile de içeceği yeri elbette bilmişti. Kendilerini bulutla gölgelendirip onlara kudret helvası ile bıldırcın eti indirmiş (vermiş), “Size rızık olarak verdiğimiz temiz şeylerden yiyin!” (demiştik). (Emirlerimizi dinlememekle) onlar bize zulmetmemişlerdi; ancak kendilerine yazık etmişlerdi. ",
+    "Mehmet Türk Meali": "(Bundan sonra) Biz, o (İsrail oğullarını) birer toplum olarak on iki kabîleye ayırdık. Kavmi kendisinden su bulmasını isteyince de Mûsa’ya: “Âsanı taşa vur!” diye vahyettik. O (taştan) derhal on iki pınar akmaya başladı. Her kabîlenin hangi pınardan su içeceği belirlenmişti. Sonra onların üzerlerine bulutla gölge yaptık ve bir de onlara, “size verdiğimiz rızıkların temizlerinden yiyin” diye (katımızdan) tatlı ve etli yiyecekler¹ indirdik.² Böylece onlar, Bize zulmetmediler, (bunun tersini yaparak) esasen kendilerine zulmediyorlardı.³",
+    "Muhammed Esed Meali": "Derken Biz İsrailoğulları’nı oniki boya, oymağa ayırdık. Ve halkı Musa’dan su istediğinde, o’na, “Asânla taşa vur!” diye vahyettik. Ve o tan oniki göze fışkırdı, ki her topluluk kendi su içeceği yeri bilsin. Ve onları bulutlarla gölgelendirdik; üzerlerine kudret helvası ve bıldırcın indirdik : “Size sağladığımız rızıkların temiz ve hoş olanlarından yararlanın!” dedik. Ve Bize bir zarar vermiyorlar, ama kendilerine yazık etmiş oluyorlardı.",
+    "Mustafa Çavdar Meali": "Biz onları on iki kabileye ayırmıştık. Toplumu Musa’dan su istediğinde ona “Asan ile kayaya vur” diye vahyetmiştik. Oradan on iki pınar fışkırmış ve her kabile hangi pınardan su içeceğini bilmişti. Ayrıca biz onları çölde bulut ile gölgelendirmiş ve onlara men ve selva/kudret helvası ve bıldırcın eti ikram etmiştik de size verdiğimiz rızıkların temiz ve güzel olanlarında yiyin! Demiştik. Hâlbuki onlar bize kötülük etmiyorlar sadece kendilerine zulmediyorlardı. 2/57- 60- 168, 20/80, 23/51",
+    "Mustafa İslamoğlu Meali": "Derken, Biz onları on iki boydan oluşan (on iki) gruba ayırdık. Toplumu Musa’dan su talep ettiğinde, ona “Âsânla taşa vur!” diye vahyettik. Bunun üzerine taştan on iki su gözesi fışkırdı da, bu sayede herkes nereden içeceğini öğrendi. Yine onları bulutla gölgeledik, onlara menn ve selva ikram ettik (ve dedik ki): “Size bahşettiğimiz rızıkların temiz ve güzel olanlarından yararlanın!” Fakat (onlar nankörlük etmekle) bize zulmetmiş olmadılar; asıl zulmettikleri kendileriydi.",
+    "Orhan Kuntman Meali": "Biz İsrailoğullarını, on iki kabileye, ümmetlere ayırdık, kavmi (Tih sahrasında) Kendisinden su istediği zaman Musa'ya \"Asanı taşa vur\" diye vahyettik. ondan on iki pınar akmaya başladı ve her kabile su içeceği yeri bildi ve onların üzerine kudret helvası ile bıldırcın indirdik. \"Size verdiğimiz rızıkların (böyle) temizlerinden yiyin'' dedik (yazık ki onlar bu nimetlerin kadrini bilmediler de \"biz böyle tek çeşit yiyecekle yaşamaya sabredemeyiz, başka yiyecekler de isteriz\" diye tutturdular. Bu talepleri ile ise) Bize değil, kendilerine zulmetmiş oldular.",
+    "Osman Fırat Meali": "Biz onları oniki boy topluluğa ayırdık. Kavmi kendisinden su isteyince, Mûsâ’ya: \"Asânla taşa vur!\" diye vahyettik Taştan oniki göze fışkırdı. Her kabile içeceği yeri bildi. (Ayrıca) üzerlerine bulutla gölge yaptık ve onlara kudret helvasıyle bıldırcın eti indirdik: \"Size verdiğimiz güzel rızıklardan yeyin!\" (dedik). Ama onlar bize zulmetmediler, fakat kendi kendilerine zulmediyorlardı.",
+    "Ömer Nasuhi Bilmen Meali": "Ve Biz onları oniki kadar kabilelere; ümmetlere ayırdık ve Mûsa'ya kavmi kendisinden su istedikleri vakit vahyettik ki, «Asan ile taşa vur.» Ondan oniki pınar kaynayıp akmaya başladı. Onlardan her kabile su içeceği yeri bildi. Ve onların üzerine bulutları gölgelik yaptık. Ve onların üzerine kudret helvası ile bıldırcın indirdik. Size rızık olarak verdiğimiz şeylerin temizlerinden yeyiniz (dedik). Ve onlar Bize zulmetmediler velâkin kendi nefislerine zulmeder oldular.",
+    "Suat Yıldırım Meali": "Biz onları on iki kabileye, on iki topluluğa ayırdık. Halkı kendisinden su istediğinde Mûsâ'ya: “Asanı taşa vur! ” diye vahyettik. Derhal on iki pınar fışkırdı. Her kabile su alacağı yeri öğrendi. Bulutu da üzerlerine gölgelik yaptık. Kendilerine kudret helvasıyla bıldırcın da indirdik ve dedik ki: “Size verdiğimiz rızıkların temizlerinden yiyiniz! ” Fakat onlar emrimizi dinlememekle Bize değil, asıl kendilerine zulmediyorlar, kendilerine yazık ediyorlardı.",
+    "Süleyman Ateş Meali": "Biz onları (Ya'kub'un oniki oğlundan gelen) oniki torun kabileye ayırdık. Kavmi kendisinden su isteyince, Musa'ya: \"Asanla taşa vur!\" diye vahyettik. Taştan oniki göze fışkırdı. Her kabile içeceği yeri bildi. (Ayrıca) üzerlerine bulutla gölge yaptık ve onlara kudret helvasıyle bıldırcın eti indirdik: \"Size verdiğimiz güzel rızıklardan yeyin!\" (dedik). Ama onlar (saptılar, haksızlık ettiler. Böylece onlar) bize zulmetmediler, fakat kendi kendilerine zulmediyorlardı.",
+    "Süleyman Tevfik (1927)": "Ve biz Benî İsrâîl'i her biri bir millet olmak üzere oniki sebta (kâbileye) ayırdık. Kavmi ondan (Mûsâ'dan) su istediklerinde Mûsâ'ya \"Elindeki 'asâ ile taşa ur\" diye vahy iyledik. (Mûsâ taşa urunca) ondan oniki pınar çıkdı ve herkes (kâbile) kendi su içeceği yeri bildi. Ve üstlerine bulutları gölge itdik ve onlara kudret helvası ile bıldırcın indirdik ve \"Size rızk iylediğimiz eyi ve helâl şeylerden yiyiniz\" didik. Onlar (emrimize muhâlefetle) bize zulüm itmediler ve lâkin kendi nefislerine zulüm itdiler. ",
+    "Süleymaniye Vakfı Meali": "Onları on iki boya, her biri ayrı bir toplum(ümmet) olacak şekilde ayırmıştık. Topluluğu (kavmi) ondan su isteyince: “Değneğini taşa vur” diye vahyettik; taştan on iki pınar fışkırdı. Her boy, su içeceği yeri bildi. Üzerlerine bulutları gölgelik yaptık. Onlara kudret helvası ile bıldırcını adeta yağdırdık. “Size verdiğimiz temiz ve lezzetli rızıklardan yiyin” dedik. Onlar yanlışı bize yapmadılar, aksine yanlışı kendilerine yapıyorlardı.",
+    "Şaban Piriş Meali": "Onları on iki kabileye ayırmıştık. Musa'ya da kavmine su çıkarması için değneği ile taşa vurmasını ilham ettik. Oradan on iki kaynak fışkırdı. Her kabile su içeceği yeri öğrendi. Onları bulut ile gölgelendirdik. Onlara kudret helvası ve bıldırcın yedirdik. Biz onlara zulmetmedik, fakat onlar kendilerine zulmettiler.",
+    "Ümit Şimşek Meali": "Biz onları on iki kabileye ayırdık. Musa'ya da, kavmi ondan su istediğinde, “Asânı taşa vur” diye vahyettik. Taştan on iki pınar fışkırdı; her kabile su alacağı yeri biliyordu. Onları bulutlarla da gölgeledik; bir de üzerlerine kudret helvası ile bıldırcın indirdik. “Size verdiğimiz temiz rızıklardan yiyin” dedik. Aslında onlar Bize zulmetmiş olmadılar; ancak kendilerine zulmedip duruyorlardı.",
+    "Yaşar Nuri Öztürk Meali": "Biz onları, on iki torun kabileye ayırdık. Toplumu kendisinden su istediğinde de Mûsa'ya, \"Asanı taşa vur!\" diye vahyettik. Taştan, on iki göze fışkırdı. Her oymak, su içeceği yeri belledi. Onların üzerlerine bulutları gölgelik yaptık, kendilerine kudret helvası ve bıldırcın indirdik. \"Yiyiniz size verdiğimiz rızıkların temizlerinden.\" Onlar bize zulmetmediler, ama öz benliklerine zulmediyorlardı.",
+    "Eski Anadolu Türkçesi": "daħı bölük bölük eyledük anları benį isrāyil’i on iki oġul oġlanları ya'nį yaķubuñ bölükler. daħı vaḥy eyledük mūsā dapa ol vaķt kim śu diledi andan ķavmı kim “ur aśāñı ŧaşa.” pes revān aķdı andan on iki çeşme bayıķ bildi her ādemįler sūlur yirini. daħı gölgelıķ eyildük üzerine anlaruñ bulıdı daħı indürdük anlaruñ üzere terengübįni daħı bıldırcını. “yin anılarından anuñ kim rūzį virdük size.” daħı žulm eylemediler bize velįkin oldılar gendüzilerine žulm eylerler.",
+    "Satıraltı Meal (1534)": "Daḫı bölükler eyledük anları on iki ḳabīle, on iki ümmet oldılar. Daḫı vaḥyeyledük Mū ol vaḳt ki ṣu istediler ḳavmi özinden. Vur didük ‘aṣāñ bile ṭaşı, pes çıḳdı ṭaşdan on iki bıñar. Taḥḳīḳ bildi her sıbṭ içeçek yir‐lerini. Daḫı gölge eyledük anlar üstine bulıtları, daḫı indürdük üstlerine menile bıldırcın. Eyitdük anlara: Yiñüz yaḫşılarından size virdügümüz rızḳdan.Bize ẓulm eylemediler, līkin kendü nefslerine ẓulm eylediler.",
+    "Bunyadov-Memmedeliyev": "Biz onları (İsrail oğullarını) on iki qəbiləyə - ümmətə böldük. Camaatı (Tih səhrasında) ondan (Musadan içməyə) su istədiyi zaman ona: “Əsanı daşa vur!” – deyə vəhy etdik. (Əsanı daşa vuran kimi) ondan on iki çeşmə qaynayıb axmağa başladı. Hər qəbilə özünün su içəcəyi yeri bildi. Biz buludları onların üstündə kölgəlik etdik, onlara qüdrət halvası və bildirçin endirdik. Onlara: “Sizə ruzi olaraq verdiyimiz pak ne’mətlərdən yeyin!” dedik. Onlar (naşükür olmaqla, əmrlərimizi yerinə yetirməməklə) Bizə deyil, ancaq özlərinə zülm edirdilər!",
+    "M. Pickthall (English)": "We divided them into twelve tribes, nations; and We inspired Moses, when his people asked him for water, saying: Smite with thy staff the rock! And there gushed forth therefrom twelve springs, so that each tribe knew their drinking place. And we caused the white cloud to overshadow them and sent down for them the manna and the quails (saying): Eat of the good things wherewith We have provided you. They wronged Us not, but they were wont to wrong themselves.",
+    "Yusuf Ali (English)": "We divided them into twelve tribes(1133) or nations. We directed Moses by inspiration, when his (thirsty) people asked him for water: \"Strike the rock with thy staff\": out of it there gushed forth twelve springs: Each group knew its own place for water. We gave them the shade of clouds, and sent down to them manna and quails, (saying): \"Eat of the good things We have provided for you\": (but they rebelled); to Us they did no harm, but they harmed their own souls.(1134)"
+  }
+}

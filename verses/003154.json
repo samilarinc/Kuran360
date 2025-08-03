@@ -1,0 +1,333 @@
+{
+  "surah_number": 3,
+  "verse_number": 154,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=3&ayet=154",
+  "arabic_text": "ثُمَّاَنْزَلَعَلَيْكُمْمِنْبَعْدِالْغَمِّاَمَنَةًنُعَاسًايَغْشٰىطَٓائِفَةًمِنْكُمْۙوَطَٓائِفَةٌقَدْاَهَمَّتْهُمْاَنْفُسُهُمْيَظُنُّونَبِاللّٰهِغَيْرَالْحَقِّظَنَّالْجَاهِلِيَّةِۜيَقُولُونَهَلْلَنَامِنَالْاَمْرِمِنْشَيْءٍۜقُلْاِنَّالْاَمْرَكُلَّهُلِلّٰهِۜيُخْفُونَف۪ٓياَنْفُسِهِمْمَالَايُبْدُونَلَكَۜيَقُولُونَلَوْكَانَلَنَامِنَالْاَمْرِشَيْءٌمَاقُتِلْنَاهٰهُنَاۜقُلْلَوْكُنْتُمْف۪يبُيُوتِكُمْلَبَرَزَالَّذ۪ينَكُتِبَعَلَيْهِمُالْقَتْلُاِلٰىمَضَاجِعِهِمْۚوَلِيَبْتَلِيَاللّٰهُمَاف۪يصُدُورِكُمْوَلِيُمَحِّصَمَاف۪يقُلُوبِكُمْۜوَاللّٰهُعَل۪يمٌبِذَاتِالصُّدُورِ",
+  "transliteration": "Śumme enzele ‘aleykum min ba’di-lġammi emeneten nu’âsen yaġşâtâ-ifeten minkum(s)vetâ-ifetunkad ehemmet-hum enfusuhum yazunnûne bi(A)llâhi ġayra-lhakkizanne-lcâhiliyye(ti)(s)yekûlûne hel lenâ mine-l-emri min şey/-(in)(k)kul inne-l-emra kullehu li(A)llâh(i)(k)yuḣfûne fî enfusihim mâ lâ yubdûne lek(e)(s)yekûlûne lev kâne lenâ mine-l-emri şey-un mâkutilnâ hâhunâ(k)kul lev kuntum fî buyûtikum leberaze-lleżîne kutibe ‘aleyhimu-lkatlu ilâ medâci’ihim(s)veliyebteliya(A)llâhu mâ fîsudûrikum veliyumehhisa mâ fîkulûbikum(k)va(A)llâhu ‘alîmun biżâti-ssudûr(i)",
+  "word_translations": [
+    {
+      "arabic": "ثُمَّ",
+      "turkish": "sonra"
+    },
+    {
+      "arabic": "اَنْزَلَ",
+      "turkish": "indirdi"
+    },
+    {
+      "arabic": "عَلَيْكُمْ",
+      "turkish": "size"
+    },
+    {
+      "arabic": "بَعْدِ",
+      "turkish": "ardından"
+    },
+    {
+      "arabic": "الْغَمِّ",
+      "turkish": "o üzüntünün"
+    },
+    {
+      "arabic": "اَمَنَةً",
+      "turkish": "bir güven"
+    },
+    {
+      "arabic": "نُعَاسًا",
+      "turkish": "bir uyku"
+    },
+    {
+      "arabic": "يَغْشٰى",
+      "turkish": "bürüyen"
+    },
+    {
+      "arabic": "طَٓائِفَةً",
+      "turkish": "bir kısmınızı"
+    },
+    {
+      "arabic": "مِنْكُمْۙ",
+      "turkish": "sizden"
+    },
+    {
+      "arabic": "وَطَٓائِفَةٌ",
+      "turkish": "ve bir kısmınız da"
+    },
+    {
+      "arabic": "قَدْ",
+      "turkish": "doğrusu"
+    },
+    {
+      "arabic": "اَهَمَّتْهُمْ",
+      "turkish": "kaygısına düşmüştü"
+    },
+    {
+      "arabic": "اَنْفُسُهُمْ",
+      "turkish": "kendi canlarının"
+    },
+    {
+      "arabic": "يَظُنُّونَ",
+      "turkish": "bir zanda bulunuyorlar"
+    },
+    {
+      "arabic": "بِاللّٰهِ",
+      "turkish": "Allah'a karşı"
+    },
+    {
+      "arabic": "غَيْرَ",
+      "turkish": "-sız"
+    },
+    {
+      "arabic": "الْحَقِّ",
+      "turkish": "hak-"
+    },
+    {
+      "arabic": "ظَنَّ",
+      "turkish": "zannı (gibi)"
+    },
+    {
+      "arabic": "الْجَاهِلِيَّةِۜ",
+      "turkish": "cahiliyye"
+    },
+    {
+      "arabic": "يَقُولُونَ",
+      "turkish": "diyorlardı"
+    },
+    {
+      "arabic": "هَلْ",
+      "turkish": "var mı"
+    },
+    {
+      "arabic": "لَنَا",
+      "turkish": "bize"
+    },
+    {
+      "arabic": "الْاَمْرِ",
+      "turkish": "bu işten"
+    },
+    {
+      "arabic": "مِنْ",
+      "turkish": "hiçbir"
+    },
+    {
+      "arabic": "شَيْءٍۜ",
+      "turkish": "şey"
+    },
+    {
+      "arabic": "قُلْ",
+      "turkish": "de ki"
+    },
+    {
+      "arabic": "اِنَّ",
+      "turkish": "şüphesiz"
+    },
+    {
+      "arabic": "الْاَمْرَ",
+      "turkish": "iş"
+    },
+    {
+      "arabic": "كُلَّهُ",
+      "turkish": "bütünüyle"
+    },
+    {
+      "arabic": "لِلّٰهِۜ",
+      "turkish": "Allah'a aittir"
+    },
+    {
+      "arabic": "يُخْفُونَ",
+      "turkish": "onlar gizliyorlar"
+    },
+    {
+      "arabic": "اَنْفُسِهِمْ",
+      "turkish": "içlerinde"
+    },
+    {
+      "arabic": "مَا",
+      "turkish": "şeyleri"
+    },
+    {
+      "arabic": "يُبْدُونَ",
+      "turkish": "açıklayamadıkları"
+    },
+    {
+      "arabic": "لَكَۜ",
+      "turkish": "sana"
+    },
+    {
+      "arabic": "يَقُولُونَ",
+      "turkish": "diyorlar ki"
+    },
+    {
+      "arabic": "لَوْ",
+      "turkish": "şayet"
+    },
+    {
+      "arabic": "كَانَ",
+      "turkish": "olsaydı"
+    },
+    {
+      "arabic": "لَنَا",
+      "turkish": "bize"
+    },
+    {
+      "arabic": "الْاَمْرِ",
+      "turkish": "bu işten"
+    },
+    {
+      "arabic": "شَيْءٌ",
+      "turkish": "bir şey (fayda)"
+    },
+    {
+      "arabic": "قُتِلْنَا",
+      "turkish": "öldürülmezdik"
+    },
+    {
+      "arabic": "هٰهُنَاۜ",
+      "turkish": "burada"
+    },
+    {
+      "arabic": "قُلْ",
+      "turkish": "de ki"
+    },
+    {
+      "arabic": "لَوْ",
+      "turkish": "şayet"
+    },
+    {
+      "arabic": "كُنْتُمْ",
+      "turkish": "olsaydınız"
+    },
+    {
+      "arabic": "بُيُوتِكُمْ",
+      "turkish": "evlerinizde dahi"
+    },
+    {
+      "arabic": "لَبَرَزَ",
+      "turkish": "mutlaka boylardı"
+    },
+    {
+      "arabic": "الَّذ۪ينَ",
+      "turkish": "olanlar"
+    },
+    {
+      "arabic": "كُتِبَ",
+      "turkish": "yazılmış"
+    },
+    {
+      "arabic": "عَلَيْهِمُ",
+      "turkish": "üzerine"
+    },
+    {
+      "arabic": "الْقَتْلُ",
+      "turkish": "öldürülme(si)"
+    },
+    {
+      "arabic": "مَضَاجِعِهِمْۚ",
+      "turkish": "yatacakları yeri"
+    },
+    {
+      "arabic": "وَلِيَبْتَلِيَ",
+      "turkish": "ve denemesi içindir"
+    },
+    {
+      "arabic": "اللّٰهُ",
+      "turkish": "Allah'ın"
+    },
+    {
+      "arabic": "مَا",
+      "turkish": "olanı"
+    },
+    {
+      "arabic": "ف۪ي",
+      "turkish": "içinde"
+    },
+    {
+      "arabic": "صُدُورِكُمْ",
+      "turkish": "göğüsleriniz"
+    },
+    {
+      "arabic": "وَلِيُمَحِّصَ",
+      "turkish": "ve açığa çıkarması içindir"
+    },
+    {
+      "arabic": "مَا",
+      "turkish": "olanı"
+    },
+    {
+      "arabic": "ف۪ي",
+      "turkish": "içinde"
+    },
+    {
+      "arabic": "قُلُوبِكُمْۜ",
+      "turkish": "kalbleriniz"
+    },
+    {
+      "arabic": "وَاللّٰهُ",
+      "turkish": "Allah"
+    },
+    {
+      "arabic": "عَل۪يمٌ",
+      "turkish": "bilir"
+    },
+    {
+      "arabic": "بِذَاتِ",
+      "turkish": "özünü"
+    },
+    {
+      "arabic": "الصُّدُورِ",
+      "turkish": "göğüslerin"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Bu gamdan sonra size emniyetle bir uyku verdi ki içinizden bir bölüğü sarıp kapladı. Bir bölükse can kaygısına düşmüştü. Allah hakkında, Müslümanlıktan önceki bilgisizlik çağında olduğu gibi haksız zanlara kapıldılar. Diyorlar ki: Bu işte nemiz var bizim? De ki: Bütün işler Allah'ındır. Onlar, sana açıklamadıklarını yüreklerinde gizliyorlar ve bu işte payımız olsaydı burada öldürülmezdik diyorlar. De ki: Evlerinizde de olsanız, öldürmeleri yazılanlar, gene çıkarlar, öldürülüp yatacakları yerlere giderlerdi ve Allah, gönüllerinizde olanları yoklamak, yüreklerinizdekini artırmak için yaptı bunu ve Allah, yüreklerinizde ne varsa hepsini bilir.",
+    "Abdullah-Ahmet Akgül Meali": "Sonra(o yenilgi ve)kederin ardından(Allah)üzerinize bir güvenlik(duygusu)indirdi,(rahatlamak ve o şaşkınlığı atlatmak üzere tatlı)bir uyuklama ki, içinizden bir grubu sarıveriyordu.(Sizden kalpleri hastalıklı)Bir grubu da, nefisleri can derdine düşürmüştü; Allah’a karşı haksız yere cahiliye zannıyla(kötü)zanlara kapılarak: “Bu işten bize ne var ki?(Cihada katıldık da ne kazandık?)”diyorlardı. De ki: “Şüphesiz işin(takdirin)tümü Allah’ındır.” Onlar(münafıklar), Sana açıklamadıkları şeyi içlerinde gizli tutuyorlar, “Bu işten bize(hayırlı)bir şey olsaydı, biz burada öldürülmezdik” diye(sızlanıyorlardı). De ki: “Evlerinizde olsaydınız da üzerlerine öldürülmesi yazılmış olanlar, yine devrilecekleri(ölüp mezarı boylayacakları)yerlere gidecekti.(Kimse ölümden kaçamazdı. Bunu)Allah, sizi deneyip sinelerinizdeki(nifak ve itirazı yoklayıp açığa çıkarmak)ve kalplerinizdeki(kötü duyguları)arındırmak için(yaptı). Allah, göğüslerin-gönüllerin özünde(saklı)olanı bilip durandır.”",
+    "Abdullah Parlıyan Meali": "Sonra Allah, bu kederin ardından size bir emniyet duygusu ve bazılarınızı sarıp kuşatan bir iç sükûneti, uyuklama hali vermişti. Kendi canlarının kaygısına düşmüş, münafık bir gurup da, Allah'a karşı haksız yere cahiliye devrindekine benzer düşüncelere kapılıyorlar. “Bu işten bize ne” diyorlardı. Ey peygamber! De ki: “Bütün işler Allah'ındır.” Onlar sana açıklayamadıklarını içlerinde gizliyorlar. “Bizim elimizden bir şey gelseydi burada öldürülmezdik” diyorlar. Onlara şöyle söyle: “Evlerinizde kalmış olsaydınız bile, öldürülmesi kararlaştırılmış olanlar, devrilecekleri yere mutlaka çıkıp giderlerdi.” Ve bu başınıza gelenlerin tümü Allah'ın göğüslerinizde barındırdığınız herşeyi denemesi ve kalplerinizin içini her türlü boş ve yararsız şeylerden arındırması içindir. Zira Allah, inananların kalplerindeki herşeyi bilendir.",
+    "Ahmet Tekin Meali": "Sonra o kederin ardından Allah üzerinize bir güven, içinizden bir kısmını saran ağır bir uyku indirdi. Kendi canlarının kaygısına düşmüş bir grup da, Allah'a karşı haksız yere İslâm dışı, cahiliyet devrindekine benzer düşüncelere kapılıyorlar:“Yönetimde sözümüz mü geçiyor ki? Tedbir konusunda bizim görüşümüz mü alındı ki? Beklenilen zaferden, ganimetten bize bir pay mı var ki? Bizim elimizden bir şey mi gelir ki?” mânâlarına gelen lastikli, tarizli sözler söylüyorlardı. Sen:“Zafer, üstünlük tamamen Allah'ın tasarrufundadır” de. Onlar senin karşında açıkça söyleyemeyecekleri asıl düşüncelerini içlerinde gizliyorlar:“Bizim fikrimizle hareket edilse, tedbirlerimiz dikkate alınsaydı, burada içimizden bu kadar ölü vermezdik” diyerek tenkit ediyorlardı. Sen de:“Evlerinizde oturmuş olsaydınız bile, öldürülmesi takdir edilmiş olanlar, öldürülecekleri yerlere çıkıp giderlerdi. Allah gönüllerinizdekini denemek, akıllarınızdakini, kalplerinizdekini temizlemek için böyle yaptı. Allah gönlünüzdeki sırları bilir.” de.",
+    "Ahmet Varol Meali": "Sonra kederin ardından üzerinize bir güven, içinizden bir kısmınızı bürüyen bir uyuklama indirdi. Bir grup da canlarının derdine düşmüşlerdi; cahiliye zannıyla, Allah hakkında, haksız düşüncelere kapılmaya başladılar. Bunlar: \"Bu işten bize bir şey var mı?\" diyorlardı. De ki: \"İş (buyruk) tamamiyle Allah'a aittir.\" Onlar sana açıklamadıklarını kalplerinde gizliyorlar. \"Bu işten bize bir şey olsaydı burada öldürülmezdik\" diyorlar. De ki: \"Eğer evlerinizde olsaydınız, haklarında öldürülme hükmü yazılmış olanlar yine mutlaka düşecekleri yerlere varırlardı.\" Allah kalplerinizde olanı imtihan etmek gönüllerinizi arındırmak için (bu durumlarla sizi karşılaştırıyor). Allah kalplerde olanı bilir.",
+    "Ali Bulaç Meali": "Sonra kederin ardından üzerinize bir güvenlik (duygusu) indirdi, bir uyuklama ki, içinizden bir grubu sarıveriyordu. Bir grup da, canları derdine düşmüştü; Allah'a karşı haksız yere cahiliye zannıyla zanlara kapılarak: 'Bu işten bize ne var ki?' diyorlardı. De ki: 'Şüphesiz işin tümü Allah'ındır.' Onlar, sana açıklamadıkları şeyi içlerinde gizli tutuyorlar, 'Bu işten bize bir şey olsaydı, burada öldürülmezdik' diyorlar. De ki: 'Evlerinizde olsaydınız da üzerlerine öldürülmesi yazılmış olanlar, yine devrilecekleri yerlere gidecekti. (Bunu) Allah, sinelerinizdekini denemek ve kalplerinizde olanı arındırmak için (yaptı). Allah, sinelerin özünde saklı duranı bilendir.",
+    "Ali Fikri Yavuz Meali": "Sonra o kederin arkasından üzerinize Allah bir emniyet, bir uyku indirdi. Öyle ki, içinizden bir zümreyi (öz müminleri o uyku) sarıyordu. (münafıklardan ibaret) bir zümreyi de, nefisleri, can kaygısına düşürmüş, gözleri uyku tutmaz olmuştu; Allah'a karşı cahiliyyet zannı gibi haksız bir zan besliyor ve; “- Bu zafer işinden bize ne?” diyorlardı. (Rasûlüm), de ki: “- Bütün iş Allah'ındır.” Onlar, nefislerinde, sana açamadıkları bir şey gizliyorlar: “- İş elimizde olsa, zorla savaşa çıkarılmasaydık burada öldürülmezdik” diyorlardı. (Rasûlüm) de ki: “- Evinizde de olsaydınız, üzerlerine ölüm yazılmış (takdir edilmiş) bulunanları yine dışarı çıkacak, düşüp kaldıkları yerleri çaresiz boylayacaklardı.” Allah, Uhud savaşındaki bu olayları, kalblerinizde olan ihlâs ve nifakı meydana çıkarmak ve yüreklerinizdeki niyyetleri pâk ve öz yapmak için başınıza getirdi. Allah kalplerde olanı pek iyi bilir.",
+    "Bahaeddin Sağlam Meali": "Sonra Allah, o keder ve sıkıntının ardından üzerinize bir güven indirdi. Bir grubunuzu bürüyen bir uyku ve esneme salıverdi (onları rahatlattı.) Bir grup da can kaygısına düşmüşlerdi. Cahiliyet devrindeki inançlar gibi Allah hakkında gerçek dışı şeyler düşünüyorlardı. “Bu işin idaresinde bizim de payımız var mı?” diyorlardı. Sen de ki: “Bütün idare Allah’ındır.” Sana göstermedikleri şeyi içlerinde gizliyorlardı. Onlar: “Eğer bir payımız olsaydı, biz burada öldürülmezdik.” diyorlardı. Sen de ki: “Eğer evinizde de olsaydınız, kendilerine ölüm yazılanlar, dışarı çıkarak düşüp öldükleri bu yerlerine geleceklerdi.” Allah bu savaşı diledi ki, içinizi (özünüzü) olgunlaştırsın, kalplerinizi (kirlerden) temizlesin. Allah sinelere sahip her canlıyı çok iyi bilendir.",
+    "Bayraktar Bayraklı Meali": "Sonra O, bu kederin ardından, size bir emniyet duygusu ve uyku hali, bazılarınızı sarıp kuşatan bir iç sükûneti bağışladı; oysa sadece kendilerini düşünen ötekiler, Allah hakkında yanlış fikirlere -putperest câhiliye düşüncelerine- kapıldılar ve “Bu konuda o zaman bir karar yetkisine sahip miydik?” diye kendi kendilerine sordular. De ki: “Bütün karar yetkisi, yalnızca Allah'a aittir!” Onlara gelince, onlar “Eğer bir karar yetkimiz olsaydı, ardımızda bu kadar çok ölü bırakmazdık” diyerek, ey Peygamber, sana göstermeyecekleri o iman zayıflığını içlerinde saklamaya çalışıyorlar. Onlara de ki: “Evlerinizde de kalmış olsaydınız, içinizden ölümü takdir edilmiş olanlar, devrilecekleri/öldürülecekleri yere mutlaka çıkıp giderlerdi.” Bu başınıza gelenlerin hepsi, Allah'ın göğüslerinizde barındırdığınız her şeyi sınaması ve kalplerinizin içini her türlü boş ve yararsız şeylerden arındırması içindir. Zira Allah, insanların sinelerindeki her şeyi bilir.",
+    "Besim Atalay Meali (1965)": "Kaygının sonunda Allah sizlerden bir bölüğü sarmış olan emniyetle, uyku verdi, bir bölük de, kendi derdine düştü, haksızlık ederek Allaha karşı bilgisizlik zannı besler oldular, dediler ki: «Bu işte bizim neyimiz vardır?» Diyesin ki onlara: «Her iş Allaha gider!», sana açmadıkların içlerinde gizlerler, derler ki : «Eğer bunda kazancımız bulunsaydı, öldürülmezdik burada», diyesin ki onlara: «Ölmesi alnına yazılmış olan, evinde olsa dahi, ölüme karşı çıkar», gönlünüzü arıtmakçin, içinizde olanı, Allah yoklamakçin böyle yapmıştır, Allah bilir gönüllerde olanı",
+    "Cemal Külünkoğlu Meali": "Sonra o üzüntü ve kederin ardından Allah üzerinize bir güven indirdi, (şaşkınlığı atlatmak ve rahatlamak için) bir kısmınızı bürüyen bir uyku hali verdi. Bir kısmınız da canlarının derdine düşerek, cahiliye kafasıyla Allah hakkında gerçek dışı zanlara kapılarak: “Bu işten bize ne var (niye savaştık) ki?” diyorlardı. (Ey Resûl!) De ki: “Şüphesiz bütün iş (yetki ve karar) Allah'ındır.” Onlar, sana açıklayamadıkları şeyi içlerinde gizli tutuyorlar ve: “Bu işten bize bir şey olsaydı, biz burada öldürülmezdik (kardeşlerimiz öldürülmezdi)” diyorlar. De ki: “Evlerinizde dahi olsaydınız, üzerlerine öldürülmesi yazılmış bulunanlar mutlaka yatacakları (öldürülecekleri) yerlere çıkıp gideceklerdi. Allah, bunu gönüllerinizdeki (ihlâs ve fitne gibi) şeyleri yoklamak ve kalplerinizdeki (vesveseleri) temizlemek için yaptı. Allah, sinelerdekini (kalplerde olanı) hakkıyla bilendir.”",
+    "Cemil Said (1924)": "Ândan sonra Allâh sizin bir kısmınıza enmiyet ve uyku inzâl iyledi diğer bir kısmınız hırs-ı nefsânî ile Allâh hakkında ba’zı zanniyât-ı câhiliyede bulundı. \"Biz bu işde ne kazanıyoruz\" diyorlardı. Ânlara di ki: \"Her iş Allâh’ın emriyle olur\" Sana izhâr itdikleri şeyleri kalblerinin derin köşesinde saklıyorlar idi. \"Eğer bu işde bir şey kazanmaklığımız Allâh’ca mev’ûd ola idi mağlûb olmaz idik\" diyorlar. Ânlara di ki: \"Eğer hânelerinizde kalmış ola idiniz eceli gelenler orada katl olunur idi.\" Böylece Allâh sizin kalblerinizdekini meydâna çıkarır. Allâh kalblerde ne bulundığını bilir.",
+    "Diyanet İşleri Meali (Eski)": "Kederden sonra, bir takımınızı kendinden geçirecek şekilde size huzur ve emniyet indirdi; oysa bir takımınız da kendi derdlerine düşmüşlerdi. Haksız yere Allah hakkında, cahiliye devrinde olduğu gibi inanıyorlar. \"Bu işte bizim bir fikrimiz var mı?\" diyorlardı; De ki: \"Buyruğun hepsi Allah'ındır\". Sana açmadıklarını içlerinde gizliyorlar. \"Bu işte bizim fikrimiz alınsaydı, burada öldürülmezdik\" diyorlar. De ki: Evlerinizde olsaydınız, haklarında ölüm yazılı olan kimseler, yine de devrilecekleri yere varırlardı. Bu, Allah'ın içinizde olanı denemesi, kalblerinizde olanı arıtması içindir. Allah gönüllerde olanı bilir.",
+    "Diyanet İşleri Meali (Yeni)": "Sonra o kederin ardından (Allah) üzerinize içinizden bir kısmını örtüp bürüyen bir güven, bir uyku indirdi. Bir kısmınız da kendi canlarının kaygısına düşmüştü. Allah’a karşı cahiliye zannı gibi gerçek dışı zanda bulunuyorlar; “Bu işte bizim hiçbir dahlimiz yok” diyorlardı. De ki: “Bütün iş, Allah’ındır.” Onlar sana açıklayamadıklarını içlerinde saklıyorlar ve diyorlar ki: “Bu konuda bizim elimizde bir şey olsaydı, burada öldürülmezdik.” De ki: “Evlerinizde dahi olsaydınız, üzerlerine öldürülmesi yazılmış bulunanlar mutlaka yatacakları (öldürülecekleri) yerlere çıkıp gideceklerdi. Allah, bunu göğüslerinizdekini denemek, kalplerinizdekini arındırmak için yaptı. Allah, göğüslerin özünü (kalplerde olanı) bilir.”",
+    "Kur'an Yolu (Diyanet İşleri)": "Sonra o kederin ardından Allah size bir güven, bir grubunuzu kendinden geçiren uyuklama hali verdi; bir grup da kendi canlarının derdine düşmüşler, Allah hakkında haksız yere Cahiliye düşüncelerine kapılarak, “Bu işten bize ne?” diyorlardı. De ki: “İşin tamamı Allah’a aittir.” Sana açmadıklarını içlerinde gizliyorlar: “Bu işte bizim görüşümüz alınsaydı burada öldürülmezdik” diyorlar. De ki: “Evlerinizde dahi olsaydınız, yine de haklarında ölüm yazılmış olanlar ölüp düşecekleri yere geleceklerdi. Bu, Allah’ın içinizde olanı ortaya çıkarması ve kalplerinizdeki şüpheyi gidermesi içindir. Allah kalplerde olanı bilir.”",
+    "Diyanet Vakfı Meali": "Sonra o kederin arkasından Allah size bir güven indirdi ki, (bu güvenin yol açtığı) uyuklama hali bir kısmınızı kaplıyordu. Kendi canlarının kaygısına düşmüş bir gurup da, Allah'a karşı haksız yere cahiliye devrindekine benzer düşüncelere kapılıyorlar, «Bu işten bize ne!» diyorlardı. De ki: İş (zafer, yardım, herşeyin karar ve buyruğu) tamamen Allah'a aittir. Onlar, sana açıklayamadıklarını içlerinde gizliyorlar. «Bu işten bize bir şey olsaydı, burada öldürülmezdik» diyorlar. Şöyle de: Evlerinizde kalmış olsaydınız bile, öldürülmesi takdir edilmiş olanlar, öldürülüp düşecekleri yerlere kendiliklerinden çıkıp giderlerdi. Allah, içinizdekileri yoklamak ve kalplerinizdekileri temizlemek için (böyle yaptı). Allah içinizde ne varsa hepsini bilir.",
+    "Edip Yüksel Meali": "Sonra o üzüntünün ardından, içinizden bir grubu sakinleştiren güven dolu bir uykuyu üzerinize indirdi. Bir kısmınız bencilce kendi derdine düşmüş, cahiliye döneminde olduğu gibi ALLAH hakkında yanlış düşünceler üretiyor ve, \"Bu işte bir yetkimiz varmı,\" diyordu. \"Tüm yetki ALLAH'ındır,\" de. Sana açmadıklarını içlerinde gizliyorlardı. \"Bizim bir yetkimiz olsaydı burada öldürülmezdik,\" diyorlar. De ki, \"Evlerinizde dahi olsaydınız, aranızda ölmesi kararlaştırılanlar devrilecekleri yere doğru sürüneceklerdi.\" ALLAH böylece göğüslerinizdekini dener ve kalplerinizdekini arıtır. ALLAH en gizli düşünceleri bilir",
+    "Elmalılı Hamdi Yazır Meali": "Sonra o kederin ardından (Allah) üzerinize öyle bir eminlik, öyle bir uyku indirdi ki, o, içinizden bir zümreyi örtüp bürüyordu. Bir zümre de canları sevdasına düşmüştü. Allah'a karşı, cahiliyet zannı gibi, hakka aykırı bir zan besliyorlar ve \"Bu işten bize ne?\" diyorlardı. De ki: \"Bütün iş Allah'ındır\". Onlar sana açıklamayacaklarını içlerinde saklıyorlar (ve) diyorlar ki: \"Bize bu işten bir şey olsaydı burada öldürülmezdik\". Onlara şöyle söyle: \"Eğer siz evlerinizde olsaydınız bile, üzerlerine öldürülmesi yazılmış olanlar yine muhakkak yatacakları (öldürülecekleri) yerlere çıkıp gidecekti. Allah (bunu) göğüslerinizin içindekini denemek ve yüreklerinizdekini temizlemek için yaptı. Allah göğüslerin içinde olanı bilir.",
+    "Elmalılı Meali (Orijinal)": "sonra o gamın arkasından üzerinize bir emniyyet indirdi: bir uyku ki içinizden bir taifeyi sarıyordu, bir taife de nefisleri sevdasına düşmüşlerdi: Allaha karşı cahiliyye zannı nâ hak bir zan besliyorlardı: «var mı bize o emirden bir şey?» diyorlardı, «hakikat emrin hepsi Allahın» de, onlar nefislerinde sana açamadıkları bir şey gizliyorlar: «bizim emirden bir hıssamız olsa idi burada katlolunmazdık» diyorlar, deki: «evinizde de olsa idiniz üzerlerine katil yazılmış bulunanlar yine çıkacak düşüb kaldıkları yerleri çaresiz boylıyacaklardı, Allah sinelerinizdekini yoklamak ve yüreğinizdekini meydana çıkarmak içindir ki bunu başınıza getirdi, Allah sinelerin kühnünü bilir",
+    "Emrah Demiryent Meali": "Sonra bu keder (ler) in ardından, Allah size öyle bir güven (duygusu) ve uyku hâli verdiki o hâl içinizden bir kısmınızı (mü’minleri) sarıyordu. Diğer bir kısmı (munâfıklar) da canlarının derdine düşmüştü. Zira onlar Allah hakkında câhiliyye zihniyetiyle, haksız bir düşüncede bulunarak, “Bu işte (cihat yapılıp yapılmaması hususunda) bizim bir yetkimiz mi var”? (Bu hususta görüşümüz alınmadı ki) diyorlardı. (Resûlüm, onlara) de ki: “Bütün iş (emir/hüküm) Allah’ındır.” Onlar, senin huzurunda açığa vuramadıklarını, içlerinde gizliyorlar ve “Bu işte bizim bir payımız olsaydı (cihat yapılıp yapılmaması hususunda fikrimiz/düşüncemiz sorulsaydı, şimdi buralara gelmez ve) *biz burada öldürülmezdik.” diyorlar. (Resûlüm! Yine onlara) de ki: “Evlerinizde olsaydınız bile, üzerlerine ölüm yazılmış olanlar, devrilip ölecekleri yerlere mutlaka çıkıp gideceklerdi. (Ezelî ve ebedî ilmiyle her şeyi hakkıyla bilen) Allah bunu, gönlünüzdeki şeyleri (kimin asi, kimin itaatkâr olduğunu sizin için) ortaya çıkarmak ve (ayrıca) kalplerinizdekini (vesveseleri) arındırmak için yaptı. Allah, gönüllerin özünü (kalplerinizde olanı) hakkıyla bilendir.”",
+    "Erhan Aktaş Meali": "Sonra O, üzüntünün ardından, sizden bir kısmınıza, güven duygusu, sarıp kuşatan bir iç dinginlik indirdi. Bir kısmınız da can kaygısına düşmüştü. Allah hakkında, tıpkı cahiliye¹ dönemindekine benzer biçimde gerçeğe aykırı bir sanı besliyorlardı. “Bu işten bize ne? Diyorlardı. De ki: “Her şeyin takdiri yalnız Allah'ındır.” Sana, açıklamadıkları şeyleri içlerinde gizliyorlar. “Elimizden bir şey gelseydi buralarda öldürülmezdik.” Diyorlar. De ki: “Evlerinizde kalmış olsaydınız bile, üzerlerine öldürülme yazılmış² olanlar düşüp ölecekleri yere kendiliğinden çıkıp gelirlerdi. Allah, bunu, göğüslerinizde olanı sınamak ve kalplerinizdekilerini arındırmak için yaptı. Allah, göğüslerin özünü bilir.",
+    "Hasan Basri Çantay Meali": "Sonra o kederin ardından (Allah) üzerinize öyle bir emînlik, öyle bir uyku indirdi ki o, içinizden bir zümreyi örtüb bürüyordu. Bir zümre de canları sevdasına düşmüşdü. Allâha karşı câhiliyyet zannı gibi hakka aykırı bir zan besliyorlar ve: «Bu işden bize ne?» diyorlardı. De ki: (Habîbim), «Bütün iş Allahındır». Onlar sana açıklamayacaklarını içlerinde saklıyorlar, diyorlar ki: «Bize bu işden bir şey (bir pay) olsaydı burada öldürülmezdik». Şöyle de: «Siz evlerinizde olsaydınız bile üzerlerine öldürülmesi yazılmış (takdîr edilmiş) olanlar yine muhakkak yatacakları (öldürülecekleri) yerlere çıkıb gidecekdi. (Allah bunu) göğüslerinizin içindekini yoklamak, yüreklerinizdekini temizlemek için (yapdı). Allah, sîynelerdeki özü hakkıyle bilendir.",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "Sonra kederin ardından üzerinize, içinizden bir grubu saran güven verici bir uyuklama indirdi. Bir grup da canlarının derdine düşmüş, Allah’a karşı haksız yere cahiliye zanlarına kapılarak: “Bu işten bize ne var?” diyorlardı. De ki: “İşin hepsi Allah’ındır.” Onlar sana açıklamadıkları şeyi nefislerinde gizliyorlar. “Bu iş bize kalsaydı biz burada öldürülmezdik.” diyorlar. De ki: “Evlerinizde olsaydınız da üzerlerine öldürülmesi yazılmış olanlar yine de devrileceklerdi. Allah bunu kafanızdan geçirdiklerinizle (sizi) imtihan etmek ve zihinlerinizde olanı ortaya çıkarmak için yaptı. Allah kafaların içindekileri hakkıyla bilendir.”",
+    "Hayrat Neşriyat Meali": "Sonra o kederin ardından (Allah) üzerinize bir emniyet, bir uyku indirdi ki, (o hâl)içinizden bir tâifeyi (samîmî mü'minleri) bürüyordu; (münâfıklardan) bir tâife de vardı ki, doğrusu nefisleri, kendilerini derde düşürmüş, Allah hakkında haksız yere, câhiliye zannıyla zanda bulunuyorlardı. “Bu işten (zafer ve galibiyet va'dinden) bize bir şey var mı?” diyorlardı.(Ey Resûlüm!) De ki: “Şübhesiz iş tamâmıyla Allah'a âiddir!”(1) Sana açıklayamayacaklarını içlerinde gizliyorlar. (Birbirlerine:) “Eğer (Muhammed'in dediği gibi) bu işten bize bir şey olsaydı, burada öldürülmezdik” diyorlardı.De ki: “Evlerinizde bile bulunsaydınız, üzerlerine ölüm yazılmış olanlar, (öldürülerek)yatacakları yerlere mutlaka çıkıp giderlerdi!” Artık (bu, birçok hikmetler ve) Allah'ın sînelerinizde olanı denemesi, hem kalblerinizde olanı temizlemesi içindir. Çünki Allah, sînelerin içinde olanı hakkıyla bilendir.",
+    "İhsan Aktaş Meali": "Sonra o kederin ardından (Allah), üzerinize içinizden bir kısmını örtüp bürüyen bir güven, bir uyku indirdi. Ve bir kısmınız da şüphesiz kendi canlarının kaygısına düşmüştü. Allah’a karşı, cahiliye zannı gibi gerçek dışı zanda bulunuyorlardı. ’’Bu işten (yönetimden) bize bir şey var mı?’’ diyorlardı. (Resulüm!) Sen,’emir (yönetim) bütünüyle Allah’ındır ’de. İçlerinde ise, sana açıklayamadıkları şeyi gizliyorlardı. Onlar ’Eğer yönetimde bizim de bir payımız olsaydı, burada böyle öldürülmezdik’’ diyorlardı. De ki: Siz evlerinizde dâhi olsaydınız, haklarında ölüm takdir edilenler, mutlaka düşüp ölecekleri yerlere doğru çıkacaklardı. Bu, Allah’ın içinizde olanı sınamak (içinizde olanı dışınıza vurup ne olduğunuzu göstermek) ve gönüllerinizde bulunanları (şüphelernizi) temizlemek (gidermek) içindir. Ve Allah, gönüllerde olanı bilir. *",
+    "İlyas Yorulmaz Meali": "Savaş sonrası size isabet eden yenilgiye üzülmenizden sonra, Allah üzerinize bir uyku sükûnet indirdi. Bu sükûnet hali sizden bir gurubu kaplamış, yine sizin içinizden bir gurup da kendi şahsiyetlerini ön plana çıkarmış ve cahiliyyet döneminde yaptıkları gibi, Allah’a haksız yere yanlış zanlarda bulunuyorlardı. “Bu işte bizim payımız (savaş bize ne kazandırdı) ne oldu” diyorlardı. Deki “İşlerin tamamı (sonucunu tayin etmek) Allah’a aittir. Sana açıklayamadıklarını içlerinde gizliyorlar. “Keşke bu işte (savaşta) bizim de katkımız olsaydı (bizim fikrimiz alınsaydı) savaş meydanında bu kadar çok (insanımız) öldürülmezdik” diyorlar. Deki “Evlerinizde olsanız ve ölüm onların üzerine yazılmış olsaydı, yataklarında dahi ölüm onları bulurdu. Allah içlerinizden geçirdiklerinizle sizi denemek ve kalplerinizi arındırmak için (yenilgileri size tattırıyor). Allah göğüslerin ne barındırdığını (içinizden geçenleri) en iyi bilendir.",
+    "İsmayıl Hakkı Baltacıoğlu": "Sonra Allah bu tasanın ardından size öyle bir güven verdi ki içinizden bir takımını uyuklama tuttu. Bir takımları da can kaygısına düştüler,Allah’a karşı toyluk çağlarının o yamuk düşüncesine kapıldılar. Dediler: \"Bu işte bizim ne çıkarımız var ki!\"Onlara de ki: \"Yalnız Allah’ın dediği olur.\" Onlar sana belli etmediklerini içlerinde saklarlar. Dediler: \" Bu bizim için çıkar yol olsaydı burada boşu boşuna öldürülmezdik.\" De ki: \" Siz evlerinizde de kalmış olsaydınız, öldürülmek alın yazısı olanlar çıkarlar, öldürülecekleri yere kadar giderlerdi.\" Allah içinizde olanları sınamak, yüreklerinizi arıtmak için böyle yaptı. Allah bütün içinizde olanları bilicidir.",
+    "İsmail Hakkı İzmirli": "Bu gamdan sonra size içinizde bir takımını bürüyüp emniyete sebep olan bir uyuklama indirdi. Diğer takım ise can kaygusuna düştü, Allah hakkında nahak yere cahiliyete mahsus zanlar ile zanda bulundu, «bundan bize ne oldu?» diyorlardı. Onlara de ki işin hepsi Allah/ındır. Onlar sana aşikâr kılmadıkları şeyi kalplerinde gizlerler. Derler ki, elimizde bir şey olsaydı burada maktul düşmezdik.» De ki evlerinizde bile olsaydınız yine katli yazılmış olan kimse çıkar, makteline giderdi . Allah sinelerinizdeki ihlâs ve nifakı meydana koymak, kalplerinizdeki vesveseyi temizlemek için böyle yaptı. Allah sinelerinizdekini hakkiyle bilir.",
+    "İsmail Yakıt": "Sonra bu kederin ardından içinizden bir grubu tamamen kuşatan/örten bir güven ve bir sükûnet/dinginlik indirdi. Kendi canlarının kaygısına düşmüş olan bir grup da Allah’a karşı cahiliye zannı gibi haksız bir zanda bulunuyorlar ve “Bu işten/savaş kararından bizim bir dahlimiz var mı?” diyorlardı. De ki: “Bütün iş/karar verme yetkisi muhakkak ki Allah’a aittir.” Onlar açıklayamadıklarını içlerinde gizliyorlar ve “Şayet karar verme yetkisi bizde olsaydı burada öldürülmezdik” diyorlar. Onlara de ki: “Evlerinizde dahi olsaydınız, haklarında ölüm yazılmış olanlar, yine de öldürülecekleri yere varırlardı.” Bu Allah’ın göğüslerinizdekini sınaması ve kalplerinizdekini arıtması içindir. Çünkü Allah göğüslerinizin özünü/ kalplerinizin içini en iyi bilendir.",
+    "Kadri Çelik Meali": "Kederden sonra bir takımınızı (kaçtıklarına pişman olanları) saracak şekilde size güven veren hafif bir uyku indirdi; kendi canlarının kaygısına düşmüş bir grup ise haksız yere Allah hakkında cahiliye zanlarına kapıldılar. “Bu işten (Allah'ın yardımından) bir payımız var mı?” diyorlardı. De ki: “İşlerin tümü Allah'ındır.” Sana açmadıklarını içlerinde gizliyorlar. “Bu işten (Allah'ın yardımından) bir nasibimiz olsaydı, burada öldürülmezdik” diyorlar. De ki: “Evlerinizde olsaydınız, haklarında ölüm yazılı olan kimseler, yine de devrilecekleri yere gelirlerdi.” Bu, Allah'ın içinizde olanı denemesi ve kalplerinizde olanı arıtması içindir. Allah gönüllerde olanı bilir.",
+    "Mahmut Kısa Meali": "DerkenAllahbu üzüntünüzün ardından, üzerinizetatlı biruyuklama,içinizi okşayan bir huzur vegüven duygusu indirdi.Bu duygu,içinizden bir kısmınıdalga dalga sarıpkuşatıyordu.Münâfıkların oluşturduğudiğer bir grup ise, sırf kendi canlarının kaygısına düşmüşlerdi. Allah hakkında,İslâm öncesicâhiliyedöneminden kalma putperestkafasıyla, yalan yanlış düşünceler besliyorlardı.Allah’ın müminlere yardım etmeyeceğini, bu dâvânın artık bittiğini söylüyorlardı. Yenilginin faturasını hep Peygambere çıkararak,şöyle diyorlardı:“Bu işlerin kararlaştırılmasında bizim yetkimiz mi var?Niçin bizim sözümüz dinlenmedi? Yetki ve egemenlikte bizim de payımız olsaydı, bu hâllere düşer miydik?”Sen de onlarade ki:“Doğrusuher önemli konudakarar verme yetkisi, tamamenve sadeceAllah’a aittir.Sözü dinlenecek, emirlerine kayıtsız şartsız itaat edilecek yegâne otorite ve egemenlik kaynağı, Allah’ın kitabıdır.”Aslında onlar, sana açıkça söyleyemedikleriİslâm düşmanlığını ve sana karşı besledikleri kin ve nefretlerini içlerinde gizleyerek:“Bu konuda karar verme yetkisi bizde olsaydı,Medîne’de şehir savunması yapar,burada böyle öldürülmezdik,yani dostlarımızı, kardeşlerimizi bir hiç uğruna ölüme göndermezdik!” diyorlar.Böylece, bir yandan İslâmî yönetimden hoşnut olmadıklarını ima ederken, öte yandan ölüm ve ecel konusunda Allah’ın irâdesini hafife alıyorlar. Buna karşılık, onlarade ki:“Hayır, öyle değil! Siz veya Uhud savaşında şehit olan yakınlarınız, şâyet Allah yolunda mücâdeleyi terk edipevlerinizde kalmış olsaydınız bile,Allah, içinizden bazılarının —sizin bilmediğiniz hikmet ve sebeplerle— o gün orada ölmesini takdir etmişse,kendilerine ölüm yazılmış olanlar, mutlakaölecek ve kabirdeyatacakları yere gideceklerdi.Bu durumda hangi güç onları ölüm yolculuğundan alıkoyabilirdi? Unutmayın ki, her canlı için ölüm kaçınılmaz bir gerçektir. O hâlde, ölümden kaçma adına Allah yolunda mücâdeleyi terk etmenin size bir faydası olmayacaktır.”“Peki, bunca sıkıntılara katlanmamızın hikmeti nedir?” diye soracak olursanız;Allah, göğsünüzdekiiman ve samîmiyet derecesiniölçüpsınamak ve yüreğinizdekikorkaklık, bencillik ve miskinlik gibi kötü duygu ve düşüncelerisöküp atarak iç dünyanızıtertemiz yapmakiçinsizi imtihân etmektedir. Hiç kuşkusuzAllah, kalplerin içindekibütün gizli niyet ve düşünceleri bilmektedir.",
+    "Mahmut Özdemir Meali": "Acı’nın ardından, yine içinizden bir grubu saran güven uykusu indirdi. Bir grup da Allah hakkında Gerçek dışı bir zanna, Câhiliye’nin zannına kapılarak kendi can derdine düştü.“Bizim hiçbir şekilde Yetki’miz var mı?” diyorlardı. De ki: -“ Emr / Yetki, bütünüyle Allah’a aittir”. Sana belli etmeyecekleri şeyleri nefislerinde gizliyorlardı.“Bu iş bize kalsaydı, burada öldürülmezdik” diyorlardı. De ki:“Evlerinizde bulunsaydınız bile Öldürülmesi yazılmış olanlar, elbette yatırılacakları yere giderdi”. Allah’ın, göğüslerinizdeki şeyleri sınaması ve kalblerinizdeki şeyleri ayıklaması içindir. Allah Göğüsler’in özünü bilendir.",
+    "Mehmet Çakır Meali": "Bu acı yenilgiden sonra bir kısmınızın üzerine çöken o tatlı mı tatlı esenlik uykusunu Allah indirmişti. Bu sırada canları pek kıymetli olan başka bir birlik de Allah hakkında yakışıksız ve cahilce laflar ediyorlar: \"bu işte bizim fikrimizi alan oldu mu sanki ?\" diyorlardı. De ki: \"her işin başyönetmeni Allah'tır.\" Aslında senin yüzüne karşı açıkça ifade edemediklerini içlerinde tutuyorlar ve: \"şayet bu işte bizim de görüşümüz alınsaydı pisipisine ölmezdik böyle\" demek istiyorlar. De ki: \"evinizde dahi olsanız, eğer birilerinin kaderine ölüm yazılmışsa, ölüm onu yatağında da bulur.\" \"Bütün bu musibetlerle Allah, hem sizin iç dünyanızı yoklamak hem de yüreklerinizin bakımını yapmak istemiştir. \" Çünkü gizli saklı içinizdekileri en iyi Allah bilir.",
+    "Mehmet Çoban Meali": "Sonra o gamın arkasından Allah size bir güven indirdi ki uyuklama hali bir kısmınızı kaplıyordu. Kendi canlarının kaygısına düşmüş olan bir grup Allah’a karşı haksız yere cahiliye devrindekine benzer düşüncelere kapılıp:\"Bu işten bize ne?\"diyorlardı. De ki:\"Şüphesiz iş tamamen Allah’a aittir!\"Onlar sana açıklayamadıklarını içlerinde gizliyorlar:\"Bu işten bize bir şey olsaydı burada öldürülmezdik!\"diyorlar. Onlara de ki:\"Evlerinizde kalmış olsaydınız bile öldürülmesi takdir edilmiş olanlar, öldürülecekleri yerlere kendiliklerinden giderlerdi. Allah içinizdekileri yoklamak ve kalplerinizdekileri temizlemek için böyle yaptı. Allah içinizde ne varsa hepsini bilir!\"",
+    "Mehmet Okuyan Meali": "Sonra (Allah) o kederin arkasından size bir güven indirdi ki (bu güvenin yol açtığı) uyuklama hâli bir kısmınızı kaplıyordu. Kendi canlarının kaygısına düşmüş bir grup da Allah hakkında cahiliye devrindeki türden yanlış ve yersiz zanlara kapılmışlar ve “Bu işten bize ne var?” diyorlardı. De ki: “İş (karar), tamamen Allah’a aittir. Onlar, sana açıklayamadıklarını içlerinde gizliyorlar.” (Onlar) “Bu işten bize bir şey olsaydı, burada öldürülmezdik.” diyorlar. (Onlara) de ki: “Evlerinizde kalmış olsaydınız bile öldürülmesi yazılmış olanlar, yataklarına (düşecekleri yerlere) çıkıp giderlerdi. Allah göğüslerinizdekileri (kalplerinizdekileri) deneyip ortaya çıkarmak ve göğüslerinizdekileri (kalplerinizdekileri) arındırmak için (böyle yaptı). Allah göğüslerin (kalplerin) özünü bilendir.”",
+    "Mehmet Türk Meali": "Sonra o sıkıntının ardından Allah, içinizden bir grubun üzerine, kendilerini saran bir güven duygusu ve uyku,¹ indirmişti. Diğer grup² ise; kendi derdine düşmüştü. Çünkü onlar Allah hakkında cahiliyye zihniyetiyle, gerçek dışı bir düşünceye kapılarak: “Bu işte bizim de bir payımız var mı?”³ diyorlardı. (Ey Muhammed!) Onlara: “(Hayır,) işlerin tamamı, kesinlikle Allah’a aittir.” de. Aslında onlar, sana açıklayamadıkları bir şeyi içlerinde saklıyarak, kendi kendilerine: “Eğer bu işte bizim bir payımız olsaydı⁴ şimdi biz, burada böyle öldürülmezdik.” diyorlar. Sen de onlara: “Eğer siz, evlerinizde de olsaydınız, öldürülmeleri takdir edilmiş olanlar, mutlaka öldürülecekleri yerlere çıkıp gideceklerdi.” de. (Şunu iyi bilin ki) Allah (bunu) gönüllerinizdekini denemek ve kalplerinizde bulunanları temizlemek için yaptı. Çünkü Allah, gönüllerin özündekileri, çok iyi bilir.",
+    "Muhammed Esed Meali": "Sonra O, bu kederin ardından, size bir emniyet duygusu, bazılarınızı sarıp kuşatan bir iç sükûneti bağışladı; ¹¹² oysa sadece kendilerini düşünen ötekiler, Allah hakkında yanlış fikirlere -putperest cahiliyye düşüncelerine- kapıldılar ve “) o zaman bir karar yetkisine sahip miydik?” diye (kendi kendilerine) sordular. ¹¹³ De ki: “Bütün karar yetkisi, yalnızca Allah’a aittir!” ¹¹⁴ onlar, “Eğer bir karar yetkimiz olsaydı, ardımızda bu kadar çok ölü bırakmazdık” ¹¹⁵ diyerek sana göstermeyecekleri o nı içlerinde saklamaya çalışıyorlar. de ki: “Evlerinizde de kalmış olsaydınız, ölümü takdir edilmiş olanlar, devrilecekleri yere mutlaka çıkıp giderlerdi.” Ve bu , Allah’ın göğüslerinizde barındırdığınız her şeyi sınaması ve kalplerinizin içini ¹¹⁶ her türlü boş ve yararsız şeylerden arındırması içindir: Zira Allah, kalplerindeki her şeyi bilir.",
+    "Mustafa Çavdar Meali": "Sonra, o derin üzüntünün ardından size bir güven duygusu verdi ve içinizden bir kısmınıza uyku gibi saran bir sükûnet bahşetti. Canlarının derdine düşmüş bir grup da, cahiliye devri düşüncesine benzer bir düşünce ile Allah hakkında gerçek dışı düşüncelere dalmışlar ve diyorlardı ki; “Bu savaş kararında bizim bir yetkimiz var mı ki?” Onlara de ki: “Bütün yetki ve karar yalnızca Allah’a aittir.” Sana açıklamadıkları gerçek duygularını içlerinde gizliyor ve şöyle diyorlardı: “Savaş kararında bir yetkimiz olsaydı, bugün burada boş yere can vermezdik.” De ki: “Siz evlerinizde bile olsanız, ölümü takdir edilmiş olanlar yıkılacakları yere kadar giderlerdi. Bu, olup biten her şey Allah’ın yüreklerinizdeki imanı sınaması ve kalplerinizde olan kuşkuları arındırması için bir vesileydi. Zira Allah, gönüllerin özünü hakkıyla bilendir.” 3/168, 31/34",
+    "Mustafa İslamoğlu Meali": "Sonra (Allah), bu elemin ardından size bir güven hissi, bir kısmınızı çepeçevre kuşatan bir iç sükuneti bahşetti. Diğer bir kısmınız ise canlarının derdine düşmüşlerdi; Allah hakkında, haddini bilmezlik çağı olan Cahiliyye’ye özgü, yanlış tasavvurlara kapıldılar. Diyorlardı ki: “(Savaşa) emir-komuta etmede bizim de pay sahibi olmamız gerekmez miydi?” De ki: “Bütün yetki, yalnızca Allah’a aittir.” Onlar ise içlerinde gizleyip sana göstermedikleri gerçek duygularını (şöyle) dile getiriyorlardı: “Eğer bizim de emir-komuta(ya iştirak etme) yetkimiz olsaydı, burada bu kadar ölü vermezdik.” De ki: “Evlerinizde kalmış olsaydınız dahi (fark etmezdi); o ölüm, ölümü mukadder olanları, yine de yataklarına kadar izlerdi.” Bu da, Allah’ın göğüslerinizde olan her bir şeyi sınaması ve kalplerinizde olanları arıtıp damıtması içindir: zira Allah kalplerin içini bilir.",
+    "Orhan Kuntman Meali": "O kederin ardından (Rabbiniz) üzerinize öyle bir emniyet ve bir uyku indirdi ki, içinizden bir kısmım bürüyordu! (Bu, normal bir uyku olmayıp, kalblere manevi bir kuvvet aşılayan ilahi bir yardım olmuştu) Bir kısmı ise can kaygısma düşmüştü, cahiliye kafasıyle Allah'a karşı kötü zan besliyorlardı. (Cenab-ı Hakk’ın Resulüne yardım etmeyeceğini sanıyorlardı.) \"Bu işten bize ne?\" diyorlardı. (Ey Muhammed) De ki: \"Bütün iş (yardım, zafer) Allah'a aittir, onlar sana açıklamadıklarını, içlerinde saklıyorlar. \"Tedbirden hissemiz olsaydı (fikrimizle hareket edip evlerimizde kalsaydık) buralara gelip öldürülmezdik\" diyorlardı. (Ey Muhammed) De ki: \"Evlerinizde kalmış olsaydınız da, üzerlerine ölüm yazılmış olanlar (eceli gelenler, evlerinden) çıkar, ölüp yatacakları yerlere muhakkak giderlerdi. Allah, (bu Uhud savaşını) yüreklerinizde olanı (ihlas veya nifakı) meydana çıkarmak ve kalblerinizde olanı (vesvese ile kuşkuyu giderip) temizlemek için sizlere ibret kıldı. Allah herşeyi hakkıyle bilendir.",
+    "Osman Fırat Meali": "Sonra o üzüntünün ardından (Allâh) size bir güven, bir kısmınızı bürüyen bir uyku indirdi; bir kısmınız da kendi canlarının kaygısına düşmüştü. Allah’a karşı câhiliyye zannı gibi haksız bir zanda bulunuyorlar: \"Bu işten bize bir şey var mı?\" diyorlardı. De ki: \"Bütün iş, Allah’a aittir. \" Onlar sana açıklayamadıklarını içlerinde gizliyorlar. Diyorlar ki: \"Bu işten bize bir fayda olsaydı, burada öldürülmezdik. \" De ki: \"Evlerinizde dahi olsaydınız, yine üzerine öldürülme(si) yazılmış olanlar, mutlaka (vurulup) yatacakları yeri boylardı. Allâh göğüslerinizdeki denemek, kalblerinizdekini açığa çıkarmak için (bunları başınıza getirdi)\". Allâh göğüslerin özünü bilir.",
+    "Ömer Nasuhi Bilmen Meali": "Sonra o gamın ardından üzerinize bir emniyet, hafif bir uyku indirdi ki, sizden bir zümreyi örtüp kaplayıverdi. Sizden bir tâifeyi de nefisleri kaygıya düşürmüştü. Allah Teâlâ'ya karşı cahiliye zannı gibi hakka muhalif bir zanda bulunuyorlardı. Diyorlardı ki: «Bize bu emirden bir şey var mıdır?» De ki: «Şüphesiz emrin hepsi de Allah'ındır.» Onlar sana açıklamıyacakları şeyleri kendi nefislerinde gizleyiverirler. Derler ki: «Eğer bizim için bu emirden bir şey olsaydı burada katlolunmazdık. De ki: «Eğer sizler evlerinizde olsaydınız, üzerlerine katledilmeleri yazılmış olanlar yine çıkar, ölüp yatacakları yerlere kadar muhakkak giderlerdi.» Ve Allah Teâlâ göğüslerinizin içinde olanı meydana koymak ve kalblerinizde olanı temizlemek için (bu hadiseyi vücuda getirirdi). Ve Allah Teâlâ sinelerde bulunanları hakkıyla bilendir.",
+    "Suat Yıldırım Meali": "Sonra o kederin peşinden üzerinize bir güven duygusu indirdi. Sizden bir kısmını bürüyen tatlı bir uyku hali verdi. Bir kısmınız ise can derdine düşmüş, Allah hakkında Cahiliye devrindekine benzer, gerçek dışı şeyler düşünüyorlar: “Bu işin kararlaştırılmasında bizim yetkimiz mi var? Ne gezer! ” diye söyleniyorlardı. De ki: “Bütün yetki ve karar Allah'ındır” Onlar aslında içlerinde, sana karşı açığa vuramadıkları birş eyler saklıyor ve kendi aralarında: “Bu emir ve komuta işinde bir payımız olsaydı, şimdi burada olmaz, öldürülmezdik. ” diyorlardı. De ki: Siz evlerinizde dahi olsaydınız, haklarında ölüm takdir edilenler, mutlaka düşüp ölecekleri yerlere doğru çıkacaklardı. Allah, sizin içinizde olanı sınamak ve kalplerinizi her türlü vesvese ve kirden arındırıp pırıl pırıl yapmak içindir ki bunu başınıza getirdi. Allah sinelerin özünü dahi bilir. ",
+    "Süleyman Ateş Meali": "Sonra o üzüntünün ardından (Allah) size bir güven, bir kısmınızı bürüyen bir uyku indirdi; bir kısmınız da kendi canlarının kaygısına düşmüştü. Allah'a karşı cahiliyye zannı gibi haksız bir zanda bulunuyorlar: \"Bu işten bize bir şey var mı?\" diyorlardı. De ki: \"Bütün iş, Allah'a aittir.\" Onlar sana açıklayamadıklarını içlerinde gizliyorlar. Diyorlar ki: \"Bu işten bize bir fayda olsaydı, burada öldürülmezdik.\" De ki: \"Evlerinizde dahi olsaydınız, yine üzerine öldürülme(si) yazılmış olanlar, mutlaka (vurulup) yatacakları yeri boylardı. Allah göğüslerinizdekini denemek, kalblerinizdekini açığa çıkarmak için (bunları başınıza getirdi)\". Allah göğüslerin özünü bilir.",
+    "Süleyman Tevfik (1927)": "Sonra Allâh, üzerinize emniyet ve selâmete delâlet ider hafif bir uyuklamak indirdi ve bu da sizden bir tâifeyi istî'âb itdi. Bir tâife de (münâfıklar da) kendi nefislerinin mühimmine ve başlarının derdine düşüb Allâh Te'âlâ hakkında ehl-i câhiliyet zannı gibi lâyık olmayan zanda bulundılar. Bu işden bize bir şey var mıdır? (Bu va'd olunan nusret işinden bize nasîb var mı) dirler. Onlara söyle ki: Emrin kâffesi (nusret ve galebe, hezîmet ve mağlûbiyet) Allâh'ın elindedir. Onlar sana izhâr itmedikleri şeyi kendi nefislerinde gizlerler. (Kendi kendilerine) Eğer bu işden (nusret ve zafer-i mev'ûddan) bize bir şey (bir hisse) olsa idi burada katl olunmazdık didiler. Onlara söyle ki: Eğer evlerinizde olsa idiniz kendilerine katl olunmaları yazılmış olanlar katl olunacakları yerlere kendileri çıkarlardı. Allâh Te'âlâ'nın (sizi böyle musâb itmesi) kalbinizde gizlediğiniz şeyleri (ihlâs veyâ nifâkı) izhâr ve imtihân itmek ve kalbinizdekini (şeytân vesveselerini) izâle ile tathîr iylemek içündir. Allâh Te'âlâ kalbinizde gizli olan şeyleri bilir.",
+    "Süleymaniye Vakfı Meali": "O kederden sonra size bir güven duygusu ve bir kesimi rahatlatan tatlı bir uyku verdi. Bir kesim de kendi derdine düşmüştü. Allah hakkında, gerçek dışı kuruntulara, cahiliye kuruntusuna kapılarak \"Bu işten elimize ne geçti ki?\" diyorlardı. De ki: \"Bütün işler Allah içindir\". Sana açmadıklarını içlerinde gizliyor, \"Bu iş lehimize olsaydı burada öldürülmezdik\" diyorlardı. De ki: \"Evlerinizde bile olsaydınız, öldürülecekleri yazılanlar, düşecekleri yere kadar gelirlerdi\". Bunlar, Allah'ın içinizde olanı denemesi ve kalplerinizdeki kirleri iyice gidermesi içindir. İçinizde ne olduğunu bilen Allah’tır.",
+    "Şaban Piriş Meali": "Sonra, o kederin ardından size öyle bir güven öyle bir uyku indirdik ki O, içinizden bir grubu kapladı. Bir grup da canlarının derdine düşüp, Allah hakkında, cahiliye (dönemi) zannı ile doğru olmayan bir zanda bulunuyorlardı: -Bu işten bize ne? (Bizmi gelmek istedik) diyorlardı. De ki:-İş tamamıyla Allah'ındır. İçlerinde, sana açıklamadıkları bir şey gizliyorlar.-Bizim görüşümüz alınsaydı, burada öldürülüp gitmezdik, diyorlar. De ki:-Evlerinizde bulunsaydınız bile, öldürülecekleri takdir olunanlar yatırılacakları yere giderlerdi. Bu, Allah'ın gönüllerinizdekini denemesi ve kalplerinizdekini temizlemesi içindir... Allah, gönüllerde olanı hakkıyla bilir.",
+    "Ümit Şimşek Meali": "Bu gamdan sonra Allah size bir emniyet indirdi ve içinizden bir kısmını kaplayan bir uyku verdi. Kendi derdine düşen daha başkaları ise, Cahiliyet kafasıyla Allah hakkında gerçek dışı zanlara kapılmışlardı. Onlar “Yönetimde bizim de bir payımız olacak mı?” diyorlar. Sen, “Emir bütünüyle Allah'ındır” de. Gönüllerinde ise, sana açıklayamadıkları şeyi gizliyorlar. Diyorlar ki: “Eğer yönetimde bizim de bir payımız olsaydı, burada böyle öldürülmezdik.” De ki: Siz evinizde bile olsanız, ölümleri takdir edilmiş olanlar, evlerinden çıkıp, düşecekleri yere varacaklardı. Allah, gönüllerinizde olanı sınamak ve kalplerinizdekini temizlemek için bunları başınıza getirdi. Allah, gönüllerde saklı ne varsa hepsini bilir.",
+    "Yaşar Nuri Öztürk Meali": "Sonra bu kederin ardından üzerinize, içinizden bir grubu sarıp kuşatan, güven verici bir uyku indirdi. Bir grup da -gerçekten onlar kendi canlarının derdine düşmüştü- Allah hakkında gerçek dışı sanılara, cahiliye düşüncelerine kapılıyordu. \"Şu işten bize bir şey var mı?\" diyorlardı. De ki: \"Emir/iş ve oluş tümüyle Allah'ındır.\" Öz benliklerinde, sana açıklamaz oldukları şeyler saklıyorlar. Diyorlar ki: \"Bu işten bizim lehimize bir şey olsaydı, şuracıkta öldürülmezdik.\" Söyle onlara: \"Evlerinizde kalsaydınız bile, üzerlerine ölüm yazılmış olanlar, uzanacakları yerleri muhakkak boylayacaklardı.\" Bu, Allah, göğüslerinizdekini denesin, kalplerinizdekini ortaya çıkarsın diyedir. Allah, göğüslerin özünü çok iyi bilir.",
+    "Eski Anadolu Türkçesi": "andan, indürdį üzerüñüze ķayġurdan śoñra, iminlik, ımızganmaķ. geldi bir bölüġe sizden; daħı bir bölük ya'nį münafıķlar bayıķ ķayġulu eyledi anları gümān eylerler Tañrı’ya ḥaķdan ayruķ cāhilliķ gümāniñ eylemek. eydürler “var mıdur bizüm ya'nį yoķdur işden žafer bulmaķ?\" eyit: “bayıķ iş dükeli, Tañrı’nuñdur.” gizlerler nefsleri içinde, anı kim eşikere eylemezler saña . eydürler ya'nį peyġamber’e: “eger olmış-mıssa bizüm işden nesene depelenmeyedük uşbunda.” eyit: “eger ola-duñuz evlerüñüz içinde çıķadı anlar kim yazıldı anlaruñ üzere depelemek düşecek yirleri yaña. daħı tā śınaya Tañrı anı kim gögüzlerüñüz içindedür; daħı aru eyleye anı kim göñüllerüñüz içindedür. daħı Tañrı bilicidür gögüzler issini”",
+    "Satıraltı Meal (1534)": "Andan ṣoñra indürdi sizüñ üstüñüze ḳayġıdan ṣoñra iminlik. Uyuḳlamaḳyapdı bir ṭāyife sizden ve bir ṭāyife daḫı hemme ve ġamma düşdiler nefsle‐ri‐çün. Ẓan iderler Allāh ḥaḳḳında nā‐ḥaḳ nesneleri cāhiller ẓannı gibi. Ey‐dürler: Bizüm işde nesnemüz var mıdur, dirler. Eyit yā Muḥammed: Barça iş‐ler ve buyruḳlar Tañrı Ta‘ālānuñdur. Ṣaḳlarlar nefslerinde saña āşikāre ey‐lemegen nesneleri. Eydürler: Eger bir iş üstine olsa‐y‐dı bizi bunda öldür‐mezlerdi. Eyit yā Muḥammed: Eger olsa‐y‐duñuz evlerüñüzde düşmangelürdi, ol kişiler ki öldürmek yazılmış‐ıdı üstlerine anlar yatduġı yirlerde,ṣınamaġ‐ıçun Tañrı Ta‘ālā yüreklerinde olan nesneyi, daḫı gidermeg‐içünyüregüñüzde olan kini, Tañrı Ta‘ālā bilicidür yüreklerden geçen fikrleri.",
+    "Bunyadov-Memmedeliyev": "Bu qəm qüssədən sonra Allah sizə rahatlıq üçün xəfif bir uyğu göndərdi. O sizin bir qisminizi bürüdü. O biri qisminiz isə ancaq öz canlarının harayına qalaraq: “Bu işdə bizim üçün bir şey (xeyir) varmı?” – deyə Allaha qarşı haqsız yerə, cahiliyyətə xas olan düşüncələrə qapıldılar. (Ya Rəsulum!) Onlara de: “Əlbəttə, bütün işlər Allaha məxsusdur (Allahın əlindədir)”. Onlar (münafiqlər) sənə açıb bildirmədikləri şeyləri öz ürəklərində gizlədərək: “Əgər bu işdə bizim üçün bir şey (bir qələbə) olsaydı, elə buradaca öldürülməzdik”, - deyirlər. (Ya Rəsulum!) De: “Əgər siz evlərinizdə olsaydınız belə, alınlarına ölüm yazılmış kəslər yenə çıxıb əbədi yatacaqları (öləcəkləri) yerlərə gedərdilər ki, Allah (bununla) sizin ürəklərinizdə olanları (səmimiyyət və ikiüzlülüyü) yoxlayıb aşkara çıxartsın və qəlblərinizdə olanları (niyyətlərinizi) təmizləsin. Allah ürəklərdə olanları biləndir!”",
+    "M. Pickthall (English)": "Then, after grief, He sent clown security for you. As slumber did it overcome a party of you, while (the other) party, who were anxious on their own account, thought wrongly of Allah, the thought of ignorance. They said: Have we any part in the cause? Say (O Muhammad): The cause belongeth wholly to Allah. They hide within themselves (a thought) which they reveal not unto thee, saying: Had we had any part in the cause we should not have been slain here. Say: Even though ye had been in your houses, those appointed to be slain would have gone forth to the places where they were to lie. (All this hath been) in order that Allah might try what is in your breasts and prove what is in your hearts. Allah is Aware of what is hidden in the breasts (of men).",
+    "Yusuf Ali (English)": "After (the excitement) of the distress, He sent down calm on a band of you overcome with slumber,(465) while another band was stirred to anxiety by their own feelings, Moved by wrong suspicions of Allah.suspicions due to ignorance. They said: \"What affair is this of ours?\"(466) Say thou: \"Indeed, this affair is wholly Allah.s.\" They hide in their minds what they dare not reveal to thee. They say (to themselves): \"If we had had anything to do with this affair, We should not have been in the slaughter here.\" Say: \"Even if you had remained in your homes, those for whom death was decreed would certainly have gone forth to the place of their death\"; but (all this was)(467) that Allah might test what is in your breasts and purge what is in your hearts. For Allah knoweth well the secrets of your hearts."
+  }
+}

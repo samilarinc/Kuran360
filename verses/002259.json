@@ -1,0 +1,309 @@
+{
+  "surah_number": 2,
+  "verse_number": 259,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=2&ayet=259",
+  "arabic_text": "اَوْكَالَّذ۪يمَرَّعَلٰىقَرْيَةٍوَهِيَخَاوِيَةٌعَلٰىعُرُوشِهَاۚقَالَاَنّٰىيُحْي۪هٰذِهِاللّٰهُبَعْدَمَوْتِهَاۚفَاَمَاتَهُاللّٰهُمِائَةَعَامٍثُمَّبَعَثَهُۜقَالَكَمْلَبِثْتَۜقَالَلَبِثْتُيَوْمًااَوْبَعْضَيَوْمٍۜقَالَبَلْلَبِثْتَمِائَةَعَامٍفَانْظُرْاِلٰىطَعَامِكَوَشَرَابِكَلَمْيَتَسَنَّهْۚوَانْظُرْاِلٰىحِمَارِكَوَلِنَجْعَلَكَاٰيَةًلِلنَّاسِوَانْظُرْاِلَىالْعِظَامِكَيْفَنُنْشِزُهَاثُمَّنَكْسُوهَالَحْمًاۜفَلَمَّاتَبَيَّنَلَهُۙقَالَاَعْلَمُاَنَّاللّٰهَعَلٰىكُلِّشَيْءٍقَد۪يرٌ",
+  "transliteration": "Ev kelleżî merra ‘alâkaryetin vehiye ḣâviyetun ‘alâ ‘urûşihâkâle ennâ yuhyî hâżihi(A)llâhu ba’de mevtihâ(s)feemâtehu(A)llâhu mi-ete ‘âmin śumme be’aśeh(u)(s)kâle kem lebiśt(e)(s)kâle lebiśtu yevmen ev ba’da yevm(in)(s)kâle bel lebiśte mi-ete ‘âmin fenzur ilâta’âmike veşerâbike lem yetesenneh(s)venzur ilâhimârike velinec’aleke âyeten linnâs(i)(s)venzur ile-l’izâmi keyfe nunşizuhâ śumme neksûhâ lahmâ(en)(c)felemmâ tebeyyene lehukâle a’lemu enna(A)llâhe ‘alâ kulli şey-inkadîr(un)",
+  "word_translations": [
+    {
+      "arabic": "اَوْ",
+      "turkish": "yahut"
+    },
+    {
+      "arabic": "كَالَّذ۪ي",
+      "turkish": "şu kimse gibi ki"
+    },
+    {
+      "arabic": "مَرَّ",
+      "turkish": "uğramıştı"
+    },
+    {
+      "arabic": "قَرْيَةٍ",
+      "turkish": "bir kasabaya"
+    },
+    {
+      "arabic": "وَهِيَ",
+      "turkish": "o (kasaba)"
+    },
+    {
+      "arabic": "خَاوِيَةٌ",
+      "turkish": "(duvarları) yığılmış"
+    },
+    {
+      "arabic": "عَلٰى",
+      "turkish": "üstüne"
+    },
+    {
+      "arabic": "عُرُوشِهَاۚ",
+      "turkish": "çatıları"
+    },
+    {
+      "arabic": "قَالَ",
+      "turkish": "dedi ki"
+    },
+    {
+      "arabic": "اَنّٰى",
+      "turkish": "nasıl"
+    },
+    {
+      "arabic": "يُحْي۪",
+      "turkish": "diriltecek"
+    },
+    {
+      "arabic": "هٰذِهِ",
+      "turkish": "bunu"
+    },
+    {
+      "arabic": "اللّٰهُ",
+      "turkish": "Allah"
+    },
+    {
+      "arabic": "بَعْدَ",
+      "turkish": "sonra"
+    },
+    {
+      "arabic": "مَوْتِهَاۚ",
+      "turkish": "öldükten"
+    },
+    {
+      "arabic": "فَاَمَاتَهُ",
+      "turkish": "kendisini öldürüp"
+    },
+    {
+      "arabic": "اللّٰهُ",
+      "turkish": "Allah (da)"
+    },
+    {
+      "arabic": "مِائَةَ",
+      "turkish": "yüz"
+    },
+    {
+      "arabic": "عَامٍ",
+      "turkish": "sene"
+    },
+    {
+      "arabic": "ثُمَّ",
+      "turkish": "sonra"
+    },
+    {
+      "arabic": "بَعَثَهُۜ",
+      "turkish": "diriltti"
+    },
+    {
+      "arabic": "قَالَ",
+      "turkish": "dedi"
+    },
+    {
+      "arabic": "كَمْ",
+      "turkish": "ne kadar"
+    },
+    {
+      "arabic": "لَبِثْتَۜ",
+      "turkish": "kaldın"
+    },
+    {
+      "arabic": "قَالَ",
+      "turkish": "dedi"
+    },
+    {
+      "arabic": "لَبِثْتُ",
+      "turkish": "kaldım"
+    },
+    {
+      "arabic": "يَوْمًا",
+      "turkish": "bir gün"
+    },
+    {
+      "arabic": "اَوْ",
+      "turkish": "ya da"
+    },
+    {
+      "arabic": "بَعْضَ",
+      "turkish": "birazı (kadar)"
+    },
+    {
+      "arabic": "يَوْمٍۜ",
+      "turkish": "bir günün"
+    },
+    {
+      "arabic": "قَالَ",
+      "turkish": "(Allah) dedi"
+    },
+    {
+      "arabic": "بَلْ",
+      "turkish": "bilakis"
+    },
+    {
+      "arabic": "لَبِثْتَ",
+      "turkish": "kaldın"
+    },
+    {
+      "arabic": "مِائَةَ",
+      "turkish": "yüz"
+    },
+    {
+      "arabic": "عَامٍ",
+      "turkish": "yıl"
+    },
+    {
+      "arabic": "فَانْظُرْ",
+      "turkish": "bak"
+    },
+    {
+      "arabic": "طَعَامِكَ",
+      "turkish": "yiyeceğine"
+    },
+    {
+      "arabic": "وَشَرَابِكَ",
+      "turkish": "ve içeceğine"
+    },
+    {
+      "arabic": "يَتَسَنَّهْۚ",
+      "turkish": "bozulmamış"
+    },
+    {
+      "arabic": "وَانْظُرْ",
+      "turkish": "ve bak"
+    },
+    {
+      "arabic": "حِمَارِكَ",
+      "turkish": "eşeğine"
+    },
+    {
+      "arabic": "وَلِنَجْعَلَكَ",
+      "turkish": "seni kılalım diye"
+    },
+    {
+      "arabic": "اٰيَةً",
+      "turkish": "bir ibret"
+    },
+    {
+      "arabic": "لِلنَّاسِ",
+      "turkish": "insanlar için"
+    },
+    {
+      "arabic": "وَانْظُرْ",
+      "turkish": "ve bak"
+    },
+    {
+      "arabic": "الْعِظَامِ",
+      "turkish": "kemiklere"
+    },
+    {
+      "arabic": "كَيْفَ",
+      "turkish": "nasıl"
+    },
+    {
+      "arabic": "نُنْشِزُهَا",
+      "turkish": "onları birbiri üstüne koyuyor"
+    },
+    {
+      "arabic": "ثُمَّ",
+      "turkish": "sonra"
+    },
+    {
+      "arabic": "نَكْسُوهَا",
+      "turkish": "onlara giydiriyoruz"
+    },
+    {
+      "arabic": "لَحْمًاۜ",
+      "turkish": "et"
+    },
+    {
+      "arabic": "فَلَمَّا",
+      "turkish": "bu işler"
+    },
+    {
+      "arabic": "تَبَيَّنَ",
+      "turkish": "açıkça belli olunca"
+    },
+    {
+      "arabic": "لَهُۙ",
+      "turkish": "ona"
+    },
+    {
+      "arabic": "قَالَ",
+      "turkish": "dedi ki"
+    },
+    {
+      "arabic": "اَعْلَمُ",
+      "turkish": "biliyorum ki"
+    },
+    {
+      "arabic": "اَنَّ",
+      "turkish": "şüphesiz"
+    },
+    {
+      "arabic": "اللّٰهَ",
+      "turkish": "Allah"
+    },
+    {
+      "arabic": "كُلِّ",
+      "turkish": "her"
+    },
+    {
+      "arabic": "شَيْءٍ",
+      "turkish": "şeye"
+    },
+    {
+      "arabic": "قَد۪يرٌ",
+      "turkish": "kadirdir"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Bir de hani yapıları çökmüş, çatıları döşemelerinin üstüne yıkılmış şehre uğrayan, Allah bu şehri, ölümünden sonra nasıl diriltecek ki demişti. Allah, onu tam yüz yıl ölü bir halde bırakmış, sonra diriltmişti de demişti ki: Ne kadar yattın? O da bir gün, yahut günün birkaç saati kadar bir müddet demişti. Allah, tam yüz yıl yata kaldın. Yiyeceğine, içeceğine bak, henüz bozulmamış bile. Eşeğine de bak; bu iş seni, insanlara bir delil göstermek maksadıyla oldu; eşeğin kemiklerini nasıl birleştiriyor, sonra onlara nasıl et giydiriyoruz, hele dikkat et demişti. Bu, ona apaçık belli olunca dedi ki: Bilirim, şüphe yok ki Allah'ın her şeye gücü yeter.",
+    "Abdullah-Ahmet Akgül Meali": "Ya da altı üstüne gelmiş, ıssız duran bir şehre uğrayan kişiyi(Hz. Uzeyr’i görmedin mi?)Demişti ki: “Allah, burasını ölümünden sonra(acaba)nasıl diriltecektir?” Bunun üzerine Allah, onu yüz yıl ölü bıraktı, sonra onu(tekrar)diriltti.(Ve ona)Dedi ki: “Ne kadar kaldın?” O: “Bir gün veya bir günden az kaldım” dedi.(Allah ona:)“Hayır, yüz yıl kaldın, böyleyken yiyeceğine ve içeceğine bak, henüz bozulmamış; eşeğine de bir bak(ki çürüyen iskeletini göreceksin); işte(bunu yapmamız)seni insanlara ibret-belgesi kılmamız içindir. Şu kemiklere de bir bak; onları nasıl bir araya getiriyoruz, sonra da onlara et giydiriyoruz?” dedi. O, kendisine(bunlar)apaçık belli olduktan sonra dedi ki: “(Artık şimdi iyice)Biliyorum ki gerçekten Allah, şüphesiz her şeye güç yetirendir.”",
+    "Abdullah Parlıyan Meali": "Yoksa ey insanoğlu! Sen halkının terkettiği, çatıları yıkılıp harap olmuş bir memleketten geçen ve: “Allah bütün bunları öldükten sonra nasıl diriltecektir” diyen kimseye mi benziyorsun? Bunun üzerine Allah o kimseyi yüzyıl süre ile ölü halde bırakmış ve sonra tekrar hayata döndürerek sormuştu: “Bu halde ne kadar kaldın?” O da: “Bu halde bir gün veya bir günün birazı kadar kaldım” diye cevap vermişti de Allah: “Hayır” dedi, “Bu halde bir yüzyıl kaldın! Yiyeceğine ve içeceğine bak, geçen yıllar onları bozmamış ve eşeğine bak, biz bütün bunları insanlara bir ibret olması için yaptık. Bir de şu kemiklere bak, onları nasıl birleştirip yeniden etle bürüdüğümüzü düşün.” Yaratılışın bu sırları kendisine apaçık belli olunca o kimse demişti ki: “Allah'ın herşeye gücü yettiğini şimdi daha iyi biliyorum.”",
+    "Ahmet Tekin Meali": "Yoksa sen, altı üstüne gelmiş, ıpıssız kalan bir şehre uğrayan kimsenin gördükleri karşısında:“Bu şehri, böyle bir ölümden sonra Allah nasıl diriltecek?\" diyen kimse gibi mi düşünüyorsun?Suali soran kimseyi Allah yüz sene ölü halde bulundurdu. Sonra onu diriltti. Ona:“Burada ne kadar kaldın?\" diye sordu. O:“Bir gün kaldım veya bir günden biraz daha eksik bir süre\" dedi. Allah:“Hayır, yüz sene kaldın. Öyle iken yiyeceğine, içeceğine dikkatlice bir bak, henüz bozulmamış. Hele eşeğine bak. Seni insanlara bir ibret haline getirelim, bir uyarı yapalım diye böyle yaptık. Şimdi sen bütün dikkatini toplayarak kemiklere bak, incele, onları nasıl düzenliyor, sonra kemiklerde tomurcuklanma oluşturup uzatarak, yoğunlaştırarak, kaynaştırıp kemikten iskeleti etle kasla örtüyoruz.\" dedi. Ölüleri diriltme konusu, böylece kendisine açıklanınca:“Şimdi, Allah'ın her şeye gücünün, kudretinin yettiğini bilir hale geldim\" dedi.",
+    "Ahmet Varol Meali": "Yahut binalarının çatıları çökmüş ve duvarları üstüne yıkılmış bir kasabadan geçen gibisinden haberin oldu mu? Bu kişi: \"Allah bunu ölümünden sonra nasıl diriltecek?\" demişti. Bunun üzerine Allah onu öldürüp yüz yıl sonra diriltti. \"Burada ne kadar kaldın?\" dedi. O kişi: \"Bir gün veya bir günden daha kısa bir süre kaldım\" cevabını verdi. (Allah da): \"Hayır sen burada yüz yıl kaldın. Yiyecek ve içeceğine bak, hiç bozulmamış. Bir de eşeğine bak. Seni insanlar için bir ibret kılalım diye (bunu yaptık). Şimdi kemiklere bak onları nasıl biraraya getiriyor, sonra da üzerlerine et geçiriyoruz\" dedi. Bütün bunlar kendisine apaçık görününce \"(Artık) Allah'ın her şeye güç yetirebildiğini biliyorum\" dedi.",
+    "Ali Bulaç Meali": "Ya da altı üstüne gelmiş, ıssız duran bir şehre uğrayan gibisini (görmedin mi?) Demişti ki: 'Allah, burasını ölümünden sonra nasıl diriltecekmiş?' Bunun üzerine Allah, onu yüz yıl ölü bıraktı, sonra onu diriltti. (Ve ona) Dedi ki: 'Ne kadar kaldın?' O: 'Bir gün veya bir günden az kaldım' dedi. (Allah ona:) 'Hayır, yüz yıl kaldın, böyleyken yiyeceğine ve içeceğine bak, henüz bozulmamış; eşeğine de bir bak; (bunu yapmamız) seni insanlara ibret-belgesi kılmamız içindir. Kemiklere de bir bak nasıl bir araya getiriyoruz, sonra da onlara et giydiriyoruz?' dedi. O, kendisine (bunlar) apaçık belli olduktan sonra dedi ki: '(Artık şimdi) Biliyorum ki gerçekten Allah, her şeye güç yetirendir.'",
+    "Ali Fikri Yavuz Meali": "Yahud o kimseden haber almadın mı ki, binaların çatıları çökmüş, duvarları üstüne yığılmış tenha bir kasabaya uğrayarak şöyle demişti; “Bunu, bu ölümden sonra Allah nerden diriltecek?” bunun üzerine Allah o kimseyi yüz sene öldürdü (ölü bıraktı) sonra diriltti. Allah (kendisine melek vasıtasıyla); “- Ne kadar eğlendin kaldın?” diye sordu. O da;”- Bir gün yahud bir günden az kaldım” dedi. Allah ona; “- Hayır, yüz yıl ölü kaldın. Öyle iken bak yiyeceğine içeceğine henüz bozulmamış; hele merkebine bak! (nasıl çürümüş ve kemikleri kalmıştır.) Bunu yapmamız, seni insanlara ibret nişanesi kılmamız için ve kendin de bilesin diyedir. Merkebinin kemiklerine bak ki, onları nasıl birleştirip yerli yerine koyuyoruz; sonra onlara nasıl et giydiriyoruz” buyurdu. O merkep dirilip eski haline geldiği ve her şey kendisine açıkça belli olduğu zaman, adam şöyle dedi: “- Artık biliyorum ki, Allah hakikaten her şey'e kadirdir.”",
+    "Bahaeddin Sağlam Meali": "Veya görmedin mi o kişiyi ki; damları çökmüş boş bir şehirden geçerken: “Ölümünden sonra Allah, bu şehri ne zaman diriltecektir?” dedi. Allah onu yüz sene ölü bıraktı. Sonra onu diriltti. Ona: “Ne kadar kaldın?” deyince: “Bir gün veya yarım gün” dedi. Allah: “Hayır, yüz sene kaldın. Yiyecek ve içeceğine bak! Henüz bozulmamışlar. Eşeğine bak! (henüz diridir.) Böyle yaptık ki, ibret alasın ve seni insanlar için bir mucize kılalım. İşte, kemiklere bak! Nasıl onları iskelet yapar, sonra onlara et giydiririz… (Bu yaradılışın sırrı) ona açıklanınca; “Allah’ın her şeye gücü yettiğini şimdi biliyorum” dedi.",
+    "Bayraktar Bayraklı Meali": "Yoksa ey insanoğlu, halkının terk ettiği, çatıları yıkılıp harap olmuş bir kasabadan geçen ve “Allah bütün bunları öldükten sonra nasıl diriltebilir?” diyen o kişi ile aynı fikirde misin? Bunun üzerine Allah, onu yüz yıl süre ile ölü bırakmış ve sonra tekrar hayata döndürerek sormuştu: “Bu halde ne kadar kaldın?” O da, “Bir gün veya bir günden biraz daha az bir süre kaldım” diye cevap vermişti. Allah, “Hayır” dedi. “Bu halde bir asır kaldın! Yiyeceğine ve içeceğine bak; geçen yıllar onları bozmamış ve eşeğine bak; biz bütün bunları insanlara bir ders olasın diye yaptık. Bir de şu insanların ve hayvanların kemiklerine bak. Onları nasıl birleştirip et ile örttüğümüzü düşün!” Bütün bunlar ona açıklanınca, “Şimdi öğrendim ki Allah her şeye kâdirdir” dedi.",
+    "Besim Atalay Meali (1965)": "«Ya da görmedin mi sen, çatıları yıkılmış bir kente uğrayanı? Bu kent öldükten sonra, Allah nice diriltir?» demiş idi o, Allah onu öldürdü, yüz yıl öylece durdu, sonra onu diriltti, dedi ki: «Ne kadar kaldın?», «Bir gün, ya da yarım gün kaldım» dedi, Tanrı buyurdu ki: «Yok, yüz yıl kaldın sen, yeygine bak, içeceğe bak bozulmamıştır, bir de bak eşeğine, onunçün insanlara belge kıldık seni, bak kemiklere, bunları nice biz bir yere getirerek dereriz, sonra etle bezeriz!...», bunları görünce dedi ki : «Ben iyi biliyorum Allah herşeye kaadir»",
+    "Cemal Külünkoğlu Meali": "Yahut altı üstüne gelmiş bir kasabaya uğrayan kimseyi (Hz. Üzeyr'i duymadın mı? Kendi kendine): “Allah burayı ölümünden sonra (acaba) nasıl diriltecek?” demişti. Bunun üzerine Allah onu yüz yıl ölü moduna sokmuş, sonra da hayata döndürmüştü. (Melek vasıtasıyla kendisine): “Bu halde ne kadar kaldın?” diye sormuştu. O da: “Bu halde bir gün veya bir günden biraz daha az kaldım.” diye cevap vermişti. (Allah): “Hayır, (bu halde) yüzyıl kaldın! İşte yiyeceğine ve içeceğine bak henüz bozulmamış. Bir de merkebine bak (kemikleri nasıl birbirinden ayrılmış). Senin bu durumunu da insanlara delil yaptık. Hele o kemiklere dikkat et, onları nasıl birleştirip yerli yerine koyuyoruz, sonra da onlara nasıl et giydiriyoruz!” demişti. Bütün bunları apaçık gördükten sonra: “Allah'ın her şeye kadir olduğunu artık çok iyi biliyorum.” demişti.",
+    "Cemil Said (1924)": "Yâhud o seyyâhdan bahs idildiğini işitmedin mi ki külliyen harâb idilmiş bir karyenin yanından geçerken \"Allâh bu ölmüş şehri nasıl diriltecek\" diyü bağırmışdı. Allâh ânı öldürdi ve öylece yüz sene kaldı. Sonra diriltdi. Âna \"Burada ne kadar zamân kaldın\" diyü sordı. Seyyâh \"Bir gün yâhud bir kaç sa’at\" didi. Allâh \"Hayır burada yüz sene kaldın\" didi. Allâh \"Yemeğine ve meşrû’batına bak bozulmamış, sonra bir de eşeğine bak. Biz seninle insânlara bir ’alâmet (mu’cize) göstermek istedik. Bak biz kemikleri nasıl diriltüb üstlerini etle kaplayorız\" buyurdı. Seyyâh \"Allâh’ın her şeye kâdir oldığını bildim\" didi.",
+    "Diyanet İşleri Meali (Eski)": "Yahut altı üstüne gelmiş bir kasabaya uğrayan kimseyi görmedin mi? \"Allah burayı ölümünden sonra acaba nasıl diriltecek?\" dedi. Bunun üzerine Allah onu yüz yıl ölü bıraktı, sonra diriltti, \"Ne kadar kaldın?\" dedi, \"Bir gün veya bir günden az kaldım\" dedi, \"Hayır yüz yıl kaldın, yiyeceğine içeceğine bak, bozulmamış; eşeğine bak ve hem seni insanlar için bir ibret kılacağız, kemiklere bak, onları nasıl birleştirip, sonra onlara et giydiriyoruz\" dedi; bu ona apaçık belli olunca, \"Artık Allah'ın her şeye Kadir olduğuna inanmış bulunuyorum\" dedi.",
+    "Diyanet İşleri Meali (Yeni)": "Yahut altı üstüne gelmiş (ıpıssız duran) bir şehre uğrayan kimseyi görmedin mi? O, “Allah, burayı ölümünden sonra nasıl diriltecek (acaba)?” demişti. Bunun üzerine, Allah onu öldürüp yüzyıl ölü bıraktı, sonra diriltti ve ona sordu: “Ne kadar (ölü) kaldın?” O, “Bir gün veya bir günden daha az kaldım” diye cevap verdi. Allah, şöyle dedi: “Hayır, yüz sene kaldın. Böyle iken yiyeceğine ve içeceğine bak, henüz bozulmamış. Bir de eşeğine bak! (Böyle yapmamız) seni insanlara ibret belgesi kılmamız içindir. (Eşeğin) kemikler(in)e de bak, nasıl onları bir araya getiriyor, sonra onlara nasıl et giydiriyoruz?” Kendisine bütün bunlar apaçık belli olunca, şöyle dedi: “Şimdi, biliyorum ki; şüphesiz Allah’ın gücü her şeye hakkıyla yeter.”",
+    "Kur'an Yolu (Diyanet İşleri)": "Yahut evlerinin çatıları çöküp üzerine duvarları yıkılarak harap olmuş, ıssız bir kasabaya uğrayan kimsenin durumu gibi. Bu kişinin, “Allah, bütün bunları öldükten sonra nasıl diriltecek?” demesi üzerine Allah onu yüzyıl ölü olarak tuttu, sonra diriltti. “Ne kadar kaldın” diye sordu. “Bir gün veya günün bir kısmı kadar kaldım” dedi. Allah “Hayır, yüzyıl kaldın. Anlamak için yiyeceğine içeceğine bak, henüz değişmemiş; eşeğine bak, -seni insanlara bir işaret kılmamız için- ve kemiklere bak, onları nasıl düzeltiyor ve üzerini etle kaplıyoruz” buyurdu. Artık o adam için durum açıkça ortaya çıkınca, “Biliyorum ki Allah kesinlikle her şeye kadirdir” dedi.",
+    "Diyanet Vakfı Meali": "Yahut görmedin mi o kimseyi ki, evlerinin duvarları çatıları üzerine çökmüş (alt üst olmuş) bir kasabaya uğradı; «Ölümünden sonra Allah bunları nasıl diriltir acaba!» dedi. Bunun üzerine Allah onu öldürüp yüz sene bıraktı; sonra tekrar diriltti. Ne kadar kaldın? dedi. «Bir gün yahut daha az» dedi. Allah ona: Hayır, yüz sene kaldın. Yiyeceğine ve içeceğine bak, henüz bozulmamıştır. Eşeğine de bak. Seni insanlara bir ibret kılalım diye (yüz sene ölü tuttuk, sonra tekrar dirilttik). Şimdi sen kemiklere bak, onları nasıl düzenliyor, sonra ona nasıl et giydiriyoruz, dedi. Durum kendisince anlaşılınca: Şimdi iyice biliyorum ki, Allah her şeye kadirdir, dedi.",
+    "Edip Yüksel Meali": "Yahut şu kimse gibisi de (dikkatini çekmedi mi?)... Altı üstüne gelmiş yıkıntı bir kasabaya uğrar ve \"ALLAH bunu ölümünden sonra nasıl diriltebilir,\" der. Bunun üzerine ALLAH onu yüz sene ölü bıraktıktan sonra diriltti. \"Burada ne kadar kaldın,\" dedi. \"Bir gün yahut günün bir parçası kadar kaldım,\" dedi. \"Hayır, sen yüz yıl kaldın. Yiyeceğine ve içeceğine bak hala bozulmamış. Eşeğine de bak. Seni halk için bir delil yaptık. Kemiklere dikkat et, onları nasıl üstüste koyuyor, sonra onlara nasıl da et giydiriyoruz.\" Durum kendisine aydınlanınca, \"Artık ALLAH'ın her şeye gücü yettiğini biliyorum,\" dedi.",
+    "Elmalılı Hamdi Yazır Meali": "Yahut o kimse gibisini (görmedin mi) ki, bir şehre uğramıştı, altı üstüne gelmiş, ıpıssız yatıyordu. \"Bunu bu ölümünden sonra Allah, nerden diriltecek?\" dedi. Bunun üzerine Allah onu yüz sene öldürdü, sonra diriltti, \"Ne kadar kaldın?\" diye sordu. Oda: \"Bir gün, yahut bir günden eksik kaldım.\" dedi. Allah buyurdu ki: \"Hayır, yüz sene kaldın, öyle iken bak yiyeceğine, içeceğine henüz bozulmamış, hele eşeğine bak, hem bunlar, seni insanlara karşı kudretimizin bir işareti kılalım diyedir. Hele o kemiklere bak, onları nasıl birbirinin üzerine kaldırıyoruz? Sonra onlara nasıl et giydiriyoruz?\" Böylece gerçek ona açıkça belli olunca: \"Şimdi biliyorum ki, Allah her şeye kadirdir.\" dedi.",
+    "Elmalılı Meali (Orijinal)": "Yahud o kimse gibi ki bir şehre uğramıştı, altı üstüne gelmiş ıpıssız yatıyor, «Bunu bu ölümünden sonra Allah nerden diriltecek?» dedi, bunun üzerine Allah onu yüz sene öldürdü sonra diriltti, ne kadar kaldın? diye sordu «bir gün yahud bir günden eksik kaldım» dedi, Allah buyurdu ki: Hayır, yüz sene kaldın, öyle iken bak yiyeceğine, içeceğine henüz bozulmamış, hele merkebine bak, hem bunlar, seni insanlara karşı kudretimizin canlı bir âyeti kılayım diyedir, hele o kemiklere bak onları nasıl birbirinin üzerine kaldırıyoruz? Sonra onlara nasıl et geydiriyoruz? Bu suretle vaktaki ona hak tebeyyün etti, şimdi biliyorum, dedi: Hakikaten Allah her şey'e kadir",
+    "Emrah Demiryent Meali": "Yahut (binalarının) çatıları çökmüş ve duvarları üstüne yıkılmış (harabeye dönmüş, ıssız) bir kasabaya uğrayan kimseyi (görmedin mi? O kimse, harap olmuş kasabanın bu hazin hali karşısında, tefekkür ederek, kendi kendine:) “Allah, burayı ölümünden sonra (acaba) nasıl ihyâ edecek?” demişti. (Bunun üzerine) Allah, onu yüz yıl ölü olarak bıraktı, sonra onu dirilterek, “(Burada/bu hal üzere) ne kadar kaldın” buyurdu. O da, “Bir gün yahut bir günün bir kısmı (kadar)” dedi. (Allah buyurdu ki:) “Hayır, yüz yıl kaldın. Yiyeceğine ve içeceğine bak! (Kudretimizle, yüz yıl sonra bile hâlâ taptazeler ve) hiç bozulmamışlar. Ve bir de merkebine bak (çürümüş ve kemikleri dağılmış bir halde)! (Öldürdükten sonra tekrar diriltmeye kadir olduğumuza dair) seni, insanlara bir ibret (vesilesi) kılmak için (yüz yıl ölü olarak bırakıp, sonra tekrar dirilttik. Şimdi sen, diriltilme hadisesinin nasıl olduğunu apaçık bir şekilde görmek için, şu çürümüş olan merkebinin) kemikler (in) e bak, onları (kudretimizle) nasıl birleştirip yerli yerine koyuyoruz, sonra da onlara nasıl et giydiriyoruz.” (Ve o anda merkep kudretimizle dirilip eski haline geldi.) Bütün bunlar kendisine apaçık belli olunca o şöyle dedi: “(Diriltilme hadisesini ayan beyan bir şekilde görmekle, şimdi daha da mutmain olmuş bir şekilde) biliyorum ki, şüphesiz Allah, her şeye kâdirdir!”",
+    "Erhan Aktaş Meali": "Veya temelleri üzerine yıkılıp, harap olmuş beldeye uğrayan kimse gibi: “Ölümünden sonra Allah bunu nasıl diriltecek? Demişti. Bunun üzerine Allah, onu öldürüp yüz yıl ölü bıraktıktan sonra diriltti. Ona: “Ne kadar süre ölü kaldın?” dendi. O da: “Bir gün veya bir günden daha az.” dedi. Allah, “Hayır yüz yıl kaldın.” dedi. Buna rağmen yiyeceğine ve içeceğine bak, henüz bozulmamış. Ve eşeğine de bak. Bu, insanlara âyet¹ olman içindir. Şu kemiklere bir bak, onları nasıl düzenleyip sonra et giydiriyoruz.” Ona bu detaylı açıklama yapıldıktan sonra: “Artık anladım ki, kuşkusuz Allah, Her Şeye Güç Yetiren'dir.” dedi.",
+    "Hasan Basri Çantay Meali": "Yahud o kimse gibisini (görmedin mi) ki (binalarının) çatıları çökmüş, dıvarları üstüne yıkılmış (kimsecikleri de kalmamış bir kasabaya uğramış. (Kendi kendine) : «Allah burasını ölümden sonra acaba nasıl diriltecek?» demiş. Allah da onu yüz yıl ölü bırakmış, sonra diriltmiş (kendisine) : «Ne kadar eğlendin?» demiş o da: «Bir gün, yahud bir günden az» diye söylemişdi. Allah (ona) : «Hayır, yüz yıl (ölü) kaldın, işte yiyeceğine, içeceğine bak, henüz bozulmamışdır. Bir de merkebine bak. (Böyle yapmamız) seni insanlara ibret nişanesi kılmamız içindir. (Merkebin) kemikler (ine) de bak, onları nasıl birleşdirib yerli yerine koyuyoruz. Sonra da onlara et giydiriyoruz» dedi. O — (merkeb dirilib eski haaline geldiği ve her şey) kendisine apaçık belli olduğu zaman — (şöyle) söyledi: «(Artık şu müşahedemle de) biliyorum ki Allah şübhesiz her şey'e hakkıyle gücüyetendir».",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "Veya tavanları çöküp harap olmuş, ıssız duran bir şehre uğrayan ve: “Allah buraya ölümünden sonra nasıl hayat verecekmiş?” diyen kimseye bir baksana! Bu sözü üzerine Allah onu yüz yıl ölü halde bıraktı, sonra diriltti. Ona: “Ne kadar kaldın?” dedi. O da: “Bir gün veya bir günden az kaldım.” dedi. Allah: “Hayır, yüz yıl kaldın. Yiyeceğine ve içeceğine bak, henüz bozulmamış; eşeğine de bir bak, bunu yapmamız seni insanlara ayet kılmamız içindir. Kemiklere de bir bak, nasıl bir araya getiriyoruz, sonra da onlara et giydiriyoruz.” O, kendisine bunlar apaçık belli olduktan sonra: “Artık anladım ki Allah her şeye güç yetirendir.” dedi.",
+    "Hayrat Neşriyat Meali": "Veya (görmedin mi) o kimse gibisini (Uzeyr'i) ki, o (duvarları), çatıları üzerine çökmüş (harâb olmuş) bir şehre uğradı. “Allah, burayı ölümünden sonra nasıl diriltecek?” dedi. Bunun üzerine Allah, onu yüz yıl ölü bıraktı, sonra kendisini diriltti. (Ona) buyurdu ki: “Ne kadar kaldın?” (O da:) “Bir gün veya günün bir kısmı kadar kaldım!” dedi. (Allah ona)şöyle buyurdu: “Hayır! Yüz yıl kaldın; şimdi yiyeceğine ve içeceğine bak, bozulmamış! Bir de eşeğine bak (kemikleri dahi çürümüş)! İşte (bunlar) seni insanlara (öldükten sonra dirilmeye)bir delil kılmamız içindir; kemiklere de bak, onları nasıl birbiri üzerine kaldırıyoruz! Sonra da onlara bir et giydiriyoruz.” (Uzeyr, onun diriltilişini müşâhede ederek Allah'ın kudreti)böylece kendisine açıkça belli olunca şöyle dedi: “(Artık) biliyorum ki şübhesiz Allah, herşeye hakkıyla gücü yetendir.”",
+    "İhsan Aktaş Meali": "Yahut binalarının çatıları çökmüş ve duvarları üstüne yıkılmış bir kasabadan geçen gibisinden (haberin olmadı mı)? Bu kişi: (kendi kendine,) «Allah burayı (tamamen harabeye dönmüş bu kasabayı) ölümünden (harap oluşundan) sonra acaba ne zaman (imar edip tekrar) canlandıracak?» demişti. Bunun üzerine Allah o kimseyi yüzyıl ölü (gibi uyutmuş bir hâlde) bırakmış ve sonra tekrar hayata döndürerek (uyandırarak kendisine melek vasıtasıyla) sormuştu:’’ Bu hâlde ne kadar kaldın?” O da:“Bu hâlde bir gün veya bir günün birazı kadar kaldım”diye cevap vermişti de (yine melek vasıtasıyla) Allah:“tam tersi “Bu hâlde yüzyıl kaldın!’’ dedi. (Hem de bak, bu süre içinde kasabayı da nasıl imar edip canlandırmışız!) Ayrıca yiyeceğine ve içeceğine de bak (buna rağmen) henüz bozulmamış. Bir de merkebine bak. Seni de (senin dönemindeki) insanlara (İsrailoğullarına) canlı bir delil yapmak için böyle yaptık. Bir de (her an yaratmakta olduğumuz canlılara ait) kemiklere bak, onları nasıl yerli yerince birleştirip yeniden etle bürüdüğümüzü düşün.” Ona (bu gerçek) iyice aşikâr olunca, o kimse demişti ki:“ Allah’ın her şeye gücü yettiğini şimdi daha iyi biliyorum.*",
+    "İlyas Yorulmaz Meali": "Veya! Altı üstüne gelip harabeye dönmüş bir kasabaya yolu düşen birisi, oradan geçerken “Allah, bu kadar harap olmuş (ölü) bir yeri nasıl diriltecek” dedi. Allah onu yüz yıl ölü tuttu sonra onu diriltti ve “Ne kadar kaldın” dedi. O da “Bir gün veya bir günden daha az kaldım” dedi. Allah “Hayır, yüzyıl kaldın, bak yiyeceğine ve içeceğine bozulmamış. Birde eşeğine bak, seni insanlar için ibret yapacağız. Bak kemiklere, onları nasıl bir araya getirip, sonra o kemiklere nasıl et giydireceğiz” dedi. O’na (tereddütleri) açıklanınca, şimdi “Allah’ın her şeye gücünün yettiğini öğrendim” dedi.",
+    "İsmayıl Hakkı Baltacıoğlu": "Yine onun gibi bir kimse de çatıları çöküp duvarları üzerine yıkılmış bir kentten geçti de: « Allah bu kenti öldükten sonra nasıl diriltecek?» dedi. Bunun üzerine Allah o kimseyi yüz yıl ölü bıraktı. Sonra da diriltip ona sordu: « Ne kadar ölü kaldın?» O kimse dedi: « Bir gün, belki bir günden de az.» Allah dedi: « Yok, tam yüz yıl ölü kaldın. Yiyeceğine, içeceğine baksana, bozulmamışlar bile. Bir de şu eşeğine bak. Biz seni insanlara belge yapmak istedik de onun için böyle yaptık. Bir de şu kemiklere bak. Biz onları nasıl bir araya getiriyoruz, sonra onları etlerle donatıyoruz.» Bütün bunlar belirdikten sonra o kimse dedi: « Ben artık iyice anladım ki Allah’ın gücü her nesneye yeticidir.»",
+    "İsmail Hakkı İzmirli": "Yahut o kimseyi görmedin mi ki çatıları çökmüş, duvarları yıkılmış bir kasabaya uğrayarak «Allah bunu öldürdükten sonra nasıl diriltir ?» demişdi. Allah onu yüz sene öldürdükten sonra diriltti. Ona «ne kadar eğlendin? dedi. O da «bir gün veya birkaç saat eğlendim» dedi. «Hayır» yüz sene eğlendin» yiyeceğine, içeceğine bak ki bu uzun müddet esnasında hiç bozulmamıştır» bir de merkebine bak. Seni insanlara bir nişane-i ibret kılacağız. Hele kemiklere bak ki onları nasıl yerli yerine koyuyoruz «Onlara nasıl et giydiriyoruz!» dedi. Vaktaki bu hal ona belli oldu, «artık bilirim ki Allah her şeye kemaliyle kaadirdir» dedi.",
+    "İsmail Yakıt": "Yine sen, çatıları çökmüş ve duvarları yıkılmış (harap ve ıssız) bir beldeye uğrayan ve “Böylesine harap olmuş şu beldeye Allah nasıl hayat verir ki?” diyeni görmedin mi? Bunun üzerine Allah onu öldürdü ve yüz yıl sonra da hayata döndürdü. Ona, “Ölü olarak ne kadar kaldın?” diye sordu. O da, “Bir gün ya da daha az” dedi. Allah, “Bilakis! Yüz yıl kaldın. Yiyeceğin ve içeceğine bak (hâlâ) bozulmamışlar. Merkebine de bak… İşte biz seni insanlara ibret olsun diye böyle yaptık.¹⁷⁰ Kemiklere de bir bak! Biz onları yerli yerince diziyor sonra da et giydiriyoruz” deyince o (gerçeği anladı ve): “Muhakkak ki Allah’ın her şeye gücünün yettiğini biliyorum” dedi.",
+    "Kadri Çelik Meali": "Yahut sakinlerinin boşalttığı evlerin bulunduğu kasabaya uğrayan kimseyi (görmedin mi?) “Allah burayı ölümünden sonra acaba nasıl diriltecek?” dedi. Bunun üzerine Allah onu yüz yıl ölü bıraktı, sonra diriltti, “Ne kadar kaldın?” dedi. “Bir gün veya bir günün bir kısmı kadar kaldım” dedi. “Hayır yüz yıl kaldın. Yiyeceğine içeceğine bak, bozulmamış; eşeğine bir bak ve hem seni insanlar için bir örnek kılacağız. Kemiklere bir bak, onları nasıl birleştirip sonra onlara et giydiriyoruz” dedi. Bu ona apaçık belli olunca, “Artık Allah'ın her şeye kadir olduğunu biliyorum” dedi.",
+    "Mahmut Kısa Meali": "Yâhuthakîkate ulaşmak için çaba harcayan, doğruyu görünce de, inatçılık etmeden ona teslim olanşu kimsenin misalineibretle bir bak, bir düşünsene: Hanio,altı üstüne gelmiş, ıssız mı ıssız bir şehrin yanından geçerkenkendi kendine:“Bütün bunlar ölüp gitmişken, Allah hepsini yenidenne zaman, nasıl diriltecek acaba?” deyince, Allah onu derhâl öldürdü ve yüz yıl sonra yeniden dirilterek:“Söyle bakalım, sence ölü vaziyettekaç yıl kaldın?” diye sordu. Adam:“Olsa olsabir gün, ya da birkaç saat kalmışımdır!” deyince, Allah buyurdu ki:“Hayır, aslında yüz yıl kaldın. Yiyeceğine ve içeceğine baksana, daha bozulmamışlar bile. Bir deşu etleri çürümüş, kemikleri dağılmışeşeğine bak!İşte bütün bunları,seni, insanlığa,sınırsız kudretimizi gösterenbir ibret belgesikılmak içinyaptık.Şimdi oçürümüşkemiklere bir bak; nasıl onları üst üste yerleştiriyor, sonra da üzerlerine et giydiriyoruz!”Nihâyet,ölüm ötesi hayat ile ilgili hakîkatona iyice belli olunca:“Artık kesinlikle anladım ki, Allah’ın her şeye gücü yetermiş!” dedi.Demek ki Allah sizden körü körüne iman etmenizi değil, aksine vahyin ışığında aklınızı kullanarak ve tüm kalbinizle iknâ olarak inanmanızı istiyor. Bakınız, imanın sembolü olan atanız İbrahim, size nasıl yol gösteriyor:",
+    "Mahmut Özdemir Meali": "Yahut çatıları çökmüş, üstüne duvarları yıkılmakta olan viran bir şehire uğramış kimse gibidir.“Allah buranın ölümünden sonra bunu nereden diriltecek?” dedi. Allah onu yüz sene ölü halde bıraktı. Sonra onu yeniden diriltti: - “Ne kadar kaldın?” diye sordu.“Bir gün yahut günün bir kısmı kaldım” dedi.“Hayır, yüz sene kaldın! Bozulmamış yiyeceğine ve içeceğine bak! Eşeğine de bak! Bir de seni İnsanlar’a bir âyet kılmamız içindir. Kemikler’e de bak! Nasıl onları birbiri üzerine (ayağa) kaldırıyoruz; sonra et giydiriyoruz?”. Ona açıkça belli olduğunda:“Biliyorum ki Allah, her şeye kadîr / güç yetirendir” dedi.",
+    "Mehmet Çakır Meali": "Resulüm! Bir savaş sonrasında yerle bir olmuş şehri teftiş eden Üzeyr'e kulak ver?Üzeyr: Allah bu ölü şehri nasıl hayata döndürebilir?demişti, bunun üzerine Allah, Üzeyr'i yüz yıldondurupsonra diriltmiş ve sormuştu:Allah:Ne kadar kaldın?Üzeyr:Bir gün ya da daha az kaldım.Allah:Yoo yüz yıl kaldın.Ekmeğine suyuna bak, henüzbozulmamış.Şu eşeğine bak! Senin bu halin insanlığa bir ipucu olacak.Şimdi de kemikleri nasıl birleştirip etle kaplayışımızı seyret.Üzeyr kendine gelince hakkı teslim etti: \"Artık anlıyorum ki Allah, her şeye kadirdir...\"",
+    "Mehmet Çoban Meali": "Yahut altı üstüne gelmiş ıpıssız duran bir şehre uğrayan kimseyi görmedin mi? O,\"Allah burayı ölümünden sonra nasıl diriltecek?\"demişti. Bunun üzerine, Allah onu bilincinde öldürüp yüzyıl ölü bıraktı, sonra diriltti. Bilinci yerine geldiğinde sanki yüz yıl ölü kalmış sonra dirilmiş gibiydi. Allah ona sordu:\"Ne kadar ölü kaldın?\"O,\"Bir gün veya bir günden daha az kaldım!\"diye cevap verdi. Allah şöyle dedi:\"Hayır! Yüz sene kaldın! Böyle iken yiyeceğine ve içeceğine bak! Henüz bozulmamış.Bir de eşeğine bak!Böyle yapmamız seni insanlara ibret belgesi kılmamız içindir.Eşeğin kemiklerine bak! Nasıl onları bir araya getiriyor, sonra onlara nasıl et giydiriyoruz?\"Böylece tefekkür ve bilinç ile ona olacakları gösterdik. O beyninde bütün bunları düşünerek gerçekleştiğini hayal etti. Ona gösterdiğimiz tefekkür yoluyla yüz yıl sonrasına gitti. Yüz yıl sonrasında kendini hayal ederek nasıl diriltilebileceğini, eşeğinin etinin nasıl kemiğiyle tekrar birleştirilerek diriltilebileceğini tefekkür ederek aklını ikna etti. Bütün olanlara bilgisiyle bilinciyle açıkça ikna olunca şöyle dedi:\"Şimdi biliyorum ki şüphesiz Allah’ın gücü her şeye hakkıyla yeter.\"Ey insanlar! Siz de gözlerinizi kaparak bildirdiğimiz gerçeklerle ölümünüzü, dirilişinizi, hesaba çekileceğinizi, hesap günü başınıza gelecekleri hayal edebilir, üzerinde düşünebilirsiniz. Bu size zor değildir. Çünkü Rabbiniz olarak sizi bunu yapabilecek güçte yarattım! Size hayal etme, fikir üretme, olaylar üzerine düşünce üretme, muhakeme kurma yetileri verdim! Size verdiğim akıl, muhakeme yoluyla bunları yapabilirsiniz. Ön yargılı davranıp inkâr edeceğinize etrafınızdaki doğal olayları seyrederek, bir tohumdan her yer nasıl yemyeşil oluyorsa, hatta sizin bile gözlerinizle göremediğiniz topraklar, oralara suyu gönderdiğimiz zaman yemyeşil oluyorsa; biz, ölümünüzle birlikte tohumlarınızı toprakta bırakır, Sur’a üfürülünce de anında dirilirsiniz. Bunu anlayacak kadar aklınız. Bunu düşünecek kadar kabiliyetiniz var. Bunları size veren rabbinizdir. Yeter ki ön yargılardan kurtularak olayları doğru değerlendirin!",
+    "Mehmet Okuyan Meali": "Veya (görmediniz mi) o kişiyi ki evlerinin duvarları çatıları üzerine yığılmış (alt üst olmuş) bir şehre uğramıştı. (Bu kişi), “(Şehrin) ölümünden sonra Allah burayı nasıl diriltir acaba?” demişti. Bunun üzerine Allah onu yüz yıl öldürmüş (ölü gibi bırakmış), sonra tekrar diriltmişti. (Allah) “Ne kadar kaldın?” diye sorunca “Bir gün veya günün bir kısmı kadar.” demişti. (Allah) ona şöyle demişti: “Hayır! Yüz yıl kaldın. Yiyeceğine ve içeceğine bak, henüz bozulmamıştır. Eşeğine de bak! Seni insanlara bir ibret kılalım diye (böyle yaptık). Şimdi kemiklere bak, onları nasıl düzenliyor, sonra nasıl onlara et giydiriyoruz!” (Durum) kendisi için apaçık bir hâl alınca, “Biliyorum ki Allah her şeye gücü yetendir.” demişti. ",
+    "Mehmet Türk Meali": "Yahut binalarının duvarları, tavanlarının üzerine çökmüş (alt üst olmuş) şehre¹ uğrayan (kimsenin² olayına) benzer bir şey, (gördün mü?) O kimse: “Acaba Allah, burayı ölümünden sonra nasıl diriltecek?” deyince Allah, onu yüz yıl ölü bırakmış ve sonra tekrar dirilterek ona: “(ölü olarak) ne kadar kaldın?” demişti. O da: “Bir gün ya da bir günden daha az bir süre” demişti. Allah, (ona): “Hayır sen (ölü olarak) yüz yıl kaldın dön de hâlâ bozulmamış olan şu yiyecek ve içeceklerine bir bak. (Aynı durumdaki) eşeğine de bir bak. Seni de böylece (öldürüp tekrar dirilterek) insanlara bir ibret yaptık. Şu (eşeğiyin) kemiklerini, nasıl birleştirip arkasından üzerlerine et giydirdiğimize de bir bak.” demişti. (Sonunda) bu kimse, işin içyüzünü iyice anlayınca: “Biliyorum ki gerçekten Allah’ın gücü, her şeye yeter.” dedi.",
+    "Muhammed Esed Meali": "Yoksa halkının terk ettiği, çatıları yıkılıp harap olmuş (virane) bir kasabadan geçen : “Allah bütün bunları öldükten sonra nasıl diriltebilirmiş?” ²⁵² diyen o kişi misin? ²⁵³ Bunun üzerine Allah, onu yüzyıl süre ile ölü bırakmış ve sonra tekrar hayata döndürerek sormuştu: “Bu halde ne kadar kaldın?” O da: “Bu halde bir gün veya bir günden biraz daha az bir süre kaldım” diye cevap vermişti. : “Hayır” dedi, “bu halde bir yüzyıl kaldın! Yiyeceğine ve içeceğine bak -geçen yıllar onları bozmamış- ve eşeğine bak! ²⁵⁴ insanlara bir ibret olman için . Birde şu kemiklerine bak -onları nasıl birleştirip et ile örttüğümüzü düşün!” ²⁵⁵ ona açıklanınca, “ öğrendim ki” dedi, “Allah her şeye kâdirdir!”",
+    "Mustafa Çavdar Meali": "Veya altı üstüne gelmiş, ıssız bir beldeye uğrayan kimse gibi, “Allah burasını, ölümden sonra nasıl diriltir?” demişti. Bunun üzerine Allah, onu yüz yıl ölü bıraktı, sonra onu diriltti. Ona: “Ne kadar kaldın?” demişti. O da: “Bir gün veya bir günün bir kısmı kadar kaldım.” demişti. “Hayır, yüz yıl kaldın. Öyleyse yiyeceğine ve içeceğine bak, henüz bozulmamış. Eşeğine de bak, seni insanlara ibret kılmak için; bir de o kemiklere bak, nasıl bir araya getiriyoruz. Sonra da onlara et giydiriyoruz?” demişti. O kendisine bunlar apaçık belli olduktan sonra, “Artık biliyorum ki Allah’ın her şeye gücü yeter.” demişti. 18/19, 22/5-6",
+    "Mustafa İslamoğlu Meali": "Ya da mesela (şöyle birini gözünde canlandır): O, alt üst olmuş, her tarafı yıkılıp harabe hâline gelmiş bir şehre uğrayıp, “Allah bütün bunları öldükten sonra nasıl diriltecek?” diyen biri. Allah onu yüz yıl ölü olarak bıraktı, ardından dirilterek sordu: “Ne kadar kaldın?” O da cevap verdi: “Bir gün ya da daha az kaldım.” Buyurdu: “Hayır, aksine yüz yıl kaldın, istersen yiyeceğine ve içeceğine bak, daha kokuşmamış bile; ve bir de eşeğine bak. Biz seni, insanlara (ölümden sonra dirilişe dair) bir kudret delili kılalım diye böyle yaptık. Ve bak (canlılara ait) kemiklere, onları nasıl yerli yerince dizip, ardından üzerlerini etle kaplayıp eski haline döndürdüğümüzü düşün!” Bütün bunlar kendisine açıklanınca şu itirafta bulundu: “Artık bildim ki Allah her şeye kadirdir.”",
+    "Orhan Kuntman Meali": "(Ey Muhammed bir de) Binalarının çatıları çökmüş, onların üzerine duvarları yıkılmış bir kasabaya uğrayan o (mümin) adama bak (Kasabanın o harap halini görünce, kendi kendine) \"Allah bu kasabayı nasıl (ne zaman) ihya edecek? (ihya etse bile bu çok uzun zaman alır, ben de onu göremem)\" dedi. Bunun üzerine Allah onu yüz sene ölü bıraktı, sonra diriltti. Ona \"Ne kadar kaldın?\" diye nida olundu. O da: \"Bir gün veya bir günden daha az kaldım!\" dedi. Bunun üzerine ona: \"Hayır, yüz sene (ölü olarak) kaldın; şu yiyeceğine ve içeceğine bak ki, hiçbiri bozulmamış! (Sen onların bozulmadığına bakarak bir gün o vaziyette kaldığını sanabilirsin, fakat) Bir de merkebine bak. (ki o ne hale gelmiş, kemikleri parça parça olmuş öteye beriye dağılmış) Seni insanlara ibret kılalım diye böyle yaptık (Seni yüz yıl ölü vaziyette bırakıp dirilttik ki, insanlara Hak tanığı olasın) O kemiklere (tekrar) bak; onları nasıl birbirine ekleyerek yerli yerine koyuyoruz, sonra da onlara nasıl et giydiriyoruz'' buyuruldu. Böylece ona (gözü önünde merkebinin dirilmesi, ölümden sonra dirilme gerçeği) açıkça belli olunca: \"Şimdi (yakinen) biliyorum ki, Allah herşeye kadirdir\" dedi.",
+    "Osman Fırat Meali": "Yahut şu kimse gibisi ki, çatıları duvarları üstüne yığılmış (alt üst olmuş) ıssız bir kasabaya uğramış ve demişti ki; \"Allâh, bunu böyle öldükten sonra nasıl diriltecek?\" Allâh da kendisini yüz sene öldürüp sonra diriltti. \"Ne kadar kaldın?\" dedi. \"Bir gün, ya da bir günün birazı kadar kaldım\" dedi. (Allâh) \"Hayır, yüz yıl kaldın. Yiyecek ve içeceğine bak, bozulmamış, eşeğine de bak, seni insanlar için bir ibret kılalım diye (böyle yaptık). Kemiklere bak, nasıl onları birbiri üstüne koyuyor, sonra onlara et giydiriyoruz!\" dedi Bu işler ona açıkça belli olunca: \"Allâh’ın herşeye kâdir olduğunu biliyorum. \" dedi.",
+    "Ömer Nasuhi Bilmen Meali": "Yahut o kimse gibisini görmedin mi ki, bir karyeye uğramıştı. O karyenin tavanları çökmüş, onların üzerine duvarları yıkılmıştı. «Allah Teâlâ bu karyeyi bu ölümünden sonra nasıl ihya edecek?» diyordu. Bunun üzerine Allah Teâlâ o kimseyi yüz sene ölü bıraktı. Sonra da onu ihya buyurdu. Dedi ki: «Ne kadar kaldın?» Dedi ki: «Bir gün veya bir günün bir kısmı kadar kaldım.» Dedi ki: «Hayır, yüz sene kaldın. İmdi yiyeceğine ve içeceğine bak ki, hiç biri bozulmamış, merkebine de bak. Ve seni nâsa bir âyet kılmak için (bu yapacağımızı yaptık). Ve kemiklere bak, onları nasıl biribirine birleştiriyoruz. Sonra da onlara et giydiriyoruz.» Vaktâ ki (bu hakikat) kendisine tebeyyün etti. Dedi ki: «Ben bilirim, Allah Teâlâ şüphe yok her şeye kâdirdir.»",
+    "Suat Yıldırım Meali": "Yahut şu kimsenin hali gibi ki o bir şehre uğramıştı. Şehrin altı üstüne gelmiş, ıpıssız yatıyordu. “Allah burayı bu ölümünden sonra nasıl diriltecek? ” dedi. Bunun üzerine Allah onu yüz yıl boyunca öldürüp sonra diriltti. “Ölü vaziyette ne kadar kaldın? ” diye sorunca o: “Bir gün veya daha az” diye cevap verdi. Allah ona: “Hayır! yüz sene kaldın. İşte yiyeceğine ve içeceğine bak henüz bozulmamış. Bir de merkebine bak! (Kemikleri nasıl birbirinden ayrılmış). Seni de insanlara canlı bir delil yapmak için öldürüp dirilttik. Hele o kemiklere dikkat et, onları nasıl birleştirip yerli yerine koyuyoruz, sonra da onlara et giydiriyoruz! ” Böylece işin gerçeği kendisine tam mânasıyla belli olunca: “Artık pek iyi biliyorum ki Allah her şeye kadirdir. ” dedi. {KM, Hezekiel 37, 6}",
+    "Süleyman Ateş Meali": "Yahut şu kimse gibisini (görmedin mi) ki, duvarları, çatıları üstüne yığılmış (alt üst olmuş) ıssız bir kasabaya uğramıştı; \"Allah, bunu böyle öldükten sonra nasıl diriltecek?\" demişti. Allah da kendisini yüz sene öldürüp sonra diriltti. \"Ne kadar kaldın?\" dedi. \"Bir gün, ya da bir günün birazı kadar kaldım\" dedi. (Allah) \"Hayır, dedi, yüz yıl kaldın. Yiyecek ve içeceğine bak, bozulmamış. Eşeğine bak, seni insanlar için bir ibret kılalım diye (böyle yaptık). Kemiklere bak, nasıl onları birbiri üstüne koyuyor, sonra onlara et giydiriyoruz!\" Bu işler ona açıkça belli olunca: \"Allah'ın herşeye kadir olduğunu biliyorum.\" dedi.",
+    "Süleyman Tevfik (1927)": "Yâhud şu kimse gibi ki bir karyeden geçdi. Onun damları çökmüş ve divarları yıkılmışdı. (Bu hâle teessüf göstererek) bunı (bu harâbeyi) şu ölü hâlinden sonra 'acabâ Allâh yeniden dirildir mi? (Ma'mûr ve âbâdân kılar mı) didi. Cenâb-ı Hak onı yüz yıl emâte (öldürüb) idüb sonra yeniden diriltdi ve ona ne kadar yatdın didi. O da: Bir gün ve yâhud günün bir kısmı yatdım didikde Allâh: Sen yüz yıl yatdın. Bak, yanındaki yiyeceğin ve içeceğin bozulmamışdır. Merkebine de bak. Seni insânlar içün âyet, Allâh'ın kudretine burhân kılacağız. Bak ki kemikleri birbirine nasıl birleşdiriyoruz. Ve sonra üstüne et giydiriyoruz didi. Ona bundaki hakîkat tebeyyün iyledikde: Bildim ki Allâh her şeye kâdirdir didi.",
+    "Süleymaniye Vakfı Meali": "Şu kişiyi de düşündün mü? Binaları tamamen çökmüş bir kente uğramıştı da “Allah burayı ölümünden sonra nasıl diriltecek?” demişti. Allah onu yüz yıl süreyle öldürdü, sonra diriltti. “Ne kadar kaldın?” dedi. “Bir gün kaldım, belki bir günden de az!” dedi. Allah dedi ki: “Yok, tam yüz yıl kaldın! Yiyeceğine ve içeceğine bak, hiç bozulmamış! Bir de eşeğine bak! Bu, seni insanlara bir belge yapmak içindir. Şimdi de (eşekten kalma) kemiklere bak, onları nasıl birleştireceğimizi, sonra nasıl ete büründüreceğimizi gör!” Bunları açık açık görünce dedi ki: “Şimdi biliyorum, Allah her şeye bir ölçü koyar.”",
+    "Şaban Piriş Meali": "Veya altı üstüne gelmiş, ıssız bir beldeye uğrayan kimse gibi: -Allah, burasını ölümden sonra nasıl diriltir? demişti de, bunun üzerine Allah, onu yüz yıl ölü bıraktı, sonra onu diriltti. Ona:-Ne kadar kaldın? demiştik. O da:-Bir gün veya bir günün bir kısmı kaldım, demişti.-Hayır, yüz yıl kaldın, böyleyken yiyeceğine ve içeceğine bak, henüz bozulmamış, eşeğine de bak, seni insanlara bir ibret kılmak için, bir de o kemiklere bak, nasıl bir araya getiriyoruz. Sonra da onlara et giydiriyoruz? demişti. O kendisine bunlar apaçık belli olduktan sonra:-Artık biliyorum ki Allah'ın her şeye gücü yeter, demişti.",
+    "Ümit Şimşek Meali": "Yahut şu kimsenin haline bak ki, altı üstüne gelmiş harap bir beldeden geçerken “Allah bu beldeyi nasıl diriltecek?” demişti. Allah da onu öldürüp yüz sene öylece bıraktı, sonra diriltip “Ne kadar ölü kaldın?” diye sordu. O, “Ya bir gün, yahut daha da az” dedi. Allah ise “Sen yüz sene ölü kaldın,” buyurdu. “Yiyeceğine, içeceğine bir bak, hiç dokunulmamış. Bir de merkebine bak! Seni böylece insanlara bir delil yapmak için öldürüp dirilttik. Şimdi de kemiklere bak; onları nasıl yerli yerince diziyor, sonra üzerine et giydiriyoruz.” Bütün bunları apaçık gördükten sonra, o kimse, “Allah'ın herşeye kadir olduğunu artık çok iyi biliyorum” dedi.(135)",
+    "Yaşar Nuri Öztürk Meali": "Ya şu kişi gibisini görmedin mi? Çatıları çökmüş, duvarları-damları yere inmiş bir kente uğramıştı da şöyle demişti: \"Allah şurayı ölümünden sonra nasıl hayata kavuşturacak?\" Bunun üzerine Allah, o kişiyi yüz yıllık bir süre için öldürmüş, sonra diriltmişti. \"Ne kadar bekledin?\" demişti. \"Bir gün veya günün bir kısmı kadar bekledim.\" dedi. \"Hayır, dedi, aksine sen, yüz yıl kaldın. Yiyeceğine, içeceğine bak! Henüz bozulmamış. Eşeğine bak! Seni insanlara bir ibret yapalım diyedir bu. Kemiklere bak, nasıl yerli yerince düzenliyoruz onları ve sonra et giydiriyoruz onlara.\" İş kendisi için açıklık kazanınca şöyle dedi o: \"Allah'ın her şeye kadir olduğunu biliyorum.\"",
+    "Eski Anadolu Türkçesi": "anuñ gibi kim geçdi bir köy ol düşmiş iken ev örtüleri üzerine anuñ ya'nį ilk örtüsi yıķıldı; andan, dinarları örtüsi üzere yıķıldı. eyitti: “ķaçan yā nite dirüre uşbunı Tañrı, öldüginden śoñra?” pes öldürdi anı Tañrı yüz yıl; andan, dirilti anı; eyitti: “niçe dölendüñ?” eyitdi: “dölendüm bir gün, yā günüñ bir nicesi.” eyitti: “belki dölendüñ yüz yıl. pes baķ ta'āmuna ya'nį incir yā üzüm, daħı içilür nesenene ya'nį şıra yā süd; azmadı ol. daħı baķ gölüġüñe; daħı anuñ-içün kim ķılavuz seni nişān ādemįlere. daħı baķ süñüklere ya'nį gölük sürtüklerine, nite götürürüz anları; andan, geydürürüz anlara eti.” pes ol vaķt kim bellü oldı aña; eyitti: “bilürin, bayıķ Tañrı her nesene üzere güci yiterdür.”",
+    "Satıraltı Meal (1534)": "Yā ol kimse gibi ki geçdi bir şehr üstine ol ḫarāb‐iken, dīvārları saḳflarüstine düşmiş‐idi. Eyitdi: Neçük dirildür Tañrı Ta‘ālā bu şehr ḳavmini öl‐genden ṣoñra? Pes öldürdi anı Tañrı Ta‘ālā, yüz yıl ölü yatdı, andan ṣoñra di‐riltdi anı. Tañrı Ta‘ālā eyitdi: Nice yıl ölmiş yatduñ? dir. Eyitdi Bir gün öl‐miş yatdum didi, yā buçuḳ gün didi. Tañrı Ta‘ālā eyitdi: Bel ki yüz yıl ölmişyatduñ sen didi. Pes baḳ gör sen ḳoyġan yimegi içmegi yüz yıla taġyīr ol‐mamışdur, daḫı baḳ gör senüñ işegüñ neçük diriltdük? Daḫı ḳılmaġ‐ıçun seni ‘alāmet‐i ḳıyāmet ḥaḳ olmaġa. Daḫı baḳ gör süñükleri neçük dirildür‐biz, andan ṣoñra et geydürür‐biz anlara. Pes ol vaḳt kim bilindi özine.Eyitdi: Bilür‐men ki Tañrı Ta‘ālā her nesneye ḳādirdür.",
+    "Bunyadov-Memmedeliyev": "Yaxud (Ya Rəsulum! Damları çökmüş, divarları) uçulmuş bir kəndin yanından keçən kimsənin əhvalatını bilirsən? O kimsə: “Əcaba, Allah bu kəndi ölümündən sonra necə dirildəcək?” – demişdi. Belə olduqda, Allah onu yüz il ölü halında saxladı, sonra dirildərək ondan: “Nə qədər yatmısan?” – deyə soruşdu. O da: “Bir gün, bəlkə, bir gündən daha az” – deyə cavab verdi. Allah ona: “Bəlkə, yüz il yatmısan, yediyin yeməyə, içdiyin suya bax, hələ də xarab olmayıb. Bir də uzunqulağına bax! Səni insanlar üçün bir ibrət dərsi olmaqdan ötrü belə etdik. İndi (uzunqulağının) sümüklərinə bax, gör necə onları bir-biri ilə birləşdirir, sonra da onların üzərini ətlə örtürük?” – deyə buyurdu. O kimsəyə bunlar aydın olduqda: “Artıq bildim ki, Allah hər şeyə qadirdir!” – dedi.",
+    "M. Pickthall (English)": "Or (bethink thee of) the like of him who, passing by a township which had fallen into utter ruin, exclaimed: How shall Allah give this township life after its death? And Allah made him die a hundred years, then brought him back to life. He said: How long hast thou tarried? (The man) said: I have tarried a day or part of a day. (He) said: Nay, but thou hast tarried for a hundred years. Just look at thy food and drink which have rotted! Look at thine ass! And, that We may make thee a token unto mankind, look at the bones, how We adjust them and then cover them with flesh! And when (the matter) became clear unto him, he said: I know now that Allah is Able to do all things.",
+    "Yusuf Ali (English)": "Or (take) the similitude of one who passed by a hamlet, all in ruins(304) to its roofs. He said: \"Oh! how shall Allah bring it (ever) to life, after (this) its death?\" but Allah caused him to die for a hundred years, then raised him up (again). He said: \"How long didst thou tarry (thus)?\" He said: (Perhaps) a day or part of a day.\" He said: \"Nay, thou hast tarried thus a hundred years; but look at thy food and thy drink; they show no signs of age; and look at thy donkey: And that We may make of thee a sign unto the people, Look further at the bones, how We bring them together and clothe them with flesh(305).\" When this was shown clearly to him, he said: \"I know that Allah hath power over all things.\""
+  }
+}

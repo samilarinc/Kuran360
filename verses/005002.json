@@ -1,0 +1,253 @@
+{
+  "surah_number": 5,
+  "verse_number": 2,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=5&ayet=2",
+  "arabic_text": "يَٓااَيُّهَاالَّذ۪ينَاٰمَنُوالَاتُحِلُّواشَعَٓائِرَاللّٰهِوَلَاالشَّهْرَالْحَرَامَوَلَاالْهَدْيَوَلَاالْقَلَٓائِدَوَلَٓاآٰمّ۪ينَالْبَيْتَالْحَرَامَيَبْتَغُونَفَضْلًامِنْرَبِّهِمْوَرِضْوَانًاۜوَاِذَاحَلَلْتُمْفَاصْطَادُواۜوَلَايَجْرِمَنَّكُمْشَنَاٰنُقَوْمٍاَنْصَدُّوكُمْعَنِالْمَسْجِدِالْحَرَامِاَنْتَعْتَدُواۢوَتَعَاوَنُواعَلَىالْبِرِّوَالتَّقْوٰىۖوَلَاتَعَاوَنُواعَلَىالْاِثْمِوَالْعُدْوَانِۖوَاتَّقُوااللّٰهَۜاِنَّاللّٰهَشَد۪يدُالْعِقَابِ",
+  "transliteration": "Yâ eyyuhâ-lleżîne âmenû lâ tuhillû şe’â-ira(A)llâhi velâ-şşehra-lharâme velâ-lhedye velâ-lkalâ-ide velâ âmmîne-lbeyte-lharâme yebteġûne fadlen min rabbihim veridvânâ(en)(c)ve-iżâhaleltum festâdû(c)velâ yecrimennekum şeneânukavmin ensaddûkum ‘ani-lmescidi-lharâmi en ta’tedû vete’âvenû ‘alâ-lbirri ve-ttakvâ(s)velâ te’âvenû ‘alâ-l-iśmi vel’udvân(i)(c)vettekû(A)llâh(e)(s)inna(A)llâhe şedîdu-l’ikâb(i)",
+  "word_translations": [
+    {
+      "arabic": "يَٓا",
+      "turkish": "Ey"
+    },
+    {
+      "arabic": "اَيُّهَا",
+      "turkish": "ey"
+    },
+    {
+      "arabic": "الَّذ۪ينَ",
+      "turkish": "kimseler"
+    },
+    {
+      "arabic": "اٰمَنُوا",
+      "turkish": "inanan(lar)"
+    },
+    {
+      "arabic": "تُحِلُّوا",
+      "turkish": "saygısızlık etmeyin"
+    },
+    {
+      "arabic": "شَعَٓائِرَ",
+      "turkish": "işaretlerine"
+    },
+    {
+      "arabic": "اللّٰهِ",
+      "turkish": "Allah'ın"
+    },
+    {
+      "arabic": "وَلَا",
+      "turkish": "ve"
+    },
+    {
+      "arabic": "الشَّهْرَ",
+      "turkish": "aya"
+    },
+    {
+      "arabic": "الْحَرَامَ",
+      "turkish": "haram"
+    },
+    {
+      "arabic": "وَلَا",
+      "turkish": "ve"
+    },
+    {
+      "arabic": "الْهَدْيَ",
+      "turkish": "kurbana"
+    },
+    {
+      "arabic": "وَلَا",
+      "turkish": "ve"
+    },
+    {
+      "arabic": "الْقَلَٓائِدَ",
+      "turkish": "gerdanlık(lı kurban)lara"
+    },
+    {
+      "arabic": "وَلَٓا",
+      "turkish": "ve"
+    },
+    {
+      "arabic": "آٰمّ۪ينَ",
+      "turkish": "gelenlere"
+    },
+    {
+      "arabic": "الْبَيْتَ",
+      "turkish": "Beyt-i"
+    },
+    {
+      "arabic": "الْحَرَامَ",
+      "turkish": "Haram'a"
+    },
+    {
+      "arabic": "يَبْتَغُونَ",
+      "turkish": "arzu ederek"
+    },
+    {
+      "arabic": "فَضْلًا",
+      "turkish": "lutfunu"
+    },
+    {
+      "arabic": "رَبِّهِمْ",
+      "turkish": "Rablerinin"
+    },
+    {
+      "arabic": "وَرِضْوَانًاۜ",
+      "turkish": "ve rızasını"
+    },
+    {
+      "arabic": "وَاِذَا",
+      "turkish": "ve zaman"
+    },
+    {
+      "arabic": "حَلَلْتُمْ",
+      "turkish": "ihramdan çıktığınız"
+    },
+    {
+      "arabic": "فَاصْطَادُواۜ",
+      "turkish": "avlanabilirsiniz"
+    },
+    {
+      "arabic": "يَجْرِمَنَّكُمْ",
+      "turkish": "sizi itmesin"
+    },
+    {
+      "arabic": "شَنَاٰنُ",
+      "turkish": "beslediğiniz kin"
+    },
+    {
+      "arabic": "قَوْمٍ",
+      "turkish": "bir topluma karşı"
+    },
+    {
+      "arabic": "اَنْ",
+      "turkish": "dolayı"
+    },
+    {
+      "arabic": "صَدُّوكُمْ",
+      "turkish": "sizi çevirdiklerinden"
+    },
+    {
+      "arabic": "الْمَسْجِدِ",
+      "turkish": "Mescid-i"
+    },
+    {
+      "arabic": "الْحَرَامِ",
+      "turkish": "Haram'dan"
+    },
+    {
+      "arabic": "تَعْتَدُواۢ",
+      "turkish": "suç işlemeğe"
+    },
+    {
+      "arabic": "وَتَعَاوَنُوا",
+      "turkish": "ve yardımlaşın"
+    },
+    {
+      "arabic": "عَلَى",
+      "turkish": "üzerinde"
+    },
+    {
+      "arabic": "الْبِرِّ",
+      "turkish": "iyilik"
+    },
+    {
+      "arabic": "وَالتَّقْوٰىۖ",
+      "turkish": "ve takva"
+    },
+    {
+      "arabic": "تَعَاوَنُوا",
+      "turkish": "yardımlaşmayın"
+    },
+    {
+      "arabic": "عَلَى",
+      "turkish": "üzerinde"
+    },
+    {
+      "arabic": "الْاِثْمِ",
+      "turkish": "günah"
+    },
+    {
+      "arabic": "وَالْعُدْوَانِۖ",
+      "turkish": "ve düşmanlık"
+    },
+    {
+      "arabic": "وَاتَّقُوا",
+      "turkish": "ve korkun"
+    },
+    {
+      "arabic": "اللّٰهَۜ",
+      "turkish": "Allah'tan"
+    },
+    {
+      "arabic": "اِنَّ",
+      "turkish": "şüphesiz"
+    },
+    {
+      "arabic": "اللّٰهَ",
+      "turkish": "Allah'ın"
+    },
+    {
+      "arabic": "شَد۪يدُ",
+      "turkish": "çetindir"
+    },
+    {
+      "arabic": "الْعِقَابِ",
+      "turkish": "azabı"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Ey inananlar, Allah'a ibadete vesile olan, hac töreni yapılan yerlerin ve savaşın haram edildiği ayların hürmetini koruyun, hac kurbanlarına, kurban edilecekleri belli olsun diye boynuna bir şey takılan hayvanlara, Rablerinden bir lütfe ve razılığa ulaşmak için Beytül Haram'ı ziyarete gelenlere hürmetsizlik etmeyin. İhramdan çıkınca avlanın. Sizi Mescidi Haram'dan meneden kavme karşı beslediğiniz kin aşırı hareket etmenize, tecavüzde bulunmanıza sebep olmasın. İyilik etmek ve kötülükten sakınmak hususunda birbirinize yardım edin, suç işlemek ve düşmanlık etmek için yardımlaşmayın ve Allah'tan sakının, şüphe yok ki Allah'ın cezası, çok çetindir.",
+    "Abdullah-Ahmet Akgül Meali": "(Öyle ise)Ey iman edenler!(Cami, ezan, Ramazan, bayram, başörtüsü gibi)Allah’ın şiarlarına(İslam’ın simge ve sembollerine), haram olan(ve saygı duyulan)aya, kurbanlık hayvanlara ve(kurbanlık nişanı ve ibadet heyecanıyla bunlara takılan)boyun bağlarına ve Allah’ın fazlını ve rızasını umarak hacca gelen(Müslümanlara); sakın hürmetsizlik(haksızlık ve saygısızlık)etmeyiniz.(Hacc farizasını bitirip)İhramdan çıktıktan sonra ise artık avlanabilirsiniz.(Daha önce)Sizi Mescid-i Haram’dan alıkoydukları(Kâbe’yi ziyaretinize ve Mekke’ye girmenize mâni oldukları)için, bundan dolayı bir topluluğa olan hırsınız ve hıncınız, sakın sizi haddi aşmaya(taşkınlık ve azgınlık yapmaya)sürüklemesin.(Ey iman edenler!)İyilik ve takvada(hayırlı hizmet yapmak ve başkalarını kötülükten sakındırmak konusunda)yardımlaşın.(Ama sakın)Günah(işleyip kötülük yapmak, sapkınlık ve saldırganlıkla)haddi aşmak hususunda yardımlaşmayın.(Günahları ve fuhşiyatı meşrulaştırıp yaygınlaştırmak, adil devlet düzenini ve toplum disiplinini yozlaştırmak konusunda teşkilatlanıp ayaklanmayın… Zalim ve kâfirlere yandaşlık yapmayın,her halde ve her meselede mutlaka)Allah’tan korkup(küfür, zulüm ve kötülükten)sakının. Gerçekten Allah’ın(zalim ve hainlere bir müddet fırsat verse de, en acı ve alçaltıcı bir ceza ilesonuçlandırması ve)azabı pek şiddetlidir.",
+    "Abdullah Parlıyan Meali": "Ey iman edenler! Allah'ın koyduğu sembollere, kutsal hac ayına, süslenmiş kurbanlıklara, Rablerinin lütuf ve rızasını isteyerek Beyti Haram'a doğru gelenlere saygısızlıkta bulunmayın. Ancak ihramdan çıktığınızda, serbestçe avlanabilirsiniz. Sizi Mescidi Haram'dan alıkoyanlara karşı öfkeniz, saldırganlık yapmanıza yol açmasın. İyi ve güzel olan şeyler ve yolunuzu Allah'ın kitabı ile bulmada yardımlaşın, kötülüğü ve düşmanlığı artırmada değil. Allah'a karşı sorumluluğunuzun bilincinde olun ve unutmayın ki, Allah'ın cezası çok şiddetlidir.",
+    "Ahmet Tekin Meali": "Ey iman edenler, Allah'ın emirlerini çağrıştıran, hac menâsiki ile ilgili sembollere, Allah'ın savaşı haram kıldığı aylardaki yasaklara, kur-banlara, Kâbe'ye yapılan bağışlara, boyun-larında gerdânileri, ipleri, tasmaları olan kurbanlık ve sahipli hayvanlara, Rablerinin lütuf ve rızasına ulaşma mertebesini, rızık kazanmayı, ticarî kazanç elde etmeyi umarak, Beyt-i Haram'a, Beytullah'a niyetle yola çıkanlara, saygısızlık ve tecavüzü meşrû hale getirmeyin.İhramdan çıktığınız zaman avlanabilirsiniz.Mescid-i Haram'a girmenizi engelledikleri için bir kavme karşı beslediğiniz kin, sizi onlara tecavüze sevketmesin.İyilik, insanlık, müslümanlık ve takvâ esaslarını- Kuran esaslarını benimseyip, geçmiştekilerin hakim oldukları gibi, yeryüzüne hakim olan salih kullara dahil olarak Allahın emirlerine muhalefetten korunun, dinî ve sosyal görevlerinizin bilincinde olmada yardımlaşın. Bilerek günah işlemekte, zarar vermekte ve düşmanlıkta birbirinize yardım etmeyin. Kuran esaslarını benimseyip, yeryüzüne hakim olan salih kullara dahil olarak Allah’ın emirlerine muhalefetten korunun. Allah, inkâr ve isyan suçunuza denk, size âdil ceza verme gücüne sahiptir.",
+    "Ahmet Varol Meali": "Ey iman edenler! Allah'ın işaretlerine, haram aya, kurbanlık hayvanlara, gerdanlık(lı hayvan)lara, Rabbinin lütfundan bir şeyler kazanmak ve rızasına kavuşmak için Haram Ev'i (Kabe'yi) ziyarete gelenlere saygısızlık etmeyin. İhramdan çıktığınız zaman avlanabilirsiniz. Bir topluluğa sizi Mescidi Haram'dan alıkoymaları dolayısıyla duyduğunuz kin sınırı aşmanıza sebep olmasın. İyilik ve takvada birbirinizle yardımlaşın. Günah ve düşmanlıkta yardımlaşmayın. Allah'a karşı gelmekten sakının. Allah, cezası çok şiddetli olandır.",
+    "Ali Bulaç Meali": "Ey iman edenler, Allah'ın şiarlarına, haram olan ay'a, kurbanlık hayvanlara, (onlardaki) gerdanlıklara ve Rablerinden bir fazl ve hoşnutluk isteyerek Beyt-i Haram'a gelenlere sakın saygısızlık etmeyin. İhramdan çıktınız mı artık avlanabilirsiniz. Sizi Mescid-i Haram'dan alıkoyduklarından dolayı bir topluluğa olan kininiz, sakın sizi haddi aşmaya sürüklemesin. İyilik ve takva konusunda yardımlaşın, günah ve haddi aşmada yardımlaşmayın ve Allah'tan korkup-sakının. Gerçekten Allah (ceza ile) sonuçlandırması pek şiddetli olandır.",
+    "Ali Fikri Yavuz Meali": "Ey iman edenler! Ne Allah'ın hac âdetlerine, ne haram aya (Recep, Zilkade, Zilhicce ve Muharrem aylarına), ne kurbanlık hediyelere, ne (onlardaki) gerdanlıklara, ne de Rablerinden gerek fazlını ve gerek rızâsını arayarak Beyt-i Harâm'ı kasdedip gelenlere sakın hürmetsizlik etmeyin. İhramdan çıktığınız zaman (isterseniz) avlanın. Sizi Mescid-i Haram'dan menettiler diye bir kavme karşı beslediğiniz kin, sakın sizi tecavüze götürmesin. İyilik etmek ve fenalıktan sakınmak hususunda birbirinizle yardımlaşın, günah işlemek ve haddi aşmak üzerinde yardımlaşmayın. Allah'dan korkun, çünkü Allah'ın azabı çok şiddetlidir.",
+    "Bahaeddin Sağlam Meali": "Ey iman edenler! Hac ibadetlerine, yasak aylara, kurbanlara, gerdanlıklara, Rablerinden lütuf ve rıza isteyen Kâbe ziyaretçilerine saygısızlık ederek ortamı bozmayın. İhramdan çıktığınız zaman avlanabilirsiniz. Sizi Mescid-ül Haram’dan çevirdiler diye bir topluma kızmanız, sizi saldırıya geçirip suç işletmesin. İyilik ve öz korunma (takva) üzerine yardımlaşın. Günah ve düşmanlık üzerine yardımlaşmayın. Allah’tan sakının. Muhakkak Allah’ın ağır azabı çok serttir.",
+    "Bayraktar Bayraklı Meali": "Ey iman edenler! Ne Allah'ın işaretlerine, ne haram aya, ne kurbana, ne gerdanlıklı kurbanlara, ne de Rabblerinin ihsanını arzu ederek Beyt-i Harâm'a doğru gelenlere saygısızlık ediniz. İhramdan çıktığınız zaman avlanabilirsiniz. Sizi Mescid-i Haram'dan çevirdiklerinden dolayı bir topluma karşı beslediğiniz kin, sizi saldırıya sevk etmesin. İyilik ve takvâ üzerinden yardımlaşınız; günah ve düşmanlık üzerinde yardımlaşmayınız, Allah'tan sakınınız. Çünkü Allah'ın azabı şiddetlidir.",
+    "Besim Atalay Meali (1965)": "Ey inanmış olanlar! Allahın nişanlarına, savaş haram olan aya, hac kurbanına, belli olmasıyçin boynuna gerdanlık takılan kurbanlara, Allahın erdemiyle, hoşnutluğun kazanmakçin, kutlu eve gelenlere saygı gösterin, haccı bitirince avlanırsınız, sizleri Kabe'den uzak tuttuklarıyçin, o ulusa karşı hıncınız kabarıp da, taşkınlık yaptırarak size günah işletmesin, iyilikle, sakınçlık üzerine yardımlaşınız, günah ile taşkınlık üzerine yardımlaşmayın, Allahtan sakınınız, iyi bilin, Allahın azabı katı",
+    "Cemal Külünkoğlu Meali": "Ey iman edenler! Allah'ın (ibadet için) koyduğu sembollere, (savaşmanın yasak olduğu haram) ay'a, süslenmiş kurbanlıklara ve Rablerinin lütuf ve rızasını isteyerek Mescid-i Haram'a yönelenlere karşı saygısızlık etmeyin! (Hac farizasını bitirip) ihramdan çıktıktan sonra avlanabilirsiniz. (Daha önce) sizi Mescid-i Haram'dan alıkoyanlara karşı öfkeniz saldırganlık yapmanıza yol açmasın! İyilikte ve fenalıklardan sakınmada birbirinizle yardımlaşın; günah işlemek ve düşmanlıkları körüklemek amacıyla yardımlaşmayın! Allah'a karşı gelmekten sakının! Çünkü Allah'ın azabı çok şiddetlidir.",
+    "Cemil Said (1924)": "Ey mü’minler haccın şerâit ve ’ibâdâtını ve şeh-i harâmın hürmetini bozmayınız kurbâna ve ânın işârâtına ri’âyet idiniz. Beytü’l Harâm’da Allâh’ın ’inâyet ve rızâsını tahsîl içün çalışanlara hürmet idiniz. Hac bitdikden sonra sayd idebilürsiniz. Mescidü’l Harâm’dan sizi uzaklaşdırmağa uğraşanlar ’aleyhindeki kininiz sizi haksız mu’âmelâta sevk itmesün biri birinize karşu takvâda ve fezâil husûsunda mu’âvenet idiniz lâkin fenâlıkda ve haksızlıkda yardım itmeyiniz Allâh’dan korkınız çünki Allâh’ın ’azâbı şedîddir.",
+    "Diyanet İşleri Meali (Eski)": "Ey İnananlar! Allah'ın nişanelerine, hürmet edilen aya, hediye olan kurbanlığa, gerdanlıklar takılan hayvanlara, Rab'lerinden bol nimet ve rıza talep ederek Beyt-i Haram'a gelenlere sakın hürmetsizlik etmeyin. İhramdan çıktığınız zaman avlanabilirsiniz. Sizi Mescid-i Haram'dan menettiği için bir topluluğa olan kininiz, aşırı gitmenize sebep olmasın; iyilikte ve fenalıktan sakınmakta yardımlaşın, günah işlemek ve aşırı gitmekte yardımlaşmayın. Allah'tan sakının, Allah'ın cezası şiddetlidir.",
+    "Diyanet İşleri Meali (Yeni)": "Ey iman edenler! Allah’ın (koyduğu din) nişanelerine, haram aya, hac kurbanına, (bu kurbanlıklara takılı) gerdanlıklara ve de Rab’lerinden bol nimet ve hoşnutluk isteyerek Kâ’be’ye gelenlere sakın saygısızlık etmeyin. İhramdan çıktığınızda (isterseniz) avlanın. Sizi Mescid-i Haram’dan alıkoydular diye birtakımlarına beslediğiniz kin, sakın ha sizi, haddi aşmaya sürüklemesin. İyilik ve takva (Allah’a karşı gelmekten sakınma) üzere yardımlaşın. Ama günah ve düşmanlık üzere yardımlaşmayın. Allah'a karşı gelmekten sakının. Çünkü Allah’ın cezası çok şiddetlidir.",
+    "Kur'an Yolu (Diyanet İşleri)": "Ey iman edenler! Allah’ın işaretlerine, haram aya, boyunları bağsız ve bağlı kurbanlıklara, rablerinin lütuf ve rızasını dileyerek Beytülharâm’a yönelmiş kimselere sakın saygısızlık etmeyin. İhramdan çıkınca avlanabilirsiniz. Mescid-i Harâm’a girmenizi engellediler diye bir topluma karşı duyduğunuz kin, sakın aşırı gitmenize sebep olmasın. İyilik ve takvâ hususunda yardımlaşın, günah ve haksızlık yolunda yardımlaşmayın. Allah’tan korkun, çünkü Allah’ın cezası çetindir.",
+    "Diyanet Vakfı Meali": "Ey iman edenler! Allah'ın (koyduğu, dinî) işaretlerine, haram aya, (Allah'a hediye edilmiş) kurbana, (ondaki) gerdanlıklara, Rablerinin lütuf ve rızasını arayarak Beyt-i Haram'a yönelmiş kimselere (tecavüz ve) saygısızlık etmeyin. İhramdan çıkınca avlanabilirsiniz. Mescid-i Haram'a girmenizi önledikleri için bir topluma karşı beslediğiniz kin sizi tecavüze sevketmesin! İyilik ve (Allah'ın yasaklarından) sakınma üzerinde yardımlaşın, günah ve düşmanlık üzerine yardımlaşmayın. Allah'tan korkun; çünkü Allah'ın cezası çetindir.",
+    "Edip Yüksel Meali": "İnananlar! Ne ALLAH'ın koyduğu dinsel törenlere, ne kutsal aya, ne kurbana, ne onları işaretleyen çelenklere ve ne de Rab'lerinin lütuf ve rızasını aramak için Kutsal Ev'e doğru yola çıkanlara saygısızlık etmeyin. İhramdan çıktığınız zaman avlanabilirsiniz. Sizi Kutsal Mescid'den çeviren bir topluluğa olan kininizden dolayı provakasyona gelip saldırganlaşmayın. İyilik ve erdemlilikte yardımlaşın. Kötülük ve düşmanlıkta yardımlaşmayın. ALLAH'ı dinleyin. ALLAH'ın cezası çetindir.",
+    "Elmalılı Hamdi Yazır Meali": "Ey iman edenler! Allah'ın alâmetlerine, haram aya, kurbanlık hediyelere, gerdanlıklarına ve Rablerinden lutuf ve rıza bekleyerek Kabe'ye yönelenlere sakın saygısızlık etmeyin. İhramdan çıktığınız zaman avlanabilirsiniz. Sizi Mescidi Haram'dan çevirdiklerinden dolayı bir topluma karşı olan kininiz, sizi saldırıya sevk etmesin. İyilik ve takva üzerinde yardımlaşın, günah ve düşmanlık üzerinde yardımlaşmayın. Allah'tan korkun. Çünkü Allah'ın azabı çetindir.",
+    "Elmalılı Meali (Orijinal)": "Ey o bütün iyman edenler! ne Allahın şeâirine, ne şehri harâma, ne kurbanlık hediyyelere, ne gerdanlıklarına ne de mevlâlarının gerek fazlını ve gerek rızasını arayarak beyti harâma doğru gelenlere sakın hurmetsizlik etmeyin, ihramdan çıktığınız zaman isterseniz avlanın, sizi Mescidi haramdan menettiler diye bir takımlarına karşı beslediğiniz kin sakın sizi tecavüze sevk etmesin, birr-ü takvâ üzere yardımlaşın, günah-ü taaddi üzere yardımlaşmayın, Allahdan korkun çünkü Allahın ıkabı çok şiddetlidir",
+    "Emrah Demiryent Meali": "Ey îmân edenler! Allah’ın şeâirine (dininin alâmetlerine, savaşmanın yasak olduğu) harâm aya, (hac) kurbanlıklarına ve (boyunlarına takılmış) gerdanlıklara ve Rablerinin lütuf ve rızasını isteyerek Mescid-i Harâm’a yönelenlere karşı saygısızlık etmeyin. (Hac farîzasını bitirip) ihramdan çıktıktan sonra (isterseniz) avlanabilirsiniz. (Daha önce) sizi, Mescid-i Harâm’dan alıkoymalarından dolayı bir topluma olan kızgınlığınız, aşırı gitmenize (haksızlık yapmanıza) neden olmasın. Günah ve düşmanlık üzerinde değil, iyilik ve takva üzerinde yardımlaşın. Allah’tan korkun. Şüphesiz, Allah’ın azabı çok şiddetlidir.",
+    "Erhan Aktaş Meali": "Ey iman edenler! Allah'ın işaretlerine¹, haram aya, kurbana, gerdanlıklara;² Rabb'lerinin lütuf ve rızasını dileyerek Beyt-i Haram'a gelenlere saygısızlık etmeyin. İhramdan çıktığınız zaman avlanabilirsiniz. Sizi, Mescid-i Haram'dan alıkoymalarından dolayı bir topluma olan kızgınlığınız, aşırı gitmenize neden olmasın. Günah ve düşmanlık üzerinde değil, iyilik ve takva üzerinde yardımlaşın. Allah'a karşı takvalı olun. Kuşkusuz Allah'ın azabı çok şiddetlidir.",
+    "Hasan Basri Çantay Meali": "Ey îman edenler, Allahın şeâirine, haram olan aya, kurbanlık hediyyelere, (onlardaki) gerdanlıklara ve Rablerinden hem bir ticâret, hem bir rızaa arayarak Beyt-i haraamı kasdedib gelenlere sakın hürmetsizlik etmeyin, ihramdan çıkdığınız vakit (isterseniz) avlanın. Sizi Mescid-i haramdan men' etdiler diye bir kavme karşı beslediğiniz kîn, sakın sizi tecâvüze sevk etmesin. İyilik etmek, fenâlıkdan sakınmak hususunda birbirinizle yardımlaşın. Günâh işlemek ve haddi aşmak üzerinde yardımlaşmayın Allahdan korkun. Şübhesiz ki Allah, cezası çok çetin olandır.",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "Ey iman edenler! Allah’ın nişanelerine, haram aya, süslenmiş ve kesilecek hayvanlara, Rablerinden bir lütuf ve rıza isteyerek Beyt-i Haram’a gelenlere saygısızlık etmeyin. İhramdan çıktığınız zaman avlanabilirsiniz. Mescid-i Haram’a girmenizi engellediği için bir topluma olan hıncınız sizi aşırı gitmeye sevk etmesin. Erdem ve takvada yardımlaşın, günah ve düşmanlıkta yardımlaşmayın. Allah’a karşı takvalı olun. Allah, cezası şiddetli olandır.",
+    "Hayrat Neşriyat Meali": "Ey îmân edenler! Ne Allah'ın şeâirine (dîninin alâmetlerine), ne haram aya, ne(Kâ'be'ye hediye edilen) kurbana, ne (ona takılan) gerdanlıklara ne de Rablerinden bir lütuf ve bir rızâ arayarak Beyt-i Harâm'a gelenlere hürmetsizlik etmeyin! Ama ihrâmdan çıkınca artık avlanabilirsiniz.Ve sizi Mescid-i Harâm'dan men' ettiler diye bir kavme olan kin(iniz), sakın sizi haddi aşmaya sevk etmesin! Hem iyilik ve takvâ üzerine yardımlaşın,(2) günah ve düşmanlık üzerine ise yardımlaşmayın, hem Allah'dan sakının! Şübhe yok ki Allah, azâbı çok şiddetli olandır.",
+    "İhsan Aktaş Meali": "Ey iman etmiş olanlar! Allah’ın (koyduğu, dini) nişanelerine, kutsal (hac) ayına, (Allah adına hediye edilmiş) kurbanlıklara, (kurban olarak) gerdanlıklarla işaretlenmiş hayvanlara, Rablerinin lütuf ve rızasını arayarak Beyt-i Haram’a yönelmiş kimselere (tecavüz ve) saygısızlık etmeyin. İhramdan çıktığınızda ise (isterseniz) avlanın. Ve sizi Mescid-i Haram’dan alıkoymuş olanlara karşı öfkeniz (kininiz), saldırganlık yapmanıza yol açmasın! İyilik etmek, fenâlıktan sakınmak hususunda da birbirinizle yardımlaşın. Günah işlemek ve haddi aşmak üzerinde yardımlaşmayın. Ve Allah’a karşı gelmekten sakının. Şüphesiz Allah’ın (zalim, azgın ve saldırganlara karşı) cezası çok çetin olandır. *",
+    "İlyas Yorulmaz Meali": "Ey İman edenler! Allah’ı hatırlatan işaretlere, haram aylara, kurbanlıklara, adak olarak ayrılmış hayvanlara, beytül-haramın (ibadet için gelenlerin) güvenilirliğine ve Allah’ın rızası ve lütfundan rızık aramaya gelenlere zarar verecek davranışlardan kaçının. İhramdan çıktıktan sonra avlanabilirsiniz. Sizleri Mescidi-i Haramdan uzaklaştıranlara olan kininiz, haddi aşmanıza sebep olup, iyiliklerde yardımlaşmanıza, haramlardan korunmanıza (takvaya) engel olmasın. İyi ve doğru şeyleri yapmakta yardımlaşın, günah işlemek ve birbirinize düşmanlık etmekte yardımlaşmayın, Allah’dan korunun, Allah, hesabı çok şiddetli olandır.",
+    "İsmayıl Hakkı Baltacıoğlu": "Ey inananlar! Allah’ın törenlerine, vuruşma haram olan aya, Kabe’ye gönderilen kurbanlara, kurbanların gerdanlıklarına, Çalaplarının bol vergisini dilemek üzere Beyt-i Haram’a gelenlere karşı sakın saygısızlık etmeyin. İhramdan çıktıktan sonra da artık avlayın. Sizi Mescid-i Haram’dan alıkoyduğu için o ulusa karşı duyduğunuz tiksinti sakın, sizi taşkınlığa sürüklemesin. Olgunlukta, sakınırlıkta birbirinize yardım edin. Günah işlemekte, sınırları aşmakta biribirinize yardım etmeyin. Allah’tan sakının. Çünkü Allah’ın azabı çok ağırdır.",
+    "İsmail Hakkı İzmirli": "Ey iman edenler! Allah/ın nişanlarını , şehr-i Haramı hacı kurbanını, gerdanlıkları , Rablerinden inayet, hoşnutluk isteyerek Beyt-i Haramı kastedenlerin katlini helâl kılmayın. İhramdan çıkınca avlayabilirsiniz . Sizi Mesçid-i Haramdan alıkoyduklarından dolayı o cemaate öfkelenmeniz sakın sizi haddi aşmaya sevketmesin. İyi işe ve takvaya yardım edin, masiyet ve taaddiye yardım etmeyin, Allah/tan sakının. Allah, ukubette şiddetlidir.",
+    "İsmail Yakıt": "Ey inananlar! Allah’ın sembollerine, haram aya, (Kâbe’ye) hediye edilen kurbana, gerdanlık takılan hayvanlara, Rablerinden lütuf ve rızasını (kazanmayı) arzu ederek “Beytü’l-Harâm’a” gelenlere saygısızlık etmeyiniz . İhramdan çıktığınız zaman avlanınız!² Sizin Mescid-i Harâm’a (girmenizi) engelledikleri/sizi geri çevirdikleri için bir topluluğa olan kininiz, aşırı gitmenize/suç işlemenize sebep olmasın. Erdemli olmak ve sorumluluk bilinci taşımak konusunda yardımlaşınız ama günah işleme ve düşmanlık etme konusunda yardımlaşmayınız. Allah’a karşı sorumluluk bilincinde olunuz. Muhakkak ki Allah, azabı şiddetli olandır.",
+    "Kadri Çelik Meali": "Ey iman edenler! Allah'ın nişanelerine, hürmet edilen aya, (Kâbe'ye hediye olan) kurbanlığa, gerdanlıklar takılan hayvanlara, Rablerinden bol nimet ve rıza talep ederek Beyt-i Haram'a gelenlere (saldırı ve saygısızlığı), helal saymayın. İhramdan çıktığınız zaman avlanabilirsiniz. Sizi Mescid-i Haram'dan menettiği için bir topluluğa olan kininiz, aşırı gitmenize sebep olmasın. İyilikte ve takvada yardımlaşın, günah işlemek ve aşırı gitmekte yardımlaşmayın. Allah'tan sakının, şüphesiz Allah cezası pek şiddetli olandır.",
+    "Mahmut Kısa Meali": "Ey iman edenler!1.Allah’ın şiarlarına,yani O’na itaati temsil eden mescit, ezan, Mushaf, başörtüsü ve benzeri kutsal işâret ve sembollere karşı saygısızca davranmayın!2. Savaşmanınyasakedildiği (2. Bakara: 194) kutsalaylaratam olarak riayet edin!3. Hac amacıyla Mekke’ye giden hacıların, Kâbe’de kurban etmek üzere yanlarında getirdiklerikurbanlıklarasaygısızlık etmeyin! Meselâ, onların hac kafilelerine saldırmaya, kurbanlık hayvanlarını ellerinden almaya kalkmayın.4. Ayrıca, hac ve umre dışında, Allah’a adandıklarının bir belirtisi olarak boyunlarına işâretler takılaraksüslenen kurbanlıklarada aynı şekilde saygılı davranın!5. Bir de, hem ticâret yaparakRab’lerinin lütfedeceği nîmetlerielde etmekvehem de hac ibâdetini yerine getirerek O’nunrızasını kazanmak amacıyla Kutsal Kâbe’ye gelen hacılara karşı —bunlar, bir zamanlar sizi hacdan alıkoymuş düşmanlarınız bile olsalar—saygısızlık etmeyin!Onların huzur ve güven içinde topraklarınızdan geçmelerine izin verin. Çünkü sizler, yeryüzünde sulh ve adâleti sağlamakla yükümlüsünüz.Kabe’yi ziyaret amacıyla ihrama girerseniz —deniz avı hariç— avlanmayın. Fakat hac ibâdetlerini bitiripihramdan çıktığınız zaman,Mekke’deki yasak bölge dışında ve hayvanların etinden, derisinden vs. faydalanmak veya zararından korunmak amacıylaavlanabilirsiniz.Fakat sırf zevk için avlanmak doğru değildir.Bir zamanlarKâbe’yi ziyaret etmenize engel oldukları için bu insanlara karşı duyduğunuz öfke, sizi asla adâletsizliğe sevk etmesin!Geçmişten kaynaklanan intikam duygularıyla onlara saldırmaya, eziyet etmeye kalkmayın! İlâhî dâvet onlara açık ve net olarak ulaşıncaya kadar da, Kâbe’yi haccetmelerine engel olmayın.Ayrıca, yeryüzünde zulüm ve haksızlığı ortadan kaldırmak ve İslâm’ın ortaya koyduğu iman ve hayat sistemini egemen kılmak için birleşin: Ahlâkî değerleri yeniden yücelterekiyilikleri yaygınlaştırma vezulme karşı tek yumruk olarakkötülükleri engelleme konusunda birbirinizle yardımlaşın; günah işlemek ve düşmanlıkları körüklemekamacıyla yardımlaşmayın!Allah yolunda mücâdeleyi terk ettiğiniz takdirde, meydan kötülere kalır ve zulüm, sistemleşerek insanlığın başına bir kâbus gibi çöker.O hâlde,Allah’tangelen ilkeler doğrultusunda hayata yön vererek kötülüğün her çeşidinden titizliklesakının!Şunu hiç unutmayın ki,Allah’ın cezalandırması çok çetindir!Eti yenilmesi haram kılınan hayvanlara gelince:",
+    "Mahmut Özdemir Meali": "Ey iman edenler! Allah’ın nişanelerine hürmetsizlik etmeyin! Haram Ay’a da, Kurbanlık Hediyeler’e de, Gerdanlıklar’a da, rabb’lerinden bir lütuf ve hoşnutluk aramak üzere Beyt-ül Harâm’a Gelenler’e de (hürmetsizlik etmeyin)! İhramdan çıktığınız zaman avlanabilirsiniz. Sizi Mescid ül-Harâm’dan engellediler diye bir kavmin öfkesi sizi suça sevketmesin! İyilik ve Takvâ üzerine yardımlaşın; Günah ve Düşmanlık üzerine yardımlaşmayın! Allah’tan sakınıp korunun! Allah, İkab’ı / Cezalandırması / Azab’ı şiddetli olandır.",
+    "Mehmet Çakır Meali": "Sevgili müminler! Tanrı'nın belirlediği hac ziyaret noktalarını ve yasaklı ayın kurallarını ihlâl etmeyin. Üzerindekurbanlıktırişareti bulunan hayvanları avlamayın. Yasaklı ev / Ka'beye sığınanlara da ilişmeyin, bırakın huzur içinde Rab’lerinin rızasını ve ikramını talep etsinler. İhramdan çıkar çıkmaz avlanabilirsiniz. Vaktiyle sizi Ka'beye sokmayanlara karşı beslediğiniz kin, sizi taşkınlık yapmaya sevk etmesin. İyilik ve sağlamcılıkta yardımlaşın; günah ve düşmanlıkta yardımlaşmayın. Kendinizi sağlama alın. Çünkü Allah'ın cezası serttir…",
+    "Mehmet Çoban Meali": "Ey iman edenler! Allah’a adamak için işaretlediğiniz hayvanlara, haram aya, hac kurbanına takılı gerdanlıklara, Rabbinin rızasını gözeterek Kâbe’ye ziyaret için gelenlere saygısızlık etmeyin! İhramdan çıktığınızda size helal kılınanları avlayabilirsiniz. Mescid-i Haram’dan alıkoydular diye, bazılarına karşı duyduğunuz kin sizi haddi aşmaya ve zulme sürüklemesin! Her zaman Allah’ın yasalarına uyarak saygı gösterin! Allah’a karşı gelmekten sakınmak üzere birbirinizle yardımlaşın! İyilikleri hâkim kılmak üzere birbirinize en güzel desteği verin! Ancak günah ve düşmanlık üzerine yardımlaşmayın! Allah’a karşı gelmekten sakının! Bilin ki Allah’ın cezası çok şiddetlidir.",
+    "Mehmet Okuyan Meali": "Ey iman edenler! Allah’ın sembollerine, haram ay(lar)a, (hediye edilmiş) kurban(lar)a ve (onlardaki) gerdanlıklara, Rablerinin lütuf ve rızasını arayarak Saygın Ev’e (Kâbe’ye) yönelmiş kişilere saygısızlık etmeyin! İhramdan çıkınca avlanın! Mescid-i Haram’dan sizi engelledikleri için bir topluma karşı öfke(niz) sizi haddi aşma suçuna sevk etmesin! İyilik ve (duyarlılık) üzerine yardımlaşın; günah ve düşmanlık üzerine yardımlaşmayın! Allah’a karşı lı (duyarlı) olun! Şüphesiz ki Allah azabı şiddetli olandır.",
+    "Mehmet Türk Meali": "Ey îman edenler! Allah’ın (ibâdet amaçlı) sembollerine,¹ (içerisinde savaşılması) haram olan aya,² (Kâbe’ye) armağan edilen kurbanlığa, gerdanlıklı kurbanlara³ ve Rablerinin lütuf ve rızasını kazanmak amacı ile Kâbe’ye yönelenlere sakın saygısızlık etmeyin. Ancak ihramdan çıkınca avlanabilirsiniz. Sizi Mescid-i Haram’dan alıkoyduklarından dolayı bir topluma olan kininiz sizi suç işlemeğe sevk etmesin. Birbirinizle iyilik ve takva konusunda yardımlaşın fakat günâh ve düşmanlık konusunda sakın yardımlaşmayın. Allah’a karşı hata etmekten sakının. İyi bilin ki Allah’ın cezâsı çok şiddetlidir.⁴",
+    "Muhammed Esed Meali": "Siz ey imana ermiş olanlar! Allah’ın koyduğu sembollere ve kutsal ayına ve süslenmiş kurbanlıklara ⁴ ve Rablerinin lütuf ve rızasını isteyerek Beytu’l-Harâm’a koşanlara karşı saygısızlıkta bulunmayın; hac göreviniz bittikten sonra ⁵ serbestçe avlanabilirsiniz. Sizi Mescid-i Harâm’dan alıkoyanlara karşı öfkeniz, saldırganlık yapmanıza yol açmasın: ⁶ erdemi ve ilahî sorumluluk bilincini geliştirmede birbirinizle yardımlaşın, kötülüğü ve düşmanlığı artırmada değil; Allah’a karşı sorumluluğunuzun bilincinde olun: Ve unutmayın ki Allah’ın intikamı çetindir!",
+    "Mustafa Çavdar Meali": "Ey iman edenler! Allah’ın dini sembollerine, dokunulmaz kutsal aya, hac kurbanlarına ve gerdanlık takılmış kurbanlık hayvanlara, Rablerinin lütfunu aramak/ticaret yapmak ve onun rızasına ulaşmak için Beyt-i Harama gelenlere saygısızlık etmeyin.1 İhramdan çıktığınız zaman avlanabilirsiniz. Sizi daha önce Mescid-i Haram’a girmenizi engellediği için bir topluma olan öfkeniz, onlara karşı saldırganlığa sebep olmasın.3 İyilik ve kötülüklerden korunma hususunda yardımlaşın, günah ve düşmanlık hususunda yardımlaşmayın.4 Allah’tan korkun. Allah’ın cezalandırması çok şiddetlidir. 122/27, 2 4/135, 35/8, 44/85-114",
+    "Mustafa İslamoğlu Meali": "Siz ey iman edenler! Allah’ın sembollerine, kutsal aya, gerdanları süslenmiş kurbanlıklara ve Rablerinin ihsan ve rızasını isteyerek Beytu’l-Haram’a koşanlara karşı saygısızlık etmeyin! Ancak, hac ile ilgili sorumlulukları yerine getirdiğiniz zaman avlanın! Sizi Mescid-i Haram’dan alıkoyanlara olan hıncınız, onlara saldırganlık yapmanıza yol açmasın; erdem ve takvada birbirinizle dayanışma içinde olun, günahkârca kötülük ve düşmanlıkta değil; artık Allah’a karşı sorumluluğunuzun bilincinde olun: Çünkü Allah’ın cezası pek çetindir.",
+    "Orhan Kuntman Meali": "Ey iman edenler, Allah’ın hükümlerine, haram aya (savaşmanın yasak olduğu Recep, Zilkade, Zilhicce ve Muharrem aylarına) Kabe'ye hediye edilen, (özellikle üzerlerine kurbanlık nişanesi olan) gerdanlık takılı hayvanlara ve Rablerinden (dünyaya ait) bir lütuf ile rıza umarak Kabe'yi ziyarete gelenlere sakın saygısızlık etmeyin! İhramdan çıktıktan sonra, isterseniz avlanabilirsiniz. Bir zamanlar sizi Mescid-i Haram’dan alıkoydular diye, bir topluluğu karşı beslediğiniz kin, sakın sizi onlara karşı saldırıya sevk etmesin. İyilik etmek ve kötülükten sakınmak için birbirinize yardım edin, aranızda günah ve haddi aşmayı önlemeye çalışın, Allah'tan korkun, kuşkusuz Allah’ın (emir ve yasaklarım çiğneyenlere karşı) azabı çok şiddetlidir.",
+    "Osman Fırat Meali": "Ey iman edenler!. Ne Allâh’ın koyduğu sembollere, ne harâm aya, ne hediyeye( kurbanalıklara), ne de (Kurbanlıklara takılan) gerdanlıklara ve ne de rablerinin lutuf ve rızâsını arzu ederek Beyti Harâm’a doğru gelenlere saygısızlık etmeyin. İhrâmdan çıktığınız zaman avlanabilirsiniz. Sizi Mescidi Haramdan alıkoyanlara karşı öfkeniz, saldırganlık yapmanıza yol açmasın. İyilik ve takvâ üzerinde yardımlaşın, günâh ve düşmanlık üzerinde yardımlaşmayın, Allah’tan korkun. Çünkü Allâh’ın azâbı çetindir.",
+    "Ömer Nasuhi Bilmen Meali": "Ey imân edenler! Allah Teâlâ'nın ahkâm-ı şer'iyesine ve haram olan aya ve Harem'e gönderilen kurbana ve gerdanlıklı kurban hayvanlarına Rablerinden fazl ve rıdvan talebinde bulunarak Beyt-i Harâm'a gelmek kasdinde bulunanlara tecavüzü helâl addetmeyiniz. İhramdan çıktığınız zaman artık avlanabilirsiniz. Sizi Mescid-i Haram'dan men etmiş olduklarından dolayı bir kavime olan öfkelenmeniz sizi sakın tecavüze sevketmesin. Ve birr ve takvâ üzere yardımlaşınız ve günah ve adâvet üzere yardımlaşmayınız. Ve Allah Teâlâ'dan korkunuz, şüphe yok ki, Allah Teâlâ'nın azabı pek şiddetlidir.",
+    "Suat Yıldırım Meali": "Ey iman edenler! Ne Allah'ın şeairine, ne şehr-i harama, ne Kâbe'ye hediye olarak gönderilen kurbanlık hayvanlara, hele hele gerdanlık takılı kurbanlıklara, ne de Rabbinin lütfunu, ihsan edeceği kazancı ve O'nun rızasını arzulayarak Beyt-i Haram'a yönelenlere sakın hürmetsizlik etmeyin. İhramdan çıkınca isterseniz avlanın. Sizin Mescid-i Haram'ı ziyaretinizi engellediler diye birtakım kimselere karşı beslediğiniz kin ve öfke, sakın sizin onlara saldırmanıza yol açmasın. Siz iyilik etmek, fenalıktan sakınmak hususunda birbirinizle yardımlaşın, günah işlemek ve başkasına saldırmak hususunda birbirinizi desteklemeyin. Allah'a karşı gelmekten sakının. Çünkü Allah'ın cezası çok şiddetlidir. ",
+    "Süleyman Ateş Meali": "Ey inananlar, ne Allah'ın işaretlerine, ne haram aya, ne kurbana, ne gerdanlık(lı kurban)lara ve ne de Rablerinin lutuf ve rızasını arzu ederek Beyt-i haram'a doğru gelenlere saygısızlık etmeyin. İhramdan çıktığınız zaman avlanabilirsiniz. Sizi Mescid-i haram'dan çevirdiklerinden dolayı bir topluma karşı beslediğiniz kin, sizi suç işlemeğe itmesin. İyilik ve takva üzerinde yardımlaşın, günah ve düşmanlık üzerinde yardımlaşmayın, Allah'tan korkun. Çünkü Allah'ın azabı çetindir.",
+    "Süleyman Tevfik (1927)": "Ey Mü'minler! Allâh'ın şe'âirini (menâsik-i haccı yâhud ahkâm-ı dîni icrâ itmemek veyâ bozmak ile), şehr-i harâmı (onda kıtâl ve muhârebe ile), hedyi (Ka'be'ye ihdâ olunan kurbânı), kalâidi (hac kurbânı oldığı bilinmek içün boynuna tasma takılan hayvânları ahz ve gasb ve yâhud mahalline vusülden men' ile) helâl saymayınız. Rablerinin lütuf ve ihsânını ve rızâsını isteyerek Beytü'l Harâm'a gelüb emn ve emâna girenlerin (ziyâret veyâ ticâret maksadıyla Mekke'ye gelen müşriklerin ve kâfirlerin) katlini helâl 'add itmeyiniz. İhrâmdan veyâ Harem'den çıkdığınızda sayd idiniz. Mescid-i Harâm'dan sizi men' iden kavme olan şiddet-i buğzunuz onlara tecâvüz ve te'addî ile sizi vebâle sokmasun. Hayır ve hasenât ve takvâ üzerine birbirinize mu'âvenet idiniz. Zulüm ve günâh üzerine birbirinize mu'în olmayınız ve Allâh'dan ittikâ idiniz. Allâh'ın 'azâbı şiddetlidir.",
+    "Süleymaniye Vakfı Meali": "Ey inanıp güvenenler, Allah’a kulluğun simgelerine, haram (yasak) ayına, hac kurbanına, gerdanlıklı kurbanlara ve Rablerinin ikramını ve rızasını aramak için Kabe’ye yönelenlere saygısızlık etmeyin. İhramdan çıkınca avlanabilirsiniz. Mescid-i Haram’dan men eden bir topluluğa duyduğunuz öfke, sakın sizi aşırılığa sevk etmesin. İyilikte ve kendinizi korumada (takvada) yardımlaşın ama günahta ve taşkınlıkta yardımlaşmayın. Allah’tan çekinerek kendinizi koruyun çünkü Allah’ın cezası pek ağırdır.",
+    "Şaban Piriş Meali": "- Ey iman edenler, Allah'ın nişanelerine, haram aya, kurbanlığa ve gerdanlık takılan hayvanlara, Rab'lerinden nimet ve rıza isteyerek Beyt-i Harama gelenlere saygısızlık etmeyin. İhramdan çıktığınız zaman avlanabilirsiniz. Sizi Mescid-i Haram'a girmenizi engellediği için bir topluma olan kininiz, aşırı gitmenize sebep olmasın. İyilik ve takva hususunda yardımlaşın, günah ve düşmanlık hususunda yardımlaşmayın. Allah'tan korkun. Allah'ın cezalandırması şiddetlidir.",
+    "Ümit Şimşek Meali": "Ey iman edenler! Allah'ın nişanlarına,(1) Haram Aylara, hac kurbanlarına, kurban olarak işaretlenmiş hayvanlara, Rablerinin lütfunu ve rızasını arayarak Kâbe'ye gelenlere tecavüz etmeyin. İhramdan çıktığınız zaman ise avlanabilirsiniz. Sizi Mescid-i Haramın ziyaretinden alıkoydukları için bir topluluğa duyduğunuz kin, sizi adaletsizliğe sevk etmesin. İyilik ve takvâda(2) yardımlaşın; günahta ve düşmanlıkta yardımlaşmayın. Allah'tan korkun. Çünkü Allah'ın cezası pek çetindir.",
+    "Yaşar Nuri Öztürk Meali": "Ey iman edenler! Allah'ın ibadet, iyilik ve güzellik alâmeti kıldığı şeylere, çarpışmanın yasak olduğu haram aya, kurbanlık hediyelere, gerdanlıklara, Rablerinden bir lütuf ve rıza niyaz ederek Mescid-i Haram'a gelmiş olanlara saygısızlık etmeyin! İhramdan çıktığınız vakit avlanın. Bir topluluğun, sizi Mescid-i Haram'dan uzak tutmak için sergilediği kötülük, sizi saldırganlık ve düşmanlığa sakın itmesin! Hayırda erginlik/dürüstlük ve takva üzere yardımlaşın! Kötülük/çirkinlik, düşmanlık/saldırganlık üzere yardımlaşmayın. Allah'tan sakının! Kuşkunuz olmasın ki, Allah'ın azabı çok şiddetlidir.",
+    "Eski Anadolu Türkçesi": "iy anlar kim įmān getürdiler! ḥelāl eylemeñ Tañrı’nuñ hac nişānlaruñ ne daħı ḥarām ayı ne daħı ķurban kim ķa'be'ye viribįrler ne daħı ķurbān boyuma daķduklarun ne daħı ķaśd eyleyicileri ķa'be'ye kim isterler eylügi ya'nį bezirgenlıķ anlaruñ çalabısından daħı ħoşnūdluķ. daħı ķaçan iḥram ŧonından çıķası avlañ. daħı ķazarını aśım si 'afv bir ķavm sevmemek ya'nį mekke kāfirleri kim yıġdılar sizi mescid-i ḥarām’dan kim artuķlıķ eyleyesiz daħı arķa virişüñ eylük üzere daħı śaķınmaķ üzere daħı arķa virişmeñ yazuķ üzere daħı žulm eylemek üzere. daħı śaķınuñ Tañrı’dan bayıķ Tañrı ķatı 'aźābludur.",
+    "Satıraltı Meal (1534)": "İy īmān getüren kişiler, ḥalāl görmeñüz Tañrı Ta‘ālā ḥarām eyledügi nesne‐leri, ḳurbānları daḫı ḥalāl görmeñüz, Mekketu’llāha ḳaṣd eyleyenleri öl‐dürmegi daḫı ḥalāl görmeñüz, isterler ki Tañrı Ta‘ālānuñ keremi, rāżılıġındaḫı isterler. Ḳaçan iḥrāmdan çıḳsañuz av avlañuz, daḫı sizi yamanlıġa bı‐raḳmasun bir ḳavm yamanlıḳ eylemegi ki men‘ eylediler sizi Mekke‐tu’llāhdan, ta‘addī eylemeñüz biri birüñüze, yardım idüñüz yaḫşılıḳ üstine,taḳvā üstine, daḫı biri birüñüze yardım eylemeñüz yamanlıḳ üstine, düş‐manlıḳ üstine daḫı, daḫı Tañrıdan ḳorḳuñuz. Taḥḳīḳ Tañrı Ta‘ālānuñ ‘aẕābıḳatıdur.",
+    "Bunyadov-Memmedeliyev": "Ey iman gətirənlər! Allahın müəyyən etdiyi mərasimə (həcc mərasiminə), haram (hörmətli) aya (həcc ayı hesab edilən zülhiccəyə və ya rəcəb zülqə’də, zülhiccə və məhərrəm aylarına), (Kə’bəyə gətirilən) qurbanlara, boynuna nişan taxılmış qurbanlıq heyvanlara, həmçinin Rəbbinin lütfünü və razılığını diləyərək Beytülhərama (müqəddəs evə) üz tutub (ziyarətə) gələnlərə hörmətsizlik etməyin! İhramdan çıxdığınız zaman (istəsəniz) ov edin. (Vaxtilə) sizi Məscidülhərama daxil olmağa qoymayan camaata qarşı bəslədiyiniz kin sizi təcavüzə sövq etməsin (zülm və haqsızlıq günahına batırmasın). Yaxşılıq etməkdə və pis əməllərdən çəkinməkdə əlbir olun, günah iş görməkdə və düşmənçilik etməkdə bir-birinizə kömək göstərməyin. Allahdan qorxun. Həqiqətən, Allahın əzabı şiddətlidir!",
+    "M. Pickthall (English)": "O ye who believe! Profane not Allah's monuments nor the Sacred Month nor the offerings nor the garlands, nor those repairing to the Sacred House, seeking the grace and pleasure of Allah. But when ye have left the sacred territory, then go hunting (if ye will). And let not your hatred of a folk who (once) stopped your going to the Inviolable Place of Worship seduce you to transgress; but help ye one another unto righteousness and pious duty. Help not one another unto sin and transgression, but keep your duty to Allah. Lo! Allah is severe in punishment.",
+    "Yusuf Ali (English)": "O ye who believe! Violate not the sanctity of the symbols of Allah,(686) nor of the Sacred Month,(687) nor of the animals brought for sacrifice, nor the garlands that mark out such animals, nor the people resorting to the Sacred House,(688) seeking of the bounty and good pleasure of their Lord. But when ye are clear of the Sacred Precincts(689) and of pilgrim garb, ye may hunt and let not the hatred of some people in (once) shutting you out of the Sacred Mosque lead you to transgression (and hostility on your part).(690) Help ye one another in righteousness and piety, but help ye not one another in sin and rancour: fear Allah. for Allah is strict in punishment."
+  }
+}

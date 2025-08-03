@@ -1,0 +1,129 @@
+{
+  "surah_number": 11,
+  "verse_number": 123,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=11&ayet=123",
+  "arabic_text": "وَلِلّٰهِغَيْبُالسَّمٰوَاتِوَالْاَرْضِوَاِلَيْهِيُرْجَعُالْاَمْرُكُلُّهُفَاعْبُدْهُوَتَوَكَّلْعَلَيْهِۜوَمَارَبُّكَبِغَافِلٍعَمَّاتَعْمَلُونَ",
+  "transliteration": "Veli(A)llâhi ġaybu-ssemâvâti vel-ardi ve-ileyhi yurce’u-l-emru kulluhu fa’budhu vetevekkel ‘aleyh(i)(c)vemâ rabbuke biġâfilin ‘ammâ ta’melûn(e)",
+  "word_translations": [
+    {
+      "arabic": "وَلِلّٰهِ",
+      "turkish": "ve Allah'a aittir"
+    },
+    {
+      "arabic": "غَيْبُ",
+      "turkish": "gaybı"
+    },
+    {
+      "arabic": "السَّمٰوَاتِ",
+      "turkish": "göklerin"
+    },
+    {
+      "arabic": "وَالْاَرْضِ",
+      "turkish": "ve yerin"
+    },
+    {
+      "arabic": "وَاِلَيْهِ",
+      "turkish": "ve O'na"
+    },
+    {
+      "arabic": "يُرْجَعُ",
+      "turkish": "döndürülür"
+    },
+    {
+      "arabic": "الْاَمْرُ",
+      "turkish": "işler"
+    },
+    {
+      "arabic": "كُلُّهُ",
+      "turkish": "bütün"
+    },
+    {
+      "arabic": "فَاعْبُدْهُ",
+      "turkish": "(öyleyse) O'na kulluk et"
+    },
+    {
+      "arabic": "وَتَوَكَّلْ",
+      "turkish": "ve dayan"
+    },
+    {
+      "arabic": "عَلَيْهِۜ",
+      "turkish": "O'na"
+    },
+    {
+      "arabic": "وَمَا",
+      "turkish": "ve değildir"
+    },
+    {
+      "arabic": "رَبُّكَ",
+      "turkish": "Rabbin"
+    },
+    {
+      "arabic": "بِغَافِلٍ",
+      "turkish": "habersiz"
+    },
+    {
+      "arabic": "عَمَّا",
+      "turkish": "-dan"
+    },
+    {
+      "arabic": "تَعْمَلُونَ",
+      "turkish": "yaptıklarınız-"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Ve göklerle yeryüzünde gaibe ait olan, bilinmeyen her şey, Allah'ındır ve bütün işler, dönüp ona varır, artık ona kulluk et ve ona dayan. Rabbin, yaptığınız şeylerden gafil değildir.",
+    "Abdullah-Ahmet Akgül Meali": "(Gerçek şu ki:)Göklerin ve yerin gaybı(bütün varlıkları ve yaratılış sırları)Allah’ındır, bütün işler O’na döndürülüp durmaktadır; öyleyse sadece O’na kulluk et ve O’na tevekkül edip(güven). Senin Rabbin yaptıklarınızdan(gafil)habersiz değildir.(Sakın böyle sanıp aldanmayınız!)",
+    "Abdullah Parlıyan Meali": "Göklerin ve yerin, vahiyle bilinip akıl ve duyularla bilinemeyen gerçekleri, Allah'ın elindedir. Bütün işler O'na döndürülmektedir. Öyleyse O'na kulluk et, O'na güven, O'na dayan; çünkü Rabbin, yapıpettiklerinizden asla habersiz değildir.",
+    "Ahmet Tekin Meali": "Göklerdeki ve yerdeki bilinmeyen güçlerin ve imkânların tasarrufu yalnızca Allah'a aittir. Bütün planların icra edilerek sonuçlandırıldığı, bütün icraatların, amellerin hesabının sorulduğu tek merci Allah'tır. O halde O'nu ilâh tanı, candan müslüman olarak O'na teslim ol, saygıyla O'na kulluk ve ibadet et, O'nun şeriatına bağlan, O'na boyun eğ, işlerini O'na havale et. Rabbin işlediğiniz amellerden gafil, habersiz değildir, Buna göre sizi mükâfatlandırıp cezalandıracaktır.",
+    "Ahmet Varol Meali": "Göklerin ve yerin gaybı Allah'a aittir. Bütün işler O'na döndürülür. O'na kulluk et ve O'na dayan. Rabbin yaptıklarınızdan habersiz değildir.",
+    "Ali Bulaç Meali": "Göklerin ve yerin gaybı Allah'ındır, bütün işler O'na döndürülür; öyleyse O'na kulluk edin ve O'na tevekkül edin. Rabbin yaptıklarınızdan habersiz değildir.",
+    "Ali Fikri Yavuz Meali": "Göklerin ve yerin sırrı, Allah'ın ilmindedir. Bütün işler de ona döndürülür. O halde, yalnız O'na ibadet et ve O'na tevekkül kıl. Senin Rabbin, yapmakta olduğunuz şeylerden gafil değildir.",
+    "Bahaeddin Sağlam Meali": "Göklerin ve yerin gaybı (gizli idaresi,) Allah’ın elindedir. Her şey bütünü ile O’na döner. O’na ibadet et ve O’na tevekkül et. Çünkü O, sizin yaptıklarınızın hiçbirinden habersiz değildir.",
+    "Bayraktar Bayraklı Meali": "Göklerin ve yerin gaybı yalnız Allah'a aittir. Her iş O'na döndürülür. Öyle ise O'na kulluk et ve O'na dayan. Rabbin, yaptıklarınızdan gâfil değildir.",
+    "Besim Atalay Meali (1965)": "Göklerde de, yerde de göze görünmiyen her şey Allahın, her iş ona dayanır, ona tapasın, ona güvenesin, yaptığınız bir işten Allah habersiz değil",
+    "Cemal Külünkoğlu Meali": "Göklerin ve yerin bilinmeyen, insan idrakini aşan görülüp gözlenemeyen sırrı Allah'ın bilgisindedir. Bütün işler ancak O'na döndürülür. Öyleyse, O'na kulluk et; O'na güven. Rabbin yaptıklarınızdan asla habersiz değildir.",
+    "Cemil Said (1924)": "Semâvâtda ve arzda gizli olan şeyleri Allâh bilür. Her şey âna rücû’ idecekdir âna ’ibâdet ve tevekkül it. Rabbin a’mâlinizden gâfil değildir.",
+    "Diyanet İşleri Meali (Eski)": "Göklerin ve yerin gaybı Allah'a aittir. Bütün işler O'na döndürülür. Öyleyse O'na kulluk et, O'na güven. Rabbin, yaptıklarınızdan habersiz değildir.*",
+    "Diyanet İşleri Meali (Yeni)": "Göklerin ve yerin gaybını bilmek Allah’a mahsustur. Bütün işler O’na döndürülür. Öyle ise O’na kulluk et ve O’na tevekkül et. Rabbin yaptıklarınızdan habersiz değildir.",
+    "Kur'an Yolu (Diyanet İşleri)": "Göklerin ve yerin gizlisi (gaybı) yalnız Allah’a aittir. Her iş O’na döndürülür. Öyleyse O’na kulluk et ve O’na güvenip dayan! Rabbin yapmakta olduklarınızdan habersiz değildir.",
+    "Diyanet Vakfı Meali": "Göklerin ve yerin gaybı (sırrı) yalnız Allah'a aittir. Her iş O'na döndürülür. Öyle ise O'na kulluk et ve O'na dayan! Rabbin yaptıklarınızdan gafil değildir.",
+    "Edip Yüksel Meali": "Göklerin ve yerin gizlilikleri ALLAH'a aittir. Tüm işler sonunda ona döner. O'na kulluk edin ve O'na güvenin. Rabbin onların yaptığından habersiz değildir.",
+    "Elmalılı Hamdi Yazır Meali": "Göklerin ve yerin gaybını bilmek yalnızca Allah'a mahsustur. Her iş O'na döndürülür. Sen yalnızca O'na ibadet et ve yalnızca O'na dayan. Rabbin yaptıklarınızın hiçbirinden gafil değildir.",
+    "Elmalılı Meali (Orijinal)": "Bununla beraber Göklerin Yerin gaybi, Allahın'dır, emrin de hepsi ona irca' olunur, yalnız ona ıbadet et ve ona tevekkül kıl, rabbın ne yaptığınızdan ve yapacağınızdan gafil değil",
+    "Emrah Demiryent Meali": "Göklerin ve yerin gaybı Allah’a aittir. Bütün işler (hüküm verilmek üzere) O’ (nun manevi huzuru) na döndürülür. (Tevhid üzere) O’na kulluk et (meye) ve (sadece) O’na tevekkül (etmeye devam) et. Rabbin, yaptıklarınızdan habersiz değildir.",
+    "Erhan Aktaş Meali": "Göklerin ve yerin gaybı Allah'a aittir. Bütün işler O'na döndürülür. Öyleyse yalnızca O'na kulluk et ve yalnızca O'na tevekkül¹ et. Rabb'in, yaptıklarınızdan habersiz değildir.",
+    "Hasan Basri Çantay Meali": "«Göklerin ve yerin (sırr-ı) ğaybı Allahındır. Her iş Ona döndürülür, öyle ise Ona ibâdet et, Ona güvenib dayan. Senin Rabbin yapmakda olduğunuz şeylerden gaafil (ve habersiz) değildir».",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "Göklerin ve yerin gaybı Allah’a aittir. Bütün işler O’na döndürülür. Öyleyse O’na kulluk et ve O’na tevekkül et. Rabbin, yaptıklarınızdan habersiz değildir.",
+    "Hayrat Neşriyat Meali": "Hâlbuki göklerin ve yerin gaybı Allah'a âiddir ve bütün işler hep O'na döndürülür;(1) öyle ise O'na ibâdet et ve O'na tevekkül et! Çünki Rabbin, yapmakta olduklarınızdan gafil değildir.",
+    "İhsan Aktaş Meali": "Ve (iyi bilin ki) göklerin ve yerin (bütün evrenin) gaybı (insan idrakini aşan görünmez bilgisi), Allah’a aittir. Bütün işler de hep Allah’a döndürülüp götürülür. Öyleyse yalnız O’na kulluk et (hiç kimseye kulluk ve kölelik etme) ve O’na dayan. Ve (bil ki) Rabbin sizin yaptıklarınızdan asla habersız değildir.*",
+    "İlyas Yorulmaz Meali": "Göklerin ve yerin bilinmeyenlerini bilmek Allah’a aittir. Bütün işler O’na döndürülür. O halde yalnızca O’na kulluk et ve yalnızca O’na güven. Senin Rabbin yaptığınız hiçbir şeyden habersiz değildir.",
+    "İsmayıl Hakkı Baltacıoğlu": "Yerlerdeki, göklerdeki görünmiyenleri bilmek Allah’a vergidir. Bütün işlerin sonu Ona varır. Öyleyse, yalnız Ona tapın, yalnız Ona dayanın. Senin çalabın sizin bütün işlediklerinizi bilmez değildir.",
+    "İsmail Hakkı İzmirli": "Göklerde ve yerdeki gaipleri bilmek Allah/a mahsustur. Bütün işler O/na döner. Artık O/na tap, O/na güven. Rabbin yaptıklarınızdan gafil değildir.",
+    "İsmail Yakıt": "Göklerin ve yerin algılanamayanı/bilinemeyeni Allah’a aittir. Bütün işler O’na döndürülür. O’na ibadet ediniz ve güvenip dayanınız. Unutma! Rabbin yaptıklarınızdan asla gafil değildir.",
+    "Kadri Çelik Meali": "Göklerin ve yerin gaybı Allah'a aittir. Bütün işler O'na döndürülür. Öyleyse O'na ibadet et, O'na güven ve Rabbin, yaptıklarınızdan asla gafil değildir.",
+    "Mahmut Kısa Meali": "Göklerin ve yerin gaybı,yani evrendeki mutlak ve şaşmaz; göklerde ve yerde insanlığı Allah’ın rızasına ya da azap ve gazabına ulaştıran bütün yolların bilgisiyalnızca Allah’ın elindedir; her şey O’na döndürülecekve her konuda nihâî kararı O verecek, son sözü O söyleyecektir. Öyleyse,sadeceO’na kulluk et veyalnızcaO’na dayan!Unutma,Rabb’in, yaptığınız hiçbir şeyden habersiz değildir.",
+    "Mahmut Özdemir Meali": "Yer’in ve Gökler’in gaybı Allah’ındır. Bütünüyle İşler O’na döndürülüyor! Yalnız O’na kulluk et! O’na tevekkül et! Senin rabbin, onların işleyeceklerinden gâfil değildir.",
+    "Mehmet Çakır Meali": "Yerin ve göklerin ötesi de Allah'ındır. Her iş Allah'ın onayından geçer. Hep bunu dikkate alarak ona hizmet et. Allah'a güven. Çünkü senin Rabb'in yaptıklarınızı görmemiş olamaz.",
+    "Mehmet Çoban Meali": "Göklerin, yerin bilinmeyenleri Allah’a aittir. Bütün işler ona döndürülür. Öyleyse Allah’ın yasalarına uyarak ona kulluk et! Ona dayan! Rabbin yaptıklarınızdan habersiz değildir.",
+    "Mehmet Okuyan Meali": "Göklerin ve yerin ı (bilinemeyeni) yalnızca Allah’a aittir. Her iş yalnızca O’na döndürülür. Öyle ise O’na kulluk et ve O’na güven! Rabbin yaptıklarınızdan asla habersiz değildir.",
+    "Mehmet Türk Meali": "Göklerin ve yerin ğayb (bilgileri) Allah’a aittir. Bütün işler (sonunda) Ona döndürülür; öyleyse sen, sadece Ona kulluk ve tevekkül et. Senin Rabbin yaptıklarınızdan asla habersiz değildir.",
+    "Muhammed Esed Meali": "Göklerin ve yerin bilinmeyen, görülüp gözlenemeyen yüzü Allah’ın elindedir; ¹⁵⁵ ve var olan her şey hep O’na döndürülmektedir. Öyleyse, O’na kulluk et; O’na güven/O’na dayan; çünkü Rabbin yapıp-ettiklerinizden asla habersiz değildir.",
+    "Mustafa Çavdar Meali": "Göklerde ve yerde bilinmeyen ne varsa hepsi Allah’ın bilgisindedir. Sonunda her iş döner dolaşır Allah’ın dediğine varır, öyleyse sen sadece O’na kulluk et ve sadece O’na dayanıp güven. Zira senin Rabbin onların yaptıklarına asla duyarsız değildir. 3/180, 58/6, 67/29",
+    "Mustafa İslamoğlu Meali": "Göklerin ve yerin gizli gerçekleri Allah’a aittir; ve sonunda her iş döner dolaşır Allah’ın (dediğine) varır: şu hâlde yalnız O’na kul ol ve O’na güvenip dayan; zira senin Rabbin yaptıklarınız karşısında asla duyarsız kalmaz.",
+    "Orhan Kuntman Meali": "Göklerin ve yerin gaybı Allah’ındır, her iş O'na döndürülür. (Ey Muhammed) Sen sadece O'na ibadet et ve sadece O'na güvenip dayan. Rabbin yaptıklarınızın hiçbirinden elbette gafil değildir! (Mümin kullarını güzel amellerinden dolayı mükafatlandırır ve şirk ve küfürde direnenlere ise hak ettikleri cezalarını elbette verir.)",
+    "Osman Fırat Meali": "Göklerin ve yerin gaybını bilmek Allah’a mahsustur. Bütün işler O’na döndürülür. Öyle ise O’na kulluk et ve O’na tevekkül et. Rabbin yaptıklarınızdan gafil değildir.",
+    "Ömer Nasuhi Bilmen Meali": "Ve göklerin ve yerin gaybı Allah içindir ve emrin hepsi de O'na döndürülecektir. Artık O'na ibadet et ve O'na tevekkülde bulun ve Rabbin neler yapar olduğunuzdan asla gâfil değildir.",
+    "Suat Yıldırım Meali": "Bununla beraber, göklerin ve yerin gaybını bilmek Allah'a mahsustur. Bütün işler, hükmetmesi için O'na götürülür. Öyleyse sen yalnız O'na ibadet et, yalnız O'na dayan, O'na güven. Rabbin yaptıklarınızdan asla habersiz değildir.",
+    "Süleyman Ateş Meali": "Göklerin ve yerin gaybı (görünmez bilgisi), Allah'a aittir. Bütün işler hep Allah'a döndürülüp götürülür. O'na kulluk et ve O'na dayan. Rabbin sizin yaptıklarınızdan gafil değildir.",
+    "Süleyman Tevfik (1927)": "Göklerin ve yerin mugayyibâtını bilmek Allâh Te'âlâ'ya mahsûsdur. Umûrun kâffesi O'na râci' olur. (Yâ Muhammed) O'na 'ibâdet ve O'na tevekkül it. Rabbin işlediğiniz şeylerden gâfil değildir.",
+    "Süleymaniye Vakfı Meali": "Göklerde ve yerdeki bütün bilinmeyenleri bilmek Allah’a mahsustur. Her iş O’na varır. Sen O’na kul ol ve O’na güvenip dayan. Senin Rabbin yaptığınız işlerden habersiz değildir.",
+    "Şaban Piriş Meali": "Göklerin ve yerin gizlisi Allah'a aittir. Bütün işler O'na döner. Yalnız O'na kulluk et, O'na bağlan. Rabbin yaptıklarınızdan habersiz değildir.",
+    "Ümit Şimşek Meali": "Göklerin ve yerin gizlilikleri Allah'a aittir; bütün işler Ona döner. Sen de Ona kulluk et, Ona tevekkül et. Rabbin, sizin yaptıklarınızdan habersiz değildir.",
+    "Yaşar Nuri Öztürk Meali": "Göklerin ve yerin gizli bilgileri Allah'a aittir. Tüm iş ve oluş O'na döndürülür. O halde O'na kulluk et, O'na dayanıp güven! Rabbin, yapmakta olduklarınızdan habersiz değildir.",
+    "Eski Anadolu Türkçesi": "daħı Tañrı’nuñdur gökler görünmezi daħı yirüñ daħı anuñ yaña döner iş dükeli. pes ŧapuñ aña daħı tevekkül eyle aña. daħı. degül çalabuñ ġāfil andan kim işlersiz.",
+    "Satıraltı Meal (1534)": "Daḫı Tañrı Ta‘ālā bilür ġaybı göklerüñ ve yirlerüñ daḫı. Daḫı Allāh ḥażre‐tine döner barça işler. Pes ṭap sen, daḫı aña ṣıġın, senüñ Çalabuñ ġāfil degül‐dür anlar işledügi işlerden.",
+    "Bunyadov-Memmedeliyev": "Göylərin və yerin qeybi Allaha məxsusdur (Onun elmindədir). Bütün işlər də axırda Ona (Allaha) qayıdacaqdır. (Ya Rəsulum!) Yalnız Ona ibadət et və yalnız Ona təvəkkül elə. Rəbbin nə etdiklərinizdən qafil deyildir!",
+    "M. Pickthall (English)": "And Allah's is the Invisible of the heavens and the earth, and unto Him the whole matter will be returned. So worship Him and put thy trust in Him. Lo! thy Lord is not unaware of what ye (mortals) do.",
+    "Yusuf Ali (English)": "To Allah do belong the unseen (secrets) of the heavens and the earth, and to Him goeth back every affair (for decision): (1626)then worship Him, and put thy trust in Him: and thy Lord is not unmindful of aught that ye do."
+  }
+}

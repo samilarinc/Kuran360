@@ -1,0 +1,93 @@
+{
+  "surah_number": 2,
+  "verse_number": 2,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=2&ayet=2",
+  "arabic_text": "ذٰلِكَالْكِتَابُلَارَيْبَۚۛف۪يهِۚۛهُدًىلِلْمُتَّق۪ينَۙ",
+  "transliteration": "Żâlike-lkitâbu lâ raybe(*)fîhi(*)huden lilmuttekîn(e)",
+  "word_translations": [
+    {
+      "arabic": "ذٰلِكَ",
+      "turkish": "işte o"
+    },
+    {
+      "arabic": "الْكِتَابُ",
+      "turkish": "Kitap"
+    },
+    {
+      "arabic": "لَا",
+      "turkish": "yoktur"
+    },
+    {
+      "arabic": "رَيْبَۚۛ",
+      "turkish": "hiç şüphe"
+    },
+    {
+      "arabic": "ف۪يهِۚۛ",
+      "turkish": "kendisinde"
+    },
+    {
+      "arabic": "هُدًى",
+      "turkish": "yol göstericidir"
+    },
+    {
+      "arabic": "لِلْمُتَّق۪ينَۙ",
+      "turkish": "müttakiler için"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Bu, bir kitaptır ki onda şüphe yok. Takva sahiplerine yol göstericidir.",
+    "Abdullah-Ahmet Akgül Meali": "Bu(Kur’an), kendisinde asla şüphe(çarpıklık, karışıklık ve yanlışlık)bulunmayan,(ahirete inanan, ona hazırlık yapan, her türlü küfür ve kötülükten sakınıp Allah’ın rızasını arayan)müttakiler için yol gösterici olan bir Kitaptır(ki, mü’minlere hayat ve huzur rehberidir ve Allah’la kulları arasında bir sözleşmedir).",
+    "Abdullah Parlıyan Meali": "Anlattığı konularda hiçbir şüpheye yer bırakmayan bu kitap; yolunu Allah'ın kitabıyla bulmak isteyenlere cennet yolunu gösterir.",
+    "Ahmet Tekin Meali": "Geçmiş kutsal kitaplarda, Muhammed'e vahyedileceği müjdelenen, bütün insanların iman etmekle, uygulamakla yükümlü olduğu, yürürlükteki tek ve son ilâhî kitap yalnızca bu mükemmel, kutsal kitaptır, Kur'an'dır. Allah katından indirildiğinde, kaynağında, vahyinde ve içindeki bilgilerde; geçmiş kitaplarda müjdelenen, bütün insanları muhatap alan, yürürlükteki tek ve son kitap olduğunda, şüphe ve tereddüt yoktur.Allah'a sığınıp, emirlerine yapışarak, günahlardan arınıp, azaptan korunanlar, kulluk ve sorumluluk şuuruyla, haklarına ve özgürlüklerine sahip çıkarak şahsiyetli davranan, dinî ve sosyal görevlerinin bilincinde olan, Kuran esaslarını benimseyip, yeryüzüne hakim olan salih kullara dahil olarak Allah’ın emirlerine muhalefetten korunan mü'minler için, hidayet kaynağı-hidayet rehberidir.",
+    "Ahmet Varol Meali": "Bu (Kur'an-ı Kerim) doğruluğunda şüphe olmayan bir kitaptır. Allah'a karşı gelmekten sakınanlar için bir hidayet rehberidir.",
+    "Ali Bulaç Meali": "Bu, kendisinde şüphe olmayan, muttakiler için yol gösterici bir kitaptır.",
+    "Ali Fikri Yavuz Meali": "Bu, O kitaptır ki, kendisinden hiç şüphe yoktur ve daha önceki kitaplarda, Allah'ın inzâl edeceğini vaad buyurduğu kâmil kitaptır. Âhirette zarar verecek şeylerden korunanlar (takva sahipleri) için delildir, yol göstericidir.",
+    "Bahaeddin Sağlam Meali": "O vahiyler, kitaptır; (bilgidir, yasadır, öz ve gerçektir.) Kalbi daraltacak şüphe çekecek bir yanı yoktur. (Çünkü) özlerini koruyanlar (muttakiler) için bir rehberdir.",
+    "Bayraktar Bayraklı Meali": "Kendisinde hiç şüphe olmayan bu kitap, sakınanlar için bir rehberdir.",
+    "Besim Atalay Meali (1965)": "Bu bir kitaptır ki onda şüphe bulunmaz, sakınçlara kılavuzdur",
+    "Cemal Külünkoğlu Meali": "Bu, kendisinde kuşku, çelişme, tutarsızlık olmayan (ilahi bir) kitaptır. Muttâkiler için bir yol göstericidir.",
+    "Cemil Said (1924)": "İşte sıhhatinde hiç şübhe olmayan kitâb ki Allâh’dan korkanların mürşîdidir.",
+    "Diyanet İşleri Meali (Eski)": "Bu, doğruluğu şüphe götürmeyen ve Allah'a karşı gelmekten sakınanlara yol gösteren Kitap'dır.",
+    "Diyanet İşleri Meali (Yeni)": "Bu, kendisinde şüphe olmayan kitaptır. Allah’a karşı gelmekten sakınanlar için yol göstericidir.",
+    "Kur'an Yolu (Diyanet İşleri)": "İşte kitap; onda asla şüphe yoktur. O, günahtan sakınanlar için bir rehberdir.",
+    "Diyanet Vakfı Meali": "O kitap (Kur'an); onda asla şüphe yoktur. O, müttakîler (sakınanlar ve arınmak isteyenler) için bir yol göstericidir.",
+    "Edip Yüksel Meali": "Bu, kuşkusuz, erdemliler için yol gösterici bir kitaptır.",
+    "Elmalılı Hamdi Yazır Meali": "İşte o kitap, bunda şüphe yok, müttakiler (kötülükten korunacaklar) için hidayettir.",
+    "Elmalılı Meali (Orijinal)": "işte -o kitap, bunda şüphe yok, ayni hidayet, korunacaklar için",
+    "Emrah Demiryent Meali": "İşte bu kitap (Kur’ân-ı Kerîm)! Kendisinde hiçbir şüphe yoktur. Takva sahipleri için bir hidâyet rehberidir.",
+    "Erhan Aktaş Meali": "Bu Kitap, mutlak gerçeğin ta kendisidir. O, muttakiler¹ için hidâyettir.²",
+    "Hasan Basri Çantay Meali": "Bu, o kitab'dır ki kendisinde (Allah katından gönderilmiş olduğunda) hiç şübhe yokdur. (O) takvaa sahibleri için doğru yolun ta kendisidir.",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "Kendisinde şüphe olmayan bu kitap, muttakiler (:takva sahipleri) için hidayettir (:yol göstericidir).",
+    "Hayrat Neşriyat Meali": "İşte bu, o Kitab'dır ki, onda şübhe yoktur.(2) Takvâ sâhibleri için bir hidâyettir.",
+    "İhsan Aktaş Meali": "(İndirmekte olduğumuz) o kitap (hâlinde yazılan Kur’an), onda asla şüphe yoktur. (O bütün insanları ve özellikle) muttakileri (kötülüklerden sakınıp arınmak isteyen erkek ve kadınları) doğru yola ileten bir kılavuzdur. *",
+    "İlyas Yorulmaz Meali": "Allah’ın azabından (muttakiler) korunanları en doğru yola iletmesinde şüphe ve tereddüt olmayan yalnızca bu kitaptır.",
+    "İsmayıl Hakkı Baltacıoğlu": "Bu öyle bir Kitaptır ki doğruluğunda hiç şüphe yoktur, Allah’tan sakınanlara da yol göstericidir.",
+    "İsmail Hakkı İzmirli": "Bu, bir Kitaptır ki onda şüphe götürecek hiçbir şey yoktur , müttekiler hakkında bir rehberdir ",
+    "İsmail Yakıt": "Bu kitap, kesin gerçeğin tâ kendisidir²; sorumluluk bilincinde olanlar ³ için yol gösteren bir rehberdir.",
+    "Kadri Çelik Meali": "İşte o (yüce) kitap (Kur'an), hiç şüphesiz takva sahipleri için bir hidayettir.",
+    "Mahmut Kısa Meali": "İşte şu kitap,toplumun ve bireyin temel hayat prensiplerini çizen bu ilâhî yazgı var ya,kendisinde hiç şüphe yoktur,insan aklını şüpheye düşürebilecek hiçbir çelişki, eğrilik, tutarsızlık yoktur onda. Öyleyse, gönlünü aç ve onu içtenlikle oku; okudukça göreceksin ki, bu sözler yüce Yaratıcıdan gelen hakîkatin ta kendisidir. Fakat bu kitap, kötülüğü, çirkinliği tercih eden kimseler için değil; her türlü fenâlıktan titizlikle sakınan, doğruya ve güzelliğe ulaşmayı arzu eden otakvâ sahipleri içinbir kılavuz, bir yol gösterici, birhidâyettir. Şu hâlde, tüm insanlığa doğru yolu gösteren bu kitap, ancak takvâ sahiplerini hedefe ulaştıracaktır. Peki, kimdir bu takvâ sahipleri?",
+    "Mahmut Özdemir Meali": "İçinde kuşku olmayan bu Kitap, Bir hidayettir Müttakîler / Sakınıp Korunanlar için!",
+    "Mehmet Çakır Meali": "Sadece bu Kitap'ta, şüphe yoktur. Bu Kitap, sağlamcılar için bir kılavuzdur:",
+    "Mehmet Çoban Meali": "Okuduğunuz kitap hiçbir şüpheye mahal bırakmaz. Allah tarafından insanlara okunsun diye gönderilmiştir. Her şeyin yaratıcısı olan Allah’a karşı gelmekten sakınanlar için yol göstericidir. Allah’a karşı gelmekten sakınanlar, inançlarında samimi olup sağlam duran, Allah’a, Allah’tan gelenlere kesin olarak inananlardır.",
+    "Mehmet Okuyan Meali": "O kitap (Kur’an); onda asla şüphe yoktur. ler (duyarlı olanlar) için bir yol göstericidir.",
+    "Mehmet Türk Meali": "Bu, kendisinde şüphe¹ olmayan tek kitaptır.² Allah’a karşı hata etmekten sakınanlar için³ dosdoğru yolu gösteren (âyetler) ondadır.⁴",
+    "Muhammed Esed Meali": "BU İLAHÎ KELÂM–ki üzerinde hiçbir şüpheye yer yoktur– Allah’a karşı sorumluluklarının bilincinde olanlara ² bir rehber tir,",
+    "Mustafa Çavdar Meali": "Allah’a karşı gelmekten sakınanlar için doğru yol kılavuzu olan işte bu kitabın/Kuran’ın içinde hiçbir şüpheye yer yoktur. 4/82, 2/23, 17/9, 45/20",
+    "Mustafa İslamoğlu Meali": "İŞTE bu, kendisi hakkında hiçbir kuşkuya yer olmayan Kitap’tır. Takvâ sahipleri için bir hidayet rehberidir.",
+    "Orhan Kuntman Meali": "(Ey insanlar) İşte (okuduğunuz) şu Kitap (Kur’an öyle bir kitaptır ki onda (onun, Allah katından gönderilmiş olduğunda) asla kuşku yoktur! (kitaplar içinde hak -kendisinde şüphe olmayan- Allah’ın kitabı olduğu bunun kadar kesinlik ve şüphesizlik ile bilinen ve doğru yolu bunun kadar gösteren hiçbir kitap yoktur. Bunun ne vahyinin niteliği ve inmesinde ve bir şüphe, ne de töhmet vardır.) O, Takva sahipleri (Rablerinin azabından sakınan, emir ve yasaklarını tam uygulayarak O'nun koruması altına girmeye hak kazanan kullar) için doğru yol rehberidir.",
+    "Osman Fırat Meali": "İşte bu Kitap; kendisinde hiç şüphe yoktur; müttakiler için yol göstericidir.",
+    "Ömer Nasuhi Bilmen Meali": "İşte bu kitap ki, bunda bir şekk yoktur. Muttakîler için bir hidâyettir.",
+    "Suat Yıldırım Meali": "İşte Kitap! Şüphe yoktur onda. Rehberdir müttakîlere! ",
+    "Süleyman Ateş Meali": "İşte o Kitap; kendisinde hiç şüphe yoktur; müttakiler için yol göstericidir.",
+    "Süleyman Tevfik (1927)": "Bu kitâb (Hak tarafından gönderilmiş oldığında) şek ve şübhe olmayan kitâbdır. Allâh'dan korkub günâhlardan sakınanlara yol göstericidir.",
+    "Süleymaniye Vakfı Meali": "İşte o Kitap budur; içinde şüpheye yer yoktur. Müttakîler için rehberdir.",
+    "Şaban Piriş Meali": "2,3. Hiç kuşkusuz bu kitap, kendilerini günahlardan korumaya çalışan, görmediği halde inanan, namazı kılan ve kendilerine verdiğimiz rızıktan (Allah yolunda) harcayanlar için yol göstericidir.",
+    "Ümit Şimşek Meali": "Şu kitap ki, onda hiç kuşku yoktur. Takvâ sahipleri(2) için o bir yol göstericidir.",
+    "Yaşar Nuri Öztürk Meali": "İşte sana o Kitap! Kuşku/ çelişme/ tutarsızlık yok onda. Bir kılavuzdur o, sakınanlar için.",
+    "Eski Anadolu Türkçesi": "aña allāh-ü alam şol kitāb yoķdur gümān anuñ içinde; yol göstermekdür śaķınıcılara.",
+    "Satıraltı Meal (1534)": "İşte o kitāb. Bunda şübhe yoḳdur ḳorunacaḳlar içün ‘ayn‐ı hidāyetdir.",
+    "Bunyadov-Memmedeliyev": "Bu, (Allah tərəfindən nazil edilməsinə, haqdan gəlməsinə) heç bir şəkk-şübhə olmayan, müttəqilərə(Allahdan qorxanlara, pis əməllərdən çəkinənlərə) doğru yol göstərən Kitabdır.",
+    "M. Pickthall (English)": "This is the Scripture whereof there is no doubt, a guidance unto those who ward off (evil).",
+    "Yusuf Ali (English)": "This is the Book; in it is guidance sure, without doubt, to those who fear(26) Allah."
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "surah_number": 23,
+  "verse_number": 68,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=23&ayet=68",
+  "arabic_text": "اَفَلَمْيَدَّبَّرُواالْقَوْلَاَمْجَٓاءَهُمْمَالَمْيَأْتِاٰبَٓاءَهُمُالْاَوَّل۪ينَۘ",
+  "transliteration": "Efelem yeddebberû-lkavle em câehum mâ lem ye/ti âbâehumu-l-evvelîn(e)",
+  "word_translations": [
+    {
+      "arabic": "يَدَّبَّرُوا",
+      "turkish": "onlar iyice düşünmediler mi?"
+    },
+    {
+      "arabic": "الْقَوْلَ",
+      "turkish": "o sözü (Kur'an'ı)"
+    },
+    {
+      "arabic": "اَمْ",
+      "turkish": "yoksa"
+    },
+    {
+      "arabic": "جَٓاءَهُمْ",
+      "turkish": "onlara geldi (mi)?"
+    },
+    {
+      "arabic": "مَا",
+      "turkish": "bir şey"
+    },
+    {
+      "arabic": "يَأْتِ",
+      "turkish": "gelmeyen"
+    },
+    {
+      "arabic": "اٰبَٓاءَهُمُ",
+      "turkish": "atalarına"
+    },
+    {
+      "arabic": "الْاَوَّل۪ينَۘ",
+      "turkish": "önceki"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Şu Kur'an'ı bir iyice düşünmezler mi, yoksa evvelce gelip geçen atalarına gelmeyen bir şey mi geldi onlara?",
+    "Abdullah-Ahmet Akgül Meali": "Onlar, hâlâ bu(Hakk)sözü(Kur’an’ı)gereği gibi düşünmezler mi, yoksa onlara geçmişteki atalarına gelmeyen(özel kurtuluş beratı gibi)bir şey mi gelmiştir?",
+    "Abdullah Parlıyan Meali": "Onlar hâlâ O Kur'ân'ı düşünmediler mi? Yoksa onlara geçmişteki atalarına gelmeyen birşey mi geldi?",
+    "Ahmet Tekin Meali": "Onlar bu kelâmı, Kur'ân'ı hiç düşünüp kendilerine neler kazandırabileceğini hesap etmediler mi? Yoksa, kendilerine, geçmişteki atalarına gelmeyen bir imtiyaz taahhüdü mü geldi?",
+    "Ahmet Varol Meali": "Onlar o sözü (Kur'an'ı) düşünmediler mi yoksa onlara önceki atalarına gelmeyen bir şey mi geldi?",
+    "Ali Bulaç Meali": "Onlar, yine de o sözü (Kur'an'ı) gereği gibi düşünmediler mi, yoksa onlara, geçmişteki atalarına gelmeyen bir şey mi geldi?",
+    "Ali Fikri Yavuz Meali": "Hak olduğunu anlamak için Kur'an hakkında hiç düşünmediler mi? (İcazkâr lâfzına ve hikmetli manasına bakıb Allah katından olduğunu anlamadılar mı?). Yoksa onlara, evvelki atalarına gelmemiş olan bir peygamber mi geldi (de onu inkâr ediyorlar)?",
+    "Bahaeddin Sağlam Meali": "Acaba o sözü (Kur’anı) düşünmediler mi? Yoksa onlara, eski atalarına gelmeyen bir kitap geldi diye mi (böyle davranıyorlar?)",
+    "Bayraktar Bayraklı Meali": "Onlar bu Kur'ân'ı hiç düşünmediler mi? Yoksa kendilerine, daha önce geçmişteki atalarına gelmeyen bir şey mi geldi?",
+    "Besim Atalay Meali (1965)": "Onlar bu sözü düşünmezler mi? Yoksa, eski atalarına gelmiyen bir şey mi geldi onlara?",
+    "Cemal Külünkoğlu Meali": "Peki, onlar (Allah'ın) sözünü (Kur'an'ı) anlamaya hiç çalışmadılar mı? Yahut kendilerine, daha önce geçmişteki atalarına gelmeyen (azap görmeyeceklerine dair) bir şey mi geldi?",
+    "Cemil Said (1924)": "Kendilerine gelen kitâbın hak oldığına dikkat itmeyecekler mi, yâhud kendilerinden evvel gelen babalarına âyet ve rasûl gelmedi mi?",
+    "Diyanet İşleri Meali (Eski)": "Söyleneni hiç düşünmezler mi? Yoksa onlara, ilk atalarına gelmeyen bir şey mi geldi?",
+    "Diyanet İşleri Meali (Yeni)": "Onlar bu sözü (Kur’an’ı) hiç düşünmediler mi? Yoksa kendilerine, önceki atalarına gelmeyen bir şey mi geldi?",
+    "Kur'an Yolu (Diyanet İşleri)": "Onlar bu söz (Kur’an) üzerinde hiç düşünmezler mi? Yoksa kendilerine, daha önce atalarına gelmeyen bir şey mi geldi?",
+    "Diyanet Vakfı Meali": "Onlar bu sözü (Kur'an'ı) hiç düşünmediler mi? Yoksa kendilerine, daha önce geçmişteki atalarına gelmeyen bir şey mi geldi?",
+    "Edip Yüksel Meali": "Onlar bu sözü incelemediler mi, yoksa geçmiş atalarına gelmeyen bir şey mi kendilerine geldi?",
+    "Elmalılı Hamdi Yazır Meali": "Onlar bu sözü (Kur'ân'ı) hiç düşünmediler mi? Yoksa kendilerine, daha önce geçmişteki atalarına gelmeyen bir şey mi geldi?",
+    "Elmalılı Meali (Orijinal)": "Ya hâlâ o kelâmı tedebbür etmezler mi? Yoksa onlara evvelki atalarına gelmemiş bir şey mi geldi?",
+    "Emrah Demiryent Meali": "Onlar o sözü (Kur’ân’ın nazmındaki mu‘cizeliğe bakıp onun Allah kelâmı olduğunu) düşünmediler mi? Yoksa onlara önceki atalarına gelmeyen bir şey mi geldi?",
+    "Erhan Aktaş Meali": "Onlar, hala sözün¹ üzerinde düşünmüyorlar mı? Yoksa onlara, atalarına gelmemiş bir şey mi geldi?",
+    "Hasan Basri Çantay Meali": "Bu (hak) sözü iyice düşünmediler mi hiç? Yoksa kendilerine evvelki (atalarına) gelmeyen bir şey (bir kitab ve bir peygamber) mi geldi?",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "Onlar yine de o sözü (:Kur’ân’ı) gereği gibi düşünmediler mi? Yoksa onlara geçmişteki atalarına gelmeyen bir şey mi geldi?",
+    "Hayrat Neşriyat Meali": "Bu sözü (Kur'ân'ı) hiç düşünmediler mi? Yoksa kendilerine, evvelki atalarına gelmeyen bir şey mi geldi?",
+    "İhsan Aktaş Meali": "Onlar bu sözü (Kur’an’ı) hiç düşünmediler mi? Yoksa kendilerine, daha önce geçmişteki atalarına gelmeyen bir şey mi geldi?",
+    "İlyas Yorulmaz Meali": "(Allah’ın) Bu sözlerini hiç düşünmüyorlar mı? Yoksa daha önce gelip geçmiş atalarına gelmeyen bir bilgi onlara mı geldi?",
+    "İsmayıl Hakkı Baltacıoğlu": "Onlar Allah’ın sözünü iyice düşünmüyorlar mı, yoksa onlara eski atalarına gelmemiş olan bir Kitap mı geldi?",
+    "İsmail Hakkı İzmirli": "Onlar bu hak sözü düşünüp taşınmıyorlar mı? Yoksa kendilerine, evvel geçen babalarına gelmeyen bir Kitap ve peygamber mi geldi ?",
+    "İsmail Yakıt": "Onlar bu sözü hiç akıl süzgecinden geçirmediler mi? .⁹ Yoksa onlara önceki babalarına/atalarına gelmeyen bir şey mi geldi?",
+    "Kadri Çelik Meali": "Onlar, yine de o sözü (Kur'an'ı) gereği gibi düşünmediler mi, yoksa onlara geçmişteki babalarına gelmeyen bir şey mi geldi?",
+    "Mahmut Kısa Meali": "Peki onlar,yani Yahudiler ve Hıristiyanlar başta olmak üzere, Son Elçiyi inkâr edenler,builâhîkelâm üzerinde hiç mi düşünmediler; yoksa geçmişte yaşayan atalarına gelmeyenve önceki kutsal kitaplarla çelişen türedi bir vahiymi geldi onlaraki, böylesine inatla yüz çeviriyorlar?",
+    "Mahmut Özdemir Meali": "Söz’ü (enine-boyuna) düşünmediler mi; yoksa onlara İlk Önceki atalarına gelmemiş şeyler mi geldi?",
+    "Mehmet Çakır Meali": "Onlarbu Söyleme dikkat etmediler mi hiç? Yoksa onlara, atalarına gelenden farklı bir şey mi geldi?",
+    "Mehmet Çoban Meali": "Sor onlara:\"Ayetlerimle açıklanan gerçekleri hiç düşündüler mi? Yoksa açıklanan konularda kendilerine delil olabilecek başka kitaplar mı vardı?\"",
+    "Mehmet Okuyan Meali": "Onlar bu sözü (Kur’an’ı) hiç düşünmediler mi? Yoksa kendilerine, daha önce geçmişteki atalarına gelmeyen bir şey mi geldi!",
+    "Mehmet Türk Meali": "Onlar (Allah’ın) sözü olan (Kur’an’ı) anlamak mı istemiyorlar? Yoksa onlara, geçmişteki atalarına gelmeyen bir şey mi geldi?¹",
+    "Muhammed Esed Meali": "Peki, onlar sözünü anlamaya hiç çalışmadılar mı? Yahut geçip gitmiş atalarına hiç gelmeyen bir şey mi geldi onlara? ³⁹",
+    "Mustafa Çavdar Meali": "Şimdi onlar Kuran hakkında derinlemesine hiç düşünmediler mi? Yoksa onlara, önceki atalarına gelmemiş yeni bir şey mi geldi? 4/82, 47/24...28",
+    "Mustafa İslamoğlu Meali": "İyi de, onlar (bu) sözü hiç mi düşünmediler? Ya da kendilerinden önce gelip geçmiş atalarına hiç ulaşmamış olan bir şey mi gelmiş onlara?",
+    "Orhan Kuntman Meali": "O Hak söz, (Kur'an) üzerinde bir kez olsun düşünmediler mi? (Onun bir beşer sözü olamayacağını idrak edemiyorlar mı?) Yoksa onlara evvelki atalarına gelmeyen, (Kur'an'dan başka, ondan daha üstün) bir kitap mı geldi?",
+    "Osman Fırat Meali": "Ve onlar (Allah’ın bu) sözünü anlamaya hiç çalışmadılar mı? Yoksa önceki atalarına hiç gelmeyen bir şey mi geldi onlara?",
+    "Ömer Nasuhi Bilmen Meali": "Ya o kelâmı hâlâ tefekkür etmezler mi? Yahut onlara evvelki atalarına gelmemiş bir şey mi gelmiş oldu?",
+    "Suat Yıldırım Meali": "Peki onlar Allah'ın sözünü anlamaya çalışmadılar mı? Yoksa önce geçip gitmiş babalarına hiç gelmemiş olan, ömürlerinde ilk defa duydukları bir şeyle mi karşılaştılar?",
+    "Süleyman Ateş Meali": "Onlar o sözü (Kur'an'ı) iyice düşünmediler mi, yoksa onlara, ilk atalarına gelmeyen bir şey (bir elçi ve Kitap) geldi diye mi (böyle davranıyorlar)?",
+    "Süleyman Tevfik (1927)": "Onlar Kur'ân'ı düşünmezler mi? Veyâhud onlara geçen babalarına gelmeyen şey mi geldi?",
+    "Süleymaniye Vakfı Meali": "Bu sözü etraflıca düşünmüyorlar mı, yoksa kendilerine, eski atalarına gelmemiş olan bir Kitap mı geldi?",
+    "Şaban Piriş Meali": "Söyleneni hiç düşünmediler mi? Yoksa onlara, önceki atalarına gelmemiş bir şey mi geldi?",
+    "Ümit Şimşek Meali": "Onlar bu söz üzerinde hiç düşünmezler mi? Yoksa gelip geçmiş atalarına gelmeyen şey onlara mı geldi?",
+    "Yaşar Nuri Öztürk Meali": "Sözü gereğince düşünmediler de ondan mı, yoksa kendilerine ilk atalarına gelmeyen bir şey geldi diye mi?",
+    "Eski Anadolu Türkçesi": "iy endįşe eylemezler mi sözi ya'nį ķur’ān’ı yā geldi mi anlara ol nesene kim gelmedi atalarına ilergiler",
+    "Satıraltı Meal (1534)": "Pes niçün fikr eylemezler ḳavli ki Ḳur’āndur? Yā geldi mi özlerine evvelkiatalarına gelmegen nesne?",
+    "Bunyadov-Memmedeliyev": "Məgər (müşriklər) kəlam (Allah kəlamı - Qur’an) haqqında düşünüb daşınmırlarmı? Yaxud onlara ulu babalarına (keçmiş ümmətlərinə) gəlməyən bir şey gəldi? (Onlar Qur’anın, Peyğəmbərin haqq olduğunu niyə anlamırlar? Məgər ulu babalarına İbrahim, İsmail, Musa kimi peyğəmbərlər gəlmədimi? Yaxud onlara Tövrat, Sühüf kimi kitablar nazil olmadımı?)",
+    "M. Pickthall (English)": "Have they not pondered the Word, or hath that come unto them which came not unto their fathers of old?",
+    "Yusuf Ali (English)": "Do they not ponder over the Word (of Allah., or has anything (new) come to them that did not come to their fathers of old?(2918)"
+  }
+}

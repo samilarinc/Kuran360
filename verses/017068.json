@@ -1,0 +1,117 @@
+{
+  "surah_number": 17,
+  "verse_number": 68,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=17&ayet=68",
+  "arabic_text": "اَفَاَمِنْتُمْاَنْيَخْسِفَبِكُمْجَانِبَالْبَرِّاَوْيُرْسِلَعَلَيْكُمْحَاصِبًاثُمَّلَاتَجِدُوالَكُمْوَك۪يلًاۙ",
+  "transliteration": "Efeemintum en yaḣsife bikum cânibe-lberri ev yursile ‘aleykumhâsiben śümme lâ tecidû lekum vekîlâ(n)",
+  "word_translations": [
+    {
+      "arabic": "اَفَاَمِنْتُمْ",
+      "turkish": "emin misiniz?"
+    },
+    {
+      "arabic": "يَخْسِفَ",
+      "turkish": "batırmayacağından"
+    },
+    {
+      "arabic": "بِكُمْ",
+      "turkish": "sizi"
+    },
+    {
+      "arabic": "جَانِبَ",
+      "turkish": "ters çevirip"
+    },
+    {
+      "arabic": "الْبَرِّ",
+      "turkish": "karayı"
+    },
+    {
+      "arabic": "اَوْ",
+      "turkish": "yahut"
+    },
+    {
+      "arabic": "يُرْسِلَ",
+      "turkish": "göndermeyeceğinden"
+    },
+    {
+      "arabic": "عَلَيْكُمْ",
+      "turkish": "üzerinize"
+    },
+    {
+      "arabic": "حَاصِبًا",
+      "turkish": "taşlar savuran bir kasırga"
+    },
+    {
+      "arabic": "ثُمَّ",
+      "turkish": "sonra"
+    },
+    {
+      "arabic": "تَجِدُوا",
+      "turkish": "bulamazsınız"
+    },
+    {
+      "arabic": "لَكُمْ",
+      "turkish": "kendinize"
+    },
+    {
+      "arabic": "وَك۪يلًاۙ",
+      "turkish": "bir koruyucu"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Emin misiniz sizi herhangi bir yerde orasıyla beraber yere geçirmeyeceğinden, yahut üstünüze taşlıtopaçlı bir kasırga göndermeyeceğinden? Sonra bir koruyucu da bulamazsınız kendinize.",
+    "Abdullah-Ahmet Akgül Meali": "(Oysa)Kara tarafında sizi yerin dibine geçirmeyeceğinden veya üzerinize taş yığınları yüklü bir kasırga göndermeyeceğinden emin misiniz? Sonra kendinize(felaketten kurtarıcı başka)bir vekil de bulamazsınız.",
+    "Abdullah Parlıyan Meali": "Peki emin misiniz O'nun sizi, yerin dibine geçirmeyeceğinden, yahut üzerinize taş yağdıracak bir kasırga göndermeyeceğinden? Sonra bir koruyucu da bulamazsınız kendinize.",
+    "Ahmet Tekin Meali": "O'nun sizi, kara tarafında yerin dibine geçirmeyeceğinden, yahut üstünüzde taş yağdıran bir kasırga estirmeyeceğinden emin misiniz? Sonra kendinizi savunan bir hâmi, bir koruyan da bulamazsınız.",
+    "Ahmet Varol Meali": "O'nun sizi kara tarafında yere geçirmeyeceğinden veya üzerinize çakıl savuran bir kasırga göndermeyeceğinden emin mi oldunuz? Sonra kendinize bir vekil de bulamazsınız.",
+    "Ali Bulaç Meali": "Kara tarafında sizi yerin dibine geçirmeyeceğinden veya üzerinize taş yığınları yüklü bir kasırga göndermeyeceğinden emin misiniz? Sonra kendinize bir vekil bulamazsınız.",
+    "Ali Fikri Yavuz Meali": "Acaba denizden karaya çıkmanızla, kara tarafında sizi yere geçirmesinden, yahud üzerinize çakıllı bir rüzgâr salıvermesinden emin mi oldunuz? (Allah bunu da yapar). Sonra (kendinizi koruyucu) hiç bir vekil bulamazsınız.",
+    "Bahaeddin Sağlam Meali": "Onun, sizi kara tarafında yerin içine batırmayacağından veyahut başınıza taşlar savuran bir kasırga göndermeyeceğinden emin misiniz? Böyle bir durumda kendinize hiçbir koruyucu bulamazsınız.",
+    "Bayraktar Bayraklı Meali": "O'nun karada da sizi yere batırmasından veya başınıza taş yağdırmayacağından güvende misiniz? Sonra kendinize bir koruyucu da bulamazsınız.",
+    "Besim Atalay Meali (1965)": "Karanın bir tarafı, sizinle birlikte yıkılmasına, ya da taş yağmasına karşı emniyette misiniz? Sonra da sizinçin vekil bulamazsınız",
+    "Cemal Külünkoğlu Meali": "(Acaba denizden çıktıktan sonra) kara tarafında sizi yerin dibine geçirmeyeceğinden veya üzerinize taş yüklü bir kasırga göndermeyeceğinden emin misiniz? Sonra kendinize bir vekil de bulamazsınız.",
+    "Cemil Said (1924)": "Karada Allâh’ın sizi ayaklarınızın altında yerin yarılmasıyla ve yâhud sizi kum altına gark idecek bir kasırga ile ve hiç bir hâmi bulamadığınız halde mahv itmeyeceğinden emîn misiniz?",
+    "Diyanet İşleri Meali (Eski)": "Onun karada da, sizi yere batırmasından veya başınıza taş yağdırmasından güvende misiniz? Sonra kendinize bir koruyucu da bulamazsınız.",
+    "Diyanet İşleri Meali (Yeni)": "Peki, karada sizi yere geçirmesinden, yahut üzerinize taşlar savuran kasırga göndermesinden, sonra da kendinize bir vekil bulamamaktan güvende misiniz?",
+    "Kur'an Yolu (Diyanet İşleri)": "Peki O’nun sizi karada yerin dibine geçirmeyeceğinden yahut başınıza taş yağdırmayacağından emin misiniz? Sonra kendinize bir koruyucu da bulamazsınız.",
+    "Diyanet Vakfı Meali": "O'nun, sizi kara tarafında yerin dibine geçirmeyeceğinden, yahut başınıza taş yağdırmayacağından emin misiniz? Sonra kendinize bir koruyucu da bulamazsınız.",
+    "Edip Yüksel Meali": "Kıyıyı üstünüze çevirip sizi yutmasından, yahut üzerinize şiddetli bir kasırga yollamasından emin misiniz? Sonra hiç bir koruyucu da bulamazsınız",
+    "Elmalılı Hamdi Yazır Meali": "(Denizden karaya çıktığınızda) O'nun sizi karada yerin dibine geçirmeyeceğinden, yahut üzerinize taş yağdıran bir kasırga gördermeyeceğinden emin misiniz? Sonra kendinize bir vekil de bulamazsınız.",
+    "Elmalılı Meali (Orijinal)": "Ya çıktığınızda kara tarafında sizi yere geçirivermesinden veya üzerinize çakıllı bir rüzgâr salıvermesinden sonra da kendinize hiç vekîl bulamamanızdan emniyyete mi erdiniz?",
+    "Emrah Demiryent Meali": "(Denizden karaya çıktığınızda) O’nun sizi karada, yerin dibine geçirmeyeceğinden yahut üzerinize taş yağdıran bir kasırga göndermeyeceğinden emin misiniz? Sonra kendinize bir vekil de bulamazsınız.",
+    "Erhan Aktaş Meali": "Peki, sizi karada yerin dibine geçirmesinden veya üzerinize bir kasırga göndermesinden güvende misiniz? Sonra kendinize bir vekil¹ de bulamazsınız.",
+    "Hasan Basri Çantay Meali": "Onun kara tarafında sizi yere geçirmesinden, yahud üzerinize çakıllı bir (kasırga) göndermesinden (selâmetinize) emîn mi oldunuz? (Olmayın). Sonra kendinize hiç bir vekîl bulamazsınız.",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "Karada sizi yerin dibine geçirmeyeceğinden ya da üzerinize taş yağdıran bir kasırga göndermeyeceğinden emin misiniz? Sonra kendinize bir vekil bulamazsınız.",
+    "Hayrat Neşriyat Meali": "Yoksa O'nun, kara tarafında sizi yere batırmasından veya üzerinize taş yağdıran bir kasırga göndermesinden emîn mi oldunuz? Sonra kendinize, (sizi koruyan) bir vekîl de bulamazsınız.",
+    "İhsan Aktaş Meali": "Peki şimdi siz, onun (Allah’ın) sizi (deprem vb. volkanik patlamalarla) karanın içine gömmeyeceğinden yahut üzerinize (volkanik patlamalar sonucunda kızgın lâvlardan ibaret) taşlar (lavlar) göndermeyeceğinden, güvende mi oldunuz? O zaman, asla kendinize sahip çıkacak bir yardımcı bulamazsınız.*",
+    "İlyas Yorulmaz Meali": "Peki, şimdi siz, Allah’ın sizi karanın içine gömmeyeceğinden yahut üzerinize yok edici bir kasırga göndermeyeceğinden, güvende mi oldunuz? O zaman, asla kendinize sahip çıkacak birini bulamazsınız.",
+    "İsmayıl Hakkı Baltacıoğlu": "Allah’ın karanın bir parçasını sizinle birlikte batırmayacağını, ya üzerinize taş yağdırmıyacağını nereden biliyorsunuz? Sonra kendinize hiç bir gözetici bulamazsınız.",
+    "İsmail Hakkı İzmirli": "O/nun, karanın bir tarafını sizinle beraber yere geçirmeyeceğinden, yahut üzerinize taşlı bir kasırga göndermeyeceğinden emin mi oldunuz? Sonra siz hiçbir vekil ve hâmi bulamazsınız.",
+    "İsmail Yakıt": "O’nun karada sizi yere batırmayacağından veya üzerinize taşlar yağdıran bir kasırga göndermeyeceğinden emin misiniz? Sonra kendinize bir vekil bulamazsınız!",
+    "Kadri Çelik Meali": "Kara tarafında sizi yerin dibine geçirmeyeceğinden veya üzerinize taş yüklü bir kasırga göndermeyeceğinden güvende misiniz? (Bunlar olduktan sonra) Kendinize bir vekil (bile) bulamazsınız!",
+    "Mahmut Kısa Meali": "Peki,karaya çıkınca her şey bitiyor mu?O’nun sizi,kendinizi güvende sandığınızkaradakorkunç bir depremleyerin dibine geçirmeyeceğinden, ya da üzerinizetaşlar savuranbir kasırga göndermeyeceğinden emîn misiniz?Sakın emîn olmayın! Çünkü Allah öyle bir belâ verir ki,sonra kendinize bir koruyucu bulamazsınız!",
+    "Mahmut Özdemir Meali": "Kara tarafında sizi batırmayacağından veya üzerinize çakıl-taş yağdıran bir kasırga göndermeyeceğinden güvende mi oldunuz? Sonra sizin için vekîl bulamazsınız.",
+    "Mehmet Çakır Meali": "İyi de Allah'ın size sahili mezar etmeyeceğinden nasıl emin olabilirsiniz? Ya da üzerinize öyle bir taş yağdırabilir ki tutunacak bir dal bile bulamazsınız.",
+    "Mehmet Çoban Meali": "Düşünmüyorlar mı? İstersek üzerinde güvenle yaşadıkları kara parçasını denizlerle değiştirmeye gücümüz yeter. Böylece kara parçalarıyla denizlerin yerlerini ters yüz ederek onları yok ederiz. Rabbinizin böyle bir şey yapmayacağından emin misiniz? Yahut üzerinize taşlar savuran kasırgalar gönderip sizleri yok etmeyeceğinden emin misiniz?",
+    "Mehmet Okuyan Meali": "(Allah’ın), sizi kara tarafında yerin dibine geçirmesinden veya üzerinize taş yağdırmasından güvende misiniz? Sonra kendiniz için hiçbir koruyucu da bulamazsınız.",
+    "Mehmet Türk Meali": "(Peki) Onun, sizi karada yerin dibine geçirmeyeceğinden yahut başınıza taş yağdırmayacağından emin misiniz? Sonra kendinize (sizi azaptan kurtaracak) bir koruyucu da bulamazsınız.",
+    "Muhammed Esed Meali": "Peki, O’nun sizi yerin dibine geçirmeyeceğinden yahut üzerinize taşı toprağı kaldıran can alıcı bir rüzgar ⁸¹ göndermeyeceğinden çok mu eminsiniz? (Hayır, o zaman) kendinize asla bir koruyucu bulamazsınız.",
+    "Mustafa Çavdar Meali": "Peki Allah’ın sizi karada yerin dibine batırmayacağından veya üzerinize taşlar yağdıran bir kasırga göndermeyeceğinden yana bir garantiniz mi var? Sonra da O’ndan başka dayanıp güvenecek bir koruyucu bulamazsınız. 7/97...99, 12/107, 16/45...47",
+    "Mustafa İslamoğlu Meali": "Şimdi, O’nun sizi (bulunduğunuz) kara parçasının bir kısmıyla birlikte yerin dibine geçirmesine, yahut taşı toprağı üzerinize uçuran bir kasırga göndermesine karşı güvenceniz mi var? Sonunda, (bu hâlinizle) kendinize hiçbir koruyucu otorite bulamayacaksınız.",
+    "Orhan Kuntman Meali": "(Ey kafirler) Yoksa, (karaya çıktıktan sonra, Rabbinizin) sizi yerin dibine geçirmeyeceğinden veya başınıza taş yağdırmayacağından emin mi oldunuz? (Haberiniz olsun ki) O zaman siz kendinize bir koruyucu bulamazsınız.",
+    "Osman Fırat Meali": "(Allah’ın) Sizi karanın bir tarafından yere geçirmeyeceğinden, yahut üzerinize bir kasırga göndermeyeceğinden emin mi oldunuz?, sonra da kendinize (Allah’tan başka) bir vekilde bulamazsınız.",
+    "Ömer Nasuhi Bilmen Meali": "Sizinle beraber karanın bir tarafını yere batırmasından veya sizin üzerinize taşlı bir kasırga göndermesinden emin mi oldunuz? Sonra kendiniz için bir vekil bulamazsınız.",
+    "Suat Yıldırım Meali": "Karada sizi yerin dibine geçirmesinden yahut çakıl savuran bir kasırga göndermesinden emin mi oldunuz? Sonra kendinize bir koruyucu da bulamazsınız. ",
+    "Süleyman Ateş Meali": "(Allah'ın) Karayı ters çevirip sizi batırmayacağından, yahut üzerinize taşlar savuran bir kasırga göndermeyeceğinden emin misiniz? (Ki bunlar olduktan) Sonra kendinize bir koruyucu bulamazsınız!",
+    "Süleyman Tevfik (1927)": "(Denizden kurtuldınız ise) Karanın bir tarafı çöküb sizi yerin dibine geçirmesinden ve üstünüze gökden taş yağmasından emîn mi oldınız? Sonra kendinizi müdâfa'a idecek vekîl bulamazsınız.",
+    "Süleymaniye Vakfı Meali": "O’nun sizi sahil tarafında batırmasına ya da üzerinize bir kasırga göndermesine karşı tedbiriniz var mı? Sonra kendinize bir vekil de bulamazsınız.",
+    "Şaban Piriş Meali": "Kara tarafında da sizi batırmayacağından veya üzerinize taşlar yağdıran bir kasırga göndermeyeceğinden güvende misiniz? O zaman bir koruyucu da bulamazsınız.",
+    "Ümit Şimşek Meali": "Yoksa Onun sizi karada yerin dibine geçirmeyeceğinden veya başınıza taşlar yağdırmayacağından emin mi oldunuz? O zaman sizi koruyup gözetecek bir vekil de bulamazsınız.",
+    "Yaşar Nuri Öztürk Meali": "Peki, kara tarafında sizi yere geçirivermesinden yahut üstünüze çakıl savuran bir kasırga göndermesinden emin misiniz? Sonra kendinize hiçbir vekil bulamazsınız.",
+    "Eski Anadolu Türkçesi": "pes imin olduñuz mı kim yire ķoya sizi yazı yanasında yā viribiye üzerüñüze ŧaş yaġdurıcı yil? andan bulmayasız sizüñ-içün śaķlayıcı.",
+    "Satıraltı Meal (1534)": "Siz imin mi oldı‐siz sizi yire yutdurmaḳdan ḳuruda yā göndermekdensizüñ üstüñüze yil bile ṭaşlar? Andan ṣoñra ṭapmazsız size yardım eyleyici.",
+    "Bunyadov-Memmedeliyev": "Məgər (Allahın) quruda sizi yerə batırmayacağına, yaxud (göydən) başınıza daş yağdırmayacağına əminsinizmi?! Sonra heç sizi qoruyan da tapılmaz (tapa bilməzsiniz).",
+    "M. Pickthall (English)": "Feel ye then secure that He will not cause a slope of the land to engulf you, or send a sandstorm, upon you, and then ye will find that ye have no protector?",
+    "Yusuf Ali (English)": "Do ye then feel secure that He will not cause you to be swallowed up beneath the earth(2263) when ye are on land, or that He will not send against you a violent tornado (with showers of stones) so that ye shall find no one to carry out your affairs for you?"
+  }
+}

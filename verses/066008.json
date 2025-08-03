@@ -1,0 +1,233 @@
+{
+  "surah_number": 66,
+  "verse_number": 8,
+  "url": "https://www.kuranmeali.com/AyetKarsilastirma.php?sure=66&ayet=8",
+  "arabic_text": "يَٓااَيُّهَاالَّذ۪ينَاٰمَنُواتُوبُٓوااِلَىاللّٰهِتَوْبَةًنَصُوحًاۜعَسٰىرَبُّكُمْاَنْيُكَفِّرَعَنْكُمْسَيِّـَٔاتِكُمْوَيُدْخِلَكُمْجَنَّاتٍتَجْر۪يمِنْتَحْتِهَاالْاَنْهَارُۙيَوْمَلَايُخْزِياللّٰهُالنَّبِيَّوَالَّذ۪ينَاٰمَنُوامَعَهُۚنُورُهُمْيَسْعٰىبَيْنَاَيْد۪يهِمْوَبِاَيْمَانِهِمْيَقُولُونَرَبَّنَٓااَتْمِمْلَنَانُورَنَاوَاغْفِرْلَنَاۚاِنَّكَعَلٰىكُلِّشَيْءٍقَد۪يرٌ",
+  "transliteration": "Yâ eyyuhâ-lleżîne âmenû tûbû ila(A)llâhi tevbeten nasûhan ‘asâ rabbukum en yukeffira ‘ankum seyyi-âtikum ve yudḣilekum cennâtin tecrî min tahtihâ-l-enhâru yevme lâ yuḣzi(A)llâhu-nnebiyye velleżîne âmenû me’ah(u)(s)nûruhum yes’â beyne eydîhim vebi-eymânihim yekûlûne rabbenâ etmim lenâ nûranâ vaġfir lenâ(s)inneke ‘alâ kulli şey-inkadîr(un)",
+  "word_translations": [
+    {
+      "arabic": "يَٓا",
+      "turkish": "ey"
+    },
+    {
+      "arabic": "اَيُّهَا",
+      "turkish": "ey"
+    },
+    {
+      "arabic": "الَّذ۪ينَ",
+      "turkish": "kimseler"
+    },
+    {
+      "arabic": "اٰمَنُوا",
+      "turkish": "inanan(lar)"
+    },
+    {
+      "arabic": "تُوبُٓوا",
+      "turkish": "tevbe edin"
+    },
+    {
+      "arabic": "اللّٰهِ",
+      "turkish": "Allah'a"
+    },
+    {
+      "arabic": "تَوْبَةً",
+      "turkish": "tevbe ile"
+    },
+    {
+      "arabic": "نَصُوحًاۜ",
+      "turkish": "yürekten"
+    },
+    {
+      "arabic": "عَسٰى",
+      "turkish": "umulur ki"
+    },
+    {
+      "arabic": "رَبُّكُمْ",
+      "turkish": "Rabbiniz"
+    },
+    {
+      "arabic": "يُكَفِّرَ",
+      "turkish": "örter"
+    },
+    {
+      "arabic": "عَنْكُمْ",
+      "turkish": "sizden"
+    },
+    {
+      "arabic": "سَيِّـَٔاتِكُمْ",
+      "turkish": "kötülüklerinizi"
+    },
+    {
+      "arabic": "وَيُدْخِلَكُمْ",
+      "turkish": "sizi sokar"
+    },
+    {
+      "arabic": "جَنَّاتٍ",
+      "turkish": "cennetlere"
+    },
+    {
+      "arabic": "تَجْر۪ي",
+      "turkish": "akan"
+    },
+    {
+      "arabic": "تَحْتِهَا",
+      "turkish": "altlarından"
+    },
+    {
+      "arabic": "الْاَنْهَارُۙ",
+      "turkish": "ırmaklar"
+    },
+    {
+      "arabic": "يَوْمَ",
+      "turkish": "günde"
+    },
+    {
+      "arabic": "يُخْزِي",
+      "turkish": "utandırmayacağı"
+    },
+    {
+      "arabic": "اللّٰهُ",
+      "turkish": "Allah'ın"
+    },
+    {
+      "arabic": "النَّبِيَّ",
+      "turkish": "peygamberi"
+    },
+    {
+      "arabic": "وَالَّذ۪ينَ",
+      "turkish": "ve olanları"
+    },
+    {
+      "arabic": "اٰمَنُوا",
+      "turkish": "inanmış"
+    },
+    {
+      "arabic": "مَعَهُۚ",
+      "turkish": "onunla beraber"
+    },
+    {
+      "arabic": "نُورُهُمْ",
+      "turkish": "onların nuru"
+    },
+    {
+      "arabic": "يَسْعٰى",
+      "turkish": "koşar"
+    },
+    {
+      "arabic": "بَيْنَ",
+      "turkish": "arasından"
+    },
+    {
+      "arabic": "اَيْد۪يهِمْ",
+      "turkish": "ellerinin"
+    },
+    {
+      "arabic": "وَبِاَيْمَانِهِمْ",
+      "turkish": "ve sağ yanlarından"
+    },
+    {
+      "arabic": "يَقُولُونَ",
+      "turkish": "derler ki"
+    },
+    {
+      "arabic": "رَبَّنَٓا",
+      "turkish": "Rabbimiz"
+    },
+    {
+      "arabic": "اَتْمِمْ",
+      "turkish": "tamamla"
+    },
+    {
+      "arabic": "لَنَا",
+      "turkish": "bize"
+    },
+    {
+      "arabic": "نُورَنَا",
+      "turkish": "nurumuzu"
+    },
+    {
+      "arabic": "وَاغْفِرْ",
+      "turkish": "ve bağışla"
+    },
+    {
+      "arabic": "لَنَاۚ",
+      "turkish": "bizi"
+    },
+    {
+      "arabic": "اِنَّكَ",
+      "turkish": "doğrusu senin"
+    },
+    {
+      "arabic": "عَلٰى",
+      "turkish": "üzerine"
+    },
+    {
+      "arabic": "كُلِّ",
+      "turkish": "her"
+    },
+    {
+      "arabic": "شَيْءٍ",
+      "turkish": "şey"
+    },
+    {
+      "arabic": "قَد۪يرٌ",
+      "turkish": "gücün yeter"
+    }
+  ],
+  "translations": {
+    "Abdulbaki Gölpınarlı Meali": "Ey inananlar, tövbe edin Allah'a halis bir tövbeyle; umulur ki Rabbiniz; kötülüklerinizi örter ve sizi, kıyılarından ırmaklar akan cennetlere sokar, o gün Allah, Peygamberi ve inananlardan onunla beraber bulunanları horlamaz, nurları, önlerinde ve sağ yanlarında koşar, parlar da Rabbimiz derler, nurumuzu tamamla, kuvvetlendir bize ve ört suçlarımızı bizim, şüphe yok ki senin, her şeye gücün yeter.",
+    "Abdullah-Ahmet Akgül Meali": "Ey iman edenler! “Tevbe-i Nasuh” ile(yani kesin bir niyetle, günahlara geri dönmemek azmiyle, samimi ve halis bir pişmanlık üzüntüsüyle, açılan bir yarığı en sağlam bir iple ve bir daha kopmaz biçimde diker gibi)Allah’a tevbe edin(ve kötülüklerden vazgeçin. Günahına sevinmenin, günahıyla övünmenin, günahını küçümsemenin ve günahlarda ısrar etmenin Allah’ın kahrına uğratacağını bilin!). Umulur ki(böyle tevbe ederseniz), Rabbiniz sizin kötülüklerinizi örter ve sizi altından ırmaklar(ve havuzlu şelaleler)akan cennetlere sokuverir. O gün(mahşerde)Allah, Peygamberi ve(kıyamete kadar)Onunla beraber iman edenleri(asla)utandırıp küçük düşürmeyecektir.(Mevlâ, sadık mü’minleri asla mahcup ve mahrum da etmeyecektir.)Nurları, önlerinde ve sağ yanlarında koşar-parıldar(vaziyette huzurla yürüyecekler ve): \"Rabbimiz nurumuzu tamamla, bizi bağışla. Şüphesiz Sen, her şeye güç yetirensin” diyeceklerdir.",
+    "Abdullah Parlıyan Meali": "Ey iman edenler! Tam bir pişmanlık ve gönül huzuru içinde gösterişten uzak ölçüde Allah'a tevbe edin. Umulur ki Rabbiniz kötülüklerinizi örtüp yok eder ve sizi içinden ırmaklar akan cennetlere koyar ki o gün Allah, peygamberi ve O'nunla beraber iman edenleri utandırmaz ve nurları önlerinde ve sağlarında hızla yayılır ve “Ey Rabbimiz!” derler. “Bizim nurumuzu tamamla ve kuvvetlendir ve bizi bağışla, şüphesiz ki senin gücün herşeye yeter.”",
+    "Ahmet Tekin Meali": "Ey iman edenler, tevbe-i nasuh ile, hâlisâne, samimi bir tevbe ile günah işlemekten vazgeçerek, Allah'a itaate yönelin, üzerinizdeki başkalarına ait hakları sahiplerine iade edin. Umulur ki, Rabbiniz kusurlarınızı siler, bağışlar. Sizi altından ırmaklar akan cennet konaklarına koyar. Allah'ın, peygamberini ve onunla birlikte, iman edenleri utandırmayacağı bir günde, sizi cennetlere koyar.Onların imanlarından, işledikleri hayırlardan ve sâlih amellerinden kaynaklanan nurları, genişleyerek ve yayılarak önlerini, sağlarını, sollarını aydınlatır. Onlar:“Rabbimiz, bizim faydalanmamız için nurumuzu devam ettir, bizi koruma kalkanına al, bağışla. Sen kanunlarının cari olduğu her şey üzerinde gücünü kudretini kullanır, düzenlemeni yaparsın.” derler.",
+    "Ahmet Varol Meali": "Ey iman edenler! Gönlü etkileyen (nasuh) tevbe ile Allah'a tevbe edin. Olur ki Rabbiniz sizin kötülüklerinizi örter ve sizi altından ırmaklar akan cennetlere sokar. O gün Allah Peygamber'i ve onunla birlikte iman edenleri utandırmaz. Nurları önlerinden ve sağlarından koşar. Derler ki: \"Rabbimiz! Bizim nurumuzu tamamla ve bizi bağışla. Şüphesiz sen her şeye güç yetirensin.\"",
+    "Ali Bulaç Meali": "Ey iman edenler, Allah'a kesin (nasuh) bir tevbe ile tevbe edin. Olabilir ki, Allah kötülüklerinizi örter ve altından ırmaklar akan cennetlere sokar. O gün Allah, Peygamberi ve onunla birlikte iman edenleri küçük düşürmeyecektir. Nurları, önlerinde ve sağ yanlarında koşar-parıldar. Derler ki: 'Rabbimiz nurumuzu tamamla, bizi bağışla. Şüphesiz Sen, her şeye güç yetirensin.'",
+    "Ali Fikri Yavuz Meali": "Ey iman edenler! Allah'a öyle tevbe edin ki, tam bir pişmanlıkla halis bir tevbe olsun; olur ki Rabbiniz, kötülüklerinizi örter ve sizi, (ağaçları) altından ırmaklar akar cennetlere koyar. O gün Allah, Peygamberini ve O'nunla beraber iman edenleri utandırmıyacaktır. (Sırat üzerinde) nurları önlerinde ve sağlarında koşub parlayacak; şöyle diyeceklerdir: “- Ey Rabbimiz! Bizim nûrumuzu tamamla, (bu Sırat üzerinde nûrları sönen münafıklar gibi bizleri yapma). Bizi bağışla; muhakkak ki sen, her şeye kadirsin.”",
+    "Bahaeddin Sağlam Meali": "Ey iman edenler! Samimi ve doğru bir halde Allah’a yönelin. Yakında Rabbiniz günahlarınızı siler; sizi altlarında nehirler akan Cennetlere koyar. O gün Allah, Peygamber’i ve onunla beraber inananları utandırmayacaktır. Nurları, önlerinde ve sağlarında onlara yol gösterir. Onlar: “Ey Rabbimiz! Nurumuzu tamamla, bizi bağışla! Sen, her şeye gücü yetensin” derler.",
+    "Bayraktar Bayraklı Meali": "“Ey iman edenler! Gönülden gelen bir tövbe ile Allah'a yöneliniz. Belki Rabbiniz kötülüklerinizi örter. Peygamberi ve onunla beraber iman edenleri utandırmayacağı günde Allah sizi, içinden ırmaklar akan cennetlere koyar. Onların önlerinden ve sağlarından nurları aydınlatıp gider de, ‘Ey Rabbimiz! Nurumuzu bizim için tamamla, bizi affet, çünkü senin her şeye gücün yeter' derler.”",
+    "Besim Atalay Meali (1965)": "ey inanmış olanlar! İçten gelen bir tövbe ile Allaha tövbe edin, ola ki, Tanrınız geçip günahınızdan, altından ırmaklar akan cennetlere sizi kor, o gün, Allah peygambere, hem onunla birlikte inanmış bulunanlara horluk göstermiyecek, her yönden nurları parlar onların; derler ki: «Tanrımız! Tümle bizim nurumuzu, bizi bağışla, evet senin gücün her şeye yeter!»",
+    "Cemal Külünkoğlu Meali": "Ey inananlar! Allah'a içtenlikle (bir daha yapmamaya karar vererek) tevbe edin! (Böyle yaparsanız) umulur ki, Rabbiniz sizin kötülüklerinizi örter, nebiyi ve onunla birlikte iman edenleri utandırmayacağı günde Allah sizi, içlerinden ırmaklar akan cennetlere koyar. Onların nuru (o gün), önlerini ve yanlarını aydınlatacak ve onlar hep şöyle dua edecekler: “Ey Rabbimiz! Bizim nurumuzu tamamla (cennete girinceye kadar sönmesin). Ve bizi bağışla! Çünkü sen her şeye gücü yetensin!”",
+    "Cemil Said (1924)": "Ey mü’minler! Samîmâne tevbe ve istiğfâr idiniz. Belki Allâh günâhlarınızı ’afv ider ve sizi nehirler ile iskâ olunmuş cennetlere idhâl ider. O gün peygamberi ve âna îmân itmiş olanları mahzûn itmeyecekdir. Ânların nûrı önlerinde ve yanlarında gidecekdir, ânlar \"Yâ rabbî bu nûrı itmâm it ve bizim günâhlarımızı ’afv iyle sen her şeye kâdirsin\" diyeceklerdir.",
+    "Diyanet İşleri Meali (Eski)": "Ey inananlar! Yürekten tevbe ederek Allah'a dönün ki, Rabbiniz kötülüklerinizi örtsün, sizi, içlerinden ırmaklar akan cennetlere koysun. Allah'ın Peygamberini ve onunla beraber olan müminleri utandırmayacağı o gün, ışıkları önlerinde ve defterleri sağlarından verilmiş olarak yürürler ve: \"Rabbimiz! Işığımızı tamamla, bizi bağışla, doğrusu Sen herşeye Kadir'sin\" derler.",
+    "Diyanet İşleri Meali (Yeni)": "Ey iman edenler! Allah’a içtenlikle tövbe edin. Umulur ki, Rabbiniz sizin kötülüklerinizi örter, peygamberi ve onunla birlikte iman edenleri utandırmayacağı günde Allah sizi, içlerinden ırmaklar akan cennetlere sokar. Onların nurları önlerinden ve sağlarından aydınlatır, gider. “Ey Rabbimiz! Nûrumuzu bizim için tamamla, bizi bağışla; çünkü senin her şeye hakkıyla gücün yeter” derler.",
+    "Kur'an Yolu (Diyanet İşleri)": "Ey iman edenler! İçtenlikle ve kararlılık içinde Allah’a tövbe edin. Umulur ki rabbiniz kötülüklerinizi örter ve sizi altından ırmaklar akan cennetlerine koyar. O gün Allah, peygamberi ve onunla aynı imanı paylaşanları utandırmaz. Onların nuru önlerinde ve sağ yanlarında ilerleyerek yollarını aydınlatırken şöyle derler: “Rabbimiz! Nurumuzu arttır eksiltme ve bizi bağışla. Şüphesiz senin her şeye gücün yeter.”",
+    "Diyanet Vakfı Meali": "Ey iman edenler! Samimi bir tevbe ile Allah'a dönün. Umulur ki Rabbiniz sizin kötülüklerinizi örter. Peygamberi ve Onunla birlikte iman edenleri utandırmayacağı günde Allah sizi, içlerinden ırmaklar akan cennetlere sokar. Onların önlerinden ve sağlarından (amellerinin) nûrları aydınlatıp gider de, «Ey Rabbimiz! Nûrumuzu bizim için tamamla, bizi bağışla; çünkü sen her şeye kadirsin» derler.",
+    "Edip Yüksel Meali": "Ey inananlar, ALLAH'a yürekten tevbe edin ki Rabbiniz kötülüklerinizi örtsün ve altından ırmaklar akan cennetlere soksun. ALLAH, o gün peygamberi ve beraberinde bulunanları utandırmaz. Işıkları, önlerinden sağ yanlarına doğru yayılır ve, \"Rabbimiz, bizim için ışığımızı tamamla ve bizi bağışla; sen herşeye gücü yetensin,\" derler.",
+    "Elmalılı Hamdi Yazır Meali": "Ey iman edenler! Samimi bir tevbe ile Allah'a dönün. Umulur ki Rabbiniz sizin kötülüklerinizi örter, Peygamber'i ve onunla birlikte iman edenleri utandırmayacağı günde Allah sizi, içlerinden ırmaklar akan cennetlere sokar. Çünkü onların nurları, önlerinde ve yanlarında koşar da, \"Ey Rabbimiz! Nurumuzu tamamla, bizi bağışla, çünkü sen her şeye kâdirsin.\" derler.",
+    "Elmalılı Meali (Orijinal)": "Ey o bütün iyman edenler! Allaha öyle tevbe edin ki nasuh (gayet ciddî, müessir, öğütcü) bir tevbe olsun, gerek ki rabbınız sizden kabahatlerinizi keffaretle örter de sizleri altından ırmaklar akar Cennetlere koyar, o gün ki Allah Peygamberini ve onun maıyyetinde iyman edenleri utandırmıyacak, nûrları önlerinde ve sağlarında koşacak, şöyle diyecekler: ya rabbenâ! Bizlere nûrumuzu tamamla ve bizleri mağfiretinle yarlığa, şübhesiz ki sen her şey'e kadîrsin",
+    "Emrah Demiryent Meali": "Ey îmân edenler! Nasûh bir tövbe ile (samimi bir niyetle, pişmanlık duyarak, günahlara geri dönmemek azmiyle) Allah’a tövbe edin. Böyle yaparsanız, Rabbiniz sizin kötülüklerinizi örter, (günahlarınızı affeder) Peygamber’i ve beraberindeki mü’minleri utandırmayacağı günde Allah sizi, altlarından ırmaklar akan cennetlere yerleştirir. (Cennetliklerin) nurları, önlerinden ve sağlarında koşar. Derler ki: “Ey Rabbimiz! Nurumuzu tamamla, bizi bağışla, şüphesiz sen her şeye kâdirsin.”",
+    "Erhan Aktaş Meali": "Ey iman edenler! Öğüt veren bir tevbe ile Allah'a tevbe edin. Umulur ki Rabb'iniz, kötülüklerinizi örter ve sizi altından nehirler akan Cennetlere koyar. O gün Allah, nebileri ve onlarla beraber olanları asla üzmeyecektir. Onların ışıkları önlerini ve yanlarını aydınlatır. “Rabb'imiz, bizim ışığımızı tamamla ve bizi bağışla. Kuşkusuz Sen, Her Şeye Güç Yetiren'sin.” derler.",
+    "Hasan Basri Çantay Meali": "Ey îman edenler, tam bir sıdk-u hulûsa mâlik bir tevbe ile Allaha dönün. Olur ki Rabbiniz kötülüklerinizi örter ve sizi altlarından ırmaklar akan cennetlere sokar. O gün Allah peygamberini ve îman edib onunla beraber olanları rüsvay etmeyecek, nuurları önlerinde ve sağlarında koşacak, «Ey Rabbimiz, diyecekler, bizim nuurumuzu tamamla, bizi yarlığa. Şübhesiz ki Sen herşey'e hakkıyle kaadirsin».",
+    "Haydar Öztürk-Serkan Yılmaz Meali": "Ey iman edenler! Allah’a samimi bir tövbe ile tövbe edin. Rabbiniz de sizin kötülüklerinizi örtsün ve sizi içinden ırmaklar akan cennetlere yerleştirsin. O gün Allah, Nebîyi ve onunla birlikte iman edenleri utandırmaz. Nurları önlerinden ve sağlarından koşar. Onlar: “Rabbimiz! Nurumuzu tamamla, bizi bağışla. Senin her şeye gücün yeter.” derler.",
+    "Hayrat Neşriyat Meali": "Ey îmân edenler! (Samîmî bir tevbe olan) Tevbe-i Nasûh ile Allah'a tevbe edin!(1)Olur ki Rabbiniz, sizin kötülüklerinizi örter ve Allah, peygamberi ve onunla berâber îmân edenleri utandırmayacağı bir günde, sizi altlarından ırmaklar akan Cennetlere koyar! Onların nûru önlerinde ve sağlarında koşar (da): “Rabbimiz! Nûrumuzu bize tamamla ve bize mağfireteyle! Şübhesiz ki sen, herşeye hakkıyla gücü yetensin!” derler.",
+    "İhsan Aktaş Meali": "Ey inanmış olanlar! Yürekten tövbe ederek (kötü işleri yapmaktan vazgeçerek), Allah’a yönelin ki, (ahiret günü) Rabbiniz kötülüklerinizi (hatalarınızı) örtsün ve sizi, içlerinden ırmaklar (ve havuzlu şelaleler) akan cennetlere koysun. Allah’ın Peygamberini ve onunla beraber iman etmiş olanları utandırmayacağı o gün, (ahiret günü) onların önlerinden ve sağlarından (yaptıkları iyi amellerinin) nûrları aydınlatıp gider de, «Rabbimiz! Nûrumuzu (manevi ışığımızı) bizim için tamamla, bizi bağışla; şüphesiz sen her şeye kadirsin» derler.",
+    "İlyas Yorulmaz Meali": "Ey İman edenler! Samimi bir tövbe ile Allah’a hatalarınızdan tövbe edin (vazgeçin). Eğer bunu yaparsanız, Rabbiniz hatalarınızın üzerini örter ve altlarından ırmakların aktığı cennetlere koyar. O gün Allah, peygamberini ve o’nunla birlikte inananları üzmeyecek. Nurları hep önlerini ve sağ taraflarını aydınlatacak ve “Ey Rabbimiz! (Bize vaat ettiğin) Nurumuzu tamamla ve bizi bağışla. Elbetteki sen her şeye gücü yetensin” diye dua edecekler.",
+    "İsmayıl Hakkı Baltacıoğlu": "Ey inanan kimseler! Allah’a bütün isteğinizle dönün. Olabilir ki çalabınız sizin kötülüklerinizi örter de sizi içinden ırmaklar akan cennetlere sokar. O gün Allah peygamberi, inanıp onunla birlik olanları utandırmıyacaktır. Onların ışıkları önlerinde, sağ yanlarında koşacaktır. Onlar diyecekler: \"Ey çalabımız! Bizim ışığımızı sonuna dek yak, bizi yarlıga, çünkü Senin her nesneye gücün yeticidir.",
+    "İsmail Hakkı İzmirli": "Mü/minler! Allah/a halis tövbeyle tövbe ediniz. Olabilir ki Rabbiniz kötülüklerinizi örter ve sizi ağaçları altından ırmaklar akar uçmaklara sokar. O gün, Allah peygamberi ve onunla beraber olan mü/minleri rüsvay etmez , Onların ışıkları önlerinde ve sağ taraflarında yürür, onlar «— Ey Rabbimiz! Bize ışığımızı tamamla, bizi yarlığa, çünkü sen her şeye hakkıyle kaadirsin» derler.",
+    "İsmail Yakıt": "Ey inananlar! Allah’a bütün samimiyetinizle tevbe ediniz. Ola ki Rabbiniz kötülüklerinizi örter ve Allah’ın, peygamberi ve onunla birlikte inananları utandırmayacağı günde sizi altlarından ırmaklar akan cennetlere sokar. Onların nurları önlerinden ve sağ yanlarından aydınlatır gider. “Rabbimiz nurumuzu bizim için tamamla ve bizi bağışla. Muhakkak ki Sen’in her şeye hakkıyla gücün yeter” derler⁴.",
+    "Kadri Çelik Meali": "Ey iman edenler! Allah'a kesin bir tevbe ile tevbe edin. Belki Allah, böylece sizin kötülüklerinizi örter ve sizi altından ırmaklar akan cennetlere sokar. O gün Allah; peygamberi ve onunla birlikte iman etmekte olanları küçük düşürmeyecektir. Nurları, önlerinde ve sağ yanlarında koşuşturur. Derler ki: “Rabbimiz nurumuzu tamamla, bizi bağışla. Şüphesiz sen her şeye güç yetirensin.”",
+    "Mahmut Kısa Meali": "Ey iman edenler! Tüm içtenliğinizle Allah’ayönelip günahlarınızdan pişmanlık duyaraktövbe edin;yüreğinizdeki ümit ışığı hiç sönmesin,umulur ki Rabb’iniz, günahlarınızı bağışlayacak ve sizi, içerisinde ırmaklar çağıldayan cennet bahçelerine yerleştirecektir. O Gün Allah, Peygamberi ve onun yanında yer alansamîmî ve fedâkâr Müslümanlarıelbetteutandırmayacaktır.Öyle ki, O Gün zâlimler ve münâfıklar karanlıklar içinde cehenneme doğru yol alırlarken, müminlerin dünyada iken kazanmış olduklarınurları, önlerinden ve sağ taraflarındankendilerinitakip edecekve cennete giden yolu onlara gösterecektir.Bu arada münafıkların zaten nurlarının yokluğu ortaya çıkıp kapkaranlıkta kalınca Müslümanlar şöyleduaederler:“Ey Rabb’imiz!”Biz cennete girinceye kadarnurumuzu tamamla;nurumuzu bizden ayırma, bizi karanlıklarda bırakma. Gerçi biz bunu hak edecek davranışlar gösteremedik, Sana hakkıyla kulluk da edemedik, onun içinbizibağışlaey Rabb’imiz;hiç kuşku yok ki, Sen her şeye kadirsin!”O hâlde, bu müjdeye nâil olabilmek için;",
+    "Mahmut Özdemir Meali": "Ey iman edenler! Etkili içten bir tevbe ile Allah’a tevbe edin / yönelin! Rabbinizin, kötülüklerinizi örtmesi ve sizi altından Irmaklar akan cennetlere girdirmesi umulur. Nebiyy’i ve onunla birlikte inanmış olanları Allah’ın utandırmayacağı gün onların nûru önlerinden ve yanlarından koşar.“Rabbimiz! Nûrumuzu tamamla! Bizi bağışla! Sen, her şeye kadîr / güç yetirensin” derler.",
+    "Mehmet Çakır Meali": "Sevgili müminler! Allah'a tövbe ederken, bir daha yapmamak üzere,Nasûh tövbesiedin. Rabb’iniz, belki o zaman suçlarınızı örtüp sizi, çağlayanlı bahçelerinde ağırlayabilir. O gün Allah, resulünü ve beraberindeki müminleri utandırmayacaktır. O gün onlar, önden ve yandan bir ışık demeti eşliğinde yol alırlarken, bir yandan da dualar edip:\" Ya Rab! n'olur, ışığımızı daim eyle! bağışla bizi\" diyecekler, \"sen,her şeye kadirsin\" diyecekler…",
+    "Mehmet Çoban Meali": "Ey iman edenler! Allah’a içtenlikle tövbe edin! İçtenlikle yaptığınız tövbe için Rabbiniz kötülüklerinizi örter! Nebi ve onunla birlikte iman edenleri utandırmayacağı gün, Allah sizi içlerinden ırmaklar akan cennetlere sokar! Ey iman edenler! Dünyada yaptığınız iyilikler hesap günü etrafını aydınlatan ışıklar olur! İman edenler hiç korkmadan ve hiç çekinmeden ışıkları takip ederler! Işıklar onları cennete götürür. İman edenler:\"Ey Rabbimiz! Işıklarımızın yetmediği yerde bizim için ışıkları tamamla! Bizi hatalarımızdan dolayı bağışla! Çünkü senin her şeye hakkıyla gücün yeter!\"derler.",
+    "Mehmet Okuyan Meali": "Ey iman edenler! Samimi bir tevbe ile Allah’a yönelin! Umulur ki Rabbiniz sizden kötülüklerinizi örter. Peygamber’i ve onunla birlikte iman edenleri rezil etmeyeceği günde Allah sizi, altlarından ırmaklar akan cennetlere yerleştirir. Onların ışığı önlerinden ve sağlarından koşar (ve) “Rabbimiz! Işığımızı bizim için tamamla; bizi bağışla! Şüphesiz ki sen her şeye gücü yetensin.” derler.",
+    "Mehmet Türk Meali": "Ey îman edenler! Allah’a gönülden tevbe edin.¹ Umulur ki Rabbiniz, kötülüklerinizi örter. Allah’ın Peygamberini ve onunla beraber inanmış olanları utandırmayacağı günde, sizi zemîninden ırmaklar akan cennetlere sokar. (O gün) onların (îmanlarının) nuru, önlerinden ve sağ taraflarından koşarken: “Ey Rabbimiz! Nurumuzu tamamla ve bizi bağışla.² Doğrusu, senin gücün her şeye yeter.” derler.",
+    "Muhammed Esed Meali": "Siz ey imana ermiş olanlar! Gönülden tevbe ederek Allah’a yönelin: ¹⁶ umulur ki Rabbiniz kötü fiilerinizi yok eder ve Allah’ın Peygamberi ile o’nun inancını paylaşanları utandırmayacağı ¹⁷ o Gün, sizi içinden ırmaklar akan bahçelere koyar: onlar, önlerinden ve sağ taraflarından hızla ışık yayarlar ¹⁸ ve “Ey Rabbimiz!” diye yalvarırlar, “Bu ışığımızı ebediyyen parlat ¹⁹ ve günahlarımızı bağışla: çünkü Sen her şeye kâdirsin!”",
+    "Mustafa Çavdar Meali": "Ey iman edenler, samimi ve kararlı bir şekilde tövbe ederek Allah’a yönelin ki Rabbiniz de günahlarınızı örtsün ve sizi, Nebi’yi ve onunla birlikte olanları asla mahcup etmeyeceği o günde tabanından ırmakların çağladığı cennetlere yerleştirsin. O gün onlar önleri ve sağ yanları iman nuruyla aydınlanmış bir şekilde cennetlere doğru koşacaklar ve “Rabbimiz nurumuzu tamamla ve bizi bağışla çünkü sen her şeye gücü yetensin” diye niyazda bulunacaklar. 4/31, 25/63...71, 57/13-14",
+    "Mustafa İslamoğlu Meali": "Siz ey iman edenler! Samimi bir kalp ile tevbe ederek içten bir sadâkatle Allah’a yönelin! Umulur ki Rabbiniz günahlarınızı örter ve Allah’ın Nebî ve ona katılarak iman edenleri mahcup etmeyeceği o gün, sizi zemininden ırmakların aktığı cennetlere koyar: Onlar önlerinden ve sağlarından ışık saçarlar ve şöyle dua ederler: “Rabbimiz! Nurumuzu tamamla ve bizi bağışla: çünkü sen her şeye kadirsin!",
+    "Orhan Kuntman Meali": "Ey iman edenler, Allah’a hâlis bir tevbe ile yönelin, umulur ki Rabbiniz, sizin kötülüklerinizi örter ve sizi, ağaçlarının altından ırmaklar akan cennetlere yerleştirir. O gün Allah, Peygamberini ve onunla beraber olan müminleri utandırmayacak, onların nurları önlerinde ve sağ yönlerinde koşacak ve onlar: \"Ey Rabbimiz nurumuzu tamamla, bizi bağışla, şüphe yok ki Sen her şeye kâdirsin\" diye niyazda bulunacaklardır,",
+    "Osman Fırat Meali": "Ey iman edenler, Allah’a (Nasuh tövbesi ile) yürekten tevbe edin. Umulur ki Rabbiniz sizin kötülüklerinizi örter; Allâh’ın Nebisi ve onunla beraber iman etmiş olanları utandırmayacağı günde, sizi altlarından ırmaklar akan cennetlere sokar. (O gün) onların nuru, önlerinden ve sağ yanlarından koşar. Ve derler ki: \"Rabbimiz, nurumuzu tamamla, bizi bağışla. Doğrusu, senin herşeye gücün yeter!\"",
+    "Ömer Nasuhi Bilmen Meali": "Ey mü'minler! Allah'a Tevbe-i Nâsûh ile tevbede bulunun. Umulur ki Rabbiniz sizden günahlarınızı örter ve sizi altlarından ırmaklar akar cennetlere girdirir. O gün ki Allah, Peygamberini ve O'nunla beraber imân etmiş olanları rüsvay etmez. Nûrları önleri ve sağ tarafları arasında koşar. Derler ki: «Ey Rabbimiz! Bize nûrumuzu tamamla, bizim için mağfiret buyur. Şüphe yok ki Sen her şey üzerine hakkıyla kâdirsin.»",
+    "Suat Yıldırım Meali": "Ey iman edenler! Samimî ve kesin bir dönüşle Allah'a tövbe ediniz! Böyle yaparsanız Rabbinizin sizin günahlarınızı affedeceğini, sizi içinden ırmaklar akan cennetlere yerleştireceğini umabilirsiniz. O gün Allah, Peygamberini ve onun beraberindeki müminleri utandırmaz. Onların nûru, önlerinden ve sağ taraflarından sür'atle ilerler. Şöyle derler onlar: “Ey Kerim Rabbimiz! Nûrumuzu daha da artır, tamamına erdir, kusurlarımızı affet, çünkü Sen her şeye kadirsin. ”",
+    "Süleyman Ateş Meali": "Ey inananlar, Allah'a yürekten tevbe edin. Umulur ki Rabbiniz sizin kötülüklerinizi örter; Allah'ın, peygamberi ve onunla beraber inanmış olanları utandırmayacağı günde, sizi altlarından ırmaklar akan cennetlere sokar. (O gün) onların nuru, önleriden ve sağ yanlarından koşar. Derler ki: \"Rabbimiz, nurumuzu tamamla, bizi bağışla. Doğrusu, senin herşeye gücün yeter!\"",
+    "Süleyman Tevfik (1927)": "Ey Mü'minler! Bir daha günâh işlememeğe kat'iyyen 'azim itmiş olanlar gibi Allâh'a tevbe idin. Me'mûldür ki rabbiniz seyyiâtınızı 'afv ide. O günde (kıyâmet gününde) Allâh Nebi'yi ve onunla berâber olanları hacîl ve mağmûm itmez. Onların nûrları önlerinde ve sağ taraflarında yürür. \"Yâ Rabbî! Bizim nûrumuzı artır. Ve bizi mağfiret buyur, tahkîk sen her şeye kâdirsin\" dirler.",
+    "Süleymaniye Vakfı Meali": "Ey inanıp güvenenler! Örnek bir dönüşle Allah’a dönün. Belki Sahibiniz, nebilerini ve inanıp güvenenleri (müminleri) aşağılamayacağı günde kabahatlerinizi örter de sizi içinden ırmaklar akan bahçelere yerleştirir. (Oraya gidecek olanların) Nurları önlerini ve sağ yanlarını aydınlatır. Şöyle derler: “Rabbimiz, nurumuzu tamamla ve bizi bağışla. Her şeye bir ölçü koyan sensin.”",
+    "Şaban Piriş Meali": "-Ey iman edenler, tam arınarak Allah'a tevbe edin. Umulur ki Rabbiniz, günahlarınızı örter ve sizi alt tarafından ırmaklar akan cennetlere girdirir. O gün, Allah, Peygamberi ve onunla beraber iman etmiş olanları utandırmaz. Nurları önlerinden ve yanlarından koşar. Rabbimiz, derler. Bizim nurumuzu tamamla ve bizi bağışla. Şüphesiz senin her şeye gücün yeter.",
+    "Ümit Şimşek Meali": "Ey iman edenler! İçten ve kesin bir tevbe ile Allah'a dönün. Bakarsınız, Rabbiniz sizin günahlarınızı örter ve sizi, altlarından ırmaklar akan Cennetlere koyar. O gün, Allah'ın Peygamberi ve beraberindeki iman edenleri utandırmayacağı gündür. O gün onların nuru önlerinde ve sağlarında koşarken, onlar da “Rabbimiz, nurumuzu tamamla ve bizi bağışla; Senin herşeye gücün yeter” diye dua etmektedirler.",
+    "Yaşar Nuri Öztürk Meali": "Ey iman edenler! Etkili öğüt veren bir tövbe ile Allah'a yönelin. Umulur ki Rabbiniz, çirkinliklerinizi ve günahlarınızı örter ve sizi altlarından ırmaklar akan cennetlere yerleştirir. O gün Allah, peygamberi ve onunla birlikte inananları utandırmayacaktır. Onların ışığı önlerinden ve sağ yanlarından koşup gelir. Şöyle derler: \"Ey Rabbimiz! Işığımızı tamamla ve bizi bağışla! Sen her şeye Kadîr'sin, her şeye gücün yeter.\"",
+    "Eski Anadolu Türkçesi": "iy anlar kim įmān getürdiler! dönüñ Tañrı’dın yaña dönmek ögütlenici. ola kim çalabuñuz yarlıġaya size yazuķlaruñuzı daħı givüre sizi uçmaķlara aķar altından ırmaķlar. ol gün kim rüsvāy eylemeye Tañrı peyġamber’i daħı anları kim įmān getürdiler anuñ-ile. nūrı anlaruñ ive yürir ileylerinde daħı śaġlarında. eydürler “iy çalabumuz! tamām eyle bizüm içün nūrumuzı daħı yarlıġa bizi bayıķ sen her nesene üzere ķaadırsın.”",
+    "Satıraltı Meal (1534)": "İy mü’minler, tevbe eyleñüz Allāha, naṣūḥ tevbesin. Ola kimTañrıñuz baġışlaya günāhlaruñuzı. Daḫı givürür sizi uçmaḳlara ki aḳar altından ırmaḳlar. Ol gün rüsvāy eylemez Tañrı Ta‘ālā peyġamberi özi‐y‐leolan mü’minleri. Daḫı yürür nūrları ileylerince ve yanlarınca. Eydürler: YāRabbenā, tamām eyle bizüm nūrumuzı ve bize günāhlarumuz baġışla. Senher nesneye ḳādirsin.",
+    "Bunyadov-Memmedeliyev": "Ey iman gətirənlər! Allaha səmimi-qəlbdən (bir daha günaha qayıtmamaq şərtilə) tövbə edin. Ola bilsin ki, Rəbbiniz günahlarınızın üstünü örtsün və sizi (ağacları) altından çaylar axan cənnətlərə daxil etsin. O gün Allah Öz Peyğəmbərini və onunla birlikdə iman gətirənləri xəcil etməz. Onların (iman) nuru (qıl körpüsü üstündə onlara yol göstərmək üçün) önlərindən və sağ tərəflərindən axıb şö’lə saçarkən onlar belə deyəcəklər: “Ey Rəbbimiz! Bizim nurumuzu tamam-kamal elə və bizi bağışla. Həqiqətən, Sən hər şeyə qadirsən!”",
+    "M. Pickthall (English)": "O ye who believe! Turn unto Allah in sincere repentance! It may be that your Lord will remit from you your evil deeds and bring you into Gardens underneath which rivers flow, on the day when Allah will not abase the Prophet and those who believe with him. Their light will run before them and on their right hands: they will say: Our Lord! Perfect our light for us, and forgive us! Lo! Thou art Able to do all things.",
+    "Yusuf Ali (English)": "O ye who believe!(5542) Turn to Allah with sincere repentance: In the hope that your Lord will remove(5543) from you your ills and admit you to Gardens beneath which Rivers flow,- the Day that Allah will not permit to be humiliated the Prophet and those who believe with him. Their Light will run(5544) forward before them and by their right hands, while they say, \"Our Lord! Perfect our Light for us, and grant us Forgiveness: for Thou hast power over all things.\""
+  }
+}
