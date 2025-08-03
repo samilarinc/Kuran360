@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,10 +6,12 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { Verse } from '../components/Verse';
 import { useAudioPlayer } from '../hooks/useAudioPlayer';
 import { Surah, Verse as VerseType } from '../types';
+import { loadSurah } from '../data/quranData';
 import { COLORS, FONT_SIZES, SPACING } from '../constants';
 
 interface SurahDetailScreenProps {
@@ -25,12 +27,38 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   route,
   navigation
 }) => {
-  const { surah } = route.params;
+  const { surah: basicSurah } = route.params;
+  const [surah, setSurah] = useState<Surah>(basicSurah);
+  const [loading, setLoading] = useState(true);
   const { audioState, playVerse, stop } = useAudioPlayer();
+
+  useEffect(() => {
+    const loadSurahData = async () => {
+      try {
+        setLoading(true);
+        
+        // Load the full surah with verses if not already loaded
+        if (basicSurah.verses.length === 0) {
+          const loadedSurah = loadSurah(basicSurah.number);
+          if (loadedSurah) {
+            setSurah(loadedSurah);
+          }
+        } else {
+          setSurah(basicSurah);
+        }
+      } catch (error) {
+        console.error('Error loading surah verses:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSurahData();
+  }, [basicSurah]);
 
   const handleVersePress = (verse: VerseType) => {
     const isCurrentVersePlaying = audioState.currentVerse?.surahNumber === verse.surahNumber &&
-      audioState.currentVerse?.verseNumber === verse.verseNumber &&
+      audioState.currentVerse?.number === verse.number &&
       audioState.isPlaying;
 
     if (isCurrentVersePlaying) {
@@ -44,7 +72,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
   const isVerseCurrentlyPlaying = (verse: VerseType) => {
     return audioState.currentVerse?.surahNumber === verse.surahNumber &&
-      audioState.currentVerse?.verseNumber === verse.verseNumber &&
+      audioState.currentVerse?.number === verse.number &&
       audioState.isPlaying;
   };
 
@@ -58,36 +86,45 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.backButtonText}>← Back</Text>
-        </TouchableOpacity>
-        <Text style={styles.surahName}>{surah.arabicName}</Text>
-        <Text style={styles.surahInfo}>
-          {surah.name} • {surah.numberOfVerses} verses • {surah.isMeccan ? 'Meccan' : 'Medinan'}
-        </Text>
-      </View>
-
-      <FlatList
-        data={surah.verses}
-        renderItem={renderVerse}
-        keyExtractor={(item) => `${item.surahNumber}-${item.verseNumber}`}
-        contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
-      />
-
-      {audioState.currentVerse && (
-        <View style={styles.audioInfo}>
-          <Text style={styles.audioInfoText}>
-            {audioState.isLoading
-              ? 'Loading...'
-              : `${audioState.isPlaying ? 'Playing' : 'Paused'}: Verse ${audioState.currentVerse.verseNumber}`
-            }
-          </Text>
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.primary} />
+          <Text style={styles.loadingText}>Loading verses...</Text>
         </View>
+      ) : (
+        <>
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}
+            >
+              <Text style={styles.backButtonText}>← Back</Text>
+            </TouchableOpacity>
+            <Text style={styles.surahName}>{surah.arabicName}</Text>
+            <Text style={styles.surahInfo}>
+              {surah.name} • {surah.verseCount} verses • {surah.revelationPlace}
+            </Text>
+          </View>
+
+          <FlatList
+            data={surah.verses}
+            renderItem={renderVerse}
+            keyExtractor={(item) => `${item.surahNumber}-${item.number}`}
+            contentContainerStyle={styles.listContainer}
+            showsVerticalScrollIndicator={false}
+          />
+
+          {audioState.currentVerse && (
+            <View style={styles.audioInfo}>
+              <Text style={styles.audioInfoText}>
+                {audioState.isLoading
+                  ? 'Loading...'
+                  : `${audioState.isPlaying ? 'Playing' : 'Paused'}: Verse ${audioState.currentVerse.number}`
+                }
+              </Text>
+            </View>
+          )}
+        </>
       )}
     </SafeAreaView>
   );
@@ -97,6 +134,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: SPACING.md,
+    fontSize: FONT_SIZES.medium,
+    color: COLORS.textSecondary,
   },
   header: {
     backgroundColor: COLORS.surface,

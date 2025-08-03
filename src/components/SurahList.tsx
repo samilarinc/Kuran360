@@ -31,7 +31,7 @@ const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress }) => (
       <Text style={styles.surahName}>{surah.name}</Text>
       <Text style={styles.surahArabicName}>{surah.arabicName}</Text>
       <Text style={styles.surahDetails}>
-        {surah.numberOfVerses} verses • {surah.isMeccan ? 'Meccan' : 'Medinan'}
+        {surah.verseCount} verses • {surah.revelationPlace}
       </Text>
     </View>
     <View style={styles.arrow}>

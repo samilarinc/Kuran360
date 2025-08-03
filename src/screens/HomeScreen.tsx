@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { SurahList } from '../components/SurahList';
-import { generateQuranData } from '../data/quranData';
+import { quranData } from '../data/quranData';
 import { Surah, QuranData } from '../types';
 import { COLORS, FONT_SIZES, SPACING } from '../constants';
 
@@ -21,10 +21,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, onSurahSelec
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadData = () => {
       try {
-        const data = await generateQuranData();
-        setSurahs(data.surahs);
+        // Load basic surah metadata (without verses)
+        setSurahs(quranData.surahs);
       } catch (error) {
         console.error('Error loading Quran data:', error);
       } finally {

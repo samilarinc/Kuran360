@@ -1,25 +1,26 @@
 export interface WordTranslation {
   arabic: string;
-  turkish: string;
+  translation: string;
 }
 
 export interface Verse {
   id: string;
+  number: number;
   surahNumber: number;
-  verseNumber: number;
   arabicText: string;
-  turkishTranslation: string;
+  translation: string;
   transliteration: string;
   wordTranslations: WordTranslation[];
-  audioFileName: string;
+  audioFileName?: string;
 }
 
 export interface Surah {
   number: number;
   name: string;
   arabicName: string;
-  numberOfVerses: number;
-  isMeccan: boolean;
+  englishName: string;
+  revelationPlace: string;
+  verseCount: number;
   verses: Verse[];
 }
 
@@ -33,4 +34,6 @@ export interface AudioState {
 
 export interface QuranData {
   surahs: Surah[];
+  totalSurahs: number;
+  totalVerses: number;
 }

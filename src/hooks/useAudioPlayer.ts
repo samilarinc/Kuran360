@@ -31,9 +31,12 @@ export const useAudioPlayer = () => {
 
       console.log(`Playing verse: ${verse.audioFileName}`);
 
-      // For Expo web, we need to serve the audio files from a public directory
-      // Create the audio file URI pointing to the local directory
-      const audioUri = `http://localhost:8081/sudais_all_verse/${verse.audioFileName}`;
+      // Generate the audio filename if not provided
+      const audioFileName = verse.audioFileName || `${verse.surahNumber.toString().padStart(3, '0')}${verse.number.toString().padStart(3, '0')}.mp3`;
+      
+      // For React Native with Metro bundler, serve the audio files via HTTP
+      // Metro can serve static files from the project directory
+      const audioUri = `http://localhost:8081/sudais_all_verse/${audioFileName}`;
       console.log(`Attempting to load audio from: ${audioUri}`);
 
       // Load and play the audio file

@@ -19,7 +19,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress }) =
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.verseNumber}>
-          <Text style={styles.verseNumberText}>{verse.verseNumber}</Text>
+          <Text style={styles.verseNumberText}>{verse.number}</Text>
         </View>
         <TouchableOpacity
           style={[
@@ -39,7 +39,8 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress }) =
 
       <View style={styles.content}>
         <Text style={styles.arabicText}>{verse.arabicText}</Text>
-        <Text style={styles.translationText}>{verse.turkishTranslation}</Text>
+        <Text style={styles.translationText}>{verse.translation}</Text>
+        <Text style={styles.transliterationText}>{verse.transliteration}</Text>
       </View>
     </View>
   );
@@ -112,5 +113,12 @@ const styles = StyleSheet.create({
     lineHeight: FONT_SIZES.translation * 1.4,
     color: COLORS.textSecondary,
     textAlign: 'left',
+  },
+  transliterationText: {
+    fontSize: FONT_SIZES.medium,
+    lineHeight: FONT_SIZES.medium * 1.3,
+    color: COLORS.textSecondary,
+    textAlign: 'left',
+    fontStyle: 'italic',
   },
 });

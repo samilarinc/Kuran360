@@ -4,15 +4,19 @@ import { AUDIO_FILE_FORMAT } from '../constants';
 // Helper function to create a verse
 export const createVerse = (
   surahNumber: number,
-  verseNumber: number,
+  number: number,
   arabicText: string,
-  turkishTranslation: string
+  translation: string,
+  transliteration: string = ''
 ): Verse => ({
+  id: `${surahNumber.toString().padStart(3, '0')}${number.toString().padStart(3, '0')}`,
   surahNumber,
-  verseNumber,
+  number,
   arabicText,
-  turkishTranslation,
-  audioFileName: AUDIO_FILE_FORMAT(surahNumber, verseNumber),
+  translation,
+  transliteration,
+  wordTranslations: [],
+  audioFileName: AUDIO_FILE_FORMAT(surahNumber, number),
 });
 
 // Helper function to create a surah
@@ -20,15 +24,17 @@ export const createSurah = (
   number: number,
   name: string,
   arabicName: string,
-  numberOfVerses: number,
-  isMeccan: boolean,
+  englishName: string,
+  revelationPlace: string,
+  verseCount: number,
   verses: Verse[]
 ): Surah => ({
   number,
   name,
   arabicName,
-  numberOfVerses,
-  isMeccan,
+  englishName,
+  revelationPlace,
+  verseCount,
   verses,
 });
 
@@ -38,7 +44,8 @@ export const importVersesFromData = (csvData: string[][]): Verse[] => {
     parseInt(row[0]), // surah number
     parseInt(row[1]), // verse number
     row[2], // arabic text
-    row[3]  // turkish translation
+    row[3], // translation
+    row[4] || ''  // transliteration
   ));
 };
 
@@ -49,16 +56,18 @@ export const ADDITIONAL_SURAHS: Partial<Surah>[] = [
     number: 3,
     name: 'Al-Imran',
     arabicName: 'آل عمران',
-    numberOfVerses: 200,
-    isMeccan: false,
-    // verses would be added here
+    englishName: 'The Family of Imran',
+    revelationPlace: 'Medina',
+    verseCount: 200,
+    verses: [],
   },
   {
     number: 4,
     name: 'An-Nisa',
     arabicName: 'النساء',
-    numberOfVerses: 176,
-    isMeccan: false,
-    // verses would be added here
-  }
+    englishName: 'The Women',
+    revelationPlace: 'Medina',
+    verseCount: 176,
+    verses: [],
+  },
 ];
