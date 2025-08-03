@@ -12,6 +12,7 @@ export interface Verse {
   transliteration: string;
   wordTranslations: WordTranslation[];
   audioFileName?: string;
+  allTranslations?: Record<string, string>; // All available translations
 }
 
 export interface Surah {
@@ -36,4 +37,17 @@ export interface QuranData {
   surahs: Surah[];
   totalSurahs: number;
   totalVerses: number;
+}
+
+export interface AppSettings {
+  selectedTranslations: string[];
+  autoplayEnabled: boolean;
+  showTransliteration: boolean;
+  showWordTranslations: boolean;
+}
+
+export interface SettingsContextType {
+  settings: AppSettings;
+  updateSettings: (newSettings: Partial<AppSettings>) => void;
+  availableTranslations: string[];
 }

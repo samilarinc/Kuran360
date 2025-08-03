@@ -5,6 +5,7 @@ import {
   StyleSheet,
   SafeAreaView,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import { SurahList } from '../components/SurahList';
 import { quranData } from '../data/quranData';
@@ -63,6 +64,12 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, onSurahSelec
       <View style={styles.header}>
         <Text style={styles.title}>القرآن الكريم</Text>
         <Text style={styles.subtitle}>Holy Quran</Text>
+        <TouchableOpacity
+          style={styles.settingsButton}
+          onPress={() => navigation.navigate('Settings')}
+        >
+          <Text style={styles.settingsButtonText}>⚙️</Text>
+        </TouchableOpacity>
       </View>
       <SurahList surahs={surahs} onSurahSelect={handleSurahSelect} />
     </SafeAreaView>
@@ -79,6 +86,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.lg,
     paddingHorizontal: SPACING.md,
     alignItems: 'center',
+    position: 'relative',
   },
   title: {
     fontSize: FONT_SIZES.xxlarge,
@@ -90,6 +98,18 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.medium,
     color: '#FFFFFF',
     opacity: 0.9,
+  },
+  settingsButton: {
+    position: 'absolute',
+    right: SPACING.md,
+    top: SPACING.lg,
+    padding: SPACING.sm,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  settingsButtonText: {
+    fontSize: 20,
+    color: '#FFFFFF',
   },
   loadingContainer: {
     flex: 1,

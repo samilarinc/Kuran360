@@ -6,6 +6,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { Verse as VerseType } from '../types';
+import { useSettings } from '../contexts/SettingsContext';
 import { COLORS, FONT_SIZES, SPACING } from '../constants';
 
 interface VerseProps {
@@ -15,6 +16,42 @@ interface VerseProps {
 }
 
 export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress }) => {
+  const { settings } = useSettings();
+
+  const renderTranslations = () => {
+    if (!verse.allTranslations) return null;
+
+    return settings.selectedTranslations.map((translationName, index) => {
+      const translationText = verse.allTranslations![translationName];
+      if (!translationText) return null;
+
+      return (
+        <View key={translationName} style={styles.translationContainer}>
+          <Text style={styles.translationTitle}>{translationName}:</Text>
+          <Text style={styles.translationText}>{translationText}</Text>
+        </View>
+      );
+    });
+  };
+
+  const renderWordTranslations = () => {
+    if (!settings.showWordTranslations || !verse.wordTranslations.length) return null;
+
+    return (
+      <View style={styles.wordTranslationsContainer}>
+        <Text style={styles.sectionTitle}>Kelime Çevirileri:</Text>
+        <View style={styles.wordTranslationsGrid}>
+          {verse.wordTranslations.map((word, index) => (
+            <View key={index} style={styles.wordTranslationItem}>
+              <Text style={styles.wordArabic}>{word.arabic}</Text>
+              <Text style={styles.wordTranslation}>{word.translation}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -39,8 +76,16 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress }) =
 
       <View style={styles.content}>
         <Text style={styles.arabicText}>{verse.arabicText}</Text>
-        <Text style={styles.translationText}>{verse.translation}</Text>
-        <Text style={styles.transliterationText}>{verse.transliteration}</Text>
+
+        {settings.showTransliteration && verse.transliteration && (
+          <Text style={styles.transliterationText}>{verse.transliteration}</Text>
+        )}
+
+        <View style={styles.translationsContainer}>
+          {renderTranslations()}
+        </View>
+
+        {renderWordTranslations()}
       </View>
     </View>
   );
@@ -120,5 +165,58 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     textAlign: 'left',
     fontStyle: 'italic',
+  },
+  translationsContainer: {
+    gap: SPACING.sm,
+  },
+  translationContainer: {
+    paddingVertical: SPACING.xs,
+    borderLeftWidth: 3,
+    borderLeftColor: COLORS.primary,
+    paddingLeft: SPACING.sm,
+  },
+  translationTitle: {
+    fontSize: FONT_SIZES.small,
+    fontWeight: '600',
+    color: COLORS.primary,
+    marginBottom: 4,
+  },
+  wordTranslationsContainer: {
+    marginTop: SPACING.sm,
+    padding: SPACING.sm,
+    backgroundColor: COLORS.background,
+    borderRadius: 8,
+  },
+  sectionTitle: {
+    fontSize: FONT_SIZES.small,
+    fontWeight: '600',
+    color: COLORS.text,
+    marginBottom: SPACING.xs,
+  },
+  wordTranslationsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: SPACING.xs,
+  },
+  wordTranslationItem: {
+    backgroundColor: COLORS.surface,
+    paddingVertical: 4,
+    paddingHorizontal: SPACING.xs,
+    borderRadius: 6,
+    marginRight: SPACING.xs,
+    marginBottom: SPACING.xs,
+    minWidth: 60,
+    alignItems: 'center',
+  },
+  wordArabic: {
+    fontSize: FONT_SIZES.small,
+    color: COLORS.text,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  wordTranslation: {
+    fontSize: FONT_SIZES.small - 2,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
   },
 });

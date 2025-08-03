@@ -30,21 +30,25 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const { surah: basicSurah } = route.params;
   const [surah, setSurah] = useState<Surah>(basicSurah);
   const [loading, setLoading] = useState(true);
-  const { audioState, playVerse, stop } = useAudioPlayer();
+  const { audioState, playVerse, stop, setVersesForAutoplay } = useAudioPlayer();
 
   useEffect(() => {
     const loadSurahData = async () => {
       try {
         setLoading(true);
-        
+
         // Load the full surah with verses if not already loaded
         if (basicSurah.verses.length === 0) {
           const loadedSurah = loadSurah(basicSurah.number);
           if (loadedSurah) {
             setSurah(loadedSurah);
+            // Set verses for autoplay functionality
+            setVersesForAutoplay(loadedSurah.verses);
           }
         } else {
           setSurah(basicSurah);
+          // Set verses for autoplay functionality
+          setVersesForAutoplay(basicSurah.verses);
         }
       } catch (error) {
         console.error('Error loading surah verses:', error);
@@ -54,7 +58,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     };
 
     loadSurahData();
-  }, [basicSurah]);
+  }, [basicSurah, setVersesForAutoplay]);
 
   const handleVersePress = (verse: VerseType) => {
     const isCurrentVersePlaying = audioState.currentVerse?.surahNumber === verse.surahNumber &&
