@@ -44,6 +44,7 @@ export interface AppSettings {
   autoplayEnabled: boolean;
   showTransliteration: boolean;
   showWordTranslations: boolean;
+  usePaginatedView: boolean;
 }
 
 export interface SettingsContextType {

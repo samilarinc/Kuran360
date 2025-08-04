@@ -15,9 +15,10 @@ import { COLORS, FONT_SIZES, SPACING } from '../constants';
 interface HomeScreenProps {
   navigation: any;
   onSurahSelect?: (surah: Surah) => void;
+  lastSelectedSurah?: Surah;
 }
 
-export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, onSurahSelect }) => {
+export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, onSurahSelect, lastSelectedSurah }) => {
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -71,7 +72,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, onSurahSelec
           <Text style={styles.settingsButtonText}>⚙️</Text>
         </TouchableOpacity>
       </View>
-      <SurahList surahs={surahs} onSurahSelect={handleSurahSelect} />
+      <SurahList
+        surahs={surahs}
+        onSurahSelect={handleSurahSelect}
+        scrollToSurah={lastSelectedSurah}
+      />
     </SafeAreaView>
   );
 };

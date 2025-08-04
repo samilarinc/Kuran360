@@ -152,6 +152,21 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                             thumbColor={settings.showWordTranslations ? '#FFFFFF' : '#f4f3f4'}
                         />
                     </View>
+
+                    <View style={styles.settingItem}>
+                        <View style={styles.settingInfo}>
+                            <Text style={styles.settingLabel}>Sayfalı Görünüm</Text>
+                            <Text style={styles.settingDescription}>
+                                Her ayeti ayrı sayfada göster (kaydırarak geçiş)
+                            </Text>
+                        </View>
+                        <Switch
+                            value={settings.usePaginatedView}
+                            onValueChange={(value) => updateSettings({ usePaginatedView: value })}
+                            trackColor={{ false: COLORS.background, true: COLORS.primary }}
+                            thumbColor={settings.usePaginatedView ? '#FFFFFF' : '#f4f3f4'}
+                        />
+                    </View>
                 </View>
 
                 {/* Translation Selection */}

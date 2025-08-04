@@ -5,7 +5,7 @@ import { HomeScreen } from '../screens/HomeScreen';
 import { SurahDetailScreen } from '../screens/SurahDetailScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { Surah } from '../types';
-import { quranData } from '../data/quranData';
+import { quranData, loadSurah } from '../data/quranData';
 
 // Safe window access for web platform
 const getWindow = (): any => {
@@ -26,7 +26,11 @@ export type RootStackParamList = {
 
 type NavigationHistoryItem = {
   screen: 'Home' | 'SurahDetail' | 'Settings';
-  params?: { surah: Surah };
+  params?: {
+    surah?: Surah;
+    verseIndex?: number;
+    lastSelectedSurah?: Surah;
+  };
 };
 
 export const AppNavigator: React.FC = () => {
@@ -40,7 +44,11 @@ export const AppNavigator: React.FC = () => {
       case 'Settings':
         return '/settings';
       case 'SurahDetail':
-        return route.params ? `/surah/${route.params.surah.number}` : '/';
+        if (route.params?.surah) {
+          const baseUrl = `/surah/${route.params.surah.number}`;
+          return route.params.verseIndex !== undefined ? `${baseUrl}/verse/${route.params.verseIndex + 1}` : baseUrl;
+        }
+        return '/';
       default:
         return '/';
     }
@@ -51,11 +59,29 @@ export const AppNavigator: React.FC = () => {
       return { screen: 'Settings' };
     }
 
+    // Check for verse-specific URLs: /surah/1/verse/3
+    const verseMatch = pathname.match(/^\/surah\/(\d+)\/verse\/(\d+)$/);
+    if (verseMatch) {
+      const surahNumber = parseInt(verseMatch[1], 10);
+      const verseNumber = parseInt(verseMatch[2], 10);
+
+      const surah = loadSurah(surahNumber);
+
+      if (surah && verseNumber >= 1 && verseNumber <= surah.verses.length) {
+        return {
+          screen: 'SurahDetail',
+          params: { surah, verseIndex: verseNumber - 1 } // Convert to 0-based index
+        };
+      }
+    }
+
+    // Check for surah-only URLs: /surah/1
     const surahMatch = pathname.match(/^\/surah\/(\d+)$/);
     if (surahMatch) {
       const surahNumber = parseInt(surahMatch[1], 10);
-      // Find the actual surah from our data
-      const surah = quranData.surahs.find(s => s.number === surahNumber);
+
+      const surah = loadSurah(surahNumber);
+
       if (surah) {
         return {
           screen: 'SurahDetail',
@@ -155,15 +181,56 @@ export const AppNavigator: React.FC = () => {
       navigateToRoute(route, true);
     },
     goBack: () => {
-      // Always go back to Home - simple and reliable
-      const homeRoute: NavigationHistoryItem = { screen: 'Home' };
-      setNavigationHistory([homeRoute]);
-      setCurrentIndex(0);
-      updateUrl(homeRoute);
+      if (currentIndex > 0) {
+        // Go back to the previous route in history
+        const newIndex = currentIndex - 1;
+        setCurrentIndex(newIndex);
+        updateUrl(navigationHistory[newIndex]);
+      } else {
+        // If we're at the beginning, go to Home but preserve the last selected surah
+        const currentRoute = navigationHistory[currentIndex];
+        const lastSelectedSurah = currentRoute.screen === 'SurahDetail' ? currentRoute.params?.surah : undefined;
+
+        const homeRoute: NavigationHistoryItem = {
+          screen: 'Home',
+          params: lastSelectedSurah ? { lastSelectedSurah } : undefined
+        };
+        setNavigationHistory([homeRoute]);
+        setCurrentIndex(0);
+        updateUrl(homeRoute);
+      }
     }
   };
 
+  // Function to update the URL with verse information without creating a new navigation entry
+  const updateVerseUrl = useCallback((surah: Surah, verseIndex?: number) => {
+    if (Platform.OS === 'web') {
+      const route: NavigationHistoryItem = {
+        screen: 'SurahDetail',
+        params: { surah, verseIndex }
+      };
+      const url = buildUrl(route);
+      const windowObj = getWindow();
+      if (windowObj && windowObj.history) {
+        windowObj.history.replaceState(null, '', url);
+      }
+    }
+  }, [buildUrl]);
+
   const handleSurahSelect = (surah: Surah) => {
+    // Update the current Home route to remember the selected surah
+    setNavigationHistory(prev => {
+      const newHistory = [...prev];
+      if (newHistory[currentIndex].screen === 'Home') {
+        newHistory[currentIndex] = {
+          screen: 'Home',
+          params: { lastSelectedSurah: surah }
+        };
+      }
+      return newHistory;
+    });
+
+    // Navigate to the surah detail
     navigation.navigate('SurahDetail', { surah });
   };
 
@@ -172,16 +239,25 @@ export const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
       {currentRoute.screen === 'Home' ? (
-        <HomeScreen navigation={navigation} onSurahSelect={handleSurahSelect} />
+        <HomeScreen
+          navigation={navigation}
+          onSurahSelect={handleSurahSelect}
+          lastSelectedSurah={currentRoute.params?.lastSelectedSurah}
+        />
       ) : currentRoute.screen === 'Settings' ? (
         <SettingsScreen navigation={navigation} />
-      ) : currentRoute.screen === 'SurahDetail' && currentRoute.params ? (
+      ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
         <SurahDetailScreen
           navigation={navigation}
-          route={{ params: { surah: currentRoute.params.surah } }}
+          route={{ params: { surah: currentRoute.params.surah, verseIndex: currentRoute.params.verseIndex } }}
+          updateVerseUrl={updateVerseUrl}
         />
       ) : (
-        <HomeScreen navigation={navigation} onSurahSelect={handleSurahSelect} />
+        <HomeScreen
+          navigation={navigation}
+          onSurahSelect={handleSurahSelect}
+          lastSelectedSurah={currentRoute.params?.lastSelectedSurah}
+        />
       )}
     </NavigationContainer>
   );

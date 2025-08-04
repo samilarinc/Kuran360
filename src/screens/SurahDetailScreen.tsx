@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { Verse } from '../components/Verse';
+import { Verse, PaginatedVerseView } from '../components';
 import { useAudioPlayer } from '../hooks/useAudioPlayer';
+import { useSettings } from '../contexts/SettingsContext';
 import { Surah, Verse as VerseType } from '../types';
 import { loadSurah } from '../data/quranData';
 import { COLORS, FONT_SIZES, SPACING } from '../constants';
@@ -18,18 +19,22 @@ interface SurahDetailScreenProps {
   route: {
     params: {
       surah: Surah;
+      verseIndex?: number;
     };
   };
   navigation: any;
+  updateVerseUrl?: (surah: Surah, verseIndex?: number) => void;
 }
 
 export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   route,
-  navigation
+  navigation,
+  updateVerseUrl
 }) => {
   const { surah: basicSurah } = route.params;
   const [surah, setSurah] = useState<Surah>(basicSurah);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const { settings } = useSettings();
   const { audioState, playVerse, stop, setVersesForAutoplay } = useAudioPlayer();
 
   useEffect(() => {
@@ -80,6 +85,17 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       audioState.isPlaying;
   };
 
+  const handleVerseChange = (verseIndex: number) => {
+    // Update URL to reflect current verse
+    if (updateVerseUrl) {
+      updateVerseUrl(surah, verseIndex);
+    }
+
+    // Don't auto-play on verse change in paginated view
+    // Users can manually tap the play button if they want to hear the verse
+    console.log('Verse changed to:', verseIndex + 1);
+  };
+
   const renderVerse = ({ item }: { item: VerseType }) => (
     <Verse
       verse={item}
@@ -110,15 +126,26 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             </Text>
           </View>
 
-          <FlatList
-            data={surah.verses}
-            renderItem={renderVerse}
-            keyExtractor={(item) => `${item.surahNumber}-${item.number}`}
-            contentContainerStyle={styles.listContainer}
-            showsVerticalScrollIndicator={false}
-          />
+          {/* Conditional rendering based on settings */}
+          {settings.usePaginatedView ? (
+            <PaginatedVerseView
+              verses={surah.verses}
+              initialVerseIndex={route.params.verseIndex}
+              onVerseChange={handleVerseChange}
+              onPlayAudio={handleVersePress}
+              audioState={audioState}
+            />
+          ) : (
+            <FlatList
+              data={surah.verses}
+              renderItem={renderVerse}
+              keyExtractor={(item) => `${item.surahNumber}-${item.number}`}
+              contentContainerStyle={styles.listContainer}
+              showsVerticalScrollIndicator={false}
+            />
+          )}
 
-          {audioState.currentVerse && (
+          {audioState.currentVerse && !settings.usePaginatedView && (
             <View style={styles.audioInfo}>
               <Text style={styles.audioInfoText}>
                 {audioState.isLoading

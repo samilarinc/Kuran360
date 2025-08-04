@@ -11,6 +11,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     autoplayEnabled: false,
     showTransliteration: true,
     showWordTranslations: true,
+    usePaginatedView: false,
 };
 
 // Available translations from the JSON data
