@@ -11,8 +11,8 @@ import { quranData } from '../data/quranData';
 const getWindow = (): any => {
   if (Platform.OS === 'web') {
     // Use globalThis which is available in modern React Native Web
-    return typeof globalThis !== 'undefined' && (globalThis as any).window 
-      ? (globalThis as any).window 
+    return typeof globalThis !== 'undefined' && (globalThis as any).window
+      ? (globalThis as any).window
       : null;
   }
   return null;
@@ -50,56 +50,63 @@ export const AppNavigator: React.FC = () => {
     if (pathname === '/settings') {
       return { screen: 'Settings' };
     }
-    
+
     const surahMatch = pathname.match(/^\/surah\/(\d+)$/);
     if (surahMatch) {
       const surahNumber = parseInt(surahMatch[1], 10);
       // Find the actual surah from our data
       const surah = quranData.surahs.find(s => s.number === surahNumber);
       if (surah) {
-        return { 
-          screen: 'SurahDetail', 
-          params: { surah } 
+        return {
+          screen: 'SurahDetail',
+          params: { surah }
         };
       }
     }
-    
+
     return pathname === '/' || pathname === '' ? { screen: 'Home' } : null;
   }, []);
 
-  const navigateToRoute = useCallback((route: NavigationHistoryItem, updateHistory: boolean = true) => {
-    console.log('Navigating to route:', route.screen, 'updateHistory:', updateHistory);
-    
-    if (updateHistory) {
-      setNavigationHistory(prev => {
-        const newHistory = prev.slice(0, currentIndex + 1);
-        newHistory.push(route);
-        return newHistory;
-      });
-      setCurrentIndex(prev => prev + 1);
-    } else {
-      // For URL navigation, replace current route
-      setNavigationHistory(prev => {
-        const newHistory = [...prev];
-        newHistory[currentIndex] = route;
-        return newHistory;
-      });
-    }
-  }, [currentIndex]);
-
-  // Update URL when navigation changes (Web only)
-  useEffect(() => {
+  const updateUrl = useCallback((route: NavigationHistoryItem) => {
     if (Platform.OS === 'web') {
-      const currentRoute = navigationHistory[currentIndex];
-      const url = buildUrl(currentRoute);
-      
-      // Use history API if available
+      const url = buildUrl(route);
       const windowObj = getWindow();
       if (windowObj && windowObj.history) {
         windowObj.history.pushState(null, '', url);
       }
     }
-  }, [navigationHistory, currentIndex, buildUrl]);
+  }, [buildUrl]);
+
+  const navigateToRoute = useCallback((route: NavigationHistoryItem, addToHistory: boolean = true) => {
+
+    if (addToHistory) {
+      // Add new route to history - use functional updates to avoid stale closures
+      setNavigationHistory(prev => {
+        const newHistory = [...prev];
+        setCurrentIndex(currentIndex => {
+          const newIndex = currentIndex + 1;
+          // Remove any forward history beyond current index
+          newHistory.splice(newIndex);
+          // Add new route
+          newHistory.push(route);
+          return newIndex;
+        });
+        return newHistory;
+      });
+    } else {
+      setNavigationHistory(prev => {
+        const newHistory = [...prev];
+        setCurrentIndex(currentIndex => {
+          newHistory[currentIndex] = route;
+          return currentIndex;
+        });
+        return newHistory;
+      });
+    }
+
+    // Update URL
+    updateUrl(route);
+  }, [updateUrl]);
 
   // Handle browser back/forward buttons and initial URL (Web only)
   useEffect(() => {
@@ -110,16 +117,29 @@ export const AppNavigator: React.FC = () => {
           const urlPath = windowObj.location.pathname;
           const route = parseUrl(urlPath);
           if (route) {
-            navigateToRoute(route, false);
+            // For popstate events, just replace the current route
+            setNavigationHistory(prev => {
+              const newHistory = [...prev];
+              setCurrentIndex(currentIndex => {
+                newHistory[currentIndex] = route;
+                return currentIndex;
+              });
+              return newHistory;
+            });
+            updateUrl(route);
           }
         };
 
         windowObj.addEventListener('popstate', handlePopState);
-        
-        // Parse initial URL on web
+
+        // Parse initial URL on web - only do this once
         const initialRoute = parseUrl(windowObj.location.pathname);
         if (initialRoute && initialRoute.screen !== 'Home') {
-          navigateToRoute(initialRoute, false);
+          // Build proper history for direct URL access
+          const homeRoute: NavigationHistoryItem = { screen: 'Home' };
+          setNavigationHistory([homeRoute, initialRoute]);
+          setCurrentIndex(1);
+          updateUrl(initialRoute);
         }
 
         return () => {
@@ -127,23 +147,19 @@ export const AppNavigator: React.FC = () => {
         };
       }
     }
-  }, [parseUrl, navigateToRoute]);
+  }, []); // Remove dependencies to prevent infinite loop
 
   const navigation = {
     navigate: (screen: 'Home' | 'SurahDetail' | 'Settings', params?: { surah: Surah }) => {
-      console.log(`Navigating to ${screen}`, params);
       const route: NavigationHistoryItem = { screen, params };
-      navigateToRoute(route);
+      navigateToRoute(route, true);
     },
     goBack: () => {
-      console.log('Going back. Current index:', currentIndex, 'History length:', navigationHistory.length);
-      if (currentIndex > 0) {
-        setCurrentIndex(currentIndex - 1);
-      } else {
-        // Fallback to Home if no history
-        console.log('No history to go back to, navigating to Home');
-        navigateToRoute({ screen: 'Home' });
-      }
+      // Always go back to Home - simple and reliable
+      const homeRoute: NavigationHistoryItem = { screen: 'Home' };
+      setNavigationHistory([homeRoute]);
+      setCurrentIndex(0);
+      updateUrl(homeRoute);
     }
   };
 

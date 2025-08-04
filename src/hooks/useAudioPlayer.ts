@@ -27,20 +27,30 @@ export const useAudioPlayer = () => {
     setAllVerses(verses);
   };
 
-  const playNextVerse = () => {
-    if (!settings.autoplayEnabled || !audioState.currentVerse || !allVerses.length) {
+  const playNextVerse = (currentVerse?: VerseType) => {
+    // Use the passed verse or fall back to state
+    const verseToUse = currentVerse || audioState.currentVerse;
+    console.log(`Attempting to play next verse. Current verse ID: ${verseToUse?.id}`);
+
+    if (!settings.autoplayEnabled || !verseToUse || !allVerses.length) {
+      console.log('Autoplay conditions not met:', {
+        autoplayEnabled: settings.autoplayEnabled,
+        hasCurrentVerse: !!verseToUse,
+        hasAllVerses: allVerses.length > 0
+      });
       return;
     }
 
-    const currentIndex = allVerses.findIndex(v => v.id === audioState.currentVerse!.id);
+    const currentIndex = allVerses.findIndex(v => v.id === verseToUse.id);
     const nextIndex = currentIndex + 1;
+    console.log(`Autoplay: Current index ${currentIndex}, moving to next index ${nextIndex}`);
 
     if (nextIndex < allVerses.length) {
       const nextVerse = allVerses[nextIndex];
-      console.log(`Autoplay: Moving to next verse ${nextVerse.number}`);
+      console.log(`Next verse found: ${nextVerse.id} (Surah ${nextVerse.surahNumber}, Verse ${nextVerse.number})`);
       playVerse(nextVerse);
     } else {
-      console.log('Autoplay: Reached end of surah');
+      console.log('Reached end of surah, stopping autoplay');
       stop();
     }
   };
@@ -54,10 +64,8 @@ export const useAudioPlayer = () => {
         await sound.unloadAsync();
       }
 
-      console.log(`Playing verse: ${verse.audioFileName}`);
-
-      // Generate the audio filename if not provided
-      const audioFileName = verse.audioFileName || `${verse.surahNumber.toString().padStart(3, '0')}${verse.number.toString().padStart(3, '0')}.mp3`;
+      // Generate the audio filename - always use this format since audioFileName is not set in data
+      const audioFileName = `${verse.surahNumber.toString().padStart(3, '0')}${verse.number.toString().padStart(3, '0')}.mp3`;
 
       // For React Native with Metro bundler, serve the audio files via HTTP
       // Metro can serve static files from the project directory
@@ -85,8 +93,8 @@ export const useAudioPlayer = () => {
 
           // Check if the verse has finished playing for autoplay
           if (status.didJustFinish && settings.autoplayEnabled) {
-            console.log('Verse finished, attempting autoplay...');
-            setTimeout(() => playNextVerse(), 1000); // Small delay before next verse
+            // Pass the current verse to avoid stale closure issues
+            setTimeout(() => playNextVerse(verse), 50); // Small delay before next verse
           }
         }
       });
@@ -98,14 +106,13 @@ export const useAudioPlayer = () => {
         isLoading: false,
       }));
 
-      console.log(`Successfully loaded and playing: ${verse.audioFileName}`);
+      console.log(`Successfully loaded and playing: ${audioFileName} for verse ${verse.id}`);
 
     } catch (error) {
       console.error('Error playing audio:', error);
       setAudioState(prev => ({ ...prev, isLoading: false }));
 
       // Fall back to simulation if audio loading fails
-      console.log(`Simulating playback for: ${verse.audioFileName}`);
       setAudioState(prev => ({
         ...prev,
         currentVerse: verse,

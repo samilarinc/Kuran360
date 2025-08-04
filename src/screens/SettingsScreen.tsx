@@ -216,11 +216,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomWidth: 1,
         borderBottomColor: COLORS.background,
-        flexDirection: 'row',
     },
     backButton: {
         position: 'absolute',
         left: SPACING.md,
+        top: SPACING.lg,
+        zIndex: 1,
         paddingVertical: SPACING.xs,
         paddingHorizontal: SPACING.sm,
     },
@@ -233,7 +234,6 @@ const styles = StyleSheet.create({
         fontSize: FONT_SIZES.xlarge,
         fontWeight: 'bold',
         color: COLORS.primary,
-        flex: 1,
         textAlign: 'center',
     },
     content: {
