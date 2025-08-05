@@ -12,6 +12,7 @@ import {
 import { Verse } from './Verse';
 import { GoToVerseModal } from './GoToVerseModal';
 import { Verse as VerseType } from '../types';
+import { useSettings } from '../contexts/SettingsContext';
 import { COLORS, FONT_SIZES, SPACING } from '../constants';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -31,6 +32,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
     onPlayAudio,
     audioState,
 }) => {
+    const { settings, updateSettings } = useSettings();
     const [currentVerseIndex, setCurrentVerseIndex] = useState(initialVerseIndex);
     const [isInitialized, setIsInitialized] = useState(false);
     const [isGoToVerseModalVisible, setIsGoToVerseModalVisible] = useState(false);
@@ -137,17 +139,16 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                 </TouchableOpacity>
 
                 <View style={styles.verseInfo}>
-                    <Text style={styles.verseNumber}>
-                        Ayet {currentVerse.number}
-                    </Text>
-                    <Text style={styles.verseCounter}>
-                        {currentVerseIndex + 1} / {verses.length}
-                    </Text>
                     <TouchableOpacity
-                        style={styles.goToVerseButton}
+                        style={styles.verseNumberButton}
                         onPress={() => setIsGoToVerseModalVisible(true)}
                     >
-                        <Text style={styles.goToVerseButtonText}>Git</Text>
+                        <Text style={styles.verseNumberButtonText}>
+                            Ayet {currentVerse.number}
+                        </Text>
+                        <Text style={styles.verseCounter}>
+                            {currentVerseIndex + 1} / {verses.length}
+                        </Text>
                     </TouchableOpacity>
                 </View>
 
@@ -176,6 +177,8 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                     />
                 </ScrollView>
             </View>
+
+            {/* Remove the duplicate navigation controls since they're already in header */}
 
             {/* Page indicator dots */}
             <View style={styles.pageIndicator}>
@@ -253,40 +256,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
     },
-    verseNumber: {
+    verseNumberButton: {
+        alignItems: 'center',
+        paddingVertical: SPACING.xs,
+        paddingHorizontal: SPACING.sm,
+        borderRadius: 8,
+        backgroundColor: COLORS.primary + '10',
+        borderWidth: 1,
+        borderColor: COLORS.primary + '20',
+    },
+    verseNumberButtonText: {
         fontSize: FONT_SIZES.large,
         fontWeight: 'bold',
         color: COLORS.primary,
-        marginBottom: 2,
     },
     verseCounter: {
         fontSize: FONT_SIZES.small,
         color: COLORS.textSecondary,
-        marginBottom: 4,
-    },
-    goToVerseButton: {
-        backgroundColor: COLORS.primary + '20',
-        paddingHorizontal: SPACING.sm,
-        paddingVertical: 4,
-        borderRadius: 12,
-        borderWidth: 1,
-        borderColor: COLORS.primary + '40',
-    },
-    goToVerseButtonText: {
-        color: COLORS.primary,
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-    },
-    errorContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: SPACING.lg,
-    },
-    errorText: {
-        fontSize: FONT_SIZES.medium,
-        color: COLORS.textSecondary,
-        textAlign: 'center',
+        marginTop: 2,
     },
     contentContainer: {
         flex: 1,
@@ -298,6 +285,17 @@ const styles = StyleSheet.create({
         padding: SPACING.md,
         minHeight: '100%',
         justifyContent: 'center',
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: SPACING.lg,
+    },
+    errorText: {
+        fontSize: FONT_SIZES.medium,
+        color: COLORS.textSecondary,
+        textAlign: 'center',
     },
     pageIndicator: {
         flexDirection: 'row',

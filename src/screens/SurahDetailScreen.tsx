@@ -34,7 +34,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const { surah: basicSurah } = route.params;
   const [surah, setSurah] = useState<Surah>(basicSurah);
   const [loading, setLoading] = useState(false);
-  const { settings } = useSettings();
+  const { settings, updateSettings } = useSettings();
   const { audioState, playVerse, stop, setVersesForAutoplay } = useAudioPlayer();
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
         // Load the full surah with verses if not already loaded
         if (basicSurah.verses.length === 0) {
-          const loadedSurah = loadSurah(basicSurah.number);
+          const loadedSurah = await loadSurah(basicSurah.number);
           if (loadedSurah) {
             setSurah(loadedSurah);
             // Set verses for autoplay functionality
@@ -120,10 +120,28 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             >
               <Text style={styles.backButtonText}>← Back</Text>
             </TouchableOpacity>
-            <Text style={styles.surahName}>{surah.arabicName}</Text>
-            <Text style={styles.surahInfo}>
-              {surah.name} • {surah.verseCount} verses • {surah.revelationPlace}
-            </Text>
+            
+            <View style={styles.surahInfoContainer}>
+              <Text style={styles.surahName}>{surah.arabicName}</Text>
+              <Text style={styles.surahInfo}>
+                {surah.name} • {surah.verseCount} verses • {surah.revelationPlace}
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              style={[
+                styles.autoplayToggle,
+                settings.autoplayEnabled && styles.autoplayToggleActive
+              ]}
+              onPress={() => updateSettings({ autoplayEnabled: !settings.autoplayEnabled })}
+            >
+              <Text style={[
+                styles.autoplayToggleText,
+                settings.autoplayEnabled && styles.autoplayToggleTextActive
+              ]}>
+                {settings.autoplayEnabled ? '🔊' : '🔇'}
+              </Text>
+            </TouchableOpacity>
           </View>
 
           {/* Conditional rendering based on settings */}
@@ -180,15 +198,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.surface,
     paddingVertical: SPACING.lg,
     paddingHorizontal: SPACING.md,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: COLORS.background,
   },
   backButton: {
-    position: 'absolute',
-    left: SPACING.md,
-    top: SPACING.lg,
-    zIndex: 1,
     paddingVertical: SPACING.xs,
     paddingHorizontal: SPACING.sm,
   },
@@ -196,6 +212,11 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: FONT_SIZES.medium,
     fontWeight: '600',
+  },
+  surahInfoContainer: {
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: SPACING.md,
   },
   surahName: {
     fontSize: FONT_SIZES.xlarge,
@@ -206,6 +227,26 @@ const styles = StyleSheet.create({
   surahInfo: {
     fontSize: FONT_SIZES.medium,
     color: COLORS.textSecondary,
+  },
+  autoplayToggle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: COLORS.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: COLORS.textSecondary + '30',
+  },
+  autoplayToggleActive: {
+    backgroundColor: COLORS.primary + '20',
+    borderColor: COLORS.primary,
+  },
+  autoplayToggleText: {
+    fontSize: 20,
+  },
+  autoplayToggleTextActive: {
+    // No additional styling needed for active text
   },
   listContainer: {
     paddingBottom: SPACING.xl,

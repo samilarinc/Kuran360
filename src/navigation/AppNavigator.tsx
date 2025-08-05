@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { Platform } from 'react-native';
+import { Platform, View, ActivityIndicator } from 'react-native';
 import { HomeScreen } from '../screens/HomeScreen';
 import { SurahDetailScreen } from '../screens/SurahDetailScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
@@ -38,6 +38,7 @@ export const AppNavigator: React.FC = () => {
     { screen: 'Home' }
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoadingRoute, setIsLoadingRoute] = useState(false);
 
   const buildUrl = useCallback((route: NavigationHistoryItem): string => {
     switch (route.screen) {
@@ -54,7 +55,7 @@ export const AppNavigator: React.FC = () => {
     }
   }, []);
 
-  const parseUrl = useCallback((pathname: string): NavigationHistoryItem | null => {
+  const parseUrl = useCallback(async (pathname: string): Promise<NavigationHistoryItem | null> => {
     if (pathname === '/settings') {
       return { screen: 'Settings' };
     }
@@ -65,7 +66,7 @@ export const AppNavigator: React.FC = () => {
       const surahNumber = parseInt(verseMatch[1], 10);
       const verseNumber = parseInt(verseMatch[2], 10);
 
-      const surah = loadSurah(surahNumber);
+      const surah = await loadSurah(surahNumber);
 
       if (surah && verseNumber >= 1 && verseNumber <= surah.verses.length) {
         return {
@@ -80,7 +81,7 @@ export const AppNavigator: React.FC = () => {
     if (surahMatch) {
       const surahNumber = parseInt(surahMatch[1], 10);
 
-      const surah = loadSurah(surahNumber);
+      const surah = await loadSurah(surahNumber);
 
       if (surah) {
         return {
@@ -139,34 +140,52 @@ export const AppNavigator: React.FC = () => {
     if (Platform.OS === 'web') {
       const windowObj = getWindow();
       if (windowObj) {
-        const handlePopState = () => {
+        const handlePopState = async () => {
           const urlPath = windowObj.location.pathname;
-          const route = parseUrl(urlPath);
-          if (route) {
-            // For popstate events, just replace the current route
-            setNavigationHistory(prev => {
-              const newHistory = [...prev];
-              setCurrentIndex(currentIndex => {
-                newHistory[currentIndex] = route;
-                return currentIndex;
+          setIsLoadingRoute(true);
+          try {
+            const route = await parseUrl(urlPath);
+            if (route) {
+              // For popstate events, just replace the current route
+              setNavigationHistory(prev => {
+                const newHistory = [...prev];
+                setCurrentIndex(currentIndex => {
+                  newHistory[currentIndex] = route;
+                  return currentIndex;
+                });
+                return newHistory;
               });
-              return newHistory;
-            });
-            updateUrl(route);
+              updateUrl(route);
+            }
+          } catch (error) {
+            console.error('Error parsing URL:', error);
+          } finally {
+            setIsLoadingRoute(false);
           }
         };
 
         windowObj.addEventListener('popstate', handlePopState);
 
         // Parse initial URL on web - only do this once
-        const initialRoute = parseUrl(windowObj.location.pathname);
-        if (initialRoute && initialRoute.screen !== 'Home') {
-          // Build proper history for direct URL access
-          const homeRoute: NavigationHistoryItem = { screen: 'Home' };
-          setNavigationHistory([homeRoute, initialRoute]);
-          setCurrentIndex(1);
-          updateUrl(initialRoute);
-        }
+        const initializeRoute = async () => {
+          setIsLoadingRoute(true);
+          try {
+            const initialRoute = await parseUrl(windowObj.location.pathname);
+            if (initialRoute && initialRoute.screen !== 'Home') {
+              // Build proper history for direct URL access
+              const homeRoute: NavigationHistoryItem = { screen: 'Home' };
+              setNavigationHistory([homeRoute, initialRoute]);
+              setCurrentIndex(1);
+              updateUrl(initialRoute);
+            }
+          } catch (error) {
+            console.error('Error parsing initial URL:', error);
+          } finally {
+            setIsLoadingRoute(false);
+          }
+        };
+
+        initializeRoute();
 
         return () => {
           windowObj.removeEventListener('popstate', handlePopState);
@@ -235,6 +254,16 @@ export const AppNavigator: React.FC = () => {
   };
 
   const currentRoute = navigationHistory[currentIndex];
+
+  if (isLoadingRoute) {
+    return (
+      <NavigationContainer>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" />
+        </View>
+      </NavigationContainer>
+    );
+  }
 
   return (
     <NavigationContainer>

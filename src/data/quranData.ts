@@ -1,5 +1,9 @@
 import { QuranData, Surah, Verse } from '../types';
-import allVerses from './allVerses.json';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
+
+// Remove the direct import of allVerses.json to reduce bundle size
+// import allVerses from './allVerses.json';
 
 interface VerseData {
   surah_number: number;
@@ -12,6 +16,96 @@ interface VerseData {
     turkish: string;
   }>;
   translations: Record<string, string>;
+}
+
+// Cross-platform storage utility
+const Storage = {
+  async getItem(key: string): Promise<string | null> {
+    if (Platform.OS === 'web') {
+      // Use globalThis to access localStorage in web environment
+      const globalObj = globalThis as any;
+      return globalObj.localStorage ? globalObj.localStorage.getItem(key) : null;
+    } else {
+      return await AsyncStorage.getItem(key);
+    }
+  },
+  
+  async setItem(key: string, value: string): Promise<void> {
+    if (Platform.OS === 'web') {
+      // Use globalThis to access localStorage in web environment
+      const globalObj = globalThis as any;
+      if (globalObj.localStorage) {
+        globalObj.localStorage.setItem(key, value);
+      }
+    } else {
+      await AsyncStorage.setItem(key, value);
+    }
+  }
+};
+
+// Global cache for verse data
+let allVersesCache: VerseData[] | null = null;
+const VERSES_CACHE_KEY = 'quran_verses_data';
+const VERSES_VERSION_KEY = 'quran_verses_version';
+const CURRENT_VERSION = '1.0'; // Increment this when you update the verses data
+
+// Function to load verses data from static file or localStorage
+// Load all verses data into memory and localStorage
+export async function loadAllVerses(): Promise<VerseData[]> {
+  // Check if already loaded in memory
+  if (allVersesCache) {
+    return allVersesCache;
+  }
+
+  // Check localStorage first
+  try {
+    const cachedVersion = await Storage.getItem(VERSES_VERSION_KEY);
+    const cachedData = await Storage.getItem(VERSES_CACHE_KEY);
+    
+    if (cachedVersion === CURRENT_VERSION && cachedData) {
+      console.log('Loading verses from localStorage cache');
+      const parsedData = JSON.parse(cachedData);
+      // Ensure it's an array
+      allVersesCache = Array.isArray(parsedData) ? parsedData : Object.values(parsedData);
+      return allVersesCache!;
+    }
+  } catch (error) {
+    console.warn('Error reading from localStorage:', error);
+  }
+
+  // Load from server
+  try {
+    console.log('Loading verses from server...');
+    const response = await fetch('/allVerses.json');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const rawData = await response.json();
+    console.log('Raw JSON structure:', typeof rawData);
+    console.log('Is array:', Array.isArray(rawData));
+    
+    // The JSON file is structured as an object with keys like "100001" and verse data as values
+    // Convert object to array of verse data
+    const versesData: VerseData[] = Object.values(rawData) as VerseData[];
+    
+    console.log('Processed data length:', versesData.length);
+    allVersesCache = versesData;
+
+    // Cache in localStorage
+    try {
+      await Storage.setItem(VERSES_CACHE_KEY, JSON.stringify(versesData));
+      await Storage.setItem(VERSES_VERSION_KEY, CURRENT_VERSION);
+      console.log('Verses cached in localStorage');
+    } catch (error) {
+      console.warn('Error saving to localStorage:', error);
+    }
+
+    return versesData;
+  } catch (error) {
+    console.error('Error loading verses data:', error);
+    throw error;
+  }
 }
 
 // Convert JSON verse data to our app format
@@ -37,10 +131,21 @@ function convertToAppFormat(verseData: VerseData): Verse {
   };
 }
 
-// Function to load a single verse from the combined JSON
-function requireVerse(surahNumber: number, verseNumber: number): any | null {
-  const fileName = `${surahNumber.toString().padStart(3, '0')}${verseNumber.toString().padStart(3, '0')}`;
-  return (allVerses as any)[fileName] || null;
+// Function to load a single verse from the loaded verses data
+async function requireVerse(surahNumber: number, verseNumber: number): Promise<VerseData | null> {
+  const allVerses = await loadAllVerses();
+  
+  if (!Array.isArray(allVerses)) {
+    console.error('allVerses is not an array:', allVerses);
+    return null;
+  }
+  
+  // Find the verse in the array
+  const verse = allVerses.find((v: VerseData) =>
+    v.surah_number === surahNumber && v.verse_number === verseNumber
+  );
+  
+  return verse || null;
 }
 
 // Complete Surah metadata (all 114 surahs)
@@ -165,14 +270,14 @@ const SURAH_METADATA = [
 const loadedSurahs = new Map<number, Surah>();
 
 // Load verses for a specific surah
-function loadSurahVerses(surahNumber: number): Verse[] {
+async function loadSurahVerses(surahNumber: number): Promise<Verse[]> {
   const surahMeta = SURAH_METADATA.find(s => s.number === surahNumber);
   if (!surahMeta) return [];
 
   const verses: Verse[] = [];
 
   for (let verseNumber = 1; verseNumber <= surahMeta.verseCount; verseNumber++) {
-    const verseData = requireVerse(surahNumber, verseNumber);
+    const verseData = await requireVerse(surahNumber, verseNumber);
     if (verseData) {
       verses.push(convertToAppFormat(verseData));
     }
@@ -182,7 +287,7 @@ function loadSurahVerses(surahNumber: number): Verse[] {
 }
 
 // Load a single surah
-export function loadSurah(surahNumber: number): Surah | null {
+export async function loadSurah(surahNumber: number): Promise<Surah | null> {
   if (loadedSurahs.has(surahNumber)) {
     return loadedSurahs.get(surahNumber)!;
   }
@@ -190,7 +295,7 @@ export function loadSurah(surahNumber: number): Surah | null {
   const surahMeta = SURAH_METADATA.find(s => s.number === surahNumber);
   if (!surahMeta) return null;
 
-  const verses = loadSurahVerses(surahNumber);
+  const verses = await loadSurahVerses(surahNumber);
 
   const surah: Surah = {
     number: surahMeta.number,

@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
 import { Verse as VerseType, AudioState } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
 
 export const useAudioPlayer = () => {
   const { settings } = useSettings();
+  const settingsRef = useRef(settings);
   const [audioState, setAudioState] = useState<AudioState>({
     isPlaying: false,
     currentVerse: null,
@@ -14,6 +15,11 @@ export const useAudioPlayer = () => {
   });
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [allVerses, setAllVerses] = useState<VerseType[]>([]);
+
+  // Keep settings ref updated
+  useEffect(() => {
+    settingsRef.current = settings;
+  }, [settings]);
 
   useEffect(() => {
     return sound
@@ -32,9 +38,10 @@ export const useAudioPlayer = () => {
     const verseToUse = currentVerse || audioState.currentVerse;
     console.log(`Attempting to play next verse. Current verse ID: ${verseToUse?.id}`);
 
-    if (!settings.autoplayEnabled || !verseToUse || !allVerses.length) {
+    // Use ref to get current settings value (avoid closure issues)
+    if (!settingsRef.current.autoplayEnabled || !verseToUse || !allVerses.length) {
       console.log('Autoplay conditions not met:', {
-        autoplayEnabled: settings.autoplayEnabled,
+        autoplayEnabled: settingsRef.current.autoplayEnabled,
         hasCurrentVerse: !!verseToUse,
         hasAllVerses: allVerses.length > 0
       });
@@ -68,8 +75,18 @@ export const useAudioPlayer = () => {
       const audioFileName = `${verse.surahNumber.toString().padStart(3, '0')}${verse.number.toString().padStart(3, '0')}.mp3`;
 
       // For React Native with Metro bundler, serve the audio files via HTTP
-      // Metro can serve static files from the project directory
-      const audioUri = `http://localhost:8081/sudais_all_verse/${audioFileName}`;
+      // Use dynamic URL based on current environment
+      const getBaseUrl = () => {
+        if (typeof globalThis !== 'undefined' && (globalThis as any).window) {
+          // Web environment - use current domain
+          const win = (globalThis as any).window;
+          return `${win.location.protocol}//${win.location.host}`;
+        }
+        // Mobile environment - use localhost with Metro bundler
+        return 'http://localhost:8081';
+      };
+      
+      const audioUri = `${getBaseUrl()}/sudais_all_verse/${audioFileName}`;
       console.log(`Attempting to load audio from: ${audioUri}`);
 
       // Load and play the audio file
@@ -92,9 +109,22 @@ export const useAudioPlayer = () => {
           }));
 
           // Check if the verse has finished playing for autoplay
-          if (status.didJustFinish && settings.autoplayEnabled) {
-            // Pass the current verse to avoid stale closure issues
-            setTimeout(() => playNextVerse(verse), 50); // Small delay before next verse
+          if (status.didJustFinish) {
+            // Small delay before checking autoplay to ensure settings are updated
+            setTimeout(() => {
+              // Use ref to get the most current autoplay setting
+              if (settingsRef.current.autoplayEnabled) {
+                playNextVerse(verse);
+              } else {
+                console.log('Autoplay disabled, stopping after current verse');
+                // Don't stop the sound, just don't play next verse
+                setAudioState(prev => ({
+                  ...prev,
+                  isPlaying: false,
+                  currentVerse: null,
+                }));
+              }
+            }, 50);
           }
         }
       });

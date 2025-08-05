@@ -73,7 +73,7 @@ export const SurahList: React.FC<SurahListProps> = ({ surahs, onSurahSelect, scr
       showsVerticalScrollIndicator={false}
       onScrollToIndexFailed={(info) => {
         // Handle the case where scrollToIndex fails
-        const wait = new Promise(resolve => setTimeout(resolve, 500));
+        const wait = new Promise<void>(resolve => setTimeout(resolve, 500));
         wait.then(() => {
           flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
         });
