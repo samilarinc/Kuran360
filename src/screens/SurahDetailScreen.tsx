@@ -110,8 +110,8 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.primary} />
-          <Text style={styles.loadingText}>Loading verses...</Text>
-          <Text style={styles.loadingNote}>(This is a one-time process)</Text>
+          <Text style={styles.loadingText}>Ayetler yükleniyor...</Text>
+          <Text style={styles.loadingNote}>(Bu işlem sadece bir kez yapılır)</Text>
         </View>
       ) : (
         <>
@@ -120,13 +120,13 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               style={styles.backButton}
               onPress={() => navigation.goBack()}
             >
-              <Text style={styles.backButtonText}>← Back</Text>
+              <Text style={styles.backButtonText}>← Geri</Text>
             </TouchableOpacity>
 
             <View style={styles.surahInfoContainer}>
               <Text style={styles.surahName}>{surah.arabicName}</Text>
               <Text style={styles.surahInfo}>
-                {surah.name} • {surah.verseCount} verses • {surah.revelationPlace}
+                {surah.turkishName || surah.name} • {surah.verseCount} ayet • {surah.revelationPlace}
               </Text>
             </View>
 
@@ -159,8 +159,8 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             <View style={styles.audioInfo}>
               <Text style={styles.audioInfoText}>
                 {audioState.isLoading
-                  ? 'Loading...'
-                  : `${audioState.isPlaying ? 'Playing' : 'Paused'}: Verse ${audioState.currentVerse.number}`
+                  ? 'Yükleniyor...'
+                  : `${audioState.isPlaying ? 'Çalıyor' : 'Duraklatıldı'}: ${audioState.currentVerse.number}. Ayet`
                 }
               </Text>
             </View>

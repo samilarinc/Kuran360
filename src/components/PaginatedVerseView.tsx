@@ -118,7 +118,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
         return (
             <SafeAreaView style={styles.container}>
                 <View style={styles.errorContainer}>
-                    <Text style={styles.errorText}>No verses available</Text>
+                    <Text style={styles.errorText}>Ayet bulunamadı</Text>
                 </View>
             </SafeAreaView>
         );

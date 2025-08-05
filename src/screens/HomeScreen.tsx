@@ -84,11 +84,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>القرآن الكريم</Text>
-          <Text style={styles.subtitle}>Holy Quran</Text>
+          <Text style={styles.subtitle}>Kur'an-ı Kerim</Text>
         </View>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.primary} />
-          <Text style={styles.loadingText}>Loading Quran data...</Text>
+          <Text style={styles.loadingText}>Kur'an verileri yükleniyor...</Text>
         </View>
       </SafeAreaView>
     );
@@ -100,7 +100,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>القرآن الكريم</Text>
-          <Text style={styles.subtitle}>Holy Quran</Text>
+          <Text style={styles.subtitle}>Kur'an-ı Kerim</Text>
         </View>
         <View style={styles.downloadContainer}>
           <View style={styles.downloadCard}>
@@ -138,7 +138,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>القرآن الكريم</Text>
-        <Text style={styles.subtitle}>Holy Quran</Text>
+        <Text style={styles.subtitle}>Kur'an-ı Kerim</Text>
         <TouchableOpacity
           style={styles.settingsButton}
           onPress={() => navigation.navigate('Settings')}

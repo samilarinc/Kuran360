@@ -125,7 +125,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
 
                     <View style={styles.settingItem}>
                         <View style={styles.settingInfo}>
-                            <Text style={styles.settingLabel}>Transkripsiyon Göster</Text>
+                            <Text style={styles.settingLabel}>Türkçe Okunuş</Text>
                             <Text style={styles.settingDescription}>
                                 Ayetlerin okunuş şeklini göster
                             </Text>

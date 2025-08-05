@@ -18,6 +18,7 @@ export interface Verse {
 export interface Surah {
   number: number;
   name: string;
+  turkishName?: string;
   arabicName: string;
   englishName: string;
   revelationPlace: string;

@@ -29,10 +29,10 @@ const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress }) => (
       <Text style={styles.surahNumberText}>{surah.number}</Text>
     </View>
     <View style={styles.surahInfo}>
-      <Text style={styles.surahName}>{surah.name}</Text>
+      <Text style={styles.surahName}>{surah.turkishName || surah.name}</Text>
       <Text style={styles.surahArabicName}>{surah.arabicName}</Text>
       <Text style={styles.surahDetails}>
-        {surah.verseCount} verses • {surah.revelationPlace}
+        {surah.verseCount} ayet • {surah.revelationPlace}
       </Text>
     </View>
     <View style={styles.arrow}>
