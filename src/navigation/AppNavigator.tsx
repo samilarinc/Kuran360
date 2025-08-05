@@ -33,7 +33,7 @@ type NavigationHistoryItem = {
   };
 };
 
-export const AppNavigator: React.FC = () => {
+export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAvailable }) => {
   const [navigationHistory, setNavigationHistory] = useState<NavigationHistoryItem[]>([
     { screen: 'Home' }
   ]);
@@ -272,6 +272,7 @@ export const AppNavigator: React.FC = () => {
           navigation={navigation}
           onSurahSelect={handleSurahSelect}
           lastSelectedSurah={currentRoute.params?.lastSelectedSurah}
+          isDataAvailable={isDataAvailable}
         />
       ) : currentRoute.screen === 'Settings' ? (
         <SettingsScreen navigation={navigation} />

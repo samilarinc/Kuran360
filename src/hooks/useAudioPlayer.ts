@@ -85,7 +85,7 @@ export const useAudioPlayer = () => {
         // Mobile environment - use localhost with Metro bundler
         return 'http://localhost:8081';
       };
-      
+
       const audioUri = `${getBaseUrl()}/sudais_all_verse/${audioFileName}`;
       console.log(`Attempting to load audio from: ${audioUri}`);
 

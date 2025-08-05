@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Verse, PaginatedVerseView } from '../components';
+import { AutoplayToggle } from '../components/AutoplayToggle';
 import { useAudioPlayer } from '../hooks/useAudioPlayer';
 import { useSettings } from '../contexts/SettingsContext';
 import { Surah, Verse as VerseType } from '../types';
@@ -110,6 +111,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.primary} />
           <Text style={styles.loadingText}>Loading verses...</Text>
+          <Text style={styles.loadingNote}>(This is a one-time process)</Text>
         </View>
       ) : (
         <>
@@ -120,7 +122,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             >
               <Text style={styles.backButtonText}>← Back</Text>
             </TouchableOpacity>
-            
+
             <View style={styles.surahInfoContainer}>
               <Text style={styles.surahName}>{surah.arabicName}</Text>
               <Text style={styles.surahInfo}>
@@ -128,20 +130,10 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               </Text>
             </View>
 
-            <TouchableOpacity
-              style={[
-                styles.autoplayToggle,
-                settings.autoplayEnabled && styles.autoplayToggleActive
-              ]}
-              onPress={() => updateSettings({ autoplayEnabled: !settings.autoplayEnabled })}
-            >
-              <Text style={[
-                styles.autoplayToggleText,
-                settings.autoplayEnabled && styles.autoplayToggleTextActive
-              ]}>
-                {settings.autoplayEnabled ? '🔊' : '🔇'}
-              </Text>
-            </TouchableOpacity>
+            <AutoplayToggle
+              isEnabled={settings.autoplayEnabled}
+              onToggle={(enabled) => updateSettings({ autoplayEnabled: enabled })}
+            />
           </View>
 
           {/* Conditional rendering based on settings */}
@@ -194,6 +186,11 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.medium,
     color: COLORS.textSecondary,
   },
+  loadingNote: {
+    marginTop: SPACING.sm,
+    fontSize: FONT_SIZES.small,
+    color: COLORS.textSecondary,
+  },
   header: {
     backgroundColor: COLORS.surface,
     paddingVertical: SPACING.lg,
@@ -227,26 +224,6 @@ const styles = StyleSheet.create({
   surahInfo: {
     fontSize: FONT_SIZES.medium,
     color: COLORS.textSecondary,
-  },
-  autoplayToggle: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: COLORS.background,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: COLORS.textSecondary + '30',
-  },
-  autoplayToggleActive: {
-    backgroundColor: COLORS.primary + '20',
-    borderColor: COLORS.primary,
-  },
-  autoplayToggleText: {
-    fontSize: 20,
-  },
-  autoplayToggleTextActive: {
-    // No additional styling needed for active text
   },
   listContainer: {
     paddingBottom: SPACING.xl,

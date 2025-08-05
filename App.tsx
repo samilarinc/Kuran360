@@ -3,27 +3,29 @@ import { StatusBar, View, ActivityIndicator } from 'react-native';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { SettingsProvider } from './src/contexts/SettingsContext';
 import { COLORS } from './src/constants';
-import { loadAllVerses } from './src/data/quranData';
+import { isDataCached } from './src/data/quranData';
 
 const App: React.FC = () => {
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [isAppReady, setIsAppReady] = useState(false);
+  const [isDataAvailable, setIsDataAvailable] = useState(false);
 
   useEffect(() => {
-    const initializeData = async () => {
+    const checkDataAvailability = async () => {
       try {
-        await loadAllVerses();
-        setIsDataLoaded(true);
+        const cached = await isDataCached();
+        setIsDataAvailable(cached);
+        setIsAppReady(true);
       } catch (error) {
-        console.error('Error loading verse data:', error);
-        // Still set to true to show the app, data will be loaded on demand
-        setIsDataLoaded(true);
+        console.error('Error checking data availability:', error);
+        setIsDataAvailable(false);
+        setIsAppReady(true);
       }
     };
 
-    initializeData();
+    checkDataAvailability();
   }, []);
 
-  if (!isDataLoaded) {
+  if (!isAppReady) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primary }}>
         <ActivityIndicator size="large" color="#ffffff" />
@@ -37,7 +39,7 @@ const App: React.FC = () => {
         barStyle="light-content"
         backgroundColor={COLORS.primary}
       />
-      <AppNavigator />
+      <AppNavigator isDataAvailable={isDataAvailable} />
     </SettingsProvider>
   );
 };

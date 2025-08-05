@@ -18,27 +18,164 @@ interface VerseData {
   translations: Record<string, string>;
 }
 
-// Cross-platform storage utility
+// Cross-platform storage utility with IndexedDB for web and AsyncStorage for mobile
 const Storage = {
+  // IndexedDB helper for web
+  async openDB(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const globalObj = globalThis as any;
+      if (!globalObj.indexedDB) {
+        reject(new Error('IndexedDB not supported'));
+        return;
+      }
+
+      const request = globalObj.indexedDB.open('QuranApp', 1);
+
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve(request.result);
+
+      request.onupgradeneeded = (event: any) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains('cache')) {
+          db.createObjectStore('cache', { keyPath: 'key' });
+        }
+      };
+    });
+  },
+
   async getItem(key: string): Promise<string | null> {
     if (Platform.OS === 'web') {
-      // Use globalThis to access localStorage in web environment
-      const globalObj = globalThis as any;
-      return globalObj.localStorage ? globalObj.localStorage.getItem(key) : null;
+      try {
+        const db = await this.openDB();
+        const transaction = db.transaction(['cache'], 'readonly');
+        const store = transaction.objectStore('cache');
+
+        return new Promise((resolve, reject) => {
+          const request = store.get(key);
+          request.onerror = () => reject(request.error);
+          request.onsuccess = () => {
+            const result = request.result;
+            resolve(result ? result.value : null);
+          };
+        });
+      } catch (error) {
+        console.warn('IndexedDB failed, trying localStorage chunks:', error);
+        // Fallback to chunked localStorage
+        return await this.getItemFromChunks(key);
+      }
     } else {
       return await AsyncStorage.getItem(key);
     }
   },
-  
+
+  // Read chunked data from localStorage
+  async getItemFromChunks(key: string): Promise<string | null> {
+    const globalObj = globalThis as any;
+    if (!globalObj.localStorage) return null;
+
+    // Check if this is chunked data
+    const chunkInfo = globalObj.localStorage.getItem(`${key}_chunks`);
+    if (chunkInfo) {
+      const { count } = JSON.parse(chunkInfo);
+      let result = '';
+      for (let i = 0; i < count; i++) {
+        const chunk = globalObj.localStorage.getItem(`${key}_${i}`);
+        if (!chunk) return null;
+        result += chunk;
+      }
+      return result;
+    }
+
+    // Regular single item
+    return globalObj.localStorage.getItem(key);
+  },
+
   async setItem(key: string, value: string): Promise<void> {
     if (Platform.OS === 'web') {
-      // Use globalThis to access localStorage in web environment
-      const globalObj = globalThis as any;
-      if (globalObj.localStorage) {
-        globalObj.localStorage.setItem(key, value);
+      try {
+        const db = await this.openDB();
+        const transaction = db.transaction(['cache'], 'readwrite');
+        const store = transaction.objectStore('cache');
+
+        return new Promise((resolve, reject) => {
+          const request = store.put({ key, value });
+          request.onerror = () => reject(request.error);
+          request.onsuccess = () => resolve();
+        });
+      } catch (error) {
+        console.warn('IndexedDB failed, using localStorage chunking:', error);
+        // Fallback to localStorage with chunking
+        await this.setItemWithChunking(key, value);
       }
     } else {
       await AsyncStorage.setItem(key, value);
+    }
+  },
+
+  // Fallback chunking method for localStorage
+  async setItemWithChunking(key: string, value: string): Promise<void> {
+    const globalObj = globalThis as any;
+    if (!globalObj.localStorage) return;
+
+    const CHUNK_SIZE = 1024 * 1024; // 1MB chunks for safety
+
+    // Clear any existing chunks
+    const existingChunkInfo = globalObj.localStorage.getItem(`${key}_chunks`);
+    if (existingChunkInfo) {
+      const { count } = JSON.parse(existingChunkInfo);
+      for (let i = 0; i < count; i++) {
+        globalObj.localStorage.removeItem(`${key}_${i}`);
+      }
+    }
+
+    // Save in chunks
+    const chunks = Math.ceil(value.length / CHUNK_SIZE);
+    console.log(`📦 Chunking data into ${chunks} smaller chunks of 1MB each`);
+
+    for (let i = 0; i < chunks; i++) {
+      const start = i * CHUNK_SIZE;
+      const end = Math.min(start + CHUNK_SIZE, value.length);
+      const chunk = value.slice(start, end);
+      try {
+        globalObj.localStorage.setItem(`${key}_${i}`, chunk);
+      } catch (error) {
+        throw new Error(`Failed to save chunk ${i}: ${error}`);
+      }
+    }
+
+    // Save chunk info
+    globalObj.localStorage.setItem(`${key}_chunks`, JSON.stringify({ count: chunks }));
+  },
+
+  async removeItem(key: string): Promise<void> {
+    if (Platform.OS === 'web') {
+      try {
+        const db = await this.openDB();
+        const transaction = db.transaction(['cache'], 'readwrite');
+        const store = transaction.objectStore('cache');
+
+        await new Promise((resolve, reject) => {
+          const request = store.delete(key);
+          request.onerror = () => reject(request.error);
+          request.onsuccess = () => resolve(undefined);
+        });
+      } catch (error) {
+        // Also clean up localStorage chunks as fallback
+        const globalObj = globalThis as any;
+        if (globalObj.localStorage) {
+          const chunkInfo = globalObj.localStorage.getItem(`${key}_chunks`);
+          if (chunkInfo) {
+            const { count } = JSON.parse(chunkInfo);
+            for (let i = 0; i < count; i++) {
+              globalObj.localStorage.removeItem(`${key}_${i}`);
+            }
+            globalObj.localStorage.removeItem(`${key}_chunks`);
+          }
+          globalObj.localStorage.removeItem(key);
+        }
+      }
+    } else {
+      await AsyncStorage.removeItem(key);
     }
   }
 };
@@ -47,66 +184,109 @@ const Storage = {
 let allVersesCache: VerseData[] | null = null;
 const VERSES_CACHE_KEY = 'quran_verses_data';
 const VERSES_VERSION_KEY = 'quran_verses_version';
-const CURRENT_VERSION = '1.0'; // Increment this when you update the verses data
+const CURRENT_VERSION = '2.0'; // Increment this when you update the verses data
+
+// Check if data is cached without loading it
+export const isDataCached = async (): Promise<boolean> => {
+  try {
+    const cachedVersion = await Storage.getItem(VERSES_VERSION_KEY);
+    if (cachedVersion !== CURRENT_VERSION) {
+      return false;
+    }
+
+    // Quick check if data exists
+    const cachedData = await Storage.getItem(VERSES_CACHE_KEY);
+    return !!cachedData;
+  } catch (error) {
+    console.error('Error checking cache:', error);
+    return false;
+  }
+};
+
+// Progress callback type
+export type ProgressCallback = (progress: number, status: string) => void;
 
 // Function to load verses data from static file or localStorage
 // Load all verses data into memory and localStorage
-export async function loadAllVerses(): Promise<VerseData[]> {
-  // Check if already loaded in memory
-  if (allVersesCache) {
-    return allVersesCache;
+export const loadAllVerses = async (progressCallback?: ProgressCallback): Promise<void> => {
+  console.log('📚 loadAllVerses called - allVersesCache exists:', !!allVersesCache, 'cache length:', allVersesCache?.length || 0);
+
+  if (allVersesCache && allVersesCache.length > 0) {
+    console.log('✅ Data already loaded, returning early');
+    progressCallback?.(100, 'Veri zaten yüklü');
+    return;
   }
 
-  // Check localStorage first
   try {
-    const cachedVersion = await Storage.getItem(VERSES_VERSION_KEY);
+    progressCallback?.(10, 'Cache kontrol ediliyor...');
+
+    // Check localStorage first
+    console.log('🔍 Checking localStorage cache...');
     const cachedData = await Storage.getItem(VERSES_CACHE_KEY);
-    
-    if (cachedVersion === CURRENT_VERSION && cachedData) {
-      console.log('Loading verses from localStorage cache');
-      const parsedData = JSON.parse(cachedData);
-      // Ensure it's an array
-      allVersesCache = Array.isArray(parsedData) ? parsedData : Object.values(parsedData);
-      return allVersesCache!;
-    }
-  } catch (error) {
-    console.warn('Error reading from localStorage:', error);
-  }
+    const cachedVersion = await Storage.getItem(VERSES_VERSION_KEY);
 
-  // Load from server
-  try {
-    console.log('Loading verses from server...');
+    console.log('📦 Cache status:', {
+      hasCachedData: !!cachedData,
+      cachedDataLength: cachedData ? cachedData.length : 0,
+      cachedVersion,
+      currentVersion: CURRENT_VERSION,
+      versionMatch: cachedVersion === CURRENT_VERSION
+    });
+
+    if (cachedData && cachedVersion === CURRENT_VERSION) {
+      progressCallback?.(50, 'Cache\'ten yükleniyor...');
+      console.log('🚀 Loading from cache...');
+      allVersesCache = JSON.parse(cachedData);
+      console.log('✅ Cache loaded successfully, verses count:', allVersesCache!.length);
+      progressCallback?.(100, 'Tamamlandı!');
+      return;
+    }
+
+    // Clear old cache if version mismatch
+    if (cachedData && cachedVersion !== CURRENT_VERSION) {
+      progressCallback?.(20, 'Eski cache temizleniyor...');
+      console.log('🧹 Clearing old cache due to version mismatch');
+      await Storage.removeItem(VERSES_CACHE_KEY);
+      await Storage.removeItem(VERSES_VERSION_KEY);
+    }
+
+    // Load from server if no cache or version mismatch
+    progressCallback?.(30, 'Sunucudan indiriliyor...');
+    console.log('📡 Loading from server...');
     const response = await fetch('/allVerses.json');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
-    const rawData = await response.json();
-    console.log('Raw JSON structure:', typeof rawData);
-    console.log('Is array:', Array.isArray(rawData));
-    
-    // The JSON file is structured as an object with keys like "100001" and verse data as values
-    // Convert object to array of verse data
-    const versesData: VerseData[] = Object.values(rawData) as VerseData[];
-    
-    console.log('Processed data length:', versesData.length);
-    allVersesCache = versesData;
 
-    // Cache in localStorage
+    progressCallback?.(60, 'Veri işleniyor...');
+    const data = await response.json();
+    console.log('📥 Data loaded from server, size:', JSON.stringify(data).length);
+
+    // Convert object to array if needed
+    const versesArray = Array.isArray(data) ? data : Object.values(data);
+
+    allVersesCache = versesArray;
+
+    progressCallback?.(80, 'Cache\'e kaydediliyor...');
+    console.log('💾 Saving to cache...');
     try {
-      await Storage.setItem(VERSES_CACHE_KEY, JSON.stringify(versesData));
+      // Cache the data
+      await Storage.setItem(VERSES_CACHE_KEY, JSON.stringify(versesArray));
       await Storage.setItem(VERSES_VERSION_KEY, CURRENT_VERSION);
-      console.log('Verses cached in localStorage');
-    } catch (error) {
-      console.warn('Error saving to localStorage:', error);
+      console.log('✅ Data cached successfully, verses count:', versesArray.length);
+      progressCallback?.(100, 'Başarıyla tamamlandı!');
+    } catch (cacheError) {
+      console.warn('⚠️ Failed to cache data, but continuing with loaded data:', cacheError);
+      progressCallback?.(100, 'İndirme tamamlandı (cache kaydedilemedi)');
+      // Continue without caching - data is still loaded in memory
     }
 
-    return versesData;
   } catch (error) {
-    console.error('Error loading verses data:', error);
+    console.error('❌ Error loading verses:', error);
+    progressCallback?.(0, 'Hata oluştu: ' + (error as Error).message);
     throw error;
   }
-}
+};
 
 // Convert JSON verse data to our app format
 function convertToAppFormat(verseData: VerseData): Verse {
@@ -133,18 +313,19 @@ function convertToAppFormat(verseData: VerseData): Verse {
 
 // Function to load a single verse from the loaded verses data
 async function requireVerse(surahNumber: number, verseNumber: number): Promise<VerseData | null> {
-  const allVerses = await loadAllVerses();
-  
-  if (!Array.isArray(allVerses)) {
-    console.error('allVerses is not an array:', allVerses);
+  // Ensure data is loaded
+  await loadAllVerses();
+
+  if (!allVersesCache || !Array.isArray(allVersesCache)) {
+    console.error('allVersesCache is not available:', allVersesCache);
     return null;
   }
-  
+
   // Find the verse in the array
-  const verse = allVerses.find((v: VerseData) =>
+  const verse = allVersesCache.find((v: VerseData) =>
     v.surah_number === surahNumber && v.verse_number === verseNumber
   );
-  
+
   return verse || null;
 }
 
