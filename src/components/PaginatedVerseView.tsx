@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     View,
     Text,
@@ -8,6 +8,7 @@ import {
     ScrollView,
     SafeAreaView,
     PanResponder,
+    Animated,
 } from 'react-native';
 import { Verse } from './Verse';
 import { GoToVerseModal } from './GoToVerseModal';
@@ -15,7 +16,9 @@ import { Verse as VerseType } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
 import { COLORS, FONT_SIZES, SPACING } from '../constants';
 
-const { width: screenWidth } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const isSmallScreen = screenHeight < 700; // Phones with height less than 700dp
+const isMobileScreen = screenWidth < 768; // Mobile vs tablet threshold
 
 interface PaginatedVerseViewProps {
     verses: VerseType[];
@@ -36,6 +39,10 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
     const [currentVerseIndex, setCurrentVerseIndex] = useState(initialVerseIndex);
     const [isInitialized, setIsInitialized] = useState(false);
     const [isGoToVerseModalVisible, setIsGoToVerseModalVisible] = useState(false);
+    
+    // Animation values
+    const translateX = useRef(new Animated.Value(0)).current;
+    const [isAnimating, setIsAnimating] = useState(false);
 
     useEffect(() => {
         // Mark as initialized after first render to avoid calling onVerseChange on mount
@@ -72,9 +79,29 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
         }
     }, [audioState?.currentVerse, audioState?.isPlaying, verses, currentVerseIndex, isInitialized]);
 
-    const goToVerse = (index: number) => {
-        if (index >= 0 && index < verses.length) {
-            setCurrentVerseIndex(index);
+    const goToVerse = (index: number, animated: boolean = true) => {
+        if (index >= 0 && index < verses.length && !isAnimating) {
+            if (animated) {
+                setIsAnimating(true);
+                const direction = index > currentVerseIndex ? -1 : 1;
+                const distance = screenWidth * direction;
+                
+                // Animate to the target position
+                Animated.timing(translateX, {
+                    toValue: distance,
+                    duration: 300,
+                    useNativeDriver: true,
+                }).start(() => {
+                    // Update the verse index without animation
+                    setCurrentVerseIndex(index);
+                    
+                    // Reset position instantly
+                    translateX.setValue(0);
+                    setIsAnimating(false);
+                });
+            } else {
+                setCurrentVerseIndex(index);
+            }
         }
     };
 
@@ -90,27 +117,108 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
         }
     };
 
-    // Simple pan responder for swipe gestures
+    // Enhanced pan responder for smooth swipe animations
     const panResponder = PanResponder.create({
         onMoveShouldSetPanResponder: (evt, gestureState) => {
-            return Math.abs(gestureState.dx) > Math.abs(gestureState.dy) && Math.abs(gestureState.dx) > 20;
+            // More sensitive detection for phones
+            const minSwipeDistance = isMobileScreen ? 15 : 20;
+            return !isAnimating && Math.abs(gestureState.dx) > Math.abs(gestureState.dy) && Math.abs(gestureState.dx) > minSwipeDistance;
         },
-        onPanResponderMove: () => {
-            // Handle move if needed
+        onPanResponderGrant: () => {
+            // Start interaction
+        },
+        onPanResponderMove: (evt, gestureState) => {
+            if (isAnimating) return;
+            
+            const { dx } = gestureState;
+            let clampedDx = dx;
+            
+            // Calculate maximum allowed swipe distance
+            const maxSwipeDistance = screenWidth * 0.8; // Limit to 80% of screen width
+            
+            // Prevent swiping beyond boundaries with rubber band effect
+            if (currentVerseIndex === 0 && dx > 0) {
+                clampedDx = dx * 0.3; // Rubber band effect for left boundary
+            } else if (currentVerseIndex === verses.length - 1 && dx < 0) {
+                clampedDx = dx * 0.3; // Rubber band effect for right boundary
+            } else {
+                // Limit the swipe distance to prevent going beyond adjacent verses
+                if (dx > maxSwipeDistance) {
+                    clampedDx = maxSwipeDistance + (dx - maxSwipeDistance) * 0.2; // Diminishing returns beyond limit
+                } else if (dx < -maxSwipeDistance) {
+                    clampedDx = -maxSwipeDistance + (dx + maxSwipeDistance) * 0.2; // Diminishing returns beyond limit
+                }
+            }
+            
+            // Update translation in real-time
+            translateX.setValue(clampedDx);
         },
         onPanResponderRelease: (evt, gestureState) => {
-            const { dx } = gestureState;
-            const threshold = screenWidth * 0.25;
+            if (isAnimating) return;
+            
+            const { dx, vx } = gestureState;
+            
+            // More phone-friendly thresholds
+            let threshold;
+            if (isMobileScreen) {
+                threshold = Math.min(screenWidth * 0.15, 80);
+                const velocityThreshold = 0.3;
+                
+                if (Math.abs(vx) > velocityThreshold) {
+                    threshold = Math.min(threshold * 0.6, 50);
+                }
+            } else {
+                threshold = screenWidth * 0.25;
+            }
 
+            setIsAnimating(true);
+            
             if (dx > threshold && currentVerseIndex > 0) {
                 // Swipe right - go to previous
-                goToPrevious();
+                Animated.timing(translateX, {
+                    toValue: screenWidth,
+                    duration: 200,
+                    useNativeDriver: true,
+                }).start(() => {
+                    setCurrentVerseIndex(currentVerseIndex - 1);
+                    translateX.setValue(0);
+                    setIsAnimating(false);
+                });
             } else if (dx < -threshold && currentVerseIndex < verses.length - 1) {
                 // Swipe left - go to next
-                goToNext();
+                Animated.timing(translateX, {
+                    toValue: -screenWidth,
+                    duration: 200,
+                    useNativeDriver: true,
+                }).start(() => {
+                    setCurrentVerseIndex(currentVerseIndex + 1);
+                    translateX.setValue(0);
+                    setIsAnimating(false);
+                });
+            } else {
+                // Snap back to original position
+                Animated.spring(translateX, {
+                    toValue: 0,
+                    useNativeDriver: true,
+                    tension: 150,
+                    friction: 8,
+                }).start(() => {
+                    setIsAnimating(false);
+                });
             }
         },
     });
+
+    // Get the three verses: previous, current, next
+    const getVisibleVerses = () => {
+        return {
+            previous: currentVerseIndex > 0 ? verses[currentVerseIndex - 1] : null,
+            current: verses[currentVerseIndex],
+            next: currentVerseIndex < verses.length - 1 ? verses[currentVerseIndex + 1] : null,
+        };
+    };
+
+    const visibleVerses = getVisibleVerses();
 
     const currentVerse = verses[currentVerseIndex];
 
@@ -129,11 +237,11 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
             {/* Header with verse info and navigation */}
             <View style={styles.header}>
                 <TouchableOpacity
-                    style={[styles.navButton, currentVerseIndex === 0 && styles.navButtonDisabled]}
+                    style={[styles.navButton, (currentVerseIndex === 0 || isAnimating) && styles.navButtonDisabled]}
                     onPress={goToPrevious}
-                    disabled={currentVerseIndex === 0}
+                    disabled={currentVerseIndex === 0 || isAnimating}
                 >
-                    <Text style={[styles.navButtonText, currentVerseIndex === 0 && styles.navButtonTextDisabled]}>
+                    <Text style={[styles.navButtonText, (currentVerseIndex === 0 || isAnimating) && styles.navButtonTextDisabled]}>
                         ← Önceki
                     </Text>
                 </TouchableOpacity>
@@ -153,29 +261,90 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                 </View>
 
                 <TouchableOpacity
-                    style={[styles.navButton, currentVerseIndex === verses.length - 1 && styles.navButtonDisabled]}
+                    style={[styles.navButton, (currentVerseIndex === verses.length - 1 || isAnimating) && styles.navButtonDisabled]}
                     onPress={goToNext}
-                    disabled={currentVerseIndex === verses.length - 1}
+                    disabled={currentVerseIndex === verses.length - 1 || isAnimating}
                 >
-                    <Text style={[styles.navButtonText, currentVerseIndex === verses.length - 1 && styles.navButtonTextDisabled]}>
+                    <Text style={[styles.navButtonText, (currentVerseIndex === verses.length - 1 || isAnimating) && styles.navButtonTextDisabled]}>
                         Sonraki →
                     </Text>
                 </TouchableOpacity>
             </View>
 
-            {/* Verse content with swipe gesture */}
+            {/* Verse content with animated swipe gesture */}
             <View style={styles.contentContainer} {...panResponder.panHandlers}>
-                <ScrollView
-                    style={styles.scrollView}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={styles.scrollContent}
+                <Animated.View 
+                    style={[
+                        styles.animatedContainer,
+                        {
+                            flexDirection: 'row',
+                            width: screenWidth * 3, // Width for 3 verses
+                            transform: [{ 
+                                translateX: Animated.add(translateX, new Animated.Value(-screenWidth)) 
+                            }]
+                        }
+                    ]}
                 >
-                    <Verse
-                        verse={currentVerse}
-                        isPlaying={audioState?.currentVerse?.id === currentVerse.id && audioState?.isPlaying}
-                        onPlayPress={onPlayAudio || (() => { })}
-                    />
-                </ScrollView>
+                    {/* Previous Verse */}
+                    <View style={styles.verseContainer}>
+                        {visibleVerses.previous ? (
+                            <ScrollView
+                                style={styles.scrollView}
+                                showsVerticalScrollIndicator={false}
+                                contentContainerStyle={styles.scrollContent}
+                                scrollEnabled={!isAnimating}
+                            >
+                                <Verse
+                                    verse={visibleVerses.previous}
+                                    isPlaying={false} // Previous verse shouldn't show as playing
+                                    onPlayPress={onPlayAudio || (() => { })}
+                                />
+                            </ScrollView>
+                        ) : (
+                            <View style={styles.emptyVerseContainer}>
+                                <Text style={styles.emptyVerseText}>İlk ayet</Text>
+                            </View>
+                        )}
+                    </View>
+
+                    {/* Current Verse */}
+                    <View style={styles.verseContainer}>
+                        <ScrollView
+                            style={styles.scrollView}
+                            showsVerticalScrollIndicator={false}
+                            contentContainerStyle={styles.scrollContent}
+                            scrollEnabled={!isAnimating}
+                        >
+                            <Verse
+                                verse={visibleVerses.current}
+                                isPlaying={audioState?.currentVerse?.id === visibleVerses.current?.id && audioState?.isPlaying}
+                                onPlayPress={onPlayAudio || (() => { })}
+                            />
+                        </ScrollView>
+                    </View>
+
+                    {/* Next Verse */}
+                    <View style={styles.verseContainer}>
+                        {visibleVerses.next ? (
+                            <ScrollView
+                                style={styles.scrollView}
+                                showsVerticalScrollIndicator={false}
+                                contentContainerStyle={styles.scrollContent}
+                                scrollEnabled={!isAnimating}
+                            >
+                                <Verse
+                                    verse={visibleVerses.next}
+                                    isPlaying={false} // Next verse shouldn't show as playing
+                                    onPlayPress={onPlayAudio || (() => { })}
+                                />
+                            </ScrollView>
+                        ) : (
+                            <View style={styles.emptyVerseContainer}>
+                                <Text style={styles.emptyVerseText}>Son ayet</Text>
+                            </View>
+                        )}
+                    </View>
+                </Animated.View>
             </View>
 
             {/* Remove the duplicate navigation controls since they're already in header */}
@@ -189,7 +358,8 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                             styles.dot,
                             index === currentVerseIndex && styles.activeDot
                         ]}
-                        onPress={() => goToVerse(index)}
+                        onPress={() => goToVerse(index, true)}
+                        disabled={isAnimating}
                     />
                 ))}
                 {verses.length > 10 && (
@@ -200,7 +370,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
             {/* Swipe instruction */}
             <View style={styles.instructionContainer}>
                 <Text style={styles.instructionText}>
-                    ← Kaydır → veya butonları kullan
+                    {isMobileScreen ? '← Kısa kaydır → ' : '← Kaydır → '}veya butonları kullan
                 </Text>
             </View>
 
@@ -210,7 +380,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                 verses={verses}
                 currentVerseIndex={currentVerseIndex}
                 onVerseSelect={(verseIndex) => {
-                    setCurrentVerseIndex(verseIndex);
+                    goToVerse(verseIndex, true);
                 }}
                 onClose={() => setIsGoToVerseModalVisible(false)}
             />
@@ -277,6 +447,15 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
+        overflow: 'hidden', // Prevent content from showing outside bounds during animation
+    },
+    animatedContainer: {
+        flex: 1,
+        width: '100%',
+    },
+    verseContainer: {
+        width: screenWidth,
+        flex: 1,
     },
     scrollView: {
         flex: 1,
@@ -285,6 +464,18 @@ const styles = StyleSheet.create({
         padding: SPACING.md,
         minHeight: '100%',
         justifyContent: 'center',
+    },
+    emptyVerseContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: SPACING.lg,
+    },
+    emptyVerseText: {
+        fontSize: FONT_SIZES.medium,
+        color: COLORS.textSecondary,
+        textAlign: 'center',
+        fontStyle: 'italic',
     },
     errorContainer: {
         flex: 1,
