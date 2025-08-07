@@ -49,6 +49,7 @@ export interface AppSettings {
   darkMode: boolean;
   audioTrackingEnabled: boolean;
   selectedReciter: string;
+  playbackRate: number;
 }
 
 export interface SettingsContextType {

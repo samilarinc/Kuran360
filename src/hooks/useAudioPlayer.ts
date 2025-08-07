@@ -21,6 +21,20 @@ export const useAudioPlayer = () => {
     settingsRef.current = settings;
   }, [settings]);
 
+  // Update playback rate when settings change
+  useEffect(() => {
+    if (sound) {
+      const updateRate = async () => {
+        try {
+          await sound.setRateAsync(settings.playbackRate, true);
+        } catch (error) {
+          console.error('Error updating playback rate:', error);
+        }
+      };
+      updateRate();
+    }
+  }, [settings.playbackRate, sound]);
+
   useEffect(() => {
     return sound
       ? () => {
@@ -101,6 +115,9 @@ export const useAudioPlayer = () => {
       );
 
       setSound(newSound);
+
+      // Set playback rate
+      await newSound.setRateAsync(settings.playbackRate, true);
 
       // Set up status update listener
       newSound.setOnPlaybackStatusUpdate((status) => {
@@ -206,6 +223,17 @@ export const useAudioPlayer = () => {
     }
   };
 
+  const changePlaybackRate = async (rate: number) => {
+    if (sound) {
+      try {
+        await sound.setRateAsync(rate, true);
+        console.log(`Playback rate changed to: ${rate}x`);
+      } catch (error) {
+        console.error('Error changing playback rate:', error);
+      }
+    }
+  };
+
   return {
     audioState,
     playVerse,
@@ -213,6 +241,7 @@ export const useAudioPlayer = () => {
     resume,
     stop,
     togglePlayPause,
+    changePlaybackRate,
     setVersesForAutoplay,
   };
 };

@@ -15,6 +15,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     darkMode: false,
     audioTrackingEnabled: true,
     selectedReciter: 'sudais',
+    playbackRate: 1.0,
 };
 
 // Available translations from the JSON data

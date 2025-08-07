@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -41,7 +41,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const [loading, setLoading] = useState(false);
   const { settings, updateSettings } = useSettings();
   const { theme } = useTheme();
-  const { audioState, playVerse, stop, setVersesForAutoplay } = useAudioPlayer();
+  const { audioState, playVerse, stop, setVersesForAutoplay, changePlaybackRate } = useAudioPlayer();
   const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
@@ -150,13 +150,32 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     updateSettings({ audioTrackingEnabled: enabled });
   }, [updateSettings]);
 
+  const handlePlaybackRateChange = useCallback(async () => {
+    // Toggle between 1x, 1.25x, 1.5x, 1.75x, 2x speeds
+    const rates = [1.0, 1.25, 1.5, 1.75, 2.0];
+    const currentIndex = rates.indexOf(settings.playbackRate);
+    const nextIndex = (currentIndex + 1) % rates.length;
+    const newRate = rates[nextIndex];
+    
+    updateSettings({ playbackRate: newRate });
+    await changePlaybackRate(newRate);
+  }, [settings.playbackRate, updateSettings, changePlaybackRate]);
+
+  // Memoize playback rate display text to prevent flickering
+  const playbackRateText = useMemo(() => {
+    return `${settings.playbackRate}x`;
+  }, [settings.playbackRate]);
+
+  // Memoize styles to prevent re-creation on every render
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
   return (
-    <SafeAreaView style={createStyles(theme).container}>
+    <SafeAreaView style={styles.container}>
       {loading ? (
-        <View style={createStyles(theme).loadingContainer}>
+        <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={theme.primary} />
-          <Text style={createStyles(theme).loadingText}>Ayetler yükleniyor...</Text>
-          <Text style={createStyles(theme).loadingNote}>(Bu işlem sadece bir kez yapılır)</Text>
+          <Text style={styles.loadingText}>Ayetler yükleniyor...</Text>
+          <Text style={styles.loadingNote}>(Bu işlem sadece bir kez yapılır)</Text>
         </View>
       ) : (
         <>
@@ -188,7 +207,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               data={surah.verses}
               renderItem={renderVerse}
               keyExtractor={(item) => `${item.surahNumber}-${item.number}`}
-              contentContainerStyle={createStyles(theme).listContainer}
+              contentContainerStyle={styles.listContainer}
               showsVerticalScrollIndicator={false}
               onScrollToIndexFailed={(info) => {
                 // Handle scroll failure gracefully
@@ -207,22 +226,33 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
           {/* Audio info bar - show in both paginated and non-paginated views when playing */}
           {audioState.currentVerse && (
-            <View style={createStyles(theme).audioInfo}>
-              <View style={createStyles(theme).audioInfoContent}>
-                <Text style={createStyles(theme).audioInfoText}>
+            <View style={styles.audioInfo}>
+              <View style={styles.audioInfoContent}>
+                <Text style={styles.audioInfoText}>
                   {audioState.isLoading
                     ? 'Yükleniyor...'
                     : `${audioState.isPlaying ? 'Çalıyor' : 'Duraklatıldı'}: ${audioState.currentVerse.number}. Ayet`
                   }
                 </Text>
-                <View style={createStyles(theme).audioTrackingContainer}>
-                  <AudioTrackingToggle
-                    isEnabled={settings.audioTrackingEnabled}
-                    onToggle={handleAudioTrackingToggle}
-                  />
-                  <Text style={createStyles(theme).audioTrackingLabel}>
-                    Otomatik takip
-                  </Text>
+                <View style={styles.audioControlsContainer}>
+                  <TouchableOpacity
+                    style={styles.playbackRateButton}
+                    onPress={handlePlaybackRateChange}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={styles.playbackRateText}>
+                      {playbackRateText}
+                    </Text>
+                  </TouchableOpacity>
+                  <View style={styles.audioTrackingContainer}>
+                    <AudioTrackingToggle
+                      isEnabled={settings.audioTrackingEnabled}
+                      onToggle={handleAudioTrackingToggle}
+                    />
+                    <Text style={styles.audioTrackingLabel}>
+                      Otomatik takip
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -284,5 +314,23 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     fontSize: FONT_SIZES.small,
     opacity: 0.8,
     textAlign: 'center',
+  },
+  audioControlsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.md,
+  },
+  playbackRateButton: {
+    backgroundColor: theme.headerText + '20',
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 4,
+    borderRadius: 6,
+    minWidth: 40,
+    alignItems: 'center',
+  },
+  playbackRateText: {
+    color: theme.headerText,
+    fontSize: FONT_SIZES.small,
+    fontWeight: '600',
   },
 });
