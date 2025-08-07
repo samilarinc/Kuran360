@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { Verse, PaginatedVerseView } from '../components';
+import { Verse } from '../components/Verse';
+import { PaginatedVerseView } from '../components/PaginatedVerseView';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { AutoplayToggle } from '../components/AutoplayToggle';
 import { AudioTrackingToggle } from '../components/AudioTrackingToggle';

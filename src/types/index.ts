@@ -48,10 +48,12 @@ export interface AppSettings {
   usePaginatedView: boolean;
   darkMode: boolean;
   audioTrackingEnabled: boolean;
+  selectedReciter: string;
 }
 
 export interface SettingsContextType {
   settings: AppSettings;
   updateSettings: (newSettings: Partial<AppSettings>) => void;
   availableTranslations: string[];
+  availableReciters: { id: string; name: string; folder: string }[];
 }

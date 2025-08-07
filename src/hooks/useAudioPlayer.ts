@@ -4,7 +4,7 @@ import { Verse as VerseType, AudioState } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
 
 export const useAudioPlayer = () => {
-  const { settings } = useSettings();
+  const { settings, availableReciters } = useSettings();
   const settingsRef = useRef(settings);
   const [audioState, setAudioState] = useState<AudioState>({
     isPlaying: false,
@@ -86,7 +86,12 @@ export const useAudioPlayer = () => {
         return 'http://localhost:8081';
       };
 
-      const audioUri = `${getBaseUrl()}/sudais_all_verse/${audioFileName}`;
+      const getReciterFolder = () => {
+        const selectedReciter = availableReciters.find(r => r.id === settings.selectedReciter);
+        return selectedReciter ? selectedReciter.folder : 'sudais_all_verse'; // Default fallback
+      };
+
+      const audioUri = `${getBaseUrl()}/${getReciterFolder()}/${audioFileName}`;
       console.log(`Attempting to load audio from: ${audioUri}`);
 
       // Load and play the audio file

@@ -14,6 +14,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     usePaginatedView: false,
     darkMode: false,
     audioTrackingEnabled: true,
+    selectedReciter: 'sudais',
 };
 
 // Available translations from the JSON data
@@ -74,6 +75,20 @@ const AVAILABLE_TRANSLATIONS = [
     'Yaşar Nuri Öztürk Meali'
 ];
 
+// Available reciters
+const AVAILABLE_RECITERS = [
+    {
+        id: 'sudais',
+        name: 'Abdul Rahman Al-Sudais',
+        folder: 'sudais_all_verse'
+    },
+    {
+        id: 'abdulsamad',
+        name: 'Abdul Basit Abdul Samad',
+        folder: 'abdulsamad_all_verse'
+    }
+];
+
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
 interface SettingsProviderProps {
@@ -113,6 +128,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
         settings,
         updateSettings,
         availableTranslations: AVAILABLE_TRANSLATIONS,
+        availableReciters: AVAILABLE_RECITERS,
     };
 
     return (

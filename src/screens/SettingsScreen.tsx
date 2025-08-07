@@ -12,6 +12,7 @@ import {
 import { useSettings } from '../contexts/SettingsContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
+import { ReciterSelector } from '../components/ReciterSelector';
 import { FONT_SIZES, SPACING } from '../constants';
 
 interface SettingsScreenProps {
@@ -19,7 +20,7 @@ interface SettingsScreenProps {
 }
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
-    const { settings, updateSettings, availableTranslations } = useSettings();
+    const { settings, updateSettings, availableTranslations, availableReciters } = useSettings();
     const { theme } = useTheme();
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
         translations: true, // Expand translations section by default
@@ -136,6 +137,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                             thumbColor={settings.autoplayEnabled ? '#FFFFFF' : '#f4f3f4'}
                         />
                     </View>
+
+                    {/* Reciter Selection */}
+                    <ReciterSelector />
                 </View>
 
                 {/* Display Options */}
