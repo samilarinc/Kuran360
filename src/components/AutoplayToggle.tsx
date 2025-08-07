@@ -7,7 +7,8 @@ import {
     Animated,
     Dimensions,
 } from 'react-native';
-import { COLORS, SPACING } from '../constants';
+import { useTheme } from '../contexts/ThemeContext';
+import { SPACING } from '../constants';
 
 interface AutoplayToggleProps {
     isEnabled: boolean;
@@ -18,6 +19,7 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
     isEnabled,
     onToggle,
 }) => {
+    const { theme } = useTheme();
     const slideAnimation = useRef(new Animated.Value(isEnabled ? 1 : 0)).current;
 
     useEffect(() => {
@@ -41,7 +43,7 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
 
     const backgroundColor = slideAnimation.interpolate({
         inputRange: [0, 1],
-        outputRange: [COLORS.textSecondary + '30', COLORS.primary],
+        outputRange: ['rgba(128, 128, 128, 0.5)', theme.primary],
     });
 
     return (
@@ -52,7 +54,7 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
                         styles.knob,
                         {
                             transform: [{ translateX }],
-                            backgroundColor: COLORS.surface,
+                            backgroundColor: '#FFFFFF',
                         }
                     ]}
                 >
@@ -72,6 +74,8 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         justifyContent: 'center',
         position: 'relative',
+        borderWidth: 2,
+        borderColor: 'rgba(255, 255, 255, 0.4)',
     },
     knob: {
         width: 24,

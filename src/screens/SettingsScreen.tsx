@@ -10,7 +10,9 @@ import {
     Alert,
 } from 'react-native';
 import { useSettings } from '../contexts/SettingsContext';
-import { COLORS, FONT_SIZES, SPACING } from '../constants';
+import { useTheme, Theme } from '../contexts/ThemeContext';
+import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
+import { FONT_SIZES, SPACING } from '../constants';
 
 interface SettingsScreenProps {
     navigation: any;
@@ -18,6 +20,7 @@ interface SettingsScreenProps {
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     const { settings, updateSettings, availableTranslations } = useSettings();
+    const { theme } = useTheme();
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
         translations: true, // Expand translations section by default
     });
@@ -71,133 +74,149 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         return (
             <TouchableOpacity
                 key={translationName}
-                style={[styles.translationItem, isSelected && styles.selectedTranslationItem]}
+                style={[createStyles(theme).translationItem, isSelected && createStyles(theme).selectedTranslationItem]}
                 onPress={() => toggleTranslation(translationName)}
                 activeOpacity={0.7}
             >
-                <Text style={[styles.translationText, isSelected && styles.selectedTranslationText]}>
+                <Text style={[createStyles(theme).translationText, isSelected && createStyles(theme).selectedTranslationText]}>
                     {translationName}
                 </Text>
-                <View style={[styles.checkbox, isSelected && styles.checkedBox]}>
-                    {isSelected && <Text style={styles.checkmark}>✓</Text>}
+                <View style={[createStyles(theme).checkbox, isSelected && createStyles(theme).checkedBox]}>
+                    {isSelected && <Text style={createStyles(theme).checkmark}>✓</Text>}
                 </View>
             </TouchableOpacity>
         );
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity
-                    style={styles.backButton}
-                    onPress={() => navigation.goBack()}
-                >
-                    <Text style={styles.backButtonText}>← Geri</Text>
-                </TouchableOpacity>
-                <Text style={styles.title}>Ayarlar</Text>
-            </View>
+        <SafeAreaView style={createStyles(theme).container}>
+            <HeaderWithDarkModeToggle
+                title="Ayarlar"
+                showBackButton={true}
+                onBackPress={() => navigation.goBack()}
+            />
 
-            <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+            <ScrollView style={createStyles(theme).content} showsVerticalScrollIndicator={false}>
+
+                {/* Theme Section */}
+                <View style={createStyles(theme).section}>
+                    <Text style={createStyles(theme).sectionTitle}>Tema</Text>
+
+                    <View style={createStyles(theme).settingItem}>
+                        <View style={createStyles(theme).settingInfo}>
+                            <Text style={createStyles(theme).settingLabel}>Koyu Mod</Text>
+                            <Text style={createStyles(theme).settingDescription}>
+                                Karanlık tema kullan
+                            </Text>
+                        </View>
+                        <Switch
+                            value={settings.darkMode}
+                            onValueChange={(value) => updateSettings({ darkMode: value })}
+                            trackColor={{ false: theme.border, true: theme.primary }}
+                            thumbColor={settings.darkMode ? '#FFFFFF' : '#f4f3f4'}
+                        />
+                    </View>
+                </View>
 
                 {/* Autoplay Section */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Ses Ayarları</Text>
+                <View style={createStyles(theme).section}>
+                    <Text style={createStyles(theme).sectionTitle}>Ses Ayarları</Text>
 
-                    <View style={styles.settingItem}>
-                        <View style={styles.settingInfo}>
-                            <Text style={styles.settingLabel}>Otomatik Oynatma</Text>
-                            <Text style={styles.settingDescription}>
+                    <View style={createStyles(theme).settingItem}>
+                        <View style={createStyles(theme).settingInfo}>
+                            <Text style={createStyles(theme).settingLabel}>Otomatik Oynatma</Text>
+                            <Text style={createStyles(theme).settingDescription}>
                                 Bir ayet bitince otomatik olarak sonraki ayete geç
                             </Text>
                         </View>
                         <Switch
                             value={settings.autoplayEnabled}
                             onValueChange={(value) => updateSettings({ autoplayEnabled: value })}
-                            trackColor={{ false: COLORS.background, true: COLORS.primary }}
+                            trackColor={{ false: theme.border, true: theme.primary }}
                             thumbColor={settings.autoplayEnabled ? '#FFFFFF' : '#f4f3f4'}
                         />
                     </View>
                 </View>
 
                 {/* Display Options */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Görünüm Seçenekleri</Text>
+                <View style={createStyles(theme).section}>
+                    <Text style={createStyles(theme).sectionTitle}>Görünüm Seçenekleri</Text>
 
-                    <View style={styles.settingItem}>
-                        <View style={styles.settingInfo}>
-                            <Text style={styles.settingLabel}>Türkçe Okunuş</Text>
-                            <Text style={styles.settingDescription}>
+                    <View style={createStyles(theme).settingItem}>
+                        <View style={createStyles(theme).settingInfo}>
+                            <Text style={createStyles(theme).settingLabel}>Türkçe Okunuş</Text>
+                            <Text style={createStyles(theme).settingDescription}>
                                 Ayetlerin okunuş şeklini göster
                             </Text>
                         </View>
                         <Switch
                             value={settings.showTransliteration}
                             onValueChange={(value) => updateSettings({ showTransliteration: value })}
-                            trackColor={{ false: COLORS.background, true: COLORS.primary }}
+                            trackColor={{ false: theme.border, true: theme.primary }}
                             thumbColor={settings.showTransliteration ? '#FFFFFF' : '#f4f3f4'}
                         />
                     </View>
 
-                    <View style={styles.settingItem}>
-                        <View style={styles.settingInfo}>
-                            <Text style={styles.settingLabel}>Kelime Çevirileri</Text>
-                            <Text style={styles.settingDescription}>
+                    <View style={createStyles(theme).settingItem}>
+                        <View style={createStyles(theme).settingInfo}>
+                            <Text style={createStyles(theme).settingLabel}>Kelime Çevirileri</Text>
+                            <Text style={createStyles(theme).settingDescription}>
                                 Her kelimenin altında Türkçe karşılığını göster
                             </Text>
                         </View>
                         <Switch
                             value={settings.showWordTranslations}
                             onValueChange={(value) => updateSettings({ showWordTranslations: value })}
-                            trackColor={{ false: COLORS.background, true: COLORS.primary }}
+                            trackColor={{ false: theme.border, true: theme.primary }}
                             thumbColor={settings.showWordTranslations ? '#FFFFFF' : '#f4f3f4'}
                         />
                     </View>
 
-                    <View style={styles.settingItem}>
-                        <View style={styles.settingInfo}>
-                            <Text style={styles.settingLabel}>Sayfalı Görünüm</Text>
-                            <Text style={styles.settingDescription}>
+                    <View style={createStyles(theme).settingItem}>
+                        <View style={createStyles(theme).settingInfo}>
+                            <Text style={createStyles(theme).settingLabel}>Sayfalı Görünüm</Text>
+                            <Text style={createStyles(theme).settingDescription}>
                                 Her ayeti ayrı sayfada göster (kaydırarak geçiş)
                             </Text>
                         </View>
                         <Switch
                             value={settings.usePaginatedView}
                             onValueChange={(value) => updateSettings({ usePaginatedView: value })}
-                            trackColor={{ false: COLORS.background, true: COLORS.primary }}
+                            trackColor={{ false: theme.border, true: theme.primary }}
                             thumbColor={settings.usePaginatedView ? '#FFFFFF' : '#f4f3f4'}
                         />
                     </View>
                 </View>
 
                 {/* Translation Selection */}
-                <View style={styles.section}>
+                <View style={createStyles(theme).section}>
                     <TouchableOpacity
-                        style={styles.sectionHeader}
+                        style={createStyles(theme).sectionHeader}
                         onPress={() => toggleSection('translations')}
                         activeOpacity={0.7}
                     >
-                        <Text style={styles.sectionTitle}>
+                        <Text style={createStyles(theme).sectionTitle}>
                             Meal Seçimi ({settings.selectedTranslations.length} seçili)
                         </Text>
-                        <Text style={styles.expandIcon}>
+                        <Text style={createStyles(theme).expandIcon}>
                             {expandedSections.translations ? '▼' : '▶'}
                         </Text>
                     </TouchableOpacity>
 
                     {expandedSections.translations && (
-                        <View style={styles.translationsContainer}>
-                            <View style={styles.translationActions}>
+                        <View style={createStyles(theme).translationsContainer}>
+                            <View style={createStyles(theme).translationActions}>
                                 <TouchableOpacity
-                                    style={styles.actionButton}
+                                    style={createStyles(theme).actionButton}
                                     onPress={selectAllTranslations}
                                 >
-                                    <Text style={styles.actionButtonText}>Tümünü Seç</Text>
+                                    <Text style={createStyles(theme).actionButtonText}>Tümünü Seç</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={[styles.actionButton, styles.secondaryButton]}
+                                    style={[createStyles(theme).actionButton, createStyles(theme).secondaryButton]}
                                     onPress={selectDefaultTranslations}
                                 >
-                                    <Text style={[styles.actionButtonText, styles.secondaryButtonText]}>
+                                    <Text style={[createStyles(theme).actionButtonText, createStyles(theme).secondaryButtonText]}>
                                         Varsayılan
                                     </Text>
                                 </TouchableOpacity>
@@ -208,8 +227,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     )}
                 </View>
 
-                <View style={styles.footer}>
-                    <Text style={styles.footerText}>
+                <View style={createStyles(theme).footer}>
+                    <Text style={createStyles(theme).footerText}>
                         Seçili mealler ayetlerin altında gösterilecektir.
                     </Text>
                 </View>
@@ -219,44 +238,17 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.background,
-    },
-    header: {
-        backgroundColor: COLORS.surface,
-        paddingVertical: SPACING.lg,
-        paddingHorizontal: SPACING.md,
-        alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: COLORS.background,
-    },
-    backButton: {
-        position: 'absolute',
-        left: SPACING.md,
-        top: SPACING.lg,
-        zIndex: 1,
-        paddingVertical: SPACING.xs,
-        paddingHorizontal: SPACING.sm,
-    },
-    backButtonText: {
-        color: COLORS.primary,
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-    },
-    title: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
-        color: COLORS.primary,
-        textAlign: 'center',
+        backgroundColor: theme.background,
     },
     content: {
         flex: 1,
         padding: SPACING.md,
     },
     section: {
-        backgroundColor: COLORS.surface,
+        backgroundColor: theme.cardBackground,
         borderRadius: 12,
         marginBottom: SPACING.md,
         overflow: 'hidden',
@@ -270,12 +262,12 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: FONT_SIZES.large,
         fontWeight: 'bold',
-        color: COLORS.text,
+        color: theme.text,
         flex: 1,
     },
     expandIcon: {
         fontSize: FONT_SIZES.medium,
-        color: COLORS.textSecondary,
+        color: theme.textSecondary,
         marginLeft: SPACING.sm,
     },
     settingItem: {
@@ -284,7 +276,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: SPACING.md,
         borderBottomWidth: 1,
-        borderBottomColor: COLORS.background,
+        borderBottomColor: theme.border,
     },
     settingInfo: {
         flex: 1,
@@ -293,12 +285,12 @@ const styles = StyleSheet.create({
     settingLabel: {
         fontSize: FONT_SIZES.medium,
         fontWeight: '600',
-        color: COLORS.text,
+        color: theme.text,
         marginBottom: 4,
     },
     settingDescription: {
         fontSize: FONT_SIZES.small,
-        color: COLORS.textSecondary,
+        color: theme.textSecondary,
         lineHeight: 18,
     },
     translationsContainer: {
@@ -311,7 +303,7 @@ const styles = StyleSheet.create({
         gap: SPACING.sm,
     },
     actionButton: {
-        backgroundColor: COLORS.primary,
+        backgroundColor: theme.primary,
         paddingVertical: SPACING.xs,
         paddingHorizontal: SPACING.md,
         borderRadius: 8,
@@ -320,16 +312,16 @@ const styles = StyleSheet.create({
     secondaryButton: {
         backgroundColor: 'transparent',
         borderWidth: 1,
-        borderColor: COLORS.primary,
+        borderColor: theme.primary,
     },
     actionButtonText: {
-        color: '#FFFFFF',
+        color: theme.headerText,
         fontSize: FONT_SIZES.small,
         fontWeight: '600',
         textAlign: 'center',
     },
     secondaryButtonText: {
-        color: COLORS.primary,
+        color: theme.primary,
     },
     translationItem: {
         flexDirection: 'row',
@@ -342,15 +334,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     selectedTranslationItem: {
-        backgroundColor: COLORS.primary + '10',
+        backgroundColor: theme.primary + '10',
     },
     translationText: {
         fontSize: FONT_SIZES.small,
-        color: COLORS.text,
+        color: theme.text,
         flex: 1,
     },
     selectedTranslationText: {
-        color: COLORS.primary,
+        color: theme.primary,
         fontWeight: '500',
     },
     checkbox: {
@@ -358,17 +350,17 @@ const styles = StyleSheet.create({
         height: 20,
         borderRadius: 4,
         borderWidth: 2,
-        borderColor: COLORS.textSecondary,
+        borderColor: theme.textSecondary,
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: SPACING.sm,
     },
     checkedBox: {
-        backgroundColor: COLORS.primary,
-        borderColor: COLORS.primary,
+        backgroundColor: theme.primary,
+        borderColor: theme.primary,
     },
     checkmark: {
-        color: '#FFFFFF',
+        color: theme.headerText,
         fontSize: 12,
         fontWeight: 'bold',
     },
@@ -378,7 +370,7 @@ const styles = StyleSheet.create({
     },
     footerText: {
         fontSize: FONT_SIZES.small,
-        color: COLORS.textSecondary,
+        color: theme.textSecondary,
         textAlign: 'center',
         lineHeight: 18,
     },

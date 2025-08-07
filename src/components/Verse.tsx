@@ -7,7 +7,8 @@ import {
 } from 'react-native';
 import { Verse as VerseType } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
-import { COLORS, FONT_SIZES, SPACING } from '../constants';
+import { useTheme, Theme } from '../contexts/ThemeContext';
+import { FONT_SIZES, SPACING } from '../constants';
 
 interface VerseProps {
   verse: VerseType;
@@ -17,6 +18,7 @@ interface VerseProps {
 
 export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress }) => {
   const { settings } = useSettings();
+  const { theme } = useTheme();
 
   const renderTranslations = () => {
     if (!verse.allTranslations) return null;
@@ -26,9 +28,9 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress }) =
       if (!translationText) return null;
 
       return (
-        <View key={translationName} style={styles.translationContainer}>
-          <Text style={styles.translationTitle}>{translationName}:</Text>
-          <Text style={styles.translationText}>{translationText}</Text>
+        <View key={translationName} style={createStyles(theme).translationContainer}>
+          <Text style={createStyles(theme).translationTitle}>{translationName}:</Text>
+          <Text style={createStyles(theme).translationText}>{translationText}</Text>
         </View>
       );
     });
@@ -38,13 +40,13 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress }) =
     if (!settings.showWordTranslations || !verse.wordTranslations.length) return null;
 
     return (
-      <View style={styles.wordTranslationsContainer}>
-        <Text style={styles.sectionTitle}>Kelime Çevirileri:</Text>
-        <View style={styles.wordTranslationsGrid}>
+      <View style={createStyles(theme).wordTranslationsContainer}>
+        <Text style={createStyles(theme).sectionTitle}>Kelime Çevirileri:</Text>
+        <View style={createStyles(theme).wordTranslationsGrid}>
           {verse.wordTranslations.map((word, index) => (
-            <View key={index} style={styles.wordTranslationItem}>
-              <Text style={styles.wordArabic}>{word.arabic}</Text>
-              <Text style={styles.wordTranslation}>{word.translation}</Text>
+            <View key={index} style={createStyles(theme).wordTranslationItem}>
+              <Text style={createStyles(theme).wordArabic}>{word.arabic}</Text>
+              <Text style={createStyles(theme).wordTranslation}>{word.translation}</Text>
             </View>
           ))}
         </View>
@@ -53,35 +55,35 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress }) =
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.verseNumber}>
-          <Text style={styles.verseNumberText}>{verse.number}</Text>
+    <View style={createStyles(theme).container}>
+      <View style={createStyles(theme).header}>
+        <View style={createStyles(theme).verseNumber}>
+          <Text style={createStyles(theme).verseNumberText}>{verse.number}</Text>
         </View>
         <TouchableOpacity
           style={[
-            styles.playButton,
-            isPlaying && styles.playButtonActive
+            createStyles(theme).playButton,
+            isPlaying && createStyles(theme).playButtonActive
           ]}
           onPress={() => onPlayPress(verse)}
         >
           <Text style={[
-            styles.playButtonText,
-            isPlaying && styles.playButtonTextActive
+            createStyles(theme).playButtonText,
+            isPlaying && createStyles(theme).playButtonTextActive
           ]}>
             {isPlaying ? '⏹️' : '▶️'}
           </Text>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.content}>
-        <Text style={styles.arabicText}>{verse.arabicText}</Text>
+      <View style={createStyles(theme).content}>
+        <Text style={createStyles(theme).arabicText}>{verse.arabicText}</Text>
 
         {settings.showTransliteration && verse.transliteration && (
-          <Text style={styles.transliterationText}>{verse.transliteration}</Text>
+          <Text style={createStyles(theme).transliterationText}>{verse.transliteration}</Text>
         )}
 
-        <View style={styles.translationsContainer}>
+        <View style={createStyles(theme).translationsContainer}>
           {renderTranslations()}
         </View>
 
@@ -91,20 +93,20 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress }) =
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
   container: {
-    backgroundColor: COLORS.surface,
+    backgroundColor: theme.cardBackground,
     marginVertical: SPACING.sm,
     marginHorizontal: SPACING.md,
     borderRadius: 12,
     padding: SPACING.md,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: theme.text,
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.22,
+    shadowOpacity: 0.1,
     shadowRadius: 2.22,
   },
   header: {
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   verseNumber: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: theme.primary,
     borderRadius: 20,
     width: 40,
     height: 40,
@@ -122,12 +124,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   verseNumberText: {
-    color: COLORS.surface,
+    color: '#FFFFFF', // Always white for good contrast
     fontSize: FONT_SIZES.medium,
     fontWeight: 'bold',
   },
   playButton: {
-    backgroundColor: COLORS.secondary,
+    backgroundColor: theme.secondary,
     borderRadius: 25,
     width: 50,
     height: 50,
@@ -135,13 +137,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   playButtonActive: {
-    backgroundColor: COLORS.accent,
+    backgroundColor: theme.accent,
   },
   playButtonText: {
     fontSize: FONT_SIZES.large,
   },
   playButtonTextActive: {
-    color: COLORS.surface,
+    color: theme.headerText,
   },
   content: {
     gap: SPACING.md,
@@ -150,19 +152,19 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.arabic,
     lineHeight: FONT_SIZES.arabic * 1.5,
     textAlign: 'right',
-    color: COLORS.text,
+    color: theme.text,
     fontWeight: '600',
   },
   translationText: {
     fontSize: FONT_SIZES.translation,
     lineHeight: FONT_SIZES.translation * 1.4,
-    color: COLORS.textSecondary,
+    color: theme.text,
     textAlign: 'left',
   },
   transliterationText: {
     fontSize: FONT_SIZES.medium,
     lineHeight: FONT_SIZES.medium * 1.3,
-    color: COLORS.textSecondary,
+    color: theme.textSecondary,
     textAlign: 'left',
     fontStyle: 'italic',
   },
@@ -172,25 +174,25 @@ const styles = StyleSheet.create({
   translationContainer: {
     paddingVertical: SPACING.xs,
     borderLeftWidth: 3,
-    borderLeftColor: COLORS.primary,
+    borderLeftColor: theme.primary,
     paddingLeft: SPACING.sm,
   },
   translationTitle: {
     fontSize: FONT_SIZES.small,
     fontWeight: '600',
-    color: COLORS.primary,
+    color: theme.primary,
     marginBottom: 4,
   },
   wordTranslationsContainer: {
     marginTop: SPACING.sm,
     padding: SPACING.sm,
-    backgroundColor: COLORS.background,
+    backgroundColor: theme.surface,
     borderRadius: 8,
   },
   sectionTitle: {
     fontSize: FONT_SIZES.small,
     fontWeight: '600',
-    color: COLORS.text,
+    color: theme.text,
     marginBottom: SPACING.xs,
   },
   wordTranslationsGrid: {
@@ -199,7 +201,7 @@ const styles = StyleSheet.create({
     gap: SPACING.xs,
   },
   wordTranslationItem: {
-    backgroundColor: COLORS.surface,
+    backgroundColor: theme.surface,
     paddingVertical: 4,
     paddingHorizontal: SPACING.xs,
     borderRadius: 6,
@@ -210,13 +212,13 @@ const styles = StyleSheet.create({
   },
   wordArabic: {
     fontSize: FONT_SIZES.small,
-    color: COLORS.text,
+    color: theme.text,
     fontWeight: '600',
     textAlign: 'center',
   },
   wordTranslation: {
     fontSize: FONT_SIZES.small - 2,
-    color: COLORS.textSecondary,
+    color: theme.textSecondary,
     textAlign: 'center',
   },
 });

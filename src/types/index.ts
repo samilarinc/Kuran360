@@ -46,6 +46,7 @@ export interface AppSettings {
   showTransliteration: boolean;
   showWordTranslations: boolean;
   usePaginatedView: boolean;
+  darkMode: boolean;
 }
 
 export interface SettingsContextType {

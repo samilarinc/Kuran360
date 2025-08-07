@@ -12,7 +12,7 @@ export const SURAH_INTRO_FORMAT = (surahNumber: number): string => {
 };
 
 // Colors
-export const COLORS = {
+export const LIGHT_COLORS = {
   primary: '#2E7D32',
   secondary: '#4CAF50',
   accent: '#FFC107',
@@ -23,7 +23,29 @@ export const COLORS = {
   success: '#4CAF50',
   error: '#F44336',
   warning: '#FF9800',
+  headerText: '#FFFFFF',
+  cardBackground: '#FFFFFF',
+  border: '#E0E0E0',
 } as const;
+
+export const DARK_COLORS = {
+  primary: '#56a35aff', // Even lighter green for better contrast
+  secondary: '#56a35aff',
+  accent: '#FFC107',
+  background: '#121212',
+  surface: '#1E1E1E',
+  text: '#FFFFFF',
+  textSecondary: '#B0B0B0', // Lighter for better visibility
+  success: '#4CAF50',
+  error: '#F44336',
+  warning: '#FF9800',
+  headerText: '#FFFFFF',
+  cardBackground: '#2D2D2D',
+  border: '#404040',
+} as const;
+
+// Legacy COLORS export for backward compatibility
+export const COLORS = LIGHT_COLORS;
 
 // Font sizes
 export const FONT_SIZES = {

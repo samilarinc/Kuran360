@@ -9,12 +9,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Verse, PaginatedVerseView } from '../components';
+import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { AutoplayToggle } from '../components/AutoplayToggle';
 import { useAudioPlayer } from '../hooks/useAudioPlayer';
 import { useSettings } from '../contexts/SettingsContext';
+import { useTheme, Theme } from '../contexts/ThemeContext';
 import { Surah, Verse as VerseType } from '../types';
 import { loadSurah } from '../data/quranData';
-import { COLORS, FONT_SIZES, SPACING } from '../constants';
+import { FONT_SIZES, SPACING } from '../constants';
 
 interface SurahDetailScreenProps {
   route: {
@@ -36,6 +38,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const [surah, setSurah] = useState<Surah>(basicSurah);
   const [loading, setLoading] = useState(false);
   const { settings, updateSettings } = useSettings();
+  const { theme } = useTheme();
   const { audioState, playVerse, stop, setVersesForAutoplay } = useAudioPlayer();
 
   useEffect(() => {
@@ -106,35 +109,27 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={createStyles(theme).container}>
       {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
-          <Text style={styles.loadingText}>Ayetler yükleniyor...</Text>
-          <Text style={styles.loadingNote}>(Bu işlem sadece bir kez yapılır)</Text>
+        <View style={createStyles(theme).loadingContainer}>
+          <ActivityIndicator size="large" color={theme.primary} />
+          <Text style={createStyles(theme).loadingText}>Ayetler yükleniyor...</Text>
+          <Text style={createStyles(theme).loadingNote}>(Bu işlem sadece bir kez yapılır)</Text>
         </View>
       ) : (
         <>
-          <View style={styles.header}>
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}
-            >
-              <Text style={styles.backButtonText}>← Geri</Text>
-            </TouchableOpacity>
-
-            <View style={styles.surahInfoContainer}>
-              <Text style={styles.surahName}>{surah.arabicName}</Text>
-              <Text style={styles.surahInfo}>
-                {surah.turkishName || surah.name} • {surah.verseCount} ayet • {surah.revelationPlace}
-              </Text>
-            </View>
-
-            <AutoplayToggle
-              isEnabled={settings.autoplayEnabled}
-              onToggle={(enabled) => updateSettings({ autoplayEnabled: enabled })}
-            />
-          </View>
+          <HeaderWithDarkModeToggle
+            title={surah.arabicName}
+            subtitle={`${surah.turkishName || surah.name} • ${surah.verseCount} ayet • ${surah.revelationPlace}`}
+            showBackButton={true}
+            onBackPress={() => navigation.goBack()}
+            autoplayToggle={
+              <AutoplayToggle
+                isEnabled={settings.autoplayEnabled}
+                onToggle={(enabled) => updateSettings({ autoplayEnabled: enabled })}
+              />
+            }
+          />
 
           {/* Conditional rendering based on settings */}
           {settings.usePaginatedView ? (
@@ -150,14 +145,14 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               data={surah.verses}
               renderItem={renderVerse}
               keyExtractor={(item) => `${item.surahNumber}-${item.number}`}
-              contentContainerStyle={styles.listContainer}
+              contentContainerStyle={createStyles(theme).listContainer}
               showsVerticalScrollIndicator={false}
             />
           )}
 
           {audioState.currentVerse && !settings.usePaginatedView && (
-            <View style={styles.audioInfo}>
-              <Text style={styles.audioInfoText}>
+            <View style={createStyles(theme).audioInfo}>
+              <Text style={createStyles(theme).audioInfoText}>
                 {audioState.isLoading
                   ? 'Yükleniyor...'
                   : `${audioState.isPlaying ? 'Çalıyor' : 'Duraklatıldı'}: ${audioState.currentVerse.number}. Ayet`
@@ -171,10 +166,10 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: theme.background,
   },
   loadingContainer: {
     flex: 1,
@@ -184,58 +179,24 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: SPACING.md,
     fontSize: FONT_SIZES.medium,
-    color: COLORS.textSecondary,
+    color: theme.textSecondary,
   },
   loadingNote: {
     marginTop: SPACING.sm,
     fontSize: FONT_SIZES.small,
-    color: COLORS.textSecondary,
-  },
-  header: {
-    backgroundColor: COLORS.surface,
-    paddingVertical: SPACING.lg,
-    paddingHorizontal: SPACING.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.background,
-  },
-  backButton: {
-    paddingVertical: SPACING.xs,
-    paddingHorizontal: SPACING.sm,
-  },
-  backButtonText: {
-    color: COLORS.primary,
-    fontSize: FONT_SIZES.medium,
-    fontWeight: '600',
-  },
-  surahInfoContainer: {
-    flex: 1,
-    alignItems: 'center',
-    marginHorizontal: SPACING.md,
-  },
-  surahName: {
-    fontSize: FONT_SIZES.xlarge,
-    fontWeight: 'bold',
-    color: COLORS.primary,
-    marginBottom: SPACING.xs,
-  },
-  surahInfo: {
-    fontSize: FONT_SIZES.medium,
-    color: COLORS.textSecondary,
+    color: theme.textSecondary,
   },
   listContainer: {
     paddingBottom: SPACING.xl,
   },
   audioInfo: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: theme.primary,
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.md,
     alignItems: 'center',
   },
   audioInfoText: {
-    color: COLORS.surface,
+    color: theme.headerText,
     fontSize: FONT_SIZES.medium,
     fontWeight: '500',
   },

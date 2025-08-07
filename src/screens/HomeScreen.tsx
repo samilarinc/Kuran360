@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SurahList } from '../components/SurahList';
+import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { quranData, loadAllVerses, ProgressCallback } from '../data/quranData';
 import { Surah, QuranData } from '../types';
-import { COLORS, FONT_SIZES, SPACING } from '../constants';
+import { useTheme, Theme } from '../contexts/ThemeContext';
+import { FONT_SIZES, SPACING } from '../constants';
 
 interface HomeScreenProps {
   navigation: any;
@@ -25,6 +27,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   lastSelectedSurah,
   isDataAvailable
 }) => {
+  const { theme } = useTheme();
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState(false);
@@ -81,14 +84,14 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>القرآن الكريم</Text>
-          <Text style={styles.subtitle}>Kur'an-ı Kerim</Text>
-        </View>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
-          <Text style={styles.loadingText}>Kur'an verileri yükleniyor...</Text>
+      <SafeAreaView style={createStyles(theme).container}>
+        <HeaderWithDarkModeToggle
+          title="القرآن الكريم"
+          subtitle="Kur'an-ı Kerim"
+        />
+        <View style={createStyles(theme).loadingContainer}>
+          <ActivityIndicator size="large" color={theme.primary} />
+          <Text style={createStyles(theme).loadingText}>Kur'an verileri yükleniyor...</Text>
         </View>
       </SafeAreaView>
     );
@@ -97,35 +100,35 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   // Show download screen if data is not available
   if (!isDataAvailable) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>القرآن الكريم</Text>
-          <Text style={styles.subtitle}>Kur'an-ı Kerim</Text>
-        </View>
-        <View style={styles.downloadContainer}>
-          <View style={styles.downloadCard}>
-            <Text style={styles.downloadTitle}>Kur'an-ı Kerim Meali</Text>
-            <Text style={styles.downloadDescription}>
+      <SafeAreaView style={createStyles(theme).container}>
+        <HeaderWithDarkModeToggle
+          title="القرآن الكريم"
+          subtitle="Kur'an-ı Kerim"
+        />
+        <View style={createStyles(theme).downloadContainer}>
+          <View style={createStyles(theme).downloadCard}>
+            <Text style={createStyles(theme).downloadTitle}>Kur'an-ı Kerim Meali</Text>
+            <Text style={createStyles(theme).downloadDescription}>
               Ayetleri okuyabilmek için Türkçe meal verilerini indirmeniz gerekmektedir.
               Bu işlem yaklaşık 66MB veri indirecektir.
             </Text>
 
             {downloading ? (
-              <View style={styles.downloadProgress}>
-                <View style={styles.progressBarContainer}>
-                  <View style={[styles.progressBar, { width: `${downloadProgress}%` }]} />
+              <View style={createStyles(theme).downloadProgress}>
+                <View style={createStyles(theme).progressBarContainer}>
+                  <View style={[createStyles(theme).progressBar, { width: `${downloadProgress}%` }]} />
                 </View>
-                <Text style={styles.progressText}>
+                <Text style={createStyles(theme).progressText}>
                   %{Math.round(downloadProgress)} - {downloadStatus}
                 </Text>
-                <ActivityIndicator size="large" color={COLORS.primary} style={{ marginTop: 10 }} />
+                <ActivityIndicator size="large" color={theme.primary} style={{ marginTop: 10 }} />
               </View>
             ) : (
               <TouchableOpacity
-                style={styles.downloadButton}
+                style={createStyles(theme).downloadButton}
                 onPress={handleDownloadData}
               >
-                <Text style={styles.downloadButtonText}>📥 Meal Verilerini İndir</Text>
+                <Text style={createStyles(theme).downloadButtonText}>📥 Meal Verilerini İndir</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -135,17 +138,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>القرآن الكريم</Text>
-        <Text style={styles.subtitle}>Kur'an-ı Kerim</Text>
-        <TouchableOpacity
-          style={styles.settingsButton}
-          onPress={() => navigation.navigate('Settings')}
-        >
-          <Text style={styles.settingsButtonText}>⚙️</Text>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={createStyles(theme).container}>
+      <HeaderWithDarkModeToggle
+        title="القرآن الكريم"
+        subtitle="Kur'an-ı Kerim"
+        showSettingsButton={true}
+        onSettingsPress={() => navigation.navigate('Settings')}
+      />
       <SurahList
         surahs={surahs}
         onSurahSelect={handleSurahSelect}
@@ -155,40 +154,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  header: {
-    backgroundColor: COLORS.primary,
-    paddingVertical: SPACING.lg,
-    paddingHorizontal: SPACING.md,
-    alignItems: 'center',
-    position: 'relative',
-  },
-  title: {
-    fontSize: FONT_SIZES.xxlarge,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: FONT_SIZES.medium,
-    color: '#FFFFFF',
-    opacity: 0.9,
-  },
-  settingsButton: {
-    position: 'absolute',
-    right: SPACING.md,
-    top: SPACING.lg,
-    padding: SPACING.sm,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  settingsButtonText: {
-    fontSize: 20,
-    color: '#FFFFFF',
+    backgroundColor: theme.background,
   },
   loadingContainer: {
     flex: 1,
@@ -199,7 +168,7 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: SPACING.md,
     fontSize: FONT_SIZES.medium,
-    color: COLORS.textSecondary,
+    color: theme.textSecondary,
   },
   downloadContainer: {
     flex: 1,
@@ -208,7 +177,7 @@ const styles = StyleSheet.create({
     padding: SPACING.xl,
   },
   downloadCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.cardBackground,
     borderRadius: 12,
     padding: SPACING.xl,
     margin: SPACING.md,
@@ -223,19 +192,19 @@ const styles = StyleSheet.create({
   downloadTitle: {
     fontSize: FONT_SIZES.xlarge,
     fontWeight: 'bold',
-    color: COLORS.primary,
+    color: theme.primary,
     marginBottom: SPACING.md,
     textAlign: 'center',
   },
   downloadDescription: {
     fontSize: FONT_SIZES.medium,
-    color: COLORS.textSecondary,
+    color: theme.textSecondary,
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: SPACING.xl,
   },
   downloadButton: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: theme.primary,
     paddingHorizontal: SPACING.xl,
     paddingVertical: SPACING.md,
     borderRadius: 8,
@@ -243,7 +212,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   downloadButtonText: {
-    color: '#FFFFFF',
+    color: theme.headerText,
     fontSize: FONT_SIZES.large,
     fontWeight: '600',
   },
@@ -254,19 +223,19 @@ const styles = StyleSheet.create({
   progressBarContainer: {
     width: '100%',
     height: 8,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: theme.border,
     borderRadius: 4,
     marginBottom: SPACING.md,
     overflow: 'hidden',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: COLORS.primary,
+    backgroundColor: theme.primary,
     borderRadius: 4,
   },
   progressText: {
     fontSize: FONT_SIZES.medium,
-    color: COLORS.textSecondary,
+    color: theme.textSecondary,
     textAlign: 'center',
     marginBottom: SPACING.sm,
   },

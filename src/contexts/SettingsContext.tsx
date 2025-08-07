@@ -12,6 +12,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     showTransliteration: true,
     showWordTranslations: true,
     usePaginatedView: false,
+    darkMode: false,
 };
 
 // Available translations from the JSON data
