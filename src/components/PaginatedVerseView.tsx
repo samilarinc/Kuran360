@@ -17,9 +17,9 @@ import { useSettings } from '../contexts/SettingsContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-const isSmallScreen = screenHeight < 700; // Phones with height less than 700dp
-const isMobileScreen = screenWidth < 768; // Mobile vs tablet threshold
+const getScreenDimensions = () => Dimensions.get('window');
+const initialDimensions = getScreenDimensions();
+const isSmallScreen = initialDimensions.height < 700; // Phones with height less than 700dp
 
 interface PaginatedVerseViewProps {
     verses: VerseType[];
@@ -42,6 +42,12 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
     const [isInitialized, setIsInitialized] = useState(false);
     const [isGoToVerseModalVisible, setIsGoToVerseModalVisible] = useState(false);
     
+    // Dynamic screen dimensions state
+    const [screenDimensions, setScreenDimensions] = useState(initialDimensions);
+    const screenWidth = screenDimensions.width;
+    const screenHeight = screenDimensions.height;
+    const isMobileScreen = screenWidth < 768; // Mobile vs tablet threshold
+    
     // Animation values
     const translateX = useRef(new Animated.Value(0)).current;
     const [isAnimating, setIsAnimating] = useState(false);
@@ -49,6 +55,13 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
     useEffect(() => {
         // Mark as initialized after first render to avoid calling onVerseChange on mount
         setIsInitialized(true);
+        
+        // Listen for dimension changes (web resize, device rotation)
+        const subscription = Dimensions.addEventListener('change', ({ window }) => {
+            setScreenDimensions(window);
+        });
+
+        return () => subscription?.remove();
     }, []);
 
     useEffect(() => {
@@ -233,60 +246,61 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
 
     const currentVerse = verses[currentVerseIndex];
 
+    // Create styles with current screen width
+    const styles = React.useMemo(() => createStyles(theme, screenWidth), [theme, screenWidth]);
+
     if (!currentVerse) {
         return (
-            <SafeAreaView style={createStyles(theme).container}>
-                <View style={createStyles(theme).errorContainer}>
-                    <Text style={createStyles(theme).errorText}>Ayet bulunamadı</Text>
+            <SafeAreaView style={styles.container}>
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>Ayet bulunamadı</Text>
                 </View>
             </SafeAreaView>
         );
     }
 
     return (
-        <SafeAreaView style={createStyles(theme).container}>
+        <SafeAreaView style={styles.container}>
             {/* Header with verse info and navigation */}
-            <View style={createStyles(theme).header}>
+            <View style={styles.header}>
                 <TouchableOpacity
-                    style={[createStyles(theme).navButton, (currentVerseIndex === 0 || isAnimating) && createStyles(theme).navButtonDisabled]}
+                    style={[styles.navButton, (currentVerseIndex === 0 || isAnimating) && styles.navButtonDisabled]}
                     onPress={goToPrevious}
                     disabled={currentVerseIndex === 0 || isAnimating}
                 >
-                    <Text style={[createStyles(theme).navButtonText, (currentVerseIndex === 0 || isAnimating) && createStyles(theme).navButtonTextDisabled]}>
+                    <Text style={[styles.navButtonText, (currentVerseIndex === 0 || isAnimating) && styles.navButtonTextDisabled]}>
                         ← Önceki
                     </Text>
                 </TouchableOpacity>
 
-                <View style={createStyles(theme).verseInfo}>
+                <View style={styles.verseInfo}>
                     <TouchableOpacity
-                        style={createStyles(theme).verseNumberButton}
+                        style={styles.verseNumberButton}
                         onPress={() => setIsGoToVerseModalVisible(true)}
+                        activeOpacity={0.8}
                     >
-                        <Text style={createStyles(theme).verseNumberButtonText}>
+                        <Text style={styles.verseNumberButtonText}>
                             Ayet {currentVerse.number}
-                        </Text>
-                        <Text style={createStyles(theme).verseCounter}>
-                            {currentVerseIndex + 1} / {verses.length}
                         </Text>
                     </TouchableOpacity>
                 </View>
 
                 <TouchableOpacity
-                    style={[createStyles(theme).navButton, (currentVerseIndex === verses.length - 1 || isAnimating) && createStyles(theme).navButtonDisabled]}
+                    style={[styles.navButton, (currentVerseIndex === verses.length - 1 || isAnimating) && styles.navButtonDisabled]}
                     onPress={goToNext}
                     disabled={currentVerseIndex === verses.length - 1 || isAnimating}
                 >
-                    <Text style={[createStyles(theme).navButtonText, (currentVerseIndex === verses.length - 1 || isAnimating) && createStyles(theme).navButtonTextDisabled]}>
+                    <Text style={[styles.navButtonText, (currentVerseIndex === verses.length - 1 || isAnimating) && styles.navButtonTextDisabled]}>
                         Sonraki →
                     </Text>
                 </TouchableOpacity>
             </View>
 
             {/* Verse content with animated swipe gesture */}
-            <View style={createStyles(theme).contentContainer} {...panResponder.panHandlers}>
+            <View style={styles.contentContainer} {...panResponder.panHandlers}>
                 <Animated.View 
                     style={[
-                        createStyles(theme).animatedContainer,
+                        styles.animatedContainer,
                         {
                             flexDirection: 'row',
                             width: screenWidth * 3, // Width for 3 verses
@@ -297,12 +311,12 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                     ]}
                 >
                     {/* Previous Verse */}
-                    <View style={createStyles(theme).verseContainer}>
+                    <View style={styles.verseContainer}>
                         {visibleVerses.previous ? (
                             <ScrollView
-                                style={createStyles(theme).scrollView}
+                                style={styles.scrollView}
                                 showsVerticalScrollIndicator={false}
-                                contentContainerStyle={createStyles(theme).scrollContent}
+                                contentContainerStyle={styles.scrollContent}
                                 scrollEnabled={!isAnimating}
                             >
                                 <Verse
@@ -312,18 +326,18 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                                 />
                             </ScrollView>
                         ) : (
-                            <View style={createStyles(theme).emptyVerseContainer}>
-                                <Text style={createStyles(theme).emptyVerseText}>İlk ayet</Text>
+                            <View style={styles.emptyVerseContainer}>
+                                <Text style={styles.emptyVerseText}>İlk ayet</Text>
                             </View>
                         )}
                     </View>
 
                     {/* Current Verse */}
-                    <View style={createStyles(theme).verseContainer}>
+                    <View style={styles.verseContainer}>
                         <ScrollView
-                            style={createStyles(theme).scrollView}
+                            style={styles.scrollView}
                             showsVerticalScrollIndicator={false}
-                            contentContainerStyle={createStyles(theme).scrollContent}
+                            contentContainerStyle={styles.scrollContent}
                             scrollEnabled={!isAnimating}
                         >
                             <Verse
@@ -335,12 +349,12 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                     </View>
 
                     {/* Next Verse */}
-                    <View style={createStyles(theme).verseContainer}>
+                    <View style={styles.verseContainer}>
                         {visibleVerses.next ? (
                             <ScrollView
-                                style={createStyles(theme).scrollView}
+                                style={styles.scrollView}
                                 showsVerticalScrollIndicator={false}
-                                contentContainerStyle={createStyles(theme).scrollContent}
+                                contentContainerStyle={styles.scrollContent}
                                 scrollEnabled={!isAnimating}
                             >
                                 <Verse
@@ -350,8 +364,8 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                                 />
                             </ScrollView>
                         ) : (
-                            <View style={createStyles(theme).emptyVerseContainer}>
-                                <Text style={createStyles(theme).emptyVerseText}>Son ayet</Text>
+                            <View style={styles.emptyVerseContainer}>
+                                <Text style={styles.emptyVerseText}>Son ayet</Text>
                             </View>
                         )}
                     </View>
@@ -361,26 +375,26 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
             {/* Remove the duplicate navigation controls since they're already in header */}
 
             {/* Page indicator dots */}
-            <View style={createStyles(theme).pageIndicator}>
+            <View style={styles.pageIndicator}>
                 {verses.slice(0, Math.min(verses.length, 10)).map((_, index) => (
                     <TouchableOpacity
                         key={index}
                         style={[
-                            createStyles(theme).dot,
-                            index === currentVerseIndex && createStyles(theme).activeDot
+                            styles.dot,
+                            index === currentVerseIndex && styles.activeDot
                         ]}
                         onPress={() => goToVerse(index, true)}
                         disabled={isAnimating}
                     />
                 ))}
                 {verses.length > 10 && (
-                    <Text style={createStyles(theme).moreIndicator}>...</Text>
+                    <Text style={styles.moreIndicator}>...</Text>
                 )}
             </View>
 
             {/* Swipe instruction */}
-            <View style={createStyles(theme).instructionContainer}>
-                <Text style={createStyles(theme).instructionText}>
+            <View style={styles.instructionContainer}>
+                <Text style={styles.instructionText}>
                     {isMobileScreen ? '← Kısa kaydır → ' : '← Kaydır → '}veya butonları kullan
                 </Text>
             </View>
@@ -399,7 +413,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
     );
 };
 
-const createStyles = (theme: Theme) => StyleSheet.create({
+const createStyles = (theme: Theme, screenWidth: number) => StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: theme.background,
@@ -439,22 +453,46 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     },
     verseNumberButton: {
         alignItems: 'center',
-        paddingVertical: SPACING.xs,
-        paddingHorizontal: SPACING.sm,
-        borderRadius: 8,
-        backgroundColor: theme.primary + '10',
-        borderWidth: 1,
-        borderColor: theme.primary + '20',
+        paddingVertical: SPACING.sm,
+        paddingHorizontal: SPACING.md,
+        borderRadius: 12,
+        backgroundColor: theme.primary,
+        borderWidth: 2,
+        borderColor: '#ffffff30',
+        elevation: 8,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        // 3D effect with inner shadow simulation
+        borderBottomWidth: 3,
+        borderRightWidth: 3,
+        borderTopWidth: 1,
+        borderLeftWidth: 1,
+        borderBottomColor: 'rgba(0, 0, 0, 0.2)',
+        borderRightColor: 'rgba(0, 0, 0, 0.2)',
+        borderTopColor: 'rgba(255, 255, 255, 0.3)',
+        borderLeftColor: 'rgba(255, 255, 255, 0.3)',
     },
     verseNumberButtonText: {
         fontSize: FONT_SIZES.large,
         fontWeight: 'bold',
-        color: theme.primary,
+        color: '#FFFFFF',
+        textShadowColor: 'rgba(0, 0, 0, 0.3)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 2,
     },
     verseCounter: {
         fontSize: FONT_SIZES.small,
-        color: theme.textSecondary,
-        marginTop: 2,
+        color: '#FFFFFF',
+        marginTop: 4,
+        opacity: 0.9,
+        textShadowColor: 'rgba(0, 0, 0, 0.3)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 1,
     },
     contentContainer: {
         flex: 1,
