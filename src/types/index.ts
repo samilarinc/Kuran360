@@ -47,6 +47,7 @@ export interface AppSettings {
   showWordTranslations: boolean;
   usePaginatedView: boolean;
   darkMode: boolean;
+  audioTrackingEnabled: boolean;
 }
 
 export interface SettingsContextType {

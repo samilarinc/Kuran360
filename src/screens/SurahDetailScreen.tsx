@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
 import { Verse, PaginatedVerseView } from '../components';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { AutoplayToggle } from '../components/AutoplayToggle';
+import { AudioTrackingToggle } from '../components/AudioTrackingToggle';
 import { useAudioPlayer } from '../hooks/useAudioPlayer';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
@@ -40,6 +41,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const { settings, updateSettings } = useSettings();
   const { theme } = useTheme();
   const { audioState, playVerse, stop, setVersesForAutoplay } = useAudioPlayer();
+  const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
     const loadSurahData = async () => {
@@ -68,6 +70,36 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
     loadSurahData();
   }, [basicSurah, setVersesForAutoplay]);
+
+  // Auto-scroll effect: scroll to the currently playing verse in non-paginated mode
+  useEffect(() => {
+    if (settings.audioTrackingEnabled && 
+        audioState.currentVerse && 
+        audioState.isPlaying && 
+        !settings.usePaginatedView && 
+        flatListRef.current) {
+      
+      // Debounce the scroll to prevent excessive calls
+      const timeoutId = setTimeout(() => {
+        // Find the index of the currently playing verse
+        const playingVerseIndex = surah.verses.findIndex(verse =>
+          verse.surahNumber === audioState.currentVerse!.surahNumber &&
+          verse.number === audioState.currentVerse!.number
+        );
+
+        if (playingVerseIndex !== -1 && flatListRef.current) {
+          // Scroll to the playing verse with animation
+          flatListRef.current.scrollToIndex({
+            index: playingVerseIndex,
+            animated: true,
+            viewPosition: 0.5, // Center the verse in the viewport
+          });
+        }
+      }, 100); // 100ms debounce
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [audioState.currentVerse, audioState.isPlaying, settings.audioTrackingEnabled, settings.usePaginatedView, surah.verses]);
 
   const handleVersePress = (verse: VerseType) => {
     const isCurrentVersePlaying = audioState.currentVerse?.surahNumber === verse.surahNumber &&
@@ -108,6 +140,15 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     />
   );
 
+  // Memoize toggle handlers to prevent unnecessary re-renders
+  const handleAutoplayToggle = useCallback((enabled: boolean) => {
+    updateSettings({ autoplayEnabled: enabled });
+  }, [updateSettings]);
+
+  const handleAudioTrackingToggle = useCallback((enabled: boolean) => {
+    updateSettings({ audioTrackingEnabled: enabled });
+  }, [updateSettings]);
+
   return (
     <SafeAreaView style={createStyles(theme).container}>
       {loading ? (
@@ -126,7 +167,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             autoplayToggle={
               <AutoplayToggle
                 isEnabled={settings.autoplayEnabled}
-                onToggle={(enabled) => updateSettings({ autoplayEnabled: enabled })}
+                onToggle={handleAutoplayToggle}
               />
             }
           />
@@ -142,22 +183,47 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             />
           ) : (
             <FlatList
+              ref={flatListRef}
               data={surah.verses}
               renderItem={renderVerse}
               keyExtractor={(item) => `${item.surahNumber}-${item.number}`}
               contentContainerStyle={createStyles(theme).listContainer}
               showsVerticalScrollIndicator={false}
+              onScrollToIndexFailed={(info) => {
+                // Handle scroll failure gracefully
+                setTimeout(() => {
+                  if (flatListRef.current) {
+                    flatListRef.current.scrollToIndex({
+                      index: Math.min(info.index, surah.verses.length - 1),
+                      animated: true,
+                      viewPosition: 0.5,
+                    });
+                  }
+                }, 100);
+              }}
             />
           )}
 
-          {audioState.currentVerse && !settings.usePaginatedView && (
+          {/* Audio info bar - show in both paginated and non-paginated views when playing */}
+          {audioState.currentVerse && (
             <View style={createStyles(theme).audioInfo}>
-              <Text style={createStyles(theme).audioInfoText}>
-                {audioState.isLoading
-                  ? 'Yükleniyor...'
-                  : `${audioState.isPlaying ? 'Çalıyor' : 'Duraklatıldı'}: ${audioState.currentVerse.number}. Ayet`
-                }
-              </Text>
+              <View style={createStyles(theme).audioInfoContent}>
+                <Text style={createStyles(theme).audioInfoText}>
+                  {audioState.isLoading
+                    ? 'Yükleniyor...'
+                    : `${audioState.isPlaying ? 'Çalıyor' : 'Duraklatıldı'}: ${audioState.currentVerse.number}. Ayet`
+                  }
+                </Text>
+                <View style={createStyles(theme).audioTrackingContainer}>
+                  <AudioTrackingToggle
+                    isEnabled={settings.audioTrackingEnabled}
+                    onToggle={handleAudioTrackingToggle}
+                  />
+                  <Text style={createStyles(theme).audioTrackingLabel}>
+                    Otomatik takip
+                  </Text>
+                </View>
+              </View>
             </View>
           )}
         </>
@@ -195,9 +261,27 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     paddingHorizontal: SPACING.md,
     alignItems: 'center',
   },
+  audioInfoContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
   audioInfoText: {
     color: theme.headerText,
     fontSize: FONT_SIZES.medium,
     fontWeight: '500',
+    flex: 1,
+    marginRight: SPACING.md,
+  },
+  audioTrackingContainer: {
+    alignItems: 'center',
+    gap: 4,
+  },
+  audioTrackingLabel: {
+    color: theme.headerText,
+    fontSize: FONT_SIZES.small,
+    opacity: 0.8,
+    textAlign: 'center',
   },
 });

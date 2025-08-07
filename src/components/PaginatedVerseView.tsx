@@ -65,21 +65,30 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
         }
     }, [currentVerseIndex, isInitialized]); // Remove onVerseChange from dependencies
 
-    // Auto-follow effect: Navigate to verse when audio is playing
+    // Auto-follow effect: Navigate to verse when audio is playing and tracking is enabled
     useEffect(() => {
-        if (audioState?.currentVerse && audioState.isPlaying && isInitialized) {
-            // Find the index of the currently playing verse
-            const playingVerseIndex = verses.findIndex(verse =>
-                verse.surahNumber === audioState.currentVerse.surahNumber &&
-                verse.number === audioState.currentVerse.number
-            );
+        if (audioState?.currentVerse && 
+            audioState.isPlaying && 
+            isInitialized && 
+            settings.audioTrackingEnabled) {
+            
+            // Debounce to prevent excessive navigation
+            const timeoutId = setTimeout(() => {
+                // Find the index of the currently playing verse
+                const playingVerseIndex = verses.findIndex(verse =>
+                    verse.surahNumber === audioState.currentVerse.surahNumber &&
+                    verse.number === audioState.currentVerse.number
+                );
 
-            // Only navigate if the playing verse is different from current verse
-            if (playingVerseIndex !== -1 && playingVerseIndex !== currentVerseIndex) {
-                setCurrentVerseIndex(playingVerseIndex);
-            }
+                // Only navigate if the playing verse is different from current verse
+                if (playingVerseIndex !== -1 && playingVerseIndex !== currentVerseIndex) {
+                    setCurrentVerseIndex(playingVerseIndex);
+                }
+            }, 100); // 100ms debounce
+
+            return () => clearTimeout(timeoutId);
         }
-    }, [audioState?.currentVerse, audioState?.isPlaying, verses, currentVerseIndex, isInitialized]);
+    }, [audioState?.currentVerse, audioState?.isPlaying, verses, currentVerseIndex, isInitialized, settings.audioTrackingEnabled]);
 
     const goToVerse = (index: number, animated: boolean = true) => {
         if (index >= 0 && index < verses.length && !isAnimating) {

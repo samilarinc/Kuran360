@@ -13,6 +13,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     showWordTranslations: true,
     usePaginatedView: false,
     darkMode: false,
+    audioTrackingEnabled: true,
 };
 
 // Available translations from the JSON data
