@@ -41,13 +41,13 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
     const [currentVerseIndex, setCurrentVerseIndex] = useState(initialVerseIndex);
     const [isInitialized, setIsInitialized] = useState(false);
     const [isGoToVerseModalVisible, setIsGoToVerseModalVisible] = useState(false);
-    
+
     // Dynamic screen dimensions state
     const [screenDimensions, setScreenDimensions] = useState(initialDimensions);
     const screenWidth = screenDimensions.width;
     const screenHeight = screenDimensions.height;
     const isMobileScreen = screenWidth < 768; // Mobile vs tablet threshold
-    
+
     // Animation values
     const translateX = useRef(new Animated.Value(0)).current;
     const [isAnimating, setIsAnimating] = useState(false);
@@ -55,7 +55,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
     useEffect(() => {
         // Mark as initialized after first render to avoid calling onVerseChange on mount
         setIsInitialized(true);
-        
+
         // Listen for dimension changes (web resize, device rotation)
         const subscription = Dimensions.addEventListener('change', ({ window }) => {
             setScreenDimensions(window);
@@ -80,12 +80,12 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
 
     // Auto-follow effect: Navigate to verse when audio is playing and tracking is enabled
     useEffect(() => {
-        if (audioState?.currentVerse && 
-            audioState.isPlaying && 
-            isInitialized && 
+        if (audioState?.currentVerse &&
+            audioState.isPlaying &&
+            isInitialized &&
             settings.audioTrackingEnabled) {
-            
-            // Debounce to prevent excessive navigation
+
+            // Increased debounce to prevent excessive navigation during rapid audio changes
             const timeoutId = setTimeout(() => {
                 // Find the index of the currently playing verse
                 const playingVerseIndex = verses.findIndex(verse =>
@@ -97,7 +97,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                 if (playingVerseIndex !== -1 && playingVerseIndex !== currentVerseIndex) {
                     setCurrentVerseIndex(playingVerseIndex);
                 }
-            }, 100); // 100ms debounce
+            }, 300); // Increased to 300ms debounce for better stability
 
             return () => clearTimeout(timeoutId);
         }
@@ -109,7 +109,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                 setIsAnimating(true);
                 const direction = index > currentVerseIndex ? -1 : 1;
                 const distance = screenWidth * direction;
-                
+
                 // Animate to the target position
                 Animated.timing(translateX, {
                     toValue: distance,
@@ -118,7 +118,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                 }).start(() => {
                     // Update the verse index without animation
                     setCurrentVerseIndex(index);
-                    
+
                     // Reset position instantly
                     translateX.setValue(0);
                     setIsAnimating(false);
@@ -153,13 +153,13 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
         },
         onPanResponderMove: (evt, gestureState) => {
             if (isAnimating) return;
-            
+
             const { dx } = gestureState;
             let clampedDx = dx;
-            
+
             // Calculate maximum allowed swipe distance
             const maxSwipeDistance = screenWidth * 0.8; // Limit to 80% of screen width
-            
+
             // Prevent swiping beyond boundaries with rubber band effect
             if (currentVerseIndex === 0 && dx > 0) {
                 clampedDx = dx * 0.3; // Rubber band effect for left boundary
@@ -173,21 +173,21 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                     clampedDx = -maxSwipeDistance + (dx + maxSwipeDistance) * 0.2; // Diminishing returns beyond limit
                 }
             }
-            
+
             // Update translation in real-time
             translateX.setValue(clampedDx);
         },
         onPanResponderRelease: (evt, gestureState) => {
             if (isAnimating) return;
-            
+
             const { dx, vx } = gestureState;
-            
+
             // More phone-friendly thresholds
             let threshold;
             if (isMobileScreen) {
                 threshold = Math.min(screenWidth * 0.15, 80);
                 const velocityThreshold = 0.3;
-                
+
                 if (Math.abs(vx) > velocityThreshold) {
                     threshold = Math.min(threshold * 0.6, 50);
                 }
@@ -196,7 +196,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
             }
 
             setIsAnimating(true);
-            
+
             if (dx > threshold && currentVerseIndex > 0) {
                 // Swipe right - go to previous
                 Animated.timing(translateX, {
@@ -298,14 +298,14 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
 
             {/* Verse content with animated swipe gesture */}
             <View style={styles.contentContainer} {...panResponder.panHandlers}>
-                <Animated.View 
+                <Animated.View
                     style={[
                         styles.animatedContainer,
                         {
                             flexDirection: 'row',
                             width: screenWidth * 3, // Width for 3 verses
-                            transform: [{ 
-                                translateX: Animated.add(translateX, new Animated.Value(-screenWidth)) 
+                            transform: [{
+                                translateX: Animated.add(translateX, new Animated.Value(-screenWidth))
                             }]
                         }
                     ]}

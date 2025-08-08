@@ -1,14 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import {
-    View,
     Text,
     TouchableOpacity,
     StyleSheet,
     Animated,
-    Dimensions,
 } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
-import { SPACING } from '../constants';
+import { useDebouncedToggle } from '../hooks/useDebouncedState';
 
 interface AutoplayToggleProps {
     isEnabled: boolean;
@@ -21,18 +19,20 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
 }) => {
     const { theme } = useTheme();
     const slideAnimation = useRef(new Animated.Value(isEnabled ? 1 : 0)).current;
+    const { isEnabled: displayState, toggle } = useDebouncedToggle(
+        isEnabled,
+        onToggle,
+        200 // 200ms debounce
+    );
 
     useEffect(() => {
+        // Animate based on the display state for immediate visual feedback
         Animated.timing(slideAnimation, {
-            toValue: isEnabled ? 1 : 0,
+            toValue: displayState ? 1 : 0,
             duration: 200,
             useNativeDriver: false,
         }).start();
-    }, [isEnabled]);
-
-    const handlePress = () => {
-        onToggle(!isEnabled);
-    };
+    }, [displayState, slideAnimation]);
 
     const switchWidth = 60;
     const knobSize = 24;
@@ -47,7 +47,7 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
     });
 
     return (
-        <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
+        <TouchableOpacity onPress={toggle} activeOpacity={0.8}>
             <Animated.View style={[styles.container, { backgroundColor }]}>
                 <Animated.View
                     style={[
@@ -59,7 +59,7 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
                     ]}
                 >
                     <Text style={styles.icon}>
-                        {isEnabled ? '▶️' : '⏸️'}
+                        {displayState ? '▶️' : '⏸️'}
                     </Text>
                 </Animated.View>
             </Animated.View>

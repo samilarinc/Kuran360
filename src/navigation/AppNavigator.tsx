@@ -287,6 +287,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
           navigation={navigation}
           onSurahSelect={handleSurahSelect}
           lastSelectedSurah={currentRoute.params?.lastSelectedSurah}
+          isDataAvailable={isDataAvailable}
         />
       )}
     </NavigationContainer>

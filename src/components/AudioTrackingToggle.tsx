@@ -1,12 +1,11 @@
 import React from 'react';
 import {
-    View,
     Text,
     TouchableOpacity,
     StyleSheet,
 } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
-import { SPACING } from '../constants';
+import { useDebouncedToggle } from '../hooks/useDebouncedState';
 
 interface AudioTrackingToggleProps {
     isEnabled: boolean;
@@ -18,28 +17,29 @@ export const AudioTrackingToggle: React.FC<AudioTrackingToggleProps> = ({
     onToggle,
 }) => {
     const { theme } = useTheme();
-
-    const handlePress = () => {
-        onToggle(!isEnabled);
-    };
+    const { isEnabled: displayState, toggle } = useDebouncedToggle(
+        isEnabled,
+        onToggle,
+        200 // 200ms debounce
+    );
 
     return (
-        <TouchableOpacity 
-            onPress={handlePress} 
+        <TouchableOpacity
+            onPress={toggle}
             activeOpacity={0.7}
             style={[
-                styles.container, 
-                { 
-                    backgroundColor: isEnabled ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-                    borderColor: isEnabled ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.2)'
+                styles.container,
+                {
+                    backgroundColor: displayState ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+                    borderColor: displayState ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.2)'
                 }
             ]}
         >
             <Text style={[styles.icon, { color: theme.headerText }]}>
-                {isEnabled ? '👁️' : '👁️‍🗨️'}
+                {displayState ? '👁️' : '👁️‍🗨️'}
             </Text>
             <Text style={[styles.label, { color: theme.headerText }]}>
-                {isEnabled ? 'Açık' : 'Kapalı'}
+                {displayState ? 'Açık' : 'Kapalı'}
             </Text>
         </TouchableOpacity>
     );

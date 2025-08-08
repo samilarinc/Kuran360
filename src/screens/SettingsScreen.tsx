@@ -9,7 +9,7 @@ import {
     Switch,
     Alert,
 } from 'react-native';
-import { useSettings } from '../contexts/SettingsContext';
+import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { ReciterSelector } from '../components/ReciterSelector';
@@ -20,7 +20,7 @@ interface SettingsScreenProps {
 }
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
-    const { settings, updateSettings, availableTranslations, availableReciters } = useSettings();
+    const { settings, updateSettings, availableTranslations, availableReciters } = useDebouncedSettings(150); // 150ms debounce for switches
     const { theme } = useTheme();
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
         translations: true, // Expand translations section by default
@@ -47,7 +47,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 );
                 return;
             }
-            newTranslations = currentTranslations.filter(t => t !== translationName);
+            newTranslations = currentTranslations.filter((t: string) => t !== translationName);
         } else {
             newTranslations = [...currentTranslations, translationName];
         }

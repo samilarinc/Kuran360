@@ -21,17 +21,18 @@ export const useAudioPlayer = () => {
     settingsRef.current = settings;
   }, [settings]);
 
-  // Update playback rate when settings change
+  // Update playback rate when settings change with debounce
   useEffect(() => {
     if (sound) {
-      const updateRate = async () => {
+      const timeoutId = setTimeout(async () => {
         try {
           await sound.setRateAsync(settings.playbackRate, true);
         } catch (error) {
           console.error('Error updating playback rate:', error);
         }
-      };
-      updateRate();
+      }, 150); // Increased debounce to 150ms for better audio stability
+
+      return () => clearTimeout(timeoutId);
     }
   }, [settings.playbackRate, sound]);
 

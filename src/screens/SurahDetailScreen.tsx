@@ -14,7 +14,7 @@ import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle
 import { AutoplayToggle } from '../components/AutoplayToggle';
 import { AudioTrackingToggle } from '../components/AudioTrackingToggle';
 import { useAudioPlayer } from '../hooks/useAudioPlayer';
-import { useSettings } from '../contexts/SettingsContext';
+import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { Surah, Verse as VerseType } from '../types';
 import { loadSurah } from '../data/quranData';
@@ -39,10 +39,18 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const { surah: basicSurah } = route.params;
   const [surah, setSurah] = useState<Surah>(basicSurah);
   const [loading, setLoading] = useState(false);
-  const { settings, updateSettings } = useSettings();
+  const { settings, updateSettings } = useDebouncedSettings(200); // 200ms debounce for better UX
   const { theme } = useTheme();
   const { audioState, playVerse, stop, setVersesForAutoplay, changePlaybackRate } = useAudioPlayer();
   const flatListRef = useRef<FlatList>(null);
+
+  // Use local state for immediate playback rate display to prevent flickering
+  const [displayPlaybackRate, setDisplayPlaybackRate] = useState<number>(settings.playbackRate);
+
+  // Sync display playback rate with settings
+  useEffect(() => {
+    setDisplayPlaybackRate(settings.playbackRate);
+  }, [settings.playbackRate]);
 
   useEffect(() => {
     const loadSurahData = async () => {
@@ -74,12 +82,12 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
   // Auto-scroll effect: scroll to the currently playing verse in non-paginated mode
   useEffect(() => {
-    if (settings.audioTrackingEnabled && 
-        audioState.currentVerse && 
-        audioState.isPlaying && 
-        !settings.usePaginatedView && 
-        flatListRef.current) {
-      
+    if (settings.audioTrackingEnabled &&
+      audioState.currentVerse &&
+      audioState.isPlaying &&
+      !settings.usePaginatedView &&
+      flatListRef.current) {
+
       // Debounce the scroll to prevent excessive calls
       const timeoutId = setTimeout(() => {
         // Find the index of the currently playing verse
@@ -96,7 +104,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             viewPosition: 0.5, // Center the verse in the viewport
           });
         }
-      }, 100); // 100ms debounce
+      }, 250); // Increased debounce to 250ms for better stability
 
       return () => clearTimeout(timeoutId);
     }
@@ -153,18 +161,28 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const handlePlaybackRateChange = useCallback(async () => {
     // Toggle between 1x, 1.25x, 1.5x, 1.75x, 2x speeds
     const rates = [1.0, 1.25, 1.5, 1.75, 2.0];
-    const currentIndex = rates.indexOf(settings.playbackRate);
+    const currentIndex = rates.indexOf(displayPlaybackRate);
     const nextIndex = (currentIndex + 1) % rates.length;
     const newRate = rates[nextIndex];
-    
+
+    // Update display rate immediately for instant UI feedback
+    setDisplayPlaybackRate(newRate);
+
+    // Update settings with debounce to prevent flickering
     updateSettings({ playbackRate: newRate });
-    await changePlaybackRate(newRate);
-  }, [settings.playbackRate, updateSettings, changePlaybackRate]);
+
+    // Apply the playback rate change immediately for better UX
+    try {
+      await changePlaybackRate(newRate);
+    } catch (error) {
+      console.error('Error changing playback rate:', error);
+    }
+  }, [displayPlaybackRate, updateSettings, changePlaybackRate]);
 
   // Memoize playback rate display text to prevent flickering
   const playbackRateText = useMemo(() => {
-    return `${settings.playbackRate}x`;
-  }, [settings.playbackRate]);
+    return `${displayPlaybackRate}x`;
+  }, [displayPlaybackRate]);
 
   // Memoize styles to prevent re-creation on every render
   const styles = useMemo(() => createStyles(theme), [theme]);
