@@ -14,6 +14,7 @@ import { Verse } from './Verse';
 import { GoToVerseModal } from './GoToVerseModal';
 import { Verse as VerseType } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
+import { useGlobalAudio } from '../contexts/AudioContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
 
@@ -25,22 +26,25 @@ interface PaginatedVerseViewProps {
     verses: VerseType[];
     initialVerseIndex?: number;
     onVerseChange?: (verseIndex: number) => void;
-    onPlayAudio?: (verse: VerseType) => void;
-    audioState?: any;
 }
 
-export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
+export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(({
     verses,
     initialVerseIndex = 0,
     onVerseChange,
-    onPlayAudio,
-    audioState,
 }) => {
     const { settings, updateSettings } = useSettings();
     const { theme } = useTheme();
+    const { audioState, playVerse } = useGlobalAudio();
     const [currentVerseIndex, setCurrentVerseIndex] = useState(initialVerseIndex);
     const [isInitialized, setIsInitialized] = useState(false);
+    const lastInitializedSurah = useRef<number | null>(null);
+    // Lock the initially requested index; ignore later prop changes to avoid resets
+    const initialIndexRef = useRef<number>(initialVerseIndex ?? 0);
+    // Compute once per render for readability
+    const currentSurahNumber = verses[0]?.surahNumber as number | undefined;
     const [isGoToVerseModalVisible, setIsGoToVerseModalVisible] = useState(false);
+    const [isUserNavigating, setIsUserNavigating] = useState(false);
 
     // Dynamic screen dimensions state
     const [screenDimensions, setScreenDimensions] = useState(initialDimensions);
@@ -53,9 +57,6 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
     const [isAnimating, setIsAnimating] = useState(false);
 
     useEffect(() => {
-        // Mark as initialized after first render to avoid calling onVerseChange on mount
-        setIsInitialized(true);
-
         // Listen for dimension changes (web resize, device rotation)
         const subscription = Dimensions.addEventListener('change', ({ window }) => {
             setScreenDimensions(window);
@@ -65,46 +66,80 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
     }, []);
 
     useEffect(() => {
-        // Update currentVerseIndex when initialVerseIndex changes (e.g., from URL)
-        if (initialVerseIndex !== currentVerseIndex) {
-            setCurrentVerseIndex(initialVerseIndex);
+        // Initialize once per surah; do not re-init on prop churn or re-renders
+        if (!currentSurahNumber || verses.length === 0) return;
+
+        const isNewSurah = lastInitializedSurah.current !== currentSurahNumber;
+        if (isNewSurah) {
+            // Honor the requested initial index for this new surah
+            initialIndexRef.current = initialVerseIndex ?? 0;
+            const validIndex = Math.max(0, Math.min(initialIndexRef.current, verses.length - 1));
+            if (currentVerseIndex !== validIndex) {
+                console.log('PaginatedVerseView: init for surah', currentSurahNumber, '-> verse index', validIndex, '(len:', verses.length, ')');
+                setCurrentVerseIndex(validIndex);
+            } else {
+                console.log('PaginatedVerseView: init skipped; already at index', currentVerseIndex, 'for surah', currentSurahNumber);
+            }
+            lastInitializedSurah.current = currentSurahNumber;
+            setIsInitialized(true);
         }
-    }, [initialVerseIndex]);
+    }, [currentSurahNumber, verses.length, initialVerseIndex]);
 
     useEffect(() => {
-        // Only call onVerseChange after initialization and when user manually changes verse
+        // Only call onVerseChange when the verse actually changes after initialization
         if (isInitialized && onVerseChange) {
+            console.log('PaginatedVerseView: Calling onVerseChange with index', currentVerseIndex);
             onVerseChange(currentVerseIndex);
         }
-    }, [currentVerseIndex, isInitialized]); // Remove onVerseChange from dependencies
+    }, [currentVerseIndex]); // Only depend on currentVerseIndex
 
     // Auto-follow effect: Navigate to verse when audio is playing and tracking is enabled
     useEffect(() => {
         if (audioState?.currentVerse &&
             audioState.isPlaying &&
             isInitialized &&
-            settings.audioTrackingEnabled) {
+            settings.audioTrackingEnabled &&
+            !isUserNavigating) { // Don't auto-navigate if user is manually navigating
+
+            // Only auto-navigate if we're viewing the same surah as the playing audio
+            const currentSurah = verses[0]; // Get first verse to check surah number
+            if (!currentSurah || currentSurah.surahNumber !== audioState.currentVerse.surahNumber) {
+                return; // Don't auto-navigate if we're on a different surah
+            }
 
             // Increased debounce to prevent excessive navigation during rapid audio changes
             const timeoutId = setTimeout(() => {
                 // Find the index of the currently playing verse
                 const playingVerseIndex = verses.findIndex(verse =>
+                    audioState.currentVerse &&
                     verse.surahNumber === audioState.currentVerse.surahNumber &&
                     verse.number === audioState.currentVerse.number
                 );
 
                 // Only navigate if the playing verse is different from current verse
                 if (playingVerseIndex !== -1 && playingVerseIndex !== currentVerseIndex) {
+                    console.log('PaginatedVerseView: Auto-following audio from verse', currentVerseIndex, 'to', playingVerseIndex);
                     setCurrentVerseIndex(playingVerseIndex);
                 }
             }, 300); // Increased to 300ms debounce for better stability
 
             return () => clearTimeout(timeoutId);
         }
-    }, [audioState?.currentVerse, audioState?.isPlaying, verses, currentVerseIndex, isInitialized, settings.audioTrackingEnabled]);
+    }, [audioState?.currentVerse, audioState?.isPlaying, verses, currentVerseIndex, isInitialized, settings.audioTrackingEnabled, isUserNavigating]);
 
-    const goToVerse = (index: number, animated: boolean = true) => {
+    const goToVerse = (index: number, animated: boolean = true, isUserManual: boolean = false) => {
         if (index >= 0 && index < verses.length && !isAnimating) {
+            // Mark as user navigating when manual
+            if (isUserManual) {
+                setIsUserNavigating(true);
+                // Auto-disable audio tracking when user manually navigates
+                if (settings.audioTrackingEnabled) {
+                    updateSettings({ audioTrackingEnabled: false });
+                }
+                // Re-enable auto-navigation after a delay
+                setTimeout(() => setIsUserNavigating(false), 2000);
+            }
+
             if (animated) {
                 setIsAnimating(true);
                 const direction = index > currentVerseIndex ? -1 : 1;
@@ -131,13 +166,13 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
 
     const goToPrevious = () => {
         if (currentVerseIndex > 0) {
-            goToVerse(currentVerseIndex - 1);
+            goToVerse(currentVerseIndex - 1, true, true); // Mark as user manual
         }
     };
 
     const goToNext = () => {
         if (currentVerseIndex < verses.length - 1) {
-            goToVerse(currentVerseIndex + 1);
+            goToVerse(currentVerseIndex + 1, true, true); // Mark as user manual
         }
     };
 
@@ -149,7 +184,8 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
             return !isAnimating && Math.abs(gestureState.dx) > Math.abs(gestureState.dy) && Math.abs(gestureState.dx) > minSwipeDistance;
         },
         onPanResponderGrant: () => {
-            // Start interaction
+            // User started swiping - temporarily disable auto-tracking
+            setIsUserNavigating(true);
         },
         onPanResponderMove: (evt, gestureState) => {
             if (isAnimating) return;
@@ -199,6 +235,11 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
 
             if (dx > threshold && currentVerseIndex > 0) {
                 // Swipe right - go to previous
+                // Disable audio tracking for swipe navigation
+                if (settings.audioTrackingEnabled) {
+                    updateSettings({ audioTrackingEnabled: false });
+                }
+
                 Animated.timing(translateX, {
                     toValue: screenWidth,
                     duration: 200,
@@ -207,9 +248,16 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                     setCurrentVerseIndex(currentVerseIndex - 1);
                     translateX.setValue(0);
                     setIsAnimating(false);
+                    // Re-enable auto-navigation after a delay
+                    setTimeout(() => setIsUserNavigating(false), 2000);
                 });
             } else if (dx < -threshold && currentVerseIndex < verses.length - 1) {
                 // Swipe left - go to next
+                // Disable audio tracking for swipe navigation
+                if (settings.audioTrackingEnabled) {
+                    updateSettings({ audioTrackingEnabled: false });
+                }
+
                 Animated.timing(translateX, {
                     toValue: -screenWidth,
                     duration: 200,
@@ -218,6 +266,8 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                     setCurrentVerseIndex(currentVerseIndex + 1);
                     translateX.setValue(0);
                     setIsAnimating(false);
+                    // Re-enable auto-navigation after a delay
+                    setTimeout(() => setIsUserNavigating(false), 2000);
                 });
             } else {
                 // Snap back to original position
@@ -228,6 +278,8 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                     friction: 8,
                 }).start(() => {
                     setIsAnimating(false);
+                    // Re-enable auto-navigation after a short delay
+                    setTimeout(() => setIsUserNavigating(false), 500);
                 });
             }
         },
@@ -322,7 +374,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                                 <Verse
                                     verse={visibleVerses.previous}
                                     isPlaying={false} // Previous verse shouldn't show as playing
-                                    onPlayPress={onPlayAudio || (() => { })}
+                                    onPlayPress={playVerse}
                                 />
                             </ScrollView>
                         ) : (
@@ -343,7 +395,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                             <Verse
                                 verse={visibleVerses.current}
                                 isPlaying={audioState?.currentVerse?.id === visibleVerses.current?.id && audioState?.isPlaying}
-                                onPlayPress={onPlayAudio || (() => { })}
+                                onPlayPress={playVerse}
                             />
                         </ScrollView>
                     </View>
@@ -360,7 +412,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                                 <Verse
                                     verse={visibleVerses.next}
                                     isPlaying={false} // Next verse shouldn't show as playing
-                                    onPlayPress={onPlayAudio || (() => { })}
+                                    onPlayPress={playVerse}
                                 />
                             </ScrollView>
                         ) : (
@@ -383,7 +435,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                             styles.dot,
                             index === currentVerseIndex && styles.activeDot
                         ]}
-                        onPress={() => goToVerse(index, true)}
+                        onPress={() => goToVerse(index, true, true)} // Mark as user manual
                         disabled={isAnimating}
                     />
                 ))}
@@ -405,13 +457,13 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = ({
                 verses={verses}
                 currentVerseIndex={currentVerseIndex}
                 onVerseSelect={(verseIndex) => {
-                    goToVerse(verseIndex, true);
+                    goToVerse(verseIndex, true, true); // Mark as user manual
                 }}
                 onClose={() => setIsGoToVerseModalVisible(false)}
             />
         </SafeAreaView>
     );
-};
+});
 
 const createStyles = (theme: Theme, screenWidth: number) => StyleSheet.create({
     container: {

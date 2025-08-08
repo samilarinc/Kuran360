@@ -6,6 +6,7 @@ import { useSettings } from '../contexts/SettingsContext';
 export const useAudioPlayer = () => {
   const { settings, availableReciters } = useSettings();
   const settingsRef = useRef(settings);
+  const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [audioState, setAudioState] = useState<AudioState>({
     isPlaying: false,
     currentVerse: null,
@@ -15,6 +16,17 @@ export const useAudioPlayer = () => {
   });
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [allVerses, setAllVerses] = useState<VerseType[]>([]);
+
+  // Debounced state update to prevent flickering
+  const debouncedSetAudioState = (newState: Partial<AudioState>) => {
+    if (updateTimeoutRef.current) {
+      clearTimeout(updateTimeoutRef.current);
+    }
+
+    updateTimeoutRef.current = setTimeout(() => {
+      setAudioState(prev => ({ ...prev, ...newState }));
+    }, 50); // Small debounce to batch state updates
+  };
 
   // Keep settings ref updated
   useEffect(() => {

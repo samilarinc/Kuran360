@@ -3,6 +3,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { SettingsProvider } from './src/contexts/SettingsContext';
 import { ThemeProvider } from './src/contexts/ThemeContext';
+import { AudioProvider } from './src/contexts/AudioContext';
 import { StatusBarManager } from './src/components/StatusBarManager';
 import { COLORS } from './src/constants';
 import { isDataCached } from './src/data/quranData';
@@ -38,8 +39,10 @@ const App: React.FC = () => {
   return (
     <SettingsProvider>
       <ThemeProvider>
-        <StatusBarManager />
-        <AppNavigator isDataAvailable={isDataAvailable} />
+        <AudioProvider>
+          <StatusBarManager />
+          <AppNavigator isDataAvailable={isDataAvailable} />
+        </AudioProvider>
       </ThemeProvider>
     </SettingsProvider>
   );

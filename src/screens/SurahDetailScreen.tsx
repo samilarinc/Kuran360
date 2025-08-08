@@ -13,7 +13,7 @@ import { PaginatedVerseView } from '../components/PaginatedVerseView';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { AutoplayToggle } from '../components/AutoplayToggle';
 import { AudioTrackingToggle } from '../components/AudioTrackingToggle';
-import { useAudioPlayer } from '../hooks/useAudioPlayer';
+import { useGlobalAudio } from '../contexts/AudioContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { Surah, Verse as VerseType } from '../types';
@@ -39,32 +39,35 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const { surah: basicSurah } = route.params;
   const [surah, setSurah] = useState<Surah>(basicSurah);
   const [loading, setLoading] = useState(false);
+  const [isUserScrolling, setIsUserScrolling] = useState(false);
+  // Persist current verse index for the active surah to survive remounts
+  const [currentPaginatedIndex, setCurrentPaginatedIndex] = useState<number>(route.params.verseIndex ?? 0);
   const { settings, updateSettings } = useDebouncedSettings(200); // 200ms debounce for better UX
   const { theme } = useTheme();
-  const { audioState, playVerse, stop, pause, resume, togglePlayPause, setVersesForAutoplay, changePlaybackRate } = useAudioPlayer();
+  const { audioState, playVerse, stop, pause, resume, togglePlayPause, setVersesForAutoplay, changePlaybackRate } = useGlobalAudio();
   const flatListRef = useRef<FlatList>(null);
-
-  // Use local state for immediate playback rate display to prevent flickering
-  const [displayPlaybackRate, setDisplayPlaybackRate] = useState<number>(settings.playbackRate);
-
-  // Sync display playback rate with settings
-  useEffect(() => {
-    setDisplayPlaybackRate(settings.playbackRate);
-  }, [settings.playbackRate]);
 
   useEffect(() => {
     const loadSurahData = async () => {
       try {
-        setLoading(true);
+        // Only show loader if we actually fetch verses from disk
+
+        // Auto-disable audio tracking when navigating to a different surah
+        if (settings.audioTrackingEnabled && audioState.currentVerse &&
+          audioState.currentVerse.surahNumber !== basicSurah.number) {
+          updateSettings({ audioTrackingEnabled: false });
+        }
 
         // Load the full surah with verses if not already loaded
         if (basicSurah.verses.length === 0) {
+          setLoading(true);
           const loadedSurah = await loadSurah(basicSurah.number);
           if (loadedSurah) {
             setSurah(loadedSurah);
             // Set verses for autoplay functionality
             setVersesForAutoplay(loadedSurah.verses);
           }
+          setLoading(false);
         } else {
           setSurah(basicSurah);
           // Set verses for autoplay functionality
@@ -72,13 +75,15 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
         }
       } catch (error) {
         console.error('Error loading surah verses:', error);
-      } finally {
-        setLoading(false);
       }
     };
 
     loadSurahData();
-  }, [basicSurah, setVersesForAutoplay]);
+    // Reset the persisted index when the surah changes
+    setCurrentPaginatedIndex(route.params.verseIndex ?? 0);
+    // We only want to react to surah changes (by number). Avoid function-identity churn.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [basicSurah.number]);
 
   // Auto-scroll effect: scroll to the currently playing verse in non-paginated mode
   useEffect(() => {
@@ -86,6 +91,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       audioState.currentVerse &&
       audioState.isPlaying &&
       !settings.usePaginatedView &&
+      !isUserScrolling && // Don't auto-scroll if user is manually scrolling
       flatListRef.current) {
 
       // Debounce the scroll to prevent excessive calls
@@ -108,9 +114,12 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
       return () => clearTimeout(timeoutId);
     }
-  }, [audioState.currentVerse, audioState.isPlaying, settings.audioTrackingEnabled, settings.usePaginatedView, surah.verses]);
+  }, [audioState.currentVerse, audioState.isPlaying, settings.audioTrackingEnabled, settings.usePaginatedView, surah.verses, isUserScrolling]);
 
   const handleVersePress = (verse: VerseType) => {
+    // Temporarily disable auto-tracking when user manually selects a verse
+    setIsUserScrolling(true);
+
     const isCurrentVersePlaying = audioState.currentVerse?.surahNumber === verse.surahNumber &&
       audioState.currentVerse?.number === verse.number &&
       audioState.isPlaying;
@@ -119,9 +128,19 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       // If this verse is currently playing, stop it
       stop();
     } else {
+      // Auto-disable audio tracking when user manually selects a different verse
+      if (settings.audioTrackingEnabled && audioState.currentVerse &&
+        (audioState.currentVerse.surahNumber !== verse.surahNumber ||
+          audioState.currentVerse.number !== verse.number)) {
+        updateSettings({ audioTrackingEnabled: false });
+      }
+
       // If this verse is not playing, play it
       playVerse(verse);
     }
+
+    // Re-enable auto-tracking after a delay
+    setTimeout(() => setIsUserScrolling(false), 2000);
   };
 
   const isVerseCurrentlyPlaying = (verse: VerseType) => {
@@ -131,14 +150,17 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   };
 
   const handleVerseChange = (verseIndex: number) => {
-    // Update URL to reflect current verse
-    if (updateVerseUrl) {
-      updateVerseUrl(surah, verseIndex);
-    }
+    // Temporarily disable URL updates to prevent circular updates
+    // TODO: Fix URL update mechanism to not cause re-renders
+    // if (updateVerseUrl) {
+    //   updateVerseUrl(surah, verseIndex);
+    // }
 
     // Don't auto-play on verse change in paginated view
     // Users can manually tap the play button if they want to hear the verse
-    console.log('Verse changed to:', verseIndex + 1);
+    console.log('Verse changed to:', verseIndex + 1, 'in surah:', surah.number);
+    // Persist current index so PaginatedVerseView remounts won't reset to 0
+    setCurrentPaginatedIndex(verseIndex);
   };
 
   const renderVerse = ({ item }: { item: VerseType }) => (
@@ -153,36 +175,6 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const handleAutoplayToggle = useCallback((enabled: boolean) => {
     updateSettings({ autoplayEnabled: enabled });
   }, [updateSettings]);
-
-  const handleAudioTrackingToggle = useCallback((enabled: boolean) => {
-    updateSettings({ audioTrackingEnabled: enabled });
-  }, [updateSettings]);
-
-  const handlePlaybackRateChange = useCallback(async () => {
-    // Toggle between 1x, 1.25x, 1.5x, 1.75x, 2x speeds
-    const rates = [1.0, 1.25, 1.5, 1.75, 2.0];
-    const currentIndex = rates.indexOf(displayPlaybackRate);
-    const nextIndex = (currentIndex + 1) % rates.length;
-    const newRate = rates[nextIndex];
-
-    // Update display rate immediately for instant UI feedback
-    setDisplayPlaybackRate(newRate);
-
-    // Update settings with debounce to prevent flickering
-    updateSettings({ playbackRate: newRate });
-
-    // Apply the playback rate change immediately for better UX
-    try {
-      await changePlaybackRate(newRate);
-    } catch (error) {
-      console.error('Error changing playback rate:', error);
-    }
-  }, [displayPlaybackRate, updateSettings, changePlaybackRate]);
-
-  // Memoize playback rate display text to prevent flickering
-  const playbackRateText = useMemo(() => {
-    return `${displayPlaybackRate}x`;
-  }, [displayPlaybackRate]);
 
   // Memoize styles to prevent re-creation on every render
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -214,10 +206,8 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
           {settings.usePaginatedView ? (
             <PaginatedVerseView
               verses={surah.verses}
-              initialVerseIndex={route.params.verseIndex}
+              initialVerseIndex={currentPaginatedIndex}
               onVerseChange={handleVerseChange}
-              onPlayAudio={handleVersePress}
-              audioState={audioState}
             />
           ) : (
             <FlatList
@@ -227,6 +217,14 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               keyExtractor={(item) => `${item.surahNumber}-${item.number}`}
               contentContainerStyle={styles.listContainer}
               showsVerticalScrollIndicator={false}
+              onScrollBeginDrag={() => {
+                // User started scrolling manually
+                setIsUserScrolling(true);
+              }}
+              onMomentumScrollEnd={() => {
+                // User finished scrolling, re-enable auto-tracking after a delay
+                setTimeout(() => setIsUserScrolling(false), 1000);
+              }}
               onScrollToIndexFailed={(info) => {
                 // Handle scroll failure gracefully
                 setTimeout(() => {
@@ -240,51 +238,6 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
                 }, 100);
               }}
             />
-          )}
-
-          {/* Audio info bar - show in both paginated and non-paginated views when playing */}
-          {audioState.currentVerse && (
-            <View style={styles.audioInfo}>
-              <View style={styles.audioInfoContent}>
-                <Text style={styles.audioInfoText}>
-                  {audioState.isLoading
-                    ? 'Yükleniyor...'
-                    : `${audioState.isPlaying ? 'Çalıyor' : 'Duraklatıldı'}: ${audioState.currentVerse.number}. Ayet`
-                  }
-                </Text>
-                <View style={styles.audioControlsContainer}>
-                  {/* Play/Pause Button */}
-                  <TouchableOpacity
-                    style={styles.playPauseButton}
-                    onPress={togglePlayPause}
-                    activeOpacity={0.7}
-                  >
-                    <Text style={styles.playPauseIcon}>
-                      {audioState.isPlaying ? '⏸️' : '▶️'}
-                    </Text>
-                  </TouchableOpacity>
-                  
-                  <TouchableOpacity
-                    style={styles.playbackRateButton}
-                    onPress={handlePlaybackRateChange}
-                    activeOpacity={0.7}
-                  >
-                    <Text style={styles.playbackRateText}>
-                      {playbackRateText}
-                    </Text>
-                  </TouchableOpacity>
-                  <View style={styles.audioTrackingContainer}>
-                    <AudioTrackingToggle
-                      isEnabled={settings.audioTrackingEnabled}
-                      onToggle={handleAudioTrackingToggle}
-                    />
-                    <Text style={styles.audioTrackingLabel}>
-                      Otomatik takip
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
           )}
         </>
       )}
@@ -314,64 +267,5 @@ const createStyles = (theme: Theme) => StyleSheet.create({
   },
   listContainer: {
     paddingBottom: SPACING.xl,
-  },
-  audioInfo: {
-    backgroundColor: theme.primary,
-    paddingVertical: SPACING.md,
-    paddingHorizontal: SPACING.md,
-    alignItems: 'center',
-  },
-  audioInfoContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-  },
-  audioInfoText: {
-    color: theme.headerText,
-    fontSize: FONT_SIZES.medium,
-    fontWeight: '500',
-    flex: 1,
-    marginRight: SPACING.md,
-  },
-  audioTrackingContainer: {
-    alignItems: 'center',
-    gap: 4,
-  },
-  audioTrackingLabel: {
-    color: theme.headerText,
-    fontSize: FONT_SIZES.small,
-    opacity: 0.8,
-    textAlign: 'center',
-  },
-  audioControlsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.md,
-  },
-  playbackRateButton: {
-    backgroundColor: theme.headerText + '20',
-    paddingHorizontal: SPACING.sm,
-    paddingVertical: 4,
-    borderRadius: 6,
-    minWidth: 40,
-    alignItems: 'center',
-  },
-  playbackRateText: {
-    color: theme.headerText,
-    fontSize: FONT_SIZES.small,
-    fontWeight: '600',
-  },
-  playPauseButton: {
-    backgroundColor: theme.headerText + '20',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  playPauseIcon: {
-    fontSize: 18,
-    color: theme.headerText,
   },
 });

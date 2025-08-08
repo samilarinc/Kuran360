@@ -4,6 +4,9 @@ import { Platform, View, ActivityIndicator } from 'react-native';
 import { HomeScreen } from '../screens/HomeScreen';
 import { SurahDetailScreen } from '../screens/SurahDetailScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
+import { ScreenWrapper } from '../components/ScreenWrapper';
+import { useGlobalAudio } from '../contexts/AudioContext';
+import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { Surah } from '../types';
 import { quranData, loadSurah } from '../data/quranData';
 
@@ -39,6 +42,17 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoadingRoute, setIsLoadingRoute] = useState(false);
+  const { audioState } = useGlobalAudio();
+  const { settings, updateSettings } = useDebouncedSettings(200);
+
+  // Auto-disable audio tracking when navigating away from SurahDetail
+  useEffect(() => {
+    const currentRoute = navigationHistory[currentIndex];
+    if (settings.audioTrackingEnabled && audioState.currentVerse &&
+      currentRoute.screen !== 'SurahDetail') {
+      updateSettings({ audioTrackingEnabled: false });
+    }
+  }, [currentIndex, navigationHistory, settings.audioTrackingEnabled, audioState.currentVerse, updateSettings]);
 
   const buildUrl = useCallback((route: NavigationHistoryItem): string => {
     switch (route.screen) {
@@ -267,29 +281,31 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
   return (
     <NavigationContainer>
-      {currentRoute.screen === 'Home' ? (
-        <HomeScreen
-          navigation={navigation}
-          onSurahSelect={handleSurahSelect}
-          lastSelectedSurah={currentRoute.params?.lastSelectedSurah}
-          isDataAvailable={isDataAvailable}
-        />
-      ) : currentRoute.screen === 'Settings' ? (
-        <SettingsScreen navigation={navigation} />
-      ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
-        <SurahDetailScreen
-          navigation={navigation}
-          route={{ params: { surah: currentRoute.params.surah, verseIndex: currentRoute.params.verseIndex } }}
-          updateVerseUrl={updateVerseUrl}
-        />
-      ) : (
-        <HomeScreen
-          navigation={navigation}
-          onSurahSelect={handleSurahSelect}
-          lastSelectedSurah={currentRoute.params?.lastSelectedSurah}
-          isDataAvailable={isDataAvailable}
-        />
-      )}
+      <ScreenWrapper>
+        {currentRoute.screen === 'Home' ? (
+          <HomeScreen
+            navigation={navigation}
+            onSurahSelect={handleSurahSelect}
+            lastSelectedSurah={currentRoute.params?.lastSelectedSurah}
+            isDataAvailable={isDataAvailable}
+          />
+        ) : currentRoute.screen === 'Settings' ? (
+          <SettingsScreen navigation={navigation} />
+        ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
+          <SurahDetailScreen
+            navigation={navigation}
+            route={{ params: { surah: currentRoute.params.surah, verseIndex: currentRoute.params.verseIndex } }}
+            updateVerseUrl={updateVerseUrl}
+          />
+        ) : (
+          <HomeScreen
+            navigation={navigation}
+            onSurahSelect={handleSurahSelect}
+            lastSelectedSurah={currentRoute.params?.lastSelectedSurah}
+            isDataAvailable={isDataAvailable}
+          />
+        )}
+      </ScreenWrapper>
     </NavigationContainer>
   );
 };
