@@ -41,7 +41,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const [loading, setLoading] = useState(false);
   const { settings, updateSettings } = useDebouncedSettings(200); // 200ms debounce for better UX
   const { theme } = useTheme();
-  const { audioState, playVerse, stop, setVersesForAutoplay, changePlaybackRate } = useAudioPlayer();
+  const { audioState, playVerse, stop, pause, resume, togglePlayPause, setVersesForAutoplay, changePlaybackRate } = useAudioPlayer();
   const flatListRef = useRef<FlatList>(null);
 
   // Use local state for immediate playback rate display to prevent flickering
@@ -253,6 +253,17 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
                   }
                 </Text>
                 <View style={styles.audioControlsContainer}>
+                  {/* Play/Pause Button */}
+                  <TouchableOpacity
+                    style={styles.playPauseButton}
+                    onPress={togglePlayPause}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={styles.playPauseIcon}>
+                      {audioState.isPlaying ? '⏸️' : '▶️'}
+                    </Text>
+                  </TouchableOpacity>
+                  
                   <TouchableOpacity
                     style={styles.playbackRateButton}
                     onPress={handlePlaybackRateChange}
@@ -350,5 +361,17 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     color: theme.headerText,
     fontSize: FONT_SIZES.small,
     fontWeight: '600',
+  },
+  playPauseButton: {
+    backgroundColor: theme.headerText + '20',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  playPauseIcon: {
+    fontSize: 18,
+    color: theme.headerText,
   },
 });
