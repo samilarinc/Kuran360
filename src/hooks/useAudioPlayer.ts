@@ -22,6 +22,8 @@ export const useAudioPlayer = () => {
   const allVersesRef = useRef<VerseType[]>([]);
   // Protect cross-surah transitions from being overwritten by UI updates
   const pendingSurahRef = useRef<number | null>(null);
+  // Cancel token for current playback session; increment to invalidate pending timers/callbacks
+  const playTokenRef = useRef(0);
 
   // Memorization mode state (range within a single surah, repeating the whole range N times)
   const memActiveRef = useRef(false);
@@ -195,6 +197,8 @@ export const useAudioPlayer = () => {
 
   const playVerse = async (verse: VerseType) => {
     try {
+      // Start a new play session; invalidate previous timers/callbacks
+      const myToken = ++playTokenRef.current;
       setAudioState(prev => ({ ...prev, isLoading: true }));
 
       // Stop any existing sound
@@ -243,6 +247,8 @@ export const useAudioPlayer = () => {
 
         // Simulate verse duration (average 5 seconds)
         setTimeout(async () => {
+          // Abort if a new play/stop happened
+          if (myToken !== playTokenRef.current) return;
           // Simulate the same logic as didJustFinish
           if (memActiveRef.current) {
             const versesArr = allVersesRef.current;
@@ -294,6 +300,8 @@ export const useAudioPlayer = () => {
           if (status.didJustFinish) {
             // Small delay before checking settings to ensure latest values
             setTimeout(async () => {
+              // Abort if a new play/stop happened
+              if (myToken !== playTokenRef.current) return;
               // Memorization mode overrides normal autoplay/play mode
               if (memActiveRef.current) {
                 const versesArr = allVersesRef.current;
@@ -454,9 +462,13 @@ export const useAudioPlayer = () => {
 
   const stop = async () => {
     try {
+      // Invalidate current session to cancel pending timers/callbacks
+      playTokenRef.current++;
       if (sound) {
-        await sound.stopAsync();
-        await sound.unloadAsync();
+        try { await sound.stopAsync(); } catch { }
+        try { await sound.unloadAsync(); } catch { }
+        // Detach any status updates to avoid stray updates
+        try { sound.setOnPlaybackStatusUpdate(null as any); } catch { }
         setSound(null);
       }
       pendingSurahRef.current = null;
