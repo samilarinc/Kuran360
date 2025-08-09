@@ -24,7 +24,7 @@ export default {
             }
         },
         web: {
-            favicon: "./assets/favicon.png",
+            favicon: "./public/favicon.png",
             name: "Kuran360"
         },
         plugins: [

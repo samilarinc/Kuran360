@@ -36,6 +36,27 @@ const App: React.FC = () => {
       const doc: any = (globalThis as any).document;
       try {
         if (doc) doc.title = 'Kuran360';
+        // Ensure favicon is set to public/favicon.png (dev/runtime safeguard)
+        if (doc) {
+          const ensureFavicon = () => {
+            try {
+              const linkId = 'app-favicon';
+              let link: any = doc.querySelector("link[rel='icon']") || doc.getElementById(linkId);
+              const href = '/favicon.png'; // served from public/
+              if (!link) {
+                link = doc.createElement('link');
+                link.rel = 'icon';
+                link.id = linkId;
+                link.type = 'image/png';
+                doc.head && doc.head.appendChild(link);
+              }
+              if (link && link.href !== href) {
+                link.href = href;
+              }
+            } catch { }
+          };
+          ensureFavicon();
+        }
         if (win) {
           const handler = () => { try { if (doc) doc.title = 'Kuran360'; } catch { } };
           win.addEventListener('popstate', handler);
