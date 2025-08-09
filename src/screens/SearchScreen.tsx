@@ -48,6 +48,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
     const [isSearching, setIsSearching] = useState(false);
     const [expandedFilters, setExpandedFilters] = useState(false);
+    const [useFuzzySearch, setUseFuzzySearch] = useState(false);
     const [searchHistory, setSearchHistory] = useState<string[]>([]);
     const [showHistory, setShowHistory] = useState(false);
 
@@ -99,109 +100,82 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
         const normalizedText = text.toLowerCase().trim();
         const normalizedQuery = query.toLowerCase().trim();
 
-        // Exact match
+        // Exact match (always enabled)
         if (normalizedText.includes(normalizedQuery)) return true;
 
-        // Word boundaries match
-        const words = normalizedQuery.split(' ');
-        return words.every(word => normalizedText.includes(word));
-    }, []);
-
-    // Search function
-    const performSearch = useCallback(async (query: string) => {
-        if (!query.trim() || query.length < 2) {
-            setSearchResults([]);
-            return;
+        // If fuzzy search is disabled, only do basic word matching
+        if (!useFuzzySearch) {
+            const words = normalizedQuery.split(' ').filter(word => word.length > 0);
+            return words.every(word => normalizedText.includes(word));
         }
 
-        // Save to search history
-        await saveSearchToHistory(query);
+        // Advanced fuzzy search (only if enabled)
+        // Remove Turkish diacritics for better matching
+        const removeDiacritics = (str: string) => {
+            return str
+                .replace(/[çğıöşüÇĞIİÖŞÜ]/g, (match) => {
+                    const map: { [key: string]: string } = {
+                        'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u',
+                        'Ç': 'C', 'Ğ': 'G', 'I': 'I', 'İ': 'I', 'Ö': 'O', 'Ş': 'S', 'Ü': 'U'
+                    };
+                    return map[match] || match;
+                })
+                .replace(/[^\w\s]/g, ' ') // Replace special chars with space
+                .replace(/\s+/g, ' ') // Multiple spaces to single space
+                .trim();
+        };
 
-        setIsSearching(true);
-        const results: SearchResult[] = [];
+        const cleanText = removeDiacritics(normalizedText);
+        const cleanQuery = removeDiacritics(normalizedQuery);
 
-        try {
-            const surahs = surahFilter === 'all'
-                ? quranData.surahs
-                : selectedSurah
-                    ? quranData.surahs.filter(s => s.number === selectedSurah)
-                    : quranData.surahs;
+        // Exact match after cleaning
+        if (cleanText.includes(cleanQuery)) return true;
 
-            for (const surahData of surahs) {
-                if (!surahData) continue;
-                const surah = await loadSurah(surahData.number);
-                if (!surah) continue;
+        // Word boundaries match
+        const queryWords = cleanQuery.split(' ').filter(word => word.length > 0);
+        const allWordsFound = queryWords.every(word => cleanText.includes(word));
+        if (allWordsFound) return true;
 
-                for (const verse of surah.verses) {
-                    // Search in Arabic text
-                    if ((searchScope === 'everywhere' || searchScope === 'arabic') &&
-                        fuzzyMatch(verse.arabicText, query)) {
-                        results.push({
-                            verse,
-                            surah,
-                            matchedText: verse.arabicText,
-                            matchedField: 'arabic'
-                        });
-                        continue;
-                    }
+        // Fuzzy character matching (allows some character mismatches)
+        const calculateSimilarity = (str1: string, str2: string): number => {
+            if (str1.length === 0) return str2.length;
+            if (str2.length === 0) return str1.length;
 
-                    // Search in transliteration
-                    if ((searchScope === 'everywhere' || searchScope === 'transliteration') &&
-                        verse.transliteration && fuzzyMatch(verse.transliteration, query)) {
-                        results.push({
-                            verse,
-                            surah,
-                            matchedText: verse.transliteration,
-                            matchedField: 'transliteration'
-                        });
-                        continue;
-                    }
+            const matrix = Array(str2.length + 1).fill(null).map(() => Array(str1.length + 1).fill(null));
 
-                    // Search in translations
-                    if (verse.allTranslations && searchScope !== 'arabic' && searchScope !== 'transliteration') {
-                        let translationsToSearch: string[] = [];
+            for (let i = 0; i <= str1.length; i++) matrix[0][i] = i;
+            for (let j = 0; j <= str2.length; j++) matrix[j][0] = j;
 
-                        switch (searchScope) {
-                            case 'everywhere':
-                                translationsToSearch = settings.selectedTranslations;
-                                break;
-                            case 'favorite':
-                                translationsToSearch = [settings.favoriteTranslation];
-                                break;
-                            case 'selected':
-                                translationsToSearch = [selectedTranslation];
-                                break;
-                            case 'all-translations':
-                                translationsToSearch = Object.keys(verse.allTranslations);
-                                break;
-                        }
-
-                        for (const translationName of translationsToSearch) {
-                            const translationText = verse.allTranslations[translationName];
-                            if (translationText && fuzzyMatch(translationText, query)) {
-                                results.push({
-                                    verse,
-                                    surah,
-                                    matchedText: translationText,
-                                    matchedField: 'translation',
-                                    translationName
-                                });
-                                break; // Don't add same verse multiple times for different translations
-                            }
-                        }
-                    }
+            for (let j = 1; j <= str2.length; j++) {
+                for (let i = 1; i <= str1.length; i++) {
+                    const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+                    matrix[j][i] = Math.min(
+                        matrix[j][i - 1] + 1,     // deletion
+                        matrix[j - 1][i] + 1,     // insertion
+                        matrix[j - 1][i - 1] + cost // substitution
+                    );
                 }
             }
 
-            setSearchResults(results);
-        } catch (error) {
-            console.error('Search error:', error);
-            Alert.alert('Hata', 'Arama sırasında bir hata oluştu.');
-        } finally {
-            setIsSearching(false);
-        }
-    }, [searchScope, selectedTranslation, surahFilter, selectedSurah, settings.selectedTranslations, settings.favoriteTranslation, fuzzyMatch, saveSearchToHistory]);
+            return matrix[str2.length][str1.length];
+        };
 
+        // Check if query is similar enough to any substring of text
+        const maxDistance = Math.floor(cleanQuery.length * 0.3); // Allow 30% character differences
+        
+        if (cleanQuery.length >= 4) { // Only apply fuzzy matching for longer queries
+            for (let i = 0; i <= cleanText.length - cleanQuery.length; i++) {
+                const substring = cleanText.substr(i, cleanQuery.length);
+                if (calculateSimilarity(cleanQuery, substring) <= maxDistance) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }, [useFuzzySearch]);
+
+    // Search function
     // Debounced search
     useEffect(() => {
         if (searchQuery.trim().length < 2) {
@@ -211,12 +185,102 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
         }
 
         setIsSearching(true);
-        const timeoutId = setTimeout(() => {
-            performSearch(searchQuery);
-        }, 500);
+        const timeoutId = setTimeout(async () => {
+            if (!searchQuery.trim() || searchQuery.length < 2) {
+                setSearchResults([]);
+                return;
+            }
+
+            // Save to search history
+            await saveSearchToHistory(searchQuery);
+
+            setIsSearching(true);
+            const results: SearchResult[] = [];
+
+            try {
+                const surahs = surahFilter === 'all'
+                    ? quranData.surahs
+                    : selectedSurah
+                        ? quranData.surahs.filter(s => s.number === selectedSurah)
+                        : quranData.surahs;
+
+                for (const surahData of surahs) {
+                    if (!surahData) continue;
+                    const surah = await loadSurah(surahData.number);
+                    if (!surah) continue;
+
+                    for (const verse of surah.verses) {
+                        // Search in Arabic text
+                        if ((searchScope === 'everywhere' || searchScope === 'arabic') &&
+                            fuzzyMatch(verse.arabicText, searchQuery)) {
+                            results.push({
+                                verse,
+                                surah,
+                                matchedText: verse.arabicText,
+                                matchedField: 'arabic'
+                            });
+                            continue;
+                        }
+
+                        // Search in transliteration
+                        if ((searchScope === 'everywhere' || searchScope === 'transliteration') &&
+                            verse.transliteration && fuzzyMatch(verse.transliteration, searchQuery)) {
+                            results.push({
+                                verse,
+                                surah,
+                                matchedText: verse.transliteration,
+                                matchedField: 'transliteration'
+                            });
+                            continue;
+                        }
+
+                        // Search in translations
+                        if (verse.allTranslations && searchScope !== 'arabic' && searchScope !== 'transliteration') {
+                            let translationsToSearch: string[] = [];
+
+                            switch (searchScope) {
+                                case 'everywhere':
+                                    translationsToSearch = settings.selectedTranslations;
+                                    break;
+                                case 'favorite':
+                                    translationsToSearch = [settings.favoriteTranslation];
+                                    break;
+                                case 'selected':
+                                    translationsToSearch = [selectedTranslation];
+                                    break;
+                                case 'all-translations':
+                                    translationsToSearch = Object.keys(verse.allTranslations);
+                                    break;
+                            }
+
+                            for (const translationName of translationsToSearch) {
+                                const translationText = verse.allTranslations[translationName];
+                                if (translationText && fuzzyMatch(translationText, searchQuery)) {
+                                    results.push({
+                                        verse,
+                                        surah,
+                                        matchedText: translationText,
+                                        matchedField: 'translation',
+                                        translationName
+                                    });
+                                    break; // Don't add same verse multiple times for different translations
+                                }
+                            }
+                        }
+                    }
+                }
+
+                setSearchResults(results);
+            } catch (error) {
+                console.error('Search error:', error);
+                Alert.alert('Hata', 'Arama sırasında bir hata oluştu.');
+            } finally {
+                setIsSearching(false);
+            }
+        }, 1000);
 
         return () => clearTimeout(timeoutId);
-    }, [searchQuery, performSearch]);
+    }, [searchQuery, searchScope, selectedTranslation, surahFilter, selectedSurah, useFuzzySearch]);
 
     const renderSearchScopeSelector = () => (
         <View style={createStyles(theme).selectorContainer}>
@@ -489,6 +553,42 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
                         {renderSearchScopeSelector()}
                         {renderTranslationSelector()}
                         {renderSurahFilter()}
+                        
+                        {/* Fuzzy Search Toggle */}
+                        <View style={createStyles(theme).selectorContainer}>
+                            <Text style={createStyles(theme).selectorTitle}>Arama Tipi:</Text>
+                            <View style={createStyles(theme).selectorGrid}>
+                                <TouchableOpacity
+                                    style={[
+                                        createStyles(theme).selectorOption,
+                                        !useFuzzySearch && createStyles(theme).selectorOptionSelected
+                                    ]}
+                                    onPress={() => setUseFuzzySearch(false)}
+                                >
+                                    <Text style={[
+                                        createStyles(theme).selectorOptionText,
+                                        !useFuzzySearch && createStyles(theme).selectorOptionTextSelected
+                                    ]}>
+                                        🎯 Kesin Eşleşme
+                                    </Text>
+                                </TouchableOpacity>
+                                
+                                <TouchableOpacity
+                                    style={[
+                                        createStyles(theme).selectorOption,
+                                        useFuzzySearch && createStyles(theme).selectorOptionSelected
+                                    ]}
+                                    onPress={() => setUseFuzzySearch(true)}
+                                >
+                                    <Text style={[
+                                        createStyles(theme).selectorOptionText,
+                                        useFuzzySearch && createStyles(theme).selectorOptionTextSelected
+                                    ]}>
+                                        🔍 Benzer Arama
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
                 )}
 
