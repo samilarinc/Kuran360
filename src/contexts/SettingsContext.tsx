@@ -16,6 +16,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     audioTrackingEnabled: true,
     selectedReciter: 'sudais',
     playbackRate: 1.0,
+    audioPlayMode: 'stopAtEnd',
 };
 
 // Available translations from the JSON data

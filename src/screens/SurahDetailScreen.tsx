@@ -65,13 +65,18 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
           if (loadedSurah) {
             setSurah(loadedSurah);
             // Set verses for autoplay functionality
-            setVersesForAutoplay(loadedSurah.verses);
+            // Only update autoplay list if we're not playing another surah
+            if (!audioState.currentVerse || audioState.currentVerse.surahNumber === loadedSurah.number) {
+              setVersesForAutoplay(loadedSurah.verses);
+            }
           }
           setLoading(false);
         } else {
           setSurah(basicSurah);
           // Set verses for autoplay functionality
-          setVersesForAutoplay(basicSurah.verses);
+          if (!audioState.currentVerse || audioState.currentVerse.surahNumber === basicSurah.number) {
+            setVersesForAutoplay(basicSurah.verses);
+          }
         }
       } catch (error) {
         console.error('Error loading surah verses:', error);

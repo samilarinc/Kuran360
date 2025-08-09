@@ -50,6 +50,8 @@ export interface AppSettings {
   audioTrackingEnabled: boolean;
   selectedReciter: string;
   playbackRate: number;
+  // Audio play behavior
+  audioPlayMode: 'nextSurah' | 'loopSurah' | 'stopAtEnd' | 'loopVerse';
 }
 
 export interface SettingsContextType {

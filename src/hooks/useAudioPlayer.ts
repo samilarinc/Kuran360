@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
 import { Verse as VerseType, AudioState } from '../types';
+import { loadSurah } from '../data/quranData';
 import { useSettings } from '../contexts/SettingsContext';
 
 export const useAudioPlayer = () => {
@@ -16,6 +17,10 @@ export const useAudioPlayer = () => {
   });
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [allVerses, setAllVerses] = useState<VerseType[]>([]);
+  // Keep a ref in sync with allVerses to avoid stale closures inside audio callbacks
+  const allVersesRef = useRef<VerseType[]>([]);
+  // Protect cross-surah transitions from being overwritten by UI updates
+  const pendingSurahRef = useRef<number | null>(null);
 
   // Debounced state update to prevent flickering
   const debouncedSetAudioState = (newState: Partial<AudioState>) => {
@@ -57,7 +62,37 @@ export const useAudioPlayer = () => {
   }, [sound]);
 
   const setVersesForAutoplay = (verses: VerseType[]) => {
-    setAllVerses(verses);
+    const targetSurah = verses[0]?.surahNumber;
+    const playingSurah = audioState.currentVerse?.surahNumber;
+    const pending = pendingSurahRef.current;
+
+    console.log('🔄 setVersesForAutoplay called:', {
+      targetSurah,
+      playingSurah,
+      pendingTransition: pending,
+      versesCount: verses.length,
+      stackTrace: new Error().stack?.split('\n')[1]?.trim()
+    });
+
+    // Accept if:
+    // - No audio is playing and no pending transition
+    // - We are transitioning and this update matches the pending target
+    // - We are not transitioning and this update matches the currently playing surah
+    const canAccept = (!playingSurah && !pending)
+      || (pending !== null && targetSurah === pending)
+      || (pending === null && playingSurah === targetSurah);
+
+    if (canAccept) {
+      console.log('✅ setVersesForAutoplay ACCEPTED for surah', targetSurah);
+      setAllVerses(verses);
+      allVersesRef.current = verses;
+    } else {
+      console.log('❌ setVersesForAutoplay REJECTED:', {
+        playingSurah,
+        targetSurah,
+        pendingTransition: pending,
+      });
+    }
   };
 
   const playNextVerse = (currentVerse?: VerseType) => {
@@ -66,26 +101,86 @@ export const useAudioPlayer = () => {
     console.log(`Attempting to play next verse. Current verse ID: ${verseToUse?.id}`);
 
     // Use ref to get current settings value (avoid closure issues)
-    if (!settingsRef.current.autoplayEnabled || !verseToUse || !allVerses.length) {
+    const versesArr = allVersesRef.current;
+    if (!settingsRef.current.autoplayEnabled || !verseToUse || !versesArr.length) {
       console.log('Autoplay conditions not met:', {
         autoplayEnabled: settingsRef.current.autoplayEnabled,
         hasCurrentVerse: !!verseToUse,
-        hasAllVerses: allVerses.length > 0
+        hasAllVerses: versesArr.length > 0
       });
       return;
     }
 
-    const currentIndex = allVerses.findIndex(v => v.id === verseToUse.id);
+    const currentIndex = versesArr.findIndex(v => v.id === verseToUse.id);
     const nextIndex = currentIndex + 1;
     console.log(`Autoplay: Current index ${currentIndex}, moving to next index ${nextIndex}`);
 
-    if (nextIndex < allVerses.length) {
-      const nextVerse = allVerses[nextIndex];
+    // If current verse is not in the allVerses array (index -1), don't try to play next
+    if (currentIndex === -1) {
+      console.log('Current verse not found in allVerses array, skipping autoplay');
+      return;
+    }
+
+    if (nextIndex < versesArr.length) {
+      const nextVerse = versesArr[nextIndex];
       console.log(`Next verse found: ${nextVerse.id} (Surah ${nextVerse.surahNumber}, Verse ${nextVerse.number})`);
       playVerse(nextVerse);
     } else {
-      console.log('Reached end of surah, stopping autoplay');
-      stop();
+      console.log('Reached end of surah');
+      const mode = settingsRef.current.audioPlayMode;
+      if (mode === 'loopSurah') {
+        const firstVerse = versesArr[0];
+        console.log('Looping surah from the beginning');
+        playVerse(firstVerse);
+      } else if (mode === 'nextSurah') {
+        const currentSurah = verseToUse.surahNumber;
+        const nextSurah = currentSurah + 1;
+        if (nextSurah <= 114) {
+          // Build a verse object for 1st verse of next surah using existing data if present; otherwise, minimal stub until load
+          const firstOfNext = versesArr.find(v => v.surahNumber === nextSurah && v.number === 1);
+          if (firstOfNext) {
+            console.log('Continuing to next surah, verse 1');
+            playVerse(firstOfNext);
+          } else {
+            // Load next surah verses and continue
+            (async () => {
+              try {
+                // Keep UI visible while fetching next surah
+                setAudioState(prev => ({ ...prev, isLoading: true }));
+                console.log('Loading next surah', nextSurah, 'for continuous playback');
+                pendingSurahRef.current = nextSurah;
+                const loaded = await loadSurah(nextSurah);
+                if (loaded && loaded.verses.length > 0) {
+                  setAllVerses(loaded.verses);
+                  allVersesRef.current = loaded.verses;
+                  await playVerse(loaded.verses[0]);
+                  pendingSurahRef.current = null;
+                } else {
+                  console.log('Failed to load next surah or no verses; stopping');
+                  pendingSurahRef.current = null;
+                  stop();
+                }
+              } catch (e) {
+                console.error('Error loading next surah:', e);
+                pendingSurahRef.current = null;
+                stop();
+              }
+            })();
+          }
+        } else {
+          console.log('No next surah exists; stopping');
+          stop();
+        }
+      } else if (mode === 'stopAtEnd') {
+        console.log('Stopping at end of surah per mode');
+        stop();
+      } else if (mode === 'loopVerse') {
+        const firstVerse = versesArr[currentIndex];
+        console.log('Looping current verse');
+        playVerse(firstVerse);
+      } else {
+        stop();
+      }
     }
   };
 
@@ -145,20 +240,65 @@ export const useAudioPlayer = () => {
 
           // Check if the verse has finished playing for autoplay
           if (status.didJustFinish) {
-            // Small delay before checking autoplay to ensure settings are updated
-            setTimeout(() => {
-              // Use ref to get the most current autoplay setting
-              if (settingsRef.current.autoplayEnabled) {
-                playNextVerse(verse);
-              } else {
-                console.log('Autoplay disabled, stopping after current verse');
-                // Don't stop the sound, just don't play next verse
-                setAudioState(prev => ({
-                  ...prev,
-                  isPlaying: false,
-                  currentVerse: null,
-                }));
+            // Small delay before checking settings to ensure latest values
+            setTimeout(async () => {
+              const mode = settingsRef.current.audioPlayMode;
+
+              // Loop current verse immediately
+              if (mode === 'loopVerse') {
+                await playVerse(verse);
+                return;
               }
+
+              // Determine if this was the last verse of current surah buffer
+              const versesArr = allVersesRef.current;
+              const idx = versesArr.findIndex(v => v.id === verse.id);
+              const isLastVerse = idx !== -1 && idx === versesArr.length - 1;
+
+              if (!isLastVerse) {
+                // Not last verse: follow autoplay toggle for next-verse behavior
+                if (settingsRef.current.autoplayEnabled) {
+                  playNextVerse(verse);
+                } else {
+                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                }
+                return;
+              }
+
+              // End-of-surah behavior: ignore autoplay flag and follow play mode
+              if (mode === 'loopSurah') {
+                const first = versesArr[0];
+                if (first) await playVerse(first);
+                else setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                return;
+              }
+
+              if (mode === 'nextSurah') {
+                try {
+                  const nextSurah = verse.surahNumber + 1;
+                  if (nextSurah <= 114) {
+                    const loaded = await loadSurah(nextSurah);
+                    if (loaded && loaded.verses.length > 0) {
+                      // CRITICAL: Update allVerses BEFORE playing to avoid index -1 lookup
+                      setAllVerses(loaded.verses);
+                      allVersesRef.current = loaded.verses;
+                      console.log('Updated allVerses to next surah in finish handler, length:', loaded.verses.length);
+                      await playVerse(loaded.verses[0]);
+                    } else {
+                      setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                    }
+                  } else {
+                    setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                  }
+                } catch (e) {
+                  console.error('Error loading next surah on finish:', e);
+                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                }
+                return;
+              }
+
+              // stopAtEnd or unknown mode
+              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
             }, 50);
           }
         }
@@ -216,6 +356,7 @@ export const useAudioPlayer = () => {
         await sound.unloadAsync();
         setSound(null);
       }
+      pendingSurahRef.current = null;
       setAudioState({
         isPlaying: false,
         currentVerse: null,
