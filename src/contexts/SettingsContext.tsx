@@ -5,8 +5,8 @@ import { AppSettings, SettingsContextType } from '../types';
 const DEFAULT_SETTINGS: AppSettings = {
     selectedTranslations: [
         'Diyanet İşleri Meali (Yeni)',
-        'Elmalılı Hamdi Yazır Meali',
-        'Süleymaniye Vakfı Meali'
+        'Elmalılı Meali (Orijinal)',
+        'Yaşar Nuri Öztürk Meali'
     ],
     autoplayEnabled: false,
     showTransliteration: true,

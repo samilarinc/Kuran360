@@ -63,8 +63,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         updateSettings({
             selectedTranslations: [
                 'Diyanet İşleri Meali (Yeni)',
-                'Elmalılı Hamdi Yazır Meali',
-                'Süleymaniye Vakfı Meali'
+                'Elmalılı Meali (Orijinal)',
+                'Yaşar Nuri Öztürk Meali'
             ]
         });
     };
