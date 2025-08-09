@@ -113,12 +113,12 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         <View style={createStyles(theme).memContainer}>
           {!memOpen ? (
             <TouchableOpacity style={createStyles(theme).memToggle} onPress={() => setMemOpen(true)}>
-              <Text style={createStyles(theme).memToggleText}>🧠 Memorize</Text>
+              <Text style={createStyles(theme).memToggleText}>🧠 Ezberle</Text>
             </TouchableOpacity>
           ) : (
             <View style={createStyles(theme).memPanel}>
               <View style={createStyles(theme).memRow}>
-                <Text style={createStyles(theme).memLabel}>End</Text>
+                <Text style={createStyles(theme).memLabel}>Şuraya Kadar</Text>
                 <View style={createStyles(theme).memStepper}>
                   <TouchableOpacity
                     style={createStyles(theme).stepBtn}
@@ -136,7 +136,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
                 </View>
               </View>
               <View style={createStyles(theme).memRow}>
-                <Text style={createStyles(theme).memLabel}>Repeats</Text>
+                <Text style={createStyles(theme).memLabel}>Tekrar Sayısı</Text>
                 <View style={createStyles(theme).memStepper}>
                   <TouchableOpacity
                     style={createStyles(theme).stepBtn}

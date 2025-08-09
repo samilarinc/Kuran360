@@ -4,6 +4,7 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
+    useWindowDimensions,
 } from 'react-native';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useNavigationHelpers } from '../contexts/NavigationContext';
@@ -17,6 +18,10 @@ export const GlobalAudioBar: React.FC = () => {
     const { settings, updateSettings } = useDebouncedSettings(200);
     const { theme } = useTheme();
     const { goToSurahVerse } = useNavigationHelpers();
+    const { width } = useWindowDimensions();
+    const isCompact = width < 380; // compact layout for small phones
+    const isMedium = width >= 380 && width < 580; // medium phones - expanded range
+    const hideLabels = isCompact || isMedium;
 
     // Memoize toggle handlers to prevent unnecessary re-renders
     const handleAudioTrackingToggle = useCallback(async (enabled: boolean) => {
@@ -38,9 +43,16 @@ export const GlobalAudioBar: React.FC = () => {
         await changePlaybackRate(newRate);
     }, [settings.playbackRate, updateSettings, changePlaybackRate]);
 
-    const playbackRateText = React.useMemo(() => {
-        return `${settings.playbackRate}x`;
-    }, [settings.playbackRate]);
+    const playbackRateText = React.useMemo(() => `${settings.playbackRate}x`, [settings.playbackRate]);
+
+    const statusLabel = React.useMemo(() => {
+        if (audioState.isLoading) return 'Yükleniyor...';
+        return audioState.isPlaying ? 'Çalıyor' : 'Duraklatıldı';
+    }, [audioState.isLoading, audioState.isPlaying]);
+
+    const verseLabel = React.useMemo(() => {
+        return audioState.currentVerse ? `${audioState.currentVerse.number}. Ayet` : '';
+    }, [audioState.currentVerse]);
 
     // Cycle audio play modes: nextSurah -> loopSurah -> stopAtEnd -> loopVerse
     const playModes: Array<{ key: 'nextSurah' | 'loopSurah' | 'stopAtEnd' | 'loopVerse'; icon: string; label: string }> = [
@@ -63,17 +75,42 @@ export const GlobalAudioBar: React.FC = () => {
         return null;
     }
 
-    const styles = createStyles(theme);
+    const styles = createStyles(theme, isCompact, isMedium);
 
     return (
         <View style={styles.audioBar}>
             <View style={styles.audioBarContent}>
-                <Text style={styles.audioText}>
-                    {audioState.isLoading
-                        ? 'Yükleniyor...'
-                        : `${audioState.isPlaying ? 'Çalıyor' : 'Duraklatıldı'}: ${audioState.currentVerse.number}. Ayet`
-                    }
-                </Text>
+                {isCompact ? (
+                    <View style={styles.audioTextContainer}>
+                        <Text
+                            style={styles.audioText}
+                            numberOfLines={1}
+                            adjustsFontSizeToFit
+                            minimumFontScale={0.65}
+                        >
+                            {statusLabel}
+                        </Text>
+                        {!!verseLabel && (
+                            <Text
+                                style={styles.verseText}
+                                numberOfLines={1}
+                                adjustsFontSizeToFit
+                                minimumFontScale={0.85}
+                            >
+                                {verseLabel}
+                            </Text>
+                        )}
+                    </View>
+                ) : (
+                    <Text
+                        style={styles.audioText}
+                        numberOfLines={1}
+                        adjustsFontSizeToFit
+                        minimumFontScale={0.65}
+                    >
+                        {audioState.isLoading ? statusLabel : `${statusLabel}: ${verseLabel}`}
+                    </Text>
+                )}
                 <View style={styles.audioControls}>
                     {/* Play Mode Button with label */}
                     <View style={styles.playModeContainer}>
@@ -84,7 +121,9 @@ export const GlobalAudioBar: React.FC = () => {
                         >
                             <Text style={styles.playModeIcon}>{currentMode.icon}</Text>
                         </TouchableOpacity>
-                        <Text style={styles.playModeLabel}>{currentMode.label}</Text>
+                        {!hideLabels && (
+                            <Text style={styles.playModeLabel}>{currentMode.label}</Text>
+                        )}
                     </View>
 
                     {/* Play/Pause Button */}
@@ -122,9 +161,11 @@ export const GlobalAudioBar: React.FC = () => {
                             isEnabled={settings.audioTrackingEnabled}
                             onToggle={handleAudioTrackingToggle}
                         />
-                        <Text style={styles.audioTrackingLabel}>
-                            Otomatik takip
-                        </Text>
+                        {!hideLabels && (
+                            <Text style={styles.audioTrackingLabel}>
+                                Otomatik takip
+                            </Text>
+                        )}
                     </View>
                 </View>
             </View>
@@ -132,7 +173,7 @@ export const GlobalAudioBar: React.FC = () => {
     );
 };
 
-const createStyles = (theme: Theme) => StyleSheet.create({
+const createStyles = (theme: Theme, isCompact: boolean, isMedium: boolean) => StyleSheet.create({
     audioBar: {
         backgroundColor: theme.primary,
         paddingVertical: SPACING.md,
@@ -145,24 +186,42 @@ const createStyles = (theme: Theme) => StyleSheet.create({
         shadowOffset: { width: 0, height: -2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
+        width: '100%',
+        overflow: 'hidden',
     },
     audioBarContent: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
+        flexWrap: isCompact ? 'wrap' : 'nowrap',
+        rowGap: isCompact ? SPACING.sm : 0,
+        columnGap: isCompact ? SPACING.sm : (isMedium ? SPACING.sm : SPACING.md),
+    },
+    audioTextContainer: {
+        flex: 1,
+        minWidth: 0,
     },
     audioText: {
         color: theme.headerText,
-        fontSize: FONT_SIZES.medium,
+        fontSize: isCompact ? 14 : (isMedium ? 13 : FONT_SIZES.medium),
         fontWeight: '500',
         flex: 1,
         marginRight: SPACING.md,
+        minWidth: 0, // allow shrinking with ellipsis
+    },
+    verseText: {
+        color: theme.headerText,
+        fontSize: isCompact ? 11 : (isMedium ? 12 : FONT_SIZES.small),
+        opacity: 0.9,
     },
     audioControls: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: SPACING.md,
+        gap: isCompact ? SPACING.sm : (isMedium ? SPACING.sm : SPACING.md),
+        flexShrink: 0,
+        flexWrap: isCompact ? 'wrap' : 'nowrap',
+        justifyContent: 'flex-end',
     },
     playModeContainer: {
         alignItems: 'center',
@@ -170,58 +229,58 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     },
     playModeButton: {
         backgroundColor: theme.headerText + '20',
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: isCompact ? 36 : (isMedium ? 38 : 40),
+        height: isCompact ? 36 : (isMedium ? 38 : 40),
+        borderRadius: isCompact ? 18 : (isMedium ? 19 : 20),
         justifyContent: 'center',
         alignItems: 'center',
     },
     playModeIcon: {
-        fontSize: 16,
+        fontSize: isCompact ? 14 : (isMedium ? 16 : 16),
         color: theme.headerText,
     },
     playModeLabel: {
         marginTop: 4,
-        fontSize: FONT_SIZES.small,
+        fontSize: isCompact ? 10 : (isMedium ? 11 : FONT_SIZES.small),
         color: theme.headerText,
         opacity: 0.85,
         textAlign: 'center',
     },
     playPauseButton: {
         backgroundColor: theme.headerText + '20',
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: isCompact ? 36 : (isMedium ? 38 : 40),
+        height: isCompact ? 36 : (isMedium ? 38 : 40),
+        borderRadius: isCompact ? 18 : (isMedium ? 19 : 20),
         justifyContent: 'center',
         alignItems: 'center',
     },
     playPauseIcon: {
-        fontSize: 18,
+        fontSize: isCompact ? 16 : (isMedium ? 17 : 18),
         color: theme.headerText,
     },
     stopButton: {
         backgroundColor: theme.headerText + '20',
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: isCompact ? 36 : (isMedium ? 38 : 40),
+        height: isCompact ? 36 : (isMedium ? 38 : 40),
+        borderRadius: isCompact ? 18 : (isMedium ? 19 : 20),
         justifyContent: 'center',
         alignItems: 'center',
     },
     stopIcon: {
-        fontSize: 18,
+        fontSize: isCompact ? 16 : (isMedium ? 17 : 18),
         color: theme.headerText,
     },
     playbackRateButton: {
         backgroundColor: theme.headerText + '20',
-        paddingHorizontal: SPACING.sm,
-        paddingVertical: 4,
+        paddingHorizontal: isCompact ? 6 : (isMedium ? 8 : SPACING.sm),
+        paddingVertical: isCompact ? 3 : (isMedium ? 4 : 4),
         borderRadius: 6,
         minWidth: 40,
         alignItems: 'center',
     },
     playbackRateText: {
         color: theme.headerText,
-        fontSize: FONT_SIZES.small,
+        fontSize: isCompact ? 12 : (isMedium ? 13 : FONT_SIZES.small),
         fontWeight: '600',
     },
     audioTrackingContainer: {
@@ -230,7 +289,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     },
     audioTrackingLabel: {
         color: theme.headerText,
-        fontSize: FONT_SIZES.small,
+        fontSize: isCompact ? 10 : (isMedium ? 11 : FONT_SIZES.small),
         opacity: 0.8,
         textAlign: 'center',
     },
