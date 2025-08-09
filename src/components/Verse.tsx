@@ -44,14 +44,36 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   const renderTranslations = () => {
     if (!verse.allTranslations) return null;
 
-    return settings.selectedTranslations.map((translationName, index) => {
+    // Favori meal'i ilk sıraya getir, sonra diğerleri
+    const orderedTranslations = [...settings.selectedTranslations].sort((a, b) => {
+      if (a === settings.favoriteTranslation) return -1;
+      if (b === settings.favoriteTranslation) return 1;
+      return 0;
+    });
+
+    return orderedTranslations.map((translationName, index) => {
       const translationText = verse.allTranslations![translationName];
       if (!translationText) return null;
 
+      const isFavorite = translationName === settings.favoriteTranslation;
+
       return (
-        <View key={translationName} style={createStyles(theme).translationContainer}>
-          <Text style={createStyles(theme).translationTitle}>{translationName}:</Text>
-          <Text style={createStyles(theme).translationText}>{translationText}</Text>
+        <View key={translationName} style={[
+          createStyles(theme).translationContainer,
+          isFavorite && createStyles(theme).favoriteTranslationContainer
+        ]}>
+          <Text style={[
+            createStyles(theme).translationTitle,
+            isFavorite && createStyles(theme).favoriteTranslationTitle
+          ]}>
+            {isFavorite && '⭐ '}{translationName}:
+          </Text>
+          <Text style={[
+            createStyles(theme).translationText,
+            isFavorite && createStyles(theme).favoriteTranslationTextStyle
+          ]}>
+            {translationText}
+          </Text>
         </View>
       );
     });
@@ -374,11 +396,26 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     borderLeftColor: theme.primary,
     paddingLeft: SPACING.sm,
   },
+  favoriteTranslationContainer: {
+    backgroundColor: '#FFD700' + '10', // Altın sarısı tint
+    borderLeftColor: '#FFD700',
+    borderLeftWidth: 4,
+    borderRadius: 6,
+    marginVertical: 2,
+  },
   translationTitle: {
     fontSize: FONT_SIZES.small,
     fontWeight: '600',
     color: theme.primary,
     marginBottom: 4,
+  },
+  favoriteTranslationTitle: {
+    color: '#B8860B', // Koyu altın
+    fontWeight: '700',
+  },
+  favoriteTranslationTextStyle: {
+    fontWeight: '500',
+    color: theme.text,
   },
   wordTranslationsContainer: {
     marginTop: SPACING.sm,

@@ -175,6 +175,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     const toggleTranslation = (translationName: string) => {
         const currentTranslations = settings.selectedTranslations;
         let newTranslations;
+        let newFavorite = settings.favoriteTranslation;
 
         if (currentTranslations.includes(translationName)) {
             if (currentTranslations.length <= 1) {
@@ -186,11 +187,19 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 return;
             }
             newTranslations = currentTranslations.filter((t: string) => t !== translationName);
+            
+            // Eğer kaldırılan meal favori ise, yeni favori belirle
+            if (settings.favoriteTranslation === translationName) {
+                newFavorite = newTranslations[0]; // İlk kalan meal'i favori yap
+            }
         } else {
             newTranslations = [...currentTranslations, translationName];
         }
 
-        updateSettings({ selectedTranslations: newTranslations });
+        updateSettings({ 
+            selectedTranslations: newTranslations,
+            favoriteTranslation: newFavorite
+        });
     };
 
     const selectAllTranslations = () => {
@@ -236,32 +245,65 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
 
     const renderTranslationItem = (translationName: string, index: number) => {
         const isSelected = settings.selectedTranslations.includes(translationName);
+        const isFavorite = settings.favoriteTranslation === translationName;
+
+        const toggleFavorite = () => {
+            if (isFavorite) {
+                // Favoriyi kaldır - ilk seçili meal'i favori yap
+                const newFavorite = settings.selectedTranslations[0];
+                updateSettings({ favoriteTranslation: newFavorite });
+            } else {
+                updateSettings({ favoriteTranslation: translationName });
+            }
+        };
 
         return (
-            <TouchableOpacity
+            <View
                 key={translationName}
                 style={[
                     createStyles(theme).translationItem,
                     isSelected && createStyles(theme).selectedTranslationItem,
+                    isFavorite && createStyles(theme).favoriteTranslationItem,
                     index === 0 && createStyles(theme).firstTranslationItem,
                     index === availableTranslations.length - 1 && createStyles(theme).lastTranslationItem
                 ]}
-                onPress={() => toggleTranslation(translationName)}
-                activeOpacity={0.7}
             >
-                <Text style={[
-                    createStyles(theme).translationText,
-                    isSelected && createStyles(theme).selectedTranslationText
-                ]}>
-                    {translationName}
-                </Text>
-                <View style={[
-                    createStyles(theme).modernCheckbox,
-                    isSelected && createStyles(theme).modernCheckboxSelected
-                ]}>
-                    {isSelected && <Text style={createStyles(theme).modernCheckmark}>✓</Text>}
-                </View>
-            </TouchableOpacity>
+                <TouchableOpacity
+                    style={createStyles(theme).translationMainContent}
+                    onPress={() => toggleTranslation(translationName)}
+                    activeOpacity={0.7}
+                >
+                    <Text style={[
+                        createStyles(theme).translationText,
+                        isSelected && createStyles(theme).selectedTranslationText,
+                        isFavorite && createStyles(theme).favoriteTranslationText
+                    ]}>
+                        {translationName}
+                    </Text>
+                    <View style={[
+                        createStyles(theme).modernCheckbox,
+                        isSelected && createStyles(theme).modernCheckboxSelected
+                    ]}>
+                        {isSelected && <Text style={createStyles(theme).modernCheckmark}>✓</Text>}
+                    </View>
+                </TouchableOpacity>
+                
+                {/* Favori Yıldızı */}
+                {isSelected && (
+                    <TouchableOpacity
+                        style={createStyles(theme).favoriteButton}
+                        onPress={toggleFavorite}
+                        activeOpacity={0.7}
+                    >
+                        <Text style={[
+                            createStyles(theme).favoriteIcon,
+                            isFavorite && createStyles(theme).favoriteIconActive
+                        ]}>
+                            {isFavorite ? '★' : '☆'}
+                        </Text>
+                    </TouchableOpacity>
+                )}
+            </View>
         );
     };
 
@@ -386,7 +428,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 <View style={createStyles(theme).section}>
                     {renderSectionHeader(
                         "Meal Seçimi",
-                        `${settings.selectedTranslations.length} meal seçili`,
+                        `${settings.selectedTranslations.length} meal seçili • Favori: ${settings.favoriteTranslation.substring(0, 20)}${settings.favoriteTranslation.length > 20 ? '...' : ''}`,
                         "translations",
                         "📖"
                     )}
@@ -406,6 +448,13 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                 >
                                     <Text style={createStyles(theme).secondaryActionButtonText}>Varsayılan</Text>
                                 </TouchableOpacity>
+                            </View>
+
+                            {/* Favori Meal Açıklaması */}
+                            <View style={createStyles(theme).favoriteExplanation}>
+                                <Text style={createStyles(theme).favoriteExplanationText}>
+                                    ⭐ Favori meal ayetlerde öncelikli olarak gösterilir
+                                </Text>
                             </View>
 
                             <View style={createStyles(theme).translationsContainer}>
@@ -661,6 +710,22 @@ const createStyles = (theme: Theme) => StyleSheet.create({
         paddingHorizontal: SPACING.lg,
         paddingBottom: SPACING.md,
     },
+    favoriteExplanation: {
+        paddingHorizontal: SPACING.lg,
+        paddingVertical: SPACING.sm,
+        backgroundColor: '#FFD700' + '10',
+        marginHorizontal: SPACING.lg,
+        marginBottom: SPACING.sm,
+        borderRadius: 8,
+        borderLeftWidth: 3,
+        borderLeftColor: '#FFD700',
+    },
+    favoriteExplanationText: {
+        fontSize: FONT_SIZES.small,
+        color: '#B8860B',
+        fontStyle: 'italic',
+        textAlign: 'center',
+    },
     translationItem: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -683,6 +748,17 @@ const createStyles = (theme: Theme) => StyleSheet.create({
         backgroundColor: theme.primary + '10',
         borderColor: theme.primary,
     },
+    favoriteTranslationItem: {
+        backgroundColor: '#FFD700' + '15', // Altın sarısı tint
+        borderColor: '#FFD700',
+        borderWidth: 2,
+    },
+    translationMainContent: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
     translationText: {
         flex: 1,
         fontSize: FONT_SIZES.small,
@@ -692,6 +768,23 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     selectedTranslationText: {
         color: theme.primary,
         fontWeight: '600',
+    },
+    favoriteTranslationText: {
+        color: '#B8860B', // Koyu altın
+        fontWeight: '700',
+    },
+    favoriteButton: {
+        padding: SPACING.xs,
+        marginLeft: SPACING.sm,
+        borderRadius: 12,
+        backgroundColor: 'transparent',
+    },
+    favoriteIcon: {
+        fontSize: 20,
+        color: theme.border,
+    },
+    favoriteIconActive: {
+        color: '#FFD700', // Altın sarısı
     },
     modernCheckbox: {
         width: 24,

@@ -42,6 +42,7 @@ export interface QuranData {
 
 export interface AppSettings {
   selectedTranslations: string[];
+  favoriteTranslation: string; // Favori meal
   autoplayEnabled: boolean;
   showTransliteration: boolean;
   showWordTranslations: boolean;

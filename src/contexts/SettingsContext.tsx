@@ -8,6 +8,7 @@ const DEFAULT_SETTINGS: AppSettings = {
         'Elmalılı Meali (Orijinal)',
         'Yaşar Nuri Öztürk Meali'
     ],
+    favoriteTranslation: 'Diyanet İşleri Meali (Yeni)', // Varsayılan favori meal
     autoplayEnabled: false,
     showTransliteration: true,
     showWordTranslations: true,
