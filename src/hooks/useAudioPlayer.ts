@@ -25,6 +25,9 @@ export const useAudioPlayer = () => {
   // Cancel token for current playback session; increment to invalidate pending timers/callbacks
   const playTokenRef = useRef(0);
 
+  // Preloading cache for next verse
+  const nextVerseAudioCache = useRef<Map<string, Audio.Sound>>(new Map());
+
   // Memorization mode state (range within a single surah, repeating the whole range N times)
   const memActiveRef = useRef(false);
   const memSurahRef = useRef<number | null>(null);
@@ -71,6 +74,98 @@ export const useAudioPlayer = () => {
       }
       : undefined;
   }, [sound]);
+
+  // Clean up preloaded audio cache
+  useEffect(() => {
+    return () => {
+      // Clean up all preloaded sounds on unmount
+      nextVerseAudioCache.current.forEach(async (cachedSound) => {
+        try {
+          await cachedSound.unloadAsync();
+        } catch (error) {
+          console.log('Error unloading cached sound:', error);
+        }
+      });
+      nextVerseAudioCache.current.clear();
+    };
+  }, []);
+
+  // Helper function to get audio URI for a verse
+  const getAudioUri = (verse: VerseType) => {
+    const audioFileName = `${verse.surahNumber.toString().padStart(3, '0')}${verse.number.toString().padStart(3, '0')}.mp3`;
+
+    const getBaseUrl = () => {
+      if (typeof globalThis !== 'undefined' && (globalThis as any).window) {
+        const win = (globalThis as any).window;
+        return `${win.location.protocol}//${win.location.host}`;
+      }
+      return 'http://localhost:8081';
+    };
+
+    const getReciterFolder = () => {
+      const selectedReciter = availableReciters.find(r => r.id === settings.selectedReciter);
+      return selectedReciter ? selectedReciter.folder : 'sudais_all_verse';
+    };
+
+    return `${getBaseUrl()}/${getReciterFolder()}/${audioFileName}`;
+  };
+
+  // Preload next verse audio when autoplay is enabled
+  const preloadNextVerse = async (currentVerse: VerseType) => {
+    if (!settingsRef.current.autoplayEnabled) return;
+
+    const versesArr = allVersesRef.current;
+    if (!versesArr.length) return;
+
+    const currentIndex = versesArr.findIndex(v => v.id === currentVerse.id);
+    if (currentIndex === -1 || currentIndex >= versesArr.length - 1) return;
+
+    const nextVerse = versesArr[currentIndex + 1];
+    const audioUri = getAudioUri(nextVerse);
+    const cacheKey = `${nextVerse.surahNumber}-${nextVerse.number}`;
+
+    // Skip if already cached
+    if (nextVerseAudioCache.current.has(cacheKey)) return;
+
+    try {
+      // Check if audio file exists
+      const response = await fetch(audioUri, { method: 'HEAD' });
+      if (!response.ok) {
+        logger.debug(`Next verse audio not available: ${audioUri}`);
+        return;
+      }
+
+      // Preload the audio
+      const { sound: preloadedSound } = await Audio.Sound.createAsync(
+        { uri: audioUri },
+        { shouldPlay: false } // Don't play, just load
+      );
+
+      // Set playback rate for consistency
+      await preloadedSound.setRateAsync(settings.playbackRate, true);
+
+      // Cache it
+      nextVerseAudioCache.current.set(cacheKey, preloadedSound);
+      logger.debug(`Preloaded next verse: ${cacheKey}`);
+
+      // Clean up old cached sounds (keep only 2-3 recent ones)
+      if (nextVerseAudioCache.current.size > 3) {
+        const keys = Array.from(nextVerseAudioCache.current.keys());
+        const oldestKey = keys[0];
+        const oldSound = nextVerseAudioCache.current.get(oldestKey);
+        if (oldSound) {
+          try {
+            await oldSound.unloadAsync();
+          } catch (error) {
+            console.log('Error unloading old cached sound:', error);
+          }
+        }
+        nextVerseAudioCache.current.delete(oldestKey);
+      }
+    } catch (error) {
+      logger.debug(`Failed to preload next verse: ${error}`);
+    }
+  };
 
   const setVersesForAutoplay = (verses: VerseType[]) => {
     const targetSurah = verses[0]?.surahNumber;
@@ -206,84 +301,79 @@ export const useAudioPlayer = () => {
         await sound.unloadAsync();
       }
 
-      // Generate the audio filename - always use this format since audioFileName is not set in data
-      const audioFileName = `${verse.surahNumber.toString().padStart(3, '0')}${verse.number.toString().padStart(3, '0')}.mp3`;
+      const audioUri = getAudioUri(verse);
+      const cacheKey = `${verse.surahNumber}-${verse.number}`;
 
-      // For React Native with Metro bundler, serve the audio files via HTTP
-      // Use dynamic URL based on current environment
-      const getBaseUrl = () => {
-        if (typeof globalThis !== 'undefined' && (globalThis as any).window) {
-          // Web environment - use current domain
-          const win = (globalThis as any).window;
-          return `${win.location.protocol}//${win.location.host}`;
-        }
-        // Mobile environment - use localhost with Metro bundler
-        return 'http://localhost:8081';
-      };
+      // Check if we have this verse preloaded
+      let newSound = nextVerseAudioCache.current.get(cacheKey);
 
-      const getReciterFolder = () => {
-        const selectedReciter = availableReciters.find(r => r.id === settings.selectedReciter);
-        return selectedReciter ? selectedReciter.folder : 'sudais_all_verse'; // Default fallback
-      };
+      if (newSound) {
+        logger.debug(`Using preloaded audio for verse: ${cacheKey}`);
+        // Remove from cache since we're using it
+        nextVerseAudioCache.current.delete(cacheKey);
 
-      const audioUri = `${getBaseUrl()}/${getReciterFolder()}/${audioFileName}`;
-      logger.debug(`Attempting to load audio from: ${audioUri}`);
+        // Start playing the preloaded sound
+        await newSound.playAsync();
+      } else {
+        logger.debug(`Loading audio from: ${audioUri}`);
 
-      // Check if audio file exists before attempting to load
-      try {
-        const response = await fetch(audioUri, { method: 'HEAD' });
-        if (!response.ok) {
-          throw new Error(`Audio file not found: ${audioUri}`);
-        }
-      } catch (error) {
-        logger.debug(`Audio file not available: ${audioUri}. Using simulation mode.`);
-        // Fall back to simulation if audio loading fails
-        setAudioState(prev => ({
-          ...prev,
-          isPlaying: true,
-          isLoading: false,
-          currentVerse: verse,
-        }));
+        // Check if audio file exists before attempting to load
+        try {
+          const response = await fetch(audioUri, { method: 'HEAD' });
+          if (!response.ok) {
+            throw new Error(`Audio file not found: ${audioUri}`);
+          }
+        } catch (error) {
+          logger.debug(`Audio file not available: ${audioUri}. Using simulation mode.`);
+          // Fall back to simulation if audio loading fails
+          setAudioState(prev => ({
+            ...prev,
+            isPlaying: true,
+            isLoading: false,
+            currentVerse: verse,
+          }));
 
-        // Simulate verse duration (average 5 seconds)
-        setTimeout(async () => {
-          // Abort if a new play/stop happened
-          if (myToken !== playTokenRef.current) return;
-          // Simulate the same logic as didJustFinish
-          if (memActiveRef.current) {
-            const versesArr = allVersesRef.current;
-            const targetSurah = memSurahRef.current;
-            const endNum = memEndRef.current;
+          // Simulate verse duration (average 5 seconds)
+          setTimeout(async () => {
+            // Abort if a new play/stop happened
+            if (myToken !== playTokenRef.current) return;
+            // Simulate the same logic as didJustFinish
+            if (memActiveRef.current) {
+              const versesArr = allVersesRef.current;
+              const targetSurah = memSurahRef.current;
+              const endNum = memEndRef.current;
 
-            if (verse.number < endNum) {
-              const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
-              if (next) {
-                await playVerse(next);
-                return;
+              if (verse.number < endNum) {
+                const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
+                if (next) {
+                  await playVerse(next);
+                  return;
+                }
               }
             }
-          }
 
-          if (settingsRef.current.autoplayEnabled) {
-            playNextVerse(verse);
-          } else {
-            setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-          }
-        }, 5000);
+            if (settingsRef.current.autoplayEnabled) {
+              playNextVerse(verse);
+            } else {
+              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+            }
+          }, 5000);
 
-        return;
+          return;
+        }
+
+        // Load and play the audio file
+        const { sound: loadedSound } = await Audio.Sound.createAsync(
+          { uri: audioUri },
+          { shouldPlay: true }
+        );
+        newSound = loadedSound;
+
+        // Set playback rate
+        await newSound.setRateAsync(settings.playbackRate, true);
       }
 
-      // Load and play the audio file
-      const { sound: newSound } = await Audio.Sound.createAsync(
-        { uri: audioUri },
-        { shouldPlay: true }
-      );
-
       setSound(newSound);
-
-      // Set playback rate
-      await newSound.setRateAsync(settings.playbackRate, true);
 
       // Set up status update listener
       newSound.setOnPlaybackStatusUpdate((status) => {
@@ -410,7 +500,7 @@ export const useAudioPlayer = () => {
 
               // stopAtEnd or unknown mode
               setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-            }, 50);
+            }, 10);
           }
         }
       });
@@ -422,7 +512,12 @@ export const useAudioPlayer = () => {
         isLoading: false,
       }));
 
-      logger.debug(`Successfully loaded and playing: ${audioFileName} for verse ${verse.id}`);
+      logger.debug(`Successfully loaded and playing verse: ${verse.id}`);
+
+      // Preload next verse if autoplay is enabled
+      if (settingsRef.current.autoplayEnabled) {
+        preloadNextVerse(verse);
+      }
 
     } catch (error) {
       console.error('Error playing audio:', error);

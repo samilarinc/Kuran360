@@ -116,7 +116,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             viewPosition: 0.5, // Center the verse in the viewport
           });
         }
-      }, 250); // Increased debounce to 250ms for better stability
+      }, 50); // Reduced debounce for faster auto-tracking
 
       return () => clearTimeout(timeoutId);
     }
