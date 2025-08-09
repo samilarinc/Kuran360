@@ -170,9 +170,38 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         </View>
                         <Switch
                             value={settings.showWordTranslations}
-                            onValueChange={(value) => updateSettings({ showWordTranslations: value })}
+                            onValueChange={(value) => {
+                                if (value && settings.inlineWordTranslations) {
+                                    // If enabling word translations, disable inline mode
+                                    updateSettings({ showWordTranslations: value, inlineWordTranslations: false });
+                                } else {
+                                    updateSettings({ showWordTranslations: value });
+                                }
+                            }}
                             trackColor={{ false: theme.border, true: theme.primary }}
                             thumbColor={settings.showWordTranslations ? '#FFFFFF' : '#f4f3f4'}
+                        />
+                    </View>
+
+                    <View style={createStyles(theme).settingItem}>
+                        <View style={createStyles(theme).settingInfo}>
+                            <Text style={createStyles(theme).settingLabel}>Kelime Üstüne Gelince Çeviri</Text>
+                            <Text style={createStyles(theme).settingDescription}>
+                                Web'de ayet içinde kelimenin üstüne gelince vurgula ve çeviriyi göster
+                            </Text>
+                        </View>
+                        <Switch
+                            value={settings.inlineWordTranslations}
+                            onValueChange={(value) => {
+                                if (value && settings.showWordTranslations) {
+                                    // If enabling inline mode, disable word translations
+                                    updateSettings({ inlineWordTranslations: value, showWordTranslations: false });
+                                } else {
+                                    updateSettings({ inlineWordTranslations: value });
+                                }
+                            }}
+                            trackColor={{ false: theme.border, true: theme.primary }}
+                            thumbColor={settings.inlineWordTranslations ? '#FFFFFF' : '#f4f3f4'}
                         />
                     </View>
 

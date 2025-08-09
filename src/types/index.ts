@@ -45,6 +45,7 @@ export interface AppSettings {
   autoplayEnabled: boolean;
   showTransliteration: boolean;
   showWordTranslations: boolean;
+  inlineWordTranslations: boolean;
   usePaginatedView: boolean;
   darkMode: boolean;
   audioTrackingEnabled: boolean;

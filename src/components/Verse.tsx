@@ -75,6 +75,65 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
     );
   };
 
+  // Inline hover translations in the main Arabic line (web only)
+  const InlineArabicWithHover: React.FC = () => {
+    if (Platform.OS !== 'web' || !settings.inlineWordTranslations || verse.wordTranslations.length === 0) {
+      return <Text style={createStyles(theme).arabicText}>{verse.arabicText}</Text>;
+    }
+
+    // Build lookup map
+    const map = new Map<string, string>();
+    verse.wordTranslations.forEach(w => {
+      if (w.arabic) map.set(w.arabic, w.translation);
+    });
+
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+    // Try to reconstruct spaced text from word translations, fallback to original
+    let displayText = verse.arabicText;
+    let words = verse.wordTranslations.map(w => w.arabic).filter(Boolean);
+
+    // If we have word translations, try to create a spaced version
+    if (words.length > 0) {
+      displayText = words.join(' ');
+    }
+
+    const tokens = displayText.split(/\s+/).filter(Boolean);
+
+    return (
+      <View style={createStyles(theme).inlineArabicRow}>
+        {tokens.map((tok, idx) => {
+          const tr = map.get(tok);
+          const isHover = hoveredIndex === idx && !!tr;
+          return (
+            <View key={idx} style={createStyles(theme).inlineArabicWordWrap}>
+              <Text
+                style={[
+                  createStyles(theme).arabicText,
+                  createStyles(theme).inlineArabicWord,
+                  isHover && createStyles(theme).inlineArabicWordHover,
+                ]}
+                // @ts-ignore web-only hover handlers
+                onMouseEnter={() => setHoveredIndex(idx)}
+                // @ts-ignore
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                {tok}
+              </Text>
+              {isHover && (
+                <View style={createStyles(theme).hoverCard}>
+                  <Text style={createStyles(theme).hoverCardText}>{tr}</Text>
+                </View>
+              )}
+              {/* Space between words, preserved visually on web */}
+              {idx < tokens.length - 1 && <Text style={createStyles(theme).inlineSpace}> </Text>}
+            </View>
+          );
+        })}
+      </View>
+    );
+  };
+
   return (
     <View style={createStyles(theme).container}>
       <View style={createStyles(theme).header}>
@@ -98,7 +157,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
       </View>
 
       <View style={createStyles(theme).content}>
-        <Text style={createStyles(theme).arabicText}>{verse.arabicText}</Text>
+        <InlineArabicWithHover />
 
         {settings.showTransliteration && verse.transliteration && (
           <Text style={createStyles(theme).transliterationText}>{verse.transliteration}</Text>
@@ -242,6 +301,56 @@ const createStyles = (theme: Theme) => StyleSheet.create({
       web: '"Scheherazade New", "Noto Naskh Arabic", Amiri, serif',
       default: undefined as any,
     }),
+  },
+  inlineArabicRow: {
+    flexDirection: 'row-reverse',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+  },
+  inlineArabicWordWrap: {
+    position: 'relative',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  inlineArabicWord: {
+    borderRadius: 6,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    // keep same font and direction as arabicText; Text merges styles
+    cursor: 'pointer',
+  },
+  inlineArabicWordHover: {
+    color: theme.secondary,
+  },
+  hoverCard: {
+    position: 'absolute',
+    bottom: '100%',
+    right: 0,
+    marginBottom: 8,
+    backgroundColor: theme.cardBackground,
+    borderRadius: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderWidth: 2,
+    borderColor: theme.primary,
+    zIndex: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    elevation: 8,
+    maxWidth: 200,
+    minWidth: 80,
+  },
+  hoverCardText: {
+    color: theme.text,
+    fontSize: FONT_SIZES.medium,
+    fontWeight: '600',
+    textAlign: 'center',
+    lineHeight: FONT_SIZES.medium * 1.2,
+  },
+  inlineSpace: {
+    // Visual spacing between tokens; width is controlled by content (space char)
   },
   translationText: {
     fontSize: FONT_SIZES.translation,

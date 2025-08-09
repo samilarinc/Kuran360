@@ -11,6 +11,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     autoplayEnabled: false,
     showTransliteration: true,
     showWordTranslations: true,
+    inlineWordTranslations: false,
     usePaginatedView: false,
     darkMode: false,
     audioTrackingEnabled: true,
