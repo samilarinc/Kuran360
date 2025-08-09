@@ -187,7 +187,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 return;
             }
             newTranslations = currentTranslations.filter((t: string) => t !== translationName);
-            
+
             // Eğer kaldırılan meal favori ise, yeni favori belirle
             if (settings.favoriteTranslation === translationName) {
                 newFavorite = newTranslations[0]; // İlk kalan meal'i favori yap
@@ -196,7 +196,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
             newTranslations = [...currentTranslations, translationName];
         }
 
-        updateSettings({ 
+        updateSettings({
             selectedTranslations: newTranslations,
             favoriteTranslation: newFavorite
         });
@@ -287,7 +287,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         {isSelected && <Text style={createStyles(theme).modernCheckmark}>✓</Text>}
                     </View>
                 </TouchableOpacity>
-                
+
                 {/* Favori Yıldızı */}
                 {isSelected && (
                     <TouchableOpacity

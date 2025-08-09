@@ -10,6 +10,8 @@ interface HeaderWithDarkModeToggleProps {
   onBackPress?: () => void;
   showSettingsButton?: boolean;
   onSettingsPress?: () => void;
+  showSearchButton?: boolean;
+  onSearchPress?: () => void;
   autoplayToggle?: React.ReactNode;
   children?: React.ReactNode;
 }
@@ -21,6 +23,8 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
   onBackPress,
   showSettingsButton = false,
   onSettingsPress,
+  showSearchButton = false,
+  onSearchPress,
   autoplayToggle,
   children,
 }) => {
@@ -93,6 +97,17 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
     settingsButtonText: {
       fontSize: 16,
     },
+    searchButton: {
+      padding: 6,
+      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      borderRadius: 16,
+      minWidth: 32,
+      alignItems: 'center',
+      marginRight: SPACING.xs,
+    },
+    searchButtonText: {
+      fontSize: 16,
+    },
     contentContainer: {
       alignItems: 'center',
       paddingHorizontal: SPACING.lg,
@@ -110,9 +125,17 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
       )}
 
       <View style={styles.rightButtons}>
-        {/* Autoplay toggle always first, then dark mode, then settings */}
+        {/* Autoplay toggle always first, then search, then dark mode, then settings */}
         {autoplayToggle && (
           <View style={{ marginRight: SPACING.xs }}>{autoplayToggle}</View>
+        )}
+        {showSearchButton && onSearchPress && (
+          <TouchableOpacity
+            style={styles.searchButton}
+            onPress={onSearchPress}
+          >
+            <Text style={styles.searchButtonText}>🔍</Text>
+          </TouchableOpacity>
         )}
         <TouchableOpacity
           style={styles.darkModeToggle}

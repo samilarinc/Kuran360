@@ -4,6 +4,7 @@ import { Platform, View, ActivityIndicator } from 'react-native';
 import { HomeScreen } from '../screens/HomeScreen';
 import { SurahDetailScreen } from '../screens/SurahDetailScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
+import { SearchScreen } from '../screens/SearchScreen';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
@@ -26,10 +27,11 @@ export type RootStackParamList = {
   Home: undefined;
   SurahDetail: { surah: Surah };
   Settings: undefined;
+  Search: undefined;
 };
 
 type NavigationHistoryItem = {
-  screen: 'Home' | 'SurahDetail' | 'Settings';
+  screen: 'Home' | 'SurahDetail' | 'Settings' | 'Search';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -59,6 +61,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     switch (route.screen) {
       case 'Settings':
         return '/settings';
+      case 'Search':
+        return '/search';
       case 'SurahDetail':
         if (route.params?.surah) {
           const baseUrl = `/surah/${route.params.surah.number}`;
@@ -73,6 +77,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   const parseUrl = useCallback(async (pathname: string): Promise<NavigationHistoryItem | null> => {
     if (pathname === '/settings') {
       return { screen: 'Settings' };
+    }
+    
+    if (pathname === '/search') {
+      return { screen: 'Search' };
     }
 
     // Check for verse-specific URLs: /surah/1/verse/3
@@ -214,7 +222,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, []); // Remove dependencies to prevent infinite loop
 
   const navigation = {
-    navigate: (screen: 'Home' | 'SurahDetail' | 'Settings', params?: { surah: Surah }) => {
+    navigate: (screen: 'Home' | 'SurahDetail' | 'Settings' | 'Search', params?: { surah: Surah }) => {
       const route: NavigationHistoryItem = { screen, params };
       navigateToRoute(route, true);
     },
@@ -337,6 +345,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
             />
           ) : currentRoute.screen === 'Settings' ? (
             <SettingsScreen navigation={navigation} />
+          ) : currentRoute.screen === 'Search' ? (
+            <SearchScreen navigation={navigation} />
           ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
             <SurahDetailScreen
               navigation={navigation}

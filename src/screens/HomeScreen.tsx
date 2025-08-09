@@ -144,6 +144,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         subtitle="Kur'an-ı Kerim"
         showSettingsButton={true}
         onSettingsPress={() => navigation.navigate('Settings')}
+        showSearchButton={true}
+        onSearchPress={() => navigation.navigate('Search')}
       />
       <SurahList
         surahs={surahs}
