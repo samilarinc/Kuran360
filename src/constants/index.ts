@@ -29,8 +29,8 @@ export const LIGHT_COLORS = {
 } as const;
 
 export const DARK_COLORS = {
-  primary: '#56a35aff', // Even lighter green for better contrast
-  secondary: '#56a35aff',
+  primary: '#56A35A', // Valid hex color - light green
+  secondary: '#56A35A',
   accent: '#FFC107',
   background: '#121212',
   surface: '#1E1E1E',

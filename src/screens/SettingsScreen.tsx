@@ -53,8 +53,8 @@ const ModernSwitch: React.FC<ModernSwitchProps> = ({
     const trackColor = animatedValue.interpolate({
         inputRange: [0, 1],
         outputRange: [
-            disabled ? theme.border + '40' : theme.border + '80',
-            disabled ? theme.primary + '60' : theme.primary
+            disabled ? 'rgba(128, 128, 128, 0.25)' : 'rgba(128, 128, 128, 0.5)',
+            disabled ? 'rgba(86, 163, 90, 0.38)' : theme.primary
         ],
     });
 
