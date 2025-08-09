@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -9,16 +9,35 @@ import { Verse as VerseType } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
+import { useGlobalAudio } from '../contexts/AudioContext';
 
 interface VerseProps {
   verse: VerseType;
   isPlaying: boolean;
   onPlayPress: (verse: VerseType) => void;
+  surahVerseCount?: number; // clamp end to this count
 }
 
-export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress }) => {
+export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount }) => {
   const { settings } = useSettings();
   const { theme } = useTheme();
+  const { startMemorization, cancelMemorization } = useGlobalAudio();
+  const [memOpen, setMemOpen] = useState(false);
+  const maxEnd = useMemo(() => {
+    // Cap strictly to provided surah count; if missing, default to current verse (no growth)
+    console.log('Surah verse count:', surahVerseCount, verse.number);
+    return surahVerseCount && surahVerseCount > 0 ? surahVerseCount : verse.number;
+  }, [surahVerseCount, verse.number]);
+  const [endVerse, setEndVerse] = useState<number>(Math.min(verse.number, maxEnd));
+
+  // Keep endVerse within [currentVerseNumber, maxEnd] when surah count changes
+  useEffect(() => {
+    setEndVerse(v => clamp(v, verse.number, maxEnd));
+  }, [maxEnd, verse.number]);
+  const [repeats, setRepeats] = useState<number>(3);
+
+  const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
+  const canStartMem = useMemo(() => endVerse >= verse.number, [endVerse, verse.number]);
 
   const renderTranslations = () => {
     if (!verse.allTranslations) return null;
@@ -88,6 +107,66 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress }) =
         </View>
 
         {renderWordTranslations()}
+
+        {/* Memorization inline control */}
+        <View style={createStyles(theme).memContainer}>
+          {!memOpen ? (
+            <TouchableOpacity style={createStyles(theme).memToggle} onPress={() => setMemOpen(true)}>
+              <Text style={createStyles(theme).memToggleText}>🧠 Memorize</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={createStyles(theme).memPanel}>
+              <View style={createStyles(theme).memRow}>
+                <Text style={createStyles(theme).memLabel}>End</Text>
+                <View style={createStyles(theme).memStepper}>
+                  <TouchableOpacity
+                    style={createStyles(theme).stepBtn}
+                    onPress={() => setEndVerse(v => clamp(v - 1, verse.number, maxEnd))}
+                  >
+                    <Text style={createStyles(theme).stepText}>-</Text>
+                  </TouchableOpacity>
+                  <Text style={createStyles(theme).memValue}>{endVerse}</Text>
+                  <TouchableOpacity
+                    style={createStyles(theme).stepBtn}
+                    onPress={() => setEndVerse(v => clamp(v + 1, verse.number, maxEnd))}
+                  >
+                    <Text style={createStyles(theme).stepText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={createStyles(theme).memRow}>
+                <Text style={createStyles(theme).memLabel}>Repeats</Text>
+                <View style={createStyles(theme).memStepper}>
+                  <TouchableOpacity
+                    style={createStyles(theme).stepBtn}
+                    onPress={() => setRepeats(r => clamp(r - 1, 1, 99))}
+                  >
+                    <Text style={createStyles(theme).stepText}>-</Text>
+                  </TouchableOpacity>
+                  <Text style={createStyles(theme).memValue}>{repeats}</Text>
+                  <TouchableOpacity
+                    style={createStyles(theme).stepBtn}
+                    onPress={() => setRepeats(r => clamp(r + 1, 1, 99))}
+                  >
+                    <Text style={createStyles(theme).stepText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={createStyles(theme).memActions}>
+                <TouchableOpacity
+                  style={[createStyles(theme).memStartBtn, !canStartMem && createStyles(theme).memStartBtnDisabled]}
+                  disabled={!canStartMem}
+                  onPress={() => startMemorization(verse.surahNumber, verse.number, endVerse, repeats)}
+                >
+                  <Text style={createStyles(theme).memStartText}>Start</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={createStyles(theme).memCancelBtn} onPress={() => { cancelMemorization(); setMemOpen(false); }}>
+                  <Text style={createStyles(theme).memCancelText}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -221,5 +300,90 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     fontSize: FONT_SIZES.small - 2,
     color: theme.textSecondary,
     textAlign: 'center',
+  },
+  memContainer: {
+    marginTop: SPACING.sm,
+  },
+  memToggle: {
+    alignSelf: 'flex-end',
+    backgroundColor: theme.secondary,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 6,
+    borderRadius: 8,
+  },
+  memToggleText: {
+    color: theme.headerText,
+    fontWeight: '600',
+  },
+  memPanel: {
+    backgroundColor: theme.surface,
+    borderRadius: 10,
+    padding: SPACING.sm,
+    gap: SPACING.sm,
+  },
+  memRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  memLabel: {
+    color: theme.text,
+    fontWeight: '600',
+  },
+  memStepper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  stepBtn: {
+    width: 34,
+    height: 34,
+    borderRadius: 6,
+    backgroundColor: theme.cardBackground,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepText: {
+    color: theme.text,
+    fontSize: FONT_SIZES.large,
+  },
+  memValue: {
+    minWidth: 28,
+    textAlign: 'center',
+    color: theme.text,
+    fontWeight: '600',
+  },
+  memActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: SPACING.sm,
+  },
+  memHint: {
+    color: theme.textSecondary,
+    fontSize: FONT_SIZES.small,
+    textAlign: 'right',
+  },
+  memStartBtn: {
+    backgroundColor: theme.primary,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  memStartBtnDisabled: {
+    opacity: 0.5,
+  },
+  memStartText: {
+    color: '#fff',
+    fontWeight: '700',
+  },
+  memCancelBtn: {
+    backgroundColor: theme.accent,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  memCancelText: {
+    color: theme.headerText,
+    fontWeight: '700',
   },
 });

@@ -173,8 +173,10 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       verse={item}
       isPlaying={isVerseCurrentlyPlaying(item)}
       onPlayPress={handleVersePress}
+      surahVerseCount={surah.verses.length > 0 ? surah.verses.length : surah.verseCount}
     />
   );
+  console.log('Count: ', surah.verses.length, surah.verseCount);
 
   // Memoize toggle handlers to prevent unnecessary re-renders
   const handleAutoplayToggle = useCallback((enabled: boolean) => {

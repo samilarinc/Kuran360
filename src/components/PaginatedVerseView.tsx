@@ -375,6 +375,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                                     verse={visibleVerses.previous}
                                     isPlaying={false} // Previous verse shouldn't show as playing
                                     onPlayPress={playVerse}
+                                    surahVerseCount={verses.length}
                                 />
                             </ScrollView>
                         ) : (
@@ -396,6 +397,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                                 verse={visibleVerses.current}
                                 isPlaying={audioState?.currentVerse?.id === visibleVerses.current?.id && audioState?.isPlaying}
                                 onPlayPress={playVerse}
+                                surahVerseCount={verses.length}
                             />
                         </ScrollView>
                     </View>
@@ -413,6 +415,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                                     verse={visibleVerses.next}
                                     isPlaying={false} // Next verse shouldn't show as playing
                                     onPlayPress={playVerse}
+                                    surahVerseCount={verses.length}
                                 />
                             </ScrollView>
                         ) : (

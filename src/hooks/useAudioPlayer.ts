@@ -22,6 +22,14 @@ export const useAudioPlayer = () => {
   // Protect cross-surah transitions from being overwritten by UI updates
   const pendingSurahRef = useRef<number | null>(null);
 
+  // Memorization mode state (range within a single surah, repeating the whole range N times)
+  const memActiveRef = useRef(false);
+  const memSurahRef = useRef<number | null>(null);
+  const memStartRef = useRef<number>(1);
+  const memEndRef = useRef<number>(1);
+  const memCyclesTotalRef = useRef<number>(1); // total times to play the whole range
+  const memCyclesDoneRef = useRef<number>(0); // completed cycles
+
   // Debounced state update to prevent flickering
   const debouncedSetAudioState = (newState: Partial<AudioState>) => {
     if (updateTimeoutRef.current) {
@@ -242,6 +250,57 @@ export const useAudioPlayer = () => {
           if (status.didJustFinish) {
             // Small delay before checking settings to ensure latest values
             setTimeout(async () => {
+              // Memorization mode overrides normal autoplay/play mode
+              if (memActiveRef.current) {
+                const versesArr = allVersesRef.current;
+                const targetSurah = memSurahRef.current;
+                const startNum = memStartRef.current;
+                const endNum = memEndRef.current;
+
+                // If we somehow left the target surah, cancel memorization
+                if (!targetSurah || verse.surahNumber !== targetSurah) {
+                  memActiveRef.current = false;
+                  memCyclesDoneRef.current = 0;
+                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                  return;
+                }
+
+                // Move to next verse within range
+                if (verse.number < endNum) {
+                  const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
+                  if (next) {
+                    await playVerse(next);
+                    return;
+                  }
+                  // If next not found, cancel memorization gracefully
+                  memActiveRef.current = false;
+                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                  return;
+                }
+
+                // Finished the end of the range; either loop the whole range or stop
+                const cyclesDone = memCyclesDoneRef.current + 1;
+                if (cyclesDone < Math.max(1, memCyclesTotalRef.current)) {
+                  memCyclesDoneRef.current = cyclesDone;
+                  const startVerse = versesArr.find(v => v.surahNumber === targetSurah && v.number === startNum);
+                  if (startVerse) {
+                    await playVerse(startVerse);
+                    return;
+                  }
+                  // Start not found; cancel
+                  memActiveRef.current = false;
+                  memCyclesDoneRef.current = 0;
+                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                  return;
+                } else {
+                  // All cycles completed
+                  memActiveRef.current = false;
+                  memCyclesDoneRef.current = 0;
+                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                  return;
+                }
+              }
+
               const mode = settingsRef.current.audioPlayMode;
 
               // Loop current verse immediately
@@ -388,6 +447,67 @@ export const useAudioPlayer = () => {
     }
   };
 
+  // Start memorization over a range within a single surah.
+  // Each verse in the range is repeated `repeatsPerVerse` times, then proceeds to the next.
+  const startMemorization = async (
+    surahNumber: number,
+    startVerseNumber: number,
+    endVerseNumber: number,
+    repeatsForWholeRange: number
+  ) => {
+    try {
+      // Normalize inputs
+      const startNum = Math.max(1, Math.floor(startVerseNumber));
+      let endNum = Math.max(startNum, Math.floor(endVerseNumber));
+      const cycles = Math.max(1, Math.floor(repeatsForWholeRange));
+
+      // Ensure we have the correct surah verses loaded
+      if (!allVersesRef.current.length || allVersesRef.current[0].surahNumber !== surahNumber) {
+        pendingSurahRef.current = surahNumber;
+        const loaded = await loadSurah(surahNumber);
+        pendingSurahRef.current = null;
+        if (!loaded || !loaded.verses.length) {
+          console.warn('Unable to load surah for memorization');
+          return;
+        }
+        setAllVerses(loaded.verses);
+        allVersesRef.current = loaded.verses;
+      }
+
+      // Optional clamp: ensure end doesn't exceed this surah's total verses
+      const versesArr = allVersesRef.current;
+      const maxNumInSurah = versesArr.reduce((max, v) => v.surahNumber === surahNumber ? Math.max(max, v.number) : max, 0);
+      if (maxNumInSurah > 0) {
+        endNum = Math.min(endNum, maxNumInSurah);
+      }
+
+      // Find starting verse
+      const startVerse = versesArr.find(v => v.surahNumber === surahNumber && v.number === startNum);
+      if (!startVerse) {
+        console.warn('Start verse not found for memorization');
+        return;
+      }
+
+      // Initialize memorization state
+      memActiveRef.current = true;
+      memSurahRef.current = surahNumber;
+      memStartRef.current = startNum;
+      memEndRef.current = endNum;
+      memCyclesTotalRef.current = cycles;
+      memCyclesDoneRef.current = 0;
+
+      // Begin playback at start verse
+      await playVerse(startVerse);
+    } catch (error) {
+      console.error('Error starting memorization:', error);
+    }
+  };
+
+  const cancelMemorization = () => {
+    memActiveRef.current = false;
+    memCyclesDoneRef.current = 0;
+  };
+
   return {
     audioState,
     playVerse,
@@ -397,5 +517,7 @@ export const useAudioPlayer = () => {
     togglePlayPause,
     changePlaybackRate,
     setVersesForAutoplay,
+    startMemorization,
+    cancelMemorization,
   };
 };

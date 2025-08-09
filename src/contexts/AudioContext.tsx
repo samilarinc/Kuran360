@@ -11,6 +11,8 @@ interface AudioContextType {
     togglePlayPause: () => Promise<void>;
     changePlaybackRate: (rate: number) => Promise<void>;
     setVersesForAutoplay: (verses: VerseType[]) => void;
+    startMemorization: (surahNumber: number, startVerseNumber: number, endVerseNumber: number, repeatsPerVerse: number) => Promise<void>;
+    cancelMemorization: () => void;
 }
 
 const AudioContext = createContext<AudioContextType | null>(null);
