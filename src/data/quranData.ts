@@ -1,6 +1,7 @@
 import { QuranData, Surah, Verse } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
+import logger from '../utils/logger';
 
 // Remove the direct import of allVerses.json to reduce bundle size
 // import allVerses from './allVerses.json';
@@ -130,7 +131,7 @@ const Storage = {
 
     // Save in chunks
     const chunks = Math.ceil(value.length / CHUNK_SIZE);
-    console.log(`📦 Chunking data into ${chunks} smaller chunks of 1MB each`);
+    logger.debug(`📦 Chunking data into ${chunks} smaller chunks of 1MB each`);
 
     for (let i = 0; i < chunks; i++) {
       const start = i * CHUNK_SIZE;
@@ -209,10 +210,10 @@ export type ProgressCallback = (progress: number, status: string) => void;
 // Function to load verses data from static file or localStorage
 // Load all verses data into memory and localStorage
 export const loadAllVerses = async (progressCallback?: ProgressCallback): Promise<void> => {
-  console.log('📚 loadAllVerses called - allVersesCache exists:', !!allVersesCache, 'cache length:', allVersesCache?.length || 0);
+  logger.debug('📚 loadAllVerses called - allVersesCache exists:', !!allVersesCache, 'cache length:', allVersesCache?.length || 0);
 
   if (allVersesCache && allVersesCache.length > 0) {
-    console.log('✅ Data already loaded, returning early');
+    logger.debug('✅ Data already loaded, returning early');
     progressCallback?.(100, 'Veri zaten yüklü');
     return;
   }
@@ -221,11 +222,11 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
     progressCallback?.(10, 'Cache kontrol ediliyor...');
 
     // Check localStorage first
-    console.log('🔍 Checking localStorage cache...');
+    logger.debug('🔍 Checking localStorage cache...');
     const cachedData = await Storage.getItem(VERSES_CACHE_KEY);
     const cachedVersion = await Storage.getItem(VERSES_VERSION_KEY);
 
-    console.log('📦 Cache status:', {
+    logger.debug('📦 Cache status:', {
       hasCachedData: !!cachedData,
       cachedDataLength: cachedData ? cachedData.length : 0,
       cachedVersion,
@@ -235,9 +236,9 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
 
     if (cachedData && cachedVersion === CURRENT_VERSION) {
       progressCallback?.(50, 'Cache\'ten yükleniyor...');
-      console.log('🚀 Loading from cache...');
+      logger.debug('🚀 Loading from cache...');
       allVersesCache = JSON.parse(cachedData);
-      console.log('✅ Cache loaded successfully, verses count:', allVersesCache!.length);
+      logger.debug('✅ Cache loaded successfully, verses count:', allVersesCache!.length);
       progressCallback?.(100, 'Tamamlandı!');
       return;
     }
@@ -245,14 +246,14 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
     // Clear old cache if version mismatch
     if (cachedData && cachedVersion !== CURRENT_VERSION) {
       progressCallback?.(20, 'Eski cache temizleniyor...');
-      console.log('🧹 Clearing old cache due to version mismatch');
+      logger.debug('🧹 Clearing old cache due to version mismatch');
       await Storage.removeItem(VERSES_CACHE_KEY);
       await Storage.removeItem(VERSES_VERSION_KEY);
     }
 
     // Load from server if no cache or version mismatch
     progressCallback?.(30, 'Sunucudan indiriliyor...');
-    console.log('📡 Loading from server...');
+    logger.debug('📡 Loading from server...');
     const response = await fetch('/allVerses.json');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -260,7 +261,7 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
 
     progressCallback?.(60, 'Veri işleniyor...');
     const data = await response.json();
-    console.log('📥 Data loaded from server, size:', JSON.stringify(data).length);
+    logger.debug('📥 Data loaded from server, size:', JSON.stringify(data).length);
 
     // Convert object to array if needed
     const versesArray = Array.isArray(data) ? data : Object.values(data);
@@ -268,12 +269,12 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
     allVersesCache = versesArray;
 
     progressCallback?.(80, 'Cache\'e kaydediliyor...');
-    console.log('💾 Saving to cache...');
+    logger.debug('💾 Saving to cache...');
     try {
       // Cache the data
       await Storage.setItem(VERSES_CACHE_KEY, JSON.stringify(versesArray));
       await Storage.setItem(VERSES_VERSION_KEY, CURRENT_VERSION);
-      console.log('✅ Data cached successfully, verses count:', versesArray.length);
+      logger.debug('✅ Data cached successfully, verses count:', versesArray.length);
       progressCallback?.(100, 'Başarıyla tamamlandı!');
     } catch (cacheError) {
       console.warn('⚠️ Failed to cache data, but continuing with loaded data:', cacheError);

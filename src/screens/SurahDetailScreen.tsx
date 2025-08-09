@@ -19,6 +19,7 @@ import { useTheme, Theme } from '../contexts/ThemeContext';
 import { Surah, Verse as VerseType } from '../types';
 import { loadSurah } from '../data/quranData';
 import { FONT_SIZES, SPACING } from '../constants';
+import logger from '../utils/logger';
 
 interface SurahDetailScreenProps {
   route: {
@@ -163,7 +164,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
     // Don't auto-play on verse change in paginated view
     // Users can manually tap the play button if they want to hear the verse
-    console.log('Verse changed to:', verseIndex + 1, 'in surah:', surah.number);
+    logger.debug('Verse changed to:', verseIndex + 1, 'in surah:', surah.number);
     // Persist current index so PaginatedVerseView remounts won't reset to 0
     setCurrentPaginatedIndex(verseIndex);
   };
@@ -176,7 +177,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       surahVerseCount={surah.verses.length > 0 ? surah.verses.length : surah.verseCount}
     />
   );
-  console.log('Count: ', surah.verses.length, surah.verseCount);
+  logger.debug('Count: ', surah.verses.length, surah.verseCount);
 
   // Memoize toggle handlers to prevent unnecessary re-renders
   const handleAutoplayToggle = useCallback((enabled: boolean) => {

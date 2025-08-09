@@ -1,4 +1,5 @@
 import { Verse } from '../types';
+import logger from './logger';
 
 class AudioManager {
     private currentVerse: Verse | null = null;
@@ -8,7 +9,7 @@ class AudioManager {
         try {
             this.currentVerse = verse;
             this.isPlaying = true;
-            console.log(`Playing verse: ${verse.audioFileName}`);
+            logger.debug(`Playing verse: ${verse.audioFileName}`);
             // TODO: Implement with Expo AV
         } catch (error) {
             console.error('Error playing verse:', error);
@@ -19,7 +20,7 @@ class AudioManager {
     async pause(): Promise<void> {
         try {
             this.isPlaying = false;
-            console.log('Pausing audio');
+            logger.debug('Pausing audio');
             // TODO: Implement with Expo AV
         } catch (error) {
             console.error('Error pausing audio:', error);
@@ -30,7 +31,7 @@ class AudioManager {
     async resume(): Promise<void> {
         try {
             this.isPlaying = true;
-            console.log('Resuming audio');
+            logger.debug('Resuming audio');
             // TODO: Implement with Expo AV
         } catch (error) {
             console.error('Error resuming audio:', error);
@@ -42,7 +43,7 @@ class AudioManager {
         try {
             this.isPlaying = false;
             this.currentVerse = null;
-            console.log('Stopping audio');
+            logger.debug('Stopping audio');
             // TODO: Implement with Expo AV
         } catch (error) {
             console.error('Error stopping audio:', error);

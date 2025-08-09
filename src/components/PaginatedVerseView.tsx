@@ -16,6 +16,7 @@ import { Verse as VerseType } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
+import logger from '../utils/logger';
 import { FONT_SIZES, SPACING } from '../constants';
 
 const getScreenDimensions = () => Dimensions.get('window');
@@ -75,10 +76,10 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
             initialIndexRef.current = initialVerseIndex ?? 0;
             const validIndex = Math.max(0, Math.min(initialIndexRef.current, verses.length - 1));
             if (currentVerseIndex !== validIndex) {
-                console.log('PaginatedVerseView: init for surah', currentSurahNumber, '-> verse index', validIndex, '(len:', verses.length, ')');
+                logger.debug('PaginatedVerseView: init for surah', currentSurahNumber, '-> verse index', validIndex, '(len:', verses.length, ')');
                 setCurrentVerseIndex(validIndex);
             } else {
-                console.log('PaginatedVerseView: init skipped; already at index', currentVerseIndex, 'for surah', currentSurahNumber);
+                logger.debug('PaginatedVerseView: init skipped; already at index', currentVerseIndex, 'for surah', currentSurahNumber);
             }
             lastInitializedSurah.current = currentSurahNumber;
             setIsInitialized(true);
@@ -88,7 +89,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
     useEffect(() => {
         // Only call onVerseChange when the verse actually changes after initialization
         if (isInitialized && onVerseChange) {
-            console.log('PaginatedVerseView: Calling onVerseChange with index', currentVerseIndex);
+            logger.debug('PaginatedVerseView: Calling onVerseChange with index', currentVerseIndex);
             onVerseChange(currentVerseIndex);
         }
     }, [currentVerseIndex]); // Only depend on currentVerseIndex
@@ -118,7 +119,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
 
                 // Only navigate if the playing verse is different from current verse
                 if (playingVerseIndex !== -1 && playingVerseIndex !== currentVerseIndex) {
-                    console.log('PaginatedVerseView: Auto-following audio from verse', currentVerseIndex, 'to', playingVerseIndex);
+                    logger.debug('PaginatedVerseView: Auto-following audio from verse', currentVerseIndex, 'to', playingVerseIndex);
                     setCurrentVerseIndex(playingVerseIndex);
                 }
             }, 300); // Increased to 300ms debounce for better stability

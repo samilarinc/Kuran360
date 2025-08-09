@@ -3,6 +3,7 @@ import { Audio } from 'expo-av';
 import { Verse as VerseType, AudioState } from '../types';
 import { loadSurah } from '../data/quranData';
 import { useSettings } from '../contexts/SettingsContext';
+import logger from '../utils/logger';
 
 export const useAudioPlayer = () => {
   const { settings, availableReciters } = useSettings();
@@ -74,7 +75,7 @@ export const useAudioPlayer = () => {
     const playingSurah = audioState.currentVerse?.surahNumber;
     const pending = pendingSurahRef.current;
 
-    console.log('🔄 setVersesForAutoplay called:', {
+    logger.debug('🔄 setVersesForAutoplay called:', {
       targetSurah,
       playingSurah,
       pendingTransition: pending,
@@ -91,11 +92,11 @@ export const useAudioPlayer = () => {
       || (pending === null && playingSurah === targetSurah);
 
     if (canAccept) {
-      console.log('✅ setVersesForAutoplay ACCEPTED for surah', targetSurah);
+      logger.debug('✅ setVersesForAutoplay ACCEPTED for surah', targetSurah);
       setAllVerses(verses);
       allVersesRef.current = verses;
     } else {
-      console.log('❌ setVersesForAutoplay REJECTED:', {
+      logger.debug('❌ setVersesForAutoplay REJECTED:', {
         playingSurah,
         targetSurah,
         pendingTransition: pending,
@@ -106,12 +107,12 @@ export const useAudioPlayer = () => {
   const playNextVerse = (currentVerse?: VerseType) => {
     // Use the passed verse or fall back to state
     const verseToUse = currentVerse || audioState.currentVerse;
-    console.log(`Attempting to play next verse. Current verse ID: ${verseToUse?.id}`);
+    logger.debug(`Attempting to play next verse. Current verse ID: ${verseToUse?.id}`);
 
     // Use ref to get current settings value (avoid closure issues)
     const versesArr = allVersesRef.current;
     if (!settingsRef.current.autoplayEnabled || !verseToUse || !versesArr.length) {
-      console.log('Autoplay conditions not met:', {
+      logger.debug('Autoplay conditions not met:', {
         autoplayEnabled: settingsRef.current.autoplayEnabled,
         hasCurrentVerse: !!verseToUse,
         hasAllVerses: versesArr.length > 0
@@ -121,24 +122,24 @@ export const useAudioPlayer = () => {
 
     const currentIndex = versesArr.findIndex(v => v.id === verseToUse.id);
     const nextIndex = currentIndex + 1;
-    console.log(`Autoplay: Current index ${currentIndex}, moving to next index ${nextIndex}`);
+    logger.debug(`Autoplay: Current index ${currentIndex}, moving to next index ${nextIndex}`);
 
     // If current verse is not in the allVerses array (index -1), don't try to play next
     if (currentIndex === -1) {
-      console.log('Current verse not found in allVerses array, skipping autoplay');
+      logger.debug('Current verse not found in allVerses array, skipping autoplay');
       return;
     }
 
     if (nextIndex < versesArr.length) {
       const nextVerse = versesArr[nextIndex];
-      console.log(`Next verse found: ${nextVerse.id} (Surah ${nextVerse.surahNumber}, Verse ${nextVerse.number})`);
+      logger.debug(`Next verse found: ${nextVerse.id} (Surah ${nextVerse.surahNumber}, Verse ${nextVerse.number})`);
       playVerse(nextVerse);
     } else {
-      console.log('Reached end of surah');
+      logger.debug('Reached end of surah');
       const mode = settingsRef.current.audioPlayMode;
       if (mode === 'loopSurah') {
         const firstVerse = versesArr[0];
-        console.log('Looping surah from the beginning');
+        logger.debug('Looping surah from the beginning');
         playVerse(firstVerse);
       } else if (mode === 'nextSurah') {
         const currentSurah = verseToUse.surahNumber;
@@ -147,7 +148,7 @@ export const useAudioPlayer = () => {
           // Build a verse object for 1st verse of next surah using existing data if present; otherwise, minimal stub until load
           const firstOfNext = versesArr.find(v => v.surahNumber === nextSurah && v.number === 1);
           if (firstOfNext) {
-            console.log('Continuing to next surah, verse 1');
+            logger.debug('Continuing to next surah, verse 1');
             playVerse(firstOfNext);
           } else {
             // Load next surah verses and continue
@@ -155,7 +156,7 @@ export const useAudioPlayer = () => {
               try {
                 // Keep UI visible while fetching next surah
                 setAudioState(prev => ({ ...prev, isLoading: true }));
-                console.log('Loading next surah', nextSurah, 'for continuous playback');
+                logger.debug('Loading next surah', nextSurah, 'for continuous playback');
                 pendingSurahRef.current = nextSurah;
                 const loaded = await loadSurah(nextSurah);
                 if (loaded && loaded.verses.length > 0) {
@@ -164,7 +165,7 @@ export const useAudioPlayer = () => {
                   await playVerse(loaded.verses[0]);
                   pendingSurahRef.current = null;
                 } else {
-                  console.log('Failed to load next surah or no verses; stopping');
+                  logger.debug('Failed to load next surah or no verses; stopping');
                   pendingSurahRef.current = null;
                   stop();
                 }
@@ -176,15 +177,15 @@ export const useAudioPlayer = () => {
             })();
           }
         } else {
-          console.log('No next surah exists; stopping');
+          logger.debug('No next surah exists; stopping');
           stop();
         }
       } else if (mode === 'stopAtEnd') {
-        console.log('Stopping at end of surah per mode');
+        logger.debug('Stopping at end of surah per mode');
         stop();
       } else if (mode === 'loopVerse') {
         const firstVerse = versesArr[currentIndex];
-        console.log('Looping current verse');
+        logger.debug('Looping current verse');
         playVerse(firstVerse);
       } else {
         stop();
@@ -222,7 +223,7 @@ export const useAudioPlayer = () => {
       };
 
       const audioUri = `${getBaseUrl()}/${getReciterFolder()}/${audioFileName}`;
-      console.log(`Attempting to load audio from: ${audioUri}`);
+      logger.debug(`Attempting to load audio from: ${audioUri}`);
 
       // Load and play the audio file
       const { sound: newSound } = await Audio.Sound.createAsync(
@@ -341,7 +342,7 @@ export const useAudioPlayer = () => {
                       // CRITICAL: Update allVerses BEFORE playing to avoid index -1 lookup
                       setAllVerses(loaded.verses);
                       allVersesRef.current = loaded.verses;
-                      console.log('Updated allVerses to next surah in finish handler, length:', loaded.verses.length);
+                      logger.debug('Updated allVerses to next surah in finish handler, length:', loaded.verses.length);
                       await playVerse(loaded.verses[0]);
                     } else {
                       setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
@@ -370,7 +371,7 @@ export const useAudioPlayer = () => {
         isLoading: false,
       }));
 
-      console.log(`Successfully loaded and playing: ${audioFileName} for verse ${verse.id}`);
+      logger.debug(`Successfully loaded and playing: ${audioFileName} for verse ${verse.id}`);
 
     } catch (error) {
       console.error('Error playing audio:', error);
@@ -440,7 +441,7 @@ export const useAudioPlayer = () => {
     if (sound) {
       try {
         await sound.setRateAsync(rate, true);
-        console.log(`Playback rate changed to: ${rate}x`);
+        logger.debug(`Playback rate changed to: ${rate}x`);
       } catch (error) {
         console.error('Error changing playback rate:', error);
       }

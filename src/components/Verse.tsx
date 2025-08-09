@@ -8,6 +8,7 @@ import {
 import { Verse as VerseType } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
+import logger from '../utils/logger';
 import { FONT_SIZES, SPACING } from '../constants';
 import { useGlobalAudio } from '../contexts/AudioContext';
 
@@ -25,7 +26,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   const [memOpen, setMemOpen] = useState(false);
   const maxEnd = useMemo(() => {
     // Cap strictly to provided surah count; if missing, default to current verse (no growth)
-    console.log('Surah verse count:', surahVerseCount, verse.number);
+    logger.debug('Surah verse count:', surahVerseCount, verse.number);
     return surahVerseCount && surahVerseCount > 0 ? surahVerseCount : verse.number;
   }, [surahVerseCount, verse.number]);
   const [endVerse, setEndVerse] = useState<number>(Math.min(verse.number, maxEnd));
