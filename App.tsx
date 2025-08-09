@@ -56,6 +56,18 @@ const App: React.FC = () => {
             } catch { }
           };
           ensureFavicon();
+
+          // Inject Arabic-capable fonts for better shaping on Linux Chrome
+          try {
+            const fontLinkId = 'arabic-fonts';
+            if (!doc.getElementById(fontLinkId)) {
+              const linkEl = doc.createElement('link');
+              linkEl.id = fontLinkId;
+              linkEl.rel = 'stylesheet';
+              linkEl.href = 'https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap';
+              doc.head && doc.head.appendChild(linkEl);
+            }
+          } catch { }
         }
         if (win) {
           const handler = () => { try { if (doc) doc.title = 'Kuran360'; } catch { } };

@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import { Verse as VerseType } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
@@ -234,6 +235,13 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     textAlign: 'right',
     color: theme.text,
     fontWeight: '600',
+    // Ensure correct Arabic shaping & direction on web (especially Chrome/Linux)
+    writingDirection: 'rtl',
+    // Use high-quality Arabic fonts on web; fall back to system if unavailable
+    fontFamily: Platform.select({
+      web: '"Scheherazade New", "Noto Naskh Arabic", Amiri, serif',
+      default: undefined as any,
+    }),
   },
   translationText: {
     fontSize: FONT_SIZES.translation,
@@ -296,6 +304,11 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     color: theme.text,
     fontWeight: '600',
     textAlign: 'center',
+    writingDirection: 'rtl',
+    fontFamily: Platform.select({
+      web: '"Scheherazade New", "Noto Naskh Arabic", Amiri, serif',
+      default: undefined as any,
+    }),
   },
   wordTranslation: {
     fontSize: FONT_SIZES.small - 2,
