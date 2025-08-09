@@ -114,7 +114,11 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       const url = buildUrl(route);
       const windowObj = getWindow();
       if (windowObj && windowObj.history) {
-        windowObj.history.pushState(null, '', url);
+        try {
+          const doc = (globalThis as any).document;
+          if (doc) doc.title = 'Kuran360';
+        } catch { }
+        windowObj.history.pushState(null, 'Kuran360', url);
       }
     }
   }, [buildUrl]);
@@ -246,7 +250,11 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       const url = buildUrl(route);
       const windowObj = getWindow();
       if (windowObj && windowObj.history) {
-        windowObj.history.replaceState(null, '', url);
+        try {
+          const doc = (globalThis as any).document;
+          if (doc) doc.title = 'Kuran360';
+        } catch { }
+        windowObj.history.replaceState(null, 'Kuran360', url);
       }
     }
   }, [buildUrl]);
@@ -269,6 +277,20 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   };
 
   const currentRoute = navigationHistory[currentIndex];
+
+  // Ensure the web document title is always 'Kuran360'
+  useEffect(() => {
+    if (Platform.OS === 'web') {
+      try {
+        const doc = (globalThis as any).document;
+        if (doc && doc.title !== 'Kuran360') {
+          doc.title = 'Kuran360';
+        }
+      } catch {
+        // no-op
+      }
+    }
+  }, [currentIndex, navigationHistory]);
 
   if (isLoadingRoute) {
     return (
@@ -299,7 +321,11 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   };
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      documentTitle={{
+        formatter: () => 'Kuran360',
+      }}
+    >
       <NavigationProvider value={navHelpers}>
         <ScreenWrapper>
           {currentRoute.screen === 'Home' ? (

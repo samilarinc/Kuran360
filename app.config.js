@@ -1,6 +1,6 @@
 export default {
     expo: {
-        name: "QuranApp",
+        name: "Kuran360",
         slug: "quranapp",
         version: "1.0.0",
         orientation: "portrait",
@@ -24,7 +24,8 @@ export default {
             }
         },
         web: {
-            favicon: "./assets/favicon.png"
+            favicon: "./assets/favicon.png",
+            name: "Kuran360"
         },
         plugins: [
             "expo-asset"

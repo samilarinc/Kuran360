@@ -7,6 +7,7 @@ import { AudioProvider } from './src/contexts/AudioContext';
 import { StatusBarManager } from './src/components/StatusBarManager';
 import { COLORS } from './src/constants';
 import { isDataCached } from './src/data/quranData';
+import { Platform } from 'react-native';
 
 const App: React.FC = () => {
   const [isAppReady, setIsAppReady] = useState(false);
@@ -26,6 +27,22 @@ const App: React.FC = () => {
     };
 
     checkDataAvailability();
+  }, []);
+
+  // Web-only: keep document title pinned to 'Kuran360'
+  useEffect(() => {
+    if (Platform.OS === 'web') {
+      const win: any = (globalThis as any).window;
+      const doc: any = (globalThis as any).document;
+      try {
+        if (doc) doc.title = 'Kuran360';
+        if (win) {
+          const handler = () => { try { if (doc) doc.title = 'Kuran360'; } catch { } };
+          win.addEventListener('popstate', handler);
+          return () => win.removeEventListener('popstate', handler);
+        }
+      } catch { }
+    }
   }, []);
 
   if (!isAppReady) {
