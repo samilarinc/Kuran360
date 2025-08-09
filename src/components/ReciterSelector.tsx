@@ -19,9 +19,9 @@ export const ReciterSelector: React.FC = () => {
 
     return (
         <View style={createStyles(theme).container}>
-            <Text style={createStyles(theme).sectionTitle}>Qari Seçimi</Text>
+            <Text style={createStyles(theme).sectionTitle}>Okuyucu Seçimi</Text>
             <Text style={createStyles(theme).sectionDescription}>
-                Ses dosyalarını okuyacak qariyi seçin
+                Ses dosyalarını okuyacak okuyucuyu seçin
             </Text>
             <View style={createStyles(theme).reciterContainer}>
                 {availableReciters.map((reciter) => (
