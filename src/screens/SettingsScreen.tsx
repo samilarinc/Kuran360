@@ -313,8 +313,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 title="Ayarlar"
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
-                showLogo={true}
-                onLogoPress={() => navigation.navigate('Main')}
             />
 
             <ScrollView

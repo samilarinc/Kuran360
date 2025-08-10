@@ -45,6 +45,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
     const [surahFilter, setSurahFilter] = useState<SurahFilter>('all');
     const [selectedSurah, setSelectedSurah] = useState<number | null>(null);
     const [showSpecificSurah, setShowSpecificSurah] = useState(false);
+    const [showTranslationDropdown, setShowTranslationDropdown] = useState(false);
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
     const [isSearching, setIsSearching] = useState(false);
     const [expandedFilters, setExpandedFilters] = useState(false);
@@ -322,24 +323,58 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
             <View style={createStyles(theme).selectorContainer}>
                 <Text style={createStyles(theme).selectorTitle}>Meal Seçimi:</Text>
                 <View style={createStyles(theme).selectorGrid}>
-                    {availableTranslations.map((translation) => (
-                        <TouchableOpacity
-                            key={translation}
-                            style={[
-                                createStyles(theme).selectorOption,
-                                selectedTranslation === translation && createStyles(theme).selectorOptionSelected
-                            ]}
-                            onPress={() => setSelectedTranslation(translation)}
-                        >
-                            <Text style={[
-                                createStyles(theme).selectorOptionText,
-                                selectedTranslation === translation && createStyles(theme).selectorOptionTextSelected
-                            ]}>
-                                {translation.length > 15 ? translation.substring(0, 15) + '...' : translation}
-                            </Text>
-                        </TouchableOpacity>
-                    ))}
+                    <TouchableOpacity
+                        style={[
+                            createStyles(theme).selectorOption,
+                            createStyles(theme).selectorOptionSelected,
+                        ]}
+                        onPress={() => setShowTranslationDropdown(!showTranslationDropdown)}
+                    >
+                        <Text style={[
+                            createStyles(theme).selectorOptionText,
+                            createStyles(theme).selectorOptionTextSelected,
+                        ]}>
+                            Seçili Meal {selectedTranslation ? `(${selectedTranslation.length > 20 ? selectedTranslation.substring(0, 20) + '...' : selectedTranslation})` : ''}
+                        </Text>
+                        <Text style={createStyles(theme).toggleIcon}>
+                            {showTranslationDropdown ? '▲' : '▼'}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
+
+                {showTranslationDropdown && (
+                    <View style={createStyles(theme).surahDropdown}>
+                        <ScrollView
+                            style={{ maxHeight: 200 }}
+                            showsVerticalScrollIndicator={true}
+                            nestedScrollEnabled
+                            keyboardShouldPersistTaps="handled"
+                        >
+                            <View style={createStyles(theme).selectorGrid}>
+                                {availableTranslations.map((translation) => (
+                                    <TouchableOpacity
+                                        key={translation}
+                                        style={[
+                                            createStyles(theme).selectorOption,
+                                            selectedTranslation === translation && createStyles(theme).selectorOptionSelected
+                                        ]}
+                                        onPress={() => {
+                                            setSelectedTranslation(translation);
+                                            setShowTranslationDropdown(false);
+                                        }}
+                                    >
+                                        <Text style={[
+                                            createStyles(theme).selectorOptionText,
+                                            selectedTranslation === translation && createStyles(theme).selectorOptionTextSelected
+                                        ]}>
+                                            {translation.length > 15 ? translation.substring(0, 15) + '...' : translation}
+                                        </Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                        </ScrollView>
+                    </View>
+                )}
             </View>
         );
     };
@@ -391,7 +426,12 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
 
             {showSpecificSurah && (
                 <View style={createStyles(theme).surahDropdown}>
-                    <ScrollView style={{ maxHeight: 200 }} showsVerticalScrollIndicator={true}>
+                    <ScrollView
+                        style={{ maxHeight: 200 }}
+                        showsVerticalScrollIndicator={true}
+                        nestedScrollEnabled
+                        keyboardShouldPersistTaps="handled"
+                    >
                         <View style={createStyles(theme).selectorGrid}>
                             {quranData.surahs.map((surah) => (
                                 <TouchableOpacity
@@ -508,11 +548,15 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
                 title="Kuranda Ara"
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
-                showLogo={true}
-                onLogoPress={() => navigation.navigate('Main')}
             />
 
-            <View style={createStyles(theme).content}>
+            <ScrollView
+                style={createStyles(theme).content}
+                contentContainerStyle={{ padding: SPACING.lg }}
+                keyboardShouldPersistTaps="handled"
+                nestedScrollEnabled
+                showsVerticalScrollIndicator={false}
+            >
                 {/* Search Input */}
                 <View style={createStyles(theme).searchContainer}>
                     <TextInput
@@ -600,14 +644,11 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
                         {searchQuery.length >= 2 ? `${searchResults.length} sonuç bulundu` : 'Aramak için en az 2 karakter girin'}
                     </Text>
 
-                    <ScrollView
-                        style={createStyles(theme).resultsList}
-                        showsVerticalScrollIndicator={false}
-                    >
+                    <View>
                         {searchResults.map(renderSearchResult)}
-                    </ScrollView>
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };

@@ -202,8 +202,6 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             subtitle={`${surah.turkishName || surah.name} • ${surah.verseCount} ayet • ${surah.revelationPlace}`}
             showBackButton={true}
             onBackPress={() => navigation.goBack()}
-            showLogo={true}
-            onLogoPress={() => navigation.navigate('Main')}
             autoplayToggle={
               <AutoplayToggle
                 isEnabled={settings.autoplayEnabled}

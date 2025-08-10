@@ -34,12 +34,12 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
 
                     <TouchableOpacity
                         style={styles.infoRow}
-                        onPress={() => Linking.openURL('mailto:msarinc@gmail.com')}
+                        onPress={() => Linking.openURL('mailto:test@gmail.com')}
                         activeOpacity={0.7}
                     >
                         <Octicons name="mail" size={18} color={theme.primary} style={{ marginRight: SPACING.sm }} />
                         <Text style={[styles.infoText, { color: theme.text }]}>
-                            msarinc@gmail.com
+                            test@gmail.com
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
