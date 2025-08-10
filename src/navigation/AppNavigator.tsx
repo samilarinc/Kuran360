@@ -6,6 +6,7 @@ import { MainScreen } from '../screens/MainScreen';
 import { SurahDetailScreen } from '../screens/SurahDetailScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { SearchScreen } from '../screens/SearchScreen';
+import { AboutScreen } from '../screens/AboutScreen';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
@@ -30,10 +31,11 @@ export type RootStackParamList = {
   SurahDetail: { surah: Surah };
   Settings: undefined;
   Search: undefined;
+  About: undefined;
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -75,6 +77,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return '/';
       case 'Home':
         return '/surahs';
+      case 'About':
+        return '/about';
       default:
         return '/';
     }
@@ -91,7 +95,13 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
     if (pathname === '/surahs') {
       return { screen: 'Home' };
-    }    // Check for verse-specific URLs: /surah/1/verse/3
+    }
+
+    if (pathname === '/about') {
+      return { screen: 'About' };
+    }
+
+    // Check for verse-specific URLs: /surah/1/verse/3
     const verseMatch = pathname.match(/^\/surah\/(\d+)\/verse\/(\d+)$/);
     if (verseMatch) {
       const surahNumber = parseInt(verseMatch[1], 10);
@@ -230,7 +240,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, []); // Remove dependencies to prevent infinite loop
 
   const navigation = {
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search', params?: { surah: Surah }) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About', params?: { surah: Surah }) => {
       const route: NavigationHistoryItem = { screen, params };
       navigateToRoute(route, true);
     },
@@ -361,6 +371,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
             <SettingsScreen navigation={navigation} />
           ) : currentRoute.screen === 'Search' ? (
             <SearchScreen navigation={navigation} />
+          ) : currentRoute.screen === 'About' ? (
+            <AboutScreen navigation={navigation} />
           ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
             <SurahDetailScreen
               navigation={navigation}

@@ -13,7 +13,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -55,6 +55,14 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             icon: '⚙️',
             color: '#6A1B9A',
             onPress: () => onNavigate('Settings'),
+        },
+        {
+            id: 'about',
+            title: 'Hakkında',
+            subtitle: 'Uygulama hakkında',
+            icon: 'ℹ️',
+            color: '#00897B',
+            onPress: () => onNavigate('About'),
         },
     ];
 
