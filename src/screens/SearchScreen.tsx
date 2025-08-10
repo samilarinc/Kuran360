@@ -73,7 +73,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
     // Save search to history
     const saveSearchToHistory = useCallback(async (query: string) => {
         if (!query.trim() || query.length < 2) return;
-        
+
         try {
             const newHistory = [query, ...searchHistory.filter(h => h !== query)].slice(0, 10); // Keep last 10 searches
             setSearchHistory(newHistory);
@@ -162,7 +162,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
 
         // Check if query is similar enough to any substring of text
         const maxDistance = Math.floor(cleanQuery.length * 0.3); // Allow 30% character differences
-        
+
         if (cleanQuery.length >= 4) { // Only apply fuzzy matching for longer queries
             for (let i = 0; i <= cleanText.length - cleanQuery.length; i++) {
                 const substring = cleanText.substr(i, cleanQuery.length);
@@ -366,7 +366,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
                         Tüm Sureler
                     </Text>
                 </TouchableOpacity>
-                
+
                 <TouchableOpacity
                     style={[
                         createStyles(theme).selectorOption,
@@ -388,7 +388,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
             </View>
-            
+
             {showSpecificSurah && (
                 <View style={createStyles(theme).surahDropdown}>
                     <ScrollView style={{ maxHeight: 200 }} showsVerticalScrollIndicator={true}>
@@ -427,9 +427,9 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
         const parts = text.split(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
         return (
             <Text style={createStyles(theme).resultText}>
-                {parts.map((part, index) => 
-                    part.toLowerCase() === query.toLowerCase() ? 
-                        <Text key={index} style={createStyles(theme).highlightedText}>{part}</Text> : 
+                {parts.map((part, index) =>
+                    part.toLowerCase() === query.toLowerCase() ?
+                        <Text key={index} style={createStyles(theme).highlightedText}>{part}</Text> :
                         <Text key={index}>{part}</Text>
                 )}
             </Text>
@@ -449,25 +449,25 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
                 style={createStyles(theme).resultItem}
                 onPress={handleResultPress}
             >
-            <View style={createStyles(theme).resultHeader}>
-                <Text style={createStyles(theme).resultSurahInfo}>
-                    {result.surah.turkishName || result.surah.name} - Ayet {result.verse.number}
-                </Text>
-                <Text style={createStyles(theme).resultMatchType}>
-                    {result.matchedField === 'arabic' ? '🔤 Arapça' :
-                        result.matchedField === 'transliteration' ? '📝 Okunuş' :
-                            `📖 ${result.translationName || 'Meal'}`}
-                </Text>
-            </View>
+                <View style={createStyles(theme).resultHeader}>
+                    <Text style={createStyles(theme).resultSurahInfo}>
+                        {result.surah.turkishName || result.surah.name} - Ayet {result.verse.number}
+                    </Text>
+                    <Text style={createStyles(theme).resultMatchType}>
+                        {result.matchedField === 'arabic' ? '🔤 Arapça' :
+                            result.matchedField === 'transliteration' ? '📝 Okunuş' :
+                                `📖 ${result.translationName || 'Meal'}`}
+                    </Text>
+                </View>
 
-            {result.matchedField === 'arabic' && (
-                <Text style={createStyles(theme).resultArabic}>
-                    {result.verse.arabicText}
-                </Text>
-            )}
+                {result.matchedField === 'arabic' && (
+                    <Text style={createStyles(theme).resultArabic}>
+                        {result.verse.arabicText}
+                    </Text>
+                )}
 
-            {highlightMatch(result.matchedText, searchQuery)}
-        </TouchableOpacity>
+                {highlightMatch(result.matchedText, searchQuery)}
+            </TouchableOpacity>
         );
     };
 
@@ -508,6 +508,8 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
                 title="Kuranda Ara"
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
+                showLogo={true}
+                onLogoPress={() => navigation.navigate('Main')}
             />
 
             <View style={createStyles(theme).content}>
@@ -553,7 +555,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
                         {renderSearchScopeSelector()}
                         {renderTranslationSelector()}
                         {renderSurahFilter()}
-                        
+
                         {/* Fuzzy Search Toggle */}
                         <View style={createStyles(theme).selectorContainer}>
                             <Text style={createStyles(theme).selectorTitle}>Arama Tipi:</Text>
@@ -572,7 +574,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
                                         🎯 Kesin Eşleşme
                                     </Text>
                                 </TouchableOpacity>
-                                
+
                                 <TouchableOpacity
                                     style={[
                                         createStyles(theme).selectorOption,

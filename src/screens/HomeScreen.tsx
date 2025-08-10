@@ -142,6 +142,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       <HeaderWithDarkModeToggle
         title="القرآن الكريم"
         subtitle="Kur'an-ı Kerim"
+        showLogo={true}
+        onLogoPress={() => navigation.navigate('Main')}
         showSettingsButton={true}
         onSettingsPress={() => navigation.navigate('Settings')}
         showSearchButton={true}

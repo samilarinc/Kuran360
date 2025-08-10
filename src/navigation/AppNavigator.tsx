@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { Platform, View, ActivityIndicator } from 'react-native';
 import { HomeScreen } from '../screens/HomeScreen';
+import { MainScreen } from '../screens/MainScreen';
 import { SurahDetailScreen } from '../screens/SurahDetailScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { SearchScreen } from '../screens/SearchScreen';
@@ -24,6 +25,7 @@ const getWindow = (): any => {
 };
 
 export type RootStackParamList = {
+  Main: undefined;
   Home: undefined;
   SurahDetail: { surah: Surah };
   Settings: undefined;
@@ -31,7 +33,7 @@ export type RootStackParamList = {
 };
 
 type NavigationHistoryItem = {
-  screen: 'Home' | 'SurahDetail' | 'Settings' | 'Search';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -41,7 +43,7 @@ type NavigationHistoryItem = {
 
 export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAvailable }) => {
   const [navigationHistory, setNavigationHistory] = useState<NavigationHistoryItem[]>([
-    { screen: 'Home' }
+    { screen: 'Main' }
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoadingRoute, setIsLoadingRoute] = useState(false);
@@ -59,6 +61,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
   const buildUrl = useCallback((route: NavigationHistoryItem): string => {
     switch (route.screen) {
+      case 'Main':
+        return '/';
       case 'Settings':
         return '/settings';
       case 'Search':
@@ -69,6 +73,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
           return route.params.verseIndex !== undefined ? `${baseUrl}/verse/${route.params.verseIndex + 1}` : baseUrl;
         }
         return '/';
+      case 'Home':
+        return '/surahs';
       default:
         return '/';
     }
@@ -78,12 +84,14 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     if (pathname === '/settings') {
       return { screen: 'Settings' };
     }
-    
+
     if (pathname === '/search') {
       return { screen: 'Search' };
     }
 
-    // Check for verse-specific URLs: /surah/1/verse/3
+    if (pathname === '/surahs') {
+      return { screen: 'Home' };
+    }    // Check for verse-specific URLs: /surah/1/verse/3
     const verseMatch = pathname.match(/^\/surah\/(\d+)\/verse\/(\d+)$/);
     if (verseMatch) {
       const surahNumber = parseInt(verseMatch[1], 10);
@@ -114,7 +122,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       }
     }
 
-    return pathname === '/' || pathname === '' ? { screen: 'Home' } : null;
+    return pathname === '/' || pathname === '' ? { screen: 'Main' } : null;
   }, []);
 
   const updateUrl = useCallback((route: NavigationHistoryItem) => {
@@ -222,7 +230,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, []); // Remove dependencies to prevent infinite loop
 
   const navigation = {
-    navigate: (screen: 'Home' | 'SurahDetail' | 'Settings' | 'Search', params?: { surah: Surah }) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search', params?: { surah: Surah }) => {
       const route: NavigationHistoryItem = { screen, params };
       navigateToRoute(route, true);
     },
@@ -336,7 +344,13 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     >
       <NavigationProvider value={navHelpers}>
         <ScreenWrapper>
-          {currentRoute.screen === 'Home' ? (
+          {currentRoute.screen === 'Main' ? (
+            <MainScreen
+              onNavigate={(screen) => {
+                navigation.navigate(screen);
+              }}
+            />
+          ) : currentRoute.screen === 'Home' ? (
             <HomeScreen
               navigation={navigation}
               onSurahSelect={handleSurahSelect}
@@ -354,11 +368,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               updateVerseUrl={updateVerseUrl}
             />
           ) : (
-            <HomeScreen
-              navigation={navigation}
-              onSurahSelect={handleSurahSelect}
-              lastSelectedSurah={currentRoute.params?.lastSelectedSurah}
-              isDataAvailable={isDataAvailable}
+            <MainScreen
+              onNavigate={(screen) => {
+                navigation.navigate(screen);
+              }}
             />
           )}
         </ScreenWrapper>

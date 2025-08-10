@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
 
@@ -12,6 +12,8 @@ interface HeaderWithDarkModeToggleProps {
   onSettingsPress?: () => void;
   showSearchButton?: boolean;
   onSearchPress?: () => void;
+  showLogo?: boolean;
+  onLogoPress?: () => void;
   autoplayToggle?: React.ReactNode;
   children?: React.ReactNode;
 }
@@ -25,6 +27,8 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
   onSettingsPress,
   showSearchButton = false,
   onSearchPress,
+  showLogo = false,
+  onLogoPress,
   autoplayToggle,
   children,
 }) => {
@@ -112,6 +116,29 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
       alignItems: 'center',
       paddingHorizontal: SPACING.lg,
     },
+    logoContainer: {
+      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      borderRadius: 16,
+      padding: 6,
+      minWidth: 32,
+      alignItems: 'center',
+    },
+    logoText: {
+      fontSize: 16,
+    },
+    logoImage: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+    },
+    logoButton: {
+      padding: 6,
+      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      borderRadius: 16,
+      minWidth: 32,
+      alignItems: 'center',
+      marginRight: SPACING.xs,
+    },
   });
 
   return (
@@ -124,7 +151,32 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
         </TouchableOpacity>
       )}
 
+      {/* Logo - sadece geri tuşu yokken göster */}
+      {showLogo && onLogoPress && !showBackButton && (
+        <TouchableOpacity style={styles.leftButton} onPress={onLogoPress}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require('../../public/favicon.png')}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
+          </View>
+        </TouchableOpacity>
+      )}
+
       <View style={styles.rightButtons}>
+        {/* Logo sağ üstte - geri tuşu varken */}
+        {showLogo && onLogoPress && showBackButton && (
+          <TouchableOpacity style={styles.logoButton} onPress={onLogoPress}>
+            <View style={styles.logoContainer}>
+              <Image
+                source={require('../../public/favicon.png')}
+                style={styles.logoImage}
+                resizeMode="contain"
+              />
+            </View>
+          </TouchableOpacity>
+        )}
         {/* Autoplay toggle always first, then search, then dark mode, then settings */}
         {autoplayToggle && (
           <View style={{ marginRight: SPACING.xs }}>{autoplayToggle}</View>
