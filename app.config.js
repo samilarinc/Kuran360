@@ -1,34 +1,54 @@
-export default {
-    expo: {
-        name: "Kuran360",
-        slug: "quranapp",
-        version: "1.0.0",
-        orientation: "portrait",
-        icon: "./assets/icon.png",
-        userInterfaceStyle: "light",
-        splash: {
-            image: "./assets/splash.png",
-            resizeMode: "contain",
+import 'dotenv/config';
+
+export default ({ config }) => ({
+    ...config,
+    name: "Kuran360",
+    slug: "quranapp",
+    version: "1.0.0",
+    orientation: "portrait",
+    icon: "./assets/icon.png",
+    userInterfaceStyle: "light",
+    scheme: process.env.APP_SCHEME || "kuran360",
+    splash: {
+        image: "./assets/splash.png",
+        resizeMode: "contain",
+        backgroundColor: "#2E7D32"
+    },
+    assetBundlePatterns: [
+        "**/*"
+    ],
+    ios: {
+        supportsTablet: true
+    },
+    android: {
+        adaptiveIcon: {
+            foregroundImage: "./assets/adaptive-icon.png",
             backgroundColor: "#2E7D32"
+        }
+    },
+    web: {
+        favicon: "./public/favicon.png",
+        name: "Kuran360"
+    },
+    plugins: [
+        "expo-asset"
+    ],
+    extra: {
+        ...(config?.extra || {}),
+        firebase: {
+            apiKey: process.env.FIREBASE_API_KEY,
+            authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+            projectId: process.env.FIREBASE_PROJECT_ID,
+            storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+            appId: process.env.FIREBASE_APP_ID,
+            measurementId: process.env.FIREBASE_MEASUREMENT_ID,
         },
-        assetBundlePatterns: [
-            "**/*"
-        ],
-        ios: {
-            supportsTablet: true
-        },
-        android: {
-            adaptiveIcon: {
-                foregroundImage: "./assets/adaptive-icon.png",
-                backgroundColor: "#2E7D32"
-            }
-        },
-        web: {
-            favicon: "./public/favicon.png",
-            name: "Kuran360"
-        },
-        plugins: [
-            "expo-asset"
-        ]
+        google: {
+            expoClientId: process.env.GOOGLE_EXPO_CLIENT_ID,
+            iosClientId: process.env.GOOGLE_IOS_CLIENT_ID,
+            androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
+            webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
+        }
     }
-};
+});
