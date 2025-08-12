@@ -56,6 +56,30 @@ export interface AppSettings {
   audioPlayMode: 'nextSurah' | 'loopSurah' | 'stopAtEnd' | 'loopVerse';
 }
 
+export interface Bookmark {
+  id: string;
+  surahNumber: number;
+  verseNumber: number;
+  surahName: string;
+  verseText: string;
+  createdAt: number;
+  note?: string;
+}
+
+export interface LastRead {
+  surahNumber: number;
+  verseNumber: number;
+  surahName: string;
+  verseText: string;
+  timestamp: number;
+  url: string;
+}
+
+export interface UserData {
+  bookmarks: Bookmark[];
+  lastRead: LastRead[];
+}
+
 export interface SettingsContextType {
   settings: AppSettings;
   updateSettings: (newSettings: Partial<AppSettings>) => void;

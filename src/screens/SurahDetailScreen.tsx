@@ -16,6 +16,8 @@ import { AudioTrackingToggle } from '../components/AudioTrackingToggle';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { useTheme, Theme } from '../contexts/ThemeContext';
+import { useAuth } from '../contexts/AuthContext';
+import { useUserData } from '../contexts/UserDataContext';
 import { Surah, Verse as VerseType } from '../types';
 import { loadSurah } from '../data/quranData';
 import { FONT_SIZES, SPACING } from '../constants';
@@ -45,6 +47,8 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const [currentPaginatedIndex, setCurrentPaginatedIndex] = useState<number>(route.params.verseIndex ?? 0);
   const { settings, updateSettings } = useDebouncedSettings(200); // 200ms debounce for better UX
   const { theme } = useTheme();
+  const { user } = useAuth();
+  const { addToLastRead } = useUserData();
   const { audioState, playVerse, stop, pause, resume, togglePlayPause, setVersesForAutoplay, changePlaybackRate } = useGlobalAudio();
   const flatListRef = useRef<FlatList>(null);
 
@@ -122,6 +126,41 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     }
   }, [audioState.currentVerse, audioState.isPlaying, settings.audioTrackingEnabled, settings.usePaginatedView, surah.verses, isUserScrolling]);
 
+  // Track last read verses for logged in users (works for both paginated and list modes)
+  const currentKey = useMemo(() => {
+    if (!surah || surah.verses.length === 0) return null;
+    if (settings.usePaginatedView) {
+      return `${surah.number}-${currentPaginatedIndex}`;
+    }
+    const cv = audioState.currentVerse;
+    return cv ? `${cv.surahNumber}-${cv.number}` : `${surah.number}-1`;
+  }, [settings.usePaginatedView, currentPaginatedIndex, audioState.currentVerse, surah?.number, surah?.verses?.length]);
+
+  useEffect(() => {
+    if (!user?.uid || !surah || surah.verses.length === 0 || !currentKey) return;
+
+    const timeoutId = setTimeout(() => {
+      const currentVerse = settings.usePaginatedView
+        ? surah.verses[currentPaginatedIndex]
+        : (audioState.currentVerse || surah.verses[0]);
+
+      if (!currentVerse) return;
+
+      const surahName = surah.number === 1 ? 'Al-Fatiha' : `Surah ${surah.number}`;
+      const verseText = currentVerse.allTranslations?.[settings.favoriteTranslation] || currentVerse.translation || '';
+      if (!verseText.trim()) return;
+
+      addToLastRead(
+        currentVerse.surahNumber,
+        currentVerse.number,
+        surahName,
+        verseText
+      );
+    }, 1500); // Debounce to avoid rapid changes
+
+    return () => clearTimeout(timeoutId);
+  }, [user?.uid, currentKey, settings.favoriteTranslation]);
+
   const handleVersePress = (verse: VerseType) => {
     // Temporarily disable auto-tracking when user manually selects a verse
     setIsUserScrolling(true);
@@ -175,9 +214,9 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       isPlaying={isVerseCurrentlyPlaying(item)}
       onPlayPress={handleVersePress}
       surahVerseCount={surah.verses.length > 0 ? surah.verses.length : surah.verseCount}
+      showBookmarkButton={!!user}
     />
   );
-  logger.debug('Count: ', surah.verses.length, surah.verseCount);
 
   // Memoize toggle handlers to prevent unnecessary re-renders
   const handleAutoplayToggle = useCallback((enabled: boolean) => {

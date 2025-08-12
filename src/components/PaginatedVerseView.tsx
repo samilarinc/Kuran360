@@ -16,6 +16,7 @@ import { Verse as VerseType } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
+import { useAuth } from '../contexts/AuthContext';
 import logger from '../utils/logger';
 import { FONT_SIZES, SPACING } from '../constants';
 
@@ -37,6 +38,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
     const { settings, updateSettings } = useSettings();
     const { theme } = useTheme();
     const { audioState, playVerse } = useGlobalAudio();
+    const { user } = useAuth();
     const [currentVerseIndex, setCurrentVerseIndex] = useState(initialVerseIndex);
     const [isInitialized, setIsInitialized] = useState(false);
     const lastInitializedSurah = useRef<number | null>(null);
@@ -377,6 +379,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                                     isPlaying={false} // Previous verse shouldn't show as playing
                                     onPlayPress={playVerse}
                                     surahVerseCount={verses.length}
+                                    showBookmarkButton={!!user}
                                 />
                             </ScrollView>
                         ) : (
@@ -399,6 +402,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                                 isPlaying={audioState?.currentVerse?.id === visibleVerses.current?.id && audioState?.isPlaying}
                                 onPlayPress={playVerse}
                                 surahVerseCount={verses.length}
+                                showBookmarkButton={!!user}
                             />
                         </ScrollView>
                     </View>
@@ -417,6 +421,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                                     isPlaying={false} // Next verse shouldn't show as playing
                                     onPlayPress={playVerse}
                                     surahVerseCount={verses.length}
+                                    showBookmarkButton={!!user}
                                 />
                             </ScrollView>
                         ) : (

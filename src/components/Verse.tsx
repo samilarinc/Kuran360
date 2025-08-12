@@ -9,6 +9,8 @@ import {
 import { Verse as VerseType } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
+import { useAuth } from '../contexts/AuthContext';
+import { useUserData } from '../contexts/UserDataContext';
 import logger from '../utils/logger';
 import { FONT_SIZES, SPACING } from '../constants';
 import { useGlobalAudio } from '../contexts/AudioContext';
@@ -18,11 +20,14 @@ interface VerseProps {
   isPlaying: boolean;
   onPlayPress: (verse: VerseType) => void;
   surahVerseCount?: number; // clamp end to this count
+  showBookmarkButton?: boolean;
 }
 
-export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount }) => {
+export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount, showBookmarkButton = false }) => {
   const { settings } = useSettings();
   const { theme } = useTheme();
+  const { user } = useAuth();
+  const { addBookmark, removeBookmark, isBookmarked, bookmarks } = useUserData();
   const { startMemorization, cancelMemorization } = useGlobalAudio();
   const [memOpen, setMemOpen] = useState(false);
   const maxEnd = useMemo(() => {
@@ -156,26 +161,61 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
     );
   };
 
+  const handleBookmarkToggle = async () => {
+    if (!user || !showBookmarkButton) return;
+
+    const surahName = verse.surahNumber === 1 ? "Al-Fatiha" : `Surah ${verse.surahNumber}`;
+    const verseText = verse.allTranslations?.[settings.favoriteTranslation] || verse.translation || '';
+
+    // Don't proceed if we don't have verse text
+    if (!verseText.trim()) {
+      console.warn('Cannot bookmark verse without text');
+      return;
+    }
+
+    if (isBookmarked(verse.surahNumber, verse.number)) {
+      // Find the bookmark to remove by its ID
+      const bookmark = bookmarks.find(b => b.surahNumber === verse.surahNumber && b.verseNumber === verse.number);
+      if (bookmark) {
+        await removeBookmark(bookmark.id);
+      }
+    } else {
+      await addBookmark(verse.surahNumber, verse.number, surahName, verseText);
+    }
+  };
+
   return (
     <View style={createStyles(theme).container}>
       <View style={createStyles(theme).header}>
         <View style={createStyles(theme).verseNumber}>
           <Text style={createStyles(theme).verseNumberText}>{verse.number}</Text>
         </View>
-        <TouchableOpacity
-          style={[
-            createStyles(theme).playButton,
-            isPlaying && createStyles(theme).playButtonActive
-          ]}
-          onPress={() => onPlayPress(verse)}
-        >
-          <Text style={[
-            createStyles(theme).playButtonText,
-            isPlaying && createStyles(theme).playButtonTextActive
-          ]}>
-            {isPlaying ? '⏹️' : '▶️'}
-          </Text>
-        </TouchableOpacity>
+        <View style={createStyles(theme).headerActions}>
+          {showBookmarkButton && user && (
+            <TouchableOpacity
+              style={createStyles(theme).bookmarkButton}
+              onPress={handleBookmarkToggle}
+            >
+              <Text style={createStyles(theme).bookmarkIcon}>
+                {isBookmarked(verse.surahNumber, verse.number) ? '🔖' : '📌'}
+              </Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            style={[
+              createStyles(theme).playButton,
+              isPlaying && createStyles(theme).playButtonActive
+            ]}
+            onPress={() => onPlayPress(verse)}
+          >
+            <Text style={[
+              createStyles(theme).playButtonText,
+              isPlaying && createStyles(theme).playButtonTextActive
+            ]}>
+              {isPlaying ? '⏹️' : '▶️'}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={createStyles(theme).content}>
@@ -545,5 +585,23 @@ const createStyles = (theme: Theme) => StyleSheet.create({
   memCancelText: {
     color: theme.headerText,
     fontWeight: '700',
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  bookmarkButton: {
+    backgroundColor: theme.surface,
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.primary,
+  },
+  bookmarkIcon: {
+    fontSize: 18,
   },
 });
