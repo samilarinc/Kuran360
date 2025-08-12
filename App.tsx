@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { SettingsProvider } from './src/contexts/SettingsContext';
+import { AuthProvider } from './src/contexts/AuthContext';
 import { ThemeProvider } from './src/contexts/ThemeContext';
 import { AudioProvider } from './src/contexts/AudioContext';
 import { StatusBarManager } from './src/components/StatusBarManager';
@@ -87,14 +88,16 @@ const App: React.FC = () => {
   }
 
   return (
-    <SettingsProvider>
-      <ThemeProvider>
-        <AudioProvider>
-          <StatusBarManager />
-          <AppNavigator isDataAvailable={isDataAvailable} />
-        </AudioProvider>
-      </ThemeProvider>
-    </SettingsProvider>
+    <AuthProvider>
+      <SettingsProvider>
+        <ThemeProvider>
+          <AudioProvider>
+            <StatusBarManager />
+            <AppNavigator isDataAvailable={isDataAvailable} />
+          </AudioProvider>
+        </ThemeProvider>
+      </SettingsProvider>
+    </AuthProvider>
   );
 };
 

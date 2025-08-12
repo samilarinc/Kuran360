@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '../services/firebase';
+import { useAuth } from './AuthContext';
 import { AppSettings, SettingsContextType } from '../types';
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -101,20 +104,51 @@ interface SettingsProviderProps {
 
 export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) => {
     const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
+    const { user } = useAuth();
 
     useEffect(() => {
         loadSettings();
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user?.uid]);
 
     const loadSettings = async () => {
         try {
+            if (user?.uid) {
+                console.log('🔄 Loading settings from Firestore for user:', user.uid);
+                const ref = doc(db, 'users', user.uid, 'meta', 'settings');
+                const snap = await getDoc(ref);
+                if (snap.exists()) {
+                    const cloud = snap.data() as Partial<AppSettings>;
+                    const mergedSettings = { ...DEFAULT_SETTINGS, ...cloud };
+                    setSettings(mergedSettings);
+                    await AsyncStorage.setItem('quran_app_settings', JSON.stringify(mergedSettings));
+                    console.log('✅ Settings loaded from Firestore and synced locally');
+                    return;
+                } else {
+                    console.log('📄 No Firestore settings found, creating initial document');
+                    // Create initial settings document with current local settings
+                    const localSettings = await AsyncStorage.getItem('quran_app_settings');
+                    const initialSettings = localSettings ?
+                        { ...DEFAULT_SETTINGS, ...JSON.parse(localSettings) } :
+                        DEFAULT_SETTINGS;
+                    await setDoc(ref, initialSettings);
+                    setSettings(initialSettings);
+                    return;
+                }
+            }
+
+            // fallback local
+            console.log('💾 Loading settings from local storage (no user)');
             const savedSettings = await AsyncStorage.getItem('quran_app_settings');
             if (savedSettings) {
                 const parsedSettings = JSON.parse(savedSettings);
                 setSettings({ ...DEFAULT_SETTINGS, ...parsedSettings });
+                console.log('✅ Settings loaded from local storage');
+            } else {
+                console.log('🆕 Using default settings');
             }
         } catch (error) {
-            console.error('Error loading settings:', error);
+            console.error('❌ Error loading settings:', error);
         }
     };
 
@@ -122,7 +156,22 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
         try {
             const updatedSettings = { ...settings, ...newSettings };
             setSettings(updatedSettings);
+
+            // Always save to AsyncStorage
             await AsyncStorage.setItem('quran_app_settings', JSON.stringify(updatedSettings));
+
+            // Save to Firestore if user is logged in
+            if (user?.uid) {
+                try {
+                    const ref = doc(db, 'users', user.uid, 'meta', 'settings');
+                    await setDoc(ref, updatedSettings, { merge: true });
+                    console.log('✅ Settings saved to Firestore for user:', user.uid);
+                } catch (firestoreError) {
+                    console.error('❌ Error saving to Firestore:', firestoreError);
+                }
+            } else {
+                console.log('ℹ️ Settings saved locally (no user logged in)');
+            }
         } catch (error) {
             console.error('Error saving settings:', error);
         }
