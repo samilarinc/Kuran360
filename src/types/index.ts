@@ -80,6 +80,36 @@ export interface UserData {
   lastRead: LastRead[];
 }
 
+// Social/forum types
+export interface VerseMention {
+  surahNumber: number;
+  verseNumber: number;
+}
+
+export interface Thread {
+  id: string;
+  authorId: string;
+  authorName?: string;
+  authorPhotoURL?: string;
+  title: string;
+  body: string;
+  mentions: VerseMention[];
+  createdAt: number; // ms epoch
+  updatedAt: number; // ms epoch
+  replyCount: number;
+}
+
+export interface Post {
+  id: string;
+  threadId: string;
+  authorId: string;
+  authorName?: string;
+  authorPhotoURL?: string;
+  body: string;
+  mentions: VerseMention[];
+  createdAt: number; // ms epoch
+}
+
 export interface SettingsContextType {
   settings: AppSettings;
   updateSettings: (newSettings: Partial<AppSettings>) => void;

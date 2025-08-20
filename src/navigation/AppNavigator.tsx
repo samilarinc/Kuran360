@@ -8,6 +8,9 @@ import { SettingsScreen } from '../screens/SettingsScreen';
 import { SearchScreen } from '../screens/SearchScreen';
 import { AboutScreen } from '../screens/AboutScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
+import { ForumScreen } from '../screens/ForumScreen';
+import { ForumThreadScreen } from '../screens/ForumThreadScreen';
+import { ForumProvider } from '../contexts/ForumContext';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
@@ -34,13 +37,16 @@ export type RootStackParamList = {
   Search: undefined;
   About: undefined;
   Profile: undefined;
+  Forum: undefined;
+  ForumThread: { threadId: string };
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread';
   params?: {
     surah?: Surah;
     verseIndex?: number;
+    threadId?: string;
     lastSelectedSurah?: Surah;
   };
 };
@@ -83,6 +89,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return '/about';
       case 'Profile':
         return '/profile';
+      case 'Forum':
+        return '/forum';
+      case 'ForumThread':
+        return route.params?.threadId ? `/forum/${route.params.threadId}` : '/forum';
       default:
         return '/';
     }
@@ -107,6 +117,15 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
     if (pathname === '/profile') {
       return { screen: 'Profile' };
+    }
+
+    if (pathname === '/forum') {
+      return { screen: 'Forum' };
+    }
+
+    const threadMatch = pathname.match(/^\/forum\/(.+)$/);
+    if (threadMatch) {
+      return { screen: 'ForumThread', params: { threadId: threadMatch[1] } };
     }
 
     // Check for verse-specific URLs: /surah/1/verse/3
@@ -248,7 +267,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, []); // Remove dependencies to prevent infinite loop
 
   const navigation = {
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile', params?: { surah: Surah }) => {
+  navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
       navigateToRoute(route, true);
     },
@@ -361,6 +380,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       }}
     >
       <NavigationProvider value={navHelpers}>
+        <ForumProvider>
         <ScreenWrapper>
           {currentRoute.screen === 'Main' ? (
             <MainScreen
@@ -383,6 +403,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
             <AboutScreen navigation={navigation} />
           ) : currentRoute.screen === 'Profile' ? (
             <ProfileScreen navigation={navigation} />
+          ) : currentRoute.screen === 'Forum' ? (
+            <ForumScreen navigation={navigation} />
+          ) : currentRoute.screen === 'ForumThread' && currentRoute.params?.threadId ? (
+            <ForumThreadScreen navigation={navigation} route={{ params: { threadId: currentRoute.params.threadId } }} />
           ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
             <SurahDetailScreen
               navigation={navigation}
@@ -396,7 +420,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               }}
             />
           )}
-        </ScreenWrapper>
+          </ScreenWrapper>
+        </ForumProvider>
       </NavigationProvider>
     </NavigationContainer>
   );
