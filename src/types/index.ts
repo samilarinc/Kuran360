@@ -80,6 +80,13 @@ export interface UserData {
   lastRead: LastRead[];
 }
 
+export interface UserProfile {
+  displayName: string;
+  email: string;
+  photoURL?: string;
+  updatedAt: number;
+}
+
 // Social/forum types
 export interface VerseMention {
   surahNumber: number;

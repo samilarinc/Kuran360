@@ -14,7 +14,7 @@ type ForumContextType = {
 const ForumContext = createContext<ForumContextType | undefined>(undefined);
 
 export const ForumProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const lastActionAtRef = useRef<number>(0);
   const [minIntervalMs] = useState(5000); // 5s simple client-side rate-limit
 
@@ -27,7 +27,7 @@ export const ForumProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       const payload = {
         authorId: user.uid,
-        authorName: user.displayName || 'User',
+        authorName: userProfile?.displayName || user.displayName || 'User',
         authorPhotoURL: user.photoURL || null,
         title: title.trim(),
         body: body.trim(),
@@ -52,7 +52,7 @@ export const ForumProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const payload = {
         threadId,
         authorId: user.uid,
-        authorName: user.displayName || 'User',
+        authorName: userProfile?.displayName || user.displayName || 'User',
         authorPhotoURL: user.photoURL || null,
         body: body.trim(),
         mentions: (mentions || []).map(m => ({ surahNumber: m.surahNumber, verseNumber: m.verseNumber })),

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, FlatList, TextInput, Alert } from 'react-native';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserData } from '../contexts/UserDataContext';
@@ -10,9 +10,12 @@ import { GoogleAuthProvider, signInWithPopup, signInWithCredential } from 'fireb
 import Constants from 'expo-constants';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-    const { user, signOutUser } = useAuth();
+    const { user, userProfile, signOutUser, updateDisplayName } = useAuth();
     const { bookmarks, lastRead, removeBookmark } = useUserData();
     const { theme } = useTheme();
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [newDisplayName, setNewDisplayName] = useState('');
+    const [isUpdating, setIsUpdating] = useState(false);
 
     const signInWithGoogle = async () => {
         try {
@@ -26,6 +29,40 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
         } catch (e: any) {
             console.warn('Google sign-in failed:', e?.message || e);
         }
+    };
+
+    const handleEditName = () => {
+        setNewDisplayName(userProfile?.displayName || user?.displayName || '');
+        setIsEditingName(true);
+    };
+
+    const handleSaveName = async () => {
+        if (!newDisplayName.trim()) {
+            Alert.alert('Hata', 'Kullanıcı adı boş olamaz.');
+            return;
+        }
+
+        if (newDisplayName.trim().length < 2) {
+            Alert.alert('Hata', 'Kullanıcı adı en az 2 karakter olmalıdır.');
+            return;
+        }
+
+        setIsUpdating(true);
+        try {
+            await updateDisplayName(newDisplayName.trim());
+            setIsEditingName(false);
+            Alert.alert('Başarılı', 'Kullanıcı adınız güncellendi.');
+        } catch (error) {
+            console.error('Error updating display name:', error);
+            Alert.alert('Hata', 'Kullanıcı adı güncellenirken bir hata oluştu.');
+        } finally {
+            setIsUpdating(false);
+        }
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditingName(false);
+        setNewDisplayName('');
     };
 
     const handleBookmarkPress = (bookmark: any) => {
@@ -98,11 +135,55 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                     <Image source={{ uri: user.photoURL }} style={createStyles(theme).avatar} />
                                 ) : (
                                     <View style={[createStyles(theme).avatar, createStyles(theme).avatarFallback]}>
-                                        <Text style={createStyles(theme).avatarInitials}>{user.displayName?.charAt(0) || 'U'}</Text>
+                                        <Text style={createStyles(theme).avatarInitials}>
+                                            {(userProfile?.displayName || user.displayName)?.charAt(0) || 'U'}
+                                        </Text>
                                     </View>
                                 )}
                                 <View style={{ flex: 1 }}>
-                                    <Text style={createStyles(theme).name}>{user.displayName || 'İsimsiz Kullanıcı'}</Text>
+                                    {isEditingName ? (
+                                        <View style={createStyles(theme).editNameContainer}>
+                                            <TextInput
+                                                style={createStyles(theme).nameInput}
+                                                value={newDisplayName}
+                                                onChangeText={setNewDisplayName}
+                                                placeholder="Kullanıcı adını girin"
+                                                placeholderTextColor={theme.textSecondary}
+                                                maxLength={50}
+                                                autoFocus
+                                            />
+                                            <View style={createStyles(theme).editButtonRow}>
+                                                <TouchableOpacity
+                                                    style={[createStyles(theme).editButton, createStyles(theme).cancelButton]}
+                                                    onPress={handleCancelEdit}
+                                                    disabled={isUpdating}
+                                                >
+                                                    <Text style={createStyles(theme).cancelButtonText}>İptal</Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity
+                                                    style={[createStyles(theme).editButton, createStyles(theme).saveButton]}
+                                                    onPress={handleSaveName}
+                                                    disabled={isUpdating}
+                                                >
+                                                    <Text style={createStyles(theme).saveButtonText}>
+                                                        {isUpdating ? 'Kaydediliyor...' : 'Kaydet'}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    ) : (
+                                        <View style={createStyles(theme).nameContainer}>
+                                            <Text style={createStyles(theme).name}>
+                                                {userProfile?.displayName || user.displayName || 'İsimsiz Kullanıcı'}
+                                            </Text>
+                                            <TouchableOpacity
+                                                style={createStyles(theme).editNameButton}
+                                                onPress={handleEditName}
+                                            >
+                                                <Text style={createStyles(theme).editNameButtonText}>✏️</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    )}
                                     <Text style={createStyles(theme).email}>{user.email || '—'}</Text>
                                 </View>
                             </View>
@@ -169,8 +250,63 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     avatar: { width: 64, height: 64, borderRadius: 32, marginRight: SPACING.md },
     avatarFallback: { backgroundColor: theme.primary + '20', alignItems: 'center', justifyContent: 'center' },
     avatarInitials: { fontSize: 24, color: theme.primary, fontWeight: '700' },
-    name: { fontSize: FONT_SIZES.large, color: theme.text, fontWeight: '600' },
+    nameContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
+    name: { fontSize: FONT_SIZES.large, color: theme.text, fontWeight: '600', flex: 1 },
     email: { fontSize: FONT_SIZES.small, color: theme.secondary },
+    editNameButton: {
+        padding: SPACING.xs,
+        marginLeft: SPACING.sm,
+        backgroundColor: theme.surface,
+        borderRadius: 6,
+        borderWidth: 1,
+        borderColor: theme.border,
+    },
+    editNameButtonText: {
+        fontSize: 14,
+    },
+    editNameContainer: {
+        flex: 1,
+    },
+    nameInput: {
+        fontSize: FONT_SIZES.large,
+        color: theme.text,
+        fontWeight: '600',
+        borderWidth: 1,
+        borderColor: theme.border,
+        borderRadius: 8,
+        padding: SPACING.sm,
+        backgroundColor: theme.surface,
+        marginBottom: SPACING.sm,
+    },
+    editButtonRow: {
+        flexDirection: 'row',
+        gap: SPACING.sm,
+    },
+    editButton: {
+        flex: 1,
+        paddingVertical: SPACING.xs,
+        paddingHorizontal: SPACING.sm,
+        borderRadius: 6,
+        alignItems: 'center',
+    },
+    cancelButton: {
+        backgroundColor: theme.surface,
+        borderWidth: 1,
+        borderColor: theme.border,
+    },
+    cancelButtonText: {
+        color: theme.textSecondary,
+        fontSize: FONT_SIZES.small,
+        fontWeight: '600',
+    },
+    saveButton: {
+        backgroundColor: theme.primary,
+    },
+    saveButtonText: {
+        color: '#fff',
+        fontSize: FONT_SIZES.small,
+        fontWeight: '600',
+    },
     signOutBtn: {
         marginTop: SPACING.lg,
         backgroundColor: theme.primary,
