@@ -18,7 +18,7 @@ import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserData } from '../contexts/UserDataContext';
-import { Surah, Verse as VerseType } from '../types';
+import { Surah, Verse as VerseType, LastRead } from '../types';
 import { loadSurah } from '../data/quranData';
 import { FONT_SIZES, SPACING } from '../constants';
 import logger from '../utils/logger';
@@ -48,7 +48,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const { settings, updateSettings } = useDebouncedSettings(200); // 200ms debounce for better UX
   const { theme } = useTheme();
   const { user } = useAuth();
-  const { addToLastRead } = useUserData();
+  const { addToLastRead, lastRead } = useUserData();
   const { audioState, playVerse, stop, pause, resume, togglePlayPause, setVersesForAutoplay, changePlaybackRate } = useGlobalAudio();
   const flatListRef = useRef<FlatList>(null);
 
@@ -126,7 +126,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     }
   }, [audioState.currentVerse, audioState.isPlaying, settings.audioTrackingEnabled, settings.usePaginatedView, surah.verses, isUserScrolling]);
 
-  // Track last read verses for logged in users (works for both paginated and list modes)
+  // Track last read verses for logged in users with 10-second interval checking
   const currentKey = useMemo(() => {
     if (!surah || surah.verses.length === 0) return null;
     if (settings.usePaginatedView) {
@@ -137,9 +137,10 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   }, [settings.usePaginatedView, currentPaginatedIndex, audioState.currentVerse, surah?.number, surah?.verses?.length]);
 
   useEffect(() => {
-    if (!user?.uid || !surah || surah.verses.length === 0 || !currentKey) return;
+    if (!user?.uid || !surah || surah.verses.length === 0) return;
 
-    const timeoutId = setTimeout(() => {
+    // Set up 10-second interval to check current verse
+    const intervalId = setInterval(() => {
       const currentVerse = settings.usePaginatedView
         ? surah.verses[currentPaginatedIndex]
         : (audioState.currentVerse || surah.verses[0]);
@@ -150,16 +151,24 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       const verseText = currentVerse.allTranslations?.[settings.favoriteTranslation] || currentVerse.translation || '';
       if (!verseText.trim()) return;
 
-      addToLastRead(
-        currentVerse.surahNumber,
-        currentVerse.number,
-        surahName,
-        verseText
+      // Check if this verse is already in lastRead
+      const isAlreadyInLastRead = lastRead.some((lr: LastRead) =>
+        lr.surahNumber === currentVerse.surahNumber && lr.verseNumber === currentVerse.number
       );
-    }, 1500); // Debounce to avoid rapid changes
 
-    return () => clearTimeout(timeoutId);
-  }, [user?.uid, currentKey, settings.favoriteTranslation]);
+      // Only add if not already in the list
+      if (!isAlreadyInLastRead) {
+        addToLastRead(
+          currentVerse.surahNumber,
+          currentVerse.number,
+          surahName,
+          verseText
+        );
+      }
+    }, 10000); // Check every 10 seconds
+
+    return () => clearInterval(intervalId);
+  }, [user?.uid, surah, currentPaginatedIndex, audioState.currentVerse, settings.usePaginatedView, settings.favoriteTranslation, lastRead, addToLastRead]);
 
   const handleVersePress = (verse: VerseType) => {
     // Temporarily disable auto-tracking when user manually selects a verse

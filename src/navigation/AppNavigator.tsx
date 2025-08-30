@@ -267,7 +267,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, []); // Remove dependencies to prevent infinite loop
 
   const navigation = {
-  navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
       navigateToRoute(route, true);
     },
@@ -381,45 +381,45 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     >
       <NavigationProvider value={navHelpers}>
         <ForumProvider>
-        <ScreenWrapper>
-          {currentRoute.screen === 'Main' ? (
-            <MainScreen
-              onNavigate={(screen) => {
-                navigation.navigate(screen);
-              }}
-            />
-          ) : currentRoute.screen === 'Home' ? (
-            <HomeScreen
-              navigation={navigation}
-              onSurahSelect={handleSurahSelect}
-              lastSelectedSurah={currentRoute.params?.lastSelectedSurah}
-              isDataAvailable={isDataAvailable}
-            />
-          ) : currentRoute.screen === 'Settings' ? (
-            <SettingsScreen navigation={navigation} />
-          ) : currentRoute.screen === 'Search' ? (
-            <SearchScreen navigation={navigation} />
-          ) : currentRoute.screen === 'About' ? (
-            <AboutScreen navigation={navigation} />
-          ) : currentRoute.screen === 'Profile' ? (
-            <ProfileScreen navigation={navigation} />
-          ) : currentRoute.screen === 'Forum' ? (
-            <ForumScreen navigation={navigation} />
-          ) : currentRoute.screen === 'ForumThread' && currentRoute.params?.threadId ? (
-            <ForumThreadScreen navigation={navigation} route={{ params: { threadId: currentRoute.params.threadId } }} />
-          ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
-            <SurahDetailScreen
-              navigation={navigation}
-              route={{ params: { surah: currentRoute.params.surah, verseIndex: currentRoute.params.verseIndex } }}
-              updateVerseUrl={updateVerseUrl}
-            />
-          ) : (
-            <MainScreen
-              onNavigate={(screen) => {
-                navigation.navigate(screen);
-              }}
-            />
-          )}
+          <ScreenWrapper>
+            {currentRoute.screen === 'Main' ? (
+              <MainScreen
+                onNavigate={(screen) => {
+                  navigation.navigate(screen);
+                }}
+              />
+            ) : currentRoute.screen === 'Home' ? (
+              <HomeScreen
+                navigation={navigation}
+                onSurahSelect={handleSurahSelect}
+                lastSelectedSurah={currentRoute.params?.lastSelectedSurah}
+                isDataAvailable={isDataAvailable}
+              />
+            ) : currentRoute.screen === 'Settings' ? (
+              <SettingsScreen navigation={navigation} />
+            ) : currentRoute.screen === 'Search' ? (
+              <SearchScreen navigation={navigation} />
+            ) : currentRoute.screen === 'About' ? (
+              <AboutScreen navigation={navigation} />
+            ) : currentRoute.screen === 'Profile' ? (
+              <ProfileScreen navigation={navigation} />
+            ) : currentRoute.screen === 'Forum' ? (
+              <ForumScreen navigation={navigation} />
+            ) : currentRoute.screen === 'ForumThread' && currentRoute.params?.threadId ? (
+              <ForumThreadScreen navigation={navigation} route={{ params: { threadId: currentRoute.params.threadId } }} />
+            ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
+              <SurahDetailScreen
+                navigation={navigation}
+                route={{ params: { surah: currentRoute.params.surah, verseIndex: currentRoute.params.verseIndex } }}
+                updateVerseUrl={updateVerseUrl}
+              />
+            ) : (
+              <MainScreen
+                onNavigate={(screen) => {
+                  navigation.navigate(screen);
+                }}
+              />
+            )}
           </ScreenWrapper>
         </ForumProvider>
       </NavigationProvider>

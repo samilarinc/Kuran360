@@ -58,10 +58,10 @@ export const ForumProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         mentions: (mentions || []).map(m => ({ surahNumber: m.surahNumber, verseNumber: m.verseNumber })),
         createdAt: Date.now(),
       };
-  const ref = await addDoc(collection(db, 'posts'), payload);
-  // update thread metadata
-  const threadRef = doc(db, 'threads', threadId);
-  await updateDoc(threadRef, { updatedAt: Date.now() });
+      const ref = await addDoc(collection(db, 'posts'), payload);
+      // update thread metadata
+      const threadRef = doc(db, 'threads', threadId);
+      await updateDoc(threadRef, { updatedAt: Date.now() });
       markNow();
       return ref.id;
     } catch (e) {

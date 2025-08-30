@@ -25,8 +25,8 @@ export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ n
     const id = await createPost(route.params.threadId, body, []);
     if (id) {
       setBody('');
-  const data = await listPosts(route.params?.threadId);
-  setPosts(data);
+      const data = await listPosts(route.params?.threadId);
+      setPosts(data);
     }
   };
 

@@ -133,19 +133,27 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
 
         try {
             const cacheKey = `${surahNumber}-${verseNumber}`;
-            if (lastReadCacheRef.current === cacheKey) {
-                return;
-            }
-            lastReadCacheRef.current = cacheKey;
-            setTimeout(() => {
-                if (lastReadCacheRef.current === cacheKey) lastReadCacheRef.current = null;
-            }, 10000);
 
-            // Keep only last 5 reads, remove duplicates
-            const updatedLastRead = [
-                newLastRead,
-                ...lastRead.filter(lr => !(lr.surahNumber === surahNumber && lr.verseNumber === verseNumber))
-            ].slice(0, 5);
+            // Check if this verse is already in the recent readings
+            const existingIndex = lastRead.findIndex(lr =>
+                lr.surahNumber === surahNumber && lr.verseNumber === verseNumber
+            );
+
+            let updatedLastRead: LastRead[];
+
+            if (existingIndex !== -1) {
+                // Verse already exists, update its timestamp and move to front
+                updatedLastRead = [
+                    newLastRead,
+                    ...lastRead.filter((_, index) => index !== existingIndex)
+                ];
+            } else {
+                // New verse, add to front and remove oldest if we have more than 5
+                updatedLastRead = [newLastRead, ...lastRead];
+                if (updatedLastRead.length > 5) {
+                    updatedLastRead = updatedLastRead.slice(0, 5);
+                }
+            }
 
             const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
             await updateDoc(userDocRef, {
