@@ -74,8 +74,16 @@ export const SurahList: React.FC<SurahListProps> = ({ surahs, onSurahSelect, scr
       keyExtractor={(item) => item.number.toString()}
       contentContainerStyle={createStyles(theme).container}
       showsVerticalScrollIndicator={false}
+      // Disable virtualization since we only have 114 surahs - this ensures
+      // all items are always rendered and scrollToIndex works reliably
+      removeClippedSubviews={false}
+      windowSize={150} // Render more items at once
+      maxToRenderPerBatch={150} // Render all items in one batch
+      initialNumToRender={114} // Render all items initially
+      // Remove getItemLayout to let FlatList calculate positions accurately
+      // This is more reliable for scrollToIndex positioning
       onScrollToIndexFailed={(info) => {
-        // Handle the case where scrollToIndex fails
+        // This should rarely happen now, but keep as fallback
         const wait = new Promise<void>(resolve => setTimeout(resolve, 500));
         wait.then(() => {
           flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
