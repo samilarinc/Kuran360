@@ -21,9 +21,10 @@ interface VerseProps {
   onPlayPress: (verse: VerseType) => void;
   surahVerseCount?: number; // clamp end to this count
   showBookmarkButton?: boolean;
+  showMemorization?: boolean;
 }
 
-export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount, showBookmarkButton = false }) => {
+export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount, showBookmarkButton = false, showMemorization = true }) => {
   const { settings } = useSettings();
   const { theme } = useTheme();
   const { user } = useAuth();
@@ -233,97 +234,99 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         {renderWordTranslations()}
 
         {/* Memorization inline control */}
-        <View style={createStyles(theme).memContainer}>
-          {!memOpen ? (
-            <TouchableOpacity style={createStyles(theme).memToggle} onPress={() => setMemOpen(true)}>
-              <Text style={createStyles(theme).memToggleText}>🧠 Ezberle</Text>
-            </TouchableOpacity>
-          ) : (
-            <View style={createStyles(theme).memPanel}>
-              <View style={createStyles(theme).memRow}>
-                <Text style={createStyles(theme).memLabel}>Şuraya Kadar</Text>
-                <View style={createStyles(theme).memStepper}>
+        {showMemorization && (
+          <View style={createStyles(theme).memContainer}>
+            {!memOpen ? (
+              <TouchableOpacity style={createStyles(theme).memToggle} onPress={() => setMemOpen(true)}>
+                <Text style={createStyles(theme).memToggleText}>🧠 Ezberle</Text>
+              </TouchableOpacity>
+            ) : (
+              <View style={createStyles(theme).memPanel}>
+                <View style={createStyles(theme).memRow}>
+                  <Text style={createStyles(theme).memLabel}>Şuraya Kadar</Text>
+                  <View style={createStyles(theme).memStepper}>
+                    <TouchableOpacity
+                      style={createStyles(theme).stepBtn}
+                      onPress={() => setEndVerse(v => clamp(v - 1, verse.number, maxEnd))}
+                    >
+                      <Text style={createStyles(theme).stepText}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={createStyles(theme).memValue}>{endVerse}</Text>
+                    <TouchableOpacity
+                      style={createStyles(theme).stepBtn}
+                      onPress={() => setEndVerse(v => clamp(v + 1, verse.number, maxEnd))}
+                    >
+                      <Text style={createStyles(theme).stepText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={createStyles(theme).memRow}>
+                  <Text style={createStyles(theme).memLabel}>
+                    {memMode === 'individual' ? 'Her Ayet İçin' : 'Tekrar Sayısı'}
+                  </Text>
+                  <View style={createStyles(theme).memStepper}>
+                    <TouchableOpacity
+                      style={createStyles(theme).stepBtn}
+                      onPress={() => setRepeats(r => clamp(r - 1, 1, 99))}
+                    >
+                      <Text style={createStyles(theme).stepText}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={createStyles(theme).memValue}>{repeats}</Text>
+                    <TouchableOpacity
+                      style={createStyles(theme).stepBtn}
+                      onPress={() => setRepeats(r => clamp(r + 1, 1, 99))}
+                    >
+                      <Text style={createStyles(theme).stepText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={createStyles(theme).memRow}>
+                  <Text style={createStyles(theme).memLabel}>Ezber Modu</Text>
+                  <View style={createStyles(theme).memToggleContainer}>
+                    <TouchableOpacity
+                      style={[
+                        createStyles(theme).memModeBtn,
+                        createStyles(theme).memModeBtnLeft,
+                        memMode === 'range' && createStyles(theme).memModeBtnActive
+                      ]}
+                      onPress={() => setMemMode('range')}
+                    >
+                      <Text style={[
+                        createStyles(theme).memModeText,
+                        memMode === 'range' && createStyles(theme).memModeTextActive
+                      ]}>Aralık</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        createStyles(theme).memModeBtn,
+                        createStyles(theme).memModeBtnRight,
+                        memMode === 'individual' && createStyles(theme).memModeBtnActive
+                      ]}
+                      onPress={() => setMemMode('individual')}
+                    >
+                      <Text style={[
+                        createStyles(theme).memModeText,
+                        memMode === 'individual' && createStyles(theme).memModeTextActive
+                      ]}>Ayet Ayet</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={createStyles(theme).memActions}>
                   <TouchableOpacity
-                    style={createStyles(theme).stepBtn}
-                    onPress={() => setEndVerse(v => clamp(v - 1, verse.number, maxEnd))}
+                    style={[createStyles(theme).memStartBtn, !canStartMem && createStyles(theme).memStartBtnDisabled]}
+                    disabled={!canStartMem}
+                    onPress={() => startMemorization(verse.surahNumber, verse.number, endVerse, repeats, memMode)}
                   >
-                    <Text style={createStyles(theme).stepText}>-</Text>
+                    <Text style={createStyles(theme).memStartText}>Start</Text>
                   </TouchableOpacity>
-                  <Text style={createStyles(theme).memValue}>{endVerse}</Text>
-                  <TouchableOpacity
-                    style={createStyles(theme).stepBtn}
-                    onPress={() => setEndVerse(v => clamp(v + 1, verse.number, maxEnd))}
-                  >
-                    <Text style={createStyles(theme).stepText}>+</Text>
+                  <TouchableOpacity style={createStyles(theme).memCancelBtn} onPress={() => { cancelMemorization(); setMemOpen(false); }}>
+                    <Text style={createStyles(theme).memCancelText}>Close</Text>
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style={createStyles(theme).memRow}>
-                <Text style={createStyles(theme).memLabel}>
-                  {memMode === 'individual' ? 'Her Ayet İçin' : 'Tekrar Sayısı'}
-                </Text>
-                <View style={createStyles(theme).memStepper}>
-                  <TouchableOpacity
-                    style={createStyles(theme).stepBtn}
-                    onPress={() => setRepeats(r => clamp(r - 1, 1, 99))}
-                  >
-                    <Text style={createStyles(theme).stepText}>-</Text>
-                  </TouchableOpacity>
-                  <Text style={createStyles(theme).memValue}>{repeats}</Text>
-                  <TouchableOpacity
-                    style={createStyles(theme).stepBtn}
-                    onPress={() => setRepeats(r => clamp(r + 1, 1, 99))}
-                  >
-                    <Text style={createStyles(theme).stepText}>+</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={createStyles(theme).memRow}>
-                <Text style={createStyles(theme).memLabel}>Ezber Modu</Text>
-                <View style={createStyles(theme).memToggleContainer}>
-                  <TouchableOpacity
-                    style={[
-                      createStyles(theme).memModeBtn,
-                      createStyles(theme).memModeBtnLeft,
-                      memMode === 'range' && createStyles(theme).memModeBtnActive
-                    ]}
-                    onPress={() => setMemMode('range')}
-                  >
-                    <Text style={[
-                      createStyles(theme).memModeText,
-                      memMode === 'range' && createStyles(theme).memModeTextActive
-                    ]}>Aralık</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      createStyles(theme).memModeBtn,
-                      createStyles(theme).memModeBtnRight,
-                      memMode === 'individual' && createStyles(theme).memModeBtnActive
-                    ]}
-                    onPress={() => setMemMode('individual')}
-                  >
-                    <Text style={[
-                      createStyles(theme).memModeText,
-                      memMode === 'individual' && createStyles(theme).memModeTextActive
-                    ]}>Ayet Ayet</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={createStyles(theme).memActions}>
-                <TouchableOpacity
-                  style={[createStyles(theme).memStartBtn, !canStartMem && createStyles(theme).memStartBtnDisabled]}
-                  disabled={!canStartMem}
-                  onPress={() => startMemorization(verse.surahNumber, verse.number, endVerse, repeats, memMode)}
-                >
-                  <Text style={createStyles(theme).memStartText}>Start</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={createStyles(theme).memCancelBtn} onPress={() => { cancelMemorization(); setMemOpen(false); }}>
-                  <Text style={createStyles(theme).memCancelText}>Close</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-        </View>
+            )}
+          </View>
+        )}
       </View>
     </View>
   );

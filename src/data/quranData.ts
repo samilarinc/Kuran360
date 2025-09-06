@@ -500,6 +500,32 @@ export function getSurahsList() {
   })) as Surah[];
 }
 
+// Get a random verse from the Quran
+export async function getRandomVerse(): Promise<{ surah: Surah, verse: Verse, verseIndex: number } | null> {
+  try {
+    // Pick a random surah
+    const randomSurahNumber = Math.floor(Math.random() * 114) + 1;
+    const surah = await loadSurah(randomSurahNumber);
+
+    if (!surah || surah.verses.length === 0) {
+      return null;
+    }
+
+    // Pick a random verse from the surah
+    const randomVerseIndex = Math.floor(Math.random() * surah.verses.length);
+    const verse = surah.verses[randomVerseIndex];
+
+    return {
+      surah,
+      verse,
+      verseIndex: randomVerseIndex
+    };
+  } catch (error) {
+    logger.error('Error getting random verse:', error);
+    return null;
+  }
+}
+
 // Main QuranData object - starts with metadata only, loads verses on demand
 export const quranData: QuranData = {
   surahs: getSurahsList(),

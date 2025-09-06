@@ -71,6 +71,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>06 Eylül 2025</Text>
                         <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Rastgele ayet sayfası eklendi</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ezber moduna "Ayet Ayet" seçeneği eklendi</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Okuyucu seçiminde ses önizleme özelliği eklendi</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Sayfalı görünümde dinamik sayfa göstergesi eklendi</Text>

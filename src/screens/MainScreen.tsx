@@ -13,7 +13,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -39,6 +39,14 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             icon: '📖',
             color: '#2E7D32',
             onPress: () => onNavigate('Home'),
+        },
+        {
+            id: 'random-verse',
+            title: 'Rastgele Ayet',
+            subtitle: 'Günün ayetini keşfedin',
+            icon: '🎲',
+            color: '#FF7043',
+            onPress: () => onNavigate('RandomVerse'),
         },
         {
             id: 'search',
