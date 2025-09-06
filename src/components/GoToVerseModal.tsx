@@ -39,9 +39,8 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
 
     // Get the user's preferred translation
     const getPreferredTranslation = (verse: VerseType): string => {
-        if (settings.selectedTranslations.length > 0 && verse.allTranslations) {
-            const preferredTranslation = settings.selectedTranslations[0];
-            return verse.allTranslations[preferredTranslation] || verse.translation;
+        if (verse.allTranslations && settings.favoriteTranslation) {
+            return verse.allTranslations[settings.favoriteTranslation] || verse.translation;
         }
         return verse.translation;
     };
