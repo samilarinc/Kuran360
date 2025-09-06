@@ -7,11 +7,48 @@ import {
 } from 'react-native';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
+import { useGlobalAudio } from '../contexts/AudioContext';
 import { FONT_SIZES, SPACING } from '../constants';
 
 export const ReciterSelector: React.FC = () => {
     const { settings, updateSettings, availableReciters } = useSettings();
     const { theme } = useTheme();
+    const { playVerse } = useGlobalAudio();
+
+    const playPreview = async (reciterId: string) => {
+        const originalReciter = settings.selectedReciter;
+
+        try {
+            // Temporarily change for preview
+            await updateSettings({ selectedReciter: reciterId });
+
+            // Wait a moment for settings to update
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            const previewVerse = {
+                id: '001002',
+                surahNumber: 1,
+                number: 2,
+                arabicText: 'ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ',
+                translation: 'Hamd, âlemlerin Rabbi Allah\'a mahsustur.',
+                transliteration: 'Al-hamdu lillahi rabbil-\'alameen',
+                wordTranslations: [],
+                allTranslations: {}
+            };
+
+            await playVerse(previewVerse);
+
+            // Wait for audio to start before restoring settings
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Restore original reciter
+            await updateSettings({ selectedReciter: originalReciter });
+        } catch (error) {
+            console.log('Preview playback failed:', error);
+            // Always restore on error
+            await updateSettings({ selectedReciter: originalReciter });
+        }
+    };
 
     const handleReciterChange = async (reciterId: string) => {
         await updateSettings({ selectedReciter: reciterId });
@@ -34,14 +71,26 @@ export const ReciterSelector: React.FC = () => {
                         onPress={() => handleReciterChange(reciter.id)}
                         activeOpacity={0.7}
                     >
-                        <Text
-                            style={[
-                                createStyles(theme).reciterText,
-                                settings.selectedReciter === reciter.id && createStyles(theme).selectedReciterText,
-                            ]}
-                        >
-                            {reciter.name}
-                        </Text>
+                        <View style={createStyles(theme).reciterInfo}>
+                            <Text
+                                style={[
+                                    createStyles(theme).reciterText,
+                                    settings.selectedReciter === reciter.id && createStyles(theme).selectedReciterText,
+                                ]}
+                            >
+                                {reciter.name}
+                            </Text>
+                            <TouchableOpacity
+                                style={createStyles(theme).previewButton}
+                                onPress={(e) => {
+                                    e.stopPropagation();
+                                    playPreview(reciter.id);
+                                }}
+                                activeOpacity={0.6}
+                            >
+                                <Text style={createStyles(theme).previewButtonText}>🔊</Text>
+                            </TouchableOpacity>
+                        </View>
                         <View style={[
                             createStyles(theme).radioButton,
                             settings.selectedReciter === reciter.id && createStyles(theme).selectedRadioButton,
@@ -114,6 +163,24 @@ const createStyles = (theme: Theme) => StyleSheet.create({
         color: theme.text,
         fontWeight: '500',
         flex: 1,
+    },
+    reciterInfo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'space-between',
+    },
+    previewButton: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: theme.primary + '20',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: SPACING.sm,
+    },
+    previewButtonText: {
+        fontSize: 16,
     },
     selectedReciterText: {
         color: theme.primary,
