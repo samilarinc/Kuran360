@@ -34,12 +34,12 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
 
                     <TouchableOpacity
                         style={styles.infoRow}
-                        onPress={() => Linking.openURL('mailto:test@gmail.com')}
+                        onPress={() => Linking.openURL('mailto:msamilarinc@gmail.com')}
                         activeOpacity={0.7}
                     >
                         <Octicons name="mail" size={18} color={theme.primary} style={{ marginRight: SPACING.sm }} />
                         <Text style={[styles.infoText, { color: theme.text }]}>
-                            test@gmail.com
+                            msamilarinc@gmail.com
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -49,6 +49,14 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     >
                         <Octicons name="mark-github" size={18} color={theme.primary} style={{ marginRight: SPACING.sm }} />
                         <Text style={[styles.infoText, { color: theme.primary, textDecorationLine: 'underline' }]}>github.com/samilarinc</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.infoRow}
+                        onPress={() => Linking.openURL('https://www.linkedin.comin/samil-arinc/')}
+                        activeOpacity={0.7}
+                    >
+                        <Octicons name="link" size={18} color={theme.primary} style={{ marginRight: SPACING.sm }} />
+                        <Text style={[styles.infoText, { color: theme.primary, textDecorationLine: 'underline' }]}>linkedin.com/in/samil-arinc</Text>
                     </TouchableOpacity>
                 </View>
 

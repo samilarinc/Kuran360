@@ -93,6 +93,31 @@ const AVAILABLE_RECITERS = [
         id: 'abdulsamad',
         name: 'Abdul Basit Abdul Samad',
         folder: 'abdulsamad_all_verse'
+    },
+    {
+        id: 'nasser',
+        name: 'Nasser Alqatami',
+        folder: 'nasser_all_verse'
+    },
+    {
+        id: 'minshawi_murattal',
+        name: 'Muhammad Siddiq Al-Minshawi - Murattal',
+        folder: 'minshawy_murattal_all_verse'
+    },
+    {
+        id: 'minshawi_mujawwad',
+        name: 'Muhammad Siddiq Al-Minshawi - Mujawwad',
+        folder: 'minshawy_mujawwad_all_verse'
+    },
+    {
+        id: 'abubakr',
+        name: 'Abu Bakr Al-Shatri',
+        folder: 'abubakr_all_verse'
+    },
+    {
+        id: 'ghamidi',
+        name: 'Muhammad Al-Ghamidi',
+        folder: 'ghamidi_all_verse'
     }
 ];
 

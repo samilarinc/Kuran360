@@ -10,26 +10,12 @@ import { GoogleAuthProvider, signInWithPopup, signInWithCredential } from 'fireb
 import Constants from 'expo-constants';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-    const { user, userProfile, signOutUser, updateDisplayName } = useAuth();
+    const { user, userProfile, signOutUser, updateDisplayName, signInWithGoogle } = useAuth();
     const { bookmarks, lastRead, removeBookmark } = useUserData();
     const { theme } = useTheme();
     const [isEditingName, setIsEditingName] = useState(false);
     const [newDisplayName, setNewDisplayName] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
-
-    const signInWithGoogle = async () => {
-        try {
-            if (Platform.OS === 'web') {
-                const provider = new GoogleAuthProvider();
-                await signInWithPopup(auth, provider);
-                return;
-            }
-            // Native: use expo-auth-session (deferred wiring). For now, show minimal guidance.
-            throw new Error('Google SSO for native requires expo-auth-session setup.');
-        } catch (e: any) {
-            console.warn('Google sign-in failed:', e?.message || e);
-        }
-    };
 
     const handleEditName = () => {
         setNewDisplayName(userProfile?.displayName || user?.displayName || '');
@@ -231,8 +217,8 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                         </TouchableOpacity>
                     </View>
                 )}
-            </ScrollView>
-        </SafeAreaView>
+            </ScrollView >
+        </SafeAreaView >
     );
 };
 

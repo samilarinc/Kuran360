@@ -1,12 +1,33 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { auth, db, type User } from '../services/firebase';
-import { onAuthStateChanged, signOut, updateProfile } from 'firebase/auth';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { UserProfile } from '../types';
+import { auth, googleProvider } from '../services/firebase';
+import {
+    User,
+    signInWithPopup,
+    signOut,
+    onAuthStateChanged,
+    GoogleAuthProvider,
+    signInWithCredential,
+    updateProfile
+} from 'firebase/auth';
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+import { Platform } from 'react-native';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '../services/firebase';
+
+WebBrowser.maybeCompleteAuthSession();
+
+interface UserProfile {
+    displayName: string;
+    email: string;
+    photoURL?: string;
+    updatedAt: number;
+}
 
 type AuthContextType = {
     user: User | null;
     loading: boolean;
+    signInWithGoogle: () => Promise<void>;
     signOutUser: () => Promise<void>;
     updateDisplayName: (newDisplayName: string) => Promise<void>;
     userProfile: UserProfile | null;
@@ -18,6 +39,40 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [user, setUser] = useState<User | null>(null);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
+
+    // Get Google OAuth config with fallback
+    const getGoogleConfig = () => {
+        // Try environment variables first
+        const envConfig = {
+            webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+            iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+            androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+        };
+
+        if (envConfig.webClientId) {
+            return envConfig;
+        }
+
+        // Fallback for web builds
+        if (Platform.OS === 'web') {
+            try {
+                const { googleConfig } = require('../config/firebase-config.js');
+                return {
+                    webClientId: googleConfig.webClientId,
+                    iosClientId: googleConfig.iosClientId,
+                    androidClientId: googleConfig.androidClientId,
+                };
+            } catch (error) {
+                console.warn('Failed to load Google config fallback:', error);
+            }
+        }
+
+        return envConfig;
+    };
+
+    const googleConfig = getGoogleConfig();
+
+    const [request, response, promptAsync] = Google.useAuthRequest(googleConfig);
 
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, async (u) => {
@@ -31,6 +86,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         });
         return () => unsub();
     }, []);
+
+    useEffect(() => {
+        if (response?.type === 'success') {
+            const { authentication } = response;
+            if (authentication?.accessToken) {
+                const credential = GoogleAuthProvider.credential(
+                    authentication.idToken,
+                    authentication.accessToken
+                );
+                signInWithCredential(auth, credential);
+            }
+        }
+    }, [response]);
 
     const loadUserProfile = async (user: User) => {
         try {
@@ -90,13 +158,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     };
 
+    const signInWithGoogle = async () => {
+        try {
+            if (Platform.OS === 'web') {
+                await signInWithPopup(auth, googleProvider);
+            } else {
+                await promptAsync();
+            }
+        } catch (error) {
+            console.error('Error signing in with Google:', error);
+        }
+    };
+
     const signOutUser = async () => {
         await signOut(auth);
         setUserProfile(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, userProfile, loading, signOutUser, updateDisplayName }}>
+        <AuthContext.Provider value={{ user, userProfile, loading, signInWithGoogle, signOutUser, updateDisplayName }}>
             {children}
         </AuthContext.Provider>
     );
