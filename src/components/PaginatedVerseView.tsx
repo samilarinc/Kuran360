@@ -336,6 +336,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                     >
                         <Text style={styles.verseNumberButtonText}>
                             Ayet {currentVerse.number}
+                            <Text style={styles.verseTotal}> / {verses.length}</Text>
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -545,6 +546,15 @@ const createStyles = (theme: Theme, screenWidth: number) => StyleSheet.create({
         textShadowColor: 'rgba(0, 0, 0, 0.3)',
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 2,
+    },
+    verseTotal: {
+        fontSize: 14,
+        fontWeight: '400',
+        color: '#FFFFFF',
+        opacity: 0.75,
+        textShadowColor: 'rgba(0, 0, 0, 0.2)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 1,
     },
     verseCounter: {
         fontSize: FONT_SIZES.small,

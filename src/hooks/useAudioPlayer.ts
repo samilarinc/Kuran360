@@ -35,7 +35,7 @@ export const useAudioPlayer = () => {
   const memEndRef = useRef<number>(1);
   const memCyclesTotalRef = useRef<number>(1); // total times to play the whole range
   const memCyclesDoneRef = useRef<number>(0); // completed cycles
-  
+
   // Mode switch: 'range' = old mode (repeat whole range), 'individual' = new mode (repeat each verse)
   const memModeRef = useRef<'range' | 'individual'>('range');
   const memCurrentVerseRepeatsRef = useRef<number>(0); // how many times current verse has been repeated
@@ -416,7 +416,7 @@ export const useAudioPlayer = () => {
                 if (mode === 'individual') {
                   // New mode: repeat each verse individually
                   const currentRepeats = memCurrentVerseRepeatsRef.current + 1;
-                  
+
                   if (currentRepeats < memCyclesTotalRef.current) {
                     // Repeat the same verse
                     memCurrentVerseRepeatsRef.current = currentRepeats;
@@ -425,7 +425,7 @@ export const useAudioPlayer = () => {
                   } else {
                     // Move to next verse
                     memCurrentVerseRepeatsRef.current = 0;
-                    
+
                     if (verse.number < endNum) {
                       const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
                       if (next) {
@@ -433,7 +433,7 @@ export const useAudioPlayer = () => {
                         return;
                       }
                     }
-                    
+
                     // Finished all verses in range
                     memActiveRef.current = false;
                     memCyclesDoneRef.current = 0;
