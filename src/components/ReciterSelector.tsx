@@ -40,7 +40,7 @@ export const ReciterSelector: React.FC = () => {
 
             // Wait for audio to start before restoring settings
             await new Promise(resolve => setTimeout(resolve, 500));
-            
+
             // Restore original reciter
             await updateSettings({ selectedReciter: originalReciter });
         } catch (error) {

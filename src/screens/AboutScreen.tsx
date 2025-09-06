@@ -64,6 +64,32 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Proje Hakkında</Text>
                     <Text style={[styles.sectionText, { color: theme.textSecondary }]}>Bu uygulama tamamen kişisel bir projedir ve herhangi bir ticari/kar amacı yoktur. Projenin ilerleyen aşamalarında açık kaynak olarak paylaşılması planlanmaktadır.</Text>
                 </View>
+
+                <View style={[styles.section, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
+                    <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Güncelleme Notları</Text>
+
+                    <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>06 Eylül 2025</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ezber moduna "Ayet Ayet" seçeneği eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Okuyucu seçiminde ses önizleme özelliği eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Sayfalı görünümde dinamik sayfa göstergesi eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ayete git butonunda toplam ayet sayısı gösterimi eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ayete git modal'ında favori meal desteği düzeltildi</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>05 Eylül 2025</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Hakkında sayfasına güncelleme notları eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Yeni kariler eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ezber modu için tekrar sayısı özelliği eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Audio oynatıcı performans iyileştirmeleri</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• UI geliştirmeleri ve hata düzeltmeleri</Text>
+                        </View>
+                    </View>
+                </View>
             </ScrollView>
         </SafeAreaView>
     );
@@ -182,5 +208,24 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: SPACING.md,
         opacity: 0.7,
+    },
+    updateItem: {
+        marginBottom: SPACING.lg,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(0,0,0,0.06)',
+        paddingBottom: SPACING.md,
+    },
+    updateDate: {
+        fontSize: FONT_SIZES.medium,
+        fontWeight: '600',
+        marginBottom: SPACING.sm,
+    },
+    updateList: {
+        paddingLeft: SPACING.xs,
+    },
+    updateBullet: {
+        fontSize: FONT_SIZES.small,
+        lineHeight: 22,
+        marginBottom: SPACING.xs,
     },
 });
