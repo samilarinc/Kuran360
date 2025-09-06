@@ -438,20 +438,92 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
 
             {/* Page indicator dots */}
             <View style={styles.pageIndicator}>
-                {verses.slice(0, Math.min(verses.length, 10)).map((_, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={[
-                            styles.dot,
-                            index === currentVerseIndex && styles.activeDot
-                        ]}
-                        onPress={() => goToVerse(index, true, true)} // Mark as user manual
-                        disabled={isAnimating}
-                    />
-                ))}
-                {verses.length > 10 && (
-                    <Text style={styles.moreIndicator}>...</Text>
-                )}
+                {(() => {
+                    const maxDots = 7; // Maximum number of dots to show
+                    const totalVerses = verses.length;
+
+                    if (totalVerses <= maxDots) {
+                        // Show all verses if they fit
+                        return verses.map((_, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={[
+                                    styles.dot,
+                                    index === currentVerseIndex && styles.activeDot
+                                ]}
+                                onPress={() => goToVerse(index, true, true)}
+                                disabled={isAnimating}
+                            />
+                        ));
+                    }
+
+                    // Dynamic range calculation
+                    const sideCount = Math.floor((maxDots - 1) / 2); // Number of dots on each side of current
+                    let startIndex = Math.max(0, currentVerseIndex - sideCount);
+                    let endIndex = Math.min(totalVerses - 1, currentVerseIndex + sideCount);
+
+                    // Adjust if we're near the beginning or end
+                    if (endIndex - startIndex + 1 < maxDots) {
+                        if (startIndex === 0) {
+                            endIndex = Math.min(totalVerses - 1, startIndex + maxDots - 1);
+                        } else if (endIndex === totalVerses - 1) {
+                            startIndex = Math.max(0, endIndex - maxDots + 1);
+                        }
+                    }
+
+                    const result = [];
+
+                    // Show first dot and ellipsis if we're not at the beginning
+                    if (startIndex > 0) {
+                        result.push(
+                            <TouchableOpacity
+                                key={0}
+                                style={[styles.dot, 0 === currentVerseIndex && styles.activeDot]}
+                                onPress={() => goToVerse(0, true, true)}
+                                disabled={isAnimating}
+                            />
+                        );
+                        if (startIndex > 1) {
+                            result.push(
+                                <Text key="leftEllipsis" style={styles.ellipsis}>...</Text>
+                            );
+                        }
+                    }
+
+                    // Show the main range
+                    for (let i = startIndex; i <= endIndex; i++) {
+                        result.push(
+                            <TouchableOpacity
+                                key={i}
+                                style={[
+                                    styles.dot,
+                                    i === currentVerseIndex && styles.activeDot
+                                ]}
+                                onPress={() => goToVerse(i, true, true)}
+                                disabled={isAnimating}
+                            />
+                        );
+                    }
+
+                    // Show ellipsis and last dot if we're not at the end
+                    if (endIndex < totalVerses - 1) {
+                        if (endIndex < totalVerses - 2) {
+                            result.push(
+                                <Text key="rightEllipsis" style={styles.ellipsis}>...</Text>
+                            );
+                        }
+                        result.push(
+                            <TouchableOpacity
+                                key={totalVerses - 1}
+                                style={[styles.dot, totalVerses - 1 === currentVerseIndex && styles.activeDot]}
+                                onPress={() => goToVerse(totalVerses - 1, true, true)}
+                                disabled={isAnimating}
+                            />
+                        );
+                    }
+
+                    return result;
+                })()}
             </View>
 
             {/* Swipe instruction */}
@@ -627,6 +699,12 @@ const createStyles = (theme: Theme, screenWidth: number) => StyleSheet.create({
         width: 12,
         height: 12,
         borderRadius: 6,
+    },
+    ellipsis: {
+        color: theme.textSecondary,
+        fontSize: FONT_SIZES.small,
+        marginHorizontal: 4,
+        lineHeight: 12,
     },
     moreIndicator: {
         color: theme.textSecondary,
