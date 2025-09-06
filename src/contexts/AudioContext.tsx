@@ -11,7 +11,7 @@ interface AudioContextType {
     togglePlayPause: () => Promise<void>;
     changePlaybackRate: (rate: number) => Promise<void>;
     setVersesForAutoplay: (verses: VerseType[]) => void;
-    startMemorization: (surahNumber: number, startVerseNumber: number, endVerseNumber: number, repeatsPerVerse: number) => Promise<void>;
+    startMemorization: (surahNumber: number, startVerseNumber: number, endVerseNumber: number, repetitionCount: number, mode?: 'range' | 'individual') => Promise<void>;
     cancelMemorization: () => void;
 }
 

@@ -35,6 +35,10 @@ export const useAudioPlayer = () => {
   const memEndRef = useRef<number>(1);
   const memCyclesTotalRef = useRef<number>(1); // total times to play the whole range
   const memCyclesDoneRef = useRef<number>(0); // completed cycles
+  
+  // Mode switch: 'range' = old mode (repeat whole range), 'individual' = new mode (repeat each verse)
+  const memModeRef = useRef<'range' | 'individual'>('range');
+  const memCurrentVerseRepeatsRef = useRef<number>(0); // how many times current verse has been repeated
 
   // Debounced state update to prevent flickering
   const debouncedSetAudioState = (newState: Partial<AudioState>) => {
@@ -398,48 +402,81 @@ export const useAudioPlayer = () => {
                 const targetSurah = memSurahRef.current;
                 const startNum = memStartRef.current;
                 const endNum = memEndRef.current;
+                const mode = memModeRef.current;
 
                 // If we somehow left the target surah, cancel memorization
                 if (!targetSurah || verse.surahNumber !== targetSurah) {
                   memActiveRef.current = false;
                   memCyclesDoneRef.current = 0;
+                  memCurrentVerseRepeatsRef.current = 0;
                   setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
                   return;
                 }
 
-                // Move to next verse within range
-                if (verse.number < endNum) {
-                  const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
-                  if (next) {
-                    await playVerse(next);
+                if (mode === 'individual') {
+                  // New mode: repeat each verse individually
+                  const currentRepeats = memCurrentVerseRepeatsRef.current + 1;
+                  
+                  if (currentRepeats < memCyclesTotalRef.current) {
+                    // Repeat the same verse
+                    memCurrentVerseRepeatsRef.current = currentRepeats;
+                    await playVerse(verse);
+                    return;
+                  } else {
+                    // Move to next verse
+                    memCurrentVerseRepeatsRef.current = 0;
+                    
+                    if (verse.number < endNum) {
+                      const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
+                      if (next) {
+                        await playVerse(next);
+                        return;
+                      }
+                    }
+                    
+                    // Finished all verses in range
+                    memActiveRef.current = false;
+                    memCyclesDoneRef.current = 0;
+                    memCurrentVerseRepeatsRef.current = 0;
+                    setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
                     return;
                   }
-                  // If next not found, cancel memorization gracefully
-                  memActiveRef.current = false;
-                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                  return;
-                }
-
-                // Finished the end of the range; either loop the whole range or stop
-                const cyclesDone = memCyclesDoneRef.current + 1;
-                if (cyclesDone < Math.max(1, memCyclesTotalRef.current)) {
-                  memCyclesDoneRef.current = cyclesDone;
-                  const startVerse = versesArr.find(v => v.surahNumber === targetSurah && v.number === startNum);
-                  if (startVerse) {
-                    await playVerse(startVerse);
-                    return;
-                  }
-                  // Start not found; cancel
-                  memActiveRef.current = false;
-                  memCyclesDoneRef.current = 0;
-                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                  return;
                 } else {
-                  // All cycles completed
-                  memActiveRef.current = false;
-                  memCyclesDoneRef.current = 0;
-                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                  return;
+                  // Original mode: repeat whole range
+                  // Move to next verse within range
+                  if (verse.number < endNum) {
+                    const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
+                    if (next) {
+                      await playVerse(next);
+                      return;
+                    }
+                    // If next not found, cancel memorization gracefully
+                    memActiveRef.current = false;
+                    setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                    return;
+                  }
+
+                  // Finished the end of the range; either loop the whole range or stop
+                  const cyclesDone = memCyclesDoneRef.current + 1;
+                  if (cyclesDone < Math.max(1, memCyclesTotalRef.current)) {
+                    memCyclesDoneRef.current = cyclesDone;
+                    const startVerse = versesArr.find(v => v.surahNumber === targetSurah && v.number === startNum);
+                    if (startVerse) {
+                      await playVerse(startVerse);
+                      return;
+                    }
+                    // Start not found; cancel
+                    memActiveRef.current = false;
+                    memCyclesDoneRef.current = 0;
+                    setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                    return;
+                  } else {
+                    // All cycles completed
+                    memActiveRef.current = false;
+                    memCyclesDoneRef.current = 0;
+                    setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                    return;
+                  }
                 }
               }
 
@@ -599,18 +636,18 @@ export const useAudioPlayer = () => {
   };
 
   // Start memorization over a range within a single surah.
-  // Each verse in the range is repeated `repeatsPerVerse` times, then proceeds to the next.
   const startMemorization = async (
     surahNumber: number,
     startVerseNumber: number,
     endVerseNumber: number,
-    repeatsForWholeRange: number
+    repetitionCount: number,
+    mode: 'range' | 'individual' = 'range'
   ) => {
     try {
       // Normalize inputs
       const startNum = Math.max(1, Math.floor(startVerseNumber));
       let endNum = Math.max(startNum, Math.floor(endVerseNumber));
-      const cycles = Math.max(1, Math.floor(repeatsForWholeRange));
+      const cycles = Math.max(1, Math.floor(repetitionCount));
 
       // Ensure we have the correct surah verses loaded
       if (!allVersesRef.current.length || allVersesRef.current[0].surahNumber !== surahNumber) {
@@ -646,6 +683,8 @@ export const useAudioPlayer = () => {
       memEndRef.current = endNum;
       memCyclesTotalRef.current = cycles;
       memCyclesDoneRef.current = 0;
+      memModeRef.current = mode;
+      memCurrentVerseRepeatsRef.current = 0;
 
       // Begin playback at start verse
       await playVerse(startVerse);
@@ -657,6 +696,7 @@ export const useAudioPlayer = () => {
   const cancelMemorization = () => {
     memActiveRef.current = false;
     memCyclesDoneRef.current = 0;
+    memCurrentVerseRepeatsRef.current = 0;
   };
 
   return {

@@ -42,6 +42,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
     setEndVerse(v => clamp(v, verse.number, maxEnd));
   }, [maxEnd, verse.number]);
   const [repeats, setRepeats] = useState<number>(3);
+  const [memMode, setMemMode] = useState<'range' | 'individual'>('range');
 
   const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
   const canStartMem = useMemo(() => endVerse >= verse.number, [endVerse, verse.number]);
@@ -258,7 +259,9 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
                 </View>
               </View>
               <View style={createStyles(theme).memRow}>
-                <Text style={createStyles(theme).memLabel}>Tekrar Sayısı</Text>
+                <Text style={createStyles(theme).memLabel}>
+                  {memMode === 'individual' ? 'Her Ayet İçin' : 'Tekrar Sayısı'}
+                </Text>
                 <View style={createStyles(theme).memStepper}>
                   <TouchableOpacity
                     style={createStyles(theme).stepBtn}
@@ -275,11 +278,42 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
                   </TouchableOpacity>
                 </View>
               </View>
+              <View style={createStyles(theme).memRow}>
+                <Text style={createStyles(theme).memLabel}>Ezber Modu</Text>
+                <View style={createStyles(theme).memToggleContainer}>
+                  <TouchableOpacity
+                    style={[
+                      createStyles(theme).memModeBtn,
+                      createStyles(theme).memModeBtnLeft,
+                      memMode === 'range' && createStyles(theme).memModeBtnActive
+                    ]}
+                    onPress={() => setMemMode('range')}
+                  >
+                    <Text style={[
+                      createStyles(theme).memModeText,
+                      memMode === 'range' && createStyles(theme).memModeTextActive
+                    ]}>Aralık</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      createStyles(theme).memModeBtn,
+                      createStyles(theme).memModeBtnRight,
+                      memMode === 'individual' && createStyles(theme).memModeBtnActive
+                    ]}
+                    onPress={() => setMemMode('individual')}
+                  >
+                    <Text style={[
+                      createStyles(theme).memModeText,
+                      memMode === 'individual' && createStyles(theme).memModeTextActive
+                    ]}>Ayet Ayet</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
               <View style={createStyles(theme).memActions}>
                 <TouchableOpacity
                   style={[createStyles(theme).memStartBtn, !canStartMem && createStyles(theme).memStartBtnDisabled]}
                   disabled={!canStartMem}
-                  onPress={() => startMemorization(verse.surahNumber, verse.number, endVerse, repeats)}
+                  onPress={() => startMemorization(verse.surahNumber, verse.number, endVerse, repeats, memMode)}
                 >
                   <Text style={createStyles(theme).memStartText}>Start</Text>
                 </TouchableOpacity>
@@ -584,6 +618,44 @@ const createStyles = (theme: Theme) => StyleSheet.create({
   },
   memCancelText: {
     color: theme.headerText,
+    fontWeight: '700',
+  },
+  memToggleContainer: {
+    flexDirection: 'row',
+    borderRadius: 8,
+    backgroundColor: theme.surface,
+    borderWidth: 1,
+    borderColor: theme.border,
+    overflow: 'hidden',
+  },
+  memModeBtn: {
+    flex: 1,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.surface,
+    borderWidth: 0,
+  },
+  memModeBtnLeft: {
+    borderRightWidth: 0.5,
+    borderRightColor: theme.border,
+  },
+  memModeBtnRight: {
+    borderLeftWidth: 0.5,
+    borderLeftColor: theme.border,
+  },
+  memModeBtnActive: {
+    backgroundColor: theme.primary,
+  },
+  memModeText: {
+    fontSize: FONT_SIZES.small,
+    color: theme.text,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  memModeTextActive: {
+    color: '#fff',
     fontWeight: '700',
   },
   headerActions: {
