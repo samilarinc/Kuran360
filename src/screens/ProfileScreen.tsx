@@ -1,28 +1,43 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, FlatList, TextInput, Alert } from 'react-native';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { SPACING, FONT_SIZES } from '../constants';
-import { auth } from '../services/firebase';
-import { GoogleAuthProvider, signInWithPopup, signInWithCredential } from 'firebase/auth';
-import Constants from 'expo-constants';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-    const { user, signOutUser } = useAuth();
+    const { user, userProfile, signOutUser, updateDisplayName, signInWithGoogle } = useAuth();
     const { theme } = useTheme();
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [newDisplayName, setNewDisplayName] = useState('');
+    const [isUpdating, setIsUpdating] = useState(false);
 
-    const signInWithGoogle = async () => {
+    const handleEditName = () => {
+        setNewDisplayName(userProfile?.displayName || user?.displayName || '');
+        setIsEditingName(true);
+    };
+
+    const handleSaveName = async () => {
+        if (!newDisplayName.trim()) {
+            Alert.alert('Hata', 'Kullanıcı adı boş olamaz.');
+            return;
+        }
+
+        if (newDisplayName.trim().length < 2) {
+            Alert.alert('Hata', 'Kullanıcı adı en az 2 karakter olmalıdır.');
+            return;
+        }
+
         try {
-            if (Platform.OS === 'web') {
-                const provider = new GoogleAuthProvider();
-                await signInWithPopup(auth, provider);
-                return;
-            }
-            // Native: use expo-auth-session (deferred wiring). For now, show minimal guidance.
-            throw new Error('Google SSO for native requires expo-auth-session setup.');
-        } catch (e: any) {
-            console.warn('Google sign-in failed:', e?.message || e);
+            setIsUpdating(true);
+            await updateDisplayName(newDisplayName.trim());
+            setIsEditingName(false);
+            Alert.alert('Başarılı', 'Kullanıcı adınız güncellendi.');
+        } catch (error) {
+            console.error('Error updating name:', error);
+            Alert.alert('Hata', 'Kullanıcı adı güncellenirken bir hata oluştu.');
+        } finally {
+            setIsUpdating(false);
         }
     };
 
@@ -34,16 +49,25 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                 {user ? (
                     <View style={createStyles(theme).card}>
                         <View style={createStyles(theme).avatarRow}>
-                            {user.photoURL ? (
-                                <Image source={{ uri: user.photoURL }} style={createStyles(theme).avatar} />
+                            {(userProfile?.photoURL || user?.photoURL) ? (
+                                <Image 
+                                    source={{ uri: (userProfile?.photoURL || user?.photoURL) as string }} 
+                                    style={createStyles(theme).avatar} 
+                                />
                             ) : (
                                 <View style={[createStyles(theme).avatar, createStyles(theme).avatarFallback]}>
-                                    <Text style={createStyles(theme).avatarInitials}>{user.displayName?.charAt(0) || 'U'}</Text>
+                                    <Text style={createStyles(theme).avatarInitials}>
+                                        {(userProfile?.displayName || user?.displayName)?.charAt(0) || 'U'}
+                                    </Text>
                                 </View>
                             )}
                             <View style={{ flex: 1 }}>
-                                <Text style={createStyles(theme).name}>{user.displayName || 'İsimsiz Kullanıcı'}</Text>
-                                <Text style={createStyles(theme).email}>{user.email || '—'}</Text>
+                                <Text style={createStyles(theme).name}>
+                                    {userProfile?.displayName || user?.displayName || 'İsimsiz Kullanıcı'}
+                                </Text>
+                                <Text style={createStyles(theme).email}>
+                                    {userProfile?.email || user?.email || '—'}
+                                </Text>
                             </View>
                         </View>
 
