@@ -70,6 +70,27 @@ const App: React.FC = () => {
               doc.head && doc.head.appendChild(linkEl);
             }
           } catch { }
+
+          // Add Google Analytics
+          try {
+            if (!doc.querySelector('script[src*="gtag/js"]')) {
+              // Add gtag script
+              const gtagScript = doc.createElement('script');
+              gtagScript.async = true;
+              gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-T2MCJ8GGYZ';
+              doc.head && doc.head.appendChild(gtagScript);
+
+              // Add gtag configuration
+              const configScript = doc.createElement('script');
+              configScript.innerHTML = `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-T2MCJ8GGYZ');
+              `;
+              doc.head && doc.head.appendChild(configScript);
+            }
+          } catch { }
         }
         if (win) {
           const handler = () => { try { if (doc) doc.title = 'Kuran360'; } catch { } };
