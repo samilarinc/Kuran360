@@ -34,6 +34,20 @@ interface CanvasRenderingContext2D {
   stroke(): void;
 }
 
+type ThemeMode = 'light' | 'dark';
+
+interface VerseImagePalette {
+  background: string;
+  text: string;
+  translation: string;
+  accent: string;
+  border: string;
+  gradientTop: string;
+  gradientMid: string;
+  gradientBottom: string;
+  footerText?: string;
+}
+
 export class VerseImageGenerator {
   private static readonly IMAGE_WIDTH = 800;
   private static readonly IMAGE_HEIGHT = 600;
@@ -46,7 +60,7 @@ export class VerseImageGenerator {
   /**
    * Ayet resmini oluşturur (sadece web platformunda)
    */
-  static async generateVerseImage(verseData: VerseShareData): Promise<string | null> {
+  static async generateVerseImage(verseData: VerseShareData, options?: { themeMode?: ThemeMode }): Promise<string | null> {
     console.log('generateVerseImage başlatıldı', verseData);
 
     if (Platform.OS !== 'web' || typeof document === 'undefined') {
@@ -64,7 +78,8 @@ export class VerseImageGenerator {
       }
 
       console.log('Ayet resmi çiziliyor...');
-      await this.drawVerseImage(ctx, verseData);
+  const palette = this.getPalette(options?.themeMode || 'light');
+  await this.drawVerseImage(ctx, verseData, palette);
 
       console.log('Canvas blob\'a dönüştürülüyor...');
       // Canvas'ı blob'a dönüştür
@@ -115,11 +130,11 @@ export class VerseImageGenerator {
   /**
    * Canvas'a ayet resmini çizer
    */
-  private static async drawVerseImage(ctx: CanvasRenderingContext2D, verseData: VerseShareData): Promise<void> {
+  private static async drawVerseImage(ctx: CanvasRenderingContext2D, verseData: VerseShareData, palette: VerseImagePalette): Promise<void> {
     const { arabicText, translation, surahName, verseNumber } = verseData;
 
     // Arka plan
-    this.drawBackground(ctx);
+  this.drawBackground(ctx, palette);
 
     // Dinamik font boyutları hesapla
     const fontSizes = this.calculateFontSizes(ctx, arabicText, translation);
@@ -128,34 +143,34 @@ export class VerseImageGenerator {
     const layout = this.calculateLayout(ctx, arabicText, translation, fontSizes);
 
     // Başlık (Sure adı ve ayet numarası)
-    this.drawTitle(ctx, surahName, verseNumber, layout.titleY);
+  this.drawTitle(ctx, surahName, verseNumber, layout.titleY, palette);
 
     // Arapça metin
-    await this.drawArabicText(ctx, arabicText, fontSizes.arabic, layout.arabicY, layout.arabicLines, layout.arabicLineHeight);
+  await this.drawArabicText(ctx, arabicText, fontSizes.arabic, layout.arabicY, layout.arabicLines, layout.arabicLineHeight, palette);
 
     // Çeviri metni
-    this.drawTranslation(ctx, translation, fontSizes.translation, layout.translationY, layout.translationLines, layout.translationLineHeight);
+  this.drawTranslation(ctx, translation, fontSizes.translation, layout.translationY, layout.translationLines, layout.translationLineHeight, palette);
 
     // Alt bilgi
-    this.drawFooter(ctx);
+  this.drawFooter(ctx, palette);
 
     // Dekoratif çerçeve
-    this.drawBorder(ctx);
+  this.drawBorder(ctx, palette);
   }
 
   /**
    * Arka planı çizer
    */
-  private static drawBackground(ctx: CanvasRenderingContext2D): void {
+  private static drawBackground(ctx: CanvasRenderingContext2D, palette: VerseImagePalette): void {
     // Ana arka plan
-    ctx.fillStyle = this.BACKGROUND_COLOR;
+    ctx.fillStyle = palette.background;
     ctx.fillRect(0, 0, this.IMAGE_WIDTH, this.IMAGE_HEIGHT);
 
     // Çok hafif gradient efekti
     const gradient = ctx.createLinearGradient(0, 0, 0, this.IMAGE_HEIGHT);
-    gradient.addColorStop(0, 'rgba(46, 125, 50, 0.01)');
-    gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.3)');
-    gradient.addColorStop(1, 'rgba(46, 125, 50, 0.02)');
+    gradient.addColorStop(0, palette.gradientTop);
+    gradient.addColorStop(0.5, palette.gradientMid);
+    gradient.addColorStop(1, palette.gradientBottom);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, this.IMAGE_WIDTH, this.IMAGE_HEIGHT);
   }
@@ -268,8 +283,8 @@ export class VerseImageGenerator {
   /**
    * Başlık kısmını çizer
    */
-  private static drawTitle(ctx: CanvasRenderingContext2D, surahName: string, verseNumber: number, y: number): void {
-    ctx.fillStyle = this.ACCENT_COLOR;
+  private static drawTitle(ctx: CanvasRenderingContext2D, surahName: string, verseNumber: number, y: number, palette: VerseImagePalette): void {
+    ctx.fillStyle = palette.accent;
     ctx.font = 'bold 22px Arial, sans-serif';
     ctx.textAlign = 'center';
 
@@ -277,7 +292,7 @@ export class VerseImageGenerator {
     ctx.fillText(titleText, this.IMAGE_WIDTH / 2, y);
 
     // Başlık altına elegant çizgi
-    ctx.strokeStyle = this.ACCENT_COLOR;
+  ctx.strokeStyle = palette.accent;
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     const lineY = y + 15;
@@ -289,8 +304,8 @@ export class VerseImageGenerator {
   /**
    * Arapça metni çizer
    */
-  private static async drawArabicText(ctx: CanvasRenderingContext2D, arabicText: string, fontSize: number, startY: number, precomputedLines?: string[], lineHeightOverride?: number): Promise<void> {
-    ctx.fillStyle = this.TEXT_COLOR;
+  private static async drawArabicText(ctx: CanvasRenderingContext2D, arabicText: string, fontSize: number, startY: number, precomputedLines?: string[], lineHeightOverride?: number, palette?: VerseImagePalette): Promise<void> {
+    ctx.fillStyle = palette?.text || this.TEXT_COLOR;
     ctx.font = `${fontSize}px "Scheherazade New", "Noto Naskh Arabic", Amiri, "Traditional Arabic", "Arabic Typesetting", "Times New Roman", serif`;
     // Blok ortalama: tüm satırlar için en geniş satırı bulup bloğu ortala
     ctx.textAlign = 'right';
@@ -313,8 +328,8 @@ export class VerseImageGenerator {
   /**
    * Çeviri metnini çizer
    */
-  private static drawTranslation(ctx: CanvasRenderingContext2D, translation: string, fontSize: number, startY: number, precomputedLines?: string[], lineHeightOverride?: number): void {
-    ctx.fillStyle = '#666666';
+  private static drawTranslation(ctx: CanvasRenderingContext2D, translation: string, fontSize: number, startY: number, precomputedLines?: string[], lineHeightOverride?: number, palette?: VerseImagePalette): void {
+    ctx.fillStyle = palette?.translation || '#666666';
     ctx.font = `${fontSize}px "Georgia", serif`;
     ctx.textAlign = 'left';
     ctx.direction = 'ltr';
@@ -336,8 +351,8 @@ export class VerseImageGenerator {
   /**
    * Alt bilgi kısmını çizer
    */
-  private static drawFooter(ctx: CanvasRenderingContext2D): void {
-    ctx.fillStyle = this.ACCENT_COLOR;
+  private static drawFooter(ctx: CanvasRenderingContext2D, palette: VerseImagePalette): void {
+    ctx.fillStyle = palette.footerText || palette.accent;
     ctx.font = '14px Arial, sans-serif';
     ctx.textAlign = 'center';
 
@@ -349,14 +364,14 @@ export class VerseImageGenerator {
   /**
    * Çerçeveyi çizer
    */
-  private static drawBorder(ctx: CanvasRenderingContext2D): void {
+  private static drawBorder(ctx: CanvasRenderingContext2D, palette: VerseImagePalette): void {
     // Dış çerçeve - çok hafif
-    ctx.strokeStyle = this.BORDER_COLOR;
+    ctx.strokeStyle = palette.border;
     ctx.lineWidth = 1;
     ctx.strokeRect(5, 5, this.IMAGE_WIDTH - 10, this.IMAGE_HEIGHT - 10);
 
     // İç dekoratif çerçeve - daha elegant
-    ctx.strokeStyle = this.ACCENT_COLOR;
+    ctx.strokeStyle = palette.accent;
     ctx.lineWidth = 0.5;
     ctx.strokeRect(20, 20, this.IMAGE_WIDTH - 40, this.IMAGE_HEIGHT - 40);
   }
@@ -435,5 +450,33 @@ export class VerseImageGenerator {
   static async dataURLToBlob(dataURL: string): Promise<Blob> {
     const response = await fetch(dataURL);
     return response.blob();
+  }
+
+  /** Tema paleti üretir */
+  private static getPalette(mode: ThemeMode): VerseImagePalette {
+    if (mode === 'dark') {
+      return {
+        background: '#0F120F',
+        text: '#F2F5F2',
+        translation: '#C2C7C2',
+        accent: '#66BB6A',
+        border: '#1F2A1F',
+        gradientTop: 'rgba(102,187,106,0.05)',
+        gradientMid: 'rgba(255,255,255,0.03)',
+        gradientBottom: 'rgba(102,187,106,0.04)',
+        footerText: '#7AD27E'
+      };
+    }
+    // light (default)
+    return {
+      background: this.BACKGROUND_COLOR,
+      text: this.TEXT_COLOR,
+      translation: '#666666',
+      accent: this.ACCENT_COLOR,
+      border: this.BORDER_COLOR,
+      gradientTop: 'rgba(46,125,50,0.01)',
+      gradientMid: 'rgba(255,255,255,0.3)',
+      gradientBottom: 'rgba(46,125,50,0.02)'
+    };
   }
 }

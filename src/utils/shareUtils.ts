@@ -121,10 +121,10 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
     /**
      * Sadece resim oluşturur, paylaşmaz (platform-specific paylaşım için)
      */
-    static async generateVerseImageForSharing(verseData: VerseShareData): Promise<string | null> {
+    static async generateVerseImageForSharing(verseData: VerseShareData, themeMode: 'light' | 'dark' = 'light'): Promise<string | null> {
         try {
             console.log('Resim oluşturuluyor:', verseData);
-            const imageUrl = await VerseImageGenerator.generateVerseImage(verseData);
+            const imageUrl = await VerseImageGenerator.generateVerseImage(verseData, { themeMode });
             if (!imageUrl) {
                 console.error('Resim oluşturulamadı');
                 return null;
@@ -140,10 +140,10 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
     /**
      * Ayet resmini oluşturup paylaşır - Sadece resim ve link
      */
-    static async shareVerseWithImage(verseData: VerseShareData, options?: ShareOptions): Promise<void> {
+    static async shareVerseWithImage(verseData: VerseShareData, options?: ShareOptions & { themeMode?: 'light' | 'dark' }): Promise<void> {
         try {
             // Resmi oluştur
-            const imageUrl = await VerseImageGenerator.generateVerseImage(verseData);
+            const imageUrl = await VerseImageGenerator.generateVerseImage(verseData, { themeMode: options?.themeMode || 'light' });
 
             if (!imageUrl) {
                 Alert.alert('Hata', 'Resim oluşturulamadı. Lütfen tekrar deneyin.');
@@ -706,7 +706,8 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
      */
     static getAvailablePlatforms(): Array<{ id: string; name: string; icon: string }> {
         return [
-            { id: 'image', name: 'Resim Olarak Paylaş', icon: '🖼️' },
+            { id: 'image_light', name: 'Resim (Light)', icon: '🖼️' },
+            { id: 'image_dark', name: 'Resim (Dark)', icon: '🌙' },
             { id: 'whatsapp', name: 'WhatsApp', icon: '💬' },
             { id: 'twitter', name: 'Twitter/X', icon: '🐦' },
             { id: 'telegram', name: 'Telegram', icon: '✈️' },

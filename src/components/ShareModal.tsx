@@ -34,16 +34,16 @@ export const ShareModal: React.FC<ShareModalProps> = ({
     try {
       console.log('Platform seçildi:', platformId);
 
-      if (platformId === 'image') {
+      if (platformId === 'image_light' || platformId === 'image_dark') {
         // Resim oluştur ve önizleme modalı aç
-        const imageUrl = await ShareService.generateVerseImageForSharing(verseData);
+        const imageUrl = await ShareService.generateVerseImageForSharing(verseData, platformId === 'image_dark' ? 'dark' : 'light');
         if (imageUrl) {
           setGeneratedImageUrl(imageUrl);
           setImagePreviewVisible(true);
           return; // Modal açık kalsın
         } else {
           // Resim oluşturulamazsa fallback
-          await ShareService.shareVerseWithImage(verseData);
+          await ShareService.shareVerseWithImage(verseData, { themeMode: platformId === 'image_dark' ? 'dark' : 'light' });
         }
       } else if (platformId === 'generic') {
         // Metin olarak genel paylaşım

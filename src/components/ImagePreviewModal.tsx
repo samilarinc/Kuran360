@@ -35,6 +35,9 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     verseData,
 }) => {
     const { theme } = useTheme();
+    const [currentImage, setCurrentImage] = React.useState(imageUrl);
+    const [mode, setMode] = React.useState<'light' | 'dark'>('light');
+    React.useEffect(() => { setCurrentImage(imageUrl); }, [imageUrl]);
 
     const handleDownload = () => {
         if (Platform.OS === 'web') {
@@ -119,12 +122,36 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
                             {/* Image Preview */}
                             <View style={[styles.imageContainer, { backgroundColor: theme.surface }]}>
-                                <Image
-                                    source={{ uri: imageUrl }}
+                                                                <Image
+                                                                        source={{ uri: currentImage }}
                                     style={styles.image}
                                     resizeMode="contain"
                                 />
                             </View>
+                                                        <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 12, marginBottom: 12 }}>
+                                                                <TouchableOpacity
+                                                                    style={[styles.actionButton, { backgroundColor: theme.cardBackground }]}
+                                                                    onPress={async () => {
+                                                                        if (mode !== 'light') setMode('light');
+                                                                        const img = await ShareService.generateVerseImageForSharing(verseData, 'light');
+                                                                        if (img) setCurrentImage(img);
+                                                                    }}
+                                                                >
+                                                                    <Text style={styles.actionIcon}>🔆</Text>
+                                                                    <Text style={[styles.actionText, { color: theme.text }]}>Light</Text>
+                                                                </TouchableOpacity>
+                                                                <TouchableOpacity
+                                                                    style={[styles.actionButton, { backgroundColor: theme.cardBackground }]}
+                                                                    onPress={async () => {
+                                                                        if (mode !== 'dark') setMode('dark');
+                                                                        const img = await ShareService.generateVerseImageForSharing(verseData, 'dark');
+                                                                        if (img) setCurrentImage(img);
+                                                                    }}
+                                                                >
+                                                                    <Text style={styles.actionIcon}>🌙</Text>
+                                                                    <Text style={[styles.actionText, { color: theme.text }]}>Dark</Text>
+                                                                </TouchableOpacity>
+                                                        </View>
 
                             {/* Image Actions */}
                             <View style={styles.actionsContainer}>
