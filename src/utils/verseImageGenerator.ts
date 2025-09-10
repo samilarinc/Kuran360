@@ -78,8 +78,8 @@ export class VerseImageGenerator {
       }
 
       console.log('Ayet resmi çiziliyor...');
-  const palette = this.getPalette(options?.themeMode || 'light');
-  await this.drawVerseImage(ctx, verseData, palette);
+      const palette = this.getPalette(options?.themeMode || 'light');
+      await this.drawVerseImage(ctx, verseData, palette);
 
       console.log('Canvas blob\'a dönüştürülüyor...');
       // Canvas'ı blob'a dönüştür
@@ -134,7 +134,7 @@ export class VerseImageGenerator {
     const { arabicText, translation, surahName, verseNumber } = verseData;
 
     // Arka plan
-  this.drawBackground(ctx, palette);
+    this.drawBackground(ctx, palette);
 
     // Dinamik font boyutları hesapla
     const fontSizes = this.calculateFontSizes(ctx, arabicText, translation);
@@ -143,19 +143,19 @@ export class VerseImageGenerator {
     const layout = this.calculateLayout(ctx, arabicText, translation, fontSizes);
 
     // Başlık (Sure adı ve ayet numarası)
-  this.drawTitle(ctx, surahName, verseNumber, layout.titleY, palette);
+    this.drawTitle(ctx, surahName, verseNumber, layout.titleY, palette);
 
     // Arapça metin
-  await this.drawArabicText(ctx, arabicText, fontSizes.arabic, layout.arabicY, layout.arabicLines, layout.arabicLineHeight, palette);
+    await this.drawArabicText(ctx, arabicText, fontSizes.arabic, layout.arabicY, layout.arabicLines, layout.arabicLineHeight, palette);
 
     // Çeviri metni
-  this.drawTranslation(ctx, translation, fontSizes.translation, layout.translationY, layout.translationLines, layout.translationLineHeight, palette);
+    this.drawTranslation(ctx, translation, fontSizes.translation, layout.translationY, layout.translationLines, layout.translationLineHeight, palette);
 
     // Alt bilgi
-  this.drawFooter(ctx, palette);
+    this.drawFooter(ctx, palette);
 
     // Dekoratif çerçeve
-  this.drawBorder(ctx, palette);
+    this.drawBorder(ctx, palette);
   }
 
   /**
@@ -292,7 +292,7 @@ export class VerseImageGenerator {
     ctx.fillText(titleText, this.IMAGE_WIDTH / 2, y);
 
     // Başlık altına elegant çizgi
-  ctx.strokeStyle = palette.accent;
+    ctx.strokeStyle = palette.accent;
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     const lineY = y + 15;

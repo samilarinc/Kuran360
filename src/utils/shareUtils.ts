@@ -5,7 +5,6 @@ try {
     FileSystem = require('expo-file-system');
 } catch (e: any) {
     // Web veya modül yoksa sorun değil, sadece resim dosyası üretilemez
-    console.log('expo-file-system bulunamadı (web olabilir):', (e && e.message) ? e.message : String(e));
 }
 import { VerseShareData, ShareOptions } from '../types';
 import { VerseImageGenerator } from './verseImageGenerator';
@@ -25,13 +24,14 @@ if (Platform.OS !== 'web') {
         Share = RNShareModule.default || RNShareModule;
         Social = RNShareModule.Social;
     } catch (error) {
-        console.log('React Native Share not available:', error);
+        // react-native-share yoksa sessiz geç
     }
 }
 
 export class ShareService {
     private static readonly APP_URL = 'https://kuran360.com';
     private static readonly APP_NAME = 'Kuran 360';
+    private static lastVerseData: VerseShareData | null = null;
 
     /**
      * Ayet URL'ini oluşturur
@@ -89,33 +89,56 @@ export class ShareService {
      * Ana ayetin paylaşım metnini oluşturur
      */
     static generateShareText(verseData: VerseShareData): string {
+        ShareService.lastVerseData = verseData;
         const { arabicText, translation, surahName, verseNumber, surahNumber } = verseData;
-
-        return `${arabicText}
-
-"${translation}"
-
-📖 ${surahName} Suresi, ${verseNumber}. Ayet
-
-🔗 Bu güzel ayete göz atın: ${this.generateVerseUrl(surahNumber, verseNumber)}
-
-${this.APP_NAME}`;
+        // RTL gömme işaretleri ile Arapça satırın sağa dayalı görünmesini destekle
+        const RLE = '\u202B'; // Right-to-Left Embedding
+        const PDF = '\u202C'; // Pop directional formatting
+        const rtlArabic = `${RLE}${arabicText}${PDF}`;
+        const url = this.generateVerseUrl(surahNumber, verseNumber);
+        // Yeni sade format
+        // Arapça
+        // (boş satır)
+        // Çeviri
+        // (boş satır)
+        // URL (sure/ayet bilgisi istemiyorsan kaldırılabilir)
+        return [
+            rtlArabic,
+            '',
+            `${translation}`,
+            '',
+            `${url}`
+        ].join('\n');
     }
 
     /**
      * Tüm platformlar için aynı paylaşım metni oluşturur
      */
     static generatePlatformSpecificText(verseData: VerseShareData, platform: ShareOptions['platform']): string {
-        const { arabicText, translation, surahName, verseNumber } = verseData;
+        return this.buildShareTemplate(verseData, platform);
+    }
 
-        // Tüm platformlar için aynı format
-        return `${arabicText}
-
-"${translation}"
-
-📖 ${surahName} Suresi, ${verseNumber}. Ayet
-
-${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
+    /**
+     * Tek merkezli şablon üretimi.
+     * Format: Arapça (RTL embed) + boş satır + çeviri (gerekirse kısaltılır) + boş satır + URL
+     * Twitter için çeviri kısmını güvenli bir uzunluğa kısaltır.
+     */
+    private static buildShareTemplate(verseData: VerseShareData, platform?: string): string {
+        // Her şablon üretiminde cache güncelle (fallback için)
+        ShareService.lastVerseData = verseData;
+        const { arabicText, translation, surahNumber, verseNumber } = verseData;
+        const url = this.generateVerseUrl(surahNumber, verseNumber);
+        const RLE = '\u202B';
+        const PDF = '\u202C';
+        // Twitter bazı yönlendirme (RLE/PDF) karakterleri + çok satırlı ilk kısmı kestirebiliyor; twitter için sade bırak.
+        const rtlArabic = platform === 'twitter' ? arabicText : `${RLE}${arabicText}${PDF}`;
+        let tr = translation?.trim() || '';
+        if (platform === 'twitter') {
+            const MAX = 240; // 280 sınırına tampon
+            if (tr.length > MAX) tr = tr.slice(0, MAX - 1).trimEnd() + '…';
+        }
+        const template = [rtlArabic, tr, url].join('\n\n');
+        return template;
     }
 
     /**
@@ -123,13 +146,11 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
      */
     static async generateVerseImageForSharing(verseData: VerseShareData, themeMode: 'light' | 'dark' = 'light'): Promise<string | null> {
         try {
-            console.log('Resim oluşturuluyor:', verseData);
+            ShareService.lastVerseData = verseData;
             const imageUrl = await VerseImageGenerator.generateVerseImage(verseData, { themeMode });
             if (!imageUrl) {
-                console.error('Resim oluşturulamadı');
                 return null;
             }
-            console.log('Resim başarıyla oluşturuldu:', imageUrl);
             return imageUrl;
         } catch (error) {
             console.error('Resim oluşturma hatası:', error);
@@ -138,10 +159,11 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
     }
 
     /**
-     * Ayet resmini oluşturup paylaşır - Sadece resim ve link
+     * Ayet resmini oluşturup paylaşır (sadece 'image_*' platformları seçildiğinde kullanılmalı)
      */
     static async shareVerseWithImage(verseData: VerseShareData, options?: ShareOptions & { themeMode?: 'light' | 'dark' }): Promise<void> {
         try {
+            ShareService.lastVerseData = verseData;
             // Resmi oluştur
             const imageUrl = await VerseImageGenerator.generateVerseImage(verseData, { themeMode: options?.themeMode || 'light' });
 
@@ -150,16 +172,17 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
                 return;
             }
 
-            // Sadece link - başka metin yok
+            // Tam şablon metni
             const verseUrl = this.generateVerseUrl(verseData.surahNumber, verseData.verseNumber);
+            const messageTemplate = this.generateShareText(verseData);
 
             if (Platform.OS === 'web') {
-                await this.shareImageOnWeb(imageUrl, verseUrl, '', verseUrl, verseData);
+                await this.shareImageOnWeb(imageUrl, messageTemplate, '', verseUrl, verseData);
             } else if (Share) {
                 const localFile = await this.ensureLocalFile(imageUrl, 'verse_share.png');
                 const shareOptions = {
                     url: localFile,
-                    message: verseUrl,
+                    message: messageTemplate,
                     type: 'image/png',
                 };
                 await Share.open(shareOptions);
@@ -209,7 +232,9 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
                 if (navigator.canShare({ files: [file] })) {
                     await navigator.share({
                         files: [file],
-                        url: url // Sadece link, başka metin yok
+                        title: 'Kuran360',
+                        text: message,
+                        url: url
                     });
                     return;
                 }
@@ -234,15 +259,15 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
             [
                 {
                     text: 'Twitter',
-                    onPress: () => this.shareToSocialPlatform('twitter', imageUrl, url)
+                    onPress: () => this.shareToSocialPlatform('twitter', imageUrl, url, verseData)
                 },
                 {
                     text: 'Facebook',
-                    onPress: () => this.shareToSocialPlatform('facebook', imageUrl, url)
+                    onPress: () => this.shareToSocialPlatform('facebook', imageUrl, url, verseData)
                 },
                 {
                     text: 'WhatsApp',
-                    onPress: () => this.shareToSocialPlatform('whatsapp', imageUrl, url)
+                    onPress: () => this.shareToSocialPlatform('whatsapp', imageUrl, url, verseData)
                 },
                 {
                     text: 'Instagram',
@@ -263,19 +288,19 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
     /**
      * Belirli sosyal medya platformuna paylaş
      */
-    static shareToSocialPlatform(platform: string, imageUrl: string, url: string): void {
+    static shareToSocialPlatform(platform: string, imageUrl: string, url: string, verseData?: VerseShareData): void {
         console.log(`${platform} platformu için paylaşım başlatılıyor:`, { imageUrl, url });
 
         try {
             switch (platform) {
                 case 'twitter':
-                    this.shareToTwitterWithImage(imageUrl, url);
+                    this.shareToTwitterWithImage(imageUrl, url, verseData);
                     break;
                 case 'facebook':
-                    this.shareToFacebookWithImage(imageUrl, url);
+                    this.shareToFacebookWithImage(imageUrl, url, verseData);
                     break;
                 case 'whatsapp':
-                    this.shareToWhatsAppWithImage(imageUrl, url);
+                    this.shareToWhatsAppWithImage(imageUrl, url, verseData);
                     break;
                 case 'instagram':
                     // Instagram web'de direct link paylaşımı desteklemiyor
@@ -301,9 +326,10 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
     /**
      * Twitter'a resim ile birlikte paylaş
      */
-    static async shareToTwitterWithImage(imageUrl: string, url: string): Promise<void> {
+    static async shareToTwitterWithImage(imageUrl: string, url: string, verseData?: VerseShareData): Promise<void> {
         try {
-            console.log('Twitter paylaşımı başlatılıyor:', { imageUrl, url });
+            const sourceData = verseData || ShareService.lastVerseData;
+            const messageTemplate = sourceData ? this.buildShareTemplate(sourceData, 'twitter') : url;
 
             if (Platform.OS === 'web') {
                 // Web'de Twitter'a resim paylaşımı için özel yaklaşım
@@ -315,12 +341,12 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
 
                     await navigator.share({
                         files: [file],
-                        title: 'Ayet Paylaşımı',
-                        text: `Ayet paylaşımı - ${url}`
+                        title: 'Kuran360',
+                        text: messageTemplate
                     });
                 } else {
                     // Fallback: Twitter intent URL'i
-                    const text = encodeURIComponent(`Ayet paylaşımı: ${url}`);
+                    const text = encodeURIComponent(messageTemplate);
                     const twitterUrl = `https://twitter.com/intent/tweet?text=${text}`;
                     this.openUrlInNewTab(twitterUrl);
                 }
@@ -330,12 +356,12 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
                 if (Share && Social) {
                     await Share.shareSingle({
                         social: Social.Twitter,
-                        message: `Ayet paylaşımı: ${url}`,
+                        message: messageTemplate,
                         url: localFile,
                     });
                 } else {
                     await RNShare.share({
-                        message: `Ayet paylaşımı: ${url}`,
+                        message: messageTemplate,
                         url: localFile,
                     });
                 }
@@ -349,25 +375,27 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
     /**
      * Facebook'a resim ile birlikte paylaş
      */
-    static async shareToFacebookWithImage(imageUrl: string, url: string): Promise<void> {
+    static async shareToFacebookWithImage(imageUrl: string, url: string, verseData?: VerseShareData): Promise<void> {
         try {
-            console.log('Facebook paylaşımı başlatılıyor:', { imageUrl, url });
+            const sourceData = verseData || ShareService.lastVerseData;
+            const messageTemplate = sourceData ? this.buildShareTemplate(sourceData, 'facebook') : url;
 
             if (Platform.OS === 'web') {
                 const encodedUrl = encodeURIComponent(url);
-                const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+                const encodedQuote = encodeURIComponent(messageTemplate);
+                const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedQuote}`;
                 this.openUrlInNewTab(facebookUrl);
             } else {
                 const localFile = await this.ensureLocalFile(imageUrl, `facebook_verse_${Date.now()}.png`);
                 if (Share && Social) {
                     await Share.shareSingle({
                         social: Social.Facebook,
-                        message: `Ayet paylaşımı: ${url}`,
+                        message: messageTemplate,
                         url: localFile,
                     });
                 } else {
                     await RNShare.share({
-                        message: `Ayet paylaşımı: ${url}`,
+                        message: messageTemplate,
                         url: localFile,
                     });
                 }
@@ -381,12 +409,13 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
     /**
      * WhatsApp'a resim ile birlikte paylaş
      */
-    static async shareToWhatsAppWithImage(imageUrl: string, url: string): Promise<void> {
+    static async shareToWhatsAppWithImage(imageUrl: string, url: string, verseData?: VerseShareData): Promise<void> {
         try {
-            console.log('WhatsApp paylaşımı başlatılıyor:', { imageUrl, url });
+            const sourceData = verseData || ShareService.lastVerseData;
+            const messageTemplate = sourceData ? this.buildShareTemplate(sourceData, 'whatsapp') : url;
 
             if (Platform.OS === 'web') {
-                const message = encodeURIComponent(`Ayet paylaşımı: ${url}`);
+                const message = encodeURIComponent(messageTemplate);
                 const whatsappUrl = `https://api.whatsapp.com/send?text=${message}`;
                 this.openUrlInNewTab(whatsappUrl);
             } else {
@@ -394,12 +423,12 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
                 if (Share && Social) {
                     await Share.shareSingle({
                         social: Social.Whatsapp,
-                        message: `Ayet paylaşımı: ${url}`,
+                        message: messageTemplate,
                         url: localFile,
                     });
                 } else {
                     await RNShare.share({
-                        message: `Ayet paylaşımı: ${url}`,
+                        message: messageTemplate,
                         url: localFile,
                     });
                 }
@@ -523,8 +552,7 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
                 break;
 
             case 'twitter':
-                shareUrl = `https://twitter.com/intent/tweet?text=${encodedMessage}&url=${encodedUrl}`;
-                console.log('Twitter Paylaşım URL\'si:', shareUrl);
+                shareUrl = `https://twitter.com/intent/tweet?text=${encodedMessage}`; // URL metnin içinde
                 this.openUrlInNewTab(shareUrl);
                 break;
 
@@ -608,6 +636,7 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
     ): Promise<void> {
         try {
             const message = this.generatePlatformSpecificText(verseData, platform);
+            // Tek şablon kullanımına geçiş: (generatePlatformSpecificText içten buildShareTemplate çağırıyor)
             const url = this.generateVerseUrl(verseData.surahNumber, verseData.verseNumber);
 
             if (Platform.OS === 'web') {
@@ -708,11 +737,11 @@ ${this.generateVerseUrl(verseData.surahNumber, verseNumber)}`;
         return [
             { id: 'image_light', name: 'Resim (Light)', icon: '🖼️' },
             { id: 'image_dark', name: 'Resim (Dark)', icon: '🌙' },
-            { id: 'whatsapp', name: 'WhatsApp', icon: '💬' },
             { id: 'twitter', name: 'Twitter/X', icon: '🐦' },
+            { id: 'whatsapp', name: 'WhatsApp', icon: '💬' },
             { id: 'telegram', name: 'Telegram', icon: '✈️' },
             { id: 'facebook', name: 'Facebook', icon: '📘' },
-            { id: 'generic', name: 'Metin Olarak Paylaş', icon: '📤' },
+            { id: 'generic', name: 'Metin (Genel)', icon: '📤' },
         ];
     }
 }
