@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Platform,
 } from 'react-native';
-import { Verse as VerseType } from '../types';
+import { Verse as VerseType, VerseShareData } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -14,6 +14,9 @@ import { useUserData } from '../contexts/UserDataContext';
 import logger from '../utils/logger';
 import { FONT_SIZES, SPACING } from '../constants';
 import { useGlobalAudio } from '../contexts/AudioContext';
+import { ShareModal } from './ShareModal';
+import { ShareService } from '../utils/shareUtils';
+import { getSurahsList } from '../data/quranData';
 
 interface VerseProps {
   verse: VerseType;
@@ -31,6 +34,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   const { addBookmark, removeBookmark, isBookmarked, bookmarks } = useUserData();
   const { startMemorization, cancelMemorization } = useGlobalAudio();
   const [memOpen, setMemOpen] = useState(false);
+  const [shareModalVisible, setShareModalVisible] = useState(false);
   const maxEnd = useMemo(() => {
     // Cap strictly to provided surah count; if missing, default to current verse (no growth)
     logger.debug('Surah verse count:', surahVerseCount, verse.number);
@@ -103,6 +107,23 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
       </View>
     );
   };
+
+  // Web'de meta etiketlerini güncelle
+  useEffect(() => {
+    if (Platform.OS === 'web') {
+      try {
+        ShareService.updateWebMetaForVerse({
+          arabicText: verse.arabicText,
+          translation: verse.allTranslations?.[settings.favoriteTranslation] || verse.translation || '',
+          surahName: getSurahsList()[verse.surahNumber - 1]?.name || 'Sure',
+          surahNumber: verse.surahNumber,
+          verseNumber: verse.number,
+        } as any);
+      } catch (e) {
+        // Sessiz geç
+      }
+    }
+  }, [verse.surahNumber, verse.number, verse.arabicText, settings.favoriteTranslation]);
 
   // Inline hover translations in the main Arabic line (web only)
   const InlineArabicWithHover: React.FC = () => {
@@ -186,6 +207,27 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
     }
   };
 
+  // Sure adını almak için yardımcı fonksiyon
+  const getSurahName = () => {
+    const surahs = getSurahsList();
+    const surah = surahs.find(s => s.number === verse.surahNumber);
+    return surah?.turkishName || surah?.name || `${verse.surahNumber}. Sure`;
+  };
+
+  // Share data için gerekli bilgileri hazırla
+  const shareData: VerseShareData = useMemo(() => {
+    const surahName = getSurahName();
+    const translation = verse.allTranslations?.[settings.favoriteTranslation] || verse.translation || '';
+
+    return {
+      arabicText: verse.arabicText,
+      translation: translation,
+      surahName: surahName,
+      verseNumber: verse.number,
+      surahNumber: verse.surahNumber,
+    };
+  }, [verse, settings.favoriteTranslation]);
+
   return (
     <View style={createStyles(theme).container}>
       <View style={createStyles(theme).header}>
@@ -203,6 +245,12 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
               </Text>
             </TouchableOpacity>
           )}
+          <TouchableOpacity
+            style={createStyles(theme).shareButton}
+            onPress={() => setShareModalVisible(true)}
+          >
+            <Text style={createStyles(theme).shareIcon}>📤</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={[
               createStyles(theme).playButton,
@@ -328,6 +376,13 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
           </View>
         )}
       </View>
+
+      {/* Share Modal */}
+      <ShareModal
+        isVisible={shareModalVisible}
+        onClose={() => setShareModalVisible(false)}
+        verseData={shareData}
+      />
     </View>
   );
 };
@@ -678,5 +733,18 @@ const createStyles = (theme: Theme) => StyleSheet.create({
   },
   bookmarkIcon: {
     fontSize: 18,
+  },
+  shareButton: {
+    backgroundColor: theme.surface,
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.secondary,
+  },
+  shareIcon: {
+    fontSize: 16,
   },
 });

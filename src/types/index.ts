@@ -123,3 +123,18 @@ export interface SettingsContextType {
   availableTranslations: string[];
   availableReciters: { id: string; name: string; folder: string }[];
 }
+
+export interface ShareOptions {
+  platform?: 'twitter' | 'whatsapp' | 'facebook' | 'instagram' | 'telegram' | 'generic';
+  title?: string;
+  message?: string;
+  url?: string;
+}
+
+export interface VerseShareData {
+  arabicText: string;
+  translation: string;
+  surahName: string;
+  verseNumber: number;
+  surahNumber: number;
+}
