@@ -699,6 +699,108 @@ export const useAudioPlayer = () => {
     memCurrentVerseRepeatsRef.current = 0;
   };
 
+  // Play preview with specific reciter without changing settings
+  const playPreviewWithReciter = async (verse: VerseType, reciterId: string) => {
+    try {
+      // Stop any current audio
+      await stop();
+
+      const reciter = availableReciters.find(r => r.id === reciterId);
+      if (!reciter) {
+        console.warn('Reciter not found:', reciterId);
+        return;
+      }
+
+      // Create audio URI with specified reciter
+      const audioFileName = `${verse.surahNumber.toString().padStart(3, '0')}${verse.number.toString().padStart(3, '0')}.mp3`;
+
+      const getBaseUrl = () => {
+        if (typeof globalThis !== 'undefined' && (globalThis as any).window) {
+          const win = (globalThis as any).window;
+          return `${win.location.protocol}//${win.location.host}`;
+        }
+        return 'http://localhost:8081';
+      };
+
+      const audioUri = `${getBaseUrl()}/${reciter.folder}/${audioFileName}`;
+
+      // Check if audio file exists
+      try {
+        const response = await fetch(audioUri, { method: 'HEAD' });
+        if (!response.ok) {
+          throw new Error(`Audio file not found: ${audioUri}`);
+        }
+      } catch (error) {
+        logger.debug(`Preview audio file not available: ${audioUri}. Using simulation mode.`);
+        // Show preview as playing but with simulation
+        setAudioState(prev => ({
+          ...prev,
+          isPlaying: true,
+          currentVerse: verse,
+          isLoading: false,
+        }));
+
+        // Simulate playback duration (3 seconds for preview)
+        setTimeout(async () => {
+          setAudioState(prev => ({
+            ...prev,
+            isPlaying: false,
+            currentVerse: null,
+          }));
+        }, 3000);
+        return;
+      }
+
+      setAudioState(prev => ({ ...prev, isLoading: true, currentVerse: verse }));
+
+      // Create and play the preview sound
+      const { sound: previewSound } = await Audio.Sound.createAsync(
+        { uri: audioUri },
+        { shouldPlay: true, rate: settings.playbackRate }
+      );
+
+      setSound(previewSound);
+      setAudioState(prev => ({
+        ...prev,
+        isPlaying: true,
+        isLoading: false,
+        currentVerse: verse,
+      }));
+
+      // Set up playback status update for preview
+      previewSound.setOnPlaybackStatusUpdate((status) => {
+        if (!status.isLoaded) return;
+
+        if (status.didJustFinish) {
+          // Preview finished, reset state
+          setAudioState(prev => ({
+            ...prev,
+            isPlaying: false,
+            currentVerse: null,
+            position: 0,
+          }));
+          previewSound.unloadAsync();
+          setSound(null);
+        } else {
+          setAudioState(prev => ({
+            ...prev,
+            position: status.positionMillis || 0,
+            duration: status.durationMillis || 0,
+          }));
+        }
+      });
+
+    } catch (error) {
+      console.error('Error playing preview:', error);
+      setAudioState(prev => ({
+        ...prev,
+        isPlaying: false,
+        isLoading: false,
+        currentVerse: null,
+      }));
+    }
+  };
+
   return {
     audioState,
     playVerse,
@@ -710,5 +812,6 @@ export const useAudioPlayer = () => {
     setVersesForAutoplay,
     startMemorization,
     cancelMemorization,
+    playPreviewWithReciter,
   };
 };

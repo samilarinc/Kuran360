@@ -69,7 +69,6 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Bilinen Hatalar ve Planlanan Güncellemeler</Text>
 
                     <View style={styles.updateList}>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ses önizleme sadece seçili seste çalışıyor</Text>
                         <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Header ve footer boyutu küçültülmeli ki rahatça dinlerken okunabilsin</Text>
                         <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Home butonu eklenmeli sayfalara</Text>
                         <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Resim oluşturmada instagram modu vs gibi foto boyutları seçilebilmeli</Text>
@@ -86,6 +85,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                         <Text style={[styles.updateDate, { color: theme.text }]}>19 Eylül 2025</Text>
                         <View style={styles.updateList}>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Rastgele ayet sayfası kaydırma fixlendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ses önizleme hatası düzeltildi</Text>
                         </View>
                     </View>
 

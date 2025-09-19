@@ -13,6 +13,7 @@ interface AudioContextType {
     setVersesForAutoplay: (verses: VerseType[]) => void;
     startMemorization: (surahNumber: number, startVerseNumber: number, endVerseNumber: number, repetitionCount: number, mode?: 'range' | 'individual') => Promise<void>;
     cancelMemorization: () => void;
+    playPreviewWithReciter: (verse: VerseType, reciterId: string) => Promise<void>;
 }
 
 const AudioContext = createContext<AudioContextType | null>(null);

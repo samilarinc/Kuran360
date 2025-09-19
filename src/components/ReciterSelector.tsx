@@ -13,18 +13,10 @@ import { FONT_SIZES, SPACING } from '../constants';
 export const ReciterSelector: React.FC = () => {
     const { settings, updateSettings, availableReciters } = useSettings();
     const { theme } = useTheme();
-    const { playVerse } = useGlobalAudio();
+    const { playPreviewWithReciter } = useGlobalAudio();
 
     const playPreview = async (reciterId: string) => {
-        const originalReciter = settings.selectedReciter;
-
         try {
-            // Temporarily change for preview
-            await updateSettings({ selectedReciter: reciterId });
-
-            // Wait a moment for settings to update
-            await new Promise(resolve => setTimeout(resolve, 100));
-
             const previewVerse = {
                 id: '001002',
                 surahNumber: 1,
@@ -36,17 +28,10 @@ export const ReciterSelector: React.FC = () => {
                 allTranslations: {}
             };
 
-            await playVerse(previewVerse);
-
-            // Wait for audio to start before restoring settings
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            // Restore original reciter
-            await updateSettings({ selectedReciter: originalReciter });
+            // Use the new preview function that doesn't change settings
+            await playPreviewWithReciter(previewVerse, reciterId);
         } catch (error) {
             console.log('Preview playback failed:', error);
-            // Always restore on error
-            await updateSettings({ selectedReciter: originalReciter });
         }
     };
 
