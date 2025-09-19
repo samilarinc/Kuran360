@@ -72,7 +72,6 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
 
                     <View style={styles.updateList}>
                         <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Kelime çevirisi açılınca kelime anlamı olmayanlar görünmüyor, örnek: İnşirah ilk ayet</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Home butonu eklenmeli sayfalara</Text>
                         <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Resim oluşturmada instagram modu vs gibi foto boyutları seçilebilmeli</Text>
                     </View>
                 </View>
@@ -89,6 +88,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Header ve Footer küçültüldü, alttaki instruction kaldırıldı</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Bütün mealleri göster tuşu eklendi</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Bütün mealleri göster sayfasına farklı meal ile ayet paylaşma eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Bütün sayfalara home butonu eklendi</Text>
                         </View>
                     </View>
 
