@@ -66,7 +66,38 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                 </View>
 
                 <View style={[styles.section, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
+                    <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Bilinen Hatalar ve Planlanan Güncellemeler</Text>
+
+                    <View style={styles.updateList}>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ses önizleme sadece seçili seste çalışıyor</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Header ve footer boyutu küçültülmeli ki rahatça dinlerken okunabilsin</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Home butonu eklenmeli sayfalara</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Resim oluşturmada instagram modu vs gibi foto boyutları seçilebilmeli</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Resim oluşturmada meal sorabilir</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ayetin üstünde bir tuşla bu ayetin bütün meallerini göster diye yeni sayfa eklenmeli</Text>
+                    </View>
+                </View>
+
+
+                <View style={[styles.section, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Güncelleme Notları</Text>
+
+                    <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>19 Eylül 2025</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Rastgele ayet sayfası kaydırma fixlendi</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>10 Eylül 2025</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Google Analytics eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ayet paylaşma eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Resimli ayet paylaşma eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Dark Mode ayet paylaşma eklendi</Text>
+                        </View>
+                    </View>
 
                     <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>06 Eylül 2025</Text>

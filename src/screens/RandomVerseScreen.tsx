@@ -9,6 +9,7 @@ import {
     ActivityIndicator,
     Animated,
     PanResponder,
+    ScrollView,
 } from 'react-native';
 import { Verse } from '../components/Verse';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
@@ -225,13 +226,20 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                         },
                     ]}
                 >
-                    <Verse
-                        verse={currentVerse.verse}
-                        isPlaying={audioState.isPlaying && audioState.currentVerse?.id === currentVerse.verse.id}
-                        onPlayPress={handlePlayVerse}
-                        showBookmarkButton={true}
-                        showMemorization={false}
-                    />
+                    <ScrollView
+                        style={styles.scrollView}
+                        contentContainerStyle={styles.scrollContentContainer}
+                        showsVerticalScrollIndicator={false}
+                        scrollEnabled={!isAnimating}
+                    >
+                        <Verse
+                            verse={currentVerse.verse}
+                            isPlaying={audioState.isPlaying && audioState.currentVerse?.id === currentVerse.verse.id}
+                            onPlayPress={handlePlayVerse}
+                            showBookmarkButton={true}
+                            showMemorization={false}
+                        />
+                    </ScrollView>
                 </Animated.View>
             </View>
 
@@ -345,9 +353,18 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
     },
+    scrollView: {
+        flex: 1,
+    },
+    scrollContentContainer: {
+        flexGrow: 1,
+        paddingBottom: SPACING.xl * 3, // Extra space for surah info and bottom actions
+        paddingHorizontal: SPACING.md,
+    },
     surahInfoContainer: {
         padding: SPACING.md,
         margin: SPACING.md,
+        marginBottom: SPACING.xl, // Extra bottom margin for better scroll space
         borderRadius: 16,
         elevation: 3,
         shadowColor: '#000',
@@ -419,6 +436,7 @@ const styles = StyleSheet.create({
     },
     bottomActions: {
         padding: SPACING.md,
+        paddingBottom: SPACING.xl, // Extra bottom padding for better accessibility
         borderTopWidth: 1,
         borderTopColor: '#E0E0E0',
     },
