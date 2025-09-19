@@ -211,9 +211,11 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
             {/* Header */}
             <HeaderWithDarkModeToggle
-                title="Rastgele Ayet"
+                title="Günün Ayeti"
                 showBackButton={true}
                 onBackPress={navigation.goBack}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
             />
 
             {/* Paginated-style verse display */}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
+import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { useForum } from '../contexts/ForumContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
@@ -38,7 +39,11 @@ export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const styles = createStyles(theme);
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Forum</Text>
+      <HeaderWithDarkModeToggle
+        title="Forum"
+        showHomeButton={true}
+        onHomePress={() => navigation.navigate('Main')}
+      />
       {user ? (
         <View style={styles.card}>
           <Text style={styles.label}>Title</Text>

@@ -545,9 +545,11 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
     return (
         <SafeAreaView style={createStyles(theme).container}>
             <HeaderWithDarkModeToggle
-                title="Kuranda Ara"
+                title="Ara"
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
             />
 
             <ScrollView

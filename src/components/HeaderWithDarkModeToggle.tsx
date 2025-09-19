@@ -8,6 +8,8 @@ interface HeaderWithDarkModeToggleProps {
   subtitle?: string;
   showBackButton?: boolean;
   onBackPress?: () => void;
+  showHomeButton?: boolean;
+  onHomePress?: () => void;
   showSettingsButton?: boolean;
   onSettingsPress?: () => void;
   showSearchButton?: boolean;
@@ -23,6 +25,8 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
   subtitle,
   showBackButton = false,
   onBackPress,
+  showHomeButton = false,
+  onHomePress,
   showSettingsButton = false,
   onSettingsPress,
   showSearchButton = false,
@@ -78,14 +82,27 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
     },
     backButton: {
       paddingVertical: 8,
-      paddingHorizontal: 12,
+      paddingHorizontal: 8,
       backgroundColor: 'rgba(255, 255, 255, 0.2)',
       borderRadius: 8,
+      minWidth: 32,
+      alignItems: 'center',
     },
     backButtonText: {
       color: theme.headerText,
-      fontSize: FONT_SIZES.medium,
+      fontSize: 18,
       fontWeight: '600',
+    },
+    homeButton: {
+      padding: 6,
+      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      borderRadius: 16,
+      minWidth: 32,
+      alignItems: 'center',
+      marginLeft: SPACING.xs,
+    },
+    homeButtonText: {
+      fontSize: 16,
     },
     darkModeToggle: {
       padding: 6,
@@ -149,16 +166,30 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
 
   return (
     <View style={styles.header}>
-      {showBackButton && onBackPress && (
-        <TouchableOpacity style={styles.leftButton} onPress={onBackPress}>
-          <View style={styles.backButton}>
-            <Text style={styles.backButtonText}>← Geri</Text>
+      {/* Sol taraf butonları */}
+      {(showBackButton || showHomeButton) && (
+        <View style={styles.leftButton}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {showBackButton && onBackPress && (
+              <TouchableOpacity onPress={onBackPress}>
+                <View style={styles.backButton}>
+                  <Text style={styles.backButtonText}>←</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            {showHomeButton && onHomePress && (
+              <TouchableOpacity onPress={onHomePress}>
+                <View style={styles.homeButton}>
+                  <Text style={styles.homeButtonText}>🏠</Text>
+                </View>
+              </TouchableOpacity>
+            )}
           </View>
-        </TouchableOpacity>
+        </View>
       )}
 
-      {/* Logo - sadece geri tuşu yokken göster */}
-      {showLogo && onLogoPress && !showBackButton && (
+      {/* Logo - sadece geri ve home tuşu yokken göster */}
+      {showLogo && onLogoPress && !showBackButton && !showHomeButton && (
         <TouchableOpacity style={styles.leftButton} onPress={onLogoPress}>
           <View style={styles.logoContainer}>
             <Image
@@ -171,8 +202,8 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
       )}
 
       <View style={styles.rightButtons}>
-        {/* Logo sağ üstte - geri tuşu varken */}
-        {showLogo && onLogoPress && showBackButton && (
+        {/* Logo sağ üstte - geri veya home tuşu varken */}
+        {showLogo && onLogoPress && (showBackButton || showHomeButton) && (
           <TouchableOpacity style={styles.logoButton} onPress={onLogoPress}>
             <View style={styles.logoContainer}>
               <Image

@@ -110,7 +110,13 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
 
     return (
         <SafeAreaView style={createStyles(theme).container}>
-            <HeaderWithDarkModeToggle title="Profil" showBackButton onBackPress={() => navigation.goBack()} />
+            <HeaderWithDarkModeToggle
+                title="Profil"
+                showBackButton
+                onBackPress={() => navigation.goBack()}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
+            />
 
             <ScrollView style={createStyles(theme).content}>
                 {user ? (

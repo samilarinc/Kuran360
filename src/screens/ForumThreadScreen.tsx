@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
+import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { useForum } from '../contexts/ForumContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
@@ -33,7 +34,13 @@ export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ n
   const styles = createStyles(theme);
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Thread</Text>
+      <HeaderWithDarkModeToggle
+        title="Forum Konusu"
+        showBackButton={true}
+        onBackPress={() => navigation.goBack()}
+        showHomeButton={true}
+        onHomePress={() => navigation.navigate('Main')}
+      />
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id}

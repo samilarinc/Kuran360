@@ -198,6 +198,8 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                     title="Bütün Mealler"
                     showBackButton={true}
                     onBackPress={() => navigation.goBack()}
+                    showHomeButton={true}
+                    onHomePress={() => navigation.navigate('Main')}
                 />
                 <View style={styles.emptyState}>
                     <Text style={styles.emptyStateText}>
@@ -215,6 +217,8 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                 subtitle={`${getSurahName()} - ${verse.number}. Ayet`}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
             />
 
             <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
