@@ -72,7 +72,10 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
 
                     <View style={styles.updateList}>
                         <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Kelime çevirisi açılınca kelime anlamı olmayanlar görünmüyor, örnek: İnşirah ilk ayet</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Resim oluşturmada instagram modu vs gibi foto boyutları seçilebilmeli</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Kuran sayfası görünümü eklenecek</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Sayfa sesleri eklenecek, ayrıca 30. cüzdeki sayfadan daha kısa sureler için sesler üretilmeli</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Kürtçe meal seçeneği eklenecek</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Hubeyb Öndeş meali eklenebilir</Text>
                     </View>
                 </View>
 
@@ -89,6 +92,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Bütün mealleri göster tuşu eklendi</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Bütün mealleri göster sayfasına farklı meal ile ayet paylaşma eklendi</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Bütün sayfalara home butonu eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Resim oluşturmada farklı modlar ve boyutlarda fotoğraf üretme seçeneği eklendi</Text>
                         </View>
                     </View>
 

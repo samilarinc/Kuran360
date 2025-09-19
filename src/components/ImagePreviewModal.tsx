@@ -17,9 +17,10 @@ declare const window: any;
 declare const navigator: any;
 declare const ClipboardItem: any;
 import { useTheme, Theme } from '../contexts/ThemeContext';
-import { VerseShareData } from '../types';
+import { VerseShareData, ImageSize } from '../types';
 import { ShareService } from '../utils/shareUtils';
 import { FONT_SIZES, SPACING } from '../constants';
+import { IMAGE_SIZES } from '../utils/imageSizes';
 
 interface ImagePreviewModalProps {
     isVisible: boolean;
@@ -37,7 +38,31 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     const { theme } = useTheme();
     const [currentImage, setCurrentImage] = React.useState(imageUrl);
     const [mode, setMode] = React.useState<'light' | 'dark'>('light');
-    React.useEffect(() => { setCurrentImage(imageUrl); }, [imageUrl]);
+    const [selectedSize, setSelectedSize] = React.useState<ImageSize>(IMAGE_SIZES[6]); // Default to classic
+    const [isGenerating, setIsGenerating] = React.useState(false);
+
+    React.useEffect(() => {
+        setCurrentImage(imageUrl);
+    }, [imageUrl]);
+
+    const regenerateImage = async (themeMode: 'light' | 'dark', size: ImageSize) => {
+        setIsGenerating(true);
+        try {
+            const img = await ShareService.generateVerseImageForSharing(verseData, {
+                themeMode,
+                size
+            });
+            if (img) {
+                setCurrentImage(img);
+                setMode(themeMode);
+                setSelectedSize(size);
+            }
+        } catch (error) {
+            console.error('Resim yeniden oluşturma hatası:', error);
+            Alert.alert('Hata', 'Resim oluşturulamadı. Lütfen tekrar deneyin.');
+        }
+        setIsGenerating(false);
+    };
 
     const handleDownload = () => {
         if (Platform.OS === 'web') {
@@ -128,30 +153,100 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                     resizeMode="contain"
                                 />
                             </View>
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 12, marginBottom: 12 }}>
-                                <TouchableOpacity
-                                    style={[styles.actionButton, { backgroundColor: theme.cardBackground }]}
-                                    onPress={async () => {
-                                        if (mode !== 'light') setMode('light');
-                                        const img = await ShareService.generateVerseImageForSharing(verseData, 'light');
-                                        if (img) setCurrentImage(img);
-                                    }}
-                                >
-                                    <Text style={styles.actionIcon}>🔆</Text>
-                                    <Text style={[styles.actionText, { color: theme.text }]}>Light</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={[styles.actionButton, { backgroundColor: theme.cardBackground }]}
-                                    onPress={async () => {
-                                        if (mode !== 'dark') setMode('dark');
-                                        const img = await ShareService.generateVerseImageForSharing(verseData, 'dark');
-                                        if (img) setCurrentImage(img);
-                                    }}
-                                >
-                                    <Text style={styles.actionIcon}>🌙</Text>
-                                    <Text style={[styles.actionText, { color: theme.text }]}>Dark</Text>
-                                </TouchableOpacity>
+
+                            {/* Theme Selection */}
+                            <View style={styles.controlSection}>
+                                <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                                    Tema Seçimi
+                                </Text>
+                                <View style={styles.controlRow}>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.controlButton,
+                                            { backgroundColor: theme.cardBackground },
+                                            mode === 'light' && { backgroundColor: theme.primary }
+                                        ]}
+                                        onPress={() => regenerateImage('light', selectedSize)}
+                                        disabled={isGenerating}
+                                    >
+                                        <Text style={styles.actionIcon}>🔆</Text>
+                                        <Text style={[
+                                            styles.actionText,
+                                            { color: mode === 'light' ? '#fff' : theme.text }
+                                        ]}>
+                                            Light
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.controlButton,
+                                            { backgroundColor: theme.cardBackground },
+                                            mode === 'dark' && { backgroundColor: theme.primary }
+                                        ]}
+                                        onPress={() => regenerateImage('dark', selectedSize)}
+                                        disabled={isGenerating}
+                                    >
+                                        <Text style={styles.actionIcon}>🌙</Text>
+                                        <Text style={[
+                                            styles.actionText,
+                                            { color: mode === 'dark' ? '#fff' : theme.text }
+                                        ]}>
+                                            Dark
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
+
+                            {/* Size Selection */}
+                            <View style={styles.controlSection}>
+                                <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                                    Boyut Seçimi
+                                </Text>
+                                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView}>
+                                    <View style={styles.sizeRow}>
+                                        {IMAGE_SIZES.map((size) => (
+                                            <TouchableOpacity
+                                                key={size.id}
+                                                style={[
+                                                    styles.sizeButton,
+                                                    { backgroundColor: theme.cardBackground },
+                                                    selectedSize.id === size.id && { backgroundColor: theme.primary }
+                                                ]}
+                                                onPress={() => regenerateImage(mode, size)}
+                                                disabled={isGenerating}
+                                            >
+                                                <Text style={styles.sizeIcon}>{size.icon}</Text>
+                                                <Text style={[
+                                                    styles.sizeTitle,
+                                                    { color: selectedSize.id === size.id ? '#fff' : theme.text }
+                                                ]}>
+                                                    {size.displayName}
+                                                </Text>
+                                                <Text style={[
+                                                    styles.sizeDescription,
+                                                    { color: selectedSize.id === size.id ? '#fff' : theme.textSecondary }
+                                                ]}>
+                                                    {size.description}
+                                                </Text>
+                                                <Text style={[
+                                                    styles.sizeDimensions,
+                                                    { color: selectedSize.id === size.id ? '#fff' : theme.textSecondary }
+                                                ]}>
+                                                    {size.width}×{size.height}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        ))}
+                                    </View>
+                                </ScrollView>
+                            </View>
+
+                            {isGenerating && (
+                                <View style={styles.loadingContainer}>
+                                    <Text style={[styles.loadingText, { color: theme.textSecondary }]}>
+                                        🔄 Resim oluşturuluyor...
+                                    </Text>
+                                </View>
+                            )}
 
                             {/* Image Actions */}
                             <View style={styles.actionsContainer}>
@@ -280,6 +375,67 @@ const styles = StyleSheet.create({
         height: 300,
         borderRadius: 8,
     },
+    controlSection: {
+        paddingHorizontal: SPACING.lg,
+        marginBottom: SPACING.md,
+    },
+    controlRow: {
+        flexDirection: 'row',
+        gap: SPACING.sm,
+        justifyContent: 'center',
+    },
+    controlButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: SPACING.md,
+        paddingVertical: SPACING.sm,
+        borderRadius: 8,
+        minWidth: 100,
+        justifyContent: 'center',
+    },
+    sizeScrollView: {
+        marginVertical: SPACING.sm,
+    },
+    sizeRow: {
+        flexDirection: 'row',
+        gap: SPACING.sm,
+        paddingHorizontal: SPACING.sm,
+    },
+    sizeButton: {
+        padding: SPACING.md,
+        borderRadius: 12,
+        alignItems: 'center',
+        minWidth: 120,
+        maxWidth: 140,
+    },
+    sizeIcon: {
+        fontSize: 24,
+        marginBottom: SPACING.xs,
+    },
+    sizeTitle: {
+        fontSize: FONT_SIZES.small,
+        fontWeight: '600',
+        textAlign: 'center',
+        marginBottom: SPACING.xs,
+    },
+    sizeDescription: {
+        fontSize: FONT_SIZES.small - 2,
+        textAlign: 'center',
+        marginBottom: SPACING.xs,
+    },
+    sizeDimensions: {
+        fontSize: FONT_SIZES.small - 2,
+        textAlign: 'center',
+        fontFamily: 'monospace',
+    },
+    loadingContainer: {
+        alignItems: 'center',
+        paddingVertical: SPACING.md,
+    },
+    loadingText: {
+        fontSize: FONT_SIZES.small,
+        fontWeight: '500',
+    },
     actionsContainer: {
         paddingHorizontal: SPACING.lg,
         marginBottom: SPACING.lg,
@@ -287,7 +443,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: FONT_SIZES.medium,
         fontWeight: '600',
-        marginBottom: SPACING.md,
+        marginBottom: SPACING.sm,
     },
     actionButtons: {
         flexDirection: 'row',

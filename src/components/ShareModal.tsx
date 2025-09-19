@@ -10,10 +10,11 @@ import {
   Platform,
 } from 'react-native';
 import { useTheme, Theme } from '../contexts/ThemeContext';
-import { VerseShareData } from '../types';
+import { VerseShareData, ImageSize } from '../types';
 import { ShareService } from '../utils/shareUtils';
 import { ImagePreviewModal } from './ImagePreviewModal';
 import { FONT_SIZES, SPACING } from '../constants';
+import { IMAGE_SIZES, getDefaultImageSize } from '../utils/imageSizes';
 
 interface ShareModalProps {
   isVisible: boolean;
@@ -29,6 +30,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   const { theme } = useTheme();
   const [imagePreviewVisible, setImagePreviewVisible] = useState(false);
   const [generatedImageUrl, setGeneratedImageUrl] = useState('');
+  const [selectedSize, setSelectedSize] = useState<ImageSize>(getDefaultImageSize());
 
   const handlePlatformShare = async (platformId: string) => {
     try {
@@ -36,14 +38,20 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 
       if (platformId === 'image_light' || platformId === 'image_dark') {
         // Resim oluştur ve önizleme modalı aç
-        const imageUrl = await ShareService.generateVerseImageForSharing(verseData, platformId === 'image_dark' ? 'dark' : 'light');
+        const imageUrl = await ShareService.generateVerseImageForSharing(verseData, {
+          themeMode: platformId === 'image_dark' ? 'dark' : 'light',
+          size: selectedSize
+        });
         if (imageUrl) {
           setGeneratedImageUrl(imageUrl);
           setImagePreviewVisible(true);
           return; // Modal açık kalsın
         } else {
           // Resim oluşturulamazsa fallback
-          await ShareService.shareVerseWithImage(verseData, { themeMode: platformId === 'image_dark' ? 'dark' : 'light' });
+          await ShareService.shareVerseWithImage(verseData, {
+            themeMode: platformId === 'image_dark' ? 'dark' : 'light',
+            size: selectedSize
+          });
         }
       } else if (platformId === 'generic') {
         // Metin olarak genel paylaşım
@@ -53,7 +61,9 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         console.log(`${platformId} platformuna resimli paylaşım yapılıyor`);
 
         // Önce resmi oluştur
-        const imageUrl = await ShareService.generateVerseImageForSharing(verseData);
+        const imageUrl = await ShareService.generateVerseImageForSharing(verseData, {
+          size: selectedSize
+        });
         if (imageUrl) {
           const url = ShareService.generateVerseUrl(verseData.surahNumber, verseData.verseNumber);
           ShareService.shareToSocialPlatform(platformId, imageUrl, url);
@@ -109,6 +119,42 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               <Text style={[styles.verseInfo, { color: theme.primary }]}>
                 📖 {verseData.surahName} Suresi, {verseData.verseNumber}. Ayet
               </Text>
+            </View>
+
+            {/* Size Selection */}
+            <View style={styles.sizeSection}>
+              <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                📐 Resim Boyutu Seçin
+              </Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView}>
+                <View style={styles.sizeRow}>
+                  {IMAGE_SIZES.map((size) => (
+                    <TouchableOpacity
+                      key={size.id}
+                      style={[
+                        styles.sizeButton,
+                        { backgroundColor: theme.cardBackground },
+                        selectedSize.id === size.id && { backgroundColor: theme.primary }
+                      ]}
+                      onPress={() => setSelectedSize(size)}
+                    >
+                      <Text style={styles.sizeIcon}>{size.icon}</Text>
+                      <Text style={[
+                        styles.sizeTitle,
+                        { color: selectedSize.id === size.id ? '#fff' : theme.text }
+                      ]}>
+                        {size.displayName}
+                      </Text>
+                      <Text style={[
+                        styles.sizeDescription,
+                        { color: selectedSize.id === size.id ? '#fff' : theme.textSecondary }
+                      ]}>
+                        {size.description}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </ScrollView>
             </View>
 
             {/* Platform Options */}
@@ -211,6 +257,45 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.small,
     fontWeight: '600',
     textAlign: 'center',
+  },
+  sizeSection: {
+    paddingHorizontal: SPACING.lg,
+    marginBottom: SPACING.md,
+  },
+  sectionTitle: {
+    fontSize: FONT_SIZES.medium,
+    fontWeight: '600',
+    marginBottom: SPACING.sm,
+  },
+  sizeScrollView: {
+    marginVertical: SPACING.sm,
+  },
+  sizeRow: {
+    flexDirection: 'row',
+    gap: SPACING.sm,
+    paddingHorizontal: SPACING.sm,
+  },
+  sizeButton: {
+    padding: SPACING.sm,
+    borderRadius: 8,
+    alignItems: 'center',
+    minWidth: 100,
+    maxWidth: 120,
+  },
+  sizeIcon: {
+    fontSize: 20,
+    marginBottom: SPACING.xs,
+  },
+  sizeTitle: {
+    fontSize: FONT_SIZES.small - 1,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: SPACING.xs,
+  },
+  sizeDescription: {
+    fontSize: FONT_SIZES.small - 2,
+    textAlign: 'center',
+    lineHeight: 14,
   },
   platformList: {
     paddingHorizontal: SPACING.lg,

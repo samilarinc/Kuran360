@@ -138,3 +138,19 @@ export interface VerseShareData {
   verseNumber: number;
   surahNumber: number;
 }
+
+export interface ImageSize {
+  id: string;
+  name: string;
+  displayName: string;
+  width: number;
+  height: number;
+  aspectRatio: string;
+  description: string;
+  icon: string;
+}
+
+export interface ImageGenerationOptions {
+  themeMode?: 'light' | 'dark';
+  size?: ImageSize;
+}

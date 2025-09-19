@@ -6,8 +6,9 @@ try {
 } catch (e: any) {
     // Web veya modül yoksa sorun değil, sadece resim dosyası üretilemez
 }
-import { VerseShareData, ShareOptions } from '../types';
+import { VerseShareData, ShareOptions, ImageGenerationOptions } from '../types';
 import { VerseImageGenerator } from './verseImageGenerator';
+import { getDefaultImageSize } from './imageSizes';
 
 // Web globals
 declare const window: any;
@@ -144,10 +145,14 @@ export class ShareService {
     /**
      * Sadece resim oluşturur, paylaşmaz (platform-specific paylaşım için)
      */
-    static async generateVerseImageForSharing(verseData: VerseShareData, themeMode: 'light' | 'dark' = 'light'): Promise<string | null> {
+    static async generateVerseImageForSharing(verseData: VerseShareData, options?: ImageGenerationOptions): Promise<string | null> {
         try {
             ShareService.lastVerseData = verseData;
-            const imageUrl = await VerseImageGenerator.generateVerseImage(verseData, { themeMode });
+            const imageOptions: ImageGenerationOptions = {
+                themeMode: options?.themeMode || 'light',
+                size: options?.size || getDefaultImageSize()
+            };
+            const imageUrl = await VerseImageGenerator.generateVerseImage(verseData, imageOptions);
             if (!imageUrl) {
                 return null;
             }
@@ -161,11 +166,15 @@ export class ShareService {
     /**
      * Ayet resmini oluşturup paylaşır (sadece 'image_*' platformları seçildiğinde kullanılmalı)
      */
-    static async shareVerseWithImage(verseData: VerseShareData, options?: ShareOptions & { themeMode?: 'light' | 'dark' }): Promise<void> {
+    static async shareVerseWithImage(verseData: VerseShareData, options?: ShareOptions & ImageGenerationOptions): Promise<void> {
         try {
             ShareService.lastVerseData = verseData;
             // Resmi oluştur
-            const imageUrl = await VerseImageGenerator.generateVerseImage(verseData, { themeMode: options?.themeMode || 'light' });
+            const imageOptions: ImageGenerationOptions = {
+                themeMode: options?.themeMode || 'light',
+                size: options?.size || getDefaultImageSize()
+            };
+            const imageUrl = await VerseImageGenerator.generateVerseImage(verseData, imageOptions);
 
             if (!imageUrl) {
                 Alert.alert('Hata', 'Resim oluşturulamadı. Lütfen tekrar deneyin.');
