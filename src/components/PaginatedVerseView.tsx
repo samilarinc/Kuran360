@@ -526,13 +526,6 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                 })()}
             </View>
 
-            {/* Swipe instruction */}
-            <View style={styles.instructionContainer}>
-                <Text style={styles.instructionText}>
-                    {isMobileScreen ? '← Kısa kaydır → ' : '← Kaydır → '}veya butonları kullan
-                </Text>
-            </View>
-
             {/* Go to Verse Modal */}
             <GoToVerseModal
                 visible={isGoToVerseModalVisible}
@@ -710,17 +703,5 @@ const createStyles = (theme: Theme, screenWidth: number) => StyleSheet.create({
         color: theme.textSecondary,
         fontSize: FONT_SIZES.small,
         marginLeft: SPACING.xs,
-    },
-    instructionContainer: {
-        alignItems: 'center',
-        paddingVertical: SPACING.sm,
-        backgroundColor: theme.cardBackground,
-        borderTopWidth: 1,
-        borderTopColor: theme.border,
-    },
-    instructionText: {
-        fontSize: FONT_SIZES.small,
-        color: theme.textSecondary,
-        fontStyle: 'italic',
     },
 });

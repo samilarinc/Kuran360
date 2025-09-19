@@ -176,7 +176,8 @@ export const GlobalAudioBar: React.FC = () => {
 const createStyles = (theme: Theme, isCompact: boolean, isMedium: boolean) => StyleSheet.create({
     audioBar: {
         backgroundColor: theme.primary,
-        paddingVertical: SPACING.md,
+        // CHANGE_HERE: Reduced vertical padding for mobile to save screen space
+        paddingVertical: isCompact ? SPACING.xs : (isMedium ? SPACING.sm : SPACING.md), // 4px/8px/16px instead of always 16px
         paddingHorizontal: SPACING.md,
         alignItems: 'center',
         borderTopWidth: 1,
@@ -195,8 +196,9 @@ const createStyles = (theme: Theme, isCompact: boolean, isMedium: boolean) => St
         alignItems: 'center',
         width: '100%',
         flexWrap: isCompact ? 'wrap' : 'nowrap',
-        rowGap: isCompact ? SPACING.sm : 0,
-        columnGap: isCompact ? SPACING.sm : (isMedium ? SPACING.sm : SPACING.md),
+        // CHANGE_HERE: Reduced row and column gaps for more compact layout on mobile
+        rowGap: isCompact ? SPACING.xs : 0, // 4px instead of 8px
+        columnGap: isCompact ? SPACING.xs : (isMedium ? SPACING.xs : SPACING.sm), // Smaller gaps overall
     },
     audioTextContainer: {
         flex: 1,
@@ -218,7 +220,8 @@ const createStyles = (theme: Theme, isCompact: boolean, isMedium: boolean) => St
     audioControls: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: isCompact ? SPACING.sm : (isMedium ? SPACING.sm : SPACING.md),
+        // CHANGE_HERE: Reduced gaps between control buttons for more compact layout
+        gap: isCompact ? SPACING.xs : (isMedium ? SPACING.xs : SPACING.sm), // Smaller gaps
         flexShrink: 0,
         flexWrap: isCompact ? 'wrap' : 'nowrap',
         justifyContent: 'flex-end',
@@ -229,9 +232,10 @@ const createStyles = (theme: Theme, isCompact: boolean, isMedium: boolean) => St
     },
     playModeButton: {
         backgroundColor: theme.headerText + '20',
-        width: isCompact ? 36 : (isMedium ? 38 : 40),
-        height: isCompact ? 36 : (isMedium ? 38 : 40),
-        borderRadius: isCompact ? 18 : (isMedium ? 19 : 20),
+        // CHANGE_HERE: Reduced button sizes for more compact mobile layout
+        width: isCompact ? 32 : (isMedium ? 34 : 36), // Smaller buttons on mobile
+        height: isCompact ? 32 : (isMedium ? 34 : 36), // Smaller buttons on mobile
+        borderRadius: isCompact ? 16 : (isMedium ? 17 : 18),
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -248,9 +252,10 @@ const createStyles = (theme: Theme, isCompact: boolean, isMedium: boolean) => St
     },
     playPauseButton: {
         backgroundColor: theme.headerText + '20',
-        width: isCompact ? 36 : (isMedium ? 38 : 40),
-        height: isCompact ? 36 : (isMedium ? 38 : 40),
-        borderRadius: isCompact ? 18 : (isMedium ? 19 : 20),
+        // CHANGE_HERE: Reduced button sizes for more compact mobile layout
+        width: isCompact ? 32 : (isMedium ? 34 : 36), // Smaller buttons on mobile
+        height: isCompact ? 32 : (isMedium ? 34 : 36), // Smaller buttons on mobile
+        borderRadius: isCompact ? 16 : (isMedium ? 17 : 18),
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -260,9 +265,10 @@ const createStyles = (theme: Theme, isCompact: boolean, isMedium: boolean) => St
     },
     stopButton: {
         backgroundColor: theme.headerText + '20',
-        width: isCompact ? 36 : (isMedium ? 38 : 40),
-        height: isCompact ? 36 : (isMedium ? 38 : 40),
-        borderRadius: isCompact ? 18 : (isMedium ? 19 : 20),
+        // CHANGE_HERE: Reduced button sizes for more compact mobile layout
+        width: isCompact ? 32 : (isMedium ? 34 : 36), // Smaller buttons on mobile
+        height: isCompact ? 32 : (isMedium ? 34 : 36), // Smaller buttons on mobile
+        borderRadius: isCompact ? 16 : (isMedium ? 17 : 18),
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -272,10 +278,11 @@ const createStyles = (theme: Theme, isCompact: boolean, isMedium: boolean) => St
     },
     playbackRateButton: {
         backgroundColor: theme.headerText + '20',
-        paddingHorizontal: isCompact ? 6 : (isMedium ? 8 : SPACING.sm),
-        paddingVertical: isCompact ? 3 : (isMedium ? 4 : 4),
+        // CHANGE_HERE: Reduced padding for more compact mobile layout
+        paddingHorizontal: isCompact ? 4 : (isMedium ? 6 : SPACING.sm), // Smaller padding
+        paddingVertical: isCompact ? 2 : (isMedium ? 3 : 4), // Smaller padding
         borderRadius: 6,
-        minWidth: 40,
+        minWidth: isCompact ? 32 : 36, // Smaller minimum width
         alignItems: 'center',
     },
     playbackRateText: {
