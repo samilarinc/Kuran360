@@ -25,9 +25,10 @@ interface VerseProps {
   surahVerseCount?: number; // clamp end to this count
   showBookmarkButton?: boolean;
   showMemorization?: boolean;
+  navigation?: any; // Navigation prop for going to all translations screen
 }
 
-export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount, showBookmarkButton = false, showMemorization = true }) => {
+export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount, showBookmarkButton = false, showMemorization = true, navigation }) => {
   const { settings } = useSettings();
   const { theme } = useTheme();
   const { user } = useAuth();
@@ -243,6 +244,14 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
               <Text style={createStyles(theme).bookmarkIcon}>
                 {isBookmarked(verse.surahNumber, verse.number) ? '🔖' : '📌'}
               </Text>
+            </TouchableOpacity>
+          )}
+          {navigation && (
+            <TouchableOpacity
+              style={createStyles(theme).allTranslationsButton}
+              onPress={() => navigation.navigate('AllTranslations', { verse })}
+            >
+              <Text style={createStyles(theme).allTranslationsIcon}>📚</Text>
             </TouchableOpacity>
           )}
           <TouchableOpacity
@@ -745,6 +754,19 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     borderColor: theme.secondary,
   },
   shareIcon: {
+    fontSize: 16,
+  },
+  allTranslationsButton: {
+    backgroundColor: theme.surface,
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.primary,
+  },
+  allTranslationsIcon: {
     fontSize: 16,
   },
 });

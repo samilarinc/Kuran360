@@ -11,6 +11,7 @@ import { ProfileScreen } from '../screens/ProfileScreen';
 import { ForumScreen } from '../screens/ForumScreen';
 import { ForumThreadScreen } from '../screens/ForumThreadScreen';
 import { RandomVerseScreen } from '../screens/RandomVerseScreen';
+import { AllTranslationsScreen } from '../screens/AllTranslationsScreen';
 import { ForumProvider } from '../contexts/ForumContext';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useGlobalAudio } from '../contexts/AudioContext';
@@ -41,15 +42,17 @@ export type RootStackParamList = {
   Forum: undefined;
   ForumThread: { threadId: string };
   RandomVerse: undefined;
+  AllTranslations: { verse: any };
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations';
   params?: {
     surah?: Surah;
     verseIndex?: number;
     threadId?: string;
     lastSelectedSurah?: Surah;
+    verse?: any;
   };
 };
 
@@ -275,7 +278,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, []); // Remove dependencies to prevent infinite loop
 
   const navigation = {
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
       navigateToRoute(route, true);
     },
@@ -417,6 +420,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <ForumThreadScreen navigation={navigation} route={{ params: { threadId: currentRoute.params.threadId } }} />
             ) : currentRoute.screen === 'RandomVerse' ? (
               <RandomVerseScreen navigation={navigation} />
+            ) : currentRoute.screen === 'AllTranslations' && currentRoute.params?.verse ? (
+              <AllTranslationsScreen navigation={navigation} route={{ params: { verse: currentRoute.params.verse } }} />
             ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
               <SurahDetailScreen
                 navigation={navigation}

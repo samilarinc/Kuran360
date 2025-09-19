@@ -1,8 +1,8 @@
 # TODO LIST
 
-- [ ] Rastgele ayet sayfasında kaydırma çalışmıyor
-- [ ] Ses önizleme sadece seçili seste çalışıyor
-- [ ] Header ve footer boyutu küçültülmeli ki rahatça dinlerken okunabilsin
+- [X] Rastgele ayet sayfasında kaydırma çalışmıyor
+- [X] Ses önizleme sadece seçili seste çalışıyor
+- [X] Header ve footer boyutu küçültülmeli ki rahatça dinlerken okunabilsin
 - [ ] Home butonu eklenmeli sayfalara
 - [ ] Resim oluşturmada instagram modu vs gibi foto boyutları seçilebilmeli
 - [ ] Resim oluşturmada meal sorabilir

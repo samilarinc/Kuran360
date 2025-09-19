@@ -238,6 +238,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                             onPlayPress={handlePlayVerse}
                             showBookmarkButton={true}
                             showMemorization={false}
+                            navigation={navigation}
                         />
                     </ScrollView>
                 </Animated.View>

@@ -28,12 +28,14 @@ interface PaginatedVerseViewProps {
     verses: VerseType[];
     initialVerseIndex?: number;
     onVerseChange?: (verseIndex: number) => void;
+    navigation?: any;
 }
 
 export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(({
     verses,
     initialVerseIndex = 0,
     onVerseChange,
+    navigation,
 }) => {
     const { settings, updateSettings } = useSettings();
     const { theme } = useTheme();
@@ -381,6 +383,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                                     onPlayPress={playVerse}
                                     surahVerseCount={verses.length}
                                     showBookmarkButton={!!user}
+                                    navigation={navigation}
                                 />
                             </ScrollView>
                         ) : (
@@ -404,6 +407,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                                 onPlayPress={playVerse}
                                 surahVerseCount={verses.length}
                                 showBookmarkButton={!!user}
+                                navigation={navigation}
                             />
                         </ScrollView>
                     </View>
@@ -423,6 +427,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                                     onPlayPress={playVerse}
                                     surahVerseCount={verses.length}
                                     showBookmarkButton={!!user}
+                                    navigation={navigation}
                                 />
                             </ScrollView>
                         ) : (

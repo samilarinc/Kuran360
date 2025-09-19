@@ -71,8 +71,6 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <View style={styles.updateList}>
                         <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Home butonu eklenmeli sayfalara</Text>
                         <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Resim oluşturmada instagram modu vs gibi foto boyutları seçilebilmeli</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Resim oluşturmada meal sorabilir</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ayetin üstünde bir tuşla bu ayetin bütün meallerini göster diye yeni sayfa eklenmeli</Text>
                     </View>
                 </View>
 
@@ -86,6 +84,8 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Rastgele ayet sayfası kaydırma fixlendi</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ses önizleme hatası düzeltildi</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Header ve Footer küçültüldü, alttaki instruction kaldırıldı</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Bütün mealleri göster tuşu eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Bütün mealleri göster sayfasına farklı meal ile ayet paylaşma eklendi</Text>
                         </View>
                     </View>
 

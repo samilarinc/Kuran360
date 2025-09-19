@@ -224,6 +224,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       onPlayPress={handleVersePress}
       surahVerseCount={surah.verses.length > 0 ? surah.verses.length : surah.verseCount}
       showBookmarkButton={!!user}
+      navigation={navigation}
     />
   );
 
@@ -264,6 +265,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               verses={surah.verses}
               initialVerseIndex={currentPaginatedIndex}
               onVerseChange={handleVerseChange}
+              navigation={navigation}
             />
           ) : (
             <FlatList
