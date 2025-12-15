@@ -84,6 +84,19 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Güncelleme Notları</Text>
 
                     <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>16 Aralık 2024</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• IndexedDB veri yapısı tamamen yenilendi - ayetler artık tekil olarak saklanıyor</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Veri indirme progress bar'ı gerçek zamanlı byte gösterimi ile güncellendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Sure listesine arama özelliği eklendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• URL yapısı iyileştirildi - okunan ayet URL'de görünüyor</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Rastgele ayet ve favori kaldırma emoji'leri güncellendi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Favori kaldırma butonu hatası düzeltildi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Performans iyileştirmeleri ve memory optimizasyonu</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>19 Eylül 2025</Text>
                         <View style={styles.updateList}>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Rastgele ayet sayfası kaydırma fixlendi</Text>
