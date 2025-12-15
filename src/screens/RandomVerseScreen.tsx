@@ -306,7 +306,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                         <ActivityIndicator size="small" color="#FFFFFF" />
                     ) : (
                         <Text style={[styles.newVerseButtonText, { color: '#FFFFFF' }]}>
-                            🎲 Yeni Rastgele Ayet
+                            ✨ Yeni Rastgele Ayet
                         </Text>
                     )}
                 </TouchableOpacity>

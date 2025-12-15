@@ -209,9 +209,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     const selectDefaultTranslations = () => {
         updateSettings({
             selectedTranslations: [
-                'Diyanet İşleri Meali (Yeni)',
+                'Kur\'an Yolu (Diyanet İşleri)',
                 'Elmalılı Meali (Orijinal)',
-                'Yaşar Nuri Öztürk Meali'
+                'Ali Bulaç Meali'
             ]
         });
     };

@@ -95,6 +95,14 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basicSurah.number]);
 
+  // Update URL when component mounts or verse index changes
+  useEffect(() => {
+    if (updateVerseUrl && surah) {
+      const verseIndex = route.params.verseIndex ?? 0;
+      updateVerseUrl(surah, verseIndex);
+    }
+  }, [basicSurah.number, route.params.verseIndex, updateVerseUrl, surah]);
+
   // Auto-scroll effect: scroll to the currently playing verse in non-paginated mode
   useEffect(() => {
     if (settings.audioTrackingEnabled &&
@@ -204,11 +212,10 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   };
 
   const handleVerseChange = (verseIndex: number) => {
-    // Temporarily disable URL updates to prevent circular updates
-    // TODO: Fix URL update mechanism to not cause re-renders
-    // if (updateVerseUrl) {
-    //   updateVerseUrl(surah, verseIndex);
-    // }
+    // Update URL to reflect current verse
+    if (updateVerseUrl) {
+      updateVerseUrl(surah, verseIndex);
+    }
 
     // Don't auto-play on verse change in paginated view
     // Users can manually tap the play button if they want to hear the verse
@@ -216,6 +223,27 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     // Persist current index so PaginatedVerseView remounts won't reset to 0
     setCurrentPaginatedIndex(verseIndex);
   };
+
+  // Handle viewable items change to update URL
+  const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    if (viewableItems.length > 0 && updateVerseUrl && !settings.usePaginatedView) {
+      const firstVisibleItem = viewableItems[0];
+      if (firstVisibleItem && firstVisibleItem.item) {
+        const verseIndex = surah.verses.findIndex(
+          v => v.surahNumber === firstVisibleItem.item.surahNumber &&
+            v.number === firstVisibleItem.item.number
+        );
+        if (verseIndex !== -1) {
+          updateVerseUrl(surah, verseIndex);
+        }
+      }
+    }
+  }).current;
+
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50,
+    minimumViewTime: 300
+  }).current;
 
   const renderVerse = ({ item }: { item: VerseType }) => (
     <Verse
@@ -277,6 +305,8 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               keyExtractor={(item) => `${item.surahNumber}-${item.number}`}
               contentContainerStyle={styles.listContainer}
               showsVerticalScrollIndicator={false}
+              onViewableItemsChanged={onViewableItemsChanged}
+              viewabilityConfig={viewabilityConfig}
               onScrollBeginDrag={() => {
                 // User started scrolling manually
                 setIsUserScrolling(true);

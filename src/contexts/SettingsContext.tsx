@@ -7,11 +7,11 @@ import { AppSettings, SettingsContextType } from '../types';
 
 const DEFAULT_SETTINGS: AppSettings = {
     selectedTranslations: [
-        'Diyanet İşleri Meali (Yeni)',
+        'Kur\'an Yolu (Diyanet İşleri)',
         'Elmalılı Meali (Orijinal)',
-        'Yaşar Nuri Öztürk Meali'
+        'Ali Bulaç Meali'
     ],
-    favoriteTranslation: 'Diyanet İşleri Meali (Yeni)', // Varsayılan favori meal
+    favoriteTranslation: 'Kur\'an Yolu (Diyanet İşleri)',
     autoplayEnabled: false,
     showTransliteration: true,
     showWordTranslations: true,

@@ -82,9 +82,9 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
             </View>
             <TouchableOpacity
                 style={createStyles(theme).removeButton}
-                onPress={() => removeBookmark(`${item.surahNumber}-${item.verseNumber}`)}
+                onPress={() => removeBookmark(item.id)}
             >
-                <Text style={createStyles(theme).removeButtonText}>🗑️</Text>
+                <Text style={createStyles(theme).removeButtonText}>✕</Text>
             </TouchableOpacity>
         </TouchableOpacity>
     );

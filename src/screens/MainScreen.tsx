@@ -44,7 +44,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             id: 'random-verse',
             title: 'Rastgele Ayet',
             subtitle: 'Günün ayetini keşfedin',
-            icon: '🎲',
+            icon: '✨',
             color: '#FF7043',
             onPress: () => onNavigate('RandomVerse'),
         },
