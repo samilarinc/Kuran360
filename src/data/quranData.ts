@@ -19,35 +19,328 @@ interface VerseData {
   translations: Record<string, string>;
 }
 
-// Cross-platform storage utility with IndexedDB for web and AsyncStorage for mobile
-const Storage = {
-  // IndexedDB helper for web
+// IndexedDB Database configuration
+const DB_NAME = 'Kuran360DB';
+const DB_VERSION = 2; // Increment version for new structure
+const VERSES_STORE = 'verses';
+const META_STORE = 'meta';
+
+// Legacy keys for migration
+const LEGACY_CACHE_KEY = 'quran_verses_data';
+const LEGACY_VERSION_KEY = 'quran_verses_version';
+
+const CURRENT_VERSION = '3.0'; // New version for per-verse storage
+const META_VERSION_KEY = 'data_version';
+
+// IndexedDB Helper Class
+class IndexedDBHelper {
+  private db: any = null;
+  private dbPromise: Promise<any> | null = null;
+
   async openDB(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    if (this.db) return this.db;
+    if (this.dbPromise) return this.dbPromise;
+
+    this.dbPromise = new Promise((resolve, reject) => {
       const globalObj = globalThis as any;
       if (!globalObj.indexedDB) {
         reject(new Error('IndexedDB not supported'));
         return;
       }
 
-      const request = globalObj.indexedDB.open('QuranApp', 1);
+      const request = globalObj.indexedDB.open(DB_NAME, DB_VERSION);
 
-      request.onerror = () => reject(request.error);
-      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => {
+        this.dbPromise = null;
+        reject(request.error);
+      };
+
+      request.onsuccess = () => {
+        this.db = request.result;
+        resolve(this.db);
+      };
 
       request.onupgradeneeded = (event: any) => {
         const db = event.target.result;
+
+        // Create verses store with composite key
+        if (!db.objectStoreNames.contains(VERSES_STORE)) {
+          const versesStore = db.createObjectStore(VERSES_STORE, { keyPath: 'key' });
+          versesStore.createIndex('surahNumber', 'surahNumber', { unique: false });
+        }
+
+        // Create meta store for version info
+        if (!db.objectStoreNames.contains(META_STORE)) {
+          db.createObjectStore(META_STORE, { keyPath: 'key' });
+        }
+
+        // Keep legacy cache store for migration
         if (!db.objectStoreNames.contains('cache')) {
           db.createObjectStore('cache', { keyPath: 'key' });
         }
       };
     });
-  },
 
+    return this.dbPromise;
+  }
+
+  // Reset database connection (used after deleting database)
+  resetConnection(): void {
+    this.db = null;
+    this.dbPromise = null;
+  }
+
+  // Get a single verse by surah and verse number
+  async getVerse(surahNumber: number, verseNumber: number): Promise<VerseData | null> {
+    try {
+      const db = await this.openDB();
+      const transaction = db.transaction([VERSES_STORE], 'readonly');
+      const store = transaction.objectStore(VERSES_STORE);
+      const key = `${surahNumber}_${verseNumber}`;
+
+      return new Promise((resolve, reject) => {
+        const request = store.get(key);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => {
+          const result = request.result;
+          resolve(result ? result.data : null);
+        };
+      });
+    } catch (error) {
+      console.error('Error getting verse from IndexedDB:', error);
+      return null;
+    }
+  }
+
+  // Get all verses for a surah
+  async getSurahVerses(surahNumber: number): Promise<VerseData[]> {
+    try {
+      const db = await this.openDB();
+      const transaction = db.transaction([VERSES_STORE], 'readonly');
+      const store = transaction.objectStore(VERSES_STORE);
+      const index = store.index('surahNumber');
+      const globalObj = globalThis as any;
+
+      return new Promise((resolve, reject) => {
+        const verses: VerseData[] = [];
+        const request = index.openCursor(globalObj.IDBKeyRange.only(surahNumber));
+
+        request.onerror = () => reject(request.error);
+        request.onsuccess = (event: any) => {
+          const cursor = event.target.result;
+          if (cursor) {
+            verses.push(cursor.value.data);
+            cursor.continue();
+          } else {
+            // Sort by verse number before returning
+            verses.sort((a, b) => a.verse_number - b.verse_number);
+            resolve(verses);
+          }
+        };
+      });
+    } catch (error) {
+      console.error('Error getting surah verses from IndexedDB:', error);
+      return [];
+    }
+  }
+
+  // Store a single verse
+  async setVerse(surahNumber: number, verseNumber: number, data: VerseData): Promise<void> {
+    try {
+      const db = await this.openDB();
+      const transaction = db.transaction([VERSES_STORE], 'readwrite');
+      const store = transaction.objectStore(VERSES_STORE);
+      const key = `${surahNumber}_${verseNumber}`;
+
+      return new Promise((resolve, reject) => {
+        const request = store.put({ key, surahNumber, verseNumber, data });
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve();
+      });
+    } catch (error) {
+      console.error('Error storing verse in IndexedDB:', error);
+      throw error;
+    }
+  }
+
+  // Store multiple verses in batch (for initial load/migration)
+  async setVersesBatch(verses: VerseData[], progressCallback?: (progress: number) => void): Promise<void> {
+    try {
+      const db = await this.openDB();
+      const totalVerses = verses.length;
+      let processed = 0;
+      const batchSize = 100; // Process in batches to avoid blocking
+
+      for (let i = 0; i < verses.length; i += batchSize) {
+        const batch = verses.slice(i, i + batchSize);
+
+        await new Promise<void>((resolve, reject) => {
+          const transaction = db.transaction([VERSES_STORE], 'readwrite');
+          const store = transaction.objectStore(VERSES_STORE);
+
+          transaction.oncomplete = () => {
+            processed += batch.length;
+            if (progressCallback) {
+              progressCallback((processed / totalVerses) * 100);
+            }
+            resolve();
+          };
+
+          transaction.onerror = () => reject(transaction.error);
+
+          for (const verse of batch) {
+            const key = `${verse.surah_number}_${verse.verse_number}`;
+            store.put({
+              key,
+              surahNumber: verse.surah_number,
+              verseNumber: verse.verse_number,
+              data: verse
+            });
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error batch storing verses in IndexedDB:', error);
+      throw error;
+    }
+  }
+
+  // Get meta value
+  async getMeta(key: string): Promise<string | null> {
+    try {
+      const db = await this.openDB();
+      const transaction = db.transaction([META_STORE], 'readonly');
+      const store = transaction.objectStore(META_STORE);
+
+      return new Promise((resolve, reject) => {
+        const request = store.get(key);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => {
+          const result = request.result;
+          resolve(result ? result.value : null);
+        };
+      });
+    } catch (error) {
+      console.error('Error getting meta from IndexedDB:', error);
+      return null;
+    }
+  }
+
+  // Set meta value
+  async setMeta(key: string, value: string): Promise<void> {
+    try {
+      const db = await this.openDB();
+      const transaction = db.transaction([META_STORE], 'readwrite');
+      const store = transaction.objectStore(META_STORE);
+
+      return new Promise((resolve, reject) => {
+        const request = store.put({ key, value });
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve();
+      });
+    } catch (error) {
+      console.error('Error setting meta in IndexedDB:', error);
+      throw error;
+    }
+  }
+
+  // Check if verses exist in new format
+  async hasVersesInNewFormat(): Promise<boolean> {
+    try {
+      const version = await this.getMeta(META_VERSION_KEY);
+      if (version !== CURRENT_VERSION) return false;
+
+      // Quick check - try to get first verse
+      const firstVerse = await this.getVerse(1, 1);
+      return !!firstVerse;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // Get legacy data for migration
+  async getLegacyData(): Promise<VerseData[] | null> {
+    try {
+      const db = await this.openDB();
+      const transaction = db.transaction(['cache'], 'readonly');
+      const store = transaction.objectStore('cache');
+
+      return new Promise((resolve, reject) => {
+        const request = store.get(LEGACY_CACHE_KEY);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => {
+          const result = request.result;
+          if (result && result.value) {
+            try {
+              const data = JSON.parse(result.value);
+              resolve(Array.isArray(data) ? data : Object.values(data));
+            } catch {
+              resolve(null);
+            }
+          } else {
+            resolve(null);
+          }
+        };
+      });
+    } catch (error) {
+      console.error('Error getting legacy data:', error);
+      return null;
+    }
+  }
+
+  // Clear legacy data after migration
+  async clearLegacyData(): Promise<void> {
+    try {
+      const db = await this.openDB();
+      const transaction = db.transaction(['cache'], 'readwrite');
+      const store = transaction.objectStore('cache');
+
+      await new Promise<void>((resolve, reject) => {
+        const request = store.delete(LEGACY_CACHE_KEY);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve();
+      });
+
+      await new Promise<void>((resolve, reject) => {
+        const request = store.delete(LEGACY_VERSION_KEY);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve();
+      });
+    } catch (error) {
+      console.warn('Error clearing legacy data:', error);
+    }
+  }
+
+  // Get total verse count
+  async getVerseCount(): Promise<number> {
+    try {
+      const db = await this.openDB();
+      const transaction = db.transaction([VERSES_STORE], 'readonly');
+      const store = transaction.objectStore(VERSES_STORE);
+
+      return new Promise((resolve, reject) => {
+        const request = store.count();
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+      });
+    } catch (error) {
+      console.error('Error getting verse count:', error);
+      return 0;
+    }
+  }
+}
+
+// Create singleton instance
+const idbHelper = new IndexedDBHelper();
+
+// Cross-platform storage utility - now primarily uses IndexedDB for web
+const Storage = {
   async getItem(key: string): Promise<string | null> {
     if (Platform.OS === 'web') {
+      // For web, we now use the new IndexedDB structure
+      // This is kept for backward compatibility with other data
       try {
-        const db = await this.openDB();
+        const db = await idbHelper.openDB();
         const transaction = db.transaction(['cache'], 'readonly');
         const store = transaction.objectStore('cache');
 
@@ -60,41 +353,18 @@ const Storage = {
           };
         });
       } catch (error) {
-        console.warn('IndexedDB failed, trying localStorage chunks:', error);
-        // Fallback to chunked localStorage
-        return await this.getItemFromChunks(key);
+        console.warn('IndexedDB cache read failed:', error);
+        return null;
       }
     } else {
       return await AsyncStorage.getItem(key);
     }
   },
 
-  // Read chunked data from localStorage
-  async getItemFromChunks(key: string): Promise<string | null> {
-    const globalObj = globalThis as any;
-    if (!globalObj.localStorage) return null;
-
-    // Check if this is chunked data
-    const chunkInfo = globalObj.localStorage.getItem(`${key}_chunks`);
-    if (chunkInfo) {
-      const { count } = JSON.parse(chunkInfo);
-      let result = '';
-      for (let i = 0; i < count; i++) {
-        const chunk = globalObj.localStorage.getItem(`${key}_${i}`);
-        if (!chunk) return null;
-        result += chunk;
-      }
-      return result;
-    }
-
-    // Regular single item
-    return globalObj.localStorage.getItem(key);
-  },
-
   async setItem(key: string, value: string): Promise<void> {
     if (Platform.OS === 'web') {
       try {
-        const db = await this.openDB();
+        const db = await idbHelper.openDB();
         const transaction = db.transaction(['cache'], 'readwrite');
         const store = transaction.objectStore('cache');
 
@@ -104,76 +374,27 @@ const Storage = {
           request.onsuccess = () => resolve();
         });
       } catch (error) {
-        console.warn('IndexedDB failed, using localStorage chunking:', error);
-        // Fallback to localStorage with chunking
-        await this.setItemWithChunking(key, value);
+        console.warn('IndexedDB cache write failed:', error);
       }
     } else {
       await AsyncStorage.setItem(key, value);
     }
   },
 
-  // Fallback chunking method for localStorage
-  async setItemWithChunking(key: string, value: string): Promise<void> {
-    const globalObj = globalThis as any;
-    if (!globalObj.localStorage) return;
-
-    const CHUNK_SIZE = 1024 * 1024; // 1MB chunks for safety
-
-    // Clear any existing chunks
-    const existingChunkInfo = globalObj.localStorage.getItem(`${key}_chunks`);
-    if (existingChunkInfo) {
-      const { count } = JSON.parse(existingChunkInfo);
-      for (let i = 0; i < count; i++) {
-        globalObj.localStorage.removeItem(`${key}_${i}`);
-      }
-    }
-
-    // Save in chunks
-    const chunks = Math.ceil(value.length / CHUNK_SIZE);
-    logger.debug(`📦 Chunking data into ${chunks} smaller chunks of 1MB each`);
-
-    for (let i = 0; i < chunks; i++) {
-      const start = i * CHUNK_SIZE;
-      const end = Math.min(start + CHUNK_SIZE, value.length);
-      const chunk = value.slice(start, end);
-      try {
-        globalObj.localStorage.setItem(`${key}_${i}`, chunk);
-      } catch (error) {
-        throw new Error(`Failed to save chunk ${i}: ${error}`);
-      }
-    }
-
-    // Save chunk info
-    globalObj.localStorage.setItem(`${key}_chunks`, JSON.stringify({ count: chunks }));
-  },
-
   async removeItem(key: string): Promise<void> {
     if (Platform.OS === 'web') {
       try {
-        const db = await this.openDB();
+        const db = await idbHelper.openDB();
         const transaction = db.transaction(['cache'], 'readwrite');
         const store = transaction.objectStore('cache');
 
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
           const request = store.delete(key);
           request.onerror = () => reject(request.error);
-          request.onsuccess = () => resolve(undefined);
+          request.onsuccess = () => resolve();
         });
       } catch (error) {
-        // Also clean up localStorage chunks as fallback
-        const globalObj = globalThis as any;
-        if (globalObj.localStorage) {
-          const chunkInfo = globalObj.localStorage.getItem(`${key}_chunks`);
-          if (chunkInfo) {
-            const { count } = JSON.parse(chunkInfo);
-            for (let i = 0; i < count; i++) {
-              globalObj.localStorage.removeItem(`${key}_${i}`);
-            }
-            globalObj.localStorage.removeItem(`${key}_chunks`);
-          }
-          globalObj.localStorage.removeItem(key);
-        }
+        console.warn('IndexedDB cache delete failed:', error);
       }
     } else {
       await AsyncStorage.removeItem(key);
@@ -181,105 +402,178 @@ const Storage = {
   }
 };
 
-// Global cache for verse data
-let allVersesCache: VerseData[] | null = null;
-const VERSES_CACHE_KEY = 'quran_verses_data';
-const VERSES_VERSION_KEY = 'quran_verses_version';
-const CURRENT_VERSION = '2.0'; // Increment this when you update the verses data
+// Progress callback type
+export type ProgressCallback = (progress: number, status: string, downloadedBytes?: number, totalBytes?: number) => void;
 
-// Check if data is cached without loading it
+// Check if data is cached in the new format
 export const isDataCached = async (): Promise<boolean> => {
   try {
-    const cachedVersion = await Storage.getItem(VERSES_VERSION_KEY);
-    if (cachedVersion !== CURRENT_VERSION) {
-      return false;
+    if (Platform.OS === 'web') {
+      return await idbHelper.hasVersesInNewFormat();
+    } else {
+      // For mobile, check AsyncStorage
+      const cachedVersion = await AsyncStorage.getItem(META_VERSION_KEY);
+      return cachedVersion === CURRENT_VERSION;
     }
-
-    // Quick check if data exists
-    const cachedData = await Storage.getItem(VERSES_CACHE_KEY);
-    return !!cachedData;
   } catch (error) {
     console.error('Error checking cache:', error);
     return false;
   }
 };
 
-// Progress callback type
-export type ProgressCallback = (progress: number, status: string) => void;
-
-// Function to load verses data from static file or localStorage
-// Load all verses data into memory and localStorage
+// Load all verses - now migrates to per-verse storage
 export const loadAllVerses = async (progressCallback?: ProgressCallback): Promise<void> => {
-  logger.debug('📚 loadAllVerses called - allVersesCache exists:', !!allVersesCache, 'cache length:', allVersesCache?.length || 0);
-
-  if (allVersesCache && allVersesCache.length > 0) {
-    logger.debug('✅ Data already loaded, returning early');
-    progressCallback?.(100, 'Veri zaten yüklü');
-    return;
-  }
+  logger.debug('📚 loadAllVerses called');
 
   try {
-    progressCallback?.(10, 'Cache kontrol ediliyor...');
+    progressCallback?.(5, 'Veri formatı kontrol ediliyor...');
 
-    // Check localStorage first
-    logger.debug('🔍 Checking localStorage cache...');
-    const cachedData = await Storage.getItem(VERSES_CACHE_KEY);
-    const cachedVersion = await Storage.getItem(VERSES_VERSION_KEY);
+    if (Platform.OS === 'web') {
+      // Check if already migrated to new format
+      const hasNewFormat = await idbHelper.hasVersesInNewFormat();
 
-    logger.debug('📦 Cache status:', {
-      hasCachedData: !!cachedData,
-      cachedDataLength: cachedData ? cachedData.length : 0,
-      cachedVersion,
-      currentVersion: CURRENT_VERSION,
-      versionMatch: cachedVersion === CURRENT_VERSION
-    });
+      if (hasNewFormat) {
+        logger.debug('✅ Data already in new per-verse format');
+        progressCallback?.(100, 'Veri zaten yüklü');
+        return;
+      }
 
-    if (cachedData && cachedVersion === CURRENT_VERSION) {
-      progressCallback?.(50, 'Cache\'ten yükleniyor...');
-      logger.debug('🚀 Loading from cache...');
-      allVersesCache = JSON.parse(cachedData);
-      logger.debug('✅ Cache loaded successfully, verses count:', allVersesCache!.length);
-      progressCallback?.(100, 'Tamamlandı!');
-      return;
-    }
+      // Check for legacy data to migrate
+      progressCallback?.(10, 'Eski veri kontrol ediliyor...');
+      const legacyData = await idbHelper.getLegacyData();
 
-    // Clear old cache if version mismatch
-    if (cachedData && cachedVersion !== CURRENT_VERSION) {
-      progressCallback?.(20, 'Eski cache temizleniyor...');
-      logger.debug('🧹 Clearing old cache due to version mismatch');
-      await Storage.removeItem(VERSES_CACHE_KEY);
-      await Storage.removeItem(VERSES_VERSION_KEY);
-    }
+      if (legacyData && legacyData.length > 0) {
+        logger.debug('🔄 Migrating legacy data to new format...');
+        progressCallback?.(15, 'Veri yeni formata taşınıyor...');
 
-    // Load from server if no cache or version mismatch
-    progressCallback?.(30, 'Sunucudan indiriliyor...');
-    logger.debug('📡 Loading from server...');
-    const response = await fetch('/allVerses.json');
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+        await idbHelper.setVersesBatch(legacyData, (progress) => {
+          progressCallback?.(15 + progress * 0.7, `Ayetler kaydediliyor... %${Math.round(progress)}`);
+        });
 
-    progressCallback?.(60, 'Veri işleniyor...');
-    const data = await response.json();
-    logger.debug('📥 Data loaded from server, size:', JSON.stringify(data).length);
+        await idbHelper.setMeta(META_VERSION_KEY, CURRENT_VERSION);
+        await idbHelper.clearLegacyData();
 
-    // Convert object to array if needed
-    const versesArray = Array.isArray(data) ? data : Object.values(data);
+        logger.debug('✅ Migration complete');
+        progressCallback?.(100, 'Veri taşıma tamamlandı!');
+        return;
+      }
 
-    allVersesCache = versesArray;
+      // No data - need to download
+      // First, clear any existing databases
+      progressCallback?.(0, 'Eski veriler temizleniyor...');
+      logger.debug('🧹 Clearing any existing databases...');
 
-    progressCallback?.(80, 'Cache\'e kaydediliyor...');
-    logger.debug('💾 Saving to cache...');
-    try {
-      // Cache the data
-      await Storage.setItem(VERSES_CACHE_KEY, JSON.stringify(versesArray));
-      await Storage.setItem(VERSES_VERSION_KEY, CURRENT_VERSION);
-      logger.debug('✅ Data cached successfully, verses count:', versesArray.length);
+      try {
+        const globalObj = globalThis as any;
+        if (globalObj.indexedDB) {
+          // Delete old databases
+          await new Promise<void>((resolve) => {
+            const req1 = globalObj.indexedDB.deleteDatabase('QuranAppDB');
+            req1.onsuccess = () => resolve();
+            req1.onerror = () => resolve(); // Continue even if fails
+            req1.onblocked = () => {
+              logger.warn('⚠️ Database deletion blocked');
+              resolve();
+            };
+          });
+
+          await new Promise<void>((resolve) => {
+            const req2 = globalObj.indexedDB.deleteDatabase('QuranApp');
+            req2.onsuccess = () => resolve();
+            req2.onerror = () => resolve();
+            req2.onblocked = () => resolve();
+          });
+
+          // Reset db connection
+          idbHelper.resetConnection();
+
+          logger.debug('✅ Old databases deleted');
+        }
+      } catch (clearError) {
+        logger.warn('⚠️ Error clearing old databases:', clearError);
+      }
+
+      progressCallback?.(0, 'Sunucudan indiriliyor...');
+      logger.debug('📡 Loading from server...');
+
+      const response = await fetch('/allVerses.json');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Get total size from content-length header
+      const contentLength = response.headers.get('content-length');
+      const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
+
+      let downloadedBytes = 0;
+      const reader = response.body?.getReader();
+      const chunks: Uint8Array[] = [];
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          chunks.push(value);
+          downloadedBytes += value.length;
+
+          if (totalBytes > 0) {
+            const downloadProgress = (downloadedBytes / totalBytes) * 80; // 0-80% for download
+            progressCallback?.(downloadProgress, 'İndiriliyor...', downloadedBytes, totalBytes);
+          }
+        }
+      }
+
+      // Combine chunks and parse
+      progressCallback?.(85, 'Veri işleniyor...');
+
+      // Combine all chunks into a single Uint8Array
+      const totalLength = chunks.reduce((acc, chunk) => acc + chunk.length, 0);
+      const combined = new Uint8Array(totalLength);
+      let offset = 0;
+      for (const chunk of chunks) {
+        combined.set(chunk, offset);
+        offset += chunk.length;
+      }
+
+      // Decode to string and parse JSON
+      const decoder = new TextDecoder('utf-8');
+      const text = decoder.decode(combined);
+      const data = JSON.parse(text);
+      const versesArray: VerseData[] = Array.isArray(data) ? data : Object.values(data);
+
+      logger.debug(`📥 Downloaded ${versesArray.length} verses`);
+
+      progressCallback?.(90, 'Veritabanına kaydediliyor...');
+
+      await idbHelper.setVersesBatch(versesArray, (progress) => {
+        progressCallback?.(90 + progress * 0.09, 'Kaydediliyor...', downloadedBytes, totalBytes);
+      });
+
+      await idbHelper.setMeta(META_VERSION_KEY, CURRENT_VERSION);
+
+      logger.debug('✅ Data saved in new per-verse format');
       progressCallback?.(100, 'Başarıyla tamamlandı!');
-    } catch (cacheError) {
-      console.warn('⚠️ Failed to cache data, but continuing with loaded data:', cacheError);
-      progressCallback?.(100, 'İndirme tamamlandı (cache kaydedilemedi)');
-      // Continue without caching - data is still loaded in memory
+
+    } else {
+      // Mobile: Keep using AsyncStorage for now
+      // TODO: Implement mobile-specific per-verse storage if needed
+      const cachedVersion = await AsyncStorage.getItem(META_VERSION_KEY);
+      if (cachedVersion === CURRENT_VERSION) {
+        progressCallback?.(100, 'Veri zaten yüklü');
+        return;
+      }
+
+      progressCallback?.(30, 'Sunucudan indiriliyor...');
+      const response = await fetch('/allVerses.json');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      await AsyncStorage.setItem(LEGACY_CACHE_KEY, JSON.stringify(data));
+      await AsyncStorage.setItem(META_VERSION_KEY, CURRENT_VERSION);
+      progressCallback?.(100, 'Tamamlandı!');
     }
 
   } catch (error) {
@@ -312,22 +606,25 @@ function convertToAppFormat(verseData: VerseData): Verse {
   };
 }
 
-// Function to load a single verse from the loaded verses data
+// Function to load a single verse - now uses IndexedDB
 async function requireVerse(surahNumber: number, verseNumber: number): Promise<VerseData | null> {
-  // Ensure data is loaded
-  await loadAllVerses();
+  if (Platform.OS === 'web') {
+    // Use IndexedDB for web
+    return await idbHelper.getVerse(surahNumber, verseNumber);
+  } else {
+    // For mobile, load from AsyncStorage (legacy format for now)
+    const cachedData = await AsyncStorage.getItem(LEGACY_CACHE_KEY);
+    if (!cachedData) return null;
 
-  if (!allVersesCache || !Array.isArray(allVersesCache)) {
-    console.error('allVersesCache is not available:', allVersesCache);
-    return null;
+    try {
+      const allVerses: VerseData[] = JSON.parse(cachedData);
+      return allVerses.find(v =>
+        v.surah_number === surahNumber && v.verse_number === verseNumber
+      ) || null;
+    } catch {
+      return null;
+    }
   }
-
-  // Find the verse in the array
-  const verse = allVersesCache.find((v: VerseData) =>
-    v.surah_number === surahNumber && v.verse_number === verseNumber
-  );
-
-  return verse || null;
 }
 
 // Complete Surah metadata (all 114 surahs) with Turkish names
@@ -450,21 +747,26 @@ const SURAH_METADATA = [
 // Cache for loaded surahs
 const loadedSurahs = new Map<number, Surah>();
 
-// Load verses for a specific surah
+// Load verses for a specific surah - optimized for IndexedDB
 async function loadSurahVerses(surahNumber: number): Promise<Verse[]> {
   const surahMeta = SURAH_METADATA.find(s => s.number === surahNumber);
   if (!surahMeta) return [];
 
-  const verses: Verse[] = [];
-
-  for (let verseNumber = 1; verseNumber <= surahMeta.verseCount; verseNumber++) {
-    const verseData = await requireVerse(surahNumber, verseNumber);
-    if (verseData) {
-      verses.push(convertToAppFormat(verseData));
+  if (Platform.OS === 'web') {
+    // Use IndexedDB batch fetch for better performance
+    const versesData = await idbHelper.getSurahVerses(surahNumber);
+    return versesData.map(convertToAppFormat);
+  } else {
+    // For mobile, use the legacy method
+    const verses: Verse[] = [];
+    for (let verseNumber = 1; verseNumber <= surahMeta.verseCount; verseNumber++) {
+      const verseData = await requireVerse(surahNumber, verseNumber);
+      if (verseData) {
+        verses.push(convertToAppFormat(verseData));
+      }
     }
+    return verses;
   }
-
-  return verses;
 }
 
 // Load a single surah

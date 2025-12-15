@@ -34,6 +34,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   const [downloading, setDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [downloadStatus, setDownloadStatus] = useState('');
+  const [downloadedBytes, setDownloadedBytes] = useState(0);
+  const [totalBytes, setTotalBytes] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter surahs based on search query
@@ -63,16 +65,35 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     };
 
     loadData();
-  }, []);
+
+    // Get file size for display
+    const getFileSize = async () => {
+      try {
+        const response = await fetch('/allVerses.json', { method: 'HEAD' });
+        const contentLength = response.headers.get('content-length');
+        if (contentLength) {
+          setTotalBytes(parseInt(contentLength, 10));
+        }
+      } catch (error) {
+        console.warn('Could not fetch file size:', error);
+      }
+    };
+
+    if (!isDataAvailable) {
+      getFileSize();
+    }
+  }, [isDataAvailable]);
 
   const handleDownloadData = async () => {
     setDownloading(true);
     setDownloadProgress(0);
     setDownloadStatus('İndirme başlatılıyor...');
 
-    const progressCallback: ProgressCallback = (progress, status) => {
+    const progressCallback: ProgressCallback = (progress, status, downloaded, total) => {
       setDownloadProgress(progress);
       setDownloadStatus(status);
+      if (downloaded !== undefined) setDownloadedBytes(downloaded);
+      if (total !== undefined) setTotalBytes(total);
     };
 
     try {
@@ -126,7 +147,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <Text style={createStyles(theme).downloadTitle}>Kur'an-ı Kerim Meali</Text>
             <Text style={createStyles(theme).downloadDescription}>
               Ayetleri okuyabilmek için Türkçe meal verilerini indirmeniz gerekmektedir.
-              Bu işlem yaklaşık 66MB veri indirecektir.
+              {totalBytes > 0 && `\nBu işlem ${(totalBytes / (1024 * 1024)).toFixed(1)}MB veri indirecektir.`}
             </Text>
 
             {downloading ? (
@@ -136,6 +157,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                 </View>
                 <Text style={createStyles(theme).progressText}>
                   %{Math.round(downloadProgress)} - {downloadStatus}
+                  {totalBytes > 0 && downloadedBytes > 0 && (
+                    `\n${(downloadedBytes / (1024 * 1024)).toFixed(1)}MB / ${(totalBytes / (1024 * 1024)).toFixed(1)}MB`
+                  )}
                 </Text>
                 <ActivityIndicator size="large" color={theme.primary} style={{ marginTop: 10 }} />
               </View>
