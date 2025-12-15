@@ -442,7 +442,7 @@ const SURAH_METADATA = [
   { number: 108, name: 'Kevser', turkishName: 'Kevser', arabicName: 'الْكَوْثَر', englishName: 'The Abundance', revelationPlace: 'Mekkî', verseCount: 3 },
   { number: 109, name: 'Kafirun', turkishName: 'Kafirun', arabicName: 'الْكَافِرُون', englishName: 'The Disbelievers', revelationPlace: 'Mekkî', verseCount: 6 },
   { number: 110, name: 'Nasr', turkishName: 'Nasr', arabicName: 'النَّصْر', englishName: 'The Divine Support', revelationPlace: 'Medenî', verseCount: 3 },
-  { number: 111, name: 'Mesed', turkishName: 'Mesed', arabicName: 'الْمَسَد', englishName: 'The Palm Fibre', revelationPlace: 'Mekkî', verseCount: 5 },
+  { number: 111, name: 'Tebbet', turkishName: 'Tebbet', arabicName: 'الْمَسَد', englishName: 'The Palm Fibre', revelationPlace: 'Mekkî', verseCount: 5 },
   { number: 112, name: 'İhlas', turkishName: 'İhlas', arabicName: 'الْإِخْلَاص', englishName: 'The Sincerity', revelationPlace: 'Mekkî', verseCount: 4 },
   { number: 113, name: 'Felak', turkishName: 'Felak', arabicName: 'الْفَلَق', englishName: 'The Daybreak', revelationPlace: 'Mekkî', verseCount: 5 },
   { number: 114, name: 'Nas', turkishName: 'Nas', arabicName: 'النَّاس', englishName: 'Mankind', revelationPlace: 'Mekkî', verseCount: 6 }];

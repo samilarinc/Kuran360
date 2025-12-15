@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ActivityIndicator,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import { SurahList } from '../components/SurahList';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
@@ -33,6 +34,21 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   const [downloading, setDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [downloadStatus, setDownloadStatus] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Filter surahs based on search query
+  const filteredSurahs = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return surahs;
+    }
+    const query = searchQuery.toLowerCase().trim();
+    return surahs.filter(surah =>
+      (surah.turkishName || surah.name).toLowerCase().includes(query) ||
+      surah.arabicName.toLowerCase().includes(query) ||
+      surah.name.toLowerCase().includes(query) ||
+      surah.number.toString() === query
+    );
+  }, [surahs, searchQuery]);
 
   useEffect(() => {
     const loadData = () => {
@@ -148,8 +164,27 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         showSearchButton={true}
         onSearchPress={() => navigation.navigate('Search')}
       />
+      <View style={createStyles(theme).searchContainer}>
+        <TextInput
+          style={createStyles(theme).searchInput}
+          placeholder="Sure ara... (isim veya numara)"
+          placeholderTextColor={theme.textSecondary}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+        {searchQuery.length > 0 && (
+          <TouchableOpacity
+            style={createStyles(theme).clearButton}
+            onPress={() => setSearchQuery('')}
+          >
+            <Text style={createStyles(theme).clearButtonText}>✕</Text>
+          </TouchableOpacity>
+        )}
+      </View>
       <SurahList
-        surahs={surahs}
+        surahs={filteredSurahs}
         onSurahSelect={handleSurahSelect}
         scrollToSurah={lastSelectedSurah}
       />
@@ -170,6 +205,30 @@ const createStyles = (theme: Theme) => StyleSheet.create({
   },
   loadingText: {
     marginTop: SPACING.md,
+    fontSize: FONT_SIZES.medium,
+    color: theme.textSecondary,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: theme.cardBackground,
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.md,
+    borderRadius: 10,
+    paddingHorizontal: SPACING.md,
+    borderWidth: 1,
+    borderColor: theme.border,
+  },
+  searchInput: {
+    flex: 1,
+    height: 44,
+    fontSize: FONT_SIZES.medium,
+    color: theme.text,
+  },
+  clearButton: {
+    padding: SPACING.xs,
+  },
+  clearButtonText: {
     fontSize: FONT_SIZES.medium,
     color: theme.textSecondary,
   },
