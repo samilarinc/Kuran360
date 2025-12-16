@@ -3,7 +3,7 @@ import 'dotenv/config';
 export default ({ config }) => ({
     ...config,
     name: "Kuran360",
-    slug: "quranapp",
+    slug: "kuran360",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
@@ -24,7 +24,13 @@ export default ({ config }) => ({
         adaptiveIcon: {
             foregroundImage: "./assets/adaptive-icon.png",
             backgroundColor: "#2E7D32"
-        }
+        },
+        package: "com.kuran360",
+        navigationBar: {
+            visible: true,
+            backgroundColor: "#2E7D32"
+        },
+        softwareKeyboardLayoutMode: "pan"
     },
     web: {
         favicon: "./public/favicon.png",

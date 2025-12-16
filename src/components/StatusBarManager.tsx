@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, Platform } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 
 export const StatusBarManager: React.FC = () => {
@@ -9,6 +9,7 @@ export const StatusBarManager: React.FC = () => {
     <StatusBar
       barStyle={isDarkMode ? "light-content" : "light-content"}
       backgroundColor={theme.primary}
+      translucent={false}
     />
   );
 };

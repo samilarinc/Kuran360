@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { Platform, View, ActivityIndicator } from 'react-native';
+import { Platform, View, ActivityIndicator, BackHandler } from 'react-native';
 import { HomeScreen } from '../screens/HomeScreen';
 import { MainScreen } from '../screens/MainScreen';
 import { SurahDetailScreen } from '../screens/SurahDetailScreen';
@@ -303,6 +303,23 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       }
     }
   };
+
+  // Handle Android hardware back button
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+        if (currentIndex > 0) {
+          // Navigate back in history
+          navigation.goBack();
+          return true; // Prevent default behavior (exit app)
+        }
+        // If at the first screen (Main), allow default behavior (exit app)
+        return false;
+      });
+
+      return () => backHandler.remove();
+    }
+  }, [currentIndex, navigation]);
 
   // Function to update the URL with verse information without creating a new navigation entry
   const updateVerseUrl = useCallback((surah: Surah, verseIndex?: number) => {

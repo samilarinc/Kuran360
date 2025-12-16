@@ -1,4 +1,23 @@
 {
   "name": "Kuran360",
-  "displayName": "Kuran360"
+  "displayName": "Kuran360",
+  "extra": {
+    "firebase": {
+      "authDomain": "kuran-360.firebaseapp.com",
+      "projectId": "kuran-360",
+      "storageBucket": "kuran-360.firebasestorage.app",
+      "messagingSenderId": "413952389763",
+      "appId": "1:413952389763:web:cd31ba997802bd33c421b6",
+      "measurementId": "G-T2MCJ8GGYZ"
+    },
+    "google": {
+      "expoClientId": "",
+      "iosClientId": "",
+      "androidClientId": "",
+      "webClientId": "413952389763-pqgv0dcgr9ekb408rqrbsjso5so8mffc.apps.googleusercontent.com"
+    },
+    "eas": {
+      "projectId": "caa80dc9-2b7e-45a3-822a-f70411f6c593"
+    }
+  }
 }
