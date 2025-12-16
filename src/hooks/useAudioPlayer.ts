@@ -4,6 +4,7 @@ import { Verse as VerseType, AudioState } from '../types';
 import { loadSurah } from '../data/quranData';
 import { useSettings } from '../contexts/SettingsContext';
 import logger from '../utils/logger';
+import { Platform } from 'react-native';
 
 export const useAudioPlayer = () => {
   const { settings, availableReciters } = useSettings();
@@ -99,6 +100,9 @@ export const useAudioPlayer = () => {
     const audioFileName = `${verse.surahNumber.toString().padStart(3, '0')}${verse.number.toString().padStart(3, '0')}.mp3`;
 
     const getBaseUrl = () => {
+      if (Platform.OS !== 'web') {
+        return 'https://kuran360.com';
+      }
       if (typeof globalThis !== 'undefined' && (globalThis as any).window) {
         const win = (globalThis as any).window;
         return `${win.location.protocol}//${win.location.host}`;

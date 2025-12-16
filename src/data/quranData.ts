@@ -2,9 +2,7 @@ import { QuranData, Surah, Verse } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import logger from '../utils/logger';
-
-// Remove the direct import of allVerses.json to reduce bundle size
-// import allVerses from './allVerses.json';
+import { sqliteHelper } from '../services/sqliteService';
 
 interface VerseData {
   surah_number: number;
@@ -411,9 +409,10 @@ export const isDataCached = async (): Promise<boolean> => {
     if (Platform.OS === 'web') {
       return await idbHelper.hasVersesInNewFormat();
     } else {
-      // For mobile, check AsyncStorage
-      const cachedVersion = await AsyncStorage.getItem(META_VERSION_KEY);
-      return cachedVersion === CURRENT_VERSION;
+      // For mobile, check SQLite database
+      const version = await sqliteHelper.getMeta(META_VERSION_KEY);
+      const hasData = await sqliteHelper.hasData();
+      return version === CURRENT_VERSION && hasData;
     }
   } catch (error) {
     console.error('Error checking cache:', error);
@@ -423,8 +422,6 @@ export const isDataCached = async (): Promise<boolean> => {
 
 // Load all verses - now migrates to per-verse storage
 export const loadAllVerses = async (progressCallback?: ProgressCallback): Promise<void> => {
-  logger.debug('📚 loadAllVerses called');
-
   try {
     progressCallback?.(5, 'Veri formatı kontrol ediliyor...');
 
@@ -556,26 +553,53 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
       progressCallback?.(100, 'Başarıyla tamamlandı!');
 
     } else {
-      // Mobile: Keep using AsyncStorage for now
-      // TODO: Implement mobile-specific per-verse storage if needed
-      const cachedVersion = await AsyncStorage.getItem(META_VERSION_KEY);
-      if (cachedVersion === CURRENT_VERSION) {
+      // Mobile platform - use SQLite
+      logger.debug('📱 Checking SQLite database...');
+
+      const version = await sqliteHelper.getMeta(META_VERSION_KEY);
+      const hasData = await sqliteHelper.hasData();
+
+      if (version === CURRENT_VERSION && hasData) {
         progressCallback?.(100, 'Veri zaten yüklü');
+        logger.debug('✅ Data already in SQLite database');
         return;
       }
 
-      progressCallback?.(30, 'Sunucudan indiriliyor...');
-      const response = await fetch('/allVerses.json');
+      logger.debug('📡 Downloading data from server...');
+      progressCallback?.(10, 'Sunucudan indiriliyor...');
+
+      // Download data from server
+      const response = await fetch('https://kuran360.com/allVerses.json');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
+      progressCallback?.(50, 'Veri işleniyor...');
       const data = await response.json();
-      await AsyncStorage.setItem(LEGACY_CACHE_KEY, JSON.stringify(data));
-      await AsyncStorage.setItem(META_VERSION_KEY, CURRENT_VERSION);
+      const versesArray: VerseData[] = Array.isArray(data) ? data : Object.values(data);
+
+      logger.debug(`📥 Downloaded ${versesArray.length} verses, storing in SQLite...`);
+      progressCallback?.(60, 'SQLite veritabanına kaydediliyor...');
+
+      // Store in SQLite database
+      await sqliteHelper.setVersesBatch(versesArray, (progress) => {
+        progressCallback?.(60 + progress * 0.35, `Kaydediliyor... %${Math.round(progress)}`);
+      });
+
+      // Mark as complete
+      await sqliteHelper.setMeta(META_VERSION_KEY, CURRENT_VERSION);
+
+      // Clean up old AsyncStorage data if exists
+      try {
+        await AsyncStorage.removeItem(META_VERSION_KEY);
+        await AsyncStorage.removeItem(LEGACY_CACHE_KEY);
+      } catch (cleanupError) {
+        logger.warn('⚠️ Error cleaning up old AsyncStorage:', cleanupError);
+      }
+
+      logger.debug('✅ Data stored in SQLite successfully');
       progressCallback?.(100, 'Tamamlandı!');
     }
-
   } catch (error) {
     console.error('❌ Error loading verses:', error);
     progressCallback?.(0, 'Hata oluştu: ' + (error as Error).message);
@@ -606,24 +630,14 @@ function convertToAppFormat(verseData: VerseData): Verse {
   };
 }
 
-// Function to load a single verse - now uses IndexedDB
+// Function to load a single verse - now uses IndexedDB for web and SQLite for mobile
 async function requireVerse(surahNumber: number, verseNumber: number): Promise<VerseData | null> {
   if (Platform.OS === 'web') {
     // Use IndexedDB for web
     return await idbHelper.getVerse(surahNumber, verseNumber);
   } else {
-    // For mobile, load from AsyncStorage (legacy format for now)
-    const cachedData = await AsyncStorage.getItem(LEGACY_CACHE_KEY);
-    if (!cachedData) return null;
-
-    try {
-      const allVerses: VerseData[] = JSON.parse(cachedData);
-      return allVerses.find(v =>
-        v.surah_number === surahNumber && v.verse_number === verseNumber
-      ) || null;
-    } catch {
-      return null;
-    }
+    // Use SQLite for mobile
+    return await sqliteHelper.getVerse(surahNumber, verseNumber);
   }
 }
 
@@ -747,7 +761,7 @@ const SURAH_METADATA = [
 // Cache for loaded surahs
 const loadedSurahs = new Map<number, Surah>();
 
-// Load verses for a specific surah - optimized for IndexedDB
+// Load verses for a specific surah - optimized for IndexedDB and SQLite
 async function loadSurahVerses(surahNumber: number): Promise<Verse[]> {
   const surahMeta = SURAH_METADATA.find(s => s.number === surahNumber);
   if (!surahMeta) return [];
@@ -757,17 +771,12 @@ async function loadSurahVerses(surahNumber: number): Promise<Verse[]> {
     const versesData = await idbHelper.getSurahVerses(surahNumber);
     return versesData.map(convertToAppFormat);
   } else {
-    // For mobile, use the legacy method
-    const verses: Verse[] = [];
-    for (let verseNumber = 1; verseNumber <= surahMeta.verseCount; verseNumber++) {
-      const verseData = await requireVerse(surahNumber, verseNumber);
-      if (verseData) {
-        verses.push(convertToAppFormat(verseData));
-      }
-    }
-    return verses;
+    // Use SQLite batch fetch for mobile
+    const versesData = await sqliteHelper.getSurahVerses(surahNumber);
+    return versesData.map(convertToAppFormat);
   }
 }
+
 
 // Load a single surah
 export async function loadSurah(surahNumber: number): Promise<Surah | null> {

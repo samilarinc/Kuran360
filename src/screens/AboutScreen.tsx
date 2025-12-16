@@ -68,6 +68,34 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                 </View>
 
                 <View style={[styles.section, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
+                    <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Teknik Detaylar</Text>
+
+                    <Text style={[styles.techSubtitle, { color: theme.text }]}>SQLite Veritabanı (Mobil)</Text>
+                    <View style={styles.updateList}>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Composite primary key yapısı: (surah_number, verse_number)</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Otomatik indexleme ile hızlı sorgular</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Transaction-based batch insert (100 adet/batch)</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• İlk çalıştırmada sunucudan veri indirme</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• AsyncStorage boyut limiti sorunları çözüldü</Text>
+                    </View>
+
+                    <Text style={[styles.techSubtitle, { color: theme.text }]}>IndexedDB (Web)</Text>
+                    <View style={styles.updateList}>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ayetler tekil olarak saklanıyor</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Cursor-based verimli sorgulama</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Metadata store ile versiyon kontrolü</Text>
+                    </View>
+
+                    <Text style={[styles.techSubtitle, { color: theme.text }]}>Veri Akışı</Text>
+                    <View style={styles.updateList}>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Sunucu: https://kuran360.com/allVerses.json</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• On-demand verse loading için optimize edildi</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Audio streaming tüm platformlarda destekleniyor</Text>
+                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• APK boyutu küçültüldü (bundled data kaldırıldı)</Text>
+                    </View>
+                </View>
+
+                <View style={[styles.section, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Bilinen Hatalar ve Planlanan Güncellemeler</Text>
 
                     <View style={styles.updateList}>
@@ -86,12 +114,16 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>16 Aralık 2024</Text>
                         <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• SQLite veritabanı desteği eklendi (Android/iOS)</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Composite primary key ile (sure, ayet) hızlı sorgulama</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Transaction-based batch insert operasyonları</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• IndexedDB veri yapısı tamamen yenilendi - ayetler artık tekil olarak saklanıyor</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Veri indirme progress bar'ı gerçek zamanlı byte gösterimi ile güncellendi</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Sure listesine arama özelliği eklendi</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• URL yapısı iyileştirildi - okunan ayet URL'de görünüyor</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Rastgele ayet ve favori kaldırma emoji'leri güncellendi</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Favori kaldırma butonu hatası düzeltildi</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• AsyncStorage size limit sorunları çözüldü</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Performans iyileştirmeleri ve memory optimizasyonu</Text>
                         </View>
                     </View>
@@ -278,6 +310,12 @@ const styles = StyleSheet.create({
     updateBullet: {
         fontSize: FONT_SIZES.small,
         lineHeight: 22,
+        marginBottom: SPACING.xs,
+    },
+    techSubtitle: {
+        fontSize: FONT_SIZES.medium,
+        fontWeight: '600',
+        marginTop: SPACING.md,
         marginBottom: SPACING.xs,
     },
 });

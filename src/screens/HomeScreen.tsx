@@ -7,10 +7,11 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   TextInput,
+  Platform,
 } from 'react-native';
 import { SurahList } from '../components/SurahList';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { quranData, loadAllVerses, ProgressCallback } from '../data/quranData';
+import { quranData, loadAllVerses, ProgressCallback, isDataCached } from '../data/quranData';
 import { Surah, QuranData } from '../types';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
@@ -69,7 +70,12 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     // Get file size for display
     const getFileSize = async () => {
       try {
-        const response = await fetch('/allVerses.json', { method: 'HEAD' });
+        let response: Response;
+        if (Platform.OS === 'web') {
+          response = await fetch('/allVerses.json', { method: 'HEAD' });
+        } else {
+          response = await fetch('https://kuran360.com/allVerses.json', { method: 'HEAD' });
+        }
         const contentLength = response.headers.get('content-length');
         if (contentLength) {
           setTotalBytes(parseInt(contentLength, 10));
@@ -98,10 +104,25 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
     try {
       await loadAllVerses(progressCallback);
-      // After successful download, trigger a re-render by updating the App component
-      const globalObj = globalThis as any;
-      if (globalObj.window) {
-        globalObj.window.location.reload();
+      // After successful download, verify the data is cached
+      const isCached = await isDataCached();
+      if (isCached) {
+        setDownloadStatus('Tamamlandı! Sayfa yenileniyor...');
+
+        // For web, reload the page
+        if (Platform.OS === 'web') {
+          setTimeout(() => {
+            const globalObj = globalThis as any;
+            if (globalObj.window?.location) {
+              globalObj.window.location.reload();
+            }
+          }, 500);
+        } else {
+          // For mobile, navigate to Main which will re-check data availability
+          setTimeout(() => {
+            navigation.navigate('Main');
+          }, 500);
+        }
       }
     } catch (error) {
       console.error('Download failed:', error);
