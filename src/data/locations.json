@@ -1,0 +1,5162 @@
+[
+  {
+    "id": "9146",
+    "cityName": "Adana",
+    "districtName": null,
+    "fileName": "9146_adana.json"
+  },
+  {
+    "id": "9147",
+    "cityName": "Adana",
+    "districtName": "Aladag",
+    "fileName": "9147_adana_aladag.json"
+  },
+  {
+    "id": "9148",
+    "cityName": "Adana",
+    "districtName": "Ceyhan",
+    "fileName": "9148_adana_ceyhan.json"
+  },
+  {
+    "id": "9149",
+    "cityName": "Adana",
+    "districtName": "Feke",
+    "fileName": "9149_adana_feke.json"
+  },
+  {
+    "id": "9150",
+    "cityName": "Adana",
+    "districtName": "Imamoglu",
+    "fileName": "9150_adana_imamoglu.json"
+  },
+  {
+    "id": "9151",
+    "cityName": "Adana",
+    "districtName": "Karaisali",
+    "fileName": "9151_adana_karaisali.json"
+  },
+  {
+    "id": "9152",
+    "cityName": "Adana",
+    "districtName": "Karatas",
+    "fileName": "9152_adana_karatas.json"
+  },
+  {
+    "id": "9153",
+    "cityName": "Adana",
+    "districtName": "Kozan",
+    "fileName": "9153_adana_kozan.json"
+  },
+  {
+    "id": "9154",
+    "cityName": "Adana",
+    "districtName": "Pozanti",
+    "fileName": "9154_adana_pozanti.json"
+  },
+  {
+    "id": "9155",
+    "cityName": "Adana",
+    "districtName": "Saimbeyli",
+    "fileName": "9155_adana_saimbeyli.json"
+  },
+  {
+    "id": "9156",
+    "cityName": "Adana",
+    "districtName": "Tufanbeyli",
+    "fileName": "9156_adana_tufanbeyli.json"
+  },
+  {
+    "id": "9157",
+    "cityName": "Adana",
+    "districtName": "Yumurtalik",
+    "fileName": "9157_adana_yumurtalik.json"
+  },
+  {
+    "id": "9158",
+    "cityName": "Adiyaman",
+    "districtName": null,
+    "fileName": "9158_adiyaman.json"
+  },
+  {
+    "id": "9159",
+    "cityName": "Adiyaman",
+    "districtName": "Besni",
+    "fileName": "9159_adiyaman_besni.json"
+  },
+  {
+    "id": "9160",
+    "cityName": "Adiyaman",
+    "districtName": "Celikhan",
+    "fileName": "9160_adiyaman_celikhan.json"
+  },
+  {
+    "id": "9161",
+    "cityName": "Adiyaman",
+    "districtName": "Gerger",
+    "fileName": "9161_adiyaman_gerger.json"
+  },
+  {
+    "id": "9162",
+    "cityName": "Adiyaman",
+    "districtName": "Golbasi",
+    "fileName": "9162_adiyaman_golbasi.json"
+  },
+  {
+    "id": "9163",
+    "cityName": "Adiyaman",
+    "districtName": "Kahta",
+    "fileName": "9163_adiyaman_kahta.json"
+  },
+  {
+    "id": "9164",
+    "cityName": "Adiyaman",
+    "districtName": "Samsat",
+    "fileName": "9164_adiyaman_samsat.json"
+  },
+  {
+    "id": "9165",
+    "cityName": "Adiyaman",
+    "districtName": "Sincik",
+    "fileName": "9165_adiyaman_sincik.json"
+  },
+  {
+    "id": "9166",
+    "cityName": "Adiyaman",
+    "districtName": "Tut",
+    "fileName": "9166_adiyaman_tut.json"
+  },
+  {
+    "id": "9167",
+    "cityName": "Afyonkarahisar",
+    "districtName": null,
+    "fileName": "9167_afyonkarahisar.json"
+  },
+  {
+    "id": "9168",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Basmakci",
+    "fileName": "9168_afyonkarahisar_basmakci.json"
+  },
+  {
+    "id": "9169",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Bayat",
+    "fileName": "9169_afyonkarahisar_bayat.json"
+  },
+  {
+    "id": "9170",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Bolvadin",
+    "fileName": "9170_afyonkarahisar_bolvadin.json"
+  },
+  {
+    "id": "9171",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Cay",
+    "fileName": "9171_afyonkarahisar_cay.json"
+  },
+  {
+    "id": "9172",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Cobanlar",
+    "fileName": "9172_afyonkarahisar_cobanlar.json"
+  },
+  {
+    "id": "9173",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Dazkiri",
+    "fileName": "9173_afyonkarahisar_dazkiri.json"
+  },
+  {
+    "id": "9174",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Dinar",
+    "fileName": "9174_afyonkarahisar_dinar.json"
+  },
+  {
+    "id": "9175",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Emirdag",
+    "fileName": "9175_afyonkarahisar_emirdag.json"
+  },
+  {
+    "id": "9176",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Evciler",
+    "fileName": "9176_afyonkarahisar_evciler.json"
+  },
+  {
+    "id": "9177",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Hocalar",
+    "fileName": "9177_afyonkarahisar_hocalar.json"
+  },
+  {
+    "id": "9178",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Ihsaniye",
+    "fileName": "9178_afyonkarahisar_ihsaniye.json"
+  },
+  {
+    "id": "9179",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Iscehisar",
+    "fileName": "9179_afyonkarahisar_iscehisar.json"
+  },
+  {
+    "id": "9180",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Kiziloren",
+    "fileName": "9180_afyonkarahisar_kiziloren.json"
+  },
+  {
+    "id": "9181",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Sandikli",
+    "fileName": "9181_afyonkarahisar_sandikli.json"
+  },
+  {
+    "id": "9182",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Sinanpasa",
+    "fileName": "9182_afyonkarahisar_sinanpasa.json"
+  },
+  {
+    "id": "9183",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Suhut",
+    "fileName": "9183_afyonkarahisar_suhut.json"
+  },
+  {
+    "id": "9184",
+    "cityName": "Afyonkarahisar",
+    "districtName": "Sultandagi",
+    "fileName": "9184_afyonkarahisar_sultandagi.json"
+  },
+  {
+    "id": "9185",
+    "cityName": "Agri",
+    "districtName": null,
+    "fileName": "9185_agri.json"
+  },
+  {
+    "id": "9186",
+    "cityName": "Agri",
+    "districtName": "Diyadin",
+    "fileName": "9186_agri_diyadin.json"
+  },
+  {
+    "id": "9187",
+    "cityName": "Agri",
+    "districtName": "Dogubeyazit",
+    "fileName": "9187_agri_dogubeyazit.json"
+  },
+  {
+    "id": "9188",
+    "cityName": "Agri",
+    "districtName": "Eleskirt",
+    "fileName": "9188_agri_eleskirt.json"
+  },
+  {
+    "id": "9189",
+    "cityName": "Agri",
+    "districtName": "Patnos",
+    "fileName": "9189_agri_patnos.json"
+  },
+  {
+    "id": "9190",
+    "cityName": "Agri",
+    "districtName": "Taslicay",
+    "fileName": "9190_agri_taslicay.json"
+  },
+  {
+    "id": "9191",
+    "cityName": "Agri",
+    "districtName": "Tutak",
+    "fileName": "9191_agri_tutak.json"
+  },
+  {
+    "id": "9193",
+    "cityName": "Aksaray",
+    "districtName": null,
+    "fileName": "9193_aksaray.json"
+  },
+  {
+    "id": "9192",
+    "cityName": "Aksaray",
+    "districtName": "Agacoren",
+    "fileName": "9192_aksaray_agacoren.json"
+  },
+  {
+    "id": "9194",
+    "cityName": "Aksaray",
+    "districtName": "Eskil",
+    "fileName": "9194_aksaray_eskil.json"
+  },
+  {
+    "id": "9195",
+    "cityName": "Aksaray",
+    "districtName": "Gulagac",
+    "fileName": "9195_aksaray_gulagac.json"
+  },
+  {
+    "id": "9196",
+    "cityName": "Aksaray",
+    "districtName": "Guzelyurt",
+    "fileName": "9196_aksaray_guzelyurt.json"
+  },
+  {
+    "id": "17877",
+    "cityName": "Aksaray",
+    "districtName": "Ortakoy",
+    "fileName": "17877_aksaray_ortakoy.json"
+  },
+  {
+    "id": "9197",
+    "cityName": "Aksaray",
+    "districtName": "Sariyahsi",
+    "fileName": "9197_aksaray_sariyahsi.json"
+  },
+  {
+    "id": "9198",
+    "cityName": "Amasya",
+    "districtName": null,
+    "fileName": "9198_amasya.json"
+  },
+  {
+    "id": "9199",
+    "cityName": "Amasya",
+    "districtName": "Goynucek",
+    "fileName": "9199_amasya_goynucek.json"
+  },
+  {
+    "id": "9200",
+    "cityName": "Amasya",
+    "districtName": "Gumushacikoy",
+    "fileName": "9200_amasya_gumushacikoy.json"
+  },
+  {
+    "id": "9201",
+    "cityName": "Amasya",
+    "districtName": "Hamamozu",
+    "fileName": "9201_amasya_hamamozu.json"
+  },
+  {
+    "id": "9202",
+    "cityName": "Amasya",
+    "districtName": "Merzifon",
+    "fileName": "9202_amasya_merzifon.json"
+  },
+  {
+    "id": "9203",
+    "cityName": "Amasya",
+    "districtName": "Suluova",
+    "fileName": "9203_amasya_suluova.json"
+  },
+  {
+    "id": "9204",
+    "cityName": "Amasya",
+    "districtName": "Tasova",
+    "fileName": "9204_amasya_tasova.json"
+  },
+  {
+    "id": "9206",
+    "cityName": "Ankara",
+    "districtName": null,
+    "fileName": "9206_ankara.json"
+  },
+  {
+    "id": "9205",
+    "cityName": "Ankara",
+    "districtName": "Akyurt",
+    "fileName": "9205_ankara_akyurt.json"
+  },
+  {
+    "id": "9207",
+    "cityName": "Ankara",
+    "districtName": "Ayas",
+    "fileName": "9207_ankara_ayas.json"
+  },
+  {
+    "id": "9208",
+    "cityName": "Ankara",
+    "districtName": "Bala",
+    "fileName": "9208_ankara_bala.json"
+  },
+  {
+    "id": "9209",
+    "cityName": "Ankara",
+    "districtName": "Beypazari",
+    "fileName": "9209_ankara_beypazari.json"
+  },
+  {
+    "id": "9210",
+    "cityName": "Ankara",
+    "districtName": "Camlidere",
+    "fileName": "9210_ankara_camlidere.json"
+  },
+  {
+    "id": "9211",
+    "cityName": "Ankara",
+    "districtName": "Cubuk",
+    "fileName": "9211_ankara_cubuk.json"
+  },
+  {
+    "id": "9212",
+    "cityName": "Ankara",
+    "districtName": "Elmadag",
+    "fileName": "9212_ankara_elmadag.json"
+  },
+  {
+    "id": "9213",
+    "cityName": "Ankara",
+    "districtName": "Evren",
+    "fileName": "9213_ankara_evren.json"
+  },
+  {
+    "id": "9214",
+    "cityName": "Ankara",
+    "districtName": "Gudul",
+    "fileName": "9214_ankara_gudul.json"
+  },
+  {
+    "id": "9215",
+    "cityName": "Ankara",
+    "districtName": "Haymana",
+    "fileName": "9215_ankara_haymana.json"
+  },
+  {
+    "id": "9217",
+    "cityName": "Ankara",
+    "districtName": "Kahramankazan",
+    "fileName": "9217_ankara_kahramankazan.json"
+  },
+  {
+    "id": "9216",
+    "cityName": "Ankara",
+    "districtName": "Kalecik",
+    "fileName": "9216_ankara_kalecik.json"
+  },
+  {
+    "id": "9218",
+    "cityName": "Ankara",
+    "districtName": "Kizilcahamam",
+    "fileName": "9218_ankara_kizilcahamam.json"
+  },
+  {
+    "id": "9219",
+    "cityName": "Ankara",
+    "districtName": "Nallihan",
+    "fileName": "9219_ankara_nallihan.json"
+  },
+  {
+    "id": "9220",
+    "cityName": "Ankara",
+    "districtName": "Polatli",
+    "fileName": "9220_ankara_polatli.json"
+  },
+  {
+    "id": "9221",
+    "cityName": "Ankara",
+    "districtName": "Sereflikochisar",
+    "fileName": "9221_ankara_sereflikochisar.json"
+  },
+  {
+    "id": "9225",
+    "cityName": "Antalya",
+    "districtName": null,
+    "fileName": "9225_antalya.json"
+  },
+  {
+    "id": "9222",
+    "cityName": "Antalya",
+    "districtName": "Akseki",
+    "fileName": "9222_antalya_akseki.json"
+  },
+  {
+    "id": "9223",
+    "cityName": "Antalya",
+    "districtName": "Aksu",
+    "fileName": "9223_antalya_aksu.json"
+  },
+  {
+    "id": "9224",
+    "cityName": "Antalya",
+    "districtName": "Alanya",
+    "fileName": "9224_antalya_alanya.json"
+  },
+  {
+    "id": "9226",
+    "cityName": "Antalya",
+    "districtName": "Demre",
+    "fileName": "9226_antalya_demre.json"
+  },
+  {
+    "id": "9227",
+    "cityName": "Antalya",
+    "districtName": "Elmali",
+    "fileName": "9227_antalya_elmali.json"
+  },
+  {
+    "id": "9228",
+    "cityName": "Antalya",
+    "districtName": "Finike",
+    "fileName": "9228_antalya_finike.json"
+  },
+  {
+    "id": "9229",
+    "cityName": "Antalya",
+    "districtName": "Gazipasa",
+    "fileName": "9229_antalya_gazipasa.json"
+  },
+  {
+    "id": "9230",
+    "cityName": "Antalya",
+    "districtName": "Gundogmus",
+    "fileName": "9230_antalya_gundogmus.json"
+  },
+  {
+    "id": "9231",
+    "cityName": "Antalya",
+    "districtName": "Ibradi",
+    "fileName": "9231_antalya_ibradi.json"
+  },
+  {
+    "id": "9232",
+    "cityName": "Antalya",
+    "districtName": "Kas",
+    "fileName": "9232_antalya_kas.json"
+  },
+  {
+    "id": "9233",
+    "cityName": "Antalya",
+    "districtName": "Kemer",
+    "fileName": "9233_antalya_kemer.json"
+  },
+  {
+    "id": "9234",
+    "cityName": "Antalya",
+    "districtName": "Korkuteli",
+    "fileName": "9234_antalya_korkuteli.json"
+  },
+  {
+    "id": "9235",
+    "cityName": "Antalya",
+    "districtName": "Kumluca",
+    "fileName": "9235_antalya_kumluca.json"
+  },
+  {
+    "id": "9236",
+    "cityName": "Antalya",
+    "districtName": "Manavgat",
+    "fileName": "9236_antalya_manavgat.json"
+  },
+  {
+    "id": "9237",
+    "cityName": "Antalya",
+    "districtName": "Serik",
+    "fileName": "9237_antalya_serik.json"
+  },
+  {
+    "id": "9238",
+    "cityName": "Ardahan",
+    "districtName": null,
+    "fileName": "9238_ardahan.json"
+  },
+  {
+    "id": "9239",
+    "cityName": "Ardahan",
+    "districtName": "Cildir",
+    "fileName": "9239_ardahan_cildir.json"
+  },
+  {
+    "id": "9240",
+    "cityName": "Ardahan",
+    "districtName": "Damal",
+    "fileName": "9240_ardahan_damal.json"
+  },
+  {
+    "id": "9241",
+    "cityName": "Ardahan",
+    "districtName": "Gole",
+    "fileName": "9241_ardahan_gole.json"
+  },
+  {
+    "id": "9242",
+    "cityName": "Ardahan",
+    "districtName": "Hanak",
+    "fileName": "9242_ardahan_hanak.json"
+  },
+  {
+    "id": "9243",
+    "cityName": "Ardahan",
+    "districtName": "Posof",
+    "fileName": "9243_ardahan_posof.json"
+  },
+  {
+    "id": "9246",
+    "cityName": "Artvin",
+    "districtName": null,
+    "fileName": "9246_artvin.json"
+  },
+  {
+    "id": "9244",
+    "cityName": "Artvin",
+    "districtName": "Ardanuc",
+    "fileName": "9244_artvin_ardanuc.json"
+  },
+  {
+    "id": "9245",
+    "cityName": "Artvin",
+    "districtName": "Arhavi",
+    "fileName": "9245_artvin_arhavi.json"
+  },
+  {
+    "id": "9247",
+    "cityName": "Artvin",
+    "districtName": "Borcka",
+    "fileName": "9247_artvin_borcka.json"
+  },
+  {
+    "id": "9248",
+    "cityName": "Artvin",
+    "districtName": "Hopa",
+    "fileName": "9248_artvin_hopa.json"
+  },
+  {
+    "id": "9249",
+    "cityName": "Artvin",
+    "districtName": "Murgul",
+    "fileName": "9249_artvin_murgul.json"
+  },
+  {
+    "id": "9250",
+    "cityName": "Artvin",
+    "districtName": "Savsat",
+    "fileName": "9250_artvin_savsat.json"
+  },
+  {
+    "id": "9251",
+    "cityName": "Artvin",
+    "districtName": "Yusufeli",
+    "fileName": "9251_artvin_yusufeli.json"
+  },
+  {
+    "id": "9252",
+    "cityName": "Aydin",
+    "districtName": null,
+    "fileName": "9252_aydin.json"
+  },
+  {
+    "id": "9253",
+    "cityName": "Aydin",
+    "districtName": "Bozdogan",
+    "fileName": "9253_aydin_bozdogan.json"
+  },
+  {
+    "id": "9254",
+    "cityName": "Aydin",
+    "districtName": "Buharkent",
+    "fileName": "9254_aydin_buharkent.json"
+  },
+  {
+    "id": "9255",
+    "cityName": "Aydin",
+    "districtName": "Cine",
+    "fileName": "9255_aydin_cine.json"
+  },
+  {
+    "id": "9256",
+    "cityName": "Aydin",
+    "districtName": "Didim",
+    "fileName": "9256_aydin_didim.json"
+  },
+  {
+    "id": "9257",
+    "cityName": "Aydin",
+    "districtName": "Germencik",
+    "fileName": "9257_aydin_germencik.json"
+  },
+  {
+    "id": "9258",
+    "cityName": "Aydin",
+    "districtName": "Incirliova",
+    "fileName": "9258_aydin_incirliova.json"
+  },
+  {
+    "id": "9259",
+    "cityName": "Aydin",
+    "districtName": "Karacasu",
+    "fileName": "9259_aydin_karacasu.json"
+  },
+  {
+    "id": "9260",
+    "cityName": "Aydin",
+    "districtName": "Karpuzlu",
+    "fileName": "9260_aydin_karpuzlu.json"
+  },
+  {
+    "id": "9261",
+    "cityName": "Aydin",
+    "districtName": "Kocarli",
+    "fileName": "9261_aydin_kocarli.json"
+  },
+  {
+    "id": "9262",
+    "cityName": "Aydin",
+    "districtName": "Kosk",
+    "fileName": "9262_aydin_kosk.json"
+  },
+  {
+    "id": "9263",
+    "cityName": "Aydin",
+    "districtName": "Kusadasi",
+    "fileName": "9263_aydin_kusadasi.json"
+  },
+  {
+    "id": "9264",
+    "cityName": "Aydin",
+    "districtName": "Kuyucak",
+    "fileName": "9264_aydin_kuyucak.json"
+  },
+  {
+    "id": "9265",
+    "cityName": "Aydin",
+    "districtName": "Nazilli",
+    "fileName": "9265_aydin_nazilli.json"
+  },
+  {
+    "id": "9266",
+    "cityName": "Aydin",
+    "districtName": "Soke",
+    "fileName": "9266_aydin_soke.json"
+  },
+  {
+    "id": "9267",
+    "cityName": "Aydin",
+    "districtName": "Sultanhisar",
+    "fileName": "9267_aydin_sultanhisar.json"
+  },
+  {
+    "id": "9268",
+    "cityName": "Aydin",
+    "districtName": "Yenipazar-a",
+    "fileName": "9268_aydin_yenipazar-a.json"
+  },
+  {
+    "id": "9270",
+    "cityName": "Balikesir",
+    "districtName": null,
+    "fileName": "9270_balikesir.json"
+  },
+  {
+    "id": "9269",
+    "cityName": "Balikesir",
+    "districtName": "Ayvalik",
+    "fileName": "9269_balikesir_ayvalik.json"
+  },
+  {
+    "id": "9271",
+    "cityName": "Balikesir",
+    "districtName": "Balya",
+    "fileName": "9271_balikesir_balya.json"
+  },
+  {
+    "id": "17917",
+    "cityName": "Balikesir",
+    "districtName": "Bandirma",
+    "fileName": "17917_balikesir_bandirma.json"
+  },
+  {
+    "id": "9272",
+    "cityName": "Balikesir",
+    "districtName": "Bigadic",
+    "fileName": "9272_balikesir_bigadic.json"
+  },
+  {
+    "id": "9273",
+    "cityName": "Balikesir",
+    "districtName": "Burhaniye",
+    "fileName": "9273_balikesir_burhaniye.json"
+  },
+  {
+    "id": "9274",
+    "cityName": "Balikesir",
+    "districtName": "Dursunbey",
+    "fileName": "9274_balikesir_dursunbey.json"
+  },
+  {
+    "id": "9275",
+    "cityName": "Balikesir",
+    "districtName": "Edremit",
+    "fileName": "9275_balikesir_edremit.json"
+  },
+  {
+    "id": "17881",
+    "cityName": "Balikesir",
+    "districtName": "Erdek",
+    "fileName": "17881_balikesir_erdek.json"
+  },
+  {
+    "id": "9276",
+    "cityName": "Balikesir",
+    "districtName": "Gomec",
+    "fileName": "9276_balikesir_gomec.json"
+  },
+  {
+    "id": "9277",
+    "cityName": "Balikesir",
+    "districtName": "Gonen",
+    "fileName": "9277_balikesir_gonen.json"
+  },
+  {
+    "id": "9278",
+    "cityName": "Balikesir",
+    "districtName": "Havran",
+    "fileName": "9278_balikesir_havran.json"
+  },
+  {
+    "id": "9279",
+    "cityName": "Balikesir",
+    "districtName": "Ivrindi",
+    "fileName": "9279_balikesir_ivrindi.json"
+  },
+  {
+    "id": "9280",
+    "cityName": "Balikesir",
+    "districtName": "Kepsut",
+    "fileName": "9280_balikesir_kepsut.json"
+  },
+  {
+    "id": "17918",
+    "cityName": "Balikesir",
+    "districtName": "Manyas",
+    "fileName": "17918_balikesir_manyas.json"
+  },
+  {
+    "id": "9281",
+    "cityName": "Balikesir",
+    "districtName": "Marmara",
+    "fileName": "9281_balikesir_marmara.json"
+  },
+  {
+    "id": "9282",
+    "cityName": "Balikesir",
+    "districtName": "Savastepe",
+    "fileName": "9282_balikesir_savastepe.json"
+  },
+  {
+    "id": "9283",
+    "cityName": "Balikesir",
+    "districtName": "Sindirgi",
+    "fileName": "9283_balikesir_sindirgi.json"
+  },
+  {
+    "id": "9284",
+    "cityName": "Balikesir",
+    "districtName": "Susurluk",
+    "fileName": "9284_balikesir_susurluk.json"
+  },
+  {
+    "id": "9285",
+    "cityName": "Bartin",
+    "districtName": null,
+    "fileName": "9285_bartin.json"
+  },
+  {
+    "id": "9286",
+    "cityName": "Bartin",
+    "districtName": "Kurucasile",
+    "fileName": "9286_bartin_kurucasile.json"
+  },
+  {
+    "id": "9287",
+    "cityName": "Bartin",
+    "districtName": "Ulus",
+    "fileName": "9287_bartin_ulus.json"
+  },
+  {
+    "id": "9288",
+    "cityName": "Batman",
+    "districtName": null,
+    "fileName": "9288_batman.json"
+  },
+  {
+    "id": "9289",
+    "cityName": "Batman",
+    "districtName": "Besiri",
+    "fileName": "9289_batman_besiri.json"
+  },
+  {
+    "id": "9290",
+    "cityName": "Batman",
+    "districtName": "Gercus",
+    "fileName": "9290_batman_gercus.json"
+  },
+  {
+    "id": "9291",
+    "cityName": "Batman",
+    "districtName": "Hasankeyf",
+    "fileName": "9291_batman_hasankeyf.json"
+  },
+  {
+    "id": "9292",
+    "cityName": "Batman",
+    "districtName": "Kozluk",
+    "fileName": "9292_batman_kozluk.json"
+  },
+  {
+    "id": "9293",
+    "cityName": "Batman",
+    "districtName": "Sason",
+    "fileName": "9293_batman_sason.json"
+  },
+  {
+    "id": "9295",
+    "cityName": "Bayburt",
+    "districtName": null,
+    "fileName": "9295_bayburt.json"
+  },
+  {
+    "id": "9294",
+    "cityName": "Bayburt",
+    "districtName": "Aydintepe",
+    "fileName": "9294_bayburt_aydintepe.json"
+  },
+  {
+    "id": "9296",
+    "cityName": "Bayburt",
+    "districtName": "Demirozu",
+    "fileName": "9296_bayburt_demirozu.json"
+  },
+  {
+    "id": "9297",
+    "cityName": "Bilecik",
+    "districtName": null,
+    "fileName": "9297_bilecik.json"
+  },
+  {
+    "id": "9298",
+    "cityName": "Bilecik",
+    "districtName": "Bozuyuk",
+    "fileName": "9298_bilecik_bozuyuk.json"
+  },
+  {
+    "id": "9299",
+    "cityName": "Bilecik",
+    "districtName": "Golpazari",
+    "fileName": "9299_bilecik_golpazari.json"
+  },
+  {
+    "id": "9300",
+    "cityName": "Bilecik",
+    "districtName": "Inhisar",
+    "fileName": "9300_bilecik_inhisar.json"
+  },
+  {
+    "id": "17895",
+    "cityName": "Bilecik",
+    "districtName": "Osmaneli",
+    "fileName": "17895_bilecik_osmaneli.json"
+  },
+  {
+    "id": "17896",
+    "cityName": "Bilecik",
+    "districtName": "Pazaryeri",
+    "fileName": "17896_bilecik_pazaryeri.json"
+  },
+  {
+    "id": "9301",
+    "cityName": "Bilecik",
+    "districtName": "Sogut",
+    "fileName": "9301_bilecik_sogut.json"
+  },
+  {
+    "id": "9302",
+    "cityName": "Bilecik",
+    "districtName": "Yenipazar",
+    "fileName": "9302_bilecik_yenipazar.json"
+  },
+  {
+    "id": "9303",
+    "cityName": "Bingol",
+    "districtName": null,
+    "fileName": "9303_bingol.json"
+  },
+  {
+    "id": "17889",
+    "cityName": "Bingol",
+    "districtName": "Adakli",
+    "fileName": "17889_bingol_adakli.json"
+  },
+  {
+    "id": "9304",
+    "cityName": "Bingol",
+    "districtName": "Karliova",
+    "fileName": "9304_bingol_karliova.json"
+  },
+  {
+    "id": "9305",
+    "cityName": "Bingol",
+    "districtName": "Kigi",
+    "fileName": "9305_bingol_kigi.json"
+  },
+  {
+    "id": "9306",
+    "cityName": "Bingol",
+    "districtName": "Solhan",
+    "fileName": "9306_bingol_solhan.json"
+  },
+  {
+    "id": "9307",
+    "cityName": "Bingol",
+    "districtName": "Yayladere",
+    "fileName": "9307_bingol_yayladere.json"
+  },
+  {
+    "id": "9308",
+    "cityName": "Bingol",
+    "districtName": "Yedisu",
+    "fileName": "9308_bingol_yedisu.json"
+  },
+  {
+    "id": "9311",
+    "cityName": "Bitlis",
+    "districtName": null,
+    "fileName": "9311_bitlis.json"
+  },
+  {
+    "id": "9309",
+    "cityName": "Bitlis",
+    "districtName": "Adilcevaz",
+    "fileName": "9309_bitlis_adilcevaz.json"
+  },
+  {
+    "id": "9310",
+    "cityName": "Bitlis",
+    "districtName": "Ahlat",
+    "fileName": "9310_bitlis_ahlat.json"
+  },
+  {
+    "id": "17887",
+    "cityName": "Bitlis",
+    "districtName": "Guroymak",
+    "fileName": "17887_bitlis_guroymak.json"
+  },
+  {
+    "id": "9312",
+    "cityName": "Bitlis",
+    "districtName": "Hizan",
+    "fileName": "9312_bitlis_hizan.json"
+  },
+  {
+    "id": "9313",
+    "cityName": "Bitlis",
+    "districtName": "Mutki",
+    "fileName": "9313_bitlis_mutki.json"
+  },
+  {
+    "id": "9314",
+    "cityName": "Bitlis",
+    "districtName": "Tatvan",
+    "fileName": "9314_bitlis_tatvan.json"
+  },
+  {
+    "id": "9315",
+    "cityName": "Bolu",
+    "districtName": null,
+    "fileName": "9315_bolu.json"
+  },
+  {
+    "id": "9316",
+    "cityName": "Bolu",
+    "districtName": "Dortdivan",
+    "fileName": "9316_bolu_dortdivan.json"
+  },
+  {
+    "id": "9317",
+    "cityName": "Bolu",
+    "districtName": "Gerede",
+    "fileName": "9317_bolu_gerede.json"
+  },
+  {
+    "id": "9318",
+    "cityName": "Bolu",
+    "districtName": "Goynuk",
+    "fileName": "9318_bolu_goynuk.json"
+  },
+  {
+    "id": "9319",
+    "cityName": "Bolu",
+    "districtName": "Kibriscik",
+    "fileName": "9319_bolu_kibriscik.json"
+  },
+  {
+    "id": "9320",
+    "cityName": "Bolu",
+    "districtName": "Mengen",
+    "fileName": "9320_bolu_mengen.json"
+  },
+  {
+    "id": "9321",
+    "cityName": "Bolu",
+    "districtName": "Mudurnu",
+    "fileName": "9321_bolu_mudurnu.json"
+  },
+  {
+    "id": "9322",
+    "cityName": "Bolu",
+    "districtName": "Seben",
+    "fileName": "9322_bolu_seben.json"
+  },
+  {
+    "id": "9323",
+    "cityName": "Bolu",
+    "districtName": "Yenicaga",
+    "fileName": "9323_bolu_yenicaga.json"
+  },
+  {
+    "id": "9327",
+    "cityName": "Burdur",
+    "districtName": null,
+    "fileName": "9327_burdur.json"
+  },
+  {
+    "id": "9324",
+    "cityName": "Burdur",
+    "districtName": "Aglasun",
+    "fileName": "9324_burdur_aglasun.json"
+  },
+  {
+    "id": "9325",
+    "cityName": "Burdur",
+    "districtName": "Altinyayla",
+    "fileName": "9325_burdur_altinyayla.json"
+  },
+  {
+    "id": "9326",
+    "cityName": "Burdur",
+    "districtName": "Bucak",
+    "fileName": "9326_burdur_bucak.json"
+  },
+  {
+    "id": "9328",
+    "cityName": "Burdur",
+    "districtName": "Cavdir",
+    "fileName": "9328_burdur_cavdir.json"
+  },
+  {
+    "id": "9329",
+    "cityName": "Burdur",
+    "districtName": "Celtikci",
+    "fileName": "9329_burdur_celtikci.json"
+  },
+  {
+    "id": "9330",
+    "cityName": "Burdur",
+    "districtName": "Golhisar",
+    "fileName": "9330_burdur_golhisar.json"
+  },
+  {
+    "id": "9331",
+    "cityName": "Burdur",
+    "districtName": "Karamanli",
+    "fileName": "9331_burdur_karamanli.json"
+  },
+  {
+    "id": "9332",
+    "cityName": "Burdur",
+    "districtName": "Kemer-b",
+    "fileName": "9332_burdur_kemer-b.json"
+  },
+  {
+    "id": "9333",
+    "cityName": "Burdur",
+    "districtName": "Tefenni",
+    "fileName": "9333_burdur_tefenni.json"
+  },
+  {
+    "id": "9334",
+    "cityName": "Burdur",
+    "districtName": "Yesilova",
+    "fileName": "9334_burdur_yesilova.json"
+  },
+  {
+    "id": "9335",
+    "cityName": "Bursa",
+    "districtName": null,
+    "fileName": "9335_bursa.json"
+  },
+  {
+    "id": "9336",
+    "cityName": "Bursa",
+    "districtName": "Buyuk-orhan",
+    "fileName": "9336_bursa_buyuk-orhan.json"
+  },
+  {
+    "id": "9337",
+    "cityName": "Bursa",
+    "districtName": "Gemlik",
+    "fileName": "9337_bursa_gemlik.json"
+  },
+  {
+    "id": "9338",
+    "cityName": "Bursa",
+    "districtName": "Harmancik",
+    "fileName": "9338_bursa_harmancik.json"
+  },
+  {
+    "id": "9339",
+    "cityName": "Bursa",
+    "districtName": "Inegol",
+    "fileName": "9339_bursa_inegol.json"
+  },
+  {
+    "id": "9340",
+    "cityName": "Bursa",
+    "districtName": "Iznik",
+    "fileName": "9340_bursa_iznik.json"
+  },
+  {
+    "id": "9341",
+    "cityName": "Bursa",
+    "districtName": "Karacabey",
+    "fileName": "9341_bursa_karacabey.json"
+  },
+  {
+    "id": "9342",
+    "cityName": "Bursa",
+    "districtName": "Keles",
+    "fileName": "9342_bursa_keles.json"
+  },
+  {
+    "id": "17893",
+    "cityName": "Bursa",
+    "districtName": "Kestel",
+    "fileName": "17893_bursa_kestel.json"
+  },
+  {
+    "id": "9343",
+    "cityName": "Bursa",
+    "districtName": "Mudanya",
+    "fileName": "9343_bursa_mudanya.json"
+  },
+  {
+    "id": "9344",
+    "cityName": "Bursa",
+    "districtName": "Mustafa-kemalpasa",
+    "fileName": "9344_bursa_mustafa-kemalpasa.json"
+  },
+  {
+    "id": "17894",
+    "cityName": "Bursa",
+    "districtName": "Orhaneli",
+    "fileName": "17894_bursa_orhaneli.json"
+  },
+  {
+    "id": "9345",
+    "cityName": "Bursa",
+    "districtName": "Orhangazi",
+    "fileName": "9345_bursa_orhangazi.json"
+  },
+  {
+    "id": "9346",
+    "cityName": "Bursa",
+    "districtName": "Yenisehir",
+    "fileName": "9346_bursa_yenisehir.json"
+  },
+  {
+    "id": "9352",
+    "cityName": "Canakkale",
+    "districtName": null,
+    "fileName": "9352_canakkale.json"
+  },
+  {
+    "id": "9347",
+    "cityName": "Canakkale",
+    "districtName": "Ayvacik",
+    "fileName": "9347_canakkale_ayvacik.json"
+  },
+  {
+    "id": "9348",
+    "cityName": "Canakkale",
+    "districtName": "Bayramic",
+    "fileName": "9348_canakkale_bayramic.json"
+  },
+  {
+    "id": "9349",
+    "cityName": "Canakkale",
+    "districtName": "Biga",
+    "fileName": "9349_canakkale_biga.json"
+  },
+  {
+    "id": "9350",
+    "cityName": "Canakkale",
+    "districtName": "Bozcaada",
+    "fileName": "9350_canakkale_bozcaada.json"
+  },
+  {
+    "id": "9351",
+    "cityName": "Canakkale",
+    "districtName": "Can",
+    "fileName": "9351_canakkale_can.json"
+  },
+  {
+    "id": "17882",
+    "cityName": "Canakkale",
+    "districtName": "Ezine",
+    "fileName": "17882_canakkale_ezine.json"
+  },
+  {
+    "id": "9353",
+    "cityName": "Canakkale",
+    "districtName": "Gelibolu",
+    "fileName": "9353_canakkale_gelibolu.json"
+  },
+  {
+    "id": "9354",
+    "cityName": "Canakkale",
+    "districtName": "Gokceada",
+    "fileName": "9354_canakkale_gokceada.json"
+  },
+  {
+    "id": "9355",
+    "cityName": "Canakkale",
+    "districtName": "Lapseki",
+    "fileName": "9355_canakkale_lapseki.json"
+  },
+  {
+    "id": "9356",
+    "cityName": "Canakkale",
+    "districtName": "Yenice",
+    "fileName": "9356_canakkale_yenice.json"
+  },
+  {
+    "id": "9359",
+    "cityName": "Cankiri",
+    "districtName": null,
+    "fileName": "9359_cankiri.json"
+  },
+  {
+    "id": "9357",
+    "cityName": "Cankiri",
+    "districtName": "Atkaracalar",
+    "fileName": "9357_cankiri_atkaracalar.json"
+  },
+  {
+    "id": "9358",
+    "cityName": "Cankiri",
+    "districtName": "Bayramoren",
+    "fileName": "9358_cankiri_bayramoren.json"
+  },
+  {
+    "id": "9360",
+    "cityName": "Cankiri",
+    "districtName": "Cerkes",
+    "fileName": "9360_cankiri_cerkes.json"
+  },
+  {
+    "id": "9361",
+    "cityName": "Cankiri",
+    "districtName": "Ilgaz",
+    "fileName": "9361_cankiri_ilgaz.json"
+  },
+  {
+    "id": "9362",
+    "cityName": "Cankiri",
+    "districtName": "Kizilirmak",
+    "fileName": "9362_cankiri_kizilirmak.json"
+  },
+  {
+    "id": "9363",
+    "cityName": "Cankiri",
+    "districtName": "Kursunlu",
+    "fileName": "9363_cankiri_kursunlu.json"
+  },
+  {
+    "id": "9364",
+    "cityName": "Cankiri",
+    "districtName": "Orta",
+    "fileName": "9364_cankiri_orta.json"
+  },
+  {
+    "id": "9365",
+    "cityName": "Cankiri",
+    "districtName": "Sabanozu",
+    "fileName": "9365_cankiri_sabanozu.json"
+  },
+  {
+    "id": "9366",
+    "cityName": "Cankiri",
+    "districtName": "Yaprakli",
+    "fileName": "9366_cankiri_yaprakli.json"
+  },
+  {
+    "id": "9370",
+    "cityName": "Corum",
+    "districtName": null,
+    "fileName": "9370_corum.json"
+  },
+  {
+    "id": "9367",
+    "cityName": "Corum",
+    "districtName": "Alaca",
+    "fileName": "9367_corum_alaca.json"
+  },
+  {
+    "id": "9368",
+    "cityName": "Corum",
+    "districtName": "Bayat",
+    "fileName": "9368_corum_bayat.json"
+  },
+  {
+    "id": "9369",
+    "cityName": "Corum",
+    "districtName": "Bogazkale",
+    "fileName": "9369_corum_bogazkale.json"
+  },
+  {
+    "id": "9371",
+    "cityName": "Corum",
+    "districtName": "Dodurga",
+    "fileName": "9371_corum_dodurga.json"
+  },
+  {
+    "id": "9372",
+    "cityName": "Corum",
+    "districtName": "Iskilip",
+    "fileName": "9372_corum_iskilip.json"
+  },
+  {
+    "id": "9373",
+    "cityName": "Corum",
+    "districtName": "Kargi",
+    "fileName": "9373_corum_kargi.json"
+  },
+  {
+    "id": "9374",
+    "cityName": "Corum",
+    "districtName": "Lacin",
+    "fileName": "9374_corum_lacin.json"
+  },
+  {
+    "id": "9375",
+    "cityName": "Corum",
+    "districtName": "Mecitozu",
+    "fileName": "9375_corum_mecitozu.json"
+  },
+  {
+    "id": "9376",
+    "cityName": "Corum",
+    "districtName": "Oguzlar",
+    "fileName": "9376_corum_oguzlar.json"
+  },
+  {
+    "id": "9377",
+    "cityName": "Corum",
+    "districtName": "Ortakoy",
+    "fileName": "9377_corum_ortakoy.json"
+  },
+  {
+    "id": "9378",
+    "cityName": "Corum",
+    "districtName": "Osmancik",
+    "fileName": "9378_corum_osmancik.json"
+  },
+  {
+    "id": "9379",
+    "cityName": "Corum",
+    "districtName": "Sungurlu",
+    "fileName": "9379_corum_sungurlu.json"
+  },
+  {
+    "id": "9380",
+    "cityName": "Corum",
+    "districtName": "Ugurludag",
+    "fileName": "9380_corum_ugurludag.json"
+  },
+  {
+    "id": "9392",
+    "cityName": "Denizli",
+    "districtName": null,
+    "fileName": "9392_denizli.json"
+  },
+  {
+    "id": "9381",
+    "cityName": "Denizli",
+    "districtName": "Acipayam",
+    "fileName": "9381_denizli_acipayam.json"
+  },
+  {
+    "id": "9382",
+    "cityName": "Denizli",
+    "districtName": "Babadag",
+    "fileName": "9382_denizli_babadag.json"
+  },
+  {
+    "id": "9383",
+    "cityName": "Denizli",
+    "districtName": "Baklan",
+    "fileName": "9383_denizli_baklan.json"
+  },
+  {
+    "id": "9384",
+    "cityName": "Denizli",
+    "districtName": "Bekilli",
+    "fileName": "9384_denizli_bekilli.json"
+  },
+  {
+    "id": "9385",
+    "cityName": "Denizli",
+    "districtName": "Beyagac",
+    "fileName": "9385_denizli_beyagac.json"
+  },
+  {
+    "id": "9386",
+    "cityName": "Denizli",
+    "districtName": "Bozkurt",
+    "fileName": "9386_denizli_bozkurt.json"
+  },
+  {
+    "id": "9387",
+    "cityName": "Denizli",
+    "districtName": "Buldan",
+    "fileName": "9387_denizli_buldan.json"
+  },
+  {
+    "id": "9388",
+    "cityName": "Denizli",
+    "districtName": "Cal",
+    "fileName": "9388_denizli_cal.json"
+  },
+  {
+    "id": "9389",
+    "cityName": "Denizli",
+    "districtName": "Cameli",
+    "fileName": "9389_denizli_cameli.json"
+  },
+  {
+    "id": "9390",
+    "cityName": "Denizli",
+    "districtName": "Cardak",
+    "fileName": "9390_denizli_cardak.json"
+  },
+  {
+    "id": "9391",
+    "cityName": "Denizli",
+    "districtName": "Civril",
+    "fileName": "9391_denizli_civril.json"
+  },
+  {
+    "id": "9393",
+    "cityName": "Denizli",
+    "districtName": "Honaz",
+    "fileName": "9393_denizli_honaz.json"
+  },
+  {
+    "id": "17899",
+    "cityName": "Denizli",
+    "districtName": "Kale",
+    "fileName": "17899_denizli_kale.json"
+  },
+  {
+    "id": "9395",
+    "cityName": "Denizli",
+    "districtName": "Saraykoy",
+    "fileName": "9395_denizli_saraykoy.json"
+  },
+  {
+    "id": "9396",
+    "cityName": "Denizli",
+    "districtName": "Serinhisar",
+    "fileName": "9396_denizli_serinhisar.json"
+  },
+  {
+    "id": "17900",
+    "cityName": "Denizli",
+    "districtName": "Tavas",
+    "fileName": "17900_denizli_tavas.json"
+  },
+  {
+    "id": "9402",
+    "cityName": "Diyarbakir",
+    "districtName": null,
+    "fileName": "9402_diyarbakir.json"
+  },
+  {
+    "id": "9397",
+    "cityName": "Diyarbakir",
+    "districtName": "Bismil",
+    "fileName": "9397_diyarbakir_bismil.json"
+  },
+  {
+    "id": "9398",
+    "cityName": "Diyarbakir",
+    "districtName": "Cermik",
+    "fileName": "9398_diyarbakir_cermik.json"
+  },
+  {
+    "id": "9399",
+    "cityName": "Diyarbakir",
+    "districtName": "Cinar",
+    "fileName": "9399_diyarbakir_cinar.json"
+  },
+  {
+    "id": "9400",
+    "cityName": "Diyarbakir",
+    "districtName": "Cungus",
+    "fileName": "9400_diyarbakir_cungus.json"
+  },
+  {
+    "id": "9401",
+    "cityName": "Diyarbakir",
+    "districtName": "Dicle",
+    "fileName": "9401_diyarbakir_dicle.json"
+  },
+  {
+    "id": "9403",
+    "cityName": "Diyarbakir",
+    "districtName": "Egil",
+    "fileName": "9403_diyarbakir_egil.json"
+  },
+  {
+    "id": "9404",
+    "cityName": "Diyarbakir",
+    "districtName": "Ergani",
+    "fileName": "9404_diyarbakir_ergani.json"
+  },
+  {
+    "id": "9405",
+    "cityName": "Diyarbakir",
+    "districtName": "Hani",
+    "fileName": "9405_diyarbakir_hani.json"
+  },
+  {
+    "id": "9406",
+    "cityName": "Diyarbakir",
+    "districtName": "Hazro",
+    "fileName": "9406_diyarbakir_hazro.json"
+  },
+  {
+    "id": "9407",
+    "cityName": "Diyarbakir",
+    "districtName": "Kocakoy",
+    "fileName": "9407_diyarbakir_kocakoy.json"
+  },
+  {
+    "id": "9408",
+    "cityName": "Diyarbakir",
+    "districtName": "Kulp",
+    "fileName": "9408_diyarbakir_kulp.json"
+  },
+  {
+    "id": "9409",
+    "cityName": "Diyarbakir",
+    "districtName": "Lice",
+    "fileName": "9409_diyarbakir_lice.json"
+  },
+  {
+    "id": "9410",
+    "cityName": "Diyarbakir",
+    "districtName": "Silvan",
+    "fileName": "9410_diyarbakir_silvan.json"
+  },
+  {
+    "id": "9414",
+    "cityName": "Duzce",
+    "districtName": null,
+    "fileName": "9414_duzce.json"
+  },
+  {
+    "id": "9411",
+    "cityName": "Duzce",
+    "districtName": "Akcakoca",
+    "fileName": "9411_duzce_akcakoca.json"
+  },
+  {
+    "id": "9412",
+    "cityName": "Duzce",
+    "districtName": "Cilimli",
+    "fileName": "9412_duzce_cilimli.json"
+  },
+  {
+    "id": "9413",
+    "cityName": "Duzce",
+    "districtName": "Cumayeri",
+    "fileName": "9413_duzce_cumayeri.json"
+  },
+  {
+    "id": "9415",
+    "cityName": "Duzce",
+    "districtName": "Golyaka",
+    "fileName": "9415_duzce_golyaka.json"
+  },
+  {
+    "id": "9416",
+    "cityName": "Duzce",
+    "districtName": "Gumusova",
+    "fileName": "9416_duzce_gumusova.json"
+  },
+  {
+    "id": "9417",
+    "cityName": "Duzce",
+    "districtName": "Kaynasli",
+    "fileName": "9417_duzce_kaynasli.json"
+  },
+  {
+    "id": "9418",
+    "cityName": "Duzce",
+    "districtName": "Yigilca",
+    "fileName": "9418_duzce_yigilca.json"
+  },
+  {
+    "id": "9419",
+    "cityName": "Edirne",
+    "districtName": null,
+    "fileName": "9419_edirne.json"
+  },
+  {
+    "id": "9420",
+    "cityName": "Edirne",
+    "districtName": "Enez",
+    "fileName": "9420_edirne_enez.json"
+  },
+  {
+    "id": "9421",
+    "cityName": "Edirne",
+    "districtName": "Havsa",
+    "fileName": "9421_edirne_havsa.json"
+  },
+  {
+    "id": "9422",
+    "cityName": "Edirne",
+    "districtName": "Ipsala",
+    "fileName": "9422_edirne_ipsala.json"
+  },
+  {
+    "id": "9423",
+    "cityName": "Edirne",
+    "districtName": "Kesan",
+    "fileName": "9423_edirne_kesan.json"
+  },
+  {
+    "id": "9424",
+    "cityName": "Edirne",
+    "districtName": "Lalapasa",
+    "fileName": "9424_edirne_lalapasa.json"
+  },
+  {
+    "id": "9425",
+    "cityName": "Edirne",
+    "districtName": "Meric",
+    "fileName": "9425_edirne_meric.json"
+  },
+  {
+    "id": "9426",
+    "cityName": "Edirne",
+    "districtName": "Suloglu",
+    "fileName": "9426_edirne_suloglu.json"
+  },
+  {
+    "id": "9427",
+    "cityName": "Edirne",
+    "districtName": "Uzunkopru",
+    "fileName": "9427_edirne_uzunkopru.json"
+  },
+  {
+    "id": "9432",
+    "cityName": "Elazig",
+    "districtName": null,
+    "fileName": "9432_elazig.json"
+  },
+  {
+    "id": "9428",
+    "cityName": "Elazig",
+    "districtName": "Agin",
+    "fileName": "9428_elazig_agin.json"
+  },
+  {
+    "id": "9429",
+    "cityName": "Elazig",
+    "districtName": "Alacakaya",
+    "fileName": "9429_elazig_alacakaya.json"
+  },
+  {
+    "id": "9430",
+    "cityName": "Elazig",
+    "districtName": "Aricak",
+    "fileName": "9430_elazig_aricak.json"
+  },
+  {
+    "id": "9431",
+    "cityName": "Elazig",
+    "districtName": "Baskil",
+    "fileName": "9431_elazig_baskil.json"
+  },
+  {
+    "id": "9433",
+    "cityName": "Elazig",
+    "districtName": "Karakocan",
+    "fileName": "9433_elazig_karakocan.json"
+  },
+  {
+    "id": "9434",
+    "cityName": "Elazig",
+    "districtName": "Keban",
+    "fileName": "9434_elazig_keban.json"
+  },
+  {
+    "id": "9435",
+    "cityName": "Elazig",
+    "districtName": "Kovancilar",
+    "fileName": "9435_elazig_kovancilar.json"
+  },
+  {
+    "id": "9436",
+    "cityName": "Elazig",
+    "districtName": "Maden",
+    "fileName": "9436_elazig_maden.json"
+  },
+  {
+    "id": "9437",
+    "cityName": "Elazig",
+    "districtName": "Palu",
+    "fileName": "9437_elazig_palu.json"
+  },
+  {
+    "id": "9438",
+    "cityName": "Elazig",
+    "districtName": "Sivrice",
+    "fileName": "9438_elazig_sivrice.json"
+  },
+  {
+    "id": "9440",
+    "cityName": "Erzincan",
+    "districtName": null,
+    "fileName": "9440_erzincan.json"
+  },
+  {
+    "id": "9439",
+    "cityName": "Erzincan",
+    "districtName": "Cayirli",
+    "fileName": "9439_erzincan_cayirli.json"
+  },
+  {
+    "id": "9441",
+    "cityName": "Erzincan",
+    "districtName": "Ilic",
+    "fileName": "9441_erzincan_ilic.json"
+  },
+  {
+    "id": "9442",
+    "cityName": "Erzincan",
+    "districtName": "Kemah",
+    "fileName": "9442_erzincan_kemah.json"
+  },
+  {
+    "id": "9443",
+    "cityName": "Erzincan",
+    "districtName": "Kemaliye",
+    "fileName": "9443_erzincan_kemaliye.json"
+  },
+  {
+    "id": "9444",
+    "cityName": "Erzincan",
+    "districtName": "Otlukbeli",
+    "fileName": "9444_erzincan_otlukbeli.json"
+  },
+  {
+    "id": "9445",
+    "cityName": "Erzincan",
+    "districtName": "Refahiye",
+    "fileName": "9445_erzincan_refahiye.json"
+  },
+  {
+    "id": "9446",
+    "cityName": "Erzincan",
+    "districtName": "Tercan",
+    "fileName": "9446_erzincan_tercan.json"
+  },
+  {
+    "id": "9447",
+    "cityName": "Erzincan",
+    "districtName": "Uzumlu",
+    "fileName": "9447_erzincan_uzumlu.json"
+  },
+  {
+    "id": "9451",
+    "cityName": "Erzurum",
+    "districtName": null,
+    "fileName": "9451_erzurum.json"
+  },
+  {
+    "id": "9448",
+    "cityName": "Erzurum",
+    "districtName": "Askale",
+    "fileName": "9448_erzurum_askale.json"
+  },
+  {
+    "id": "9449",
+    "cityName": "Erzurum",
+    "districtName": "Aziziye",
+    "fileName": "9449_erzurum_aziziye.json"
+  },
+  {
+    "id": "9450",
+    "cityName": "Erzurum",
+    "districtName": "Cat",
+    "fileName": "9450_erzurum_cat.json"
+  },
+  {
+    "id": "9452",
+    "cityName": "Erzurum",
+    "districtName": "Hinis",
+    "fileName": "9452_erzurum_hinis.json"
+  },
+  {
+    "id": "9453",
+    "cityName": "Erzurum",
+    "districtName": "Horasan",
+    "fileName": "9453_erzurum_horasan.json"
+  },
+  {
+    "id": "9454",
+    "cityName": "Erzurum",
+    "districtName": "Ispir",
+    "fileName": "9454_erzurum_ispir.json"
+  },
+  {
+    "id": "9455",
+    "cityName": "Erzurum",
+    "districtName": "Karacoban",
+    "fileName": "9455_erzurum_karacoban.json"
+  },
+  {
+    "id": "9456",
+    "cityName": "Erzurum",
+    "districtName": "Karayazi",
+    "fileName": "9456_erzurum_karayazi.json"
+  },
+  {
+    "id": "9457",
+    "cityName": "Erzurum",
+    "districtName": "Koprukoy",
+    "fileName": "9457_erzurum_koprukoy.json"
+  },
+  {
+    "id": "9458",
+    "cityName": "Erzurum",
+    "districtName": "Narman",
+    "fileName": "9458_erzurum_narman.json"
+  },
+  {
+    "id": "9459",
+    "cityName": "Erzurum",
+    "districtName": "Oltu",
+    "fileName": "9459_erzurum_oltu.json"
+  },
+  {
+    "id": "9460",
+    "cityName": "Erzurum",
+    "districtName": "Olur",
+    "fileName": "9460_erzurum_olur.json"
+  },
+  {
+    "id": "9461",
+    "cityName": "Erzurum",
+    "districtName": "Pasinler",
+    "fileName": "9461_erzurum_pasinler.json"
+  },
+  {
+    "id": "9462",
+    "cityName": "Erzurum",
+    "districtName": "Pazaryolu",
+    "fileName": "9462_erzurum_pazaryolu.json"
+  },
+  {
+    "id": "9463",
+    "cityName": "Erzurum",
+    "districtName": "Senkaya",
+    "fileName": "9463_erzurum_senkaya.json"
+  },
+  {
+    "id": "9464",
+    "cityName": "Erzurum",
+    "districtName": "Tekman",
+    "fileName": "9464_erzurum_tekman.json"
+  },
+  {
+    "id": "9465",
+    "cityName": "Erzurum",
+    "districtName": "Tortum",
+    "fileName": "9465_erzurum_tortum.json"
+  },
+  {
+    "id": "9466",
+    "cityName": "Erzurum",
+    "districtName": "Uzundere",
+    "fileName": "9466_erzurum_uzundere.json"
+  },
+  {
+    "id": "9470",
+    "cityName": "Eskisehir",
+    "districtName": null,
+    "fileName": "9470_eskisehir.json"
+  },
+  {
+    "id": "9467",
+    "cityName": "Eskisehir",
+    "districtName": "Alpu",
+    "fileName": "9467_eskisehir_alpu.json"
+  },
+  {
+    "id": "9468",
+    "cityName": "Eskisehir",
+    "districtName": "Beylikova",
+    "fileName": "9468_eskisehir_beylikova.json"
+  },
+  {
+    "id": "9469",
+    "cityName": "Eskisehir",
+    "districtName": "Cifteler",
+    "fileName": "9469_eskisehir_cifteler.json"
+  },
+  {
+    "id": "9471",
+    "cityName": "Eskisehir",
+    "districtName": "Gunyuzu",
+    "fileName": "9471_eskisehir_gunyuzu.json"
+  },
+  {
+    "id": "9472",
+    "cityName": "Eskisehir",
+    "districtName": "Han",
+    "fileName": "9472_eskisehir_han.json"
+  },
+  {
+    "id": "9473",
+    "cityName": "Eskisehir",
+    "districtName": "Inonu",
+    "fileName": "9473_eskisehir_inonu.json"
+  },
+  {
+    "id": "9474",
+    "cityName": "Eskisehir",
+    "districtName": "Mahmudiye",
+    "fileName": "9474_eskisehir_mahmudiye.json"
+  },
+  {
+    "id": "9475",
+    "cityName": "Eskisehir",
+    "districtName": "Mihaliccik",
+    "fileName": "9475_eskisehir_mihaliccik.json"
+  },
+  {
+    "id": "17919",
+    "cityName": "Eskisehir",
+    "districtName": "Saricakaya",
+    "fileName": "17919_eskisehir_saricakaya.json"
+  },
+  {
+    "id": "9476",
+    "cityName": "Eskisehir",
+    "districtName": "Seyitgazi",
+    "fileName": "9476_eskisehir_seyitgazi.json"
+  },
+  {
+    "id": "9477",
+    "cityName": "Eskisehir",
+    "districtName": "Sivrihisar",
+    "fileName": "9477_eskisehir_sivrihisar.json"
+  },
+  {
+    "id": "9479",
+    "cityName": "Gaziantep",
+    "districtName": null,
+    "fileName": "9479_gaziantep.json"
+  },
+  {
+    "id": "9478",
+    "cityName": "Gaziantep",
+    "districtName": "Araban",
+    "fileName": "9478_gaziantep_araban.json"
+  },
+  {
+    "id": "9480",
+    "cityName": "Gaziantep",
+    "districtName": "Islahiye",
+    "fileName": "9480_gaziantep_islahiye.json"
+  },
+  {
+    "id": "9481",
+    "cityName": "Gaziantep",
+    "districtName": "Karkamis",
+    "fileName": "9481_gaziantep_karkamis.json"
+  },
+  {
+    "id": "9482",
+    "cityName": "Gaziantep",
+    "districtName": "Nizip",
+    "fileName": "9482_gaziantep_nizip.json"
+  },
+  {
+    "id": "9483",
+    "cityName": "Gaziantep",
+    "districtName": "Nurdagi",
+    "fileName": "9483_gaziantep_nurdagi.json"
+  },
+  {
+    "id": "9484",
+    "cityName": "Gaziantep",
+    "districtName": "Oguzeli",
+    "fileName": "9484_gaziantep_oguzeli.json"
+  },
+  {
+    "id": "9485",
+    "cityName": "Gaziantep",
+    "districtName": "Yavuzeli",
+    "fileName": "9485_gaziantep_yavuzeli.json"
+  },
+  {
+    "id": "9494",
+    "cityName": "Giresun",
+    "districtName": null,
+    "fileName": "9494_giresun.json"
+  },
+  {
+    "id": "9486",
+    "cityName": "Giresun",
+    "districtName": "Alucra",
+    "fileName": "9486_giresun_alucra.json"
+  },
+  {
+    "id": "9487",
+    "cityName": "Giresun",
+    "districtName": "Bulancak",
+    "fileName": "9487_giresun_bulancak.json"
+  },
+  {
+    "id": "9488",
+    "cityName": "Giresun",
+    "districtName": "Camoluk",
+    "fileName": "9488_giresun_camoluk.json"
+  },
+  {
+    "id": "9489",
+    "cityName": "Giresun",
+    "districtName": "Canakci",
+    "fileName": "9489_giresun_canakci.json"
+  },
+  {
+    "id": "9490",
+    "cityName": "Giresun",
+    "districtName": "Dereli",
+    "fileName": "9490_giresun_dereli.json"
+  },
+  {
+    "id": "9491",
+    "cityName": "Giresun",
+    "districtName": "Dogankent",
+    "fileName": "9491_giresun_dogankent.json"
+  },
+  {
+    "id": "9492",
+    "cityName": "Giresun",
+    "districtName": "Espiye",
+    "fileName": "9492_giresun_espiye.json"
+  },
+  {
+    "id": "9493",
+    "cityName": "Giresun",
+    "districtName": "Eynesil",
+    "fileName": "9493_giresun_eynesil.json"
+  },
+  {
+    "id": "9495",
+    "cityName": "Giresun",
+    "districtName": "Gorele",
+    "fileName": "9495_giresun_gorele.json"
+  },
+  {
+    "id": "9496",
+    "cityName": "Giresun",
+    "districtName": "Guce",
+    "fileName": "9496_giresun_guce.json"
+  },
+  {
+    "id": "9497",
+    "cityName": "Giresun",
+    "districtName": "Kesap",
+    "fileName": "9497_giresun_kesap.json"
+  },
+  {
+    "id": "9498",
+    "cityName": "Giresun",
+    "districtName": "Piraziz",
+    "fileName": "9498_giresun_piraziz.json"
+  },
+  {
+    "id": "16706",
+    "cityName": "Giresun",
+    "districtName": "Sebinkarahisar",
+    "fileName": "16706_giresun_sebinkarahisar.json"
+  },
+  {
+    "id": "9499",
+    "cityName": "Giresun",
+    "districtName": "Tirebolu",
+    "fileName": "9499_giresun_tirebolu.json"
+  },
+  {
+    "id": "9500",
+    "cityName": "Giresun",
+    "districtName": "Yaglidere",
+    "fileName": "9500_giresun_yaglidere.json"
+  },
+  {
+    "id": "9501",
+    "cityName": "Gumushane",
+    "districtName": null,
+    "fileName": "9501_gumushane.json"
+  },
+  {
+    "id": "16746",
+    "cityName": "Gumushane",
+    "districtName": "Kelkit",
+    "fileName": "16746_gumushane_kelkit.json"
+  },
+  {
+    "id": "9502",
+    "cityName": "Gumushane",
+    "districtName": "Kose",
+    "fileName": "9502_gumushane_kose.json"
+  },
+  {
+    "id": "9503",
+    "cityName": "Gumushane",
+    "districtName": "Kurtun",
+    "fileName": "9503_gumushane_kurtun.json"
+  },
+  {
+    "id": "9504",
+    "cityName": "Gumushane",
+    "districtName": "Siran",
+    "fileName": "9504_gumushane_siran.json"
+  },
+  {
+    "id": "9505",
+    "cityName": "Gumushane",
+    "districtName": "Torul",
+    "fileName": "9505_gumushane_torul.json"
+  },
+  {
+    "id": "9507",
+    "cityName": "Hakkari",
+    "districtName": null,
+    "fileName": "9507_hakkari.json"
+  },
+  {
+    "id": "9506",
+    "cityName": "Hakkari",
+    "districtName": "Cukurca",
+    "fileName": "9506_hakkari_cukurca.json"
+  },
+  {
+    "id": "9508",
+    "cityName": "Hakkari",
+    "districtName": "Semdinli",
+    "fileName": "9508_hakkari_semdinli.json"
+  },
+  {
+    "id": "9509",
+    "cityName": "Hakkari",
+    "districtName": "Yuksekova",
+    "fileName": "9509_hakkari_yuksekova.json"
+  },
+  {
+    "id": "9515",
+    "cityName": "Hatay",
+    "districtName": null,
+    "fileName": "9515_hatay.json"
+  },
+  {
+    "id": "9510",
+    "cityName": "Hatay",
+    "districtName": "Altinozu",
+    "fileName": "9510_hatay_altinozu.json"
+  },
+  {
+    "id": "9511",
+    "cityName": "Hatay",
+    "districtName": "Belen",
+    "fileName": "9511_hatay_belen.json"
+  },
+  {
+    "id": "9512",
+    "cityName": "Hatay",
+    "districtName": "Dortyol",
+    "fileName": "9512_hatay_dortyol.json"
+  },
+  {
+    "id": "9513",
+    "cityName": "Hatay",
+    "districtName": "Erzin",
+    "fileName": "9513_hatay_erzin.json"
+  },
+  {
+    "id": "9514",
+    "cityName": "Hatay",
+    "districtName": "Hassa",
+    "fileName": "9514_hatay_hassa.json"
+  },
+  {
+    "id": "9516",
+    "cityName": "Hatay",
+    "districtName": "Iskenderun",
+    "fileName": "9516_hatay_iskenderun.json"
+  },
+  {
+    "id": "9517",
+    "cityName": "Hatay",
+    "districtName": "Kirikhan",
+    "fileName": "9517_hatay_kirikhan.json"
+  },
+  {
+    "id": "9518",
+    "cityName": "Hatay",
+    "districtName": "Kumlu",
+    "fileName": "9518_hatay_kumlu.json"
+  },
+  {
+    "id": "17810",
+    "cityName": "Hatay",
+    "districtName": "Payas",
+    "fileName": "17810_hatay_payas.json"
+  },
+  {
+    "id": "9519",
+    "cityName": "Hatay",
+    "districtName": "Reyhanli",
+    "fileName": "9519_hatay_reyhanli.json"
+  },
+  {
+    "id": "9520",
+    "cityName": "Hatay",
+    "districtName": "Samandag",
+    "fileName": "9520_hatay_samandag.json"
+  },
+  {
+    "id": "16730",
+    "cityName": "Hatay",
+    "districtName": "Yayladag",
+    "fileName": "16730_hatay_yayladag.json"
+  },
+  {
+    "id": "9522",
+    "cityName": "Igdir",
+    "districtName": null,
+    "fileName": "9522_igdir.json"
+  },
+  {
+    "id": "9521",
+    "cityName": "Igdir",
+    "districtName": "Aralik",
+    "fileName": "9521_igdir_aralik.json"
+  },
+  {
+    "id": "9523",
+    "cityName": "Igdir",
+    "districtName": "Karakoyunlu",
+    "fileName": "9523_igdir_karakoyunlu.json"
+  },
+  {
+    "id": "9524",
+    "cityName": "Igdir",
+    "districtName": "Tuzluca",
+    "fileName": "9524_igdir_tuzluca.json"
+  },
+  {
+    "id": "9528",
+    "cityName": "Isparta",
+    "districtName": null,
+    "fileName": "9528_isparta.json"
+  },
+  {
+    "id": "9525",
+    "cityName": "Isparta",
+    "districtName": "Aksu-i",
+    "fileName": "9525_isparta_aksu-i.json"
+  },
+  {
+    "id": "17891",
+    "cityName": "Isparta",
+    "districtName": "Atabey",
+    "fileName": "17891_isparta_atabey.json"
+  },
+  {
+    "id": "9526",
+    "cityName": "Isparta",
+    "districtName": "Egirdir",
+    "fileName": "9526_isparta_egirdir.json"
+  },
+  {
+    "id": "9527",
+    "cityName": "Isparta",
+    "districtName": "Gelendost",
+    "fileName": "9527_isparta_gelendost.json"
+  },
+  {
+    "id": "17892",
+    "cityName": "Isparta",
+    "districtName": "Gonen",
+    "fileName": "17892_isparta_gonen.json"
+  },
+  {
+    "id": "9529",
+    "cityName": "Isparta",
+    "districtName": "Keciborlu",
+    "fileName": "9529_isparta_keciborlu.json"
+  },
+  {
+    "id": "9530",
+    "cityName": "Isparta",
+    "districtName": "Sarki-karaagac",
+    "fileName": "9530_isparta_sarki-karaagac.json"
+  },
+  {
+    "id": "17816",
+    "cityName": "Isparta",
+    "districtName": "Senirkent",
+    "fileName": "17816_isparta_senirkent.json"
+  },
+  {
+    "id": "9531",
+    "cityName": "Isparta",
+    "districtName": "Sutculer",
+    "fileName": "9531_isparta_sutculer.json"
+  },
+  {
+    "id": "9532",
+    "cityName": "Isparta",
+    "districtName": "Uluborlu",
+    "fileName": "9532_isparta_uluborlu.json"
+  },
+  {
+    "id": "9533",
+    "cityName": "Isparta",
+    "districtName": "Yalvac",
+    "fileName": "9533_isparta_yalvac.json"
+  },
+  {
+    "id": "9534",
+    "cityName": "Isparta",
+    "districtName": "Yenisar-bademli",
+    "fileName": "9534_isparta_yenisar-bademli.json"
+  },
+  {
+    "id": "9541",
+    "cityName": "Istanbul",
+    "districtName": null,
+    "fileName": "9541_istanbul.json"
+  },
+  {
+    "id": "9535",
+    "cityName": "Istanbul",
+    "districtName": "Arnavutkoy",
+    "fileName": "9535_istanbul_arnavutkoy.json"
+  },
+  {
+    "id": "17865",
+    "cityName": "Istanbul",
+    "districtName": "Avcilar",
+    "fileName": "17865_istanbul_avcilar.json"
+  },
+  {
+    "id": "17866",
+    "cityName": "Istanbul",
+    "districtName": "Basaksehir",
+    "fileName": "17866_istanbul_basaksehir.json"
+  },
+  {
+    "id": "9536",
+    "cityName": "Istanbul",
+    "districtName": "Beylikduzu",
+    "fileName": "9536_istanbul_beylikduzu.json"
+  },
+  {
+    "id": "9537",
+    "cityName": "Istanbul",
+    "districtName": "Buyukcekmece",
+    "fileName": "9537_istanbul_buyukcekmece.json"
+  },
+  {
+    "id": "9538",
+    "cityName": "Istanbul",
+    "districtName": "Catalca",
+    "fileName": "9538_istanbul_catalca.json"
+  },
+  {
+    "id": "9539",
+    "cityName": "Istanbul",
+    "districtName": "Cekmekoy",
+    "fileName": "9539_istanbul_cekmekoy.json"
+  },
+  {
+    "id": "9540",
+    "cityName": "Istanbul",
+    "districtName": "Esenyurt",
+    "fileName": "9540_istanbul_esenyurt.json"
+  },
+  {
+    "id": "9542",
+    "cityName": "Istanbul",
+    "districtName": "Kartal",
+    "fileName": "9542_istanbul_kartal.json"
+  },
+  {
+    "id": "9543",
+    "cityName": "Istanbul",
+    "districtName": "Kucukcekmece",
+    "fileName": "9543_istanbul_kucukcekmece.json"
+  },
+  {
+    "id": "9544",
+    "cityName": "Istanbul",
+    "districtName": "Maltepe",
+    "fileName": "9544_istanbul_maltepe.json"
+  },
+  {
+    "id": "9545",
+    "cityName": "Istanbul",
+    "districtName": "Pendik",
+    "fileName": "9545_istanbul_pendik.json"
+  },
+  {
+    "id": "9546",
+    "cityName": "Istanbul",
+    "districtName": "Sancaktepe",
+    "fileName": "9546_istanbul_sancaktepe.json"
+  },
+  {
+    "id": "9547",
+    "cityName": "Istanbul",
+    "districtName": "Sile",
+    "fileName": "9547_istanbul_sile.json"
+  },
+  {
+    "id": "9548",
+    "cityName": "Istanbul",
+    "districtName": "Silivri",
+    "fileName": "9548_istanbul_silivri.json"
+  },
+  {
+    "id": "9549",
+    "cityName": "Istanbul",
+    "districtName": "Sultanbeyli",
+    "fileName": "9549_istanbul_sultanbeyli.json"
+  },
+  {
+    "id": "9550",
+    "cityName": "Istanbul",
+    "districtName": "Sultangazi",
+    "fileName": "9550_istanbul_sultangazi.json"
+  },
+  {
+    "id": "9551",
+    "cityName": "Istanbul",
+    "districtName": "Tuzla",
+    "fileName": "9551_istanbul_tuzla.json"
+  },
+  {
+    "id": "9560",
+    "cityName": "Izmir",
+    "districtName": null,
+    "fileName": "9560_izmir.json"
+  },
+  {
+    "id": "9552",
+    "cityName": "Izmir",
+    "districtName": "Aliaga",
+    "fileName": "9552_izmir_aliaga.json"
+  },
+  {
+    "id": "9553",
+    "cityName": "Izmir",
+    "districtName": "Bayindir",
+    "fileName": "9553_izmir_bayindir.json"
+  },
+  {
+    "id": "9554",
+    "cityName": "Izmir",
+    "districtName": "Bergama",
+    "fileName": "9554_izmir_bergama.json"
+  },
+  {
+    "id": "9555",
+    "cityName": "Izmir",
+    "districtName": "Beydag",
+    "fileName": "9555_izmir_beydag.json"
+  },
+  {
+    "id": "9556",
+    "cityName": "Izmir",
+    "districtName": "Cesme",
+    "fileName": "9556_izmir_cesme.json"
+  },
+  {
+    "id": "9557",
+    "cityName": "Izmir",
+    "districtName": "Dikili",
+    "fileName": "9557_izmir_dikili.json"
+  },
+  {
+    "id": "9558",
+    "cityName": "Izmir",
+    "districtName": "Foca",
+    "fileName": "9558_izmir_foca.json"
+  },
+  {
+    "id": "9559",
+    "cityName": "Izmir",
+    "districtName": "Guzelybahce",
+    "fileName": "9559_izmir_guzelybahce.json"
+  },
+  {
+    "id": "9561",
+    "cityName": "Izmir",
+    "districtName": "Karaburun",
+    "fileName": "9561_izmir_karaburun.json"
+  },
+  {
+    "id": "9562",
+    "cityName": "Izmir",
+    "districtName": "Kemalpasa",
+    "fileName": "9562_izmir_kemalpasa.json"
+  },
+  {
+    "id": "9563",
+    "cityName": "Izmir",
+    "districtName": "Kinik",
+    "fileName": "9563_izmir_kinik.json"
+  },
+  {
+    "id": "9564",
+    "cityName": "Izmir",
+    "districtName": "Kiraz",
+    "fileName": "9564_izmir_kiraz.json"
+  },
+  {
+    "id": "17868",
+    "cityName": "Izmir",
+    "districtName": "Menderes",
+    "fileName": "17868_izmir_menderes.json"
+  },
+  {
+    "id": "17869",
+    "cityName": "Izmir",
+    "districtName": "Menemen",
+    "fileName": "17869_izmir_menemen.json"
+  },
+  {
+    "id": "9565",
+    "cityName": "Izmir",
+    "districtName": "Odemis",
+    "fileName": "9565_izmir_odemis.json"
+  },
+  {
+    "id": "9566",
+    "cityName": "Izmir",
+    "districtName": "Seferihisar",
+    "fileName": "9566_izmir_seferihisar.json"
+  },
+  {
+    "id": "9567",
+    "cityName": "Izmir",
+    "districtName": "Selcuk",
+    "fileName": "9567_izmir_selcuk.json"
+  },
+  {
+    "id": "9568",
+    "cityName": "Izmir",
+    "districtName": "Tire",
+    "fileName": "9568_izmir_tire.json"
+  },
+  {
+    "id": "9569",
+    "cityName": "Izmir",
+    "districtName": "Torbali",
+    "fileName": "9569_izmir_torbali.json"
+  },
+  {
+    "id": "9570",
+    "cityName": "Izmir",
+    "districtName": "Urla",
+    "fileName": "9570_izmir_urla.json"
+  },
+  {
+    "id": "9577",
+    "cityName": "Kahramanmaras",
+    "districtName": null,
+    "fileName": "9577_kahramanmaras.json"
+  },
+  {
+    "id": "9571",
+    "cityName": "Kahramanmaras",
+    "districtName": "Afsin",
+    "fileName": "9571_kahramanmaras_afsin.json"
+  },
+  {
+    "id": "9572",
+    "cityName": "Kahramanmaras",
+    "districtName": "Andirin",
+    "fileName": "9572_kahramanmaras_andirin.json"
+  },
+  {
+    "id": "9573",
+    "cityName": "Kahramanmaras",
+    "districtName": "Caglayancerit",
+    "fileName": "9573_kahramanmaras_caglayancerit.json"
+  },
+  {
+    "id": "9574",
+    "cityName": "Kahramanmaras",
+    "districtName": "Ekinozu",
+    "fileName": "9574_kahramanmaras_ekinozu.json"
+  },
+  {
+    "id": "9575",
+    "cityName": "Kahramanmaras",
+    "districtName": "Elbistan",
+    "fileName": "9575_kahramanmaras_elbistan.json"
+  },
+  {
+    "id": "9576",
+    "cityName": "Kahramanmaras",
+    "districtName": "Goksun",
+    "fileName": "9576_kahramanmaras_goksun.json"
+  },
+  {
+    "id": "9578",
+    "cityName": "Kahramanmaras",
+    "districtName": "Nurhak",
+    "fileName": "9578_kahramanmaras_nurhak.json"
+  },
+  {
+    "id": "9579",
+    "cityName": "Kahramanmaras",
+    "districtName": "Pazarcik",
+    "fileName": "9579_kahramanmaras_pazarcik.json"
+  },
+  {
+    "id": "17908",
+    "cityName": "Kahramanmaras",
+    "districtName": "Turkoglu",
+    "fileName": "17908_kahramanmaras_turkoglu.json"
+  },
+  {
+    "id": "9581",
+    "cityName": "Karabuk",
+    "districtName": null,
+    "fileName": "9581_karabuk.json"
+  },
+  {
+    "id": "9580",
+    "cityName": "Karabuk",
+    "districtName": "Eflani",
+    "fileName": "9580_karabuk_eflani.json"
+  },
+  {
+    "id": "17890",
+    "cityName": "Karabuk",
+    "districtName": "Eskipazar",
+    "fileName": "17890_karabuk_eskipazar.json"
+  },
+  {
+    "id": "9582",
+    "cityName": "Karabuk",
+    "districtName": "Ovacik-k",
+    "fileName": "9582_karabuk_ovacik-k.json"
+  },
+  {
+    "id": "9583",
+    "cityName": "Karabuk",
+    "districtName": "Yenice-k",
+    "fileName": "9583_karabuk_yenice-k.json"
+  },
+  {
+    "id": "9587",
+    "cityName": "Karaman",
+    "districtName": null,
+    "fileName": "9587_karaman.json"
+  },
+  {
+    "id": "9584",
+    "cityName": "Karaman",
+    "districtName": "Ayranci",
+    "fileName": "9584_karaman_ayranci.json"
+  },
+  {
+    "id": "9585",
+    "cityName": "Karaman",
+    "districtName": "Basyayla",
+    "fileName": "9585_karaman_basyayla.json"
+  },
+  {
+    "id": "9586",
+    "cityName": "Karaman",
+    "districtName": "Ermenek",
+    "fileName": "9586_karaman_ermenek.json"
+  },
+  {
+    "id": "9588",
+    "cityName": "Karaman",
+    "districtName": "Kazimkarabekir",
+    "fileName": "9588_karaman_kazimkarabekir.json"
+  },
+  {
+    "id": "9589",
+    "cityName": "Karaman",
+    "districtName": "Sariveliler",
+    "fileName": "9589_karaman_sariveliler.json"
+  },
+  {
+    "id": "9594",
+    "cityName": "Kars",
+    "districtName": null,
+    "fileName": "9594_kars.json"
+  },
+  {
+    "id": "9590",
+    "cityName": "Kars",
+    "districtName": "Akyaka",
+    "fileName": "9590_kars_akyaka.json"
+  },
+  {
+    "id": "9591",
+    "cityName": "Kars",
+    "districtName": "Arpacay",
+    "fileName": "9591_kars_arpacay.json"
+  },
+  {
+    "id": "9592",
+    "cityName": "Kars",
+    "districtName": "Digor",
+    "fileName": "9592_kars_digor.json"
+  },
+  {
+    "id": "9593",
+    "cityName": "Kars",
+    "districtName": "Kagizman",
+    "fileName": "9593_kars_kagizman.json"
+  },
+  {
+    "id": "9595",
+    "cityName": "Kars",
+    "districtName": "Sarikamis",
+    "fileName": "9595_kars_sarikamis.json"
+  },
+  {
+    "id": "9596",
+    "cityName": "Kars",
+    "districtName": "Selim",
+    "fileName": "9596_kars_selim.json"
+  },
+  {
+    "id": "17880",
+    "cityName": "Kars",
+    "districtName": "Susuz",
+    "fileName": "17880_kars_susuz.json"
+  },
+  {
+    "id": "9609",
+    "cityName": "Kastamonu",
+    "districtName": null,
+    "fileName": "9609_kastamonu.json"
+  },
+  {
+    "id": "9597",
+    "cityName": "Kastamonu",
+    "districtName": "Abana",
+    "fileName": "9597_kastamonu_abana.json"
+  },
+  {
+    "id": "9598",
+    "cityName": "Kastamonu",
+    "districtName": "Agli",
+    "fileName": "9598_kastamonu_agli.json"
+  },
+  {
+    "id": "9599",
+    "cityName": "Kastamonu",
+    "districtName": "Arac",
+    "fileName": "9599_kastamonu_arac.json"
+  },
+  {
+    "id": "9600",
+    "cityName": "Kastamonu",
+    "districtName": "Azdavay",
+    "fileName": "9600_kastamonu_azdavay.json"
+  },
+  {
+    "id": "9601",
+    "cityName": "Kastamonu",
+    "districtName": "Bozkurt-k",
+    "fileName": "9601_kastamonu_bozkurt-k.json"
+  },
+  {
+    "id": "9602",
+    "cityName": "Kastamonu",
+    "districtName": "Catalzeytin",
+    "fileName": "9602_kastamonu_catalzeytin.json"
+  },
+  {
+    "id": "9603",
+    "cityName": "Kastamonu",
+    "districtName": "Cide",
+    "fileName": "9603_kastamonu_cide.json"
+  },
+  {
+    "id": "9604",
+    "cityName": "Kastamonu",
+    "districtName": "Daday",
+    "fileName": "9604_kastamonu_daday.json"
+  },
+  {
+    "id": "17885",
+    "cityName": "Kastamonu",
+    "districtName": "Devrekani",
+    "fileName": "17885_kastamonu_devrekani.json"
+  },
+  {
+    "id": "9605",
+    "cityName": "Kastamonu",
+    "districtName": "Doganyurt",
+    "fileName": "9605_kastamonu_doganyurt.json"
+  },
+  {
+    "id": "9606",
+    "cityName": "Kastamonu",
+    "districtName": "Hanonu",
+    "fileName": "9606_kastamonu_hanonu.json"
+  },
+  {
+    "id": "9607",
+    "cityName": "Kastamonu",
+    "districtName": "Ihsangazi",
+    "fileName": "9607_kastamonu_ihsangazi.json"
+  },
+  {
+    "id": "9608",
+    "cityName": "Kastamonu",
+    "districtName": "Inebolu",
+    "fileName": "9608_kastamonu_inebolu.json"
+  },
+  {
+    "id": "9610",
+    "cityName": "Kastamonu",
+    "districtName": "Kure",
+    "fileName": "9610_kastamonu_kure.json"
+  },
+  {
+    "id": "9611",
+    "cityName": "Kastamonu",
+    "districtName": "Pinarbasi-k",
+    "fileName": "9611_kastamonu_pinarbasi-k.json"
+  },
+  {
+    "id": "9612",
+    "cityName": "Kastamonu",
+    "districtName": "Senpazar",
+    "fileName": "9612_kastamonu_senpazar.json"
+  },
+  {
+    "id": "17886",
+    "cityName": "Kastamonu",
+    "districtName": "Seydiler",
+    "fileName": "17886_kastamonu_seydiler.json"
+  },
+  {
+    "id": "9613",
+    "cityName": "Kastamonu",
+    "districtName": "Taskopru",
+    "fileName": "9613_kastamonu_taskopru.json"
+  },
+  {
+    "id": "9614",
+    "cityName": "Kastamonu",
+    "districtName": "Tosya",
+    "fileName": "9614_kastamonu_tosya.json"
+  },
+  {
+    "id": "9620",
+    "cityName": "Kayseri",
+    "districtName": null,
+    "fileName": "9620_kayseri.json"
+  },
+  {
+    "id": "9615",
+    "cityName": "Kayseri",
+    "districtName": "Akkisla",
+    "fileName": "9615_kayseri_akkisla.json"
+  },
+  {
+    "id": "9616",
+    "cityName": "Kayseri",
+    "districtName": "Bunyan",
+    "fileName": "9616_kayseri_bunyan.json"
+  },
+  {
+    "id": "9617",
+    "cityName": "Kayseri",
+    "districtName": "Develi",
+    "fileName": "9617_kayseri_develi.json"
+  },
+  {
+    "id": "9618",
+    "cityName": "Kayseri",
+    "districtName": "Felahiye",
+    "fileName": "9618_kayseri_felahiye.json"
+  },
+  {
+    "id": "9619",
+    "cityName": "Kayseri",
+    "districtName": "Incesu",
+    "fileName": "9619_kayseri_incesu.json"
+  },
+  {
+    "id": "9621",
+    "cityName": "Kayseri",
+    "districtName": "Ozvatan",
+    "fileName": "9621_kayseri_ozvatan.json"
+  },
+  {
+    "id": "9622",
+    "cityName": "Kayseri",
+    "districtName": "Pinarbasi",
+    "fileName": "9622_kayseri_pinarbasi.json"
+  },
+  {
+    "id": "9623",
+    "cityName": "Kayseri",
+    "districtName": "Sarioglan",
+    "fileName": "9623_kayseri_sarioglan.json"
+  },
+  {
+    "id": "9624",
+    "cityName": "Kayseri",
+    "districtName": "Sariz",
+    "fileName": "9624_kayseri_sariz.json"
+  },
+  {
+    "id": "9625",
+    "cityName": "Kayseri",
+    "districtName": "Tomarza",
+    "fileName": "9625_kayseri_tomarza.json"
+  },
+  {
+    "id": "9626",
+    "cityName": "Kayseri",
+    "districtName": "Yahyali",
+    "fileName": "9626_kayseri_yahyali.json"
+  },
+  {
+    "id": "9627",
+    "cityName": "Kayseri",
+    "districtName": "Yesilhisar",
+    "fileName": "9627_kayseri_yesilhisar.json"
+  },
+  {
+    "id": "9629",
+    "cityName": "Kilis",
+    "districtName": null,
+    "fileName": "9629_kilis.json"
+  },
+  {
+    "id": "9628",
+    "cityName": "Kilis",
+    "districtName": "Elbeyli",
+    "fileName": "9628_kilis_elbeyli.json"
+  },
+  {
+    "id": "9630",
+    "cityName": "Kilis",
+    "districtName": "Musabeyli",
+    "fileName": "9630_kilis_musabeyli.json"
+  },
+  {
+    "id": "17907",
+    "cityName": "Kilis",
+    "districtName": "Polateli",
+    "fileName": "17907_kilis_polateli.json"
+  },
+  {
+    "id": "9635",
+    "cityName": "Kirikkale",
+    "districtName": null,
+    "fileName": "9635_kirikkale.json"
+  },
+  {
+    "id": "9631",
+    "cityName": "Kirikkale",
+    "districtName": "Baliseyh",
+    "fileName": "9631_kirikkale_baliseyh.json"
+  },
+  {
+    "id": "9632",
+    "cityName": "Kirikkale",
+    "districtName": "Celebi",
+    "fileName": "9632_kirikkale_celebi.json"
+  },
+  {
+    "id": "9633",
+    "cityName": "Kirikkale",
+    "districtName": "Delice",
+    "fileName": "9633_kirikkale_delice.json"
+  },
+  {
+    "id": "9634",
+    "cityName": "Kirikkale",
+    "districtName": "Karakecili",
+    "fileName": "9634_kirikkale_karakecili.json"
+  },
+  {
+    "id": "17897",
+    "cityName": "Kirikkale",
+    "districtName": "Keskin",
+    "fileName": "17897_kirikkale_keskin.json"
+  },
+  {
+    "id": "9636",
+    "cityName": "Kirikkale",
+    "districtName": "Sulakyurt",
+    "fileName": "9636_kirikkale_sulakyurt.json"
+  },
+  {
+    "id": "9638",
+    "cityName": "Kirklareli",
+    "districtName": null,
+    "fileName": "9638_kirklareli.json"
+  },
+  {
+    "id": "17903",
+    "cityName": "Kirklareli",
+    "districtName": "Babaeski",
+    "fileName": "17903_kirklareli_babaeski.json"
+  },
+  {
+    "id": "9637",
+    "cityName": "Kirklareli",
+    "districtName": "Demirkoy",
+    "fileName": "9637_kirklareli_demirkoy.json"
+  },
+  {
+    "id": "9639",
+    "cityName": "Kirklareli",
+    "districtName": "Luleburgaz",
+    "fileName": "9639_kirklareli_luleburgaz.json"
+  },
+  {
+    "id": "9640",
+    "cityName": "Kirklareli",
+    "districtName": "Pehlivankoy",
+    "fileName": "9640_kirklareli_pehlivankoy.json"
+  },
+  {
+    "id": "9641",
+    "cityName": "Kirklareli",
+    "districtName": "Pinarhisar",
+    "fileName": "9641_kirklareli_pinarhisar.json"
+  },
+  {
+    "id": "9642",
+    "cityName": "Kirklareli",
+    "districtName": "Vize",
+    "fileName": "9642_kirklareli_vize.json"
+  },
+  {
+    "id": "9646",
+    "cityName": "Kirsehir",
+    "districtName": null,
+    "fileName": "9646_kirsehir.json"
+  },
+  {
+    "id": "9643",
+    "cityName": "Kirsehir",
+    "districtName": "Akpinar",
+    "fileName": "9643_kirsehir_akpinar.json"
+  },
+  {
+    "id": "9644",
+    "cityName": "Kirsehir",
+    "districtName": "Cicekdagi",
+    "fileName": "9644_kirsehir_cicekdagi.json"
+  },
+  {
+    "id": "9645",
+    "cityName": "Kirsehir",
+    "districtName": "Kaman",
+    "fileName": "9645_kirsehir_kaman.json"
+  },
+  {
+    "id": "9647",
+    "cityName": "Kirsehir",
+    "districtName": "Mucur",
+    "fileName": "9647_kirsehir_mucur.json"
+  },
+  {
+    "id": "9654",
+    "cityName": "Kocaeli",
+    "districtName": null,
+    "fileName": "9654_kocaeli.json"
+  },
+  {
+    "id": "9648",
+    "cityName": "Kocaeli",
+    "districtName": "Cayirova",
+    "fileName": "9648_kocaeli_cayirova.json"
+  },
+  {
+    "id": "9649",
+    "cityName": "Kocaeli",
+    "districtName": "Darica",
+    "fileName": "9649_kocaeli_darica.json"
+  },
+  {
+    "id": "9650",
+    "cityName": "Kocaeli",
+    "districtName": "Dilovasi",
+    "fileName": "9650_kocaeli_dilovasi.json"
+  },
+  {
+    "id": "9651",
+    "cityName": "Kocaeli",
+    "districtName": "Gebze",
+    "fileName": "9651_kocaeli_gebze.json"
+  },
+  {
+    "id": "9652",
+    "cityName": "Kocaeli",
+    "districtName": "Kandira",
+    "fileName": "9652_kocaeli_kandira.json"
+  },
+  {
+    "id": "9653",
+    "cityName": "Kocaeli",
+    "districtName": "Karamursel",
+    "fileName": "9653_kocaeli_karamursel.json"
+  },
+  {
+    "id": "17902",
+    "cityName": "Kocaeli",
+    "districtName": "Kartepe",
+    "fileName": "17902_kocaeli_kartepe.json"
+  },
+  {
+    "id": "9655",
+    "cityName": "Kocaeli",
+    "districtName": "Korfez",
+    "fileName": "9655_kocaeli_korfez.json"
+  },
+  {
+    "id": "9676",
+    "cityName": "Konya",
+    "districtName": null,
+    "fileName": "9676_konya.json"
+  },
+  {
+    "id": "9656",
+    "cityName": "Konya",
+    "districtName": "Ahirli",
+    "fileName": "9656_konya_ahirli.json"
+  },
+  {
+    "id": "9657",
+    "cityName": "Konya",
+    "districtName": "Akoren",
+    "fileName": "9657_konya_akoren.json"
+  },
+  {
+    "id": "9658",
+    "cityName": "Konya",
+    "districtName": "Aksehir",
+    "fileName": "9658_konya_aksehir.json"
+  },
+  {
+    "id": "9659",
+    "cityName": "Konya",
+    "districtName": "Altinekin",
+    "fileName": "9659_konya_altinekin.json"
+  },
+  {
+    "id": "9660",
+    "cityName": "Konya",
+    "districtName": "Beysehir",
+    "fileName": "9660_konya_beysehir.json"
+  },
+  {
+    "id": "9661",
+    "cityName": "Konya",
+    "districtName": "Bozkir",
+    "fileName": "9661_konya_bozkir.json"
+  },
+  {
+    "id": "9662",
+    "cityName": "Konya",
+    "districtName": "Celtik",
+    "fileName": "9662_konya_celtik.json"
+  },
+  {
+    "id": "9663",
+    "cityName": "Konya",
+    "districtName": "Cihanbeyli",
+    "fileName": "9663_konya_cihanbeyli.json"
+  },
+  {
+    "id": "9664",
+    "cityName": "Konya",
+    "districtName": "Cumra",
+    "fileName": "9664_konya_cumra.json"
+  },
+  {
+    "id": "9665",
+    "cityName": "Konya",
+    "districtName": "Derbent",
+    "fileName": "9665_konya_derbent.json"
+  },
+  {
+    "id": "9666",
+    "cityName": "Konya",
+    "districtName": "Derebucak",
+    "fileName": "9666_konya_derebucak.json"
+  },
+  {
+    "id": "9667",
+    "cityName": "Konya",
+    "districtName": "Doganhisar",
+    "fileName": "9667_konya_doganhisar.json"
+  },
+  {
+    "id": "9668",
+    "cityName": "Konya",
+    "districtName": "Emirgazi",
+    "fileName": "9668_konya_emirgazi.json"
+  },
+  {
+    "id": "9669",
+    "cityName": "Konya",
+    "districtName": "Eregli",
+    "fileName": "9669_konya_eregli.json"
+  },
+  {
+    "id": "9670",
+    "cityName": "Konya",
+    "districtName": "Guneysinir",
+    "fileName": "9670_konya_guneysinir.json"
+  },
+  {
+    "id": "16704",
+    "cityName": "Konya",
+    "districtName": "Hadim",
+    "fileName": "16704_konya_hadim.json"
+  },
+  {
+    "id": "9671",
+    "cityName": "Konya",
+    "districtName": "Halkapinar",
+    "fileName": "9671_konya_halkapinar.json"
+  },
+  {
+    "id": "9672",
+    "cityName": "Konya",
+    "districtName": "Huyuk",
+    "fileName": "9672_konya_huyuk.json"
+  },
+  {
+    "id": "9673",
+    "cityName": "Konya",
+    "districtName": "Ilgin",
+    "fileName": "9673_konya_ilgin.json"
+  },
+  {
+    "id": "9674",
+    "cityName": "Konya",
+    "districtName": "Kadinhani",
+    "fileName": "9674_konya_kadinhani.json"
+  },
+  {
+    "id": "9675",
+    "cityName": "Konya",
+    "districtName": "Karapinar",
+    "fileName": "9675_konya_karapinar.json"
+  },
+  {
+    "id": "17872",
+    "cityName": "Konya",
+    "districtName": "Karatay",
+    "fileName": "17872_konya_karatay.json"
+  },
+  {
+    "id": "9677",
+    "cityName": "Konya",
+    "districtName": "Kulu",
+    "fileName": "9677_konya_kulu.json"
+  },
+  {
+    "id": "17870",
+    "cityName": "Konya",
+    "districtName": "Meram",
+    "fileName": "17870_konya_meram.json"
+  },
+  {
+    "id": "17874",
+    "cityName": "Konya",
+    "districtName": "Sarayonu",
+    "fileName": "17874_konya_sarayonu.json"
+  },
+  {
+    "id": "17871",
+    "cityName": "Konya",
+    "districtName": "Selcuklu",
+    "fileName": "17871_konya_selcuklu.json"
+  },
+  {
+    "id": "9678",
+    "cityName": "Konya",
+    "districtName": "Seydisehir",
+    "fileName": "9678_konya_seydisehir.json"
+  },
+  {
+    "id": "17873",
+    "cityName": "Konya",
+    "districtName": "Taskent",
+    "fileName": "17873_konya_taskent.json"
+  },
+  {
+    "id": "9679",
+    "cityName": "Konya",
+    "districtName": "Tuzlukcu",
+    "fileName": "9679_konya_tuzlukcu.json"
+  },
+  {
+    "id": "9680",
+    "cityName": "Konya",
+    "districtName": "Yalihuyuk",
+    "fileName": "9680_konya_yalihuyuk.json"
+  },
+  {
+    "id": "9681",
+    "cityName": "Konya",
+    "districtName": "Yunak",
+    "fileName": "9681_konya_yunak.json"
+  },
+  {
+    "id": "9689",
+    "cityName": "Kutahya",
+    "districtName": null,
+    "fileName": "9689_kutahya.json"
+  },
+  {
+    "id": "9682",
+    "cityName": "Kutahya",
+    "districtName": "Altintas",
+    "fileName": "9682_kutahya_altintas.json"
+  },
+  {
+    "id": "9683",
+    "cityName": "Kutahya",
+    "districtName": "Aslanapa",
+    "fileName": "9683_kutahya_aslanapa.json"
+  },
+  {
+    "id": "9684",
+    "cityName": "Kutahya",
+    "districtName": "Cavdarhisar",
+    "fileName": "9684_kutahya_cavdarhisar.json"
+  },
+  {
+    "id": "9685",
+    "cityName": "Kutahya",
+    "districtName": "Domanic",
+    "fileName": "9685_kutahya_domanic.json"
+  },
+  {
+    "id": "17906",
+    "cityName": "Kutahya",
+    "districtName": "Dumlupinar",
+    "fileName": "17906_kutahya_dumlupinar.json"
+  },
+  {
+    "id": "9686",
+    "cityName": "Kutahya",
+    "districtName": "Emet",
+    "fileName": "9686_kutahya_emet.json"
+  },
+  {
+    "id": "9687",
+    "cityName": "Kutahya",
+    "districtName": "Gediz",
+    "fileName": "9687_kutahya_gediz.json"
+  },
+  {
+    "id": "9688",
+    "cityName": "Kutahya",
+    "districtName": "Hisarcik",
+    "fileName": "9688_kutahya_hisarcik.json"
+  },
+  {
+    "id": "9690",
+    "cityName": "Kutahya",
+    "districtName": "Pazarlar",
+    "fileName": "9690_kutahya_pazarlar.json"
+  },
+  {
+    "id": "9691",
+    "cityName": "Kutahya",
+    "districtName": "Saphane",
+    "fileName": "9691_kutahya_saphane.json"
+  },
+  {
+    "id": "9692",
+    "cityName": "Kutahya",
+    "districtName": "Simav",
+    "fileName": "9692_kutahya_simav.json"
+  },
+  {
+    "id": "9693",
+    "cityName": "Kutahya",
+    "districtName": "Tavsanli",
+    "fileName": "9693_kutahya_tavsanli.json"
+  },
+  {
+    "id": "9703",
+    "cityName": "Malatya",
+    "districtName": null,
+    "fileName": "9703_malatya.json"
+  },
+  {
+    "id": "9694",
+    "cityName": "Malatya",
+    "districtName": "Akcadag",
+    "fileName": "9694_malatya_akcadag.json"
+  },
+  {
+    "id": "9695",
+    "cityName": "Malatya",
+    "districtName": "Arapgir",
+    "fileName": "9695_malatya_arapgir.json"
+  },
+  {
+    "id": "9696",
+    "cityName": "Malatya",
+    "districtName": "Arguvan",
+    "fileName": "9696_malatya_arguvan.json"
+  },
+  {
+    "id": "9697",
+    "cityName": "Malatya",
+    "districtName": "Darende",
+    "fileName": "9697_malatya_darende.json"
+  },
+  {
+    "id": "9698",
+    "cityName": "Malatya",
+    "districtName": "Dogansehir",
+    "fileName": "9698_malatya_dogansehir.json"
+  },
+  {
+    "id": "9699",
+    "cityName": "Malatya",
+    "districtName": "Doganyol",
+    "fileName": "9699_malatya_doganyol.json"
+  },
+  {
+    "id": "9700",
+    "cityName": "Malatya",
+    "districtName": "Hekimhan",
+    "fileName": "9700_malatya_hekimhan.json"
+  },
+  {
+    "id": "9701",
+    "cityName": "Malatya",
+    "districtName": "Kale-m",
+    "fileName": "9701_malatya_kale-m.json"
+  },
+  {
+    "id": "9702",
+    "cityName": "Malatya",
+    "districtName": "Kuluncak",
+    "fileName": "9702_malatya_kuluncak.json"
+  },
+  {
+    "id": "9704",
+    "cityName": "Malatya",
+    "districtName": "Puturge",
+    "fileName": "9704_malatya_puturge.json"
+  },
+  {
+    "id": "9705",
+    "cityName": "Malatya",
+    "districtName": "Yazihan",
+    "fileName": "9705_malatya_yazihan.json"
+  },
+  {
+    "id": "9706",
+    "cityName": "Malatya",
+    "districtName": "Yesilyurt",
+    "fileName": "9706_malatya_yesilyurt.json"
+  },
+  {
+    "id": "9716",
+    "cityName": "Manisa",
+    "districtName": null,
+    "fileName": "9716_manisa.json"
+  },
+  {
+    "id": "9707",
+    "cityName": "Manisa",
+    "districtName": "Ahmetli",
+    "fileName": "9707_manisa_ahmetli.json"
+  },
+  {
+    "id": "9708",
+    "cityName": "Manisa",
+    "districtName": "Akhisar",
+    "fileName": "9708_manisa_akhisar.json"
+  },
+  {
+    "id": "9709",
+    "cityName": "Manisa",
+    "districtName": "Alasehir",
+    "fileName": "9709_manisa_alasehir.json"
+  },
+  {
+    "id": "9710",
+    "cityName": "Manisa",
+    "districtName": "Demirci",
+    "fileName": "9710_manisa_demirci.json"
+  },
+  {
+    "id": "9711",
+    "cityName": "Manisa",
+    "districtName": "Golmarmara",
+    "fileName": "9711_manisa_golmarmara.json"
+  },
+  {
+    "id": "9712",
+    "cityName": "Manisa",
+    "districtName": "Gordes",
+    "fileName": "9712_manisa_gordes.json"
+  },
+  {
+    "id": "9713",
+    "cityName": "Manisa",
+    "districtName": "Kirkagac",
+    "fileName": "9713_manisa_kirkagac.json"
+  },
+  {
+    "id": "9714",
+    "cityName": "Manisa",
+    "districtName": "Koprubasi",
+    "fileName": "9714_manisa_koprubasi.json"
+  },
+  {
+    "id": "9715",
+    "cityName": "Manisa",
+    "districtName": "Kula",
+    "fileName": "9715_manisa_kula.json"
+  },
+  {
+    "id": "9717",
+    "cityName": "Manisa",
+    "districtName": "Salihli",
+    "fileName": "9717_manisa_salihli.json"
+  },
+  {
+    "id": "9718",
+    "cityName": "Manisa",
+    "districtName": "Sarigol",
+    "fileName": "9718_manisa_sarigol.json"
+  },
+  {
+    "id": "9719",
+    "cityName": "Manisa",
+    "districtName": "Saruhanli",
+    "fileName": "9719_manisa_saruhanli.json"
+  },
+  {
+    "id": "9720",
+    "cityName": "Manisa",
+    "districtName": "Selendi",
+    "fileName": "9720_manisa_selendi.json"
+  },
+  {
+    "id": "9721",
+    "cityName": "Manisa",
+    "districtName": "Soma",
+    "fileName": "9721_manisa_soma.json"
+  },
+  {
+    "id": "9722",
+    "cityName": "Manisa",
+    "districtName": "Turgutlu",
+    "fileName": "9722_manisa_turgutlu.json"
+  },
+  {
+    "id": "9726",
+    "cityName": "Mardin",
+    "districtName": null,
+    "fileName": "9726_mardin.json"
+  },
+  {
+    "id": "9723",
+    "cityName": "Mardin",
+    "districtName": "Dargecit",
+    "fileName": "9723_mardin_dargecit.json"
+  },
+  {
+    "id": "9724",
+    "cityName": "Mardin",
+    "districtName": "Derik",
+    "fileName": "9724_mardin_derik.json"
+  },
+  {
+    "id": "9725",
+    "cityName": "Mardin",
+    "districtName": "Kiziltepe",
+    "fileName": "9725_mardin_kiziltepe.json"
+  },
+  {
+    "id": "9727",
+    "cityName": "Mardin",
+    "districtName": "Mazidagi",
+    "fileName": "9727_mardin_mazidagi.json"
+  },
+  {
+    "id": "9728",
+    "cityName": "Mardin",
+    "districtName": "Midyat",
+    "fileName": "9728_mardin_midyat.json"
+  },
+  {
+    "id": "9729",
+    "cityName": "Mardin",
+    "districtName": "Nusaybin",
+    "fileName": "9729_mardin_nusaybin.json"
+  },
+  {
+    "id": "9730",
+    "cityName": "Mardin",
+    "districtName": "Omerli",
+    "fileName": "9730_mardin_omerli.json"
+  },
+  {
+    "id": "17901",
+    "cityName": "Mardin",
+    "districtName": "Savur",
+    "fileName": "17901_mardin_savur.json"
+  },
+  {
+    "id": "9737",
+    "cityName": "Mersin",
+    "districtName": null,
+    "fileName": "9737_mersin.json"
+  },
+  {
+    "id": "9731",
+    "cityName": "Mersin",
+    "districtName": "Anamur",
+    "fileName": "9731_mersin_anamur.json"
+  },
+  {
+    "id": "9732",
+    "cityName": "Mersin",
+    "districtName": "Aydincik",
+    "fileName": "9732_mersin_aydincik.json"
+  },
+  {
+    "id": "9733",
+    "cityName": "Mersin",
+    "districtName": "Bozyazi",
+    "fileName": "9733_mersin_bozyazi.json"
+  },
+  {
+    "id": "9734",
+    "cityName": "Mersin",
+    "districtName": "Camliyayla",
+    "fileName": "9734_mersin_camliyayla.json"
+  },
+  {
+    "id": "9735",
+    "cityName": "Mersin",
+    "districtName": "Erdemli",
+    "fileName": "9735_mersin_erdemli.json"
+  },
+  {
+    "id": "9736",
+    "cityName": "Mersin",
+    "districtName": "Gulnar",
+    "fileName": "9736_mersin_gulnar.json"
+  },
+  {
+    "id": "9738",
+    "cityName": "Mersin",
+    "districtName": "Mut",
+    "fileName": "9738_mersin_mut.json"
+  },
+  {
+    "id": "9739",
+    "cityName": "Mersin",
+    "districtName": "Silifke",
+    "fileName": "9739_mersin_silifke.json"
+  },
+  {
+    "id": "9740",
+    "cityName": "Mersin",
+    "districtName": "Tarsus",
+    "fileName": "9740_mersin_tarsus.json"
+  },
+  {
+    "id": "9747",
+    "cityName": "Mugla",
+    "districtName": null,
+    "fileName": "9747_mugla.json"
+  },
+  {
+    "id": "9741",
+    "cityName": "Mugla",
+    "districtName": "Bodrum",
+    "fileName": "9741_mugla_bodrum.json"
+  },
+  {
+    "id": "9742",
+    "cityName": "Mugla",
+    "districtName": "Dalaman",
+    "fileName": "9742_mugla_dalaman.json"
+  },
+  {
+    "id": "9743",
+    "cityName": "Mugla",
+    "districtName": "Datca",
+    "fileName": "9743_mugla_datca.json"
+  },
+  {
+    "id": "9744",
+    "cityName": "Mugla",
+    "districtName": "Fethiye",
+    "fileName": "9744_mugla_fethiye.json"
+  },
+  {
+    "id": "9745",
+    "cityName": "Mugla",
+    "districtName": "Koycegiz",
+    "fileName": "9745_mugla_koycegiz.json"
+  },
+  {
+    "id": "17883",
+    "cityName": "Mugla",
+    "districtName": "Marmaris",
+    "fileName": "17883_mugla_marmaris.json"
+  },
+  {
+    "id": "9746",
+    "cityName": "Mugla",
+    "districtName": "Milas",
+    "fileName": "9746_mugla_milas.json"
+  },
+  {
+    "id": "9748",
+    "cityName": "Mugla",
+    "districtName": "Ortaca",
+    "fileName": "9748_mugla_ortaca.json"
+  },
+  {
+    "id": "17884",
+    "cityName": "Mugla",
+    "districtName": "Seydikemer",
+    "fileName": "17884_mugla_seydikemer.json"
+  },
+  {
+    "id": "9749",
+    "cityName": "Mugla",
+    "districtName": "Ula",
+    "fileName": "9749_mugla_ula.json"
+  },
+  {
+    "id": "9750",
+    "cityName": "Mugla",
+    "districtName": "Yatagan",
+    "fileName": "9750_mugla_yatagan.json"
+  },
+  {
+    "id": "9755",
+    "cityName": "Mus",
+    "districtName": null,
+    "fileName": "9755_mus.json"
+  },
+  {
+    "id": "9751",
+    "cityName": "Mus",
+    "districtName": "Bulanik",
+    "fileName": "9751_mus_bulanik.json"
+  },
+  {
+    "id": "9752",
+    "cityName": "Mus",
+    "districtName": "Haskoy",
+    "fileName": "9752_mus_haskoy.json"
+  },
+  {
+    "id": "9753",
+    "cityName": "Mus",
+    "districtName": "Korkut",
+    "fileName": "9753_mus_korkut.json"
+  },
+  {
+    "id": "9754",
+    "cityName": "Mus",
+    "districtName": "Malazgirt",
+    "fileName": "9754_mus_malazgirt.json"
+  },
+  {
+    "id": "9756",
+    "cityName": "Mus",
+    "districtName": "Varto",
+    "fileName": "9756_mus_varto.json"
+  },
+  {
+    "id": "9760",
+    "cityName": "Nevsehir",
+    "districtName": null,
+    "fileName": "9760_nevsehir.json"
+  },
+  {
+    "id": "9757",
+    "cityName": "Nevsehir",
+    "districtName": "Acigol",
+    "fileName": "9757_nevsehir_acigol.json"
+  },
+  {
+    "id": "17878",
+    "cityName": "Nevsehir",
+    "districtName": "Avanos",
+    "fileName": "17878_nevsehir_avanos.json"
+  },
+  {
+    "id": "9758",
+    "cityName": "Nevsehir",
+    "districtName": "Hacibektas",
+    "fileName": "9758_nevsehir_hacibektas.json"
+  },
+  {
+    "id": "9759",
+    "cityName": "Nevsehir",
+    "districtName": "Kozakli",
+    "fileName": "9759_nevsehir_kozakli.json"
+  },
+  {
+    "id": "9761",
+    "cityName": "Nevsehir",
+    "districtName": "Urgup",
+    "fileName": "9761_nevsehir_urgup.json"
+  },
+  {
+    "id": "9766",
+    "cityName": "Nigde",
+    "districtName": null,
+    "fileName": "9766_nigde.json"
+  },
+  {
+    "id": "9762",
+    "cityName": "Nigde",
+    "districtName": "Altunhisar",
+    "fileName": "9762_nigde_altunhisar.json"
+  },
+  {
+    "id": "9763",
+    "cityName": "Nigde",
+    "districtName": "Bor",
+    "fileName": "9763_nigde_bor.json"
+  },
+  {
+    "id": "9764",
+    "cityName": "Nigde",
+    "districtName": "Camardi",
+    "fileName": "9764_nigde_camardi.json"
+  },
+  {
+    "id": "9765",
+    "cityName": "Nigde",
+    "districtName": "Ciftlik",
+    "fileName": "9765_nigde_ciftlik.json"
+  },
+  {
+    "id": "9767",
+    "cityName": "Nigde",
+    "districtName": "Ulukisla",
+    "fileName": "9767_nigde_ulukisla.json"
+  },
+  {
+    "id": "9782",
+    "cityName": "Ordu",
+    "districtName": null,
+    "fileName": "9782_ordu.json"
+  },
+  {
+    "id": "9768",
+    "cityName": "Ordu",
+    "districtName": "Akkus",
+    "fileName": "9768_ordu_akkus.json"
+  },
+  {
+    "id": "9769",
+    "cityName": "Ordu",
+    "districtName": "Aybasti",
+    "fileName": "9769_ordu_aybasti.json"
+  },
+  {
+    "id": "9770",
+    "cityName": "Ordu",
+    "districtName": "Camas",
+    "fileName": "9770_ordu_camas.json"
+  },
+  {
+    "id": "9771",
+    "cityName": "Ordu",
+    "districtName": "Catalpinar",
+    "fileName": "9771_ordu_catalpinar.json"
+  },
+  {
+    "id": "9772",
+    "cityName": "Ordu",
+    "districtName": "Caybasi",
+    "fileName": "9772_ordu_caybasi.json"
+  },
+  {
+    "id": "9773",
+    "cityName": "Ordu",
+    "districtName": "Fatsa",
+    "fileName": "9773_ordu_fatsa.json"
+  },
+  {
+    "id": "9774",
+    "cityName": "Ordu",
+    "districtName": "Golkoy",
+    "fileName": "9774_ordu_golkoy.json"
+  },
+  {
+    "id": "9775",
+    "cityName": "Ordu",
+    "districtName": "Gulyali",
+    "fileName": "9775_ordu_gulyali.json"
+  },
+  {
+    "id": "9776",
+    "cityName": "Ordu",
+    "districtName": "Gurgentepe",
+    "fileName": "9776_ordu_gurgentepe.json"
+  },
+  {
+    "id": "9777",
+    "cityName": "Ordu",
+    "districtName": "Ikizce",
+    "fileName": "9777_ordu_ikizce.json"
+  },
+  {
+    "id": "9778",
+    "cityName": "Ordu",
+    "districtName": "Kabatas",
+    "fileName": "9778_ordu_kabatas.json"
+  },
+  {
+    "id": "9779",
+    "cityName": "Ordu",
+    "districtName": "Korgan",
+    "fileName": "9779_ordu_korgan.json"
+  },
+  {
+    "id": "9780",
+    "cityName": "Ordu",
+    "districtName": "Kumru",
+    "fileName": "9780_ordu_kumru.json"
+  },
+  {
+    "id": "9781",
+    "cityName": "Ordu",
+    "districtName": "Mesudiye",
+    "fileName": "9781_ordu_mesudiye.json"
+  },
+  {
+    "id": "9783",
+    "cityName": "Ordu",
+    "districtName": "Unye",
+    "fileName": "9783_ordu_unye.json"
+  },
+  {
+    "id": "9788",
+    "cityName": "Osmaniye",
+    "districtName": null,
+    "fileName": "9788_osmaniye.json"
+  },
+  {
+    "id": "9784",
+    "cityName": "Osmaniye",
+    "districtName": "Bahce",
+    "fileName": "9784_osmaniye_bahce.json"
+  },
+  {
+    "id": "9785",
+    "cityName": "Osmaniye",
+    "districtName": "Duzici",
+    "fileName": "9785_osmaniye_duzici.json"
+  },
+  {
+    "id": "9786",
+    "cityName": "Osmaniye",
+    "districtName": "Hasanbeyli",
+    "fileName": "9786_osmaniye_hasanbeyli.json"
+  },
+  {
+    "id": "9787",
+    "cityName": "Osmaniye",
+    "districtName": "Kadirli",
+    "fileName": "9787_osmaniye_kadirli.json"
+  },
+  {
+    "id": "9789",
+    "cityName": "Osmaniye",
+    "districtName": "Sumbas",
+    "fileName": "9789_osmaniye_sumbas.json"
+  },
+  {
+    "id": "9790",
+    "cityName": "Osmaniye",
+    "districtName": "Toprakkale",
+    "fileName": "9790_osmaniye_toprakkale.json"
+  },
+  {
+    "id": "9799",
+    "cityName": "Rize",
+    "districtName": null,
+    "fileName": "9799_rize.json"
+  },
+  {
+    "id": "9791",
+    "cityName": "Rize",
+    "districtName": "Ardesen",
+    "fileName": "9791_rize_ardesen.json"
+  },
+  {
+    "id": "9792",
+    "cityName": "Rize",
+    "districtName": "Camlihemsin",
+    "fileName": "9792_rize_camlihemsin.json"
+  },
+  {
+    "id": "9793",
+    "cityName": "Rize",
+    "districtName": "Cayeli",
+    "fileName": "9793_rize_cayeli.json"
+  },
+  {
+    "id": "9794",
+    "cityName": "Rize",
+    "districtName": "Findikli",
+    "fileName": "9794_rize_findikli.json"
+  },
+  {
+    "id": "9795",
+    "cityName": "Rize",
+    "districtName": "Hemsin",
+    "fileName": "9795_rize_hemsin.json"
+  },
+  {
+    "id": "9796",
+    "cityName": "Rize",
+    "districtName": "Ikizdere",
+    "fileName": "9796_rize_ikizdere.json"
+  },
+  {
+    "id": "9797",
+    "cityName": "Rize",
+    "districtName": "Iyidere",
+    "fileName": "9797_rize_iyidere.json"
+  },
+  {
+    "id": "9798",
+    "cityName": "Rize",
+    "districtName": "Pazar",
+    "fileName": "9798_rize_pazar.json"
+  },
+  {
+    "id": "9807",
+    "cityName": "Sakarya",
+    "districtName": null,
+    "fileName": "9807_sakarya.json"
+  },
+  {
+    "id": "9800",
+    "cityName": "Sakarya",
+    "districtName": "Akyazi",
+    "fileName": "9800_sakarya_akyazi.json"
+  },
+  {
+    "id": "9801",
+    "cityName": "Sakarya",
+    "districtName": "Geyve",
+    "fileName": "9801_sakarya_geyve.json"
+  },
+  {
+    "id": "9802",
+    "cityName": "Sakarya",
+    "districtName": "Hendek",
+    "fileName": "9802_sakarya_hendek.json"
+  },
+  {
+    "id": "9803",
+    "cityName": "Sakarya",
+    "districtName": "Karasu",
+    "fileName": "9803_sakarya_karasu.json"
+  },
+  {
+    "id": "9804",
+    "cityName": "Sakarya",
+    "districtName": "Kaynarca",
+    "fileName": "9804_sakarya_kaynarca.json"
+  },
+  {
+    "id": "9805",
+    "cityName": "Sakarya",
+    "districtName": "Kocaali",
+    "fileName": "9805_sakarya_kocaali.json"
+  },
+  {
+    "id": "9806",
+    "cityName": "Sakarya",
+    "districtName": "Pamukova",
+    "fileName": "9806_sakarya_pamukova.json"
+  },
+  {
+    "id": "9808",
+    "cityName": "Sakarya",
+    "districtName": "Tarakli",
+    "fileName": "9808_sakarya_tarakli.json"
+  },
+  {
+    "id": "9819",
+    "cityName": "Samsun",
+    "districtName": null,
+    "fileName": "9819_samsun.json"
+  },
+  {
+    "id": "9809",
+    "cityName": "Samsun",
+    "districtName": "19-mayis",
+    "fileName": "9809_samsun_19-mayis.json"
+  },
+  {
+    "id": "9810",
+    "cityName": "Samsun",
+    "districtName": "Alacam",
+    "fileName": "9810_samsun_alacam.json"
+  },
+  {
+    "id": "9811",
+    "cityName": "Samsun",
+    "districtName": "Asarcik",
+    "fileName": "9811_samsun_asarcik.json"
+  },
+  {
+    "id": "17911",
+    "cityName": "Samsun",
+    "districtName": "Atakum",
+    "fileName": "17911_samsun_atakum.json"
+  },
+  {
+    "id": "9812",
+    "cityName": "Samsun",
+    "districtName": "Ayvacik-s",
+    "fileName": "9812_samsun_ayvacik-s.json"
+  },
+  {
+    "id": "9813",
+    "cityName": "Samsun",
+    "districtName": "Bafra",
+    "fileName": "9813_samsun_bafra.json"
+  },
+  {
+    "id": "9814",
+    "cityName": "Samsun",
+    "districtName": "Carsamba",
+    "fileName": "9814_samsun_carsamba.json"
+  },
+  {
+    "id": "9815",
+    "cityName": "Samsun",
+    "districtName": "Havza",
+    "fileName": "9815_samsun_havza.json"
+  },
+  {
+    "id": "9816",
+    "cityName": "Samsun",
+    "districtName": "Kavak",
+    "fileName": "9816_samsun_kavak.json"
+  },
+  {
+    "id": "9817",
+    "cityName": "Samsun",
+    "districtName": "Ladik",
+    "fileName": "9817_samsun_ladik.json"
+  },
+  {
+    "id": "9818",
+    "cityName": "Samsun",
+    "districtName": "Salipazari",
+    "fileName": "9818_samsun_salipazari.json"
+  },
+  {
+    "id": "9820",
+    "cityName": "Samsun",
+    "districtName": "Tekkekoy",
+    "fileName": "9820_samsun_tekkekoy.json"
+  },
+  {
+    "id": "9821",
+    "cityName": "Samsun",
+    "districtName": "Terme",
+    "fileName": "9821_samsun_terme.json"
+  },
+  {
+    "id": "9822",
+    "cityName": "Samsun",
+    "districtName": "Vezirkopru",
+    "fileName": "9822_samsun_vezirkopru.json"
+  },
+  {
+    "id": "9823",
+    "cityName": "Samsun",
+    "districtName": "Yakakent",
+    "fileName": "9823_samsun_yakakent.json"
+  },
+  {
+    "id": "9831",
+    "cityName": "Sanliurfa",
+    "districtName": null,
+    "fileName": "9831_sanliurfa.json"
+  },
+  {
+    "id": "9824",
+    "cityName": "Sanliurfa",
+    "districtName": "Akcakale",
+    "fileName": "9824_sanliurfa_akcakale.json"
+  },
+  {
+    "id": "9825",
+    "cityName": "Sanliurfa",
+    "districtName": "Birecik",
+    "fileName": "9825_sanliurfa_birecik.json"
+  },
+  {
+    "id": "9826",
+    "cityName": "Sanliurfa",
+    "districtName": "Bozova",
+    "fileName": "9826_sanliurfa_bozova.json"
+  },
+  {
+    "id": "9827",
+    "cityName": "Sanliurfa",
+    "districtName": "Ceylanpinar",
+    "fileName": "9827_sanliurfa_ceylanpinar.json"
+  },
+  {
+    "id": "9828",
+    "cityName": "Sanliurfa",
+    "districtName": "Halfeti",
+    "fileName": "9828_sanliurfa_halfeti.json"
+  },
+  {
+    "id": "9829",
+    "cityName": "Sanliurfa",
+    "districtName": "Harran",
+    "fileName": "9829_sanliurfa_harran.json"
+  },
+  {
+    "id": "9830",
+    "cityName": "Sanliurfa",
+    "districtName": "Hilvan",
+    "fileName": "9830_sanliurfa_hilvan.json"
+  },
+  {
+    "id": "9832",
+    "cityName": "Sanliurfa",
+    "districtName": "Siverek",
+    "fileName": "9832_sanliurfa_siverek.json"
+  },
+  {
+    "id": "9833",
+    "cityName": "Sanliurfa",
+    "districtName": "Suruc",
+    "fileName": "9833_sanliurfa_suruc.json"
+  },
+  {
+    "id": "9834",
+    "cityName": "Sanliurfa",
+    "districtName": "Viransehir",
+    "fileName": "9834_sanliurfa_viransehir.json"
+  },
+  {
+    "id": "9839",
+    "cityName": "Siirt",
+    "districtName": null,
+    "fileName": "9839_siirt.json"
+  },
+  {
+    "id": "9835",
+    "cityName": "Siirt",
+    "districtName": "Baykan",
+    "fileName": "9835_siirt_baykan.json"
+  },
+  {
+    "id": "9836",
+    "cityName": "Siirt",
+    "districtName": "Eruh",
+    "fileName": "9836_siirt_eruh.json"
+  },
+  {
+    "id": "9837",
+    "cityName": "Siirt",
+    "districtName": "Kurtalan",
+    "fileName": "9837_siirt_kurtalan.json"
+  },
+  {
+    "id": "9838",
+    "cityName": "Siirt",
+    "districtName": "Pervari",
+    "fileName": "9838_siirt_pervari.json"
+  },
+  {
+    "id": "17888",
+    "cityName": "Siirt",
+    "districtName": "Sirvan",
+    "fileName": "17888_siirt_sirvan.json"
+  },
+  {
+    "id": "9847",
+    "cityName": "Sinop",
+    "districtName": null,
+    "fileName": "9847_sinop.json"
+  },
+  {
+    "id": "9840",
+    "cityName": "Sinop",
+    "districtName": "Ayancik",
+    "fileName": "9840_sinop_ayancik.json"
+  },
+  {
+    "id": "9841",
+    "cityName": "Sinop",
+    "districtName": "Boyabat",
+    "fileName": "9841_sinop_boyabat.json"
+  },
+  {
+    "id": "9842",
+    "cityName": "Sinop",
+    "districtName": "Dikmen",
+    "fileName": "9842_sinop_dikmen.json"
+  },
+  {
+    "id": "9843",
+    "cityName": "Sinop",
+    "districtName": "Duragan",
+    "fileName": "9843_sinop_duragan.json"
+  },
+  {
+    "id": "9844",
+    "cityName": "Sinop",
+    "districtName": "Erfelek",
+    "fileName": "9844_sinop_erfelek.json"
+  },
+  {
+    "id": "9845",
+    "cityName": "Sinop",
+    "districtName": "Gerze",
+    "fileName": "9845_sinop_gerze.json"
+  },
+  {
+    "id": "9846",
+    "cityName": "Sinop",
+    "districtName": "Sarayduzu",
+    "fileName": "9846_sinop_sarayduzu.json"
+  },
+  {
+    "id": "9848",
+    "cityName": "Sinop",
+    "districtName": "Turkeli",
+    "fileName": "9848_sinop_turkeli.json"
+  },
+  {
+    "id": "9854",
+    "cityName": "Sirnak",
+    "districtName": null,
+    "fileName": "9854_sirnak.json"
+  },
+  {
+    "id": "9849",
+    "cityName": "Sirnak",
+    "districtName": "Beytussebap",
+    "fileName": "9849_sirnak_beytussebap.json"
+  },
+  {
+    "id": "9850",
+    "cityName": "Sirnak",
+    "districtName": "Cizre",
+    "fileName": "9850_sirnak_cizre.json"
+  },
+  {
+    "id": "9851",
+    "cityName": "Sirnak",
+    "districtName": "Guclukonak",
+    "fileName": "9851_sirnak_guclukonak.json"
+  },
+  {
+    "id": "9852",
+    "cityName": "Sirnak",
+    "districtName": "Idil",
+    "fileName": "9852_sirnak_idil.json"
+  },
+  {
+    "id": "9853",
+    "cityName": "Sirnak",
+    "districtName": "Silopi",
+    "fileName": "9853_sirnak_silopi.json"
+  },
+  {
+    "id": "9855",
+    "cityName": "Sirnak",
+    "districtName": "Uludere",
+    "fileName": "9855_sirnak_uludere.json"
+  },
+  {
+    "id": "9868",
+    "cityName": "Sivas",
+    "districtName": null,
+    "fileName": "9868_sivas.json"
+  },
+  {
+    "id": "9856",
+    "cityName": "Sivas",
+    "districtName": "Akincilar",
+    "fileName": "9856_sivas_akincilar.json"
+  },
+  {
+    "id": "9857",
+    "cityName": "Sivas",
+    "districtName": "Altinyaylas",
+    "fileName": "9857_sivas_altinyaylas.json"
+  },
+  {
+    "id": "9858",
+    "cityName": "Sivas",
+    "districtName": "Divrigi",
+    "fileName": "9858_sivas_divrigi.json"
+  },
+  {
+    "id": "9859",
+    "cityName": "Sivas",
+    "districtName": "Dogansar",
+    "fileName": "9859_sivas_dogansar.json"
+  },
+  {
+    "id": "9860",
+    "cityName": "Sivas",
+    "districtName": "Gemerek",
+    "fileName": "9860_sivas_gemerek.json"
+  },
+  {
+    "id": "9861",
+    "cityName": "Sivas",
+    "districtName": "Golova",
+    "fileName": "9861_sivas_golova.json"
+  },
+  {
+    "id": "9862",
+    "cityName": "Sivas",
+    "districtName": "Gurun",
+    "fileName": "9862_sivas_gurun.json"
+  },
+  {
+    "id": "9863",
+    "cityName": "Sivas",
+    "districtName": "Hafik",
+    "fileName": "9863_sivas_hafik.json"
+  },
+  {
+    "id": "9864",
+    "cityName": "Sivas",
+    "districtName": "Imranli",
+    "fileName": "9864_sivas_imranli.json"
+  },
+  {
+    "id": "9865",
+    "cityName": "Sivas",
+    "districtName": "Kangal",
+    "fileName": "9865_sivas_kangal.json"
+  },
+  {
+    "id": "9866",
+    "cityName": "Sivas",
+    "districtName": "Koyulhisar",
+    "fileName": "9866_sivas_koyulhisar.json"
+  },
+  {
+    "id": "9867",
+    "cityName": "Sivas",
+    "districtName": "Sarkisla",
+    "fileName": "9867_sivas_sarkisla.json"
+  },
+  {
+    "id": "9869",
+    "cityName": "Sivas",
+    "districtName": "Susehri",
+    "fileName": "9869_sivas_susehri.json"
+  },
+  {
+    "id": "17920",
+    "cityName": "Sivas",
+    "districtName": "Ulas",
+    "fileName": "17920_sivas_ulas.json"
+  },
+  {
+    "id": "9870",
+    "cityName": "Sivas",
+    "districtName": "Yildizeli",
+    "fileName": "9870_sivas_yildizeli.json"
+  },
+  {
+    "id": "9871",
+    "cityName": "Sivas",
+    "districtName": "Zara",
+    "fileName": "9871_sivas_zara.json"
+  },
+  {
+    "id": "9879",
+    "cityName": "Tekirdag",
+    "districtName": null,
+    "fileName": "9879_tekirdag.json"
+  },
+  {
+    "id": "9872",
+    "cityName": "Tekirdag",
+    "districtName": "Cerkezkoy",
+    "fileName": "9872_tekirdag_cerkezkoy.json"
+  },
+  {
+    "id": "9873",
+    "cityName": "Tekirdag",
+    "districtName": "Corlu",
+    "fileName": "9873_tekirdag_corlu.json"
+  },
+  {
+    "id": "17904",
+    "cityName": "Tekirdag",
+    "districtName": "Ergene",
+    "fileName": "17904_tekirdag_ergene.json"
+  },
+  {
+    "id": "9874",
+    "cityName": "Tekirdag",
+    "districtName": "Hayrabolu",
+    "fileName": "9874_tekirdag_hayrabolu.json"
+  },
+  {
+    "id": "17905",
+    "cityName": "Tekirdag",
+    "districtName": "Kapakli",
+    "fileName": "17905_tekirdag_kapakli.json"
+  },
+  {
+    "id": "9876",
+    "cityName": "Tekirdag",
+    "districtName": "Malkara",
+    "fileName": "9876_tekirdag_malkara.json"
+  },
+  {
+    "id": "9875",
+    "cityName": "Tekirdag",
+    "districtName": "Mereglisi",
+    "fileName": "9875_tekirdag_mereglisi.json"
+  },
+  {
+    "id": "9877",
+    "cityName": "Tekirdag",
+    "districtName": "Saray",
+    "fileName": "9877_tekirdag_saray.json"
+  },
+  {
+    "id": "9878",
+    "cityName": "Tekirdag",
+    "districtName": "Sarkoy",
+    "fileName": "9878_tekirdag_sarkoy.json"
+  },
+  {
+    "id": "9887",
+    "cityName": "Tokat",
+    "districtName": null,
+    "fileName": "9887_tokat.json"
+  },
+  {
+    "id": "9880",
+    "cityName": "Tokat",
+    "districtName": "Almus",
+    "fileName": "9880_tokat_almus.json"
+  },
+  {
+    "id": "9881",
+    "cityName": "Tokat",
+    "districtName": "Artova",
+    "fileName": "9881_tokat_artova.json"
+  },
+  {
+    "id": "9882",
+    "cityName": "Tokat",
+    "districtName": "Basciftlik",
+    "fileName": "9882_tokat_basciftlik.json"
+  },
+  {
+    "id": "17910",
+    "cityName": "Tokat",
+    "districtName": "Erbaa",
+    "fileName": "17910_tokat_erbaa.json"
+  },
+  {
+    "id": "9883",
+    "cityName": "Tokat",
+    "districtName": "Niksar",
+    "fileName": "9883_tokat_niksar.json"
+  },
+  {
+    "id": "9884",
+    "cityName": "Tokat",
+    "districtName": "Pazar-t",
+    "fileName": "9884_tokat_pazar-t.json"
+  },
+  {
+    "id": "9885",
+    "cityName": "Tokat",
+    "districtName": "Resadiye",
+    "fileName": "9885_tokat_resadiye.json"
+  },
+  {
+    "id": "9886",
+    "cityName": "Tokat",
+    "districtName": "Sulusaray",
+    "fileName": "9886_tokat_sulusaray.json"
+  },
+  {
+    "id": "9888",
+    "cityName": "Tokat",
+    "districtName": "Turhal",
+    "fileName": "9888_tokat_turhal.json"
+  },
+  {
+    "id": "9889",
+    "cityName": "Tokat",
+    "districtName": "Yesilyurt",
+    "fileName": "9889_tokat_yesilyurt.json"
+  },
+  {
+    "id": "9890",
+    "cityName": "Tokat",
+    "districtName": "Zile",
+    "fileName": "9890_tokat_zile.json"
+  },
+  {
+    "id": "9905",
+    "cityName": "Trabzon",
+    "districtName": null,
+    "fileName": "9905_trabzon.json"
+  },
+  {
+    "id": "9891",
+    "cityName": "Trabzon",
+    "districtName": "Akcaabat",
+    "fileName": "9891_trabzon_akcaabat.json"
+  },
+  {
+    "id": "9892",
+    "cityName": "Trabzon",
+    "districtName": "Arakli",
+    "fileName": "9892_trabzon_arakli.json"
+  },
+  {
+    "id": "9893",
+    "cityName": "Trabzon",
+    "districtName": "Arsin",
+    "fileName": "9893_trabzon_arsin.json"
+  },
+  {
+    "id": "9894",
+    "cityName": "Trabzon",
+    "districtName": "Besikduzu",
+    "fileName": "9894_trabzon_besikduzu.json"
+  },
+  {
+    "id": "9895",
+    "cityName": "Trabzon",
+    "districtName": "Carsibasi",
+    "fileName": "9895_trabzon_carsibasi.json"
+  },
+  {
+    "id": "9896",
+    "cityName": "Trabzon",
+    "districtName": "Caykara",
+    "fileName": "9896_trabzon_caykara.json"
+  },
+  {
+    "id": "9897",
+    "cityName": "Trabzon",
+    "districtName": "Dernekpazari",
+    "fileName": "9897_trabzon_dernekpazari.json"
+  },
+  {
+    "id": "9898",
+    "cityName": "Trabzon",
+    "districtName": "Duzkoy",
+    "fileName": "9898_trabzon_duzkoy.json"
+  },
+  {
+    "id": "9899",
+    "cityName": "Trabzon",
+    "districtName": "Hayrat",
+    "fileName": "9899_trabzon_hayrat.json"
+  },
+  {
+    "id": "9900",
+    "cityName": "Trabzon",
+    "districtName": "Koprubasi-t",
+    "fileName": "9900_trabzon_koprubasi-t.json"
+  },
+  {
+    "id": "9901",
+    "cityName": "Trabzon",
+    "districtName": "Of",
+    "fileName": "9901_trabzon_of.json"
+  },
+  {
+    "id": "9902",
+    "cityName": "Trabzon",
+    "districtName": "Salpazari",
+    "fileName": "9902_trabzon_salpazari.json"
+  },
+  {
+    "id": "9903",
+    "cityName": "Trabzon",
+    "districtName": "Surmene",
+    "fileName": "9903_trabzon_surmene.json"
+  },
+  {
+    "id": "9904",
+    "cityName": "Trabzon",
+    "districtName": "Tonya",
+    "fileName": "9904_trabzon_tonya.json"
+  },
+  {
+    "id": "9906",
+    "cityName": "Trabzon",
+    "districtName": "Vakfikebir",
+    "fileName": "9906_trabzon_vakfikebir.json"
+  },
+  {
+    "id": "9907",
+    "cityName": "Trabzon",
+    "districtName": "Yomra",
+    "fileName": "9907_trabzon_yomra.json"
+  },
+  {
+    "id": "9914",
+    "cityName": "Tunceli",
+    "districtName": null,
+    "fileName": "9914_tunceli.json"
+  },
+  {
+    "id": "9908",
+    "cityName": "Tunceli",
+    "districtName": "Cemisgezek",
+    "fileName": "9908_tunceli_cemisgezek.json"
+  },
+  {
+    "id": "9909",
+    "cityName": "Tunceli",
+    "districtName": "Hozat",
+    "fileName": "9909_tunceli_hozat.json"
+  },
+  {
+    "id": "9910",
+    "cityName": "Tunceli",
+    "districtName": "Nazimiye",
+    "fileName": "9910_tunceli_nazimiye.json"
+  },
+  {
+    "id": "9911",
+    "cityName": "Tunceli",
+    "districtName": "Ovacik",
+    "fileName": "9911_tunceli_ovacik.json"
+  },
+  {
+    "id": "9912",
+    "cityName": "Tunceli",
+    "districtName": "Pertek",
+    "fileName": "9912_tunceli_pertek.json"
+  },
+  {
+    "id": "9913",
+    "cityName": "Tunceli",
+    "districtName": "Pulumur",
+    "fileName": "9913_tunceli_pulumur.json"
+  },
+  {
+    "id": "9919",
+    "cityName": "Usak",
+    "districtName": null,
+    "fileName": "9919_usak.json"
+  },
+  {
+    "id": "9915",
+    "cityName": "Usak",
+    "districtName": "Banaz",
+    "fileName": "9915_usak_banaz.json"
+  },
+  {
+    "id": "9916",
+    "cityName": "Usak",
+    "districtName": "Esme",
+    "fileName": "9916_usak_esme.json"
+  },
+  {
+    "id": "9917",
+    "cityName": "Usak",
+    "districtName": "Karahalli",
+    "fileName": "9917_usak_karahalli.json"
+  },
+  {
+    "id": "9918",
+    "cityName": "Usak",
+    "districtName": "Sivasli",
+    "fileName": "9918_usak_sivasli.json"
+  },
+  {
+    "id": "17909",
+    "cityName": "Usak",
+    "districtName": "Ulubey",
+    "fileName": "17909_usak_ulubey.json"
+  },
+  {
+    "id": "9930",
+    "cityName": "Van",
+    "districtName": null,
+    "fileName": "9930_van.json"
+  },
+  {
+    "id": "9920",
+    "cityName": "Van",
+    "districtName": "Bahcesaray",
+    "fileName": "9920_van_bahcesaray.json"
+  },
+  {
+    "id": "9921",
+    "cityName": "Van",
+    "districtName": "Baskale",
+    "fileName": "9921_van_baskale.json"
+  },
+  {
+    "id": "9922",
+    "cityName": "Van",
+    "districtName": "Caldiran",
+    "fileName": "9922_van_caldiran.json"
+  },
+  {
+    "id": "9923",
+    "cityName": "Van",
+    "districtName": "Catak",
+    "fileName": "9923_van_catak.json"
+  },
+  {
+    "id": "9924",
+    "cityName": "Van",
+    "districtName": "Edremit-v",
+    "fileName": "9924_van_edremit-v.json"
+  },
+  {
+    "id": "9925",
+    "cityName": "Van",
+    "districtName": "Ercis",
+    "fileName": "9925_van_ercis.json"
+  },
+  {
+    "id": "9926",
+    "cityName": "Van",
+    "districtName": "Gevas",
+    "fileName": "9926_van_gevas.json"
+  },
+  {
+    "id": "17912",
+    "cityName": "Van",
+    "districtName": "Gurpinar",
+    "fileName": "17912_van_gurpinar.json"
+  },
+  {
+    "id": "9927",
+    "cityName": "Van",
+    "districtName": "Muradiye",
+    "fileName": "9927_van_muradiye.json"
+  },
+  {
+    "id": "9928",
+    "cityName": "Van",
+    "districtName": "Ozalp",
+    "fileName": "9928_van_ozalp.json"
+  },
+  {
+    "id": "9929",
+    "cityName": "Van",
+    "districtName": "Saray-v",
+    "fileName": "9929_van_saray-v.json"
+  },
+  {
+    "id": "9935",
+    "cityName": "Yalova",
+    "districtName": null,
+    "fileName": "9935_yalova.json"
+  },
+  {
+    "id": "9931",
+    "cityName": "Yalova",
+    "districtName": "Altinova",
+    "fileName": "9931_yalova_altinova.json"
+  },
+  {
+    "id": "9932",
+    "cityName": "Yalova",
+    "districtName": "Armutlu",
+    "fileName": "9932_yalova_armutlu.json"
+  },
+  {
+    "id": "9933",
+    "cityName": "Yalova",
+    "districtName": "Cinarcik",
+    "fileName": "9933_yalova_cinarcik.json"
+  },
+  {
+    "id": "9934",
+    "cityName": "Yalova",
+    "districtName": "Termal",
+    "fileName": "9934_yalova_termal.json"
+  },
+  {
+    "id": "9936",
+    "cityName": "Yozgat",
+    "districtName": "Akdagmadeni",
+    "fileName": "9936_yozgat_akdagmadeni.json"
+  },
+  {
+    "id": "9937",
+    "cityName": "Yozgat",
+    "districtName": "Aydincik-y",
+    "fileName": "9937_yozgat_aydincik-y.json"
+  },
+  {
+    "id": "9938",
+    "cityName": "Yozgat",
+    "districtName": "Bogazliyan",
+    "fileName": "9938_yozgat_bogazliyan.json"
+  },
+  {
+    "id": "9939",
+    "cityName": "Yozgat",
+    "districtName": "Candir",
+    "fileName": "9939_yozgat_candir.json"
+  },
+  {
+    "id": "9940",
+    "cityName": "Yozgat",
+    "districtName": "Cayiralan",
+    "fileName": "9940_yozgat_cayiralan.json"
+  },
+  {
+    "id": "9941",
+    "cityName": "Yozgat",
+    "districtName": "Cekerek",
+    "fileName": "9941_yozgat_cekerek.json"
+  },
+  {
+    "id": "9942",
+    "cityName": "Yozgat",
+    "districtName": "Kadisehri",
+    "fileName": "9942_yozgat_kadisehri.json"
+  },
+  {
+    "id": "9943",
+    "cityName": "Yozgat",
+    "districtName": "Saraykent",
+    "fileName": "9943_yozgat_saraykent.json"
+  },
+  {
+    "id": "9944",
+    "cityName": "Yozgat",
+    "districtName": "Sarikaya",
+    "fileName": "9944_yozgat_sarikaya.json"
+  },
+  {
+    "id": "17879",
+    "cityName": "Yozgat",
+    "districtName": "Sefaatli",
+    "fileName": "17879_yozgat_sefaatli.json"
+  },
+  {
+    "id": "9946",
+    "cityName": "Yozgat",
+    "districtName": "Sorgun",
+    "fileName": "9946_yozgat_sorgun.json"
+  },
+  {
+    "id": "9947",
+    "cityName": "Yozgat",
+    "districtName": "Yenifakili",
+    "fileName": "9947_yozgat_yenifakili.json"
+  },
+  {
+    "id": "9948",
+    "cityName": "Yozgat",
+    "districtName": "Yerkoy",
+    "fileName": "9948_yozgat_yerkoy.json"
+  },
+  {
+    "id": "9950",
+    "cityName": "Zonguldak",
+    "districtName": "Alapli",
+    "fileName": "9950_zonguldak_alapli.json"
+  },
+  {
+    "id": "9951",
+    "cityName": "Zonguldak",
+    "districtName": "Caycuma",
+    "fileName": "9951_zonguldak_caycuma.json"
+  },
+  {
+    "id": "9952",
+    "cityName": "Zonguldak",
+    "districtName": "Devrek",
+    "fileName": "9952_zonguldak_devrek.json"
+  },
+  {
+    "id": "9953",
+    "cityName": "Zonguldak",
+    "districtName": "Gokcebey",
+    "fileName": "9953_zonguldak_gokcebey.json"
+  },
+  {
+    "id": "9954",
+    "cityName": "Zonguldak",
+    "districtName": "Karadeniz-eregli",
+    "fileName": "9954_zonguldak_karadeniz-eregli.json"
+  }
+]

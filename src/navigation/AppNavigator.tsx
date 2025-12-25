@@ -14,6 +14,7 @@ import { RandomVerseScreen } from '../screens/RandomVerseScreen';
 import { AllTranslationsScreen } from '../screens/AllTranslationsScreen';
 import { HatimScreen } from '../screens/HatimScreen';
 import { HatimDetailScreen } from '../screens/HatimDetailScreen';
+import { PrayerTimesScreen } from '../screens/PrayerTimesScreen';
 import { ForumProvider } from '../contexts/ForumContext';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useGlobalAudio } from '../contexts/AudioContext';
@@ -48,10 +49,11 @@ export type RootStackParamList = {
   AllTranslations: { verse: any };
   Hatim: undefined;
   HatimDetail: { hatimId: string };
+  PrayerTimes: undefined;
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -112,6 +114,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return '/hatim';
       case 'HatimDetail':
         return route.params?.hatimId ? `/hatim/${route.params.hatimId}` : '/hatim';
+      case 'PrayerTimes':
+        return '/prayer-times';
       default:
         return '/';
     }
@@ -158,6 +162,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     const hatimMatch = pathname.match(/^\/hatim\/(.+)$/);
     if (hatimMatch) {
       return { screen: 'HatimDetail', params: { hatimId: hatimMatch[1] } };
+    }
+
+    if (pathname === '/prayer-times') {
+      return { screen: 'PrayerTimes' };
     }
 
     // Check for verse-specific URLs: /surah/1/verse/3
@@ -308,7 +316,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = {
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -486,6 +494,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <HatimScreen navigation={navigation} />
             ) : currentRoute.screen === 'HatimDetail' && currentRoute.params?.hatimId ? (
               <HatimDetailScreen navigation={navigation} route={{ params: { hatimId: currentRoute.params.hatimId } }} />
+            ) : currentRoute.screen === 'PrayerTimes' ? (
+              <PrayerTimesScreen navigation={navigation} />
             ) : (
               <MainScreen
                 onNavigate={(screen) => {

@@ -13,7 +13,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -87,6 +87,14 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             icon: '☪️',
             color: '#00695C',
             onPress: () => onNavigate('Hatim'),
+        },
+        {
+            id: 'prayer-times',
+            title: 'Namaz Vakitleri',
+            subtitle: 'Ezan saatlerini takip edin',
+            icon: '🕌',
+            color: '#2E7D32',
+            onPress: () => onNavigate('PrayerTimes'),
         },
     ];
 

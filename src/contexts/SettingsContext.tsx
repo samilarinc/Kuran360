@@ -22,6 +22,11 @@ const DEFAULT_SETTINGS: AppSettings = {
     selectedReciter: 'sudais',
     playbackRate: 1.0,
     audioPlayMode: 'stopAtEnd',
+    prayerLocation: {
+        id: '9541',
+        cityName: 'Istanbul',
+    },
+    useGPSForPrayer: false,
 };
 
 // Available translations from the JSON data

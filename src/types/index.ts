@@ -54,6 +54,25 @@ export interface AppSettings {
   playbackRate: number;
   // Audio play behavior
   audioPlayMode: 'nextSurah' | 'loopSurah' | 'stopAtEnd' | 'loopVerse';
+  // Prayer times
+  prayerLocation?: {
+    id: string;
+    cityName: string;
+    districtName?: string | null;
+  };
+  useGPSForPrayer?: boolean;
+}
+
+export interface PrayerTime {
+  date_index: number;
+  miladi: string;
+  hicri: string;
+  imsak: string;
+  gunes: string;
+  ogle: string;
+  ikindi: string;
+  aksam: string;
+  yatsi: string;
 }
 
 export interface Bookmark {
