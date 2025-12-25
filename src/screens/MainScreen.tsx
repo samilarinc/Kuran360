@@ -13,7 +13,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -79,6 +79,14 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             icon: 'ℹ️',
             color: '#00897B',
             onPress: () => onNavigate('About'),
+        },
+        {
+            id: 'hatim',
+            title: 'Hatimler',
+            subtitle: 'Hatim gruplarına katılın',
+            icon: '☪️',
+            color: '#00695C',
+            onPress: () => onNavigate('Hatim'),
         },
     ];
 

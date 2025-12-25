@@ -12,10 +12,13 @@ import { ForumScreen } from '../screens/ForumScreen';
 import { ForumThreadScreen } from '../screens/ForumThreadScreen';
 import { RandomVerseScreen } from '../screens/RandomVerseScreen';
 import { AllTranslationsScreen } from '../screens/AllTranslationsScreen';
+import { HatimScreen } from '../screens/HatimScreen';
+import { HatimDetailScreen } from '../screens/HatimDetailScreen';
 import { ForumProvider } from '../contexts/ForumContext';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
+import { useAuth } from '../contexts/AuthContext';
 import { Surah } from '../types';
 import { quranData, loadSurah } from '../data/quranData';
 import { NavigationProvider } from '../contexts/NavigationContext';
@@ -43,14 +46,17 @@ export type RootStackParamList = {
   ForumThread: { threadId: string };
   RandomVerse: undefined;
   AllTranslations: { verse: any };
+  Hatim: undefined;
+  HatimDetail: { hatimId: string };
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail';
   params?: {
     surah?: Surah;
     verseIndex?: number;
     threadId?: string;
+    hatimId?: string;
     lastSelectedSurah?: Surah;
     verse?: any;
   };
@@ -62,6 +68,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoadingRoute, setIsLoadingRoute] = useState(false);
+  const [pendingRedirect, setPendingRedirect] = useState<NavigationHistoryItem | null>(null);
+  const { user, loading: authLoading } = useAuth();
   const { audioState } = useGlobalAudio();
   const { settings, updateSettings } = useDebouncedSettings(200);
 
@@ -100,6 +108,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return route.params?.threadId ? `/forum/${route.params.threadId}` : '/forum';
       case 'RandomVerse':
         return '/random-verse';
+      case 'Hatim':
+        return '/hatim';
+      case 'HatimDetail':
+        return route.params?.hatimId ? `/hatim/${route.params.hatimId}` : '/hatim';
       default:
         return '/';
     }
@@ -137,6 +149,15 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     const threadMatch = pathname.match(/^\/forum\/(.+)$/);
     if (threadMatch) {
       return { screen: 'ForumThread', params: { threadId: threadMatch[1] } };
+    }
+
+    if (pathname === '/hatim') {
+      return { screen: 'Hatim' };
+    }
+
+    const hatimMatch = pathname.match(/^\/hatim\/(.+)$/);
+    if (hatimMatch) {
+      return { screen: 'HatimDetail', params: { hatimId: hatimMatch[1] } };
     }
 
     // Check for verse-specific URLs: /surah/1/verse/3
@@ -254,10 +275,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
           setIsLoadingRoute(true);
           try {
             const initialRoute = await parseUrl(windowObj.location.pathname);
-            if (initialRoute && initialRoute.screen !== 'Home') {
+            if (initialRoute && initialRoute.screen !== 'Main') {
               // Build proper history for direct URL access
-              const homeRoute: NavigationHistoryItem = { screen: 'Home' };
-              setNavigationHistory([homeRoute, initialRoute]);
+              const mainRoute: NavigationHistoryItem = { screen: 'Main' };
+              setNavigationHistory([mainRoute, initialRoute]);
               setCurrentIndex(1);
               updateUrl(initialRoute);
             }
@@ -277,9 +298,29 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     }
   }, []); // Remove dependencies to prevent infinite loop
 
+  // Handle pending redirection after login
+  useEffect(() => {
+    if (user && pendingRedirect) {
+      const route = pendingRedirect;
+      setPendingRedirect(null);
+      navigateToRoute(route, true);
+    }
+  }, [user, pendingRedirect, navigateToRoute]);
+
   const navigation = {
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
+
+      // Auth protection for Hatim screens
+      if (screen === 'Hatim' || screen === 'HatimDetail') {
+        if (!user) {
+          setPendingRedirect(route);
+          const profileRoute: NavigationHistoryItem = { screen: 'Profile' };
+          navigateToRoute(profileRoute, true);
+          return;
+        }
+      }
+
       navigateToRoute(route, true);
     },
     goBack: () => {
@@ -289,17 +330,13 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         setCurrentIndex(newIndex);
         updateUrl(navigationHistory[newIndex]);
       } else {
-        // If we're at the beginning, go to Home but preserve the last selected surah
-        const currentRoute = navigationHistory[currentIndex];
-        const lastSelectedSurah = currentRoute.screen === 'SurahDetail' ? currentRoute.params?.surah : undefined;
-
-        const homeRoute: NavigationHistoryItem = {
-          screen: 'Home',
-          params: lastSelectedSurah ? { lastSelectedSurah } : undefined
+        // If we're at the beginning, go to Main instead of Home
+        const mainRoute: NavigationHistoryItem = {
+          screen: 'Main'
         };
-        setNavigationHistory([homeRoute]);
+        setNavigationHistory([mainRoute]);
         setCurrentIndex(0);
-        updateUrl(homeRoute);
+        updateUrl(mainRoute);
       }
     }
   };
@@ -445,6 +482,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
                 route={{ params: { surah: currentRoute.params.surah, verseIndex: currentRoute.params.verseIndex } }}
                 updateVerseUrl={updateVerseUrl}
               />
+            ) : currentRoute.screen === 'Hatim' ? (
+              <HatimScreen navigation={navigation} />
+            ) : currentRoute.screen === 'HatimDetail' && currentRoute.params?.hatimId ? (
+              <HatimDetailScreen navigation={navigation} route={{ params: { hatimId: currentRoute.params.hatimId } }} />
             ) : (
               <MainScreen
                 onNavigate={(screen) => {

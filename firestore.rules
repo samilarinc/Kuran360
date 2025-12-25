@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is signed in
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // User data and profiles
+    match /users/{userId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+      
+      // Allow access to subcollections (profile, data, meta, etc.)
+      match /{allSubcollections=**} {
+        allow read, write: if isSignedIn() && request.auth.uid == userId;
+      }
+    }
+
+    // Forum threads
+    match /threads/{threadId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn(); // Allow updating replyCount and updatedAt
+    }
+
+    // Forum posts
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+    }
+
+    // Hatims
+    match /hatims/{hatimId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isSignedIn(); // Allow claiming/completing parts
+    }
+  }
+}

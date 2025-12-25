@@ -154,3 +154,26 @@ export interface ImageGenerationOptions {
   themeMode?: 'light' | 'dark';
   size?: ImageSize;
 }
+
+export interface HatimPart {
+  partNumber: number; // 1-30
+  claimedById: string | null;
+  claimedByName: string | null;
+  isCompleted: boolean;
+  claimedAt?: number;
+  completedAt?: number;
+  pagesRead?: number;
+  totalPages?: number;
+}
+
+export interface Hatim {
+  id: string;
+  title: string;
+  creatorId: string;
+  creatorName: string;
+  createdAt: number;
+  parts: HatimPart[];
+  isCompleted: boolean;
+  description?: string;
+  deadline?: number;
+}
