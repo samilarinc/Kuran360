@@ -112,6 +112,16 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Güncelleme Notları</Text>
 
                     <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>26 Aralık 2025</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Hatim Sayfası: Kullanıcıların birlikte hatim indirebileceği interaktif hatim sistemi eklendi.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Namaz Vakitleri: 2025 yılı için tüm Türkiye il ve ilçelerini kapsayan, konuma duyarlı ezan vakitleri eklendi.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Cuma Hutbesi: Haftalık cuma hutbelerinin PDF formatında okunabileceği özel bölüm eklendi.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Konum Servisleri: GPS tabanlı otomatik konum tespiti ve manuel şehir/ilçe seçimi entegre edildi.</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>16 Aralık 2024</Text>
                         <View style={styles.updateList}>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• SQLite veritabanı desteği eklendi (Android/iOS)</Text>

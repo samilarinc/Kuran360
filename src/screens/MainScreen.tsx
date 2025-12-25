@@ -74,14 +74,6 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             onPress: () => onNavigate('Profile'),
         },
         {
-            id: 'about',
-            title: 'Hakkında',
-            subtitle: 'Uygulama hakkında',
-            icon: 'ℹ️',
-            color: '#00897B',
-            onPress: () => onNavigate('About'),
-        },
-        {
             id: 'hatim',
             title: 'Hatimler',
             subtitle: 'Hatim gruplarına katılın',
@@ -118,6 +110,14 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                     Alert.alert('Hata', 'Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin.');
                 }
             },
+        },
+        {
+            id: 'about',
+            title: 'Hakkında',
+            subtitle: 'Uygulama hakkında',
+            icon: 'ℹ️',
+            color: '#00897B',
+            onPress: () => onNavigate('About'),
         },
     ];
 
