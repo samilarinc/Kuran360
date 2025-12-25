@@ -11,9 +11,10 @@ import {
 } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
+import { Alert, Platform } from 'react-native';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Hutbe') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -95,6 +96,28 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             icon: '🕌',
             color: '#2E7D32',
             onPress: () => onNavigate('PrayerTimes'),
+        },
+        {
+            id: 'hutbe',
+            title: 'Cuma Hutbesi',
+            subtitle: 'Haftalık cuma hutbesini okuyun',
+            icon: '📜',
+            color: '#D84315',
+            onPress: async () => {
+                try {
+                    const response = await fetch('/hutbe/hutbe.pdf', { method: 'HEAD' });
+                    const contentType = response.headers.get('content-type');
+                    // In many dev environments, a missing file returns index.html (text/html)
+                    if (response.ok && contentType && contentType.includes('application/pdf')) {
+                        onNavigate('Hutbe');
+                    } else {
+                        Alert.alert('Bilgi', 'Güncel hutbe henüz yüklenmedi.');
+                    }
+                } catch (error) {
+                    // On catch, we assume something went wrong with the fetch, stay safe
+                    Alert.alert('Hata', 'Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin.');
+                }
+            },
         },
     ];
 
