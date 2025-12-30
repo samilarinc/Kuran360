@@ -21,6 +21,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { HatimService } from '../services/HatimService';
 import { Hatim, HatimPart } from '../types';
 import { SPACING, FONT_SIZES } from '../constants';
+import { AppHeader } from '../components/AppHeader';
 
 interface HatimDetailScreenProps {
     navigation: any;
@@ -280,7 +281,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
                 <View style={styles.center}>
                     <Text style={{ color: theme.text }}>Hatim bulunamadı.</Text>
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: SPACING.sm }}>
                         <Text style={{ color: theme.primary }}>Geri Dön</Text>
                     </TouchableOpacity>
                 </View>
@@ -347,20 +348,17 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-            {/* ... header and content ... */}
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <Text style={[styles.backText, { color: theme.primary }]}>‹ Geri</Text>
-                </TouchableOpacity>
-                <Text style={[styles.title, { color: theme.text }]} numberOfLines={1}>{hatim.title}</Text>
-                <View style={styles.headerRight}>
-                    {hatim.creatorId === user?.uid && (
-                        <TouchableOpacity onPress={openEditModal} style={styles.editButton}>
-                            <Text style={[styles.editButtonText, { color: theme.primary }]}>Düzenle</Text>
-                        </TouchableOpacity>
-                    )}
-                </View>
-            </View>
+            <AppHeader
+                title={hatim.title}
+                showBackButton={true}
+                onBackPress={() => navigation.goBack()}
+            >
+                {hatim.creatorId === user?.uid && (
+                    <TouchableOpacity onPress={openEditModal} style={styles.editButton}>
+                        <Text style={[styles.editButtonText, { color: theme.headerText }]}>Düzenle</Text>
+                    </TouchableOpacity>
+                )}
+            </AppHeader>
 
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 {/* ... existing stats ... */}
@@ -810,41 +808,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: SPACING.lg,
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(0,0,0,0.05)',
-    },
-    headerRight: {
-        minWidth: 60,
-        alignItems: 'flex-end',
-    },
     editButton: {
-        padding: SPACING.xs,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        borderRadius: 16,
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        marginLeft: SPACING.xs,
     },
     editButtonText: {
         fontWeight: '600',
         fontSize: 14,
-    },
-    backButton: {
-        padding: SPACING.sm,
-    },
-    backText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-    },
-    title: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: '700',
-        flex: 1,
-        textAlign: 'center',
-        marginHorizontal: SPACING.md,
-    },
-    headerRightPlaceholder: {
-        width: 60,
     },
     scrollContent: {
         padding: SPACING.lg,
