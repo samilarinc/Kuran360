@@ -17,7 +17,8 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { HatimService } from '../services/HatimService';
 import { Hatim } from '../types';
-import { SPACING, FONT_SIZES } from '../constants';
+import { SPACING, FONT_SIZES } from '../theme';
+import { AppHeader } from '../components/AppHeader';
 
 interface HatimScreenProps {
     navigation: any;
@@ -128,15 +129,11 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <Text style={[styles.backText, { color: theme.primary }]}>‹ Geri</Text>
-                </TouchableOpacity>
-                <Text style={[styles.title, { color: theme.text }]}>Hatimler</Text>
-                <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addButton}>
-                    <Text style={[styles.addIcon, { color: theme.primary }]}>+</Text>
-                </TouchableOpacity>
-            </View>
+            <AppHeader
+                title="Hatimler"
+                showBackButton={true}
+                onBackPress={() => navigation.goBack()}
+            />
 
             {loading ? (
                 <View style={styles.center}>
@@ -343,6 +340,12 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                     </View>
                 </View>
             </Modal>
+            <TouchableOpacity
+                style={[styles.fab, { backgroundColor: theme.primary }]}
+                onPress={() => setModalVisible(true)}
+            >
+                <Text style={styles.fabIcon}>+</Text>
+            </TouchableOpacity>
         </SafeAreaView>
     );
 };
@@ -351,30 +354,35 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: SPACING.lg,
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(0,0,0,0.05)',
-    },
-    backButton: {
-        padding: SPACING.sm,
-    },
-    backText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-    },
-    title: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: '700',
-    },
     addButton: {
-        padding: SPACING.sm,
+        position: 'absolute',
+        right: SPACING.md,
+        top: SPACING.lg,
+        padding: SPACING.xs,
     },
     addIcon: {
         fontSize: 32,
+        fontWeight: '300',
+    },
+    fab: {
+        position: 'absolute',
+        right: SPACING.lg,
+        bottom: SPACING.lg,
+        width: 56,
+        height: 56,
+        borderRadius: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 6,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+        zIndex: 100,
+    },
+    fabIcon: {
+        fontSize: 32,
+        color: '#FFFFFF',
         fontWeight: '300',
     },
     listContent: {

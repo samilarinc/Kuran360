@@ -9,8 +9,9 @@ import {
     ScrollView,
     useWindowDimensions,
 } from 'react-native';
+import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../constants';
+import { FONT_SIZES, SPACING } from '../theme';
 import { Alert, Platform } from 'react-native';
 
 interface MainScreenProps {
@@ -123,39 +124,14 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-            {/* Header with Logo */}
-            <View style={[styles.header, { backgroundColor: theme.primary, paddingVertical: headerPaddingVertical }]}>
-                {/* Dark mode toggle - top right */}
-                <TouchableOpacity
-                    style={styles.darkModeToggle}
-                    onPress={toggleDarkMode}
-                    accessibilityLabel={isDarkMode ? 'Açık mod' : 'Koyu mod'}
-                >
-                    <Text style={styles.darkModeIcon}>{isDarkMode ? '☀️' : '🌙'}</Text>
-                </TouchableOpacity>
-                <View style={styles.logoContainer}>
-                    {/* Logo placeholder - favicon kullanıyoruz */}
-                    <View
-                        style={[
-                            styles.logoPlaceholder,
-                            { backgroundColor: theme.surface },
-                            (height < 680 || width < 360) ? { width: 64, height: 64, borderRadius: 32 } : null,
-                        ]}
-                    >
-                        <Image
-                            source={require('../../public/favicon.png')}
-                            style={styles.logoImage}
-                            resizeMode="contain"
-                        />
-                    </View>
-                    <Text style={[styles.appTitle, { color: theme.headerText, fontSize: titleFontSize }]}>
-                        Kuran-ı Kerim
-                    </Text>
-                    <Text style={[styles.appSubtitle, { color: theme.headerText, fontSize: subtitleFontSize }]}>
-                        Dijital Mushaf
-                    </Text>
-                </View>
-            </View>
+
+            <AppHeader
+                title="Kuran-ı Kerim"
+                subtitle="Dijital Mushaf"
+                showLogo={false} // Use standard title/subtitle centered
+                showSettingsButton={true}
+                onSettingsPress={() => onNavigate('Settings')}
+            />
 
             {/* Main Content */}
             <ScrollView

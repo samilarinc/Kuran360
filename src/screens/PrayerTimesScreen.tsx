@@ -13,6 +13,9 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useSettings } from '../contexts/SettingsContext';
+import { useTheme } from '../contexts/ThemeContext';
+import { AppHeader } from '../components/AppHeader';
+import { SPACING, FONT_SIZES } from '../theme';
 import { PrayerTime } from '../types';
 import locations from '../data/locations.json';
 
@@ -24,6 +27,7 @@ interface Location {
 }
 
 export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+    const { theme } = useTheme();
     const { settings, updateSettings } = useSettings();
     const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
     const [loading, setLoading] = useState(true);
@@ -254,12 +258,24 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     const renderTimeRow = (label: string, time: string, icon: string) => {
         const isCurrent = currentPrayerLabel === label;
         return (
-            <View style={[styles.timeRow, isCurrent && styles.currentTimeRow]}>
+            <View style={[
+                styles.timeRow,
+                { borderBottomColor: theme.border },
+                isCurrent && [styles.currentTimeRow, { backgroundColor: theme.primary + '15', borderLeftColor: theme.primary }]
+            ]}>
                 <View style={styles.timeLabelContainer}>
-                    <Ionicons name={icon as any} size={24} color={isCurrent ? "#2E7D32" : "#666"} />
-                    <Text style={[styles.timeLabel, isCurrent && styles.currentTimeLabel]}>{label}</Text>
+                    <Ionicons name={icon as any} size={24} color={isCurrent ? theme.primary : theme.textSecondary} />
+                    <Text style={[
+                        styles.timeLabel,
+                        { color: theme.textSecondary },
+                        isCurrent && [styles.currentTimeLabel, { color: theme.primary }]
+                    ]}>{label}</Text>
                 </View>
-                <Text style={[styles.timeValue, isCurrent && styles.currentTimeValue]}>{time}</Text>
+                <Text style={[
+                    styles.timeValue,
+                    { color: theme.text },
+                    isCurrent && [styles.currentTimeValue, { color: theme.primary }]
+                ]}>{time}</Text>
             </View>
         );
     };
@@ -267,43 +283,47 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     if (loading && !todayTimes) {
         return (
             <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#2E7D32" />
+                <ActivityIndicator size="large" color={theme.primary} />
             </View>
         );
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <Ionicons name="arrow-back" size={24} color="#333" />
-                </TouchableOpacity>
-                <Text style={styles.title}>Ezan Vakitleri</Text>
-                <TouchableOpacity onPress={() => setShowLocationPicker(true)} style={styles.locationButton}>
-                    <Ionicons name="location" size={24} color="#2E7D32" />
-                </TouchableOpacity>
-            </View>
+        <View style={[styles.container, { backgroundColor: theme.background }]}>
+            <AppHeader
+                title="Ezan Vakitleri"
+                showBackButton={true}
+                onBackPress={() => navigation.goBack()}
+            />
 
             <ScrollView contentContainerStyle={styles.content}>
-                <View style={styles.currentLocationCard}>
+                <View style={[styles.currentLocationCard, { backgroundColor: theme.primary }]}>
                     <View style={styles.locationHeaderRow}>
-                        <Text style={styles.locationName}>
+                        <Text style={[styles.locationName, { color: theme.headerText }]}>
                             {settings.prayerLocation?.cityName}
                             {settings.prayerLocation?.districtName ? `, ${settings.prayerLocation.districtName}` : ''}
                         </Text>
-                        <TouchableOpacity onPress={handleUseGPS} style={styles.gpsButton}>
-                            <Ionicons name="locate" size={24} color="#FFF" />
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                onPress={() => setShowLocationPicker(true)}
+                                style={[styles.gpsButton, { marginRight: 8, backgroundColor: 'rgba(255,255,255,0.2)' }]}
+                            >
+                                <Ionicons name="search" size={24} color="#FFF" />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleUseGPS} style={styles.gpsButton}>
+                                <Ionicons name="locate" size={24} color="#FFF" />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <Text style={styles.dateText}>{todayTimes?.miladi}</Text>
-                    <Text style={styles.hicriText}>{todayTimes?.hicri}</Text>
+                    <Text style={[styles.dateText, { color: 'rgba(255,255,255,0.9)' }]}>{todayTimes?.miladi}</Text>
+                    <Text style={[styles.hicriText, { color: 'rgba(255,255,255,0.7)' }]}>{todayTimes?.hicri}</Text>
                 </View>
 
-                <View style={styles.timesCard}>
+                <View style={[styles.timesCard, { backgroundColor: theme.cardBackground }]}>
                     {nextPrayer && (
-                        <View style={styles.nextPrayerInfo}>
-                            <Text style={styles.nextPrayerLabel}>{nextPrayer.label} vaktine kalan süre</Text>
-                            <Text style={styles.remainingTime}>{nextPrayer.remaining}</Text>
+                        <View style={[styles.nextPrayerInfo, { borderBottomColor: theme.border }]}>
+                            <Text style={[styles.nextPrayerLabel, { color: theme.textSecondary }]}>{nextPrayer.label} vaktine kalan süre</Text>
+                            <Text style={[styles.remainingTime, { color: theme.primary }]}>{nextPrayer.remaining}</Text>
                         </View>
                     )}
                     {todayTimes && (
@@ -323,18 +343,19 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
 
             {showLocationPicker && (
                 <View style={styles.modalOverlay}>
-                    <View style={styles.modalContent}>
+                    <View style={[styles.modalContent, { backgroundColor: theme.cardBackground }]}>
                         <View style={styles.modalHeader}>
-                            <Text style={styles.modalTitle}>Konum Seç</Text>
+                            <Text style={[styles.modalTitle, { color: theme.text }]}>Konum Seç</Text>
                             <TouchableOpacity onPress={() => setShowLocationPicker(false)}>
-                                <Ionicons name="close" size={24} color="#333" />
+                                <Ionicons name="close" size={24} color={theme.text} />
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.searchContainer}>
-                            <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
+                        <View style={[styles.searchContainer, { backgroundColor: theme.background }]}>
+                            <Ionicons name="search" size={20} color={theme.textSecondary} style={styles.searchIcon} />
                             <TextInput
-                                style={styles.searchInput}
+                                style={[styles.searchInput, { color: theme.text }]}
                                 placeholder="Şehir veya ilçe ara..."
+                                placeholderTextColor={theme.textSecondary}
                                 value={searchQuery}
                                 onChangeText={setSearchQuery}
                             />
@@ -343,10 +364,10 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                             {filteredLocations.map((loc) => (
                                 <TouchableOpacity
                                     key={loc.id}
-                                    style={styles.locationItem}
+                                    style={[styles.locationItem, { borderBottomColor: theme.border }]}
                                     onPress={() => handleSelectLocation(loc)}
                                 >
-                                    <Text style={styles.locationItemText}>
+                                    <Text style={[styles.locationItemText, { color: theme.text }]}>
                                         {loc.cityName}{loc.districtName ? ` - ${loc.districtName}` : ''}
                                     </Text>
                                 </TouchableOpacity>
@@ -466,35 +487,27 @@ const styles = StyleSheet.create({
         color: '#666',
     },
     currentTimeRow: {
-        backgroundColor: '#E8F5E9',
         borderLeftWidth: 4,
-        borderLeftColor: '#2E7D32',
         marginHorizontal: -16,
         paddingHorizontal: 16,
     },
     currentTimeLabel: {
-        color: '#2E7D32',
         fontWeight: 'bold',
     },
-    currentTimeValue: {
-        color: '#2E7D32',
-    },
+    currentTimeValue: {},
     nextPrayerInfo: {
         alignItems: 'center',
         paddingBottom: 16,
         borderBottomWidth: 1,
-        borderBottomColor: '#EEE',
         marginBottom: 8,
     },
     nextPrayerLabel: {
         fontSize: 14,
-        color: '#666',
         marginBottom: 4,
     },
     remainingTime: {
         fontSize: 28,
         fontWeight: 'bold',
-        color: '#2E7D32',
     },
     modalOverlay: {
         position: 'absolute',

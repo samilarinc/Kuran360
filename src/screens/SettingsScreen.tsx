@@ -12,10 +12,11 @@ import {
     Animated,
 } from 'react-native';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
-import { useTheme, Theme } from '../contexts/ThemeContext';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
+import { useTheme } from '../contexts/ThemeContext';
+import { AppHeader } from '../components/AppHeader'; // Use AppHeader
+import { AppButton } from '../components/AppButton'; // Use AppButton if needed
 import { ReciterSelector } from '../components/ReciterSelector';
-import { FONT_SIZES, SPACING } from '../constants';
+import { FONT_SIZES, SPACING } from '../theme'; // Import from theme
 
 interface SettingsScreenProps {
     navigation: any;
@@ -25,7 +26,7 @@ interface ModernSwitchProps {
     value: boolean;
     onValueChange: (value: boolean) => void;
     disabled?: boolean;
-    theme: Theme;
+    theme: any; // Using any for now to avoid circular deps or just simplify if Theme is globally available via context return type
 }
 
 const ModernSwitch: React.FC<ModernSwitchProps> = ({
@@ -122,7 +123,7 @@ interface SettingItemProps {
     value: boolean;
     onValueChange: (value: boolean) => void;
     icon?: string;
-    theme: Theme;
+    theme: any;
     disabled?: boolean;
 }
 
@@ -309,7 +310,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
 
     return (
         <SafeAreaView style={createStyles(theme).container}>
-            <HeaderWithDarkModeToggle
+            <AppHeader
                 title="Ayarlar"
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
@@ -478,7 +479,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     );
 };
 
-const createStyles = (theme: Theme) => StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: theme.background,

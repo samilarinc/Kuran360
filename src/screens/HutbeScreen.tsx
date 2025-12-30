@@ -11,8 +11,13 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
+import { AppHeader } from '../components/AppHeader';
+import { useTheme } from '../contexts/ThemeContext';
+import { AppButton } from '../components/AppButton';
+import { SPACING, FONT_SIZES } from '../theme';
 
 export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+    const { theme } = useTheme();
     const pdfUrl = '/hutbe/hutbe.pdf';
     const [exists, setExists] = React.useState<boolean | null>(null);
 
@@ -37,39 +42,38 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     if (exists === false) {
         return (
-            <SafeAreaView style={styles.container}>
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                        <Ionicons name="arrow-back" size={24} color="#333" />
-                    </TouchableOpacity>
-                    <Text style={styles.title}>Hata</Text>
-                    <View style={{ width: 32 }} />
-                </View>
+            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+                <AppHeader
+                    title="Hata"
+                    showBackButton={true}
+                    onBackPress={() => navigation.goBack()}
+                />
                 <View style={[styles.mobileContainer, { flex: 1 }]}>
-                    <Ionicons name="warning-outline" size={80} color="#D32F2F" />
-                    <Text style={styles.mobileText}>Hutbe dosyası bulunamadı.</Text>
-                    <TouchableOpacity style={[styles.button, { backgroundColor: '#D32F2F' }]} onPress={() => navigation.goBack()}>
-                        <Text style={styles.buttonText}>Geri Dön</Text>
-                    </TouchableOpacity>
+                    <Ionicons name="warning-outline" size={80} color={theme.error} />
+                    <Text style={[styles.mobileText, { color: theme.textSecondary }]}>Hutbe dosyası bulunamadı.</Text>
+                    <AppButton
+                        title="Geri Dön"
+                        onPress={() => navigation.goBack()}
+                        variant="primary"
+                        style={{ backgroundColor: theme.error }}
+                    />
                 </View>
             </SafeAreaView>
         );
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <Ionicons name="arrow-back" size={24} color="#333" />
-                </TouchableOpacity>
-                <Text style={styles.title}>Cuma Hutbesi</Text>
-                <View style={{ width: 32 }} />
-            </View>
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <AppHeader
+                title="Cuma Hutbesi"
+                showBackButton={true}
+                onBackPress={() => navigation.goBack()}
+            />
 
             <View style={styles.content}>
                 {exists === null ? (
                     <View style={styles.mobileContainer}>
-                        <ActivityIndicator size="large" color="#2E7D32" />
+                        <ActivityIndicator size="large" color={theme.primary} />
                     </View>
                 ) : Platform.OS === 'web' ? (
                     <iframe
@@ -83,11 +87,12 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                     />
                 ) : (
                     <View style={styles.mobileContainer}>
-                        <Ionicons name="document-text-outline" size={80} color="#2E7D32" />
-                        <Text style={styles.mobileText}>Hutbeyi okumak için butona tıklayın.</Text>
-                        <TouchableOpacity style={styles.button} onPress={handleOpenInBrowser}>
-                            <Text style={styles.buttonText}>Hutbeyi Aç</Text>
-                        </TouchableOpacity>
+                        <Ionicons name="document-text-outline" size={80} color={theme.primary} />
+                        <Text style={[styles.mobileText, { color: theme.textSecondary }]}>Hutbeyi okumak için butona tıklayın.</Text>
+                        <AppButton
+                            title="Hutbeyi Aç"
+                            onPress={handleOpenInBrowser}
+                        />
                     </View>
                 )}
             </View>
@@ -99,25 +104,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F5F5F5',
-    },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 16,
-        paddingTop: Platform.OS === 'android' ? 40 : 10,
-        paddingBottom: 16,
-        backgroundColor: '#FFF',
-        borderBottomWidth: 1,
-        borderBottomColor: '#EEE',
-    },
-    backButton: {
-        padding: 4,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#333',
     },
     content: {
         flex: 1,
@@ -132,18 +118,5 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
         marginVertical: 20,
-        color: '#666',
-    },
-    button: {
-        backgroundColor: '#2E7D32',
-        paddingHorizontal: 30,
-        paddingVertical: 15,
-        borderRadius: 25,
-        elevation: 3,
-    },
-    buttonText: {
-        color: '#FFF',
-        fontSize: 18,
-        fontWeight: 'bold',
     },
 });
