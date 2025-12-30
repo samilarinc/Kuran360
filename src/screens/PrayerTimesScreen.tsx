@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     ScrollView,
     TouchableOpacity,
     ActivityIndicator,
@@ -18,6 +17,7 @@ import { AppHeader } from '../components/AppHeader';
 import { SPACING, FONT_SIZES } from '../theme';
 import { PrayerTime } from '../types';
 import locations from '../data/locations.json';
+import { createStyles } from './PrayerTimesScreen.styles';
 
 interface Location {
     id: string;
@@ -28,6 +28,7 @@ interface Location {
 
 export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { theme } = useTheme();
+    const styles = useMemo(() => createStyles(theme), [theme]);
     const { settings, updateSettings } = useSettings();
     const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
     const [loading, setLoading] = useState(true);
@@ -380,196 +381,4 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F5F5F5',
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 16,
-        paddingTop: 48,
-        paddingBottom: 16,
-        backgroundColor: '#FFF',
-        borderBottomWidth: 1,
-        borderBottomColor: '#EEE',
-    },
-    backButton: {
-        padding: 4,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#333',
-    },
-    locationButton: {
-        padding: 4,
-    },
-    content: {
-        padding: 16,
-    },
-    currentLocationCard: {
-        backgroundColor: '#2E7D32',
-        borderRadius: 16,
-        padding: 24,
-        alignItems: 'center',
-        marginBottom: 16,
-        elevation: 4,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-    },
-    locationName: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#FFF',
-        flex: 1,
-    },
-    locationHeaderRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-        marginBottom: 8,
-    },
-    gpsButton: {
-        padding: 8,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        borderRadius: 20,
-    },
-    dateText: {
-        fontSize: 16,
-        color: '#E8F5E9',
-        marginBottom: 4,
-    },
-    hicriText: {
-        fontSize: 14,
-        color: '#C8E6C9',
-    },
-    timesCard: {
-        backgroundColor: '#FFF',
-        borderRadius: 16,
-        padding: 16,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-    },
-    timeRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingVertical: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#F0F0F0',
-    },
-    timeLabelContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    timeLabel: {
-        fontSize: 18,
-        color: '#444',
-        marginLeft: 12,
-    },
-    timeValue: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#666',
-    },
-    currentTimeRow: {
-        borderLeftWidth: 4,
-        marginHorizontal: -16,
-        paddingHorizontal: 16,
-    },
-    currentTimeLabel: {
-        fontWeight: 'bold',
-    },
-    currentTimeValue: {},
-    nextPrayerInfo: {
-        alignItems: 'center',
-        paddingBottom: 16,
-        borderBottomWidth: 1,
-        marginBottom: 8,
-    },
-    nextPrayerLabel: {
-        fontSize: 14,
-        marginBottom: 4,
-    },
-    remainingTime: {
-        fontSize: 28,
-        fontWeight: 'bold',
-    },
-    modalOverlay: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 1000,
-        // For web
-        ...Platform.select({
-            web: {
-                display: 'flex',
-            }
-        })
-    },
-    modalContent: {
-        backgroundColor: '#FFF',
-        borderRadius: 16,
-        width: '90%',
-        maxHeight: '80%',
-        padding: 20,
-    },
-    modalHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 16,
-    },
-    modalTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    searchContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#F0F0F0',
-        borderRadius: 8,
-        paddingHorizontal: 12,
-        marginBottom: 16,
-    },
-    searchIcon: {
-        marginRight: 8,
-    },
-    searchInput: {
-        flex: 1,
-        height: 40,
-        fontSize: 16,
-        color: '#333',
-    },
-    locationList: {
-        flex: 1,
-    },
-    locationItem: {
-        paddingVertical: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: '#EEE',
-    },
-    locationItemText: {
-        fontSize: 16,
-        color: '#333',
-    },
-});
+

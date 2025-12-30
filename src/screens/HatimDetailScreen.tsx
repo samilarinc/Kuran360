@@ -285,8 +285,51 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         });
     };
 
+    const handleDeleteHatim = async () => {
+        if (Platform.OS === 'web') {
+            // @ts-ignore
+            if (window.confirm('Bu hatimi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
+                try {
+                    setIsUpdating(true);
+                    await HatimService.deleteHatim(hatimId);
+                    setEditModalVisible(false);
+                    navigation.goBack();
+                } catch (error) {
+                    console.log(error);
+                    window.alert('Silme işlemi sırasında bir sorun oluştu.');
+                    setIsUpdating(false);
+                }
+            }
+            return;
+        }
+
+        Alert.alert(
+            'Hatimi Sil',
+            'Bu hatimi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.',
+            [
+                { text: 'İptal', style: 'cancel' },
+                {
+                    text: 'Sil',
+                    style: 'destructive',
+                    onPress: async () => {
+                        try {
+                            setIsUpdating(true);
+                            await HatimService.deleteHatim(hatimId);
+                            setEditModalVisible(false);
+                            navigation.goBack();
+                        } catch (error) {
+                            Alert.alert('Hata', 'Silme işlemi sırasında bir sorun oluştu.');
+                            setIsUpdating(false);
+                        }
+                    }
+                }
+            ]
+        );
+    };
+
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            {/* ... header and content ... */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
                     <Text style={[styles.backText, { color: theme.primary }]}>‹ Geri</Text>
@@ -302,6 +345,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             </View>
 
             <ScrollView contentContainerStyle={styles.scrollContent}>
+                {/* ... existing stats ... */}
                 <View style={[styles.infoCard, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
                     <Text style={[styles.description, { color: theme.textSecondary }]}>
                         {hatim.description || 'Açıklama belirtilmemiş.'}
@@ -355,6 +399,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                     </View>
                 </View>
 
+                {/* Grid */}
                 <View style={[styles.gridContainer, { width: availableWidth + SPACING.md, alignSelf: 'center' }]}>
                     <View style={styles.grid}>
                         {hatim.parts.map((part) => (
@@ -403,7 +448,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                 </View>
             </ScrollView>
 
-            {/* Part Interaction Modal */}
+            {/* Part Interaction Modal - kept same */}
             <Modal
                 transparent
                 visible={partModalVisible}
@@ -687,24 +732,34 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                             </>
                         )}
 
-                        <View style={styles.modalButtons}>
+                        <View style={[styles.modalButtons, { justifyContent: 'space-between', marginTop: SPACING.lg }]}>
                             <TouchableOpacity
-                                style={[styles.modalButton, { backgroundColor: theme.border }]}
-                                onPress={() => setEditModalVisible(false)}
-                            >
-                                <Text style={{ color: theme.text }}>İptal</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[styles.modalButton, { backgroundColor: theme.primary }]}
-                                onPress={handleUpdateHatim}
+                                style={[styles.modalButton, { backgroundColor: '#FFEBEE', borderWidth: 1, borderColor: '#FFCDD2' }]}
+                                onPress={handleDeleteHatim}
                                 disabled={isUpdating}
                             >
-                                {isUpdating ? (
-                                    <ActivityIndicator size="small" color="#fff" />
-                                ) : (
-                                    <Text style={{ color: '#fff' }}>Güncelle</Text>
-                                )}
+                                <Text style={{ color: '#D32F2F', fontWeight: '600' }}>Sil</Text>
                             </TouchableOpacity>
+
+                            <View style={{ flexDirection: 'row' }}>
+                                <TouchableOpacity
+                                    style={[styles.modalButton, { backgroundColor: theme.border, marginRight: SPACING.sm }]}
+                                    onPress={() => setEditModalVisible(false)}
+                                >
+                                    <Text style={{ color: theme.text }}>İptal</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[styles.modalButton, { backgroundColor: theme.primary }]}
+                                    onPress={handleUpdateHatim}
+                                    disabled={isUpdating}
+                                >
+                                    {isUpdating ? (
+                                        <ActivityIndicator size="small" color="#fff" />
+                                    ) : (
+                                        <Text style={{ color: '#fff' }}>Güncelle</Text>
+                                    )}
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </View>

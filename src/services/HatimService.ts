@@ -8,7 +8,8 @@ import {
     query,
     orderBy,
     Timestamp,
-    setDoc
+    setDoc,
+    deleteDoc
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { Hatim, HatimPart } from '../types';
@@ -214,5 +215,10 @@ export const HatimService = {
     async updateHatim(hatimId: string, updates: { title?: string; description?: string; deadline?: number | null }): Promise<void> {
         const docRef = doc(db, HATIMS_COLLECTION, hatimId);
         await updateDoc(docRef, updates);
+    },
+
+    async deleteHatim(hatimId: string): Promise<void> {
+        const docRef = doc(db, HATIMS_COLLECTION, hatimId);
+        await deleteDoc(docRef);
     }
 };

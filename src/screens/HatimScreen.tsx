@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     FlatList,
     TouchableOpacity,
     ActivityIndicator,
@@ -19,6 +18,7 @@ import { HatimService } from '../services/HatimService';
 import { Hatim } from '../types';
 import { SPACING, FONT_SIZES } from '../theme';
 import { AppHeader } from '../components/AppHeader';
+import { createStyles } from './HatimScreen.styles';
 
 interface HatimScreenProps {
     navigation: any;
@@ -26,6 +26,7 @@ interface HatimScreenProps {
 
 export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
     const { theme } = useTheme();
+    const styles = useMemo(() => createStyles(theme), [theme]);
     const { user } = useAuth();
     const [hatims, setHatims] = useState<Hatim[]>([]);
     const [loading, setLoading] = useState(true);
@@ -350,164 +351,4 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    addButton: {
-        position: 'absolute',
-        right: SPACING.md,
-        top: SPACING.lg,
-        padding: SPACING.xs,
-    },
-    addIcon: {
-        fontSize: 32,
-        fontWeight: '300',
-    },
-    fab: {
-        position: 'absolute',
-        right: SPACING.lg,
-        bottom: SPACING.lg,
-        width: 56,
-        height: 56,
-        borderRadius: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
-        elevation: 6,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
-        zIndex: 100,
-    },
-    fabIcon: {
-        fontSize: 32,
-        color: '#FFFFFF',
-        fontWeight: '300',
-    },
-    listContent: {
-        padding: SPACING.lg,
-    },
-    hatimCard: {
-        padding: SPACING.lg,
-        borderRadius: 16,
-        borderWidth: 1,
-        marginBottom: SPACING.md,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-    },
-    hatimHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: SPACING.xs,
-    },
-    hatimTitle: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: '600',
-    },
-    completedBadge: {
-        backgroundColor: '#2E7D32',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 8,
-    },
-    completedBadgeText: {
-        color: '#fff',
-        fontSize: 10,
-        fontWeight: '700',
-    },
-    hatimCreator: {
-        fontSize: FONT_SIZES.small,
-        marginBottom: SPACING.md,
-    },
-    progressContainer: {
-        marginTop: SPACING.sm,
-    },
-    progressBar: {
-        height: 8,
-        borderRadius: 4,
-        overflow: 'hidden',
-        marginBottom: SPACING.xs,
-    },
-    progressFill: {
-        height: '100%',
-    },
-    progressText: {
-        fontSize: 12,
-        textAlign: 'right',
-    },
-    center: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    emptyContainer: {
-        padding: SPACING.xl,
-        alignItems: 'center',
-    },
-    emptyText: {
-        textAlign: 'center',
-        fontSize: FONT_SIZES.medium,
-        opacity: 0.7,
-    },
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: SPACING.xl,
-    },
-    modalContent: {
-        width: '100%',
-        maxWidth: 500,
-        padding: SPACING.xl,
-        borderRadius: 24,
-        elevation: 5,
-    },
-    modalTitle: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: '700',
-        marginBottom: SPACING.lg,
-        textAlign: 'center',
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 12,
-        padding: SPACING.md,
-        marginBottom: SPACING.md,
-    },
-    textArea: {
-        height: 80,
-        textAlignVertical: 'top',
-    },
-    modalButtons: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        marginTop: SPACING.sm,
-    },
-    modalButton: {
-        paddingHorizontal: SPACING.lg,
-        paddingVertical: SPACING.md,
-        borderRadius: 12,
-        marginLeft: SPACING.md,
-        minWidth: 80,
-        alignItems: 'center',
-    },
-    inputLabel: {
-        fontSize: 14,
-        fontWeight: '600',
-        marginBottom: SPACING.xs,
-        marginTop: SPACING.sm,
-    },
-    toggleRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: SPACING.md,
-        paddingVertical: SPACING.xs,
-    },
-});
+

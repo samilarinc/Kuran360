@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     TouchableOpacity,
     ActivityIndicator,
     SafeAreaView,
@@ -15,9 +14,11 @@ import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
 import { AppButton } from '../components/AppButton';
 import { SPACING, FONT_SIZES } from '../theme';
+import { createStyles } from './HutbeScreen.styles';
 
 export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { theme } = useTheme();
+    const styles = useMemo(() => createStyles(theme), [theme]);
     const pdfUrl = '/hutbe/hutbe.pdf';
     const [exists, setExists] = React.useState<boolean | null>(null);
 
@@ -100,23 +101,4 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F5F5F5',
-    },
-    content: {
-        flex: 1,
-    },
-    mobileContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-    },
-    mobileText: {
-        fontSize: 18,
-        textAlign: 'center',
-        marginVertical: 20,
-    },
-});
+
