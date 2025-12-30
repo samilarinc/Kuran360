@@ -109,6 +109,15 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     }, [calculateTimeLeft]);
 
     const handlePartPress = (part: HatimPart) => {
+        if (hatim?.isLocked) {
+            if (Platform.OS === 'web') {
+                // @ts-ignore
+                window.alert('Bu hatim kilitlenmiştir, işlem yapılamaz.');
+            } else {
+                Alert.alert('Kilitli', 'Bu hatim kilitlenmiştir, işlem yapılamaz.');
+            }
+            return;
+        }
         setSelectedPart(part);
         setLocalPages(part.pagesRead || 0);
         setPartModalVisible(true);
@@ -198,12 +207,17 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         }, 2000);
     };
 
+    const [editIsPrivate, setEditIsPrivate] = useState(false);
+    const [editIsLocked, setEditIsLocked] = useState(false);
+
     const openEditModal = () => {
         if (!hatim) return;
         setEditTitle(hatim.title);
         setEditDesc(hatim.description || '');
         setEditDeadline(hatim.deadline ? new Date(hatim.deadline) : null);
         setHasDeadline(!!hatim.deadline);
+        setEditIsPrivate(hatim.isPrivate || false);
+        setEditIsLocked(hatim.isLocked || false);
         setEditModalVisible(true);
     };
 
@@ -214,7 +228,9 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             await HatimService.updateHatim(hatimId, {
                 title: editTitle,
                 description: editDesc,
-                deadline: hasDeadline && editDeadline ? editDeadline.getTime() : null
+                deadline: hasDeadline && editDeadline ? editDeadline.getTime() : null,
+                isPrivate: editIsPrivate,
+                isLocked: editIsLocked
             });
             setEditModalVisible(false);
             await fetchHatim();
@@ -224,6 +240,8 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             setIsUpdating(false);
         }
     };
+
+
 
     const onDateChange = (event: any, selectedDate?: Date) => {
         setShowDatePicker(Platform.OS === 'ios');
@@ -603,6 +621,26 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                 onValueChange={setHasDeadline}
                                 trackColor={{ false: theme.border, true: theme.primary + '80' }}
                                 thumbColor={hasDeadline ? theme.primary : '#f4f3f4'}
+                            />
+                        </View>
+
+                        <View style={styles.toggleRow}>
+                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>Gizli Hatim</Text>
+                            <Switch
+                                value={editIsPrivate}
+                                onValueChange={setEditIsPrivate}
+                                trackColor={{ false: theme.border, true: theme.primary + '80' }}
+                                thumbColor={editIsPrivate ? theme.primary : '#f4f3f4'}
+                            />
+                        </View>
+
+                        <View style={styles.toggleRow}>
+                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>Hatimi Kilitle (Salt Okunur)</Text>
+                            <Switch
+                                value={editIsLocked}
+                                onValueChange={setEditIsLocked}
+                                trackColor={{ false: theme.border, true: '#607D8B' }}
+                                thumbColor={editIsLocked ? '#455A64' : '#f4f3f4'}
                             />
                         </View>
 

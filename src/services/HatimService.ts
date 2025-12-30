@@ -17,7 +17,7 @@ import { Hatim, HatimPart } from '../types';
 const HATIMS_COLLECTION = 'hatims';
 
 export const HatimService = {
-    async createHatim(title: string, description: string, creatorId: string, creatorName: string, deadline?: number): Promise<string> {
+    async createHatim(title: string, description: string, creatorId: string, creatorName: string, deadline?: number, isPrivate: boolean = false): Promise<string> {
         const parts: HatimPart[] = Array.from({ length: 30 }, (_, i) => {
             const partNumber = i + 1;
             let totalPages = 20;
@@ -44,20 +44,32 @@ export const HatimService = {
             createdAt: Date.now(),
             parts,
             isCompleted: false,
-            deadline: deadline || null
+            deadline: deadline || null,
+            isPrivate,
+            isLocked: false
         };
 
         const docRef = await addDoc(collection(db, HATIMS_COLLECTION), hatimData);
         return docRef.id;
     },
 
-    async getHatims(): Promise<Hatim[]> {
+    async getHatims(userId?: string): Promise<Hatim[]> {
         const q = query(collection(db, HATIMS_COLLECTION), orderBy('createdAt', 'desc'));
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(doc => ({
+        const allHatims = querySnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
         } as Hatim));
+
+        if (!userId) return allHatims.filter(h => !h.isPrivate);
+
+        // specific admin user
+        const ADMIN_ID = 'REMOVED_ADMIN_UID';
+        if (userId === ADMIN_ID) {
+            return allHatims;
+        }
+
+        return allHatims.filter(h => !h.isPrivate || h.creatorId === userId);
     },
 
     async getHatimById(id: string): Promise<Hatim | null> {
@@ -72,6 +84,7 @@ export const HatimService = {
     async claimPart(hatimId: string, partNumber: number, userId: string, userName: string): Promise<void> {
         const hatim = await this.getHatimById(hatimId);
         if (!hatim) throw new Error('Hatim bulunamadı');
+        if (hatim.isLocked) throw new Error('Bu hatim kilitlenmiştir, işlem yapılamaz.');
 
         const updatedParts = hatim.parts.map(part => {
             if (part.partNumber === partNumber) {
@@ -95,6 +108,7 @@ export const HatimService = {
     async unclaimPart(hatimId: string, partNumber: number, userId: string): Promise<void> {
         const hatim = await this.getHatimById(hatimId);
         if (!hatim) throw new Error('Hatim bulunamadı');
+        if (hatim.isLocked) throw new Error('Bu hatim kilitlenmiştir, işlem yapılamaz.');
 
         const isCreator = hatim.creatorId === userId;
 
@@ -125,6 +139,7 @@ export const HatimService = {
     async togglePartCompletion(hatimId: string, partNumber: number, userId: string, completed: boolean): Promise<void> {
         const hatim = await this.getHatimById(hatimId);
         if (!hatim) throw new Error('Hatim bulunamadı');
+        if (hatim.isLocked) throw new Error('Bu hatim kilitlenmiştir, işlem yapılamaz.');
 
         const isCreator = hatim.creatorId === userId;
 
@@ -155,6 +170,7 @@ export const HatimService = {
     async updatePartProgress(hatimId: string, partNumber: number, userId: string, pagesRead: number): Promise<void> {
         const hatim = await this.getHatimById(hatimId);
         if (!hatim) throw new Error('Hatim bulunamadı');
+        if (hatim.isLocked) throw new Error('Bu hatim kilitlenmiştir, işlem yapılamaz.');
 
         const isCreator = hatim.creatorId === userId;
 
@@ -212,7 +228,7 @@ export const HatimService = {
         }
     },
 
-    async updateHatim(hatimId: string, updates: { title?: string; description?: string; deadline?: number | null }): Promise<void> {
+    async updateHatim(hatimId: string, updates: { title?: string; description?: string; deadline?: number | null; isPrivate?: boolean; isLocked?: boolean }): Promise<void> {
         const docRef = doc(db, HATIMS_COLLECTION, hatimId);
         await updateDoc(docRef, updates);
     },

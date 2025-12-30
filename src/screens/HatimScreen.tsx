@@ -34,6 +34,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
     const [newTitle, setNewTitle] = useState('');
     const [newDesc, setNewDesc] = useState('');
     const [newDeadline, setNewDeadline] = useState<Date | null>(null);
+    const [isPrivate, setIsPrivate] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [creating, setCreating] = useState(false);
@@ -42,7 +43,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
     const fetchHatims = async () => {
         try {
             setLoading(true);
-            const data = await HatimService.getHatims();
+            const data = await HatimService.getHatims(user?.uid);
             setHatims(data);
         } catch (error) {
             console.error('Error fetching hatims:', error);
@@ -53,17 +54,18 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
 
     useEffect(() => {
         fetchHatims();
-    }, []);
+    }, [user?.uid]);
 
     const handleCreate = async () => {
         if (!newTitle.trim() || !user) return;
         try {
             setCreating(true);
             const deadline = hasDeadline && newDeadline ? newDeadline.getTime() : undefined;
-            await HatimService.createHatim(newTitle, newDesc, user.uid, user.displayName || 'İsimsiz', deadline);
+            await HatimService.createHatim(newTitle, newDesc, user.uid, user.displayName || 'İsimsiz', deadline, isPrivate);
             setNewTitle('');
             setNewDesc('');
             setNewDeadline(null);
+            setIsPrivate(false);
             setModalVisible(false);
             setHasDeadline(false);
             fetchHatims();
@@ -106,12 +108,19 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                 onPress={() => navigation.navigate('HatimDetail', { hatimId: item.id })}
             >
                 <View style={styles.hatimHeader}>
-                    <Text style={[styles.hatimTitle, { color: theme.text }]}>{item.title}</Text>
-                    {item.isCompleted && (
+                    <Text style={[styles.hatimTitle, { color: theme.text }]} numberOfLines={1}>
+                        {item.title}
+                        {item.isPrivate && <Text style={{ fontSize: 12, color: '#f44336' }}> (Gizli)</Text>}
+                    </Text>
+                    {item.isCompleted ? (
                         <View style={styles.completedBadge}>
                             <Text style={styles.completedBadgeText}>Tamamlandı</Text>
                         </View>
-                    )}
+                    ) : item.isLocked ? (
+                        <View style={[styles.completedBadge, { backgroundColor: '#607D8B' }]}>
+                            <Text style={styles.completedBadgeText}>Kilitli</Text>
+                        </View>
+                    ) : null}
                 </View>
                 <Text style={[styles.hatimCreator, { color: theme.textSecondary }]}>
                     Oluşturan: {item.creatorName}
@@ -191,6 +200,16 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                                 onValueChange={setHasDeadline}
                                 trackColor={{ false: theme.border, true: theme.primary + '80' }}
                                 thumbColor={hasDeadline ? theme.primary : '#f4f3f4'}
+                            />
+                        </View>
+
+                        <View style={styles.toggleRow}>
+                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>Gizli Hatim</Text>
+                            <Switch
+                                value={isPrivate}
+                                onValueChange={setIsPrivate}
+                                trackColor={{ false: theme.border, true: theme.primary + '80' }}
+                                thumbColor={isPrivate ? theme.primary : '#f4f3f4'}
                             />
                         </View>
 

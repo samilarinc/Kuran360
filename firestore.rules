@@ -31,10 +31,21 @@ service cloud.firestore {
 
     // Hatims
     match /hatims/{hatimId} {
-      allow read: if isSignedIn();
+      allow read: if isSignedIn() && (
+        !resource.data.isPrivate || 
+        resource.data.creatorId == request.auth.uid || 
+        request.auth.uid == 'REMOVED_ADMIN_UID' // Admin ID
+      );
       allow create: if isSignedIn();
-      allow update: if isSignedIn(); // Allow claiming/completing parts
-      allow delete: if isSignedIn() && resource.data.creatorId == request.auth.uid;
+      allow update: if isSignedIn() && (
+        !resource.data.isLocked || 
+        resource.data.creatorId == request.auth.uid || 
+        request.auth.uid == 'REMOVED_ADMIN_UID'
+      ); 
+      allow delete: if isSignedIn() && (
+          resource.data.creatorId == request.auth.uid || 
+          request.auth.uid == 'REMOVED_ADMIN_UID'
+      );
     }
   }
 }

@@ -195,4 +195,6 @@ export interface Hatim {
   isCompleted: boolean;
   description?: string;
   deadline?: number;
+  isPrivate?: boolean;
+  isLocked?: boolean;
 }
