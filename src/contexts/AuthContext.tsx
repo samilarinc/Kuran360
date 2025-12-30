@@ -11,6 +11,7 @@ import {
 } from 'firebase/auth';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
+import * as AuthSession from 'expo-auth-session';
 import { Platform } from 'react-native';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
@@ -71,8 +72,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     const googleConfig = getGoogleConfig();
+    const config = {
+        ...googleConfig,
+        androidClientId: googleConfig.androidClientId,
+        redirectUri: AuthSession.makeRedirectUri({
+            scheme: 'com.kuran360',
+            preferLocalhost: true,
+        }),
+    };
 
-    const [request, response, promptAsync] = Google.useAuthRequest(googleConfig);
+    const [request, response, promptAsync] = Google.useAuthRequest(config);
 
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, async (u) => {
@@ -97,6 +106,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 );
                 signInWithCredential(auth, credential);
             }
+        } else if (response?.type === 'error' || response?.type === 'cancel') {
+            console.log('Google Auth Response:', response);
         }
     }, [response]);
 

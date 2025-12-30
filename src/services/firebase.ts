@@ -1,7 +1,9 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+// @ts-ignore
+import { getAuth, GoogleAuthProvider, initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Check if we're in a web environment and get config accordingly
 const getFirebaseConfig = () => {
@@ -58,7 +60,15 @@ if (!firebaseConfig || !firebaseConfig.apiKey) {
 }
 
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+
+// Initialize Auth with persistence for native platforms
+export const auth = Platform.OS === 'web'
+    ? getAuth(app)
+    : initializeAuth(app, {
+        // @ts-ignore: getReactNativePersistence is available in react-native environment but not in web types
+        persistence: getReactNativePersistence(AsyncStorage)
+    });
+
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 

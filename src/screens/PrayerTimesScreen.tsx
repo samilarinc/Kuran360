@@ -53,7 +53,8 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
 
         setLoading(true);
         try {
-            const response = await fetch(`/2025_ezan/${selectedLocation.fileName}`);
+            const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
+            const response = await fetch(`${baseUrl}/2025_ezan/${selectedLocation.fileName}`);
             const data = await response.json();
             setPrayerTimes(data);
 

@@ -19,7 +19,8 @@ import { createStyles } from './HutbeScreen.styles';
 export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { theme } = useTheme();
     const styles = useMemo(() => createStyles(theme), [theme]);
-    const pdfUrl = '/hutbe/hutbe.pdf';
+    const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
+    const pdfUrl = baseUrl + '/hutbe/hutbe.pdf';
     const [exists, setExists] = React.useState<boolean | null>(null);
 
     React.useEffect(() => {
@@ -36,9 +37,7 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }, []);
 
     const handleOpenInBrowser = async () => {
-        const globalObj = global as any;
-        const origin = globalObj.window?.location?.origin || '';
-        await WebBrowser.openBrowserAsync(origin + pdfUrl);
+        await WebBrowser.openBrowserAsync(pdfUrl);
     };
 
     if (exists === false) {

@@ -100,7 +100,8 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             color: '#D84315',
             onPress: async () => {
                 try {
-                    const response = await fetch('/hutbe/hutbe.pdf', { method: 'HEAD' });
+                    const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
+                    const response = await fetch(baseUrl + '/hutbe/hutbe.pdf', { method: 'HEAD' });
                     const contentType = response.headers.get('content-type');
                     // In many dev environments, a missing file returns index.html (text/html)
                     if (response.ok && contentType && contentType.includes('application/pdf')) {
