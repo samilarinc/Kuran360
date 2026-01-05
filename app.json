@@ -1,6 +1,5 @@
 {
   "name": "Kuran360",
-  "displayName": "Kuran360",
   "extra": {
     "firebase": {
       "authDomain": "kuran-360.firebaseapp.com",
@@ -13,11 +12,12 @@
     "google": {
       "expoClientId": "",
       "iosClientId": "",
-      "androidClientId": "",
+      "androidClientId": "413952389763-blobsaf68bh5ac14dro2e1de1sclof1o.apps.googleusercontent.com",
       "webClientId": "413952389763-pqgv0dcgr9ekb408rqrbsjso5so8mffc.apps.googleusercontent.com"
     },
     "eas": {
-      "projectId": "caa80dc9-2b7e-45a3-822a-f70411f6c593"
+      "projectId": "8030feab-d680-42d0-b3be-b4b69a4af9c0"
     }
-  }
+  },
+  "owner": "msarinc"
 }

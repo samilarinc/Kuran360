@@ -1,5 +1,6 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { LIGHT_COLORS, DARK_COLORS, Theme } from '../theme';
+export type { Theme };
 import { useSettings } from './SettingsContext';
 
 

@@ -26,10 +26,6 @@ export default ({ config }) => ({
             backgroundColor: "#2E7D32"
         },
         package: "com.kuran360",
-        navigationBar: {
-            visible: true,
-            backgroundColor: "#2E7D32"
-        },
         softwareKeyboardLayoutMode: "pan"
     },
     web: {

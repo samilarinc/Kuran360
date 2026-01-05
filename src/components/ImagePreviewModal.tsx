@@ -11,6 +11,8 @@ import {
     Platform,
     Alert,
 } from 'react-native';
+import ViewShot, { captureRef } from 'react-native-view-shot';
+import { NativeVerseImageDesign } from './NativeVerseImageDesign';
 
 // Web globals
 declare const window: any;
@@ -40,6 +42,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     const [mode, setMode] = React.useState<'light' | 'dark'>('light');
     const [selectedSize, setSelectedSize] = React.useState<ImageSize>(IMAGE_SIZES[6]); // Default to classic
     const [isGenerating, setIsGenerating] = React.useState(false);
+    const viewShotRef = React.useRef<any>(null);
 
     React.useEffect(() => {
         setCurrentImage(imageUrl);
@@ -48,14 +51,39 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     const regenerateImage = async (themeMode: 'light' | 'dark', size: ImageSize) => {
         setIsGenerating(true);
         try {
-            const img = await ShareService.generateVerseImageForSharing(verseData, {
-                themeMode,
-                size
-            });
-            if (img) {
-                setCurrentImage(img);
+            if (Platform.OS === 'web') {
+                const img = await ShareService.generateVerseImageForSharing(verseData, {
+                    themeMode,
+                    size
+                });
+                if (img) {
+                    setCurrentImage(img);
+                    setMode(themeMode);
+                    setSelectedSize(size);
+                }
+            } else {
+                // Wait for state updates to reflect in NativeVerseImageDesign
                 setMode(themeMode);
                 setSelectedSize(size);
+
+                // Wait a bit for the hidden view to re-render with new props
+                setTimeout(async () => {
+                    try {
+                        if (!viewShotRef.current) {
+                            throw new Error('ViewShot ref is not attached');
+                        }
+                        const uri = await captureRef(viewShotRef.current, {
+                            format: 'png',
+                            quality: 0.9,
+                        });
+                        setCurrentImage(uri);
+                    } catch (error) {
+                        console.error('Native capture error:', error);
+                        Alert.alert('Hata', 'Görüntü oluşturulamadı.');
+                    }
+                    setIsGenerating(false);
+                }, 150);
+                return; // Early return because of setTimeout
             }
         } catch (error) {
             console.error('Resim yeniden oluşturma hatası:', error);
@@ -319,6 +347,19 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                     </View>
                 </SafeAreaView>
             </View>
+
+            {/* Hidden view for capturing on Native */}
+            {Platform.OS !== 'web' && (
+                <View style={{ position: 'absolute', left: -9999, top: 0, opacity: 0 }}>
+                    <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
+                        <NativeVerseImageDesign
+                            verseData={verseData}
+                            themeMode={mode}
+                            size={selectedSize}
+                        />
+                    </ViewShot>
+                </View>
+            )}
         </Modal>
     );
 };

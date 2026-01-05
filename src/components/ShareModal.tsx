@@ -8,8 +8,11 @@ import {
   ScrollView,
   SafeAreaView,
   Platform,
+  Alert,
 } from 'react-native';
 import { useTheme, Theme } from '../contexts/ThemeContext';
+import ViewShot, { captureRef } from 'react-native-view-shot';
+import { NativeVerseImageDesign } from './NativeVerseImageDesign';
 import { VerseShareData, ImageSize } from '../types';
 import { ShareService } from '../utils/shareUtils';
 import { ImagePreviewModal } from './ImagePreviewModal';
@@ -31,53 +34,79 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   const [imagePreviewVisible, setImagePreviewVisible] = useState(false);
   const [generatedImageUrl, setGeneratedImageUrl] = useState('');
   const [selectedSize, setSelectedSize] = useState<ImageSize>(getDefaultImageSize());
+  const viewShotRef = React.useRef<any>(null);
+  const [captureOptions, setCaptureOptions] = useState({ themeMode: 'light' as 'light' | 'dark', size: selectedSize });
 
   const handlePlatformShare = async (platformId: string) => {
     try {
       console.log('Platform seçildi:', platformId);
 
       if (platformId === 'image_light' || platformId === 'image_dark') {
+        const themeMode = platformId === 'image_dark' ? 'dark' : 'light';
         // Resim oluştur ve önizleme modalı aç
-        const imageUrl = await ShareService.generateVerseImageForSharing(verseData, {
-          themeMode: platformId === 'image_dark' ? 'dark' : 'light',
-          size: selectedSize
-        });
-        if (imageUrl) {
-          setGeneratedImageUrl(imageUrl);
-          setImagePreviewVisible(true);
-          return; // Modal açık kalsın
-        } else {
-          // Resim oluşturulamazsa fallback
-          await ShareService.shareVerseWithImage(verseData, {
-            themeMode: platformId === 'image_dark' ? 'dark' : 'light',
+        if (Platform.OS === 'web') {
+          const imageUrl = await ShareService.generateVerseImageForSharing(verseData, {
+            themeMode,
             size: selectedSize
           });
+          if (imageUrl) {
+            setGeneratedImageUrl(imageUrl);
+            setImagePreviewVisible(true);
+            return;
+          }
+        } else {
+          // Native version
+          setCaptureOptions({ themeMode, size: selectedSize });
+          setTimeout(async () => {
+            try {
+              if (!viewShotRef.current) {
+                throw new Error('ViewShot ref is not attached');
+              }
+              const uri = await captureRef(viewShotRef.current, { format: 'png', quality: 0.9 });
+              setGeneratedImageUrl(uri);
+              setImagePreviewVisible(true);
+            } catch (err) {
+              console.error('Capture error:', err);
+              Alert.alert('Hata', 'Resim oluşturulamadı.');
+            }
+          }, 150);
+          return;
         }
       } else if (platformId === 'generic') {
         // Metin olarak genel paylaşım
         await ShareService.shareVerse(verseData);
       } else if (['twitter', 'whatsapp', 'facebook', 'telegram'].includes(platformId)) {
         // Spesifik platform - resim oluşturup o platforma gönder
-        console.log(`${platformId} platformuna resimli paylaşım yapılıyor`);
-
-        // Önce resmi oluştur
-        const imageUrl = await ShareService.generateVerseImageForSharing(verseData, {
-          size: selectedSize
-        });
-        if (imageUrl) {
-          const url = ShareService.generateVerseUrl(verseData.surahNumber, verseData.verseNumber);
-          ShareService.shareToSocialPlatform(platformId, imageUrl, url);
+        if (Platform.OS === 'web') {
+          const imageUrl = await ShareService.generateVerseImageForSharing(verseData, {
+            size: selectedSize
+          });
+          if (imageUrl) {
+            const url = ShareService.generateVerseUrl(verseData.surahNumber, verseData.verseNumber);
+            ShareService.shareToSocialPlatform(platformId, imageUrl, url);
+          } else {
+            await ShareService.shareToSpecificPlatform(verseData, platformId as any);
+          }
         } else {
-          // Resim oluşturulamazsa metin paylaşımı yap
-          await ShareService.shareToSpecificPlatform(
-            verseData,
-            platformId as 'twitter' | 'whatsapp' | 'facebook' | 'telegram'
-          );
+          // Native version for specific platform
+          setCaptureOptions({ themeMode: 'light', size: selectedSize });
+          setTimeout(async () => {
+            try {
+              if (!viewShotRef.current) {
+                throw new Error('ViewShot ref is not attached');
+              }
+              const uri = await captureRef(viewShotRef.current, { format: 'png', quality: 0.9 });
+              const url = ShareService.generateVerseUrl(verseData.surahNumber, verseData.verseNumber);
+              ShareService.shareToSocialPlatform(platformId, uri, url);
+            } catch (err) {
+              await ShareService.shareToSpecificPlatform(verseData, platformId as any);
+            }
+          }, 150);
         }
       } else {
         await ShareService.shareToSpecificPlatform(
           verseData,
-          platformId as 'twitter' | 'whatsapp' | 'facebook' | 'telegram'
+          platformId as any
         );
       }
       onClose();
@@ -188,6 +217,19 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         imageUrl={generatedImageUrl}
         verseData={verseData}
       />
+
+      {/* Hidden view for capturing on Native */}
+      {Platform.OS !== 'web' && (
+        <View style={{ position: 'absolute', left: -9999, top: 0, opacity: 0 }}>
+          <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
+            <NativeVerseImageDesign
+              verseData={verseData}
+              themeMode={captureOptions.themeMode}
+              size={captureOptions.size}
+            />
+          </ViewShot>
+        </View>
+      )}
     </Modal>
   );
 };

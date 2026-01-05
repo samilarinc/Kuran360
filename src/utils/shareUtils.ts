@@ -1,10 +1,12 @@
 import { Platform, Alert, Share as RNShare } from 'react-native';
 // Expo FileSystem yerel dosya oluşturmak için
 let FileSystem: any = null;
+let Sharing: any = null;
 try {
     FileSystem = require('expo-file-system');
+    Sharing = require('expo-sharing');
 } catch (e: any) {
-    // Web veya modül yoksa sorun değil, sadece resim dosyası üretilemez
+    // Web veya modül yoksa sorun değil
 }
 import { VerseShareData, ShareOptions, ImageGenerationOptions } from '../types';
 import { VerseImageGenerator } from './verseImageGenerator';
@@ -187,6 +189,13 @@ export class ShareService {
 
             if (Platform.OS === 'web') {
                 await this.shareImageOnWeb(imageUrl, messageTemplate, '', verseUrl, verseData);
+            } else if (Sharing && await Sharing.isAvailableAsync()) {
+                const localFile = await this.ensureLocalFile(imageUrl, 'verse_share.png');
+                await Sharing.shareAsync(localFile, {
+                    mimeType: 'image/png',
+                    dialogTitle: messageTemplate,
+                    UTI: 'public.png'
+                });
             } else if (Share) {
                 const localFile = await this.ensureLocalFile(imageUrl, 'verse_share.png');
                 const shareOptions = {

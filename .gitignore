@@ -39,6 +39,7 @@ local.properties
 *.keystore
 !debug.keystore
 .kotlin/
+.expo/
 
 # node.js
 #
