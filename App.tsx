@@ -8,7 +8,7 @@ import { ThemeProvider } from './src/contexts/ThemeContext';
 import { AudioProvider } from './src/contexts/AudioContext';
 import { StatusBarManager } from './src/components/StatusBarManager';
 import { COLORS } from './src/constants';
-import { isDataCached } from './src/data/quranData';
+import { isDataCached, hasAnyData } from './src/data/quranData';
 import { Platform } from 'react-native';
 
 const App: React.FC = () => {
@@ -18,8 +18,8 @@ const App: React.FC = () => {
   useEffect(() => {
     const checkDataAvailability = async () => {
       try {
-        const cached = await isDataCached();
-        setIsDataAvailable(cached);
+        const available = await hasAnyData();
+        setIsDataAvailable(available);
         setIsAppReady(true);
       } catch (error) {
         console.error('Error checking data availability:', error);

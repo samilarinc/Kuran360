@@ -334,16 +334,36 @@ export const createStyles = (theme: any) => {
             fontSize: 14,
             fontWeight: 'bold',
         },
+        // Footer
         footer: {
             paddingHorizontal: SPACING.lg,
             paddingVertical: SPACING.lg,
             alignItems: 'center',
+            marginBottom: SPACING.xl,
         },
         footerText: {
             fontSize: FONT_SIZES.small,
             color: theme.secondary,
             textAlign: 'center',
             fontStyle: 'italic',
+        },
+        // Update Button
+        updateButton: {
+            backgroundColor: theme.primary + '10',
+            borderWidth: 1,
+            borderColor: theme.primary,
+            borderRadius: 12,
+            padding: SPACING.md,
+            margin: SPACING.lg,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        updateButtonText: {
+            color: theme.primary,
+            fontSize: FONT_SIZES.medium,
+            fontWeight: '600',
+            marginLeft: SPACING.sm,
         },
     });
 };

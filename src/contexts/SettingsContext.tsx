@@ -84,7 +84,9 @@ const AVAILABLE_TRANSLATIONS = [
     'Süleyman Tevfik (1927)',
     'Süleymaniye Vakfı Meali',
     'Süleyman Ateş Meali',
-    'Yaşar Nuri Öztürk Meali'
+    'Yaşar Nuri Öztürk Meali',
+    'Diyanet İşleri Kürtçe Meali (Latin)',
+    'Diyanet İşleri Kürtçe Meali (Arapça)'
 ];
 
 // Available reciters

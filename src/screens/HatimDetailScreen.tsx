@@ -112,8 +112,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     const handlePartPress = (part: HatimPart) => {
         if (hatim?.isLocked) {
             if (Platform.OS === 'web') {
-                // @ts-ignore
-                window.alert('Bu hatim kilitlenmiştir, işlem yapılamaz.');
+                (globalThis as any).alert?.('Bu hatim kilitlenmiştir, işlem yapılamaz.');
             } else {
                 Alert.alert('Kilitli', 'Bu hatim kilitlenmiştir, işlem yapılamaz.');
             }
@@ -306,8 +305,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
 
     const handleDeleteHatim = async () => {
         if (Platform.OS === 'web') {
-            // @ts-ignore
-            if (window.confirm('Bu hatimi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
+            if ((globalThis as any).confirm?.('Bu hatimi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
                 try {
                     setIsUpdating(true);
                     await HatimService.deleteHatim(hatimId);
@@ -315,7 +313,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                     navigation.goBack();
                 } catch (error) {
                     console.log(error);
-                    window.alert('Silme işlemi sırasında bir sorun oluştu.');
+                    (globalThis as any).alert?.('Silme işlemi sırasında bir sorun oluştu.');
                     setIsUpdating(false);
                 }
             }

@@ -12,9 +12,11 @@ import {
 } from 'react-native';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { useTheme } from '../contexts/ThemeContext';
+import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion } from '../data/quranData';
 import { AppHeader } from '../components/AppHeader'; // Use AppHeader
 import { AppButton } from '../components/AppButton'; // Use AppButton if needed
 import { ReciterSelector } from '../components/ReciterSelector';
+import { DataUpdateProgress } from '../components/DataUpdateProgress';
 import { FONT_SIZES, SPACING } from '../theme'; // Import from theme
 
 interface SettingsScreenProps {
@@ -163,7 +165,33 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         audio: false,
         display: false,
         translations: false,
+        system: false,
     });
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [downloadProgress, setDownloadProgress] = useState(0);
+    const [downloadStatus, setDownloadStatus] = useState('');
+    const [downloadedBytes, setDownloadedBytes] = useState(0);
+    const [totalBytes, setTotalBytes] = useState(0);
+    const [dataVersion, setDataVersion] = useState<string | null>(null);
+
+    React.useEffect(() => {
+        const checkVersion = async () => {
+            const version = await getStoredDataVersion();
+            setDataVersion(version);
+        };
+        checkVersion();
+    }, []);
+
+    const filteredTranslations = React.useMemo(() => {
+        if (dataVersion === '3.1') {
+            return availableTranslations;
+        }
+        // Filter out Kurdish translations if version < 3.1
+        return availableTranslations.filter(t =>
+            t !== 'Diyanet İşleri Kürtçe Meali (Latin)' &&
+            t !== 'Diyanet İşleri Kürtçe Meali (Arapça)'
+        );
+    }, [availableTranslations, dataVersion]);
 
     const toggleSection = (sectionKey: string) => {
         setExpandedSections(prev => ({
@@ -203,7 +231,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     };
 
     const selectAllTranslations = () => {
-        updateSettings({ selectedTranslations: [...availableTranslations] });
+        updateSettings({ selectedTranslations: [...filteredTranslations] });
     };
 
     const selectDefaultTranslations = () => {
@@ -214,6 +242,59 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 'Ali Bulaç Meali'
             ]
         });
+    };
+
+    const handleUpdateData = () => {
+        const title = 'Verileri Güncelle';
+        const message = 'Kur\'an mealleri ve kelime çevirileri sunucudan tekrar indirilecektir. Mevcut verileriniz en güncel sürümle değiştirilecektir. Onaylıyor musunuz?';
+
+        const runUpdate = async () => {
+            setIsUpdating(true);
+            setDownloadProgress(0);
+            setDownloadStatus('İndirme hazırlanıyor...');
+
+            const progressCallback: ProgressCallback = (progress, status, downloaded, total) => {
+                setDownloadProgress(progress);
+                setDownloadStatus(status);
+                if (downloaded !== undefined) setDownloadedBytes(downloaded);
+                if (total !== undefined) setTotalBytes(total);
+            };
+
+            try {
+                await clearCachedData();
+                await loadAllVerses(progressCallback);
+                setIsUpdating(false);
+
+                // Logically update dataVersion state after successful update
+                setDataVersion('3.1');
+
+                if (Platform.OS === 'web') {
+                    setTimeout(() => {
+                        const win: any = globalThis;
+                        if (win.window?.location) win.window.location.reload();
+                    }, 500);
+                } else {
+                    Alert.alert('Başarılı', 'Veriler başarıyla güncellendi.');
+                }
+            } catch (error) {
+                console.error('Update failed:', error);
+                setIsUpdating(false);
+                setDownloadStatus('Hata: ' + (error as Error).message);
+                Alert.alert('Hata', 'Güncelleme sırasında bir sorun oluştu.');
+            }
+        };
+
+        if (Platform.OS === 'web') {
+            const confirmed = (globalThis as any).confirm?.(message) || true;
+            if (confirmed) {
+                runUpdate();
+            }
+        } else {
+            Alert.alert(title, message, [
+                { text: 'İptal', style: 'cancel' },
+                { text: 'Güncelle', style: 'destructive', onPress: runUpdate }
+            ]);
+        }
     };
 
     const renderSectionHeader = (title: string, subtitle: string, sectionKey: string, icon: string) => (
@@ -265,7 +346,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     isSelected && createStyles(theme).selectedTranslationItem,
                     isFavorite && createStyles(theme).favoriteTranslationItem,
                     index === 0 && createStyles(theme).firstTranslationItem,
-                    index === availableTranslations.length - 1 && createStyles(theme).lastTranslationItem
+                    index === filteredTranslations.length - 1 && createStyles(theme).lastTranslationItem
                 ]}
             >
                 <TouchableOpacity
@@ -460,10 +541,44 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                             </View>
 
                             <View style={createStyles(theme).translationsContainer}>
-                                {availableTranslations.map((translation, index) =>
+                                {filteredTranslations.map((translation, index) =>
                                     renderTranslationItem(translation, index)
                                 )}
                             </View>
+                        </View>
+                    )}
+                </View>
+
+                {/* System Settings */}
+                <View style={createStyles(theme).section}>
+                    {renderSectionHeader(
+                        "Sistem & Veri",
+                        "Uygulama verilerini yönet ve güncelle",
+                        "system",
+                        "⚙️"
+                    )}
+
+                    {expandedSections.system && (
+                        <View style={createStyles(theme).sectionContent}>
+                            {isUpdating ? (
+                                <View style={{ padding: SPACING.lg }}>
+                                    <DataUpdateProgress
+                                        progress={downloadProgress}
+                                        status={downloadStatus}
+                                        downloadedBytes={downloadedBytes}
+                                        totalBytes={totalBytes}
+                                        theme={theme}
+                                    />
+                                </View>
+                            ) : (
+                                <TouchableOpacity
+                                    style={createStyles(theme).updateButton}
+                                    onPress={handleUpdateData}
+                                    activeOpacity={0.7}
+                                >
+                                    <Text style={createStyles(theme).updateButtonText}>📥 Meal Verilerini Güncelle</Text>
+                                </TouchableOpacity>
+                            )}
                         </View>
                     )}
                 </View>

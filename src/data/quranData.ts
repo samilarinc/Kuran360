@@ -27,7 +27,7 @@ const META_STORE = 'meta';
 const LEGACY_CACHE_KEY = 'quran_verses_data';
 const LEGACY_VERSION_KEY = 'quran_verses_version';
 
-const CURRENT_VERSION = '3.0'; // New version for per-verse storage
+const CURRENT_VERSION = '3.1'; // New version for per-verse storage and Kurdish translations
 const META_VERSION_KEY = 'data_version';
 
 // IndexedDB Helper Class
@@ -420,6 +420,20 @@ export const isDataCached = async (): Promise<boolean> => {
   }
 };
 
+// Check if any version of data exists
+export const hasAnyData = async (): Promise<boolean> => {
+  try {
+    if (Platform.OS === 'web') {
+      const firstVerse = await idbHelper.getVerse(1, 1);
+      return !!firstVerse;
+    } else {
+      return await sqliteHelper.hasData();
+    }
+  } catch (error) {
+    return false;
+  }
+};
+
 // Load all verses - now migrates to per-verse storage
 export const loadAllVerses = async (progressCallback?: ProgressCallback): Promise<void> => {
   try {
@@ -429,7 +443,9 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
       // Check if already migrated to new format
       const hasNewFormat = await idbHelper.hasVersesInNewFormat();
 
-      if (hasNewFormat) {
+      // If we have new format and it's not a forced update, return early
+      const currentStoredVersion = await idbHelper.getMeta(META_VERSION_KEY);
+      if (hasNewFormat && currentStoredVersion === CURRENT_VERSION) {
         logger.debug('✅ Data already in new per-verse format');
         progressCallback?.(100, 'Veri zaten yüklü');
         return;
@@ -467,11 +483,8 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
           await new Promise<void>((resolve) => {
             const req1 = globalObj.indexedDB.deleteDatabase('QuranAppDB');
             req1.onsuccess = () => resolve();
-            req1.onerror = () => resolve(); // Continue even if fails
-            req1.onblocked = () => {
-              logger.warn('⚠️ Database deletion blocked');
-              resolve();
-            };
+            req1.onerror = () => resolve();
+            req1.onblocked = () => resolve();
           });
 
           await new Promise<void>((resolve) => {
@@ -479,6 +492,13 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
             req2.onsuccess = () => resolve();
             req2.onerror = () => resolve();
             req2.onblocked = () => resolve();
+          });
+
+          await new Promise<void>((resolve) => {
+            const req3 = globalObj.indexedDB.deleteDatabase(DB_NAME);
+            req3.onsuccess = () => resolve();
+            req3.onerror = () => resolve();
+            req3.onblocked = () => resolve();
           });
 
           // Reset db connection
@@ -490,10 +510,12 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
         logger.warn('⚠️ Error clearing old databases:', clearError);
       }
 
-      progressCallback?.(0, 'Sunucudan indiriliyor...');
+      progressCallback?.(5, 'Sunucudan indiriliyor...');
       logger.debug('📡 Loading from server...');
 
-      const response = await fetch('/allVerses.json');
+      // Add a timestamp to bypass cache
+      const fetchUrl = `/allVerses.json?t=${Date.now()}`;
+      const response = await fetch(fetchUrl);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -517,6 +539,9 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
           if (totalBytes > 0) {
             const downloadProgress = (downloadedBytes / totalBytes) * 80; // 0-80% for download
             progressCallback?.(downloadProgress, 'İndiriliyor...', downloadedBytes, totalBytes);
+          } else {
+            // Fallback progress if size unknown
+            progressCallback?.(40, 'İndiriliyor...', downloadedBytes);
           }
         }
       }
@@ -842,6 +867,32 @@ export const quranData: QuranData = {
   surahs: getSurahsList(),
   totalSurahs: 114,
   totalVerses: 6236
+};
+
+// Clear cached data version to force a re-download
+export const clearCachedData = async (): Promise<void> => {
+  try {
+    if (Platform.OS === 'web') {
+      await idbHelper.setMeta(META_VERSION_KEY, '');
+    } else {
+      await sqliteHelper.setMeta(META_VERSION_KEY, '');
+    }
+  } catch (error) {
+    console.error('Error clearing cache:', error);
+  }
+};
+
+// Get stored data version
+export const getStoredDataVersion = async (): Promise<string | null> => {
+  try {
+    if (Platform.OS === 'web') {
+      return await idbHelper.getMeta(META_VERSION_KEY);
+    } else {
+      return await sqliteHelper.getMeta(META_VERSION_KEY);
+    }
+  } catch (error) {
+    return null;
+  }
 };
 
 export default quranData;

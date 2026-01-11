@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { SurahList } from '../components/SurahList';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
+import { DataUpdateProgress } from '../components/DataUpdateProgress';
 import { quranData, loadAllVerses, ProgressCallback, isDataCached } from '../data/quranData';
 import { Surah, QuranData } from '../types';
 import { useTheme, Theme } from '../contexts/ThemeContext';
@@ -146,6 +147,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         <HeaderWithDarkModeToggle
           title="القرآن الكريم"
           subtitle="Kur'an-ı Kerim"
+          showBackButton={true}
+          onBackPress={() => navigation.navigate('Main')}
+          showHomeButton={true}
+          onHomePress={() => navigation.navigate('Main')}
         />
         <View style={createStyles(theme).loadingContainer}>
           <ActivityIndicator size="large" color={theme.primary} />
@@ -162,6 +167,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         <HeaderWithDarkModeToggle
           title="القرآن الكريم"
           subtitle="Kur'an-ı Kerim"
+          showBackButton={true}
+          onBackPress={() => navigation.navigate('Main')}
+          showHomeButton={true}
+          onHomePress={() => navigation.navigate('Main')}
         />
         <View style={createStyles(theme).downloadContainer}>
           <View style={createStyles(theme).downloadCard}>
@@ -172,18 +181,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             </Text>
 
             {downloading ? (
-              <View style={createStyles(theme).downloadProgress}>
-                <View style={createStyles(theme).progressBarContainer}>
-                  <View style={[createStyles(theme).progressBar, { width: `${downloadProgress}%` }]} />
-                </View>
-                <Text style={createStyles(theme).progressText}>
-                  %{Math.round(downloadProgress)} - {downloadStatus}
-                  {totalBytes > 0 && downloadedBytes > 0 && (
-                    `\n${(downloadedBytes / (1024 * 1024)).toFixed(1)}MB / ${(totalBytes / (1024 * 1024)).toFixed(1)}MB`
-                  )}
-                </Text>
-                <ActivityIndicator size="large" color={theme.primary} style={{ marginTop: 10 }} />
-              </View>
+              <DataUpdateProgress
+                progress={downloadProgress}
+                status={downloadStatus}
+                downloadedBytes={downloadedBytes}
+                totalBytes={totalBytes}
+                theme={theme}
+              />
             ) : (
               <TouchableOpacity
                 style={createStyles(theme).downloadButton}
