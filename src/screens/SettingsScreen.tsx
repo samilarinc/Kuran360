@@ -189,7 +189,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         // Filter out Kurdish translations if version < 3.1
         return availableTranslations.filter(t =>
             t !== 'Diyanet İşleri Kürtçe Meali (Latin)' &&
-            t !== 'Diyanet İşleri Kürtçe Meali (Arapça)'
+            t !== 'Diyanet İşleri Kürtçe Meali (Arapça)' &&
+            t !== 'Ömer Çelik Meali'
         );
     }, [availableTranslations, dataVersion]);
 

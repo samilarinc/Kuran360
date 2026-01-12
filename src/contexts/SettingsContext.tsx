@@ -85,6 +85,7 @@ const AVAILABLE_TRANSLATIONS = [
     'Süleymaniye Vakfı Meali',
     'Süleyman Ateş Meali',
     'Yaşar Nuri Öztürk Meali',
+    'Ömer Çelik Meali',
     'Diyanet İşleri Kürtçe Meali (Latin)',
     'Diyanet İşleri Kürtçe Meali (Arapça)'
 ];

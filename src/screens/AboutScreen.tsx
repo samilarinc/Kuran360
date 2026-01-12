@@ -102,14 +102,20 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                         <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Kelime çevirisi açılınca kelime anlamı olmayanlar görünmüyor, örnek: İnşirah ilk ayet</Text>
                         <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Kuran sayfası görünümü eklenecek</Text>
                         <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Sayfa sesleri eklenecek, ayrıca 30. cüzdeki sayfadan daha kısa sureler için sesler üretilmeli</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Kürtçe meal seçeneği eklenecek</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Hubeyb Öndeş meali eklenebilir</Text>
                     </View>
                 </View>
 
 
                 <View style={[styles.section, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Güncelleme Notları</Text>
+
+                    <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>12 Ocak 2026</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Yeni Mealler: Kürtçe (Kurmancî) Latin ve Arap harfli Diyanet mealleri ile Ömer Çelik Meali sisteme eklendi.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Veri Altyapısı: Versiyon bazlı dinamik meal listeleme ve büyük veri dosyaları için yeni işleme motoru entegre edildi.</Text>
+                        </View>
+                    </View>
 
                     <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>26 Aralık 2025</Text>
