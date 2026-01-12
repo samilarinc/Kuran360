@@ -38,12 +38,19 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     const [showLocationPicker, setShowLocationPicker] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Load prayer times and start timer for next prayer
+    // Load prayer times when location changes
     useEffect(() => {
         loadPrayerTimes();
-        const timer = setInterval(updatePrayerStatus, 60000); // Update every minute
+    }, [settings.prayerLocation?.id]);
+
+    // Update prayer status periodically
+    useEffect(() => {
+        updatePrayerStatus();
+        const timer = setInterval(() => {
+            updatePrayerStatus();
+        }, 60000);
         return () => clearInterval(timer);
-    }, [settings.prayerLocation?.id, todayTimes]);
+    }, [todayTimes]);
 
     const loadPrayerTimes = async () => {
         const locationId = settings.prayerLocation?.id || '9541'; // Default to Istanbul

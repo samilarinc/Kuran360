@@ -20,7 +20,8 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { theme } = useTheme();
     const styles = useMemo(() => createStyles(theme), [theme]);
     const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
-    const pdfUrl = baseUrl + '/hutbe/hutbe.pdf';
+    // Add cache busting to ensure the latest PDF is always fetched
+    const pdfUrl = useMemo(() => `${baseUrl}/hutbe/hutbe.pdf?t=${Date.now()}`, [baseUrl]);
     const [exists, setExists] = React.useState<boolean | null>(null);
 
     React.useEffect(() => {
