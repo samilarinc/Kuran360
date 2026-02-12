@@ -31,11 +31,10 @@ service cloud.firestore {
 
     // Hatims
     match /hatims/{hatimId} {
-      allow read: if isSignedIn() && (
-        !resource.data.isPrivate || 
+      allow read: if resource.data.get('isPrivate', false) == false || (isSignedIn() && (
         resource.data.creatorId == request.auth.uid || 
         request.auth.uid == 'REMOVED_ADMIN_UID' // Admin ID
-      );
+      ));
       allow create: if isSignedIn();
       allow update: if isSignedIn() && (
         !resource.data.isLocked || 

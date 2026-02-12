@@ -9,7 +9,9 @@ import {
     orderBy,
     Timestamp,
     setDoc,
-    deleteDoc
+    deleteDoc,
+    where,
+    or
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { Hatim, HatimPart } from '../types';
@@ -54,22 +56,35 @@ export const HatimService = {
     },
 
     async getHatims(userId?: string): Promise<Hatim[]> {
-        const q = query(collection(db, HATIMS_COLLECTION), orderBy('createdAt', 'desc'));
+        const ADMIN_ID = 'REMOVED_ADMIN_UID';
+        let q;
+
+        if (userId === ADMIN_ID) {
+            // Admin can see everything
+            q = query(collection(db, HATIMS_COLLECTION));
+        } else if (userId) {
+            // Logged in users can see public hatims and their own hatims
+            // We use an 'or' query to satisfy security rules while getting both types
+            q = query(
+                collection(db, HATIMS_COLLECTION),
+                or(
+                    where('isPrivate', '==', false),
+                    where('creatorId', '==', userId)
+                )
+            );
+        } else {
+            // Guests only see public hatims
+            q = query(collection(db, HATIMS_COLLECTION), where('isPrivate', '==', false));
+        }
+
         const querySnapshot = await getDocs(q);
-        const allHatims = querySnapshot.docs.map(doc => ({
+        const allHatims = querySnapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data()
         } as Hatim));
 
-        if (!userId) return allHatims.filter(h => !h.isPrivate);
-
-        // specific admin user
-        const ADMIN_ID = 'REMOVED_ADMIN_UID';
-        if (userId === ADMIN_ID) {
-            return allHatims;
-        }
-
-        return allHatims.filter(h => !h.isPrivate || h.creatorId === userId);
+        // We sort in memory to avoid requiring composite indexes for (isPrivate, createdAt) or (creatorId, createdAt)
+        return allHatims.sort((a: Hatim, b: Hatim) => (b.createdAt || 0) - (a.createdAt || 0));
     },
 
     async getHatimById(id: string): Promise<Hatim | null> {
