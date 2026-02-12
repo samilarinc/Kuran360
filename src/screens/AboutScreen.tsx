@@ -110,6 +110,13 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Güncelleme Notları</Text>
 
                     <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>12 Şubat 2026</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• PWA Desteği: Web uygulaması artık Progressive Web App olarak cihazlara kurulabilir ve offline çalışabilir.</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>12 Ocak 2026</Text>
                         <View style={styles.updateList}>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Yeni Mealler: Kürtçe (Kurmancî) Latin ve Arap harfli Diyanet mealleri ile Ömer Çelik Meali sisteme eklendi.</Text>

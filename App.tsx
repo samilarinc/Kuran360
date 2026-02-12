@@ -71,6 +71,69 @@ const App: React.FC = () => {
             }
           } catch { }
 
+          // Add PWA manifest
+          try {
+            const manifestLinkId = 'pwa-manifest';
+            if (!doc.getElementById(manifestLinkId)) {
+              const manifestLink = doc.createElement('link');
+              manifestLink.id = manifestLinkId;
+              manifestLink.rel = 'manifest';
+              manifestLink.href = '/manifest.json';
+              doc.head && doc.head.appendChild(manifestLink);
+
+              // Add theme-color meta tag
+              const themeColorMeta = doc.createElement('meta');
+              themeColorMeta.name = 'theme-color';
+              themeColorMeta.content = '#2E7D32';
+              doc.head && doc.head.appendChild(themeColorMeta);
+
+              // Add apple-mobile-web-app-capable
+              const appleMeta = doc.createElement('meta');
+              appleMeta.name = 'apple-mobile-web-app-capable';
+              appleMeta.content = 'yes';
+              doc.head && doc.head.appendChild(appleMeta);
+            }
+          } catch { }
+
+          // Register Service Worker for PWA
+          try {
+            const nav = (win as any).navigator;
+            if (nav && 'serviceWorker' in nav) {
+              (win as any).addEventListener('load', () => {
+                nav.serviceWorker
+                  .register('/service-worker.js')
+                  .then((registration: any) => {
+                    console.log('SW registered:', registration);
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                      const newWorker = registration.installing;
+                      newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && nav.serviceWorker.controller) {
+                          console.log('New content available; please refresh.');
+                          if ((win as any).confirm('Yeni sürüm mevcut! Güncellemek için Tamam\'a tıklayın.')) {
+                            newWorker.postMessage({ type: 'SKIP_WAITING' });
+                            (win as any).location.reload();
+                          }
+                        }
+                      });
+                    });
+                  })
+                  .catch((error: any) => {
+                    console.log('SW registration failed:', error);
+                  });
+
+                // Reload page when new service worker takes control
+                let refreshing = false;
+                nav.serviceWorker.addEventListener('controllerchange', () => {
+                  if (refreshing) return;
+                  refreshing = true;
+                  (win as any).location.reload();
+                });
+              });
+            }
+          } catch { }
+
           // Add Google Analytics
           try {
             if (!doc.querySelector('script[src*="gtag/js"]')) {

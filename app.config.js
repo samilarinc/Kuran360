@@ -30,7 +30,29 @@ export default ({ config }) => ({
     },
     web: {
         favicon: "./public/favicon.png",
-        name: "Kuran360"
+        name: "Kuran360",
+        shortName: "Kuran360",
+        lang: "tr",
+        scope: "/",
+        themeColor: "#2E7D32",
+        backgroundColor: "#2E7D32",
+        startUrl: "/",
+        display: "standalone",
+        orientation: "portrait",
+        dir: "auto",
+        preferRelatedApplications: false,
+        description: "Quran reading and listening application",
+        bundler: "metro",
+        config: {
+            firebase: {
+                apiKey: process.env.FIREBASE_API_KEY,
+                authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+                projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+                storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+                messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+                appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
+            }
+        }
     },
     plugins: [
         "expo-asset"
