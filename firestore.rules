@@ -10,11 +10,24 @@ service cloud.firestore {
     match /users/{userId} {
       allow read, write: if isSignedIn() && request.auth.uid == userId;
       
-      // Allow access to subcollections (profile, data, meta, etc.)
+      // Allow public to see basic profile info (only displayName)
+      match /profile/public {
+        allow read: if true;
+      }
+      
+      // Allow anyone (even non-logged in) to create a dua request
+      match /duaRequests/{requestId} {
+        allow create: if true;
+        allow read, write: if isSignedIn() && request.auth.uid == userId;
+      }
+
+
+      // Allow access to other subcollections (data, meta, etc.)
       match /{allSubcollections=**} {
         allow read, write: if isSignedIn() && request.auth.uid == userId;
       }
     }
+
 
     // Forum threads
     match /threads/{threadId} {

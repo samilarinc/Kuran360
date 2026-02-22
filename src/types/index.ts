@@ -94,9 +94,27 @@ export interface LastRead {
   url: string;
 }
 
+export interface DuaItem {
+  id: string;
+  person: string;
+  topic: string;
+  isChecked: boolean;
+  isPersonal: boolean;
+  createdAt: number;
+}
+
+export interface DuaRequest {
+  id: string;
+  requesterName: string;
+  topic: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  createdAt: number;
+}
+
 export interface UserData {
   bookmarks: Bookmark[];
   lastRead: LastRead[];
+  duaList?: DuaItem[];
 }
 
 export interface UserProfile {

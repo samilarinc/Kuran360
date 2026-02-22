@@ -119,8 +119,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             if (profileDoc.exists()) {
                 const profile = profileDoc.data() as UserProfile;
                 setUserProfile(profile);
+                const publicProfileRef = doc(db, 'users', user.uid, 'profile', 'public');
+                const publicProfileDoc = await getDoc(publicProfileRef);
+                if (!publicProfileDoc.exists()) {
+                    await setDoc(publicProfileRef, { displayName: profile.displayName });
+                }
             } else {
-                // Create initial profile from Firebase Auth data
                 const initialProfile: UserProfile = {
                     displayName: user.displayName || 'İsimsiz Kullanıcı',
                     email: user.email || '',
@@ -128,6 +132,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     updatedAt: Date.now()
                 };
                 await setDoc(profileRef, initialProfile);
+                const publicProfileRef = doc(db, 'users', user.uid, 'profile', 'public');
+                await setDoc(publicProfileRef, { displayName: initialProfile.displayName });
+
                 setUserProfile(initialProfile);
             }
         } catch (error) {
@@ -159,6 +166,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             };
 
             await setDoc(profileRef, updatedProfile, { merge: true });
+            const publicProfileRef = doc(db, 'users', user.uid, 'profile', 'public');
+            await setDoc(publicProfileRef, { displayName: newDisplayName }, { merge: true });
             setUserProfile(updatedProfile);
 
             // Force refresh the user object to get updated displayName

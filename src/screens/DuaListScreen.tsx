@@ -8,60 +8,42 @@ import {
     ScrollView,
     StyleSheet,
     Alert,
+    Platform,
 } from 'react-native';
+
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../theme';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useUserData } from '../contexts/UserDataContext';
+import { useAuth } from '../contexts/AuthContext';
+import { DuaRequest } from '../types';
+
+declare const navigator: any;
+
 
 interface DuaListScreenProps {
     onNavigate: () => void;
 }
 
-interface DuaItem {
-    id: string;
-    person: string;
-    topic: string;
-    isChecked: boolean;
-    isPersonal: boolean; // true for personal duas, false for others
-}
-
-const STORAGE_KEY = '@dua_list';
-
 export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
     const { theme } = useTheme();
-    const [duaList, setDuaList] = useState<DuaItem[]>([]);
+    const { user } = useAuth();
+    const {
+        duaList,
+        duaRequests,
+        addDua,
+        updateDua,
+        deleteDua,
+        acceptDuaRequest,
+        rejectDuaRequest
+    } = useUserData();
+
     const [newPerson, setNewPerson] = useState('');
     const [newTopic, setNewTopic] = useState('');
     const [showPersonalForm, setShowPersonalForm] = useState(false);
     const [showOthersForm, setShowOthersForm] = useState(false);
 
-    // Load dua list from storage
-    React.useEffect(() => {
-        const loadDuaList = async () => {
-            try {
-                const stored = await AsyncStorage.getItem(STORAGE_KEY);
-                if (stored) {
-                    setDuaList(JSON.parse(stored));
-                }
-            } catch (error) {
-                console.error('Error loading dua list:', error);
-            }
-        };
-        loadDuaList();
-    }, []);
-
-    // Save dua list to storage
-    const saveDuaList = async (list: DuaItem[]) => {
-        try {
-            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-            setDuaList(list);
-        } catch (error) {
-            console.error('Error saving dua list:', error);
-        }
-    };
-
-    const addDua = (isPersonal: boolean) => {
+    const handleAddDua = (isPersonal: boolean) => {
         if (newTopic.trim() === '') {
             Alert.alert('Hata', 'Lütfen bir konu girin');
             return;
@@ -72,29 +54,18 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
             return;
         }
 
-        const newDua: DuaItem = {
-            id: Date.now().toString(),
-            person: isPersonal ? '' : newPerson.trim(),
-            topic: newTopic.trim(),
-            isChecked: false,
-            isPersonal: isPersonal,
-        };
-
-        saveDuaList([...duaList, newDua]);
+        addDua(isPersonal ? '' : newPerson.trim(), newTopic.trim(), isPersonal);
         setNewPerson('');
         setNewTopic('');
         setShowPersonalForm(false);
         setShowOthersForm(false);
     };
 
-    const toggleCheck = (id: string) => {
-        const updated = duaList.map(dua =>
-            dua.id === id ? { ...dua, isChecked: !dua.isChecked } : dua
-        );
-        saveDuaList(updated);
+    const toggleCheck = (id: string, isChecked: boolean) => {
+        updateDua(id, { isChecked: !isChecked });
     };
 
-    const deleteDua = (id: string) => {
+    const handleDeleteDua = (id: string) => {
         Alert.alert(
             'Sil',
             'Bu duayı silmek istediğinizden emin misiniz?',
@@ -103,27 +74,46 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 {
                     text: 'Sil',
                     style: 'destructive',
-                    onPress: () => {
-                        const updated = duaList.filter(dua => dua.id !== id);
-                        saveDuaList(updated);
-                    },
+                    onPress: () => deleteDua(id),
                 },
             ]
         );
     };
 
-    const resetChecks = () => {
+    const copyRequestLink = () => {
+        if (!user) {
+            Alert.alert('Hata', 'Link oluşturmak için giriş yapmalısınız');
+            return;
+        }
+        const link = `https://kuran360.com/dua-request/${user.uid}`;
+
+        if (Platform.OS === 'web' && typeof navigator !== 'undefined' && navigator.clipboard) {
+            navigator.clipboard.writeText(link);
+            Alert.alert('Başarılı', 'Dua isteme linki kopyalandı! Bu linki arkadaşlarınıza göndererek onlardan dua isteği alabilirsiniz.');
+        } else {
+            Alert.alert(
+                'Dua İsteme Linki',
+                `Link: ${link}\n\nBu linki kopyalayıp arkadaşlarınıza gönderebilirsiniz.`,
+                [{ text: 'Tamam' }]
+            );
+        }
+    };
+
+
+    const handleAcceptRequest = (request: DuaRequest) => {
+        acceptDuaRequest(request);
+    };
+
+    const handleRejectRequest = (request: DuaRequest) => {
         Alert.alert(
-            'Sıfırla',
-            'Tüm işaretlemeleri sıfırlamak istediğinizden emin misiniz?',
+            'Reddet',
+            'Bu dua isteğini reddetmek istediğinizden emin misiniz?',
             [
-                { text: 'İptal', style: 'cancel' },
+                { text: 'Vazgeç', style: 'cancel' },
                 {
-                    text: 'Sıfırla',
-                    onPress: () => {
-                        const updated = duaList.map(dua => ({ ...dua, isChecked: false }));
-                        saveDuaList(updated);
-                    },
+                    text: 'Reddet',
+                    style: 'destructive',
+                    onPress: () => rejectDuaRequest(request.id),
                 },
             ]
         );
@@ -142,6 +132,55 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 onBackPress={onNavigate}
             />
             <ScrollView style={styles.content}>
+                {/* Compact Request Link Section */}
+                <View style={[styles.compactShareBox, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+                    <Text style={[styles.compactShareText, { color: theme.text }]}>🔗 Linki Paylaş Dua İsteği Topla</Text>
+                    <TouchableOpacity
+                        style={[styles.compactCopyButton, { backgroundColor: theme.primary }]}
+                        onPress={copyRequestLink}
+                    >
+                        <Text style={styles.compactCopyButtonText}>Kopyala</Text>
+                    </TouchableOpacity>
+                </View>
+
+                {/* Pending Requests Section */}
+                {duaRequests.length > 0 && (
+                    <View style={styles.section}>
+                        <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                            📥 Yeni Dua İstekleri ({duaRequests.length})
+                        </Text>
+                        {duaRequests.map(request => (
+                            <View
+                                key={request.id}
+                                style={[styles.requestItem, { backgroundColor: theme.surface, borderColor: theme.border }]}
+                            >
+                                <View style={styles.requestContent}>
+                                    <Text style={[styles.requestName, { color: theme.primary }]}>
+                                        {request.requesterName}
+                                    </Text>
+                                    <Text style={[styles.requestTopic, { color: theme.text }]}>
+                                        {request.topic}
+                                    </Text>
+                                </View>
+                                <View style={styles.requestActions}>
+                                    <TouchableOpacity
+                                        style={[styles.actionButton, { backgroundColor: theme.primary }]}
+                                        onPress={() => handleAcceptRequest(request)}
+                                    >
+                                        <Text style={styles.actionButtonText}>Kabul Et</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[styles.actionButton, { backgroundColor: 'transparent', borderWidth: 1, borderColor: theme.textSecondary }]}
+                                        onPress={() => handleRejectRequest(request)}
+                                    >
+                                        <Text style={[styles.actionButtonText, { color: theme.textSecondary }]}>Vazgeç</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        ))}
+                    </View>
+                )}
+
                 {/* Personal Duas Section */}
                 <View style={styles.section}>
                     <View style={styles.sectionHeader}>
@@ -169,7 +208,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                             />
                             <TouchableOpacity
                                 style={[styles.submitButton, { backgroundColor: theme.primary }]}
-                                onPress={() => addDua(true)}
+                                onPress={() => handleAddDua(true)}
                             >
                                 <Text style={styles.submitButtonText}>Ekle</Text>
                             </TouchableOpacity>
@@ -188,7 +227,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                             >
                                 <TouchableOpacity
                                     style={styles.duaContent}
-                                    onPress={() => toggleCheck(dua.id)}
+                                    onPress={() => toggleCheck(dua.id, dua.isChecked)}
                                 >
                                     <View style={[
                                         styles.checkbox,
@@ -206,7 +245,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={() => deleteDua(dua.id)}
+                                    onPress={() => handleDeleteDua(dua.id)}
                                     style={styles.deleteButton}
                                 >
                                     <Text style={styles.deleteIcon}>×</Text>
@@ -250,7 +289,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                             />
                             <TouchableOpacity
                                 style={[styles.submitButton, { backgroundColor: theme.primary }]}
-                                onPress={() => addDua(false)}
+                                onPress={() => handleAddDua(false)}
                             >
                                 <Text style={styles.submitButtonText}>Ekle</Text>
                             </TouchableOpacity>
@@ -269,7 +308,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                             >
                                 <TouchableOpacity
                                     style={styles.duaContent}
-                                    onPress={() => toggleCheck(dua.id)}
+                                    onPress={() => toggleCheck(dua.id, dua.isChecked)}
                                 >
                                     <View style={[
                                         styles.checkbox,
@@ -292,7 +331,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={() => deleteDua(dua.id)}
+                                    onPress={() => handleDeleteDua(dua.id)}
                                     style={styles.deleteButton}
                                 >
                                     <Text style={styles.deleteIcon}>×</Text>
@@ -326,6 +365,7 @@ const createStyles = (theme: any) => StyleSheet.create({
     sectionTitle: {
         fontSize: FONT_SIZES.large,
         fontWeight: 'bold',
+        marginBottom: SPACING.sm,
     },
     addButton: {
         width: 36,
@@ -417,15 +457,62 @@ const createStyles = (theme: any) => StyleSheet.create({
         fontSize: 18,
         color: '#666',
     },
-    resetButton: {
-        borderRadius: 12,
-        padding: SPACING.md,
+    compactShareBox: {
+        flexDirection: 'row',
         alignItems: 'center',
-        marginVertical: SPACING.lg,
+        justifyContent: 'space-between',
+        padding: SPACING.md,
+        borderRadius: 12,
+        borderWidth: 1,
+        marginBottom: SPACING.lg,
     },
-    resetButtonText: {
-        color: '#FFFFFF',
+    compactShareText: {
         fontSize: FONT_SIZES.medium,
         fontWeight: 'bold',
     },
+    compactCopyButton: {
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+    },
+    compactCopyButtonText: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+        fontSize: FONT_SIZES.small,
+    },
+    requestItem: {
+
+
+        padding: SPACING.md,
+        borderRadius: 12,
+        borderWidth: 1,
+        marginBottom: SPACING.sm,
+    },
+    requestContent: {
+        marginBottom: SPACING.md,
+    },
+    requestName: {
+        fontSize: FONT_SIZES.medium,
+        fontWeight: 'bold',
+    },
+    requestTopic: {
+        fontSize: FONT_SIZES.medium,
+        marginTop: 2,
+    },
+    requestActions: {
+        flexDirection: 'row',
+        gap: SPACING.sm,
+    },
+    actionButton: {
+        flex: 1,
+        padding: SPACING.sm,
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    actionButtonText: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+        fontSize: FONT_SIZES.small,
+    },
 });
+

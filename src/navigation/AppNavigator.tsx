@@ -21,6 +21,7 @@ import { DuaListScreen } from '../screens/DuaListScreen';
 import { UmrahDuasScreen } from '../screens/UmrahDuasScreen';
 import { UmrahMenuScreen } from '../screens/UmrahMenuScreen';
 import { UmrahChecklistScreen } from '../screens/UmrahChecklistScreen';
+import { DuaRequestScreen } from '../screens/DuaRequestScreen';
 import { ForumProvider } from '../contexts/ForumContext';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useGlobalAudio } from '../contexts/AudioContext';
@@ -62,15 +63,17 @@ export type RootStackParamList = {
   DuaList: undefined;
   UmrahDuas: undefined;
   UmrahChecklist: undefined;
+  DuaRequest: { userId: string };
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest';
   params?: {
     surah?: Surah;
     verseIndex?: number;
     threadId?: string;
     hatimId?: string;
+    userId?: string;
     lastSelectedSurah?: Surah;
     verse?: any;
   };
@@ -140,6 +143,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return '/umrah-duas';
       case 'UmrahChecklist':
         return '/umrah-checklist';
+      case 'DuaRequest':
+        return route.params?.userId ? `/dua-request/${route.params.userId}` : '/dua-list';
       default:
         return '/';
     }
@@ -211,6 +216,12 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     if (pathname === '/prayer-times') {
       return { screen: 'PrayerTimes' };
     }
+
+    const duaRequestMatch = pathname.match(/^\/dua-request\/(.+)$/);
+    if (duaRequestMatch) {
+      return { screen: 'DuaRequest', params: { userId: duaRequestMatch[1] } };
+    }
+
 
     if (pathname === '/hutbe') {
       return { screen: 'Hutbe' };
@@ -364,7 +375,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = {
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -556,6 +567,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <UmrahDuasScreen onNavigate={() => navigation.goBack()} />
             ) : currentRoute.screen === 'UmrahChecklist' ? (
               <UmrahChecklistScreen />
+            ) : currentRoute.screen === 'DuaRequest' && currentRoute.params?.userId ? (
+              <DuaRequestScreen navigation={navigation} userId={currentRoute.params.userId} />
             ) : (
               <MainScreen
                 onNavigate={(screen) => {
