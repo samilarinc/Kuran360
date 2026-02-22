@@ -16,6 +16,11 @@ import { HatimScreen } from '../screens/HatimScreen';
 import { HatimDetailScreen } from '../screens/HatimDetailScreen';
 import { PrayerTimesScreen } from '../screens/PrayerTimesScreen';
 import { HutbeScreen } from '../screens/HutbeScreen';
+import { UmrahProgressScreen } from '../screens/UmrahProgressScreen';
+import { DuaListScreen } from '../screens/DuaListScreen';
+import { UmrahDuasScreen } from '../screens/UmrahDuasScreen';
+import { UmrahMenuScreen } from '../screens/UmrahMenuScreen';
+import { UmrahChecklistScreen } from '../screens/UmrahChecklistScreen';
 import { ForumProvider } from '../contexts/ForumContext';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useGlobalAudio } from '../contexts/AudioContext';
@@ -52,10 +57,15 @@ export type RootStackParamList = {
   HatimDetail: { hatimId: string };
   PrayerTimes: undefined;
   Hutbe: undefined;
+  UmrahMenu: undefined;
+  UmrahProgress: undefined;
+  DuaList: undefined;
+  UmrahDuas: undefined;
+  UmrahChecklist: undefined;
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -120,6 +130,16 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return '/prayer-times';
       case 'Hutbe':
         return '/hutbe';
+      case 'UmrahMenu':
+        return '/umrah';
+      case 'UmrahProgress':
+        return '/umrah-progress';
+      case 'DuaList':
+        return '/dua-list';
+      case 'UmrahDuas':
+        return '/umrah-duas';
+      case 'UmrahChecklist':
+        return '/umrah-checklist';
       default:
         return '/';
     }
@@ -148,6 +168,26 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
     if (pathname === '/forum') {
       return { screen: 'Forum' };
+    }
+
+    if (pathname === '/umrah') {
+      return { screen: 'UmrahMenu' };
+    }
+
+    if (pathname === '/umrah-progress') {
+      return { screen: 'UmrahProgress' };
+    }
+
+    if (pathname === '/dua-list') {
+      return { screen: 'DuaList' };
+    }
+
+    if (pathname === '/umrah-duas') {
+      return { screen: 'UmrahDuas' };
+    }
+
+    if (pathname === '/umrah-checklist') {
+      return { screen: 'UmrahChecklist' };
     }
 
     if (pathname === '/random-verse') {
@@ -324,7 +364,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = {
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -506,6 +546,16 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <PrayerTimesScreen navigation={navigation} />
             ) : currentRoute.screen === 'Hutbe' ? (
               <HutbeScreen navigation={navigation} />
+            ) : currentRoute.screen === 'UmrahMenu' ? (
+              <UmrahMenuScreen navigation={navigation} />
+            ) : currentRoute.screen === 'UmrahProgress' ? (
+              <UmrahProgressScreen onNavigate={() => navigation.goBack()} navigation={navigation} />
+            ) : currentRoute.screen === 'DuaList' ? (
+              <DuaListScreen onNavigate={() => navigation.goBack()} />
+            ) : currentRoute.screen === 'UmrahDuas' ? (
+              <UmrahDuasScreen onNavigate={() => navigation.goBack()} />
+            ) : currentRoute.screen === 'UmrahChecklist' ? (
+              <UmrahChecklistScreen />
             ) : (
               <MainScreen
                 onNavigate={(screen) => {

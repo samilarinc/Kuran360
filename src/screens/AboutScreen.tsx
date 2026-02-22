@@ -110,6 +110,16 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Güncelleme Notları</Text>
 
                     <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>22 Şubat 2026</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Umre Desteği: "Şu an neredeyim?" ekranı ile tavaf ve sa'y takibi eklendi.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Dua Listem: Kişisel ve başkaları için özel dua çizelgesi özelliği eklendi.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Umre Duaları: İhram, tavaf, sa'y ve diğer umre ibadet dualarını kapsayan rehber eklendi.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Hazırlık Listesi: Gidiş/dönüş uçuş bilgileri, platform-uyumlu tarih seçici (web/mobil), otomatik Skyscanner entegrasyonu.</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>12 Şubat 2026</Text>
                         <View style={styles.updateList}>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• PWA Desteği: Web uygulaması artık Progressive Web App olarak cihazlara kurulabilir ve offline çalışabilir.</Text>

@@ -16,7 +16,7 @@ import { Alert, Platform } from 'react-native';
 import { createStyles } from './MainScreen.styles';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Hutbe') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -114,6 +114,14 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                     Alert.alert('Hata', 'Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin.');
                 }
             },
+        },
+        {
+            id: 'umrah',
+            title: 'Umre',
+            subtitle: 'Umre rehberi ve takip',
+            icon: '🕋',
+            color: '#8E24AA',
+            onPress: () => onNavigate('UmrahMenu'),
         },
         {
             id: 'about',
