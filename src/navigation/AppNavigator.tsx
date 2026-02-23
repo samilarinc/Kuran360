@@ -566,7 +566,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
             ) : currentRoute.screen === 'UmrahDuas' ? (
               <UmrahDuasScreen onNavigate={() => navigation.goBack()} />
             ) : currentRoute.screen === 'UmrahChecklist' ? (
-              <UmrahChecklistScreen />
+              <UmrahChecklistScreen onNavigate={() => navigation.goBack()} navigation={navigation} />
             ) : currentRoute.screen === 'DuaRequest' && currentRoute.params?.userId ? (
               <DuaRequestScreen navigation={navigation} userId={currentRoute.params.userId} />
             ) : (
