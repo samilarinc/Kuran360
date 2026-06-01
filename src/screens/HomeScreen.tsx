@@ -7,15 +7,15 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   TextInput,
-  Platform,
 } from 'react-native';
 import { SurahList } from '../components/SurahList';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { DataUpdateProgress } from '../components/DataUpdateProgress';
-import { quranData, loadAllVerses, ProgressCallback, isDataCached } from '../data/quranData';
-import { Surah, QuranData } from '../types';
+import { DownloadRequired } from '../components/DownloadRequired';
+import { quranData } from '../data/quranData';
+import { Surah } from '../types';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
+import { useDownloadData } from '../hooks/useDownloadData';
 
 interface HomeScreenProps {
   navigation: any;
@@ -33,11 +33,14 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   const { theme } = useTheme();
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [loading, setLoading] = useState(true);
-  const [downloading, setDownloading] = useState(false);
-  const [downloadProgress, setDownloadProgress] = useState(0);
-  const [downloadStatus, setDownloadStatus] = useState('');
-  const [downloadedBytes, setDownloadedBytes] = useState(0);
-  const [totalBytes, setTotalBytes] = useState(0);
+  const {
+    downloading,
+    downloadProgress,
+    downloadStatus,
+    downloadedBytes,
+    totalBytes: totalBytesFromDownload,
+    handleDownloadData,
+  } = useDownloadData({ isDataAvailable, navigation });
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter surahs based on search query
@@ -67,71 +70,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     };
 
     loadData();
-
-    // Get file size for display
-    const getFileSize = async () => {
-      try {
-        let response: Response;
-        if (Platform.OS === 'web') {
-          response = await fetch('/allVerses.json', { method: 'HEAD' });
-        } else {
-          response = await fetch('https://kuran360.com/allVerses.json', { method: 'HEAD' });
-        }
-        const contentLength = response.headers.get('content-length');
-        if (contentLength) {
-          setTotalBytes(parseInt(contentLength, 10));
-        }
-      } catch (error) {
-        console.warn('Could not fetch file size:', error);
-      }
-    };
-
-    if (!isDataAvailable) {
-      getFileSize();
-    }
-  }, [isDataAvailable]);
-
-  const handleDownloadData = async () => {
-    setDownloading(true);
-    setDownloadProgress(0);
-    setDownloadStatus('İndirme başlatılıyor...');
-
-    const progressCallback: ProgressCallback = (progress, status, downloaded, total) => {
-      setDownloadProgress(progress);
-      setDownloadStatus(status);
-      if (downloaded !== undefined) setDownloadedBytes(downloaded);
-      if (total !== undefined) setTotalBytes(total);
-    };
-
-    try {
-      await loadAllVerses(progressCallback);
-      // After successful download, verify the data is cached
-      const isCached = await isDataCached();
-      if (isCached) {
-        setDownloadStatus('Tamamlandı! Sayfa yenileniyor...');
-
-        // For web, reload the page
-        if (Platform.OS === 'web') {
-          setTimeout(() => {
-            const globalObj = globalThis as any;
-            if (globalObj.window?.location) {
-              globalObj.window.location.reload();
-            }
-          }, 500);
-        } else {
-          // For mobile, navigate to Main which will re-check data availability
-          setTimeout(() => {
-            navigation.navigate('Main');
-          }, 500);
-        }
-      }
-    } catch (error) {
-      console.error('Download failed:', error);
-      setDownloadStatus('İndirme başarısız. Tekrar deneyin.');
-    } finally {
-      setDownloading(false);
-    }
-  };
+  }, []);
 
   const handleSurahSelect = (surah: Surah) => {
     if (onSurahSelect) {
@@ -172,32 +111,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           showHomeButton={true}
           onHomePress={() => navigation.navigate('Main')}
         />
-        <View style={createStyles(theme).downloadContainer}>
-          <View style={createStyles(theme).downloadCard}>
-            <Text style={createStyles(theme).downloadTitle}>Kur'an-ı Kerim Meali</Text>
-            <Text style={createStyles(theme).downloadDescription}>
-              Ayetleri okuyabilmek için Türkçe meal verilerini indirmeniz gerekmektedir.
-              {totalBytes > 0 && `\nBu işlem ${(totalBytes / (1024 * 1024)).toFixed(1)}MB veri indirecektir.`}
-            </Text>
-
-            {downloading ? (
-              <DataUpdateProgress
-                progress={downloadProgress}
-                status={downloadStatus}
-                downloadedBytes={downloadedBytes}
-                totalBytes={totalBytes}
-                theme={theme}
-              />
-            ) : (
-              <TouchableOpacity
-                style={createStyles(theme).downloadButton}
-                onPress={handleDownloadData}
-              >
-                <Text style={createStyles(theme).downloadButtonText}>📥 Meal Verilerini İndir</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
+        <DownloadRequired
+          title="Kur'an-ı Kerim Meali"
+          description="Ayetleri okuyabilmek için Türkçe meal verilerini indirmeniz gerekmektedir."
+          totalBytes={totalBytesFromDownload}
+          downloading={downloading}
+          downloadProgress={downloadProgress}
+          downloadStatus={downloadStatus}
+          downloadedBytes={downloadedBytes}
+          onDownloadPress={handleDownloadData}
+        />
       </SafeAreaView>
     );
   }
@@ -280,74 +203,5 @@ const createStyles = (theme: Theme) => StyleSheet.create({
   clearButtonText: {
     fontSize: FONT_SIZES.medium,
     color: theme.textSecondary,
-  },
-  downloadContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: SPACING.xl,
-  },
-  downloadCard: {
-    backgroundColor: theme.cardBackground,
-    borderRadius: 12,
-    padding: SPACING.xl,
-    margin: SPACING.md,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    alignItems: 'center',
-    maxWidth: 400,
-  },
-  downloadTitle: {
-    fontSize: FONT_SIZES.xlarge,
-    fontWeight: 'bold',
-    color: theme.primary,
-    marginBottom: SPACING.md,
-    textAlign: 'center',
-  },
-  downloadDescription: {
-    fontSize: FONT_SIZES.medium,
-    color: theme.textSecondary,
-    textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: SPACING.xl,
-  },
-  downloadButton: {
-    backgroundColor: theme.primary,
-    paddingHorizontal: SPACING.xl,
-    paddingVertical: SPACING.md,
-    borderRadius: 8,
-    minWidth: 200,
-    alignItems: 'center',
-  },
-  downloadButtonText: {
-    color: theme.headerText,
-    fontSize: FONT_SIZES.large,
-    fontWeight: '600',
-  },
-  downloadProgress: {
-    alignItems: 'center',
-    width: '100%',
-  },
-  progressBarContainer: {
-    width: '100%',
-    height: 8,
-    backgroundColor: theme.border,
-    borderRadius: 4,
-    marginBottom: SPACING.md,
-    overflow: 'hidden',
-  },
-  progressBar: {
-    height: '100%',
-    backgroundColor: theme.primary,
-    borderRadius: 4,
-  },
-  progressText: {
-    fontSize: FONT_SIZES.medium,
-    color: theme.textSecondary,
-    textAlign: 'center',
-    marginBottom: SPACING.sm,
   },
 });

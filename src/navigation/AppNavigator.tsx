@@ -530,7 +530,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
             ) : currentRoute.screen === 'Settings' ? (
               <SettingsScreen navigation={navigation} />
             ) : currentRoute.screen === 'Search' ? (
-              <SearchScreen navigation={navigation} />
+              <SearchScreen navigation={navigation} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'About' ? (
               <AboutScreen navigation={navigation} />
             ) : currentRoute.screen === 'Profile' ? (
@@ -540,7 +540,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
             ) : currentRoute.screen === 'ForumThread' && currentRoute.params?.threadId ? (
               <ForumThreadScreen navigation={navigation} route={{ params: { threadId: currentRoute.params.threadId } }} />
             ) : currentRoute.screen === 'RandomVerse' ? (
-              <RandomVerseScreen navigation={navigation} />
+              <RandomVerseScreen navigation={navigation} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'AllTranslations' && currentRoute.params?.verse ? (
               <AllTranslationsScreen navigation={navigation} route={{ params: { verse: currentRoute.params.verse } }} />
             ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (

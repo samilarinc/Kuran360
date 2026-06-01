@@ -13,10 +13,12 @@ import {
 } from 'react-native';
 import { Verse } from '../components/Verse';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
+import { DownloadRequired } from '../components/DownloadRequired';
 import { useTheme } from '../contexts/ThemeContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useDownloadData } from '../hooks/useDownloadData';
 import { getRandomVerse } from '../data/quranData';
 import { Surah, Verse as VerseType } from '../types';
 import { FONT_SIZES, SPACING } from '../constants';
@@ -27,6 +29,7 @@ interface RandomVerseScreenProps {
         navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse', params?: any) => void;
         goBack: () => void;
     };
+    isDataAvailable: boolean;
 }
 
 interface CachedRandomVerse {
@@ -39,7 +42,7 @@ interface CachedRandomVerse {
 const CACHE_KEY = 'randomVerse';
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation }) => {
+export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation, isDataAvailable }) => {
     const { theme } = useTheme();
     const { settings } = useDebouncedSettings(200);
     const { audioState, playVerse } = useGlobalAudio();
@@ -52,6 +55,14 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
     } | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isLoadingNew, setIsLoadingNew] = useState(false);
+    const {
+        downloading,
+        downloadProgress,
+        downloadStatus,
+        downloadedBytes,
+        totalBytes,
+        handleDownloadData,
+    } = useDownloadData({ isDataAvailable, navigation });
 
     // Animation and swipe handling
     const translateX = useRef(new Animated.Value(0)).current;
@@ -110,8 +121,12 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
     };
 
     useEffect(() => {
+        if (!isDataAvailable) {
+            return;
+        }
+
         loadRandomVerse();
-    }, []);
+    }, [isDataAvailable]);
 
     const handleNewRandomVerse = () => {
         if (!isLoadingNew && !isAnimating) {
@@ -177,6 +192,30 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
             }
         },
     });
+
+    if (!isDataAvailable) {
+        return (
+            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+                <HeaderWithDarkModeToggle
+                    title="Günün Ayeti"
+                    showBackButton={true}
+                    onBackPress={navigation.goBack}
+                    showHomeButton={true}
+                    onHomePress={() => navigation.navigate('Main')}
+                />
+                <DownloadRequired
+                    title="Kur'an-ı Kerim Meali"
+                    description="Ayetleri okuyabilmek için Türkçe meal verilerini indirmeniz gerekmektedir."
+                    totalBytes={totalBytes}
+                    downloading={downloading}
+                    downloadProgress={downloadProgress}
+                    downloadStatus={downloadStatus}
+                    downloadedBytes={downloadedBytes}
+                    onDownloadPress={handleDownloadData}
+                />
+            </SafeAreaView>
+        );
+    }
 
     if (isLoading) {
         return (

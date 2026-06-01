@@ -119,6 +119,9 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                                 >video</Text>
                             </Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Rastgele ayet sayfasında veri yoksa indirme ekranı gösteriliyor.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Arama sayfasında veri yokken indirme ekranı gösteriliyor.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• İndirme ekranı ortak componente taşındı.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• İndirme işlemi ortak hook'a taşındı.</Text>
                         </View>
                     </View>
 
@@ -357,6 +360,9 @@ const styles = StyleSheet.create({
         fontSize: FONT_SIZES.small,
         lineHeight: 22,
         marginBottom: SPACING.xs,
+    },
+    linkText: {
+        textDecorationLine: 'underline',
     },
     techSubtitle: {
         fontSize: FONT_SIZES.medium,

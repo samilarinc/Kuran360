@@ -14,13 +14,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
+import { DownloadRequired } from '../components/DownloadRequired';
 import { useNavigationHelpers } from '../contexts/NavigationContext';
 import { FONT_SIZES, SPACING } from '../constants';
 import { Verse, Surah } from '../types';
 import { quranData, loadSurah } from '../data/quranData';
+import { useDownloadData } from '../hooks/useDownloadData';
 
 interface SearchScreenProps {
     navigation: any;
+    isDataAvailable: boolean;
 }
 
 interface SearchResult {
@@ -34,7 +37,7 @@ interface SearchResult {
 type SearchScope = 'everywhere' | 'favorite' | 'selected' | 'all-translations' | 'arabic' | 'transliteration';
 type SurahFilter = 'all' | number;
 
-export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
+export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAvailable }) => {
     const { settings, availableTranslations } = useDebouncedSettings(300);
     const { theme } = useTheme();
     const navHelpers = useNavigationHelpers();
@@ -52,6 +55,14 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
     const [useFuzzySearch, setUseFuzzySearch] = useState(false);
     const [searchHistory, setSearchHistory] = useState<string[]>([]);
     const [showHistory, setShowHistory] = useState(false);
+    const {
+        downloading,
+        downloadProgress,
+        downloadStatus,
+        downloadedBytes,
+        totalBytes,
+        handleDownloadData,
+    } = useDownloadData({ isDataAvailable, navigation });
 
     // Search history cache key
     const SEARCH_HISTORY_KEY = 'quran_search_history';
@@ -70,6 +81,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
         };
         loadSearchHistory();
     }, []);
+
 
     // Save search to history
     const saveSearchToHistory = useCallback(async (query: string) => {
@@ -179,6 +191,11 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
     // Search function
     // Debounced search
     useEffect(() => {
+        if (!isDataAvailable) {
+            setSearchResults([]);
+            setIsSearching(false);
+            return;
+        }
         if (searchQuery.trim().length < 2) {
             setSearchResults([]);
             setIsSearching(false);
@@ -281,7 +298,31 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation }) => {
         }, 1000);
 
         return () => clearTimeout(timeoutId);
-    }, [searchQuery, searchScope, selectedTranslation, surahFilter, selectedSurah, useFuzzySearch]);
+    }, [searchQuery, searchScope, selectedTranslation, surahFilter, selectedSurah, useFuzzySearch, isDataAvailable]);
+
+    if (!isDataAvailable) {
+        return (
+            <SafeAreaView style={createStyles(theme).container}>
+                <HeaderWithDarkModeToggle
+                    title="Ara"
+                    showBackButton={true}
+                    onBackPress={() => navigation.goBack()}
+                    showHomeButton={true}
+                    onHomePress={() => navigation.navigate('Main')}
+                />
+                <DownloadRequired
+                    title="Kur'an-ı Kerim Meali"
+                    description="Arama yapabilmek için Türkçe meal verilerini indirmeniz gerekmektedir."
+                    totalBytes={totalBytes}
+                    downloading={downloading}
+                    downloadProgress={downloadProgress}
+                    downloadStatus={downloadStatus}
+                    downloadedBytes={downloadedBytes}
+                    onDownloadPress={handleDownloadData}
+                />
+            </SafeAreaView>
+        );
+    }
 
     const renderSearchScopeSelector = () => (
         <View style={createStyles(theme).selectorContainer}>
