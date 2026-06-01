@@ -110,6 +110,19 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Güncelleme Notları</Text>
 
                     <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>1 Haziran 2026</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Qar'i Kaldırıldı: Minshawi Mujawwad kıraatte sorunları olduğu için şu anlık deaktive edildi. bkz.{' '}
+                                <Text
+                                    style={[styles.linkText, { color: theme.primary }]}
+                                    onPress={() => Linking.openURL('https://youtu.be/dveu8DRo5Rk?si=oT3qaBZzKP8gydGG')}
+                                >video</Text>
+                            </Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Rastgele ayet sayfasında veri yoksa indirme ekranı gösteriliyor.</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>22 Şubat 2026</Text>
                         <View style={styles.updateList}>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Umre Desteği: "Şu an neredeyim?" ekranı ile tavaf ve sa'y takibi eklendi.</Text>

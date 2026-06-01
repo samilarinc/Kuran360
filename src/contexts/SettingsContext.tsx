@@ -112,11 +112,11 @@ const AVAILABLE_RECITERS = [
         name: 'Muhammad Siddiq Al-Minshawi - Murattal',
         folder: 'minshawy_murattal_all_verse'
     },
-    {
-        id: 'minshawi_mujawwad',
-        name: 'Muhammad Siddiq Al-Minshawi - Mujawwad',
-        folder: 'minshawy_mujawwad_all_verse'
-    },
+    // {
+    //     id: 'minshawi_mujawwad',
+    //     name: 'Muhammad Siddiq Al-Minshawi - Mujawwad',
+    //     folder: 'minshawy_mujawwad_all_verse'
+    // },
     {
         id: 'abubakr',
         name: 'Abu Bakr Al-Shatri',
