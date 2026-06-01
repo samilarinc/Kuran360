@@ -123,6 +123,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• İndirme ekranı ortak componente taşındı.</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• İndirme işlemi ortak hook'a taşındı.</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Arama normalize edildi ve fuzzy highlight eklendi.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Arapça yazılarda medli esre hatası giderildi.</Text>
                         </View>
                     </View>
 
