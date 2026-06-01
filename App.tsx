@@ -66,8 +66,28 @@ const App: React.FC = () => {
               const linkEl = doc.createElement('link');
               linkEl.id = fontLinkId;
               linkEl.rel = 'stylesheet';
-              linkEl.href = 'https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap';
+              linkEl.href = 'https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap';
               doc.head && doc.head.appendChild(linkEl);
+            }
+          } catch { }
+
+          // Global CSS override: react-native-web doesn't correctly pass
+          // comma-separated fontFamily to the DOM, so Arabic fonts never get
+          // applied. This forces the correct font on all RTL text elements,
+          // ensuring Quranic marks like U+06EA (medli esre) render properly.
+          try {
+            const arabicStyleId = 'arabic-font-override';
+            if (!doc.getElementById(arabicStyleId)) {
+              const styleEl = doc.createElement('style');
+              styleEl.id = arabicStyleId;
+              styleEl.textContent = `
+                [dir="rtl"],
+                [style*="direction: rtl"],
+                [style*="direction:rtl"] {
+                  font-family: "Scheherazade New", "Noto Naskh Arabic", "Amiri", "Traditional Arabic", "Arabic Typesetting", serif !important;
+                }
+              `;
+              doc.head && doc.head.appendChild(styleEl);
             }
           } catch { }
 
