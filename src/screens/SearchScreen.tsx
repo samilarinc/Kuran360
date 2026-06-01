@@ -31,6 +31,7 @@ interface SearchResult {
     surah: Surah;
     matchedText: string;
     matchedField: 'arabic' | 'translation' | 'transliteration';
+    matchedRange?: { start: number; end: number };
     translationName?: string;
 }
 
@@ -106,87 +107,101 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
         }
     }, []);
 
-    // Fuzzy search function
-    const fuzzyMatch = useCallback((text: string, query: string): boolean => {
-        if (!text || !query) return false;
+    const normalizeForSearch = useCallback((input: string) => {
+        const punctuationRegex = /[.,;:!?"'(){}\[\]<>/\\|@#$%^&*_+=~`-]/;
+        const map: Record<string, string> = {
+            'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u',
+            'Ç': 'c', 'Ğ': 'g', 'I': 'i', 'İ': 'i', 'Ö': 'o', 'Ş': 's', 'Ü': 'u'
+        };
 
-        const normalizedText = text.toLowerCase().trim();
-        const normalizedQuery = query.toLowerCase().trim();
+        const normalizedChars: string[] = [];
+        const indexMap: number[] = [];
 
-        // Exact match (always enabled)
-        if (normalizedText.includes(normalizedQuery)) return true;
+        for (let i = 0; i < input.length; i += 1) {
+            const lower = input[i].toLocaleLowerCase('tr');
+            const replaced = map[lower] || lower;
+            const outputChar = punctuationRegex.test(replaced) ? ' ' : replaced;
+            normalizedChars.push(outputChar);
+            indexMap.push(i);
+        }
 
-        // If fuzzy search is disabled, only do basic word matching
+        return { normalized: normalizedChars.join(''), indexMap };
+    }, []);
+
+    const normalizeQuery = useCallback((input: string) => {
+        const { normalized } = normalizeForSearch(input);
+        return normalized.replace(/\s+/g, ' ').trim();
+    }, [normalizeForSearch]);
+
+    const calculateSimilarity = useCallback((str1: string, str2: string): number => {
+        if (str1.length === 0) return str2.length;
+        if (str2.length === 0) return str1.length;
+
+        const matrix = Array(str2.length + 1).fill(null).map(() => Array(str1.length + 1).fill(null));
+
+        for (let i = 0; i <= str1.length; i++) matrix[0][i] = i;
+        for (let j = 0; j <= str2.length; j++) matrix[j][0] = j;
+
+        for (let j = 1; j <= str2.length; j++) {
+            for (let i = 1; i <= str1.length; i++) {
+                const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+                matrix[j][i] = Math.min(
+                    matrix[j][i - 1] + 1,
+                    matrix[j - 1][i] + 1,
+                    matrix[j - 1][i - 1] + cost
+                );
+            }
+        }
+
+        return matrix[str2.length][str1.length];
+    }, []);
+
+    const getMatchRange = useCallback((text: string, query: string) => {
+        if (!text || !query.trim()) return null;
+
+        const { normalized: normalizedText, indexMap } = normalizeForSearch(text);
+        const normalizedQuery = normalizeQuery(query);
+
+        if (!normalizedQuery) return null;
+
+        const tokens = normalizedQuery.split(' ').filter(Boolean);
+        const pattern = tokens.map(token => token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('\\s+');
+        const regex = new RegExp(pattern, 'i');
+        const directMatch = regex.exec(normalizedText);
+
+        if (directMatch) {
+            const start = directMatch.index;
+            const end = start + directMatch[0].length;
+            return { start: indexMap[start], end: indexMap[end - 1] + 1 };
+        }
+
         if (!useFuzzySearch) {
-            const words = normalizedQuery.split(' ').filter(word => word.length > 0);
-            return words.every(word => normalizedText.includes(word));
+            return null;
         }
 
-        // Advanced fuzzy search (only if enabled)
-        // Remove Turkish diacritics for better matching
-        const removeDiacritics = (str: string) => {
-            return str
-                .replace(/[çğıöşüÇĞIİÖŞÜ]/g, (match) => {
-                    const map: { [key: string]: string } = {
-                        'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u',
-                        'Ç': 'C', 'Ğ': 'G', 'I': 'I', 'İ': 'I', 'Ö': 'O', 'Ş': 'S', 'Ü': 'U'
-                    };
-                    return map[match] || match;
-                })
-                .replace(/[^\w\s]/g, ' ') // Replace special chars with space
-                .replace(/\s+/g, ' ') // Multiple spaces to single space
-                .trim();
-        };
+        const maxDistance = Math.floor(normalizedQuery.length * 0.3);
+        if (normalizedQuery.length < 4) {
+            return null;
+        }
 
-        const cleanText = removeDiacritics(normalizedText);
-        const cleanQuery = removeDiacritics(normalizedQuery);
-
-        // Exact match after cleaning
-        if (cleanText.includes(cleanQuery)) return true;
-
-        // Word boundaries match
-        const queryWords = cleanQuery.split(' ').filter(word => word.length > 0);
-        const allWordsFound = queryWords.every(word => cleanText.includes(word));
-        if (allWordsFound) return true;
-
-        // Fuzzy character matching (allows some character mismatches)
-        const calculateSimilarity = (str1: string, str2: string): number => {
-            if (str1.length === 0) return str2.length;
-            if (str2.length === 0) return str1.length;
-
-            const matrix = Array(str2.length + 1).fill(null).map(() => Array(str1.length + 1).fill(null));
-
-            for (let i = 0; i <= str1.length; i++) matrix[0][i] = i;
-            for (let j = 0; j <= str2.length; j++) matrix[j][0] = j;
-
-            for (let j = 1; j <= str2.length; j++) {
-                for (let i = 1; i <= str1.length; i++) {
-                    const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
-                    matrix[j][i] = Math.min(
-                        matrix[j][i - 1] + 1,     // deletion
-                        matrix[j - 1][i] + 1,     // insertion
-                        matrix[j - 1][i - 1] + cost // substitution
-                    );
-                }
-            }
-
-            return matrix[str2.length][str1.length];
-        };
-
-        // Check if query is similar enough to any substring of text
-        const maxDistance = Math.floor(cleanQuery.length * 0.3); // Allow 30% character differences
-
-        if (cleanQuery.length >= 4) { // Only apply fuzzy matching for longer queries
-            for (let i = 0; i <= cleanText.length - cleanQuery.length; i++) {
-                const substring = cleanText.substr(i, cleanQuery.length);
-                if (calculateSimilarity(cleanQuery, substring) <= maxDistance) {
-                    return true;
-                }
+        let bestMatch: { index: number; distance: number } | null = null;
+        for (let i = 0; i <= normalizedText.length - normalizedQuery.length; i++) {
+            const substring = normalizedText.substr(i, normalizedQuery.length);
+            const distance = calculateSimilarity(normalizedQuery, substring);
+            if (distance <= maxDistance && (!bestMatch || distance < bestMatch.distance)) {
+                bestMatch = { index: i, distance };
+                if (distance === 0) break;
             }
         }
 
-        return false;
-    }, [useFuzzySearch]);
+        if (!bestMatch) {
+            return null;
+        }
+
+        const start = bestMatch.index;
+        const end = start + normalizedQuery.length;
+        return { start: indexMap[start], end: indexMap[end - 1] + 1 };
+    }, [calculateSimilarity, normalizeForSearch, normalizeQuery, useFuzzySearch]);
 
     // Search function
     // Debounced search
@@ -229,25 +244,31 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
 
                     for (const verse of surah.verses) {
                         // Search in Arabic text
-                        if ((searchScope === 'everywhere' || searchScope === 'arabic') &&
-                            fuzzyMatch(verse.arabicText, searchQuery)) {
+                        const arabicMatchRange = (searchScope === 'everywhere' || searchScope === 'arabic')
+                            ? getMatchRange(verse.arabicText, searchQuery)
+                            : null;
+                        if (arabicMatchRange) {
                             results.push({
                                 verse,
                                 surah,
                                 matchedText: verse.arabicText,
-                                matchedField: 'arabic'
+                                matchedField: 'arabic',
+                                matchedRange: arabicMatchRange,
                             });
                             continue;
                         }
 
                         // Search in transliteration
-                        if ((searchScope === 'everywhere' || searchScope === 'transliteration') &&
-                            verse.transliteration && fuzzyMatch(verse.transliteration, searchQuery)) {
+                        const transliterationMatchRange = (searchScope === 'everywhere' || searchScope === 'transliteration')
+                            ? getMatchRange(verse.transliteration || '', searchQuery)
+                            : null;
+                        if (verse.transliteration && transliterationMatchRange) {
                             results.push({
                                 verse,
                                 surah,
                                 matchedText: verse.transliteration,
-                                matchedField: 'transliteration'
+                                matchedField: 'transliteration',
+                                matchedRange: transliterationMatchRange,
                             });
                             continue;
                         }
@@ -273,12 +294,16 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
 
                             for (const translationName of translationsToSearch) {
                                 const translationText = verse.allTranslations[translationName];
-                                if (translationText && fuzzyMatch(translationText, searchQuery)) {
+                                const translationMatchRange = translationText
+                                    ? getMatchRange(translationText, searchQuery)
+                                    : null;
+                                if (translationText && translationMatchRange) {
                                     results.push({
                                         verse,
                                         surah,
                                         matchedText: translationText,
                                         matchedField: 'translation',
+                                        matchedRange: translationMatchRange,
                                         translationName
                                     });
                                     break; // Don't add same verse multiple times for different translations
@@ -502,17 +527,20 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
         </View>
     );
 
-    const highlightMatch = (text: string, query: string) => {
-        if (!query.trim()) return <Text style={createStyles(theme).resultText}>{text}</Text>;
+    const highlightMatch = (text: string, range?: { start: number; end: number }) => {
+        if (!range || range.start >= range.end) {
+            return <Text style={createStyles(theme).resultText}>{text}</Text>;
+        }
 
-        const parts = text.split(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
+        const before = text.slice(0, range.start);
+        const match = text.slice(range.start, range.end);
+        const after = text.slice(range.end);
+
         return (
             <Text style={createStyles(theme).resultText}>
-                {parts.map((part, index) =>
-                    part.toLowerCase() === query.toLowerCase() ?
-                        <Text key={index} style={createStyles(theme).highlightedText}>{part}</Text> :
-                        <Text key={index}>{part}</Text>
-                )}
+                {before}
+                <Text style={createStyles(theme).highlightedText}>{match}</Text>
+                {after}
             </Text>
         );
     };
@@ -547,7 +575,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                     </Text>
                 )}
 
-                {highlightMatch(result.matchedText, searchQuery)}
+                {highlightMatch(result.matchedText, result.matchedRange)}
             </TouchableOpacity>
         );
     };
