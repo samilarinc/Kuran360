@@ -87,7 +87,9 @@ const AVAILABLE_TRANSLATIONS = [
     'Yaşar Nuri Öztürk Meali',
     'Ömer Çelik Meali',
     'Diyanet İşleri Kürtçe Meali (Latin)',
-    'Diyanet İşleri Kürtçe Meali (Arapça)'
+    'Diyanet İşleri Kürtçe Meali (Arapça)',
+    'Özbek Diyanet Meali',
+    'Özbekçe (Latin)',
 ];
 
 // Available reciters

@@ -110,6 +110,14 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Güncelleme Notları</Text>
 
                     <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>4 Haziran 2026</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Özbekçe Meal: Yeni Özbekçe (Kiril) ve Özbekçe (Latin) mealler eklendi.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Meal Verileri: Artık meal verileri gzip ile sıkıştırılıp 80 MB yerine 20 MB olarak indiriliyor (Teşekkürler 'kucukaslan').</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>1 Haziran 2026</Text>
                         <View style={styles.updateList}>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Qar'i Kaldırıldı: Minshawi Mujawwad kıraatte sorunları olduğu için şu anlık deaktive edildi (Teşekkürler 'ssargin'). bkz.{' '}
