@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, FlatList, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, TextInput, Alert } from 'react-native';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserData } from '../contexts/UserDataContext';
@@ -189,12 +189,11 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                         <View style={createStyles(theme).section}>
                             <Text style={createStyles(theme).sectionTitle}>Favoriler ({bookmarks.length})</Text>
                             {bookmarks.length > 0 ? (
-                                <FlatList
-                                    data={bookmarks}
-                                    renderItem={renderBookmark}
-                                    keyExtractor={(item) => `${item.surahNumber}-${item.verseNumber}`}
-                                    scrollEnabled={false}
-                                />
+                                bookmarks.map((item) => (
+                                    <View key={`${item.surahNumber}-${item.verseNumber}`}>
+                                        {renderBookmark({ item })}
+                                    </View>
+                                ))
                             ) : (
                                 <Text style={createStyles(theme).emptyText}>Henüz favori ayet eklenmemiş.</Text>
                             )}
@@ -204,12 +203,11 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                         <View style={createStyles(theme).section}>
                             <Text style={createStyles(theme).sectionTitle}>Son Okuduklarım ({lastRead.length})</Text>
                             {lastRead.length > 0 ? (
-                                <FlatList
-                                    data={lastRead}
-                                    renderItem={renderLastRead}
-                                    keyExtractor={(item) => `${item.surahNumber}-${item.verseNumber}-${item.timestamp}`}
-                                    scrollEnabled={false}
-                                />
+                                lastRead.map((item) => (
+                                    <View key={`${item.surahNumber}-${item.verseNumber}-${item.timestamp}`}>
+                                        {renderLastRead({ item })}
+                                    </View>
+                                ))
                             ) : (
                                 <Text style={createStyles(theme).emptyText}>Henüz okunmuş ayet bulunmuyor.</Text>
                             )}

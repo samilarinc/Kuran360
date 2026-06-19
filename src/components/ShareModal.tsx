@@ -124,7 +124,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
     >
       <View style={styles.overlay}>
         <SafeAreaView style={styles.container}>
-          <View style={[styles.modal, { backgroundColor: theme.background }]}>
+          <View style={[styles.modal, { backgroundColor: theme.background, flex: 1 }]}>
             {/* Header */}
             <View style={[styles.header, { borderBottomColor: theme.border }]}>
               <Text style={[styles.title, { color: theme.text }]}>
@@ -137,57 +137,59 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               </TouchableOpacity>
             </View>
 
-            {/* Verse Preview */}
-            <View style={[styles.versePreview, { backgroundColor: theme.surface }]}>
-              <Text style={[styles.arabicText, { color: theme.text }]}>
-                {verseData.arabicText}
-              </Text>
-              <Text style={[styles.translationText, { color: theme.textSecondary }]}>
-                "{verseData.translation}"
-              </Text>
-              <Text style={[styles.verseInfo, { color: theme.primary }]}>
-                📖 {verseData.surahName} Suresi, {verseData.verseNumber}. Ayet
-              </Text>
-            </View>
+            {/* Scrollable Content */}
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
 
-            {/* Size Selection */}
-            <View style={styles.sizeSection}>
-              <Text style={[styles.sectionTitle, { color: theme.text }]}>
-                📐 Resim Boyutu Seçin
-              </Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView}>
-                <View style={styles.sizeRow}>
-                  {IMAGE_SIZES.map((size) => (
-                    <TouchableOpacity
-                      key={size.id}
-                      style={[
-                        styles.sizeButton,
-                        { backgroundColor: theme.cardBackground },
-                        selectedSize.id === size.id && { backgroundColor: theme.primary }
-                      ]}
-                      onPress={() => setSelectedSize(size)}
-                    >
-                      <Text style={styles.sizeIcon}>{size.icon}</Text>
-                      <Text style={[
-                        styles.sizeTitle,
-                        { color: selectedSize.id === size.id ? '#fff' : theme.text }
-                      ]}>
-                        {size.displayName}
-                      </Text>
-                      <Text style={[
-                        styles.sizeDescription,
-                        { color: selectedSize.id === size.id ? '#fff' : theme.textSecondary }
-                      ]}>
-                        {size.description}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </ScrollView>
-            </View>
+              {/* Verse Preview */}
+              <View style={[styles.versePreview, { backgroundColor: theme.surface }]}>
+                <Text style={[styles.arabicText, { color: theme.text }]}>
+                  {verseData.arabicText}
+                </Text>
+                <Text style={[styles.translationText, { color: theme.textSecondary }]}>
+                  "{verseData.translation}"
+                </Text>
+                <Text style={[styles.verseInfo, { color: theme.primary }]}>
+                  📖 {verseData.surahName} Suresi, {verseData.verseNumber}. Ayet
+                </Text>
+              </View>
 
-            {/* Platform Options */}
-            <ScrollView style={styles.platformList} showsVerticalScrollIndicator={false}>
+              {/* Size Selection */}
+              <View style={styles.sizeSection}>
+                <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                  📐 Resim Boyutu Seçin
+                </Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView} nestedScrollEnabled={true}>
+                  <View style={styles.sizeRow}>
+                    {IMAGE_SIZES.map((size) => (
+                      <TouchableOpacity
+                        key={size.id}
+                        style={[
+                          styles.sizeButton,
+                          { backgroundColor: theme.cardBackground },
+                          selectedSize.id === size.id && { backgroundColor: theme.primary }
+                        ]}
+                        onPress={() => setSelectedSize(size)}
+                      >
+                        <Text style={styles.sizeIcon}>{size.icon}</Text>
+                        <Text style={[
+                          styles.sizeTitle,
+                          { color: selectedSize.id === size.id ? '#fff' : theme.text }
+                        ]}>
+                          {size.displayName}
+                        </Text>
+                        <Text style={[
+                          styles.sizeDescription,
+                          { color: selectedSize.id === size.id ? '#fff' : theme.textSecondary }
+                        ]}>
+                          {size.description}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </ScrollView>
+              </View>
+
+              {/* Platform Options */}
               {platforms.map((platform) => (
                 <TouchableOpacity
                   key={platform.id}
@@ -202,6 +204,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                   <Text style={[styles.arrow, { color: theme.textSecondary }]}>›</Text>
                 </TouchableOpacity>
               ))}
+
             </ScrollView>
           </View>
         </SafeAreaView>
@@ -272,8 +275,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
   },
+  scrollContent: {
+    paddingHorizontal: SPACING.lg,
+    paddingBottom: SPACING.lg,
+  },
   versePreview: {
-    margin: SPACING.lg,
+    marginVertical: SPACING.md,
     padding: SPACING.md,
     borderRadius: 12,
   },
@@ -301,7 +308,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   sizeSection: {
-    paddingHorizontal: SPACING.lg,
     marginBottom: SPACING.md,
   },
   sectionTitle: {
@@ -338,10 +344,6 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.small - 2,
     textAlign: 'center',
     lineHeight: 14,
-  },
-  platformList: {
-    paddingHorizontal: SPACING.lg,
-    paddingBottom: SPACING.lg,
   },
   platformItem: {
     flexDirection: 'row',

@@ -24,14 +24,11 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
     const styles = useMemo(() => createStyles(theme), [theme]);
     const { width, height } = useWindowDimensions();
 
-    // Responsive header padding based on screen width
-    const headerPaddingVertical = width < 360 ? SPACING.lg : width < 420 ? SPACING.xl : SPACING.xl * 2;
     const isUltraNarrow = width < 360;
-    const isNarrow = width < 420;
+    const numColumns = 3;
+    const horizontalPadding = SPACING.lg * 2;
+    const cardWidth = Math.floor((width - horizontalPadding) / numColumns) - SPACING.sm;
 
-    // Dynamic font sizes for small screens
-    const titleFontSize = isUltraNarrow ? FONT_SIZES.large : isNarrow ? FONT_SIZES.xlarge : FONT_SIZES.xlarge;
-    const subtitleFontSize = isUltraNarrow ? FONT_SIZES.small : FONT_SIZES.medium;
     const welcomeFontSize = isUltraNarrow ? FONT_SIZES.large : FONT_SIZES.xlarge;
     const descriptionFontSize = isUltraNarrow ? FONT_SIZES.small : FONT_SIZES.medium;
 
@@ -156,24 +153,24 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                     Kuran-ı Kerim'i okumak, aramak ve dinlemek için bir seçenek belirleyin
                 </Text>
 
-                {/* Menu Items */}
+                {/* Menu Items Grid */}
                 <View style={styles.menuContainer}>
-                    {menuItems.map((item, index) => (
+                    {menuItems.map((item) => (
                         <TouchableOpacity
                             key={item.id}
                             style={[
                                 styles.menuItem,
                                 {
+                                    width: cardWidth,
                                     backgroundColor: theme.cardBackground,
                                     borderColor: theme.border,
-                                    marginTop: index > 0 ? SPACING.xs : 0,
                                 }
                             ]}
                             onPress={item.onPress}
                             activeOpacity={0.7}
                         >
                             <View style={styles.menuItemContent}>
-                                <View style={[styles.iconContainer, { backgroundColor: item.color + '15' }]}>
+                                <View style={[styles.iconContainer, { backgroundColor: item.color + '20' }]}>
                                     <Text style={styles.menuIcon}>{item.icon}</Text>
                                 </View>
                                 <View style={styles.menuTextContainer}>
@@ -182,11 +179,6 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                                     </Text>
                                     <Text style={[styles.menuSubtitle, { color: theme.textSecondary }]}>
                                         {item.subtitle}
-                                    </Text>
-                                </View>
-                                <View style={[styles.arrowContainer, { borderColor: theme.border }]}>
-                                    <Text style={[styles.arrow, { color: theme.textSecondary }]}>
-                                        ›
                                     </Text>
                                 </View>
                             </View>
