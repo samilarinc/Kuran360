@@ -16,7 +16,7 @@ import { Alert, Platform } from 'react-native';
 import { createStyles } from './MainScreen.styles';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'HijriCalendar') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -119,6 +119,14 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             icon: '🕋',
             color: '#8E24AA',
             onPress: () => onNavigate('UmrahMenu'),
+        },
+        {
+            id: 'hijri-calendar',
+            title: 'Hicri Takvim',
+            subtitle: 'Ay takvimi ve İslami günler',
+            icon: '🌙',
+            color: '#1a237e',
+            onPress: () => onNavigate('HijriCalendar'),
         },
         {
             id: 'about',
