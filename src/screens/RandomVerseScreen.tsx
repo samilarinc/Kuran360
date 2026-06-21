@@ -197,7 +197,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
         return (
             <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
                 <HeaderWithDarkModeToggle
-                    title="Günün Ayeti"
+                    title="Rastgele Ayet"
                     showBackButton={true}
                     onBackPress={navigation.goBack}
                     showHomeButton={true}
@@ -250,7 +250,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
             {/* Header */}
             <HeaderWithDarkModeToggle
-                title="Günün Ayeti"
+                title="Rastgele Ayet"
                 showBackButton={true}
                 onBackPress={navigation.goBack}
                 showHomeButton={true}

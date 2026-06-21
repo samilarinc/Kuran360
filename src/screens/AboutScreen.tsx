@@ -110,6 +110,15 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Güncelleme Notları</Text>
 
                     <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>22 Haziran 2026</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Hicri Takvim: Takvim sayfası tasarlandı ve eklendi (Teşekkürler MHS).</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ana Menü: Giriş menüsü grid haline getirildi.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Topbar: Üstmenü küçültüldü.</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>4 Haziran 2026</Text>
                         <View style={styles.updateList}>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Özbekçe Meal: Yeni Özbekçe (Kiril) ve Özbekçe (Latin) mealler eklendi.</Text>

@@ -36,7 +36,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             id: 'surahs',
             title: 'Sureler',
-            subtitle: 'Kuran-ı Kerim\'i okuyun',
+            // subtitle: 'Kuran-ı Kerim\'i okuyun',
             icon: '📖',
             color: '#2E7D32',
             onPress: () => onNavigate('Home'),
@@ -44,7 +44,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             id: 'random-verse',
             title: 'Rastgele Ayet',
-            subtitle: 'Günün ayetini keşfedin',
+            // subtitle: 'Günün ayetini keşfedin',
             icon: '✨',
             color: '#FF7043',
             onPress: () => onNavigate('RandomVerse'),
@@ -52,7 +52,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             id: 'search',
             title: 'Arama',
-            subtitle: 'Kuran\'da kelime arayın',
+            // subtitle: 'Kuran\'da kelime arayın',
             icon: '🔍',
             color: '#1976D2',
             onPress: () => onNavigate('Search'),
@@ -60,7 +60,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             id: 'settings',
             title: 'Ayarlar',
-            subtitle: 'Uygulama tercihleriniz',
+            // subtitle: 'Uygulama tercihleriniz',
             icon: '⚙️',
             color: '#6A1B9A',
             onPress: () => onNavigate('Settings'),
@@ -68,7 +68,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             id: 'profile',
             title: 'Profil',
-            subtitle: 'Hesabınız ve ayarlarınız',
+            // subtitle: 'Hesabınız ve ayarlarınız',
             icon: '👤',
             color: '#455A64',
             onPress: () => onNavigate('Profile'),
@@ -76,7 +76,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             id: 'hatim',
             title: 'Hatimler',
-            subtitle: 'Hatim gruplarına katılın',
+            // subtitle: 'Hatim gruplarına katılın',
             icon: '☪️',
             color: '#00695C',
             onPress: () => onNavigate('Hatim'),
@@ -84,7 +84,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             id: 'prayer-times',
             title: 'Namaz Vakitleri',
-            subtitle: 'Ezan saatlerini takip edin',
+            // subtitle: 'Ezan saatlerini takip edin',
             icon: '🕌',
             color: '#2E7D32',
             onPress: () => onNavigate('PrayerTimes'),
@@ -92,7 +92,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             id: 'hutbe',
             title: 'Cuma Hutbesi',
-            subtitle: 'Haftalık cuma hutbesini okuyun',
+            // subtitle: 'Haftalık cuma hutbesini okuyun',
             icon: '📜',
             color: '#D84315',
             onPress: async () => {
@@ -115,7 +115,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             id: 'umrah',
             title: 'Umre',
-            subtitle: 'Umre rehberi ve takip',
+            // subtitle: 'Umre rehberi ve takip',
             icon: '🕋',
             color: '#8E24AA',
             onPress: () => onNavigate('UmrahMenu'),
@@ -123,7 +123,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             id: 'hijri-calendar',
             title: 'Hicri Takvim',
-            subtitle: 'Ay takvimi ve İslami günler',
+            // subtitle: 'Ay takvimi ve İslami günler',
             icon: '🌙',
             color: '#1a237e',
             onPress: () => onNavigate('HijriCalendar'),
@@ -131,7 +131,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             id: 'about',
             title: 'Hakkında',
-            subtitle: 'Uygulama hakkında',
+            // subtitle: 'Uygulama hakkında',
             icon: 'ℹ️',
             color: '#00897B',
             onPress: () => onNavigate('About'),
@@ -144,7 +144,8 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             <AppHeader
                 title="Kuran-ı Kerim"
                 subtitle="Dijital Mushaf"
-                showLogo={false} // Use standard title/subtitle centered
+                large
+                showLogo={false}
                 showSettingsButton={true}
                 onSettingsPress={() => onNavigate('Settings')}
             />

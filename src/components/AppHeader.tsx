@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, useWindowDimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../theme';
 
 interface AppHeaderProps {
     title: string;
     subtitle?: string;
+    large?: boolean;
     showBackButton?: boolean;
     onBackPress?: () => void;
     showHomeButton?: boolean;
@@ -23,6 +24,7 @@ interface AppHeaderProps {
 export const AppHeader: React.FC<AppHeaderProps> = ({
     title,
     subtitle,
+    large = false,
     showBackButton = false,
     onBackPress,
     showHomeButton = false,
@@ -37,29 +39,26 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     children,
 }) => {
     const { theme, isDarkMode, toggleDarkMode } = useTheme();
-    const { width } = useWindowDimensions();
-
-    const isMobile = width < 768;
-    const headerVerticalPadding = isMobile ? SPACING.md : SPACING.lg;
-    const headerTopPadding = isMobile ? SPACING.md : SPACING.lg;
 
     const styles = StyleSheet.create({
         header: {
             backgroundColor: theme.primary,
-            paddingVertical: headerVerticalPadding,
+            paddingVertical: large ? SPACING.md : SPACING.xs,
             paddingHorizontal: SPACING.md,
             alignItems: 'center',
             position: 'relative',
+            minHeight: large ? 64 : 48,
+            justifyContent: 'center',
         },
         title: {
-            fontSize: FONT_SIZES.xxlarge,
+            fontSize: large ? FONT_SIZES.xxlarge : FONT_SIZES.large,
             fontWeight: 'bold',
             color: theme.headerText,
-            marginBottom: subtitle ? 4 : 0,
+            marginBottom: subtitle ? 2 : 0,
             textAlign: 'center',
         },
         subtitle: {
-            fontSize: FONT_SIZES.medium,
+            fontSize: FONT_SIZES.small,
             color: theme.headerText,
             opacity: 0.9,
             textAlign: 'center',
@@ -67,13 +66,16 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         leftButton: {
             position: 'absolute',
             left: SPACING.md,
-            top: headerTopPadding,
+            top: 0,
+            bottom: 0,
+            justifyContent: 'center',
             zIndex: 1,
         },
         rightButtons: {
             position: 'absolute',
             right: SPACING.md,
-            top: headerTopPadding,
+            top: 0,
+            bottom: 0,
             flexDirection: 'row',
             alignItems: 'center',
             gap: SPACING.xs,

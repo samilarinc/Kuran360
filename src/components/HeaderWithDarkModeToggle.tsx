@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, useWindowDimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
 
@@ -37,30 +37,26 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
   children,
 }) => {
   const { theme, isDarkMode, toggleDarkMode } = useTheme();
-  const { width } = useWindowDimensions();
-
-  // CHANGE_HERE: Reduced header padding for mobile screens to save space
-  const isMobile = width < 768;
-  const headerVerticalPadding = isMobile ? SPACING.md : SPACING.lg; // 16px instead of 24px on mobile
-  const headerTopPadding = isMobile ? SPACING.md : SPACING.lg; // 16px instead of 24px on mobile
 
   const styles = StyleSheet.create({
     header: {
       backgroundColor: theme.primary,
-      paddingVertical: headerVerticalPadding, // CHANGE_HERE: Dynamic padding based on screen size
+      paddingVertical: SPACING.xs,
       paddingHorizontal: SPACING.md,
       alignItems: 'center',
       position: 'relative',
+      minHeight: 48,
+      justifyContent: 'center',
     },
     title: {
-      fontSize: FONT_SIZES.xxlarge,
+      fontSize: FONT_SIZES.large,
       fontWeight: 'bold',
       color: theme.headerText,
-      marginBottom: subtitle ? 4 : 0,
+      marginBottom: subtitle ? 2 : 0,
       textAlign: 'center',
     },
     subtitle: {
-      fontSize: FONT_SIZES.medium,
+      fontSize: FONT_SIZES.small,
       color: theme.headerText,
       opacity: 0.9,
       textAlign: 'center',
@@ -68,13 +64,16 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
     leftButton: {
       position: 'absolute',
       left: SPACING.md,
-      top: headerTopPadding, // CHANGE_HERE: Dynamic top positioning based on screen size
+      top: 0,
+      bottom: 0,
+      justifyContent: 'center',
       zIndex: 1,
     },
     rightButtons: {
       position: 'absolute',
       right: SPACING.md,
-      top: headerTopPadding, // CHANGE_HERE: Dynamic top positioning based on screen size
+      top: 0,
+      bottom: 0,
       flexDirection: 'row',
       alignItems: 'center',
       gap: SPACING.xs,
