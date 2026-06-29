@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useWindowDimensions } from 'react-native';
 import {
     View,
     Text,
@@ -11,6 +12,7 @@ import {
     Animated,
 } from 'react-native';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
+import { ARABIC_FONT_OPTIONS } from '../constants/fonts';
 import { useTheme } from '../contexts/ThemeContext';
 import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion } from '../data/quranData';
 import { AppHeader } from '../components/AppHeader'; // Use AppHeader
@@ -161,9 +163,11 @@ const SettingItem: React.FC<SettingItemProps> = ({
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     const { settings, updateSettings, availableTranslations, availableReciters } = useDebouncedSettings(150);
     const { theme } = useTheme();
+    const { width: screenWidth } = useWindowDimensions();
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
         audio: false,
         display: false,
+        fonts: false,
         translations: false,
         system: false,
     });
@@ -506,6 +510,79 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                             />
                         </View>
                     )}
+                </View>
+
+                {/* Font Selection */}
+                <View style={createStyles(theme).section}>
+                    {renderSectionHeader(
+                        "Yazı Tipi",
+                        "Okuma ve resim için ayrı font seçin",
+                        "fonts",
+                        "✍️"
+                    )}
+                    {expandedSections.fonts && (() => {
+                        // Section padding ~32px each side + sectionContent padding ~16px = ~96px total
+                        const available = screenWidth - 96;
+                        const gap = SPACING.sm; // 8px
+                        const minChipW = 90;
+                        // How many chips fit per row?
+                        const rawPerRow = Math.floor((available + gap) / (minChipW + gap));
+                        const perRow = Math.max(2, rawPerRow);
+                        // How many rows?
+                        const total = ARABIC_FONT_OPTIONS.length;
+                        const numRows = Math.ceil(total / perRow);
+                        // Redistribute evenly: make all rows same size if possible
+                        const evenPerRow = Math.ceil(total / numRows);
+                        // Split into rows
+                        const rows: typeof ARABIC_FONT_OPTIONS[] = [];
+                        for (let i = 0; i < total; i += evenPerRow) {
+                            rows.push(ARABIC_FONT_OPTIONS.slice(i, i + evenPerRow));
+                        }
+                        const chipWidth = (available - (evenPerRow - 1) * gap) / evenPerRow;
+
+                        return (
+                            <View style={createStyles(theme).sectionContent}>
+                                {([
+                                    { key: 'arabicFont' as const,     icon: '📖', label: 'Kuran Okuma Fontu' },
+                                    { key: 'imageArabicFont' as const, icon: '🖼️', label: 'Resim / Paylaşım Fontu' },
+                                ] as const).map(({ key, icon, label }, groupIdx) => (
+                                    <View key={key} style={{ marginBottom: groupIdx === 0 ? SPACING.lg : 0 }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.sm, gap: SPACING.xs }}>
+                                            <Text style={{ fontSize: 13 }}>{icon}</Text>
+                                            <Text style={{ fontSize: 13, fontWeight: '600', color: theme.textSecondary, letterSpacing: 0.3 }}>
+                                                {label}
+                                            </Text>
+                                        </View>
+                                        {rows.map((row, rowIdx) => (
+                                            <View key={rowIdx} style={{ flexDirection: 'row', gap, marginBottom: rowIdx < rows.length - 1 ? gap : 0 }}>
+                                                {row.map(font => {
+                                                    const isSelected = settings[key] === font.id;
+                                                    return (
+                                                        <TouchableOpacity
+                                                            key={font.id}
+                                                            onPress={() => updateSettings({ [key]: font.id })}
+                                                            style={[
+                                                                createStyles(theme).fontChip,
+                                                                { width: chipWidth },
+                                                                isSelected && { backgroundColor: theme.primary, borderColor: theme.primary },
+                                                            ]}
+                                                        >
+                                                            <Text style={[createStyles(theme).fontChipArabic, { fontFamily: Platform.OS === 'web' ? font.css : undefined, color: isSelected ? '#fff' : theme.text }]}>
+                                                                {font.labelAr}
+                                                            </Text>
+                                                            <Text style={[createStyles(theme).fontChipLabel, { color: isSelected ? 'rgba(255,255,255,0.8)' : theme.textSecondary }]}>
+                                                                {font.label}
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                    );
+                                                })}
+                                            </View>
+                                        ))}
+                                    </View>
+                                ))}
+                            </View>
+                        );
+                    })()}
                 </View>
 
                 {/* Translation Selection */}

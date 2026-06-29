@@ -87,6 +87,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Dua Listem: Dua silme ve dua isteği reddetme düzeltildi.</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Meal Güncelleme: "Hayır" denildiğinde indirme başlamıyordu, düzeltildi. Veriler zaten güncel ise güncelleme butonu gizleniyor.</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• PWA Geri Tuşu: Android'de telefon geri tuşu uygulamadan çıkartıyordu, artık uygulama içinde geri gidiyor.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Yazı Tipi Seçimi: Kuran okuma ve paylaşım resimleri için ayrı Arapça font seçimi eklendi; resim önizleme ekranında A+/A− ile yazı boyutu ayarlanabiliyor.</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ana Menü: Sağ üstteki ayarlar ikonu kaldırıldı.</Text>
                             <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Sure Görünümü: Yer iminden ayet açılırken doğru ayete kayıyor.</Text>
                         </View>

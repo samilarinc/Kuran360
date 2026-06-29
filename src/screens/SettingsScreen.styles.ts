@@ -347,6 +347,29 @@ export const createStyles = (theme: any) => {
             textAlign: 'center',
             fontStyle: 'italic',
         },
+        // Font chips
+        fontChip: {
+            borderWidth: 1,
+            borderColor: theme.border,
+            borderRadius: 10,
+            paddingVertical: SPACING.sm,
+            paddingHorizontal: SPACING.md,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: theme.surface,
+            minWidth: 110,
+            height: 72,
+        },
+        fontChipLabel: {
+            fontSize: 10,
+            color: theme.textSecondary,
+            fontWeight: '500',
+            marginTop: 2,
+        },
+        fontChipArabic: {
+            fontSize: FONT_SIZES.large + 2,
+            color: theme.text,
+        },
         // Update Button
         updateButton: {
             backgroundColor: theme.primary + '10',

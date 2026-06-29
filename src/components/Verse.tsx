@@ -13,6 +13,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useUserData } from '../contexts/UserDataContext';
 import logger from '../utils/logger';
 import { FONT_SIZES, SPACING } from '../constants';
+import { getFontOption, loadGoogleFont } from '../constants/fonts';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { ShareModal } from './ShareModal';
 import { ShareService } from '../utils/shareUtils';
@@ -31,6 +32,12 @@ interface VerseProps {
 export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount, showBookmarkButton = false, showMemorization = true, navigation }) => {
   const { settings } = useSettings();
   const { theme } = useTheme();
+  const arabicFontOption = getFontOption(settings.arabicFont);
+  const arabicFontCss = Platform.OS === 'web' ? arabicFontOption.css : undefined;
+  const styles = useMemo(() => createStyles(theme, arabicFontCss), [theme, arabicFontCss]);
+  useEffect(() => {
+    if (Platform.OS === 'web') loadGoogleFont(arabicFontOption);
+  }, [settings.arabicFont]);
   const { user } = useAuth();
   const { addBookmark, removeBookmark, isBookmarked, bookmarks } = useUserData();
   const { startMemorization, cancelMemorization } = useGlobalAudio();
@@ -70,18 +77,18 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
 
       return (
         <View key={translationName} style={[
-          createStyles(theme).translationContainer,
-          isFavorite && createStyles(theme).favoriteTranslationContainer
+          styles.translationContainer,
+          isFavorite && styles.favoriteTranslationContainer
         ]}>
           <Text style={[
-            createStyles(theme).translationTitle,
-            isFavorite && createStyles(theme).favoriteTranslationTitle
+            styles.translationTitle,
+            isFavorite && styles.favoriteTranslationTitle
           ]}>
             {isFavorite && '⭐ '}{translationName}:
           </Text>
           <Text style={[
-            createStyles(theme).translationText,
-            isFavorite && createStyles(theme).favoriteTranslationTextStyle
+            styles.translationText,
+            isFavorite && styles.favoriteTranslationTextStyle
           ]}>
             {translationText}
           </Text>
@@ -94,13 +101,13 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
     if (!settings.showWordTranslations || !verse.wordTranslations.length) return null;
 
     return (
-      <View style={createStyles(theme).wordTranslationsContainer}>
-        <Text style={createStyles(theme).sectionTitle}>Kelime Çevirileri:</Text>
-        <View style={createStyles(theme).wordTranslationsGrid}>
+      <View style={styles.wordTranslationsContainer}>
+        <Text style={styles.sectionTitle}>Kelime Çevirileri:</Text>
+        <View style={styles.wordTranslationsGrid}>
           {verse.wordTranslations.map((word, index) => (
-            <View key={index} style={createStyles(theme).wordTranslationItem}>
-              <Text style={createStyles(theme).wordArabic}>{word.arabic}</Text>
-              <Text style={createStyles(theme).wordTranslation}>{word.translation}</Text>
+            <View key={index} style={styles.wordTranslationItem}>
+              <Text style={styles.wordArabic}>{word.arabic}</Text>
+              <Text style={styles.wordTranslation}>{word.translation}</Text>
             </View>
           ))}
         </View>
@@ -128,7 +135,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   // Inline hover translations in the main Arabic line (web only)
   const InlineArabicWithHover: React.FC = () => {
     if (Platform.OS !== 'web' || !settings.inlineWordTranslations || verse.wordTranslations.length === 0) {
-      return <Text style={createStyles(theme).arabicText}>{verse.arabicText}</Text>;
+      return <Text style={styles.arabicText}>{verse.arabicText}</Text>;
     }
 
     // Build lookup map
@@ -151,17 +158,17 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
     const tokens = displayText.split(/\s+/).filter(Boolean);
 
     return (
-      <View style={createStyles(theme).inlineArabicRow}>
+      <View style={styles.inlineArabicRow}>
         {tokens.map((tok, idx) => {
           const tr = map.get(tok);
           const isHover = hoveredIndex === idx && !!tr;
           return (
-            <View key={idx} style={createStyles(theme).inlineArabicWordWrap}>
+            <View key={idx} style={styles.inlineArabicWordWrap}>
               <Text
                 style={[
-                  createStyles(theme).arabicText,
-                  createStyles(theme).inlineArabicWord,
-                  isHover && createStyles(theme).inlineArabicWordHover,
+                  styles.arabicText,
+                  styles.inlineArabicWord,
+                  isHover && styles.inlineArabicWordHover,
                 ]}
                 // @ts-ignore web-only hover handlers
                 onMouseEnter={() => setHoveredIndex(idx)}
@@ -171,12 +178,12 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
                 {tok}
               </Text>
               {isHover && (
-                <View style={createStyles(theme).hoverCard}>
-                  <Text style={createStyles(theme).hoverCardText}>{tr}</Text>
+                <View style={styles.hoverCard}>
+                  <Text style={styles.hoverCardText}>{tr}</Text>
                 </View>
               )}
               {/* Space between words, preserved visually on web */}
-              {idx < tokens.length - 1 && <Text style={createStyles(theme).inlineSpace}> </Text>}
+              {idx < tokens.length - 1 && <Text style={styles.inlineSpace}> </Text>}
             </View>
           );
         })}
@@ -229,46 +236,46 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   }, [verse, settings.favoriteTranslation]);
 
   return (
-    <View style={createStyles(theme).container}>
-      <View style={createStyles(theme).header}>
-        <View style={createStyles(theme).verseNumber}>
-          <Text style={createStyles(theme).verseNumberText}>{verse.number}</Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.verseNumber}>
+          <Text style={styles.verseNumberText}>{verse.number}</Text>
         </View>
-        <View style={createStyles(theme).headerActions}>
+        <View style={styles.headerActions}>
           {showBookmarkButton && user && (
             <TouchableOpacity
-              style={createStyles(theme).bookmarkButton}
+              style={styles.bookmarkButton}
               onPress={handleBookmarkToggle}
             >
-              <Text style={createStyles(theme).bookmarkIcon}>
+              <Text style={styles.bookmarkIcon}>
                 {isBookmarked(verse.surahNumber, verse.number) ? '🔖' : '📌'}
               </Text>
             </TouchableOpacity>
           )}
           {navigation && (
             <TouchableOpacity
-              style={createStyles(theme).allTranslationsButton}
+              style={styles.allTranslationsButton}
               onPress={() => navigation.navigate('AllTranslations', { verse })}
             >
-              <Text style={createStyles(theme).allTranslationsIcon}>📚</Text>
+              <Text style={styles.allTranslationsIcon}>📚</Text>
             </TouchableOpacity>
           )}
           <TouchableOpacity
-            style={createStyles(theme).shareButton}
+            style={styles.shareButton}
             onPress={() => setShareModalVisible(true)}
           >
-            <Text style={createStyles(theme).shareIcon}>📤</Text>
+            <Text style={styles.shareIcon}>📤</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
-              createStyles(theme).playButton,
-              isPlaying && createStyles(theme).playButtonActive
+              styles.playButton,
+              isPlaying && styles.playButtonActive
             ]}
             onPress={() => onPlayPress(verse)}
           >
             <Text style={[
-              createStyles(theme).playButtonText,
-              isPlaying && createStyles(theme).playButtonTextActive
+              styles.playButtonText,
+              isPlaying && styles.playButtonTextActive
             ]}>
               {isPlaying ? '⏹️' : '▶️'}
             </Text>
@@ -276,14 +283,14 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         </View>
       </View>
 
-      <View style={createStyles(theme).content}>
+      <View style={styles.content}>
         <InlineArabicWithHover />
 
         {settings.showTransliteration && verse.transliteration && (
-          <Text style={createStyles(theme).transliterationText}>{verse.transliteration}</Text>
+          <Text style={styles.transliterationText}>{verse.transliteration}</Text>
         )}
 
-        <View style={createStyles(theme).translationsContainer}>
+        <View style={styles.translationsContainer}>
           {renderTranslations()}
         </View>
 
@@ -291,92 +298,92 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
 
         {/* Memorization inline control */}
         {showMemorization && (
-          <View style={createStyles(theme).memContainer}>
+          <View style={styles.memContainer}>
             {!memOpen ? (
-              <TouchableOpacity style={createStyles(theme).memToggle} onPress={() => setMemOpen(true)}>
-                <Text style={createStyles(theme).memToggleText}>🧠 Ezberle</Text>
+              <TouchableOpacity style={styles.memToggle} onPress={() => setMemOpen(true)}>
+                <Text style={styles.memToggleText}>🧠 Ezberle</Text>
               </TouchableOpacity>
             ) : (
-              <View style={createStyles(theme).memPanel}>
-                <View style={createStyles(theme).memRow}>
-                  <Text style={createStyles(theme).memLabel}>Şuraya Kadar</Text>
-                  <View style={createStyles(theme).memStepper}>
+              <View style={styles.memPanel}>
+                <View style={styles.memRow}>
+                  <Text style={styles.memLabel}>Şuraya Kadar</Text>
+                  <View style={styles.memStepper}>
                     <TouchableOpacity
-                      style={createStyles(theme).stepBtn}
+                      style={styles.stepBtn}
                       onPress={() => setEndVerse(v => clamp(v - 1, verse.number, maxEnd))}
                     >
-                      <Text style={createStyles(theme).stepText}>-</Text>
+                      <Text style={styles.stepText}>-</Text>
                     </TouchableOpacity>
-                    <Text style={createStyles(theme).memValue}>{endVerse}</Text>
+                    <Text style={styles.memValue}>{endVerse}</Text>
                     <TouchableOpacity
-                      style={createStyles(theme).stepBtn}
+                      style={styles.stepBtn}
                       onPress={() => setEndVerse(v => clamp(v + 1, verse.number, maxEnd))}
                     >
-                      <Text style={createStyles(theme).stepText}>+</Text>
+                      <Text style={styles.stepText}>+</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={createStyles(theme).memRow}>
-                  <Text style={createStyles(theme).memLabel}>
+                <View style={styles.memRow}>
+                  <Text style={styles.memLabel}>
                     {memMode === 'individual' ? 'Her Ayet İçin' : 'Tekrar Sayısı'}
                   </Text>
-                  <View style={createStyles(theme).memStepper}>
+                  <View style={styles.memStepper}>
                     <TouchableOpacity
-                      style={createStyles(theme).stepBtn}
+                      style={styles.stepBtn}
                       onPress={() => setRepeats(r => clamp(r - 1, 1, 99))}
                     >
-                      <Text style={createStyles(theme).stepText}>-</Text>
+                      <Text style={styles.stepText}>-</Text>
                     </TouchableOpacity>
-                    <Text style={createStyles(theme).memValue}>{repeats}</Text>
+                    <Text style={styles.memValue}>{repeats}</Text>
                     <TouchableOpacity
-                      style={createStyles(theme).stepBtn}
+                      style={styles.stepBtn}
                       onPress={() => setRepeats(r => clamp(r + 1, 1, 99))}
                     >
-                      <Text style={createStyles(theme).stepText}>+</Text>
+                      <Text style={styles.stepText}>+</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={createStyles(theme).memRow}>
-                  <Text style={createStyles(theme).memLabel}>Ezber Modu</Text>
-                  <View style={createStyles(theme).memToggleContainer}>
+                <View style={styles.memRow}>
+                  <Text style={styles.memLabel}>Ezber Modu</Text>
+                  <View style={styles.memToggleContainer}>
                     <TouchableOpacity
                       style={[
-                        createStyles(theme).memModeBtn,
-                        createStyles(theme).memModeBtnLeft,
-                        memMode === 'range' && createStyles(theme).memModeBtnActive
+                        styles.memModeBtn,
+                        styles.memModeBtnLeft,
+                        memMode === 'range' && styles.memModeBtnActive
                       ]}
                       onPress={() => setMemMode('range')}
                     >
                       <Text style={[
-                        createStyles(theme).memModeText,
-                        memMode === 'range' && createStyles(theme).memModeTextActive
+                        styles.memModeText,
+                        memMode === 'range' && styles.memModeTextActive
                       ]}>Aralık</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={[
-                        createStyles(theme).memModeBtn,
-                        createStyles(theme).memModeBtnRight,
-                        memMode === 'individual' && createStyles(theme).memModeBtnActive
+                        styles.memModeBtn,
+                        styles.memModeBtnRight,
+                        memMode === 'individual' && styles.memModeBtnActive
                       ]}
                       onPress={() => setMemMode('individual')}
                     >
                       <Text style={[
-                        createStyles(theme).memModeText,
-                        memMode === 'individual' && createStyles(theme).memModeTextActive
+                        styles.memModeText,
+                        memMode === 'individual' && styles.memModeTextActive
                       ]}>Ayet Ayet</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={createStyles(theme).memActions}>
+                <View style={styles.memActions}>
                   <TouchableOpacity
-                    style={[createStyles(theme).memStartBtn, !canStartMem && createStyles(theme).memStartBtnDisabled]}
+                    style={[styles.memStartBtn, !canStartMem && styles.memStartBtnDisabled]}
                     disabled={!canStartMem}
                     onPress={() => startMemorization(verse.surahNumber, verse.number, endVerse, repeats, memMode)}
                   >
-                    <Text style={createStyles(theme).memStartText}>Start</Text>
+                    <Text style={styles.memStartText}>Start</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={createStyles(theme).memCancelBtn} onPress={() => { cancelMemorization(); setMemOpen(false); }}>
-                    <Text style={createStyles(theme).memCancelText}>Close</Text>
+                  <TouchableOpacity style={styles.memCancelBtn} onPress={() => { cancelMemorization(); setMemOpen(false); }}>
+                    <Text style={styles.memCancelText}>Close</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -395,7 +402,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   );
 };
 
-const createStyles = (theme: Theme) => StyleSheet.create({
+const createStyles = (theme: Theme, arabicFontCss?: string) => StyleSheet.create({
   container: {
     backgroundColor: theme.cardBackground,
     marginVertical: SPACING.sm,
@@ -456,11 +463,9 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     textAlign: 'right',
     color: theme.text,
     fontWeight: '600',
-    // Ensure correct Arabic shaping & direction on web (especially Chrome/Linux)
     writingDirection: 'rtl',
-    // Use high-quality Arabic fonts on web; fall back to system if unavailable
     fontFamily: Platform.select({
-      web: '"Scheherazade New", "Noto Naskh Arabic", Amiri, serif',
+      web: arabicFontCss ?? '"Scheherazade New", serif',
       default: undefined as any,
     }),
   },
@@ -592,7 +597,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     textAlign: 'center',
     writingDirection: 'rtl',
     fontFamily: Platform.select({
-      web: '"Scheherazade New", "Noto Naskh Arabic", Amiri, serif',
+      web: arabicFontCss ?? '"Scheherazade New", serif',
       default: undefined as any,
     }),
   },

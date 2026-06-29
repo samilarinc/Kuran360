@@ -23,6 +23,8 @@ import { VerseShareData, ImageSize } from '../types';
 import { ShareService } from '../utils/shareUtils';
 import { FONT_SIZES, SPACING } from '../constants';
 import { IMAGE_SIZES } from '../utils/imageSizes';
+import { useSettings } from '../contexts/SettingsContext';
+import { ARABIC_FONT_OPTIONS, DEFAULT_IMAGE_FONT_ID, getFontOption, loadGoogleFont } from '../constants/fonts';
 
 interface ImagePreviewModalProps {
     isVisible: boolean;
@@ -37,6 +39,9 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     imageUrl,
     verseData,
 }) => {
+    const { settings } = useSettings();
+    const [selectedFontId, setSelectedFontId] = React.useState(settings.imageArabicFont ?? DEFAULT_IMAGE_FONT_ID);
+    const [fontScale, setFontScale] = React.useState(1.0);
     const { theme } = useTheme();
     const [currentImage, setCurrentImage] = React.useState(imageUrl);
     const [mode, setMode] = React.useState<'light' | 'dark'>('light');
@@ -48,13 +53,28 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
         setCurrentImage(imageUrl);
     }, [imageUrl]);
 
-    const regenerateImage = async (themeMode: 'light' | 'dark', size: ImageSize) => {
+    const regenerateImage = async (themeMode: 'light' | 'dark', size: ImageSize, fontId?: string, scale?: number) => {
+        const useFontId = fontId ?? selectedFontId;
+        const useScale = scale ?? fontScale;
+        const fontOption = getFontOption(useFontId);
+        const fontCss = fontOption.css;
         setIsGenerating(true);
+
+        // Inject Google Fonts link then wait for the specific font to load
+        loadGoogleFont(fontOption);
+        if (typeof document !== 'undefined' && document.fonts?.load) {
+            try {
+                await document.fonts.load(`16px ${fontCss}`);
+            } catch (_) {}
+        }
+
         try {
             if (Platform.OS === 'web') {
                 const img = await ShareService.generateVerseImageForSharing(verseData, {
                     themeMode,
-                    size
+                    size,
+                    arabicFontCss: fontCss,
+                    fontScale: useScale,
                 });
                 if (img) {
                     setCurrentImage(img);
@@ -180,6 +200,80 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                     style={styles.image}
                                     resizeMode="contain"
                                 />
+                            </View>
+
+                            {/* Font Selection */}
+                            <View style={styles.controlSection}>
+                                <Text style={[styles.sectionTitle, { color: theme.text }]}>Yazı Tipi</Text>
+                                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView}>
+                                    <View style={styles.sizeRow}>
+                                        {ARABIC_FONT_OPTIONS.map(font => {
+                                            const isSelected = selectedFontId === font.id;
+                                            return (
+                                                <TouchableOpacity
+                                                    key={font.id}
+                                                    disabled={isGenerating}
+                                                    style={[
+                                                        styles.sizeButton,
+                                                        { backgroundColor: isSelected ? theme.primary : theme.cardBackground },
+                                                    ]}
+                                                    onPress={() => {
+                                                        setSelectedFontId(font.id);
+                                                        regenerateImage(mode, selectedSize, font.id, fontScale);
+                                                    }}
+                                                >
+                                                    <Text style={{ color: isSelected ? '#fff' : theme.text, fontSize: 20, fontFamily: Platform.OS === 'web' ? font.css : undefined }}>
+                                                        {font.labelAr}
+                                                    </Text>
+                                                    <Text style={{ color: isSelected ? '#fff' : theme.textSecondary, fontSize: 10, marginTop: 2 }}>
+                                                        {font.label}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            );
+                                        })}
+                                    </View>
+                                </ScrollView>
+                            </View>
+
+                            {/* Font Scale */}
+                            <View style={styles.controlSection}>
+                                <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                                    Yazı Boyutu ({Math.round(fontScale * 100)}%)
+                                </Text>
+                                <View style={styles.controlRow}>
+                                    <TouchableOpacity
+                                        style={[styles.controlButton, { backgroundColor: theme.cardBackground, flex: 1 }]}
+                                        disabled={isGenerating || fontScale <= 0.5}
+                                        onPress={() => {
+                                            const s = Math.max(0.5, Math.round((fontScale - 0.1) * 10) / 10);
+                                            setFontScale(s);
+                                            regenerateImage(mode, selectedSize, selectedFontId, s);
+                                        }}
+                                    >
+                                        <Text style={{ fontSize: 14, color: theme.text, fontWeight: '700' }}>A−</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[styles.controlButton, { backgroundColor: theme.cardBackground, flex: 1 }]}
+                                        disabled={isGenerating}
+                                        onPress={() => {
+                                            setFontScale(1.0);
+                                            regenerateImage(mode, selectedSize, selectedFontId, 1.0);
+                                        }}
+                                    >
+                                        <Text style={[styles.actionText, { color: theme.text, fontSize: 12 }]}>Sıfırla</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[styles.controlButton, { backgroundColor: theme.cardBackground, flex: 1 }]}
+                                        disabled={isGenerating || fontScale >= 2.0}
+                                        onPress={() => {
+                                            const s = Math.min(2.0, Math.round((fontScale + 0.1) * 10) / 10);
+                                            setFontScale(s);
+                                            regenerateImage(mode, selectedSize, selectedFontId, s);
+                                        }}
+                                    >
+                                        <Text style={{ fontSize: 20, color: theme.text, fontWeight: '700' }}>A+</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
 
                             {/* Theme Selection */}

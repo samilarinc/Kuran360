@@ -83,7 +83,15 @@ export class VerseImageGenerator {
 
       console.log('Ayet resmi çiziliyor...');
       const palette = this.getPalette(options?.themeMode || 'light');
-      await this.drawVerseImage(ctx, verseData, palette, imageSize);
+      const arabicFontCss = options?.arabicFontCss ?? '"Scheherazade New", serif';
+      const fontScale = options?.fontScale ?? 1.0;
+
+      // Ensure the selected font is loaded before drawing on canvas
+      if (typeof document !== 'undefined' && document.fonts?.ready) {
+        await document.fonts.ready;
+      }
+
+      await this.drawVerseImage(ctx, verseData, palette, imageSize, arabicFontCss, fontScale);
 
       console.log('Canvas blob\'a dönüştürülüyor...');
       // Canvas'ı blob'a dönüştür
@@ -134,32 +142,22 @@ export class VerseImageGenerator {
   /**
    * Canvas'a ayet resmini çizer
    */
-  private static async drawVerseImage(ctx: CanvasRenderingContext2D, verseData: VerseShareData, palette: VerseImagePalette, imageSize: ImageSize): Promise<void> {
+  private static async drawVerseImage(ctx: CanvasRenderingContext2D, verseData: VerseShareData, palette: VerseImagePalette, imageSize: ImageSize, arabicFontCss: string = '"Scheherazade New", serif', fontScale: number = 1.0): Promise<void> {
     const { arabicText, translation, surahName, verseNumber } = verseData;
 
-    // Arka plan
     this.drawBackground(ctx, palette, imageSize);
 
-    // Dinamik padding hesapla
     const padding = this.calculatePadding(imageSize);
-
-    // Dinamik font boyutları hesapla
-    const fontSizes = this.calculateFontSizes(ctx, arabicText, translation, imageSize);
-
-    // Layout hesaplamaları
+    const fontSizes = this.calculateFontSizes(ctx, arabicText, translation, imageSize, fontScale);
     const layout = this.calculateLayout(ctx, arabicText, translation, fontSizes, imageSize, padding);
 
-    // Başlık (Sure adı ve ayet numarası)
-    this.drawTitle(ctx, surahName, verseNumber, layout.titleY, palette, imageSize);
+    this.drawTitle(ctx, surahName, verseNumber, layout.titleY, palette, imageSize, fontScale);
 
-    // Arapça metin
-    await this.drawArabicText(ctx, arabicText, fontSizes.arabic, layout.arabicY, layout.arabicLines, layout.arabicLineHeight, palette, imageSize, padding);
+    await this.drawArabicText(ctx, arabicText, fontSizes.arabic, layout.arabicY, layout.arabicLines, layout.arabicLineHeight, palette, imageSize, padding, arabicFontCss);
 
-    // Çeviri metni
     this.drawTranslation(ctx, translation, fontSizes.translation, layout.translationY, layout.translationLines, layout.translationLineHeight, palette, imageSize, padding);
 
-    // Alt bilgi
-    this.drawFooter(ctx, palette, imageSize);
+    this.drawFooter(ctx, palette, imageSize, fontScale);
 
     // Dekoratif çerçeve
     this.drawBorder(ctx, palette, imageSize);
@@ -196,7 +194,7 @@ export class VerseImageGenerator {
   /**
    * Font boyutlarını dinamik olarak hesaplar - okunabilir ama sığacak boyutlar
    */
-  private static calculateFontSizes(ctx: CanvasRenderingContext2D, arabicText: string, translation: string, imageSize: ImageSize): { arabic: number; translation: number } {
+  private static calculateFontSizes(ctx: CanvasRenderingContext2D, arabicText: string, translation: string, imageSize: ImageSize, fontScale: number = 1.0): { arabic: number; translation: number } {
     // Resim boyutuna göre temel font boyutunu hesapla
     const baseArea = 800 * 600; // Default area
     const currentArea = imageSize.width * imageSize.height;
@@ -228,9 +226,13 @@ export class VerseImageGenerator {
       translationFontSize = Math.round(16 * sizeRatio);
     }
 
+    // fontScale uygula (A+/A- için)
+    arabicFontSize = Math.round(arabicFontSize * fontScale);
+    translationFontSize = Math.round(translationFontSize * fontScale);
+
     // Minimum ve maksimum font boyutları
-    arabicFontSize = Math.max(12, Math.min(72, arabicFontSize));
-    translationFontSize = Math.max(10, Math.min(32, translationFontSize));
+    arabicFontSize = Math.max(12, Math.min(96, arabicFontSize));
+    translationFontSize = Math.max(8, Math.min(48, translationFontSize));
 
     console.log(`Font hesabı: Arapça uzunluk ${arabicText.length} -> ${arabicFontSize}px, Çeviri uzunluk ${translation.length} -> ${translationFontSize}px, boyut oranı: ${sizeRatio}`);
 
@@ -310,9 +312,10 @@ export class VerseImageGenerator {
   /**
    * Başlık kısmını çizer
    */
-  private static drawTitle(ctx: CanvasRenderingContext2D, surahName: string, verseNumber: number, y: number, palette: VerseImagePalette, imageSize: ImageSize): void {
+  private static drawTitle(ctx: CanvasRenderingContext2D, surahName: string, verseNumber: number, y: number, palette: VerseImagePalette, imageSize: ImageSize, fontScale: number = 1.0): void {
     ctx.fillStyle = palette.accent;
-    const fontSize = Math.round(22 * Math.sqrt(imageSize.width * imageSize.height / (800 * 600)));
+    const uiScale = 1 + (fontScale - 1) * 0.4;
+    const fontSize = Math.round(22 * Math.sqrt(imageSize.width * imageSize.height / (800 * 600)) * uiScale);
     ctx.font = `bold ${fontSize}px Arial, sans-serif`;
     ctx.textAlign = 'center';
 
@@ -333,9 +336,9 @@ export class VerseImageGenerator {
   /**
    * Arapça metni çizer
    */
-  private static async drawArabicText(ctx: CanvasRenderingContext2D, arabicText: string, fontSize: number, startY: number, precomputedLines?: string[], lineHeightOverride?: number, palette?: VerseImagePalette, imageSize?: ImageSize, padding?: number): Promise<void> {
+  private static async drawArabicText(ctx: CanvasRenderingContext2D, arabicText: string, fontSize: number, startY: number, precomputedLines?: string[], lineHeightOverride?: number, palette?: VerseImagePalette, imageSize?: ImageSize, padding?: number, arabicFontCss: string = '"Scheherazade New", serif'): Promise<void> {
     ctx.fillStyle = palette?.text || this.TEXT_COLOR;
-    ctx.font = `${fontSize}px "Scheherazade New", "Noto Naskh Arabic", Amiri, "Traditional Arabic", "Arabic Typesetting", "Times New Roman", serif`;
+    ctx.font = `${fontSize}px ${arabicFontCss}`;
     // Blok ortalama: tüm satırlar için en geniş satırı bulup bloğu ortala
     ctx.textAlign = 'right';
     ctx.direction = 'rtl';
@@ -388,9 +391,10 @@ export class VerseImageGenerator {
   /**
    * Alt bilgi kısmını çizer
    */
-  private static drawFooter(ctx: CanvasRenderingContext2D, palette: VerseImagePalette, imageSize: ImageSize): void {
+  private static drawFooter(ctx: CanvasRenderingContext2D, palette: VerseImagePalette, imageSize: ImageSize, fontScale: number = 1.0): void {
     ctx.fillStyle = palette.footerText || palette.accent;
-    const fontSize = Math.round(14 * Math.sqrt(imageSize.width * imageSize.height / (800 * 600)));
+    const uiScale = 1 + (fontScale - 1) * 0.4;
+    const fontSize = Math.round(14 * Math.sqrt(imageSize.width * imageSize.height / (800 * 600)) * uiScale);
     ctx.font = `${fontSize}px Arial, sans-serif`;
     ctx.textAlign = 'center';
 

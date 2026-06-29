@@ -4,6 +4,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { useAuth } from './AuthContext';
 import { AppSettings, SettingsContextType } from '../types';
+import { DEFAULT_ARABIC_FONT_ID, DEFAULT_IMAGE_FONT_ID, getFontOption, loadGoogleFont } from '../constants/fonts';
 
 const DEFAULT_SETTINGS: AppSettings = {
     selectedTranslations: [
@@ -22,6 +23,8 @@ const DEFAULT_SETTINGS: AppSettings = {
     selectedReciter: 'sudais',
     playbackRate: 1.0,
     audioPlayMode: 'stopAtEnd',
+    arabicFont: DEFAULT_ARABIC_FONT_ID,
+    imageArabicFont: DEFAULT_IMAGE_FONT_ID,
     prayerLocation: {
         id: '9541',
         cityName: 'Istanbul',
@@ -211,6 +214,12 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
             console.error('Error saving settings:', error);
         }
     };
+
+    // Load selected Arabic fonts from Google Fonts when settings change
+    useEffect(() => {
+        loadGoogleFont(getFontOption(settings.arabicFont));
+        loadGoogleFont(getFontOption(settings.imageArabicFont));
+    }, [settings.arabicFont, settings.imageArabicFont]);
 
     const contextValue: SettingsContextType = {
         settings,

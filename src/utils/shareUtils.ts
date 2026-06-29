@@ -152,7 +152,9 @@ export class ShareService {
             ShareService.lastVerseData = verseData;
             const imageOptions: ImageGenerationOptions = {
                 themeMode: options?.themeMode || 'light',
-                size: options?.size || getDefaultImageSize()
+                size: options?.size || getDefaultImageSize(),
+                arabicFontCss: options?.arabicFontCss,
+                fontScale: options?.fontScale,
             };
             const imageUrl = await VerseImageGenerator.generateVerseImage(verseData, imageOptions);
             if (!imageUrl) {
@@ -174,7 +176,9 @@ export class ShareService {
             // Resmi oluştur
             const imageOptions: ImageGenerationOptions = {
                 themeMode: options?.themeMode || 'light',
-                size: options?.size || getDefaultImageSize()
+                size: options?.size || getDefaultImageSize(),
+                arabicFontCss: options?.arabicFontCss,
+                fontScale: options?.fontScale,
             };
             const imageUrl = await VerseImageGenerator.generateVerseImage(verseData, imageOptions);
 

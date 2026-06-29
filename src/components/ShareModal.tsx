@@ -18,6 +18,8 @@ import { ShareService } from '../utils/shareUtils';
 import { ImagePreviewModal } from './ImagePreviewModal';
 import { FONT_SIZES, SPACING } from '../constants';
 import { IMAGE_SIZES, getDefaultImageSize } from '../utils/imageSizes';
+import { useSettings } from '../contexts/SettingsContext';
+import { getFontOption } from '../constants/fonts';
 
 interface ShareModalProps {
   isVisible: boolean;
@@ -31,6 +33,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   verseData,
 }) => {
   const { theme } = useTheme();
+  const { settings } = useSettings();
+  const imageFontCss = getFontOption(settings.imageArabicFont).css;
   const [imagePreviewVisible, setImagePreviewVisible] = useState(false);
   const [generatedImageUrl, setGeneratedImageUrl] = useState('');
   const [selectedSize, setSelectedSize] = useState<ImageSize>(getDefaultImageSize());
@@ -47,7 +51,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         if (Platform.OS === 'web') {
           const imageUrl = await ShareService.generateVerseImageForSharing(verseData, {
             themeMode,
-            size: selectedSize
+            size: selectedSize,
+            arabicFontCss: imageFontCss,
           });
           if (imageUrl) {
             setGeneratedImageUrl(imageUrl);
@@ -79,7 +84,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         // Spesifik platform - resim oluşturup o platforma gönder
         if (Platform.OS === 'web') {
           const imageUrl = await ShareService.generateVerseImageForSharing(verseData, {
-            size: selectedSize
+            size: selectedSize,
+            arabicFontCss: imageFontCss,
           });
           if (imageUrl) {
             const url = ShareService.generateVerseUrl(verseData.surahNumber, verseData.verseNumber);

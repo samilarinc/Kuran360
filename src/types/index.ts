@@ -54,6 +54,9 @@ export interface AppSettings {
   playbackRate: number;
   // Audio play behavior
   audioPlayMode: 'nextSurah' | 'loopSurah' | 'stopAtEnd' | 'loopVerse';
+  // Font settings
+  arabicFont: string;      // font id for Quran reading
+  imageArabicFont: string; // font id for image generation
   // Prayer times
   prayerLocation?: {
     id: string;
@@ -190,6 +193,8 @@ export interface ImageSize {
 export interface ImageGenerationOptions {
   themeMode?: 'light' | 'dark';
   size?: ImageSize;
+  arabicFontCss?: string;
+  fontScale?: number;
 }
 
 export interface HatimPart {
