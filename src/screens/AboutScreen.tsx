@@ -68,34 +68,6 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
                 </View>
 
                 <View style={[styles.section, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
-                    <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Teknik Detaylar</Text>
-
-                    <Text style={[styles.techSubtitle, { color: theme.text }]}>SQLite Veritabanı (Mobil)</Text>
-                    <View style={styles.updateList}>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Composite primary key yapısı: (surah_number, verse_number)</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Otomatik indexleme ile hızlı sorgular</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Transaction-based batch insert (100 adet/batch)</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• İlk çalıştırmada sunucudan veri indirme</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• AsyncStorage boyut limiti sorunları çözüldü</Text>
-                    </View>
-
-                    <Text style={[styles.techSubtitle, { color: theme.text }]}>IndexedDB (Web)</Text>
-                    <View style={styles.updateList}>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ayetler tekil olarak saklanıyor</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Cursor-based verimli sorgulama</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Metadata store ile versiyon kontrolü</Text>
-                    </View>
-
-                    <Text style={[styles.techSubtitle, { color: theme.text }]}>Veri Akışı</Text>
-                    <View style={styles.updateList}>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Sunucu: https://kuran360.com/allVerses.json</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• On-demand verse loading için optimize edildi</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Audio streaming tüm platformlarda destekleniyor</Text>
-                        <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• APK boyutu küçültüldü (bundled data kaldırıldı)</Text>
-                    </View>
-                </View>
-
-                <View style={[styles.section, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Bilinen Hatalar ve Planlanan Güncellemeler</Text>
 
                     <View style={styles.updateList}>
@@ -108,6 +80,17 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
 
                 <View style={[styles.section, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
                     <Text style={[styles.sectionTitle, { color: theme.secondary }]}>Güncelleme Notları</Text>
+
+                    <View style={styles.updateItem}>
+                        <Text style={[styles.updateDate, { color: theme.text }]}>29 Haziran 2026</Text>
+                        <View style={styles.updateList}>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Dua Listem: Dua silme ve dua isteği reddetme düzeltildi.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Meal Güncelleme: "Hayır" denildiğinde indirme başlamıyordu, düzeltildi. Veriler zaten güncel ise güncelleme butonu gizleniyor.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• PWA Geri Tuşu: Android'de telefon geri tuşu uygulamadan çıkartıyordu, artık uygulama içinde geri gidiyor.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Ana Menü: Sağ üstteki ayarlar ikonu kaldırıldı.</Text>
+                            <Text style={[styles.updateBullet, { color: theme.textSecondary }]}>• Sure Görünümü: Yer iminden ayet açılırken doğru ayete kayıyor.</Text>
+                        </View>
+                    </View>
 
                     <View style={styles.updateItem}>
                         <Text style={[styles.updateDate, { color: theme.text }]}>22 Haziran 2026</Text>

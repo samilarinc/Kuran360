@@ -66,6 +66,11 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
     };
 
     const handleDeleteDua = (id: string) => {
+        if (Platform.OS === 'web') {
+            const confirmed = (globalThis as any).confirm?.('Bu duayı silmek istediğinizden emin misiniz?');
+            if (confirmed) deleteDua(id);
+            return;
+        }
         Alert.alert(
             'Sil',
             'Bu duayı silmek istediğinizden emin misiniz?',
@@ -105,6 +110,11 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
     };
 
     const handleRejectRequest = (request: DuaRequest) => {
+        if (Platform.OS === 'web') {
+            const confirmed = (globalThis as any).confirm?.('Bu dua isteğini reddetmek istediğinizden emin misiniz?');
+            if (confirmed) rejectDuaRequest(request.id);
+            return;
+        }
         Alert.alert(
             'Reddet',
             'Bu dua isteğini reddetmek istediğinizden emin misiniz?',

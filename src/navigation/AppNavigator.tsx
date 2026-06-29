@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { Platform, View, ActivityIndicator, BackHandler } from 'react-native';
 import { HomeScreen } from '../screens/HomeScreen';
@@ -86,11 +86,14 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     { screen: 'Main' }
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const currentIndexRef = useRef(0);
   const [isLoadingRoute, setIsLoadingRoute] = useState(false);
   const [pendingRedirect, setPendingRedirect] = useState<NavigationHistoryItem | null>(null);
   const { user, loading: authLoading } = useAuth();
   const { audioState } = useGlobalAudio();
   const { settings, updateSettings } = useDebouncedSettings(200);
+
+  useEffect(() => { currentIndexRef.current = currentIndex; }, [currentIndex]);
 
   // Auto-disable audio tracking when navigating away from SurahDetail
   useEffect(() => {
@@ -269,7 +272,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     return pathname === '/' || pathname === '' ? { screen: 'Main' } : null;
   }, []);
 
-  const updateUrl = useCallback((route: NavigationHistoryItem) => {
+  const updateUrl = useCallback((route: NavigationHistoryItem, navIndex: number) => {
     if (Platform.OS === 'web') {
       const url = buildUrl(route);
       const windowObj = getWindow();
@@ -278,40 +281,26 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
           const doc = (globalThis as any).document;
           if (doc) doc.title = 'Kuran360';
         } catch { }
-        windowObj.history.pushState(null, 'Kuran360', url);
+        windowObj.history.pushState({ navIndex }, 'Kuran360', url);
       }
     }
   }, [buildUrl]);
 
   const navigateToRoute = useCallback((route: NavigationHistoryItem, addToHistory: boolean = true) => {
-
     if (addToHistory) {
-      // Add new route to history - use functional updates to avoid stale closures
-      setNavigationHistory(prev => {
-        const newHistory = [...prev];
-        setCurrentIndex(currentIndex => {
-          const newIndex = currentIndex + 1;
-          // Remove any forward history beyond current index
-          newHistory.splice(newIndex);
-          // Add new route
-          newHistory.push(route);
-          return newIndex;
-        });
-        return newHistory;
-      });
+      const newIndex = currentIndexRef.current + 1;
+      currentIndexRef.current = newIndex;
+      setCurrentIndex(newIndex);
+      setNavigationHistory(prev => [...prev.slice(0, newIndex), route]);
+      updateUrl(route, newIndex);
     } else {
+      const idx = currentIndexRef.current;
       setNavigationHistory(prev => {
         const newHistory = [...prev];
-        setCurrentIndex(currentIndex => {
-          newHistory[currentIndex] = route;
-          return currentIndex;
-        });
+        newHistory[idx] = route;
         return newHistory;
       });
     }
-
-    // Update URL
-    updateUrl(route);
   }, [updateUrl]);
 
   // Handle browser back/forward buttons and initial URL (Web only)
@@ -319,27 +308,11 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     if (Platform.OS === 'web') {
       const windowObj = getWindow();
       if (windowObj) {
-        const handlePopState = async () => {
-          const urlPath = windowObj.location.pathname;
-          setIsLoadingRoute(true);
-          try {
-            const route = await parseUrl(urlPath);
-            if (route) {
-              // For popstate events, just replace the current route
-              setNavigationHistory(prev => {
-                const newHistory = [...prev];
-                setCurrentIndex(currentIndex => {
-                  newHistory[currentIndex] = route;
-                  return currentIndex;
-                });
-                return newHistory;
-              });
-              updateUrl(route);
-            }
-          } catch (error) {
-            console.error('Error parsing URL:', error);
-          } finally {
-            setIsLoadingRoute(false);
+        const handlePopState = (event: any) => {
+          const targetIndex = event?.state?.navIndex;
+          if (typeof targetIndex === 'number' && targetIndex >= 0) {
+            currentIndexRef.current = targetIndex;
+            setCurrentIndex(targetIndex);
           }
         };
 
@@ -351,11 +324,15 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
           try {
             const initialRoute = await parseUrl(windowObj.location.pathname);
             if (initialRoute && initialRoute.screen !== 'Main') {
-              // Build proper history for direct URL access
               const mainRoute: NavigationHistoryItem = { screen: 'Main' };
               setNavigationHistory([mainRoute, initialRoute]);
               setCurrentIndex(1);
-              updateUrl(initialRoute);
+              currentIndexRef.current = 1;
+              // Inject Main into browser history, then push the deep-linked route
+              windowObj.history.replaceState({ navIndex: 0 }, 'Kuran360', '/');
+              windowObj.history.pushState({ navIndex: 1 }, 'Kuran360', windowObj.location.pathname);
+            } else {
+              windowObj.history.replaceState({ navIndex: 0 }, 'Kuran360', windowObj.location.pathname);
             }
           } catch (error) {
             console.error('Error parsing initial URL:', error);
@@ -399,19 +376,21 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       navigateToRoute(route, true);
     },
     goBack: () => {
+      if (Platform.OS === 'web') {
+        if (currentIndex > 0) {
+          getWindow()?.history.back(); // triggers popstate → setCurrentIndex
+        }
+        return;
+      }
       if (currentIndex > 0) {
-        // Go back to the previous route in history
         const newIndex = currentIndex - 1;
+        currentIndexRef.current = newIndex;
         setCurrentIndex(newIndex);
-        updateUrl(navigationHistory[newIndex]);
       } else {
-        // If we're at the beginning, go to Main instead of Home
-        const mainRoute: NavigationHistoryItem = {
-          screen: 'Main'
-        };
+        const mainRoute: NavigationHistoryItem = { screen: 'Main' };
         setNavigationHistory([mainRoute]);
+        currentIndexRef.current = 0;
         setCurrentIndex(0);
-        updateUrl(mainRoute);
       }
     }
   };
@@ -447,7 +426,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
           const doc = (globalThis as any).document;
           if (doc) doc.title = 'Kuran360';
         } catch { }
-        windowObj.history.replaceState(null, 'Kuran360', url);
+        windowObj.history.replaceState({ navIndex: currentIndexRef.current }, 'Kuran360', url);
       }
     }
   }, [buildUrl]);

@@ -3,10 +3,12 @@ import {
   View,
   Text,
   FlatList,
+  ScrollView,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { Verse } from '../components/Verse';
 import { PaginatedVerseView } from '../components/PaginatedVerseView';
@@ -51,6 +53,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const { addToLastRead, lastRead } = useUserData();
   const { audioState, playVerse, stop, pause, resume, togglePlayPause, setVersesForAutoplay, changePlaybackRate } = useGlobalAudio();
   const flatListRef = useRef<FlatList>(null);
+  const initialScrollDone = useRef(false);
 
   useEffect(() => {
     const loadSurahData = async () => {
@@ -103,35 +106,48 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     }
   }, [basicSurah.number, route.params.verseIndex, updateVerseUrl, surah]);
 
+  // Scroll to bookmark/verse index on load (non-paginated view)
+  useEffect(() => {
+    const targetIndex = route.params.verseIndex;
+    if (targetIndex === undefined || targetIndex === 0 || settings.usePaginatedView || initialScrollDone.current) return;
+    if (surah.verses.length === 0) return;
+    initialScrollDone.current = true;
+    const timer = setTimeout(() => {
+      if (Platform.OS === 'web') {
+        // Web: all items already in DOM via ScrollView, scrollIntoView works directly
+        (typeof document !== 'undefined') &&
+          document.getElementById(`verse-item-${targetIndex}`)?.scrollIntoView({ block: 'start' });
+      } else {
+        flatListRef.current?.scrollToIndex({
+          index: Math.min(targetIndex, surah.verses.length - 1),
+          animated: false,
+          viewPosition: 0,
+        });
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [surah.verses.length]);
+
   // Auto-scroll effect: scroll to the currently playing verse in non-paginated mode
   useEffect(() => {
-    if (settings.audioTrackingEnabled &&
-      audioState.currentVerse &&
-      audioState.isPlaying &&
-      !settings.usePaginatedView &&
-      !isUserScrolling && // Don't auto-scroll if user is manually scrolling
-      flatListRef.current) {
+    if (!settings.audioTrackingEnabled || !audioState.currentVerse || !audioState.isPlaying || settings.usePaginatedView || isUserScrolling) return;
 
-      // Debounce the scroll to prevent excessive calls
-      const timeoutId = setTimeout(() => {
-        // Find the index of the currently playing verse
-        const playingVerseIndex = surah.verses.findIndex(verse =>
-          verse.surahNumber === audioState.currentVerse!.surahNumber &&
-          verse.number === audioState.currentVerse!.number
-        );
+    const timeoutId = setTimeout(() => {
+      const playingVerseIndex = surah.verses.findIndex(verse =>
+        verse.surahNumber === audioState.currentVerse!.surahNumber &&
+        verse.number === audioState.currentVerse!.number
+      );
+      if (playingVerseIndex === -1) return;
 
-        if (playingVerseIndex !== -1 && flatListRef.current) {
-          // Scroll to the playing verse with animation
-          flatListRef.current.scrollToIndex({
-            index: playingVerseIndex,
-            animated: true,
-            viewPosition: 0.5, // Center the verse in the viewport
-          });
-        }
-      }, 50); // Reduced debounce for faster auto-tracking
+      if (Platform.OS === 'web') {
+        (typeof document !== 'undefined') &&
+          document.getElementById(`verse-item-${playingVerseIndex}`)?.scrollIntoView({ block: 'center' });
+      } else if (flatListRef.current) {
+        flatListRef.current.scrollToIndex({ index: playingVerseIndex, animated: true, viewPosition: 0.5 });
+      }
+    }, 50);
 
-      return () => clearTimeout(timeoutId);
-    }
+    return () => clearTimeout(timeoutId);
   }, [audioState.currentVerse, audioState.isPlaying, settings.audioTrackingEnabled, settings.usePaginatedView, surah.verses, isUserScrolling]);
 
   // Track last read verses for logged in users with 10-second interval checking
@@ -245,15 +261,17 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     minimumViewTime: 300
   }).current;
 
-  const renderVerse = ({ item }: { item: VerseType }) => (
-    <Verse
-      verse={item}
-      isPlaying={isVerseCurrentlyPlaying(item)}
-      onPlayPress={handleVersePress}
-      surahVerseCount={surah.verses.length > 0 ? surah.verses.length : surah.verseCount}
-      showBookmarkButton={!!user}
-      navigation={navigation}
-    />
+  const renderVerse = ({ item, index }: { item: VerseType; index: number }) => (
+    <View nativeID={`verse-item-${index}`}>
+      <Verse
+        verse={item}
+        isPlaying={isVerseCurrentlyPlaying(item)}
+        onPlayPress={handleVersePress}
+        surahVerseCount={surah.verses.length > 0 ? surah.verses.length : surah.verseCount}
+        showBookmarkButton={!!user}
+        navigation={navigation}
+      />
+    </View>
   );
 
   // Memoize toggle handlers to prevent unnecessary re-renders
@@ -297,6 +315,28 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               onVerseChange={handleVerseChange}
               navigation={navigation}
             />
+          ) : Platform.OS === 'web' ? (
+            // Web: ScrollView renders all items immediately — no virtualization,
+            // so scrollIntoView works reliably for bookmark navigation
+            <ScrollView
+              contentContainerStyle={styles.listContainer}
+              showsVerticalScrollIndicator={false}
+              onScrollBeginDrag={() => setIsUserScrolling(true)}
+              onMomentumScrollEnd={() => setTimeout(() => setIsUserScrolling(false), 1000)}
+            >
+              {surah.verses.map((item, index) => (
+                <View key={`${item.surahNumber}-${item.number}`} nativeID={`verse-item-${index}`}>
+                  <Verse
+                    verse={item}
+                    isPlaying={isVerseCurrentlyPlaying(item)}
+                    onPlayPress={handleVersePress}
+                    surahVerseCount={surah.verses.length > 0 ? surah.verses.length : surah.verseCount}
+                    showBookmarkButton={!!user}
+                    navigation={navigation}
+                  />
+                </View>
+              ))}
+            </ScrollView>
           ) : (
             <FlatList
               ref={flatListRef}
@@ -305,26 +345,20 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               keyExtractor={(item) => `${item.surahNumber}-${item.number}`}
               contentContainerStyle={styles.listContainer}
               showsVerticalScrollIndicator={false}
+              initialNumToRender={50}
+              maxToRenderPerBatch={50}
+              windowSize={31}
               onViewableItemsChanged={onViewableItemsChanged}
               viewabilityConfig={viewabilityConfig}
-              onScrollBeginDrag={() => {
-                // User started scrolling manually
-                setIsUserScrolling(true);
-              }}
-              onMomentumScrollEnd={() => {
-                // User finished scrolling, re-enable auto-tracking after a delay
-                setTimeout(() => setIsUserScrolling(false), 1000);
-              }}
+              onScrollBeginDrag={() => setIsUserScrolling(true)}
+              onMomentumScrollEnd={() => setTimeout(() => setIsUserScrolling(false), 1000)}
               onScrollToIndexFailed={(info) => {
-                // Handle scroll failure gracefully
                 setTimeout(() => {
-                  if (flatListRef.current) {
-                    flatListRef.current.scrollToIndex({
-                      index: Math.min(info.index, surah.verses.length - 1),
-                      animated: true,
-                      viewPosition: 0.5,
-                    });
-                  }
+                  flatListRef.current?.scrollToIndex({
+                    index: Math.min(info.index, surah.verses.length - 1),
+                    animated: false,
+                    viewPosition: 0,
+                  });
                 }, 100);
               }}
             />

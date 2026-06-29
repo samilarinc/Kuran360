@@ -38,7 +38,6 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   const [shareModalVisible, setShareModalVisible] = useState(false);
   const maxEnd = useMemo(() => {
     // Cap strictly to provided surah count; if missing, default to current verse (no growth)
-    logger.debug('Surah verse count:', surahVerseCount, verse.number);
     return surahVerseCount && surahVerseCount > 0 ? surahVerseCount : verse.number;
   }, [surahVerseCount, verse.number]);
   const [endVerse, setEndVerse] = useState<number>(Math.min(verse.number, maxEnd));

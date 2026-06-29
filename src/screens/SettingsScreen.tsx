@@ -286,7 +286,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         };
 
         if (Platform.OS === 'web') {
-            const confirmed = (globalThis as any).confirm?.(message) || true;
+            const confirmed = (globalThis as any).confirm?.(message);
             if (confirmed) {
                 runUpdate();
             }
@@ -571,6 +571,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                         theme={theme}
                                     />
                                 </View>
+                            ) : dataVersion === '3.1' ? (
+                                <Text style={[createStyles(theme).footerText, { padding: SPACING.md, textAlign: 'center' }]}>
+                                    ✅ Meal verileri güncel (v3.1)
+                                </Text>
                             ) : (
                                 <TouchableOpacity
                                     style={createStyles(theme).updateButton}

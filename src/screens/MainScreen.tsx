@@ -146,8 +146,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                 subtitle="Dijital Mushaf"
                 large
                 showLogo={false}
-                showSettingsButton={true}
-                onSettingsPress={() => onNavigate('Settings')}
+                showSettingsButton={false}
             />
 
             {/* Main Content */}
