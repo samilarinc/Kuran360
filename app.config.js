@@ -1,4 +1,44 @@
 import 'dotenv/config';
+import { withGradleProperties, withAppBuildGradle } from '@expo/config-plugins';
+
+function withReleaseSigningConfig(config) {
+    config = withGradleProperties(config, (c) => {
+        const storeFile = process.env.MYAPP_RELEASE_STORE_FILE || 'kuran360-release.keystore';
+        const keystoreProps = [
+            { type: 'property', key: 'MYAPP_RELEASE_STORE_FILE', value: `../../${storeFile}` },
+            { type: 'property', key: 'MYAPP_RELEASE_KEY_ALIAS', value: process.env.MYAPP_RELEASE_KEY_ALIAS || '' },
+            { type: 'property', key: 'MYAPP_RELEASE_STORE_PASSWORD', value: process.env.MYAPP_RELEASE_STORE_PASSWORD || '' },
+            { type: 'property', key: 'MYAPP_RELEASE_KEY_PASSWORD', value: process.env.MYAPP_RELEASE_KEY_PASSWORD || '' },
+        ];
+        for (const prop of keystoreProps) {
+            const idx = c.modResults.findIndex(p => p.type === 'property' && p.key === prop.key);
+            if (idx >= 0) {
+                c.modResults[idx].value = prop.value;
+            } else {
+                c.modResults.push(prop);
+            }
+        }
+        return c;
+    });
+
+    config = withAppBuildGradle(config, (c) => {
+        let contents = c.modResults.contents;
+        if (!contents.includes('signingConfigs.release')) {
+            contents = contents.replace(
+                /(signingConfigs\s*\{[\s\S]*?debug\s*\{[\s\S]*?\})(\s*\n\s*\})/,
+                '$1\n        release {\n            storeFile file(MYAPP_RELEASE_STORE_FILE)\n            storePassword MYAPP_RELEASE_STORE_PASSWORD\n            keyAlias MYAPP_RELEASE_KEY_ALIAS\n            keyPassword MYAPP_RELEASE_KEY_PASSWORD\n        }$2'
+            );
+            contents = contents.replace(
+                /(buildTypes\s*\{[\s\S]*?release\s*\{[\s\S]*?)signingConfig\s+signingConfigs\.debug/,
+                '$1signingConfig signingConfigs.release'
+            );
+        }
+        c.modResults.contents = contents;
+        return c;
+    });
+
+    return config;
+}
 
 export default ({ config }) => ({
     ...config,
@@ -55,7 +95,8 @@ export default ({ config }) => ({
         }
     },
     plugins: [
-        "expo-asset"
+        "expo-asset",
+        withReleaseSigningConfig
     ],
     extra: {
         ...(config?.extra || {}),

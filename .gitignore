@@ -38,9 +38,11 @@ local.properties
 *.hprof
 .cxx/
 *.keystore
-!debug.keystore
 .kotlin/
 .expo/
+
+# generated native folder (regenerated from app.config.js via expo prebuild)
+/android
 
 # node.js
 #

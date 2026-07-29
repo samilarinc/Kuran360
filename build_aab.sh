@@ -2,22 +2,19 @@
 
 echo "Building Android App Bundle (AAB) for Release..."
 
-# Check if release signing is configured
-if ! grep -q "MYAPP_RELEASE_STORE_FILE" android/gradle.properties 2>/dev/null; then
-  echo "----------------------------------------------------------"
-  echo "WARNING: Release signing not configured in android/gradle.properties."
-  echo "The build will be signed with the DEBUG key and will be REJECTED by Google Play."
-  echo "----------------------------------------------------------"
-  sleep 2
-fi
+# Google Play expects this app's original upload key, which lives in EAS's
+# remote credential store (not the local kuran360-release.keystore, which
+# was generated locally and does NOT match). `eas build --local` fetches the
+# real signing key from EAS at build time, so this always produces an AAB
+# Google Play will accept.
+OUTPUT_PATH="./dist/app-release.aab"
 
-# Navigate to android directory and run bundleRelease
-cd android && ./gradlew bundleRelease --no-daemon && cd ..
+npx eas-cli build --platform android --profile production --local --non-interactive --output "$OUTPUT_PATH"
 
 if [ $? -eq 0 ]; then
   echo "----------------------------------------------------------"
   echo "SUCCESS: AAB file created at:"
-  echo "./android/app/build/outputs/bundle/release/app-release.aab"
+  echo "$OUTPUT_PATH"
   echo "----------------------------------------------------------"
 else
   echo "ERROR: Build failed."

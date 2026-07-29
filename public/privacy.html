@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gizlilik Politikası — Kuran360</title>
+<style>
+  :root {
+    --green: #2E7D32;
+    --green-dark: #1B5E20;
+    --bg: #FAFAF7;
+    --text: #1F2A20;
+    --muted: #5B6B5D;
+    --card: #FFFFFF;
+    --border: #E3E8E2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121712;
+      --text: #EAEFE9;
+      --muted: #A3AFA4;
+      --card: #1A211A;
+      --border: #2A332A;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.65;
+  }
+  header {
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: #fff;
+    padding: 2.5rem 1.25rem 2rem;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 0.35rem;
+    font-size: 1.6rem;
+  }
+  header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+  }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  h2 {
+    font-size: 1.1rem;
+    color: var(--green);
+    margin-top: 0;
+  }
+  @media (prefers-color-scheme: dark) {
+    h2 { color: #7BC47F; }
+  }
+  p, li { color: var(--text); font-size: 0.97rem; }
+  ul { padding-inline-start: 1.25rem; margin: 0.5rem 0; }
+  li { margin-bottom: 0.4rem; }
+  .muted { color: var(--muted); font-size: 0.88rem; }
+  a { color: var(--green); }
+  @media (prefers-color-scheme: dark) { a { color: #7BC47F; } }
+  footer {
+    text-align: center;
+    padding: 1rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Kuran360 Gizlilik Politikası</h1>
+  <p>Son güncelleme: 30 Temmuz 2026</p>
+</header>
+<main>
+
+  <div class="card">
+    <h2>1. Giriş</h2>
+    <p>Bu gizlilik politikası, Kuran360 uygulamasını (Android, iOS ve web) kullanırken hangi verilerin toplandığını, nasıl kullanıldığını ve nasıl korunduğunu açıklar. Uygulamayı kullanarak bu politikayı kabul etmiş olursunuz.</p>
+  </div>
+
+  <div class="card">
+    <h2>2. Topladığımız Veriler</h2>
+    <ul>
+      <li><strong>Hesap bilgileri:</strong> Google ile giriş yaptığınızda, Firebase Authentication üzerinden adınız, e-posta adresiniz ve profil fotoğrafınız alınır.</li>
+      <li><strong>Kullanıcı içerikleri:</strong> Forumda paylaştığınız gönderiler, dua istekleri, hatim katılımlarınız ve profilinizde girdiğiniz bilgiler Firebase Cloud Firestore'da saklanır.</li>
+      <li><strong>Konum bilgisi:</strong> Namaz vakitlerini ve kıble yönünü hesaplayabilmek için, izin verirseniz cihazınızın konumu alınır. Şehir/ilçe adını bulmak amacıyla bu konum OpenStreetMap (Nominatim) servisine gönderilir; tarafımızca sunucularda saklanmaz.</li>
+      <li><strong>Cihazda saklanan veriler:</strong> Kur'an metni, ses dosyaları ve uygulama ayarlarınız çevrimdışı kullanım için cihazınızda (yerel depolama) tutulur, sunucuya gönderilmez.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>3. Verileri Nasıl Kullanıyoruz</h2>
+    <ul>
+      <li>Hesabınızı oluşturmak ve oturum açmanızı sağlamak</li>
+      <li>Forum, dua istekleri ve hatim gibi topluluk özelliklerini sunmak</li>
+      <li>Bulunduğunuz konuma göre namaz vakitlerini ve kıble yönünü hesaplamak</li>
+      <li>Uygulamayı iyileştirmek ve teknik sorunları çözmek</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>4. Üçüncü Taraf Servisler</h2>
+    <p>Uygulama aşağıdaki üçüncü taraf servisleri kullanır; bu servislerin kendi gizlilik politikaları geçerlidir:</p>
+    <ul>
+      <li><strong>Google Firebase</strong> (Authentication, Cloud Firestore) — hesap ve içerik verileri için</li>
+      <li><strong>Google Sign-In</strong> — oturum açma için</li>
+      <li><strong>OpenStreetMap Nominatim</strong> — konumdan şehir/ilçe adı bulmak için</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>5. Veri Paylaşımı</h2>
+    <p>Verilerinizi üçüncü taraflara satmıyoruz. Forumda paylaştığınız içerikler (kullanıcı adınız ve gönderileriniz) diğer kullanıcılar tarafından görülebilir; bunun dışındaki kişisel verileriniz yalnızca yukarıda belirtilen servis sağlayıcılarla, hizmeti sunabilmek için paylaşılır.</p>
+  </div>
+
+  <div class="card">
+    <h2>6. Veri Güvenliği</h2>
+    <p>Verileriniz, Firebase'in sağladığı endüstri standardı güvenlik önlemleriyle korunur. Buna rağmen internet üzerinden hiçbir aktarım yönteminin %100 güvenli olmadığını unutmayın.</p>
+  </div>
+
+  <div class="card">
+    <h2>7. Verilerin Saklanması ve Silinmesi</h2>
+    <p>Hesabınız ve ilişkili verileriniz, hesabınızı silene veya silinmesini talep edene kadar saklanır. Hesabınızın ve verilerinizin silinmesini istemek için aşağıdaki e-posta adresinden bizimle iletişime geçebilirsiniz.</p>
+  </div>
+
+  <div class="card">
+    <h2>8. Çocukların Gizliliği</h2>
+    <p>Uygulama 13 yaş altı çocuklardan bilerek kişisel veri toplamaz. Böyle bir durumun farkına varırsak ilgili veriyi derhal sileriz.</p>
+  </div>
+
+  <div class="card">
+    <h2>9. Haklarınız</h2>
+    <p>Verilerinize erişme, düzeltme veya silinmesini talep etme hakkına sahipsiniz. Bu haklarınızı kullanmak için bizimle iletişime geçmeniz yeterlidir.</p>
+  </div>
+
+  <div class="card">
+    <h2>10. Politika Değişiklikleri</h2>
+    <p>Bu gizlilik politikası zaman zaman güncellenebilir. Önemli değişiklikler bu sayfada yayımlanacaktır.</p>
+  </div>
+
+  <div class="card">
+    <h2>11. İletişim</h2>
+    <p>Sorularınız için bize <a href="mailto:msamilarinc@gmail.com">msamilarinc@gmail.com</a> adresinden ulaşabilirsiniz.</p>
+  </div>
+
+</main>
+<footer>
+  <p class="muted">Kuran360 &copy; 2026</p>
+</footer>
+</body>
+</html>
