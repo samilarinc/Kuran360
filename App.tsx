@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
+import './src/i18n';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider as MsarincThemeProvider } from '@msarinc/ui';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { SettingsProvider } from './src/contexts/SettingsContext';
 import { AuthProvider } from './src/contexts/AuthContext';
@@ -7,9 +10,12 @@ import { UserDataProvider } from './src/contexts/UserDataContext';
 import { ThemeProvider } from './src/contexts/ThemeContext';
 import { AudioProvider } from './src/contexts/AudioContext';
 import { StatusBarManager } from './src/components/StatusBarManager';
+import { ThemeSyncBridge } from './src/components/ThemeSyncBridge';
 import { COLORS } from './src/constants';
 import { isDataCached, hasAnyData } from './src/data/quranData';
 import { Platform } from 'react-native';
+
+const queryClient = new QueryClient();
 
 const App: React.FC = () => {
   const [isAppReady, setIsAppReady] = useState(false);
@@ -193,18 +199,23 @@ const App: React.FC = () => {
   }
 
   return (
-    <AuthProvider>
-      <UserDataProvider>
-        <SettingsProvider>
-          <ThemeProvider>
-            <AudioProvider>
-              <StatusBarManager />
-              <AppNavigator isDataAvailable={isDataAvailable} />
-            </AudioProvider>
-          </ThemeProvider>
-        </SettingsProvider>
-      </UserDataProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <UserDataProvider>
+          <SettingsProvider>
+            <MsarincThemeProvider>
+              <ThemeSyncBridge />
+              <ThemeProvider>
+                <AudioProvider>
+                  <StatusBarManager />
+                  <AppNavigator isDataAvailable={isDataAvailable} />
+                </AudioProvider>
+              </ThemeProvider>
+            </MsarincThemeProvider>
+          </SettingsProvider>
+        </UserDataProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 };
 

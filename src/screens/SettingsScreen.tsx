@@ -11,9 +11,17 @@ import {
     Platform,
     Animated,
 } from 'react-native';
+import { ThemeToggle } from '@msarinc/ui';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { ARABIC_FONT_OPTIONS } from '../constants/fonts';
 import { useTheme } from '../contexts/ThemeContext';
+
+const THEME_TOGGLE_LABELS = {
+    light: 'Aydınlık',
+    dark: 'Karanlık',
+    lightsOut: 'Işıklar Kapalı',
+    accessibilityLabel: (current: string, next: string) => `Tema: ${current}. Değiştirmek için dokun, sıradaki: ${next}`,
+};
 import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion } from '../data/quranData';
 import { AppHeader } from '../components/AppHeader'; // Use AppHeader
 import { AppButton } from '../components/AppButton'; // Use AppButton if needed
@@ -411,14 +419,16 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 {/* Quick Settings - Always visible */}
                 <View style={createStyles(theme).quickSettingsSection}>
                     <Text style={createStyles(theme).quickSettingsTitle}>Hızlı Ayarlar</Text>
-                    <SettingItem
-                        title="Koyu Mod"
-                        description="Karanlık tema kullan"
-                        value={settings.darkMode}
-                        onValueChange={(value) => updateSettings({ darkMode: value })}
-                        icon="🌙"
-                        theme={theme}
-                    />
+                    <View style={createStyles(theme).settingItem}>
+                        <View style={createStyles(theme).settingContent}>
+                            <Text style={createStyles(theme).settingIcon}>🌙</Text>
+                            <View style={createStyles(theme).settingInfo}>
+                                <Text style={createStyles(theme).settingLabel}>Tema</Text>
+                                <Text style={createStyles(theme).settingDescription}>Aydınlık, karanlık veya ışıklar kapalı</Text>
+                            </View>
+                        </View>
+                        <ThemeToggle labels={THEME_TOGGLE_LABELS} compact={false} />
+                    </View>
                 </View>
 
                 {/* Audio Settings */}

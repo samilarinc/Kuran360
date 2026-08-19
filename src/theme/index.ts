@@ -32,6 +32,22 @@ export const LIGHT_COLORS: Theme = {
     border: '#E0E0E0',
 };
 
+export const LIGHTS_OUT_COLORS: Theme = {
+    primary: '#56A35A',
+    secondary: '#56A35A',
+    accent: '#FFC107',
+    background: '#000000',
+    surface: '#0A0A0A',
+    text: '#FFFFFF',
+    textSecondary: '#A1A1AA',
+    success: '#4CAF50',
+    error: '#F44336',
+    warning: '#FF9800',
+    headerText: '#FFFFFF',
+    cardBackground: '#000000',
+    border: '#1A1A1A',
+};
+
 export const DARK_COLORS: Theme = {
     primary: '#56A35A', // Valid hex color - light green
     secondary: '#56A35A',

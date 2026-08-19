@@ -1,0 +1,152 @@
+{
+  "about": {
+    "role": "Tasarımcı",
+    "projectSectionTitle": "Proje Hakkında",
+    "projectSectionText": "Bu uygulama tamamen kişisel bir projedir ve herhangi bir ticari/kar amacı yoktur. Projenin ilerleyen aşamalarında açık kaynak olarak paylaşılması planlanmaktadır.",
+    "bugsSectionTitle": "Bilinen Hatalar ve Planlanan Güncellemeler",
+    "bugsSectionBullets": [
+      "Kelime çevirisi açılınca kelime anlamı olmayanlar görünmüyor, örnek: İnşirah ilk ayet",
+      "Kuran sayfası görünümü eklenecek",
+      "Sayfa sesleri eklenecek, ayrıca 30. cüzdeki sayfadan daha kısa sureler için sesler üretilmeli"
+    ],
+    "updatesSectionTitle": "Güncelleme Notları",
+    "updates": [
+      {
+        "date": "19 Ağustos 2026",
+        "bullets": [
+          "Hakkında sayfasına dil seçici ve tema seçici eklendi.",
+          "Tema seçici artık üst menüde her sayfada sabit; aydınlık, karanlık ve ışıklar kapalı olmak üzere 3 mod arasında geçiş yapılabiliyor.",
+          "Ayarlar, kullanıcı verileri ve forum verilerinin çekilme/güncellenme altyapısı yenilendi, veriler artık daha güvenilir şekilde senkronlanıyor.",
+          "Uygulama içi metinler artık çeviri dosyalarından (tr.json/en.json) yönetiliyor; changelog da buraya taşındı."
+        ]
+      },
+      {
+        "date": "29 Haziran 2026",
+        "bullets": [
+          "Dua Listem: Dua silme ve dua isteği reddetme düzeltildi.",
+          "Meal Güncelleme: \"Hayır\" denildiğinde indirme başlamıyordu, düzeltildi. Veriler zaten güncel ise güncelleme butonu gizleniyor.",
+          "PWA Geri Tuşu: Android'de telefon geri tuşu uygulamadan çıkartıyordu, artık uygulama içinde geri gidiyor.",
+          "Yazı Tipi Seçimi: Kuran okuma ve paylaşım resimleri için ayrı Arapça font seçimi eklendi; resim önizleme ekranında A+/A− ile yazı boyutu ayarlanabiliyor.",
+          "Ana Menü: Sağ üstteki ayarlar ikonu kaldırıldı.",
+          "Sure Görünümü: Yer iminden ayet açılırken doğru ayete kayıyor."
+        ]
+      },
+      {
+        "date": "22 Haziran 2026",
+        "bullets": [
+          "Hicri Takvim: Takvim sayfası tasarlandı ve eklendi (Teşekkürler MHS).",
+          "Ana Menü: Giriş menüsü grid haline getirildi.",
+          "Topbar: Üstmenü küçültüldü."
+        ]
+      },
+      {
+        "date": "4 Haziran 2026",
+        "bullets": [
+          "Özbekçe Meal: Yeni Özbekçe (Kiril) ve Özbekçe (Latin) mealler eklendi.",
+          "Meal Verileri: Artık meal verileri gzip ile sıkıştırılıp 80 MB yerine 20 MB olarak indiriliyor (Teşekkürler 'kucukaslan')."
+        ]
+      },
+      {
+        "date": "1 Haziran 2026",
+        "bullets": [
+          "Qar'i Kaldırıldı: Minshawi Mujawwad kıraatte sorunları olduğu için şu anlık deaktive edildi (Teşekkürler 'ssargin'). bkz. video: https://youtu.be/dveu8DRo5Rk?si=oT3qaBZzKP8gydGG",
+          "Rastgele ayet sayfasında veri yoksa indirme ekranı gösteriliyor.",
+          "Arama sayfasında veri yokken indirme ekranı gösteriliyor.",
+          "İndirme ekranı ortak componente taşındı.",
+          "İndirme işlemi ortak hook'a taşındı.",
+          "Arama normalize edildi ve fuzzy highlight eklendi.",
+          "Arapça yazılarda medli esre hatası giderildi (Teşekkürler 'ferdogan')."
+        ]
+      },
+      {
+        "date": "22 Şubat 2026",
+        "bullets": [
+          "\"Şu an neredeyim?\" ekranı ile tavaf ve sa'y takibi eklendi (Umre Desteği).",
+          "Dua Listem: Kişisel ve başkaları için özel dua çizelgesi özelliği eklendi.",
+          "Umre Duaları: İhram, tavaf, sa'y ve diğer umre ibadet dualarını kapsayan rehber eklendi.",
+          "Hazırlık Listesi: Gidiş/dönüş uçuş bilgileri, platform-uyumlu tarih seçici (web/mobil), otomatik Skyscanner entegrasyonu."
+        ]
+      },
+      {
+        "date": "12 Şubat 2026",
+        "bullets": [
+          "PWA Desteği: Web uygulaması artık Progressive Web App olarak cihazlara kurulabilir ve offline çalışabilir."
+        ]
+      },
+      {
+        "date": "12 Ocak 2026",
+        "bullets": [
+          "Yeni Mealler: Kürtçe (Kurmancî) Latin ve Arap harfli Diyanet mealleri ile Ömer Çelik Meali sisteme eklendi.",
+          "Veri Altyapısı: Versiyon bazlı dinamik meal listeleme ve büyük veri dosyaları için yeni işleme motoru entegre edildi."
+        ]
+      },
+      {
+        "date": "26 Aralık 2025",
+        "bullets": [
+          "Hatim Sayfası: Kullanıcıların birlikte hatim indirebileceği interaktif hatim sistemi eklendi.",
+          "Namaz Vakitleri: 2025 yılı için tüm Türkiye il ve ilçelerini kapsayan, konuma duyarlı ezan vakitleri eklendi.",
+          "Cuma Hutbesi: Haftalık cuma hutbelerinin PDF formatında okunabileceği özel bölüm eklendi.",
+          "Konum Servisleri: GPS tabanlı otomatik konum tespiti ve manuel şehir/ilçe seçimi entegre edildi."
+        ]
+      },
+      {
+        "date": "16 Aralık 2024",
+        "bullets": [
+          "SQLite veritabanı desteği eklendi (Android/iOS)",
+          "Composite primary key ile (sure, ayet) hızlı sorgulama",
+          "Transaction-based batch insert operasyonları",
+          "IndexedDB veri yapısı tamamen yenilendi - ayetler artık tekil olarak saklanıyor",
+          "Veri indirme progress bar'ı gerçek zamanlı byte gösterimi ile güncellendi",
+          "Sure listesine arama özelliği eklendi",
+          "URL yapısı iyileştirildi - okunan ayet URL'de görünüyor",
+          "Rastgele ayet ve favori kaldırma emoji'leri güncellendi",
+          "Favori kaldırma butonu hatası düzeltildi",
+          "AsyncStorage size limit sorunları çözüldü",
+          "Performans iyileştirmeleri ve memory optimizasyonu"
+        ]
+      },
+      {
+        "date": "19 Eylül 2025",
+        "bullets": [
+          "Rastgele ayet sayfası kaydırma fixlendi",
+          "Ses önizleme hatası düzeltildi",
+          "Header ve Footer küçültüldü, alttaki instruction kaldırıldı",
+          "Bütün mealleri göster tuşu eklendi",
+          "Bütün mealleri göster sayfasına farklı meal ile ayet paylaşma eklendi",
+          "Bütün sayfalara home butonu eklendi",
+          "Resim oluşturmada farklı modlar ve boyutlarda fotoğraf üretme seçeneği eklendi"
+        ]
+      },
+      {
+        "date": "10 Eylül 2025",
+        "bullets": [
+          "Google Analytics eklendi",
+          "Ayet paylaşma eklendi",
+          "Resimli ayet paylaşma eklendi",
+          "Dark Mode ayet paylaşma eklendi"
+        ]
+      },
+      {
+        "date": "06 Eylül 2025",
+        "bullets": [
+          "Rastgele ayet sayfası eklendi",
+          "Ezber moduna \"Ayet Ayet\" seçeneği eklendi",
+          "Okuyucu seçiminde ses önizleme özelliği eklendi",
+          "Sayfalı görünümde dinamik sayfa göstergesi eklendi",
+          "Ayete git butonunda toplam ayet sayısı gösterimi eklendi",
+          "Ayete git modal'ında favori meal desteği düzeltildi"
+        ]
+      },
+      {
+        "date": "05 Eylül 2025",
+        "bullets": [
+          "Hakkında sayfasına güncelleme notları eklendi",
+          "Yeni kariler eklendi",
+          "Ezber modu için tekrar sayısı özelliği eklendi",
+          "Audio oynatıcı performans iyileştirmeleri",
+          "UI geliştirmeleri ve hata düzeltmeleri"
+        ]
+      }
+    ]
+  }
+}

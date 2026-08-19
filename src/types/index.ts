@@ -1,3 +1,5 @@
+import type { ThemeName } from '@msarinc/theme-core';
+
 export interface WordTranslation {
   arabic: string;
   translation: string;
@@ -48,7 +50,7 @@ export interface AppSettings {
   showWordTranslations: boolean;
   inlineWordTranslations: boolean;
   usePaginatedView: boolean;
-  darkMode: boolean;
+  theme: ThemeName;
   audioTrackingEnabled: boolean;
   selectedReciter: string;
   playbackRate: number;

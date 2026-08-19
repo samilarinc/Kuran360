@@ -1,10 +1,13 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, ReactNode } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { useAuth } from './AuthContext';
 import { AppSettings, SettingsContextType } from '../types';
 import { DEFAULT_ARABIC_FONT_ID, DEFAULT_IMAGE_FONT_ID, getFontOption, loadGoogleFont } from '../constants/fonts';
+
+const ASYNC_STORAGE_KEY = 'quran_app_settings';
 
 const DEFAULT_SETTINGS: AppSettings = {
     selectedTranslations: [
@@ -18,7 +21,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     showWordTranslations: true,
     inlineWordTranslations: false,
     usePaginatedView: false,
-    darkMode: false,
+    theme: 'light',
     audioTrackingEnabled: true,
     selectedReciter: 'sudais',
     playbackRate: 1.0,
@@ -134,6 +137,50 @@ const AVAILABLE_RECITERS = [
     }
 ];
 
+const readLocalSettings = async (): Promise<AppSettings> => {
+    const localSettings = await AsyncStorage.getItem(ASYNC_STORAGE_KEY);
+    return localSettings ? { ...DEFAULT_SETTINGS, ...JSON.parse(localSettings) } : DEFAULT_SETTINGS;
+};
+
+const fetchSettings = async (userId?: string): Promise<AppSettings> => {
+    if (!userId) {
+        return readLocalSettings();
+    }
+
+    try {
+        const ref = doc(db, 'users', userId, 'meta', 'settings');
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+            const cloud = snap.data() as Partial<AppSettings>;
+            const merged = { ...DEFAULT_SETTINGS, ...cloud };
+            await AsyncStorage.setItem(ASYNC_STORAGE_KEY, JSON.stringify(merged));
+            return merged;
+        }
+        const initialSettings = await readLocalSettings();
+        await setDoc(ref, initialSettings);
+        return initialSettings;
+    } catch (error) {
+        // Offline / Firestore unreachable — fall back to the last known local settings
+        // instead of resetting the user's preferences to defaults.
+        console.error('Error loading settings from Firestore, falling back to local cache:', error);
+        return readLocalSettings();
+    }
+};
+
+const persistSettings = async (settings: AppSettings, userId?: string) => {
+    await AsyncStorage.setItem(ASYNC_STORAGE_KEY, JSON.stringify(settings));
+    if (userId) {
+        try {
+            const ref = doc(db, 'users', userId, 'meta', 'settings');
+            await setDoc(ref, settings, { merge: true });
+        } catch (error) {
+            // Offline — the AsyncStorage write above already succeeded, Firestore
+            // will pick up the latest local value next time updateSettings runs online.
+            console.error('Error saving settings to Firestore:', error);
+        }
+    }
+};
+
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
 interface SettingsProviderProps {
@@ -141,78 +188,23 @@ interface SettingsProviderProps {
 }
 
 export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) => {
-    const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
     const { user } = useAuth();
+    const queryClient = useQueryClient();
+    const queryKey = ['settings', user?.uid ?? 'anon'];
 
-    useEffect(() => {
-        loadSettings();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user?.uid]);
+    const { data: settings = DEFAULT_SETTINGS } = useQuery({
+        queryKey,
+        queryFn: () => fetchSettings(user?.uid),
+    });
 
-    const loadSettings = async () => {
-        try {
-            if (user?.uid) {
-                console.log('🔄 Loading settings from Firestore for user:', user.uid);
-                const ref = doc(db, 'users', user.uid, 'meta', 'settings');
-                const snap = await getDoc(ref);
-                if (snap.exists()) {
-                    const cloud = snap.data() as Partial<AppSettings>;
-                    const mergedSettings = { ...DEFAULT_SETTINGS, ...cloud };
-                    setSettings(mergedSettings);
-                    await AsyncStorage.setItem('quran_app_settings', JSON.stringify(mergedSettings));
-                    console.log('✅ Settings loaded from Firestore and synced locally');
-                    return;
-                } else {
-                    console.log('📄 No Firestore settings found, creating initial document');
-                    // Create initial settings document with current local settings
-                    const localSettings = await AsyncStorage.getItem('quran_app_settings');
-                    const initialSettings = localSettings ?
-                        { ...DEFAULT_SETTINGS, ...JSON.parse(localSettings) } :
-                        DEFAULT_SETTINGS;
-                    await setDoc(ref, initialSettings);
-                    setSettings(initialSettings);
-                    return;
-                }
-            }
+    const mutation = useMutation({
+        mutationFn: (updated: AppSettings) => persistSettings(updated, user?.uid),
+    });
 
-            // fallback local
-            console.log('💾 Loading settings from local storage (no user)');
-            const savedSettings = await AsyncStorage.getItem('quran_app_settings');
-            if (savedSettings) {
-                const parsedSettings = JSON.parse(savedSettings);
-                setSettings({ ...DEFAULT_SETTINGS, ...parsedSettings });
-                console.log('✅ Settings loaded from local storage');
-            } else {
-                console.log('🆕 Using default settings');
-            }
-        } catch (error) {
-            console.error('❌ Error loading settings:', error);
-        }
-    };
-
-    const updateSettings = async (newSettings: Partial<AppSettings>) => {
-        try {
-            const updatedSettings = { ...settings, ...newSettings };
-            setSettings(updatedSettings);
-
-            // Always save to AsyncStorage
-            await AsyncStorage.setItem('quran_app_settings', JSON.stringify(updatedSettings));
-
-            // Save to Firestore if user is logged in
-            if (user?.uid) {
-                try {
-                    const ref = doc(db, 'users', user.uid, 'meta', 'settings');
-                    await setDoc(ref, updatedSettings, { merge: true });
-                    console.log('✅ Settings saved to Firestore for user:', user.uid);
-                } catch (firestoreError) {
-                    console.error('❌ Error saving to Firestore:', firestoreError);
-                }
-            } else {
-                console.log('ℹ️ Settings saved locally (no user logged in)');
-            }
-        } catch (error) {
-            console.error('Error saving settings:', error);
-        }
+    const updateSettings = (newSettings: Partial<AppSettings>) => {
+        const updated = { ...settings, ...newSettings };
+        queryClient.setQueryData(queryKey, updated);
+        mutation.mutate(updated);
     };
 
     // Load selected Arabic fonts from Google Fonts when settings change

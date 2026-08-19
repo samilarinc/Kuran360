@@ -10,6 +10,7 @@ config.resolver = {
   assetExts: [
     ...(config.resolver?.assetExts || []),
     'json',
+    'wasm',
   ],
 };
 

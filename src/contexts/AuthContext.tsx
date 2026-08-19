@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { auth, googleProvider } from '../services/firebase';
 import {
     User,
@@ -36,10 +37,53 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const fetchOrCreateUserProfile = async (user: User): Promise<UserProfile> => {
+    try {
+        const profileRef = doc(db, 'users', user.uid, 'profile', 'info');
+        const profileDoc = await getDoc(profileRef);
+
+        if (profileDoc.exists()) {
+            const profile = profileDoc.data() as UserProfile;
+            const publicProfileRef = doc(db, 'users', user.uid, 'profile', 'public');
+            const publicProfileDoc = await getDoc(publicProfileRef);
+            if (!publicProfileDoc.exists()) {
+                await setDoc(publicProfileRef, { displayName: profile.displayName });
+            }
+            return profile;
+        }
+
+        const initialProfile: UserProfile = {
+            displayName: user.displayName || 'İsimsiz Kullanıcı',
+            email: user.email || '',
+            photoURL: user.photoURL || undefined,
+            updatedAt: Date.now()
+        };
+        await setDoc(profileRef, initialProfile);
+        const publicProfileRef = doc(db, 'users', user.uid, 'profile', 'public');
+        await setDoc(publicProfileRef, { displayName: initialProfile.displayName });
+        return initialProfile;
+    } catch (error) {
+        console.error('Error loading user profile:', error);
+        return {
+            displayName: user.displayName || 'İsimsiz Kullanıcı',
+            email: user.email || '',
+            photoURL: user.photoURL || undefined,
+            updatedAt: Date.now()
+        };
+    }
+};
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
-    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
+    const queryClient = useQueryClient();
+    const profileQueryKey = ['userProfile', user?.uid ?? null];
+
+    const { data: userProfile = null } = useQuery({
+        queryKey: profileQueryKey,
+        queryFn: () => fetchOrCreateUserProfile(user as User),
+        enabled: !!user?.uid,
+    });
 
     // Get Google OAuth config with fallback
     const getGoogleConfig = () => {
@@ -84,13 +128,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [request, response, promptAsync] = Google.useAuthRequest(config);
 
     useEffect(() => {
-        const unsub = onAuthStateChanged(auth, async (u) => {
+        const unsub = onAuthStateChanged(auth, (u) => {
             setUser(u);
-            if (u) {
-                await loadUserProfile(u);
-            } else {
-                setUserProfile(null);
-            }
             setLoading(false);
         });
         return () => unsub();
@@ -111,52 +150,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     }, [response]);
 
-    const loadUserProfile = async (user: User) => {
-        try {
-            const profileRef = doc(db, 'users', user.uid, 'profile', 'info');
-            const profileDoc = await getDoc(profileRef);
+    const updateDisplayNameMutation = useMutation({
+        mutationFn: async (newDisplayName: string) => {
+            if (!user) throw new Error('Kullanıcı oturumu açık değil');
 
-            if (profileDoc.exists()) {
-                const profile = profileDoc.data() as UserProfile;
-                setUserProfile(profile);
-                const publicProfileRef = doc(db, 'users', user.uid, 'profile', 'public');
-                const publicProfileDoc = await getDoc(publicProfileRef);
-                if (!publicProfileDoc.exists()) {
-                    await setDoc(publicProfileRef, { displayName: profile.displayName });
-                }
-            } else {
-                const initialProfile: UserProfile = {
-                    displayName: user.displayName || 'İsimsiz Kullanıcı',
-                    email: user.email || '',
-                    photoURL: user.photoURL || undefined,
-                    updatedAt: Date.now()
-                };
-                await setDoc(profileRef, initialProfile);
-                const publicProfileRef = doc(db, 'users', user.uid, 'profile', 'public');
-                await setDoc(publicProfileRef, { displayName: initialProfile.displayName });
-
-                setUserProfile(initialProfile);
-            }
-        } catch (error) {
-            console.error('Error loading user profile:', error);
-            // Fallback to auth data
-            setUserProfile({
-                displayName: user.displayName || 'İsimsiz Kullanıcı',
-                email: user.email || '',
-                photoURL: user.photoURL || undefined,
-                updatedAt: Date.now()
-            });
-        }
-    };
-
-    const updateDisplayName = async (newDisplayName: string) => {
-        if (!user) throw new Error('Kullanıcı oturumu açık değil');
-
-        try {
-            // Update Firebase Auth profile
             await updateProfile(user, { displayName: newDisplayName });
 
-            // Update Firestore profile
             const profileRef = doc(db, 'users', user.uid, 'profile', 'info');
             const updatedProfile: UserProfile = {
                 displayName: newDisplayName,
@@ -168,10 +167,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             await setDoc(profileRef, updatedProfile, { merge: true });
             const publicProfileRef = doc(db, 'users', user.uid, 'profile', 'public');
             await setDoc(publicProfileRef, { displayName: newDisplayName }, { merge: true });
-            setUserProfile(updatedProfile);
-
-            // Force refresh the user object to get updated displayName
             await user.reload();
+            return updatedProfile;
+        },
+        onSuccess: (updatedProfile) => {
+            queryClient.setQueryData(profileQueryKey, updatedProfile);
+        },
+    });
+
+    const updateDisplayName = async (newDisplayName: string) => {
+        try {
+            await updateDisplayNameMutation.mutateAsync(newDisplayName);
         } catch (error) {
             console.error('Error updating display name:', error);
             throw error;
@@ -192,7 +198,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const signOutUser = async () => {
         await signOut(auth);
-        setUserProfile(null);
     };
 
     return (

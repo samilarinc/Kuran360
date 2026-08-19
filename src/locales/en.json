@@ -1,0 +1,152 @@
+{
+  "about": {
+    "role": "Designer",
+    "projectSectionTitle": "About the Project",
+    "projectSectionText": "This app is a fully personal project with no commercial purpose. Making the project open source is planned for a later stage.",
+    "bugsSectionTitle": "Known Issues and Planned Updates",
+    "bugsSectionBullets": [
+      "When word-by-word translation is enabled, verses without word meanings show nothing, e.g. the first verse of Inshirah",
+      "A Quran page view will be added",
+      "Page audio will be added; audio also needs to be generated for the shorter surahs on the page in juz 30"
+    ],
+    "updatesSectionTitle": "Release Notes",
+    "updates": [
+      {
+        "date": "August 19, 2026",
+        "bullets": [
+          "About screen: added a language selector and a theme selector.",
+          "The theme selector is now fixed in the top bar on every screen; you can switch between light, dark and lights-out modes.",
+          "Rebuilt how settings, user data and forum data are fetched and updated; data now syncs more reliably.",
+          "In-app text is now managed from translation files (tr.json/en.json); the changelog moved here too."
+        ]
+      },
+      {
+        "date": "June 29, 2026",
+        "bullets": [
+          "My Duas: fixed deleting a dua and rejecting a dua request.",
+          "Translation update: the download no longer failed to start when answering \"No\"; the update button is now hidden when data is already current.",
+          "PWA back button: the Android back button used to exit the app, it now navigates back within the app instead.",
+          "Font selection: added a separate Arabic font choice for Quran reading and for share images; font size can now be adjusted with A+/A- on the image preview screen.",
+          "Main menu: removed the settings icon from the top right.",
+          "Surah view: opening a verse from a bookmark now scrolls to the correct verse."
+        ]
+      },
+      {
+        "date": "June 22, 2026",
+        "bullets": [
+          "Hijri calendar: designed and added a calendar page (thanks MHS).",
+          "Main menu: switched to a grid layout.",
+          "Top bar: made the top menu smaller."
+        ]
+      },
+      {
+        "date": "June 4, 2026",
+        "bullets": [
+          "Uzbek translations: added new Uzbek (Cyrillic) and Uzbek (Latin) translations.",
+          "Translation data: translation files are now gzip-compressed, dropping the download from 80 MB to 20 MB (thanks 'kucukaslan')."
+        ]
+      },
+      {
+        "date": "June 1, 2026",
+        "bullets": [
+          "Reciter removed: Minshawi Mujawwad was temporarily disabled due to recitation issues (thanks 'ssargin'). See video: https://youtu.be/dveu8DRo5Rk?si=oT3qaBZzKP8gydGG",
+          "Random verse page now shows the download screen when data is missing.",
+          "Search page now shows the download screen when data is missing.",
+          "Moved the download screen into a shared component.",
+          "Moved the download logic into a shared hook.",
+          "Search input is now normalized with fuzzy highlighting.",
+          "Fixed a rendering issue with the medli esre mark in Arabic text (thanks 'ferdogan')."
+        ]
+      },
+      {
+        "date": "February 22, 2026",
+        "bullets": [
+          "Umrah support: added a \"Where am I now?\" screen to track tawaf and sa'y.",
+          "My Duas: added personal and on-behalf-of-others dua checklists.",
+          "Umrah duas: added a guide covering ihram, tawaf, sa'y and other umrah worship duas.",
+          "Checklist: added outbound/return flight info, a platform-aware date picker (web/mobile), and automatic Skyscanner integration."
+        ]
+      },
+      {
+        "date": "February 12, 2026",
+        "bullets": [
+          "PWA support: the web app can now be installed as a Progressive Web App and works offline."
+        ]
+      },
+      {
+        "date": "January 12, 2026",
+        "bullets": [
+          "New translations: added Kurdish (Kurmanji) Latin and Arabic-script Diyanet translations, plus the Ömer Çelik translation.",
+          "Data infrastructure: added version-based dynamic translation listing and a new processing engine for large data files."
+        ]
+      },
+      {
+        "date": "December 26, 2025",
+        "bullets": [
+          "Hatim page: added an interactive hatim system so users can complete a Quran reading together.",
+          "Prayer times: added location-aware prayer times covering every province and district in Turkey for 2025.",
+          "Friday sermon: added a dedicated section for reading the weekly Friday sermon as a PDF.",
+          "Location services: integrated GPS-based automatic location detection and manual city/district selection."
+        ]
+      },
+      {
+        "date": "December 16, 2024",
+        "bullets": [
+          "Added SQLite database support (Android/iOS)",
+          "Fast lookups via a composite (surah, verse) primary key",
+          "Transaction-based batch insert operations",
+          "Rebuilt the IndexedDB data structure - verses are now stored individually",
+          "Download progress bar now shows real-time byte counts",
+          "Added search to the surah list",
+          "Improved URL structure - the verse being read now shows in the URL",
+          "Updated the random verse and remove-favorite emojis",
+          "Fixed a bug with the remove-favorite button",
+          "Fixed AsyncStorage size limit issues",
+          "Performance improvements and memory optimization"
+        ]
+      },
+      {
+        "date": "September 19, 2025",
+        "bullets": [
+          "Fixed scrolling on the random verse page",
+          "Fixed an audio preview bug",
+          "Shrunk the header and footer, removed the instruction text below",
+          "Added a \"show all translations\" button",
+          "Added sharing a verse with a different translation from the show-all-translations page",
+          "Added a home button to every page",
+          "Added different modes and sizes when generating share images"
+        ]
+      },
+      {
+        "date": "September 10, 2025",
+        "bullets": [
+          "Added Google Analytics",
+          "Added verse sharing",
+          "Added sharing verses as images",
+          "Added dark mode verse sharing"
+        ]
+      },
+      {
+        "date": "September 06, 2025",
+        "bullets": [
+          "Added a random verse page",
+          "Added a \"verse by verse\" option to memorization mode",
+          "Added audio preview when choosing a reciter",
+          "Added a dynamic page indicator in paginated view",
+          "Added a total verse count to the go-to-verse button",
+          "Fixed favorite translation support in the go-to-verse modal"
+        ]
+      },
+      {
+        "date": "September 05, 2025",
+        "bullets": [
+          "Added release notes to the About screen",
+          "Added new reciters",
+          "Added a repeat count option to memorization mode",
+          "Audio player performance improvements",
+          "UI improvements and bug fixes"
+        ]
+      }
+    ]
+  }
+}

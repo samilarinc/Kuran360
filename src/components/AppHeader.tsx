@@ -1,7 +1,15 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { ThemeToggle } from '@msarinc/ui';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../theme';
+
+const THEME_TOGGLE_LABELS = {
+    light: 'Aydınlık',
+    dark: 'Karanlık',
+    lightsOut: 'Işıklar Kapalı',
+    accessibilityLabel: (current: string, next: string) => `Tema: ${current}. Değiştirmek için dokun, sıradaki: ${next}`,
+};
 
 interface AppHeaderProps {
     title: string;
@@ -38,7 +46,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     autoplayToggle,
     children,
 }) => {
-    const { theme, isDarkMode, toggleDarkMode } = useTheme();
+    const { theme } = useTheme();
 
     const styles = StyleSheet.create({
         header: {
@@ -184,15 +192,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                     </TouchableOpacity>
                 )}
 
-                <TouchableOpacity
-                    style={styles.actionButton}
-                    onPress={toggleDarkMode}
-                    accessibilityLabel={isDarkMode ? "Açık mod" : "Koyu mod"}
-                >
-                    <Text style={styles.actionButtonText}>
-                        {isDarkMode ? '☀️' : '🌙'}
-                    </Text>
-                </TouchableOpacity>
+                <ThemeToggle compact labels={THEME_TOGGLE_LABELS} />
 
                 {showSettingsButton && onSettingsPress && (
                     <TouchableOpacity

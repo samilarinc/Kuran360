@@ -1,35 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { useForum } from '../contexts/ForumContext';
+import { useThreads, useCreateThread } from '../contexts/ForumContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
-import { Thread, VerseMention } from '../types';
+import { VerseMention } from '../types';
 import { FONT_SIZES, SPACING } from '../constants';
 
 export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const { listThreads, createThread } = useForum();
+  const { data: threads = [] } = useThreads();
+  const createThread = useCreateThread();
   const { user } = useAuth();
   const { theme } = useTheme();
-  const [threads, setThreads] = useState<Thread[]>([]);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [mentions, setMentions] = useState<VerseMention[]>([]);
 
-  useEffect(() => {
-    (async () => {
-      const t = await listThreads();
-      setThreads(t);
-    })();
-  }, [listThreads]);
-
   const onCreate = async () => {
     if (!user) return;
     if (!title.trim() || !body.trim()) return;
-    const id = await createThread(title, body, mentions);
+    const id = await createThread.mutateAsync({ title, body, mentions });
     if (id) {
-      const t = await listThreads();
-      setThreads(t);
       setTitle('');
       setBody('');
       setMentions([]);

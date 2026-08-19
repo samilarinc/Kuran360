@@ -1,33 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { useForum } from '../contexts/ForumContext';
+import { usePosts, useCreatePost } from '../contexts/ForumContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme, Theme } from '../contexts/ThemeContext';
-import { Post } from '../types';
 import { FONT_SIZES, SPACING } from '../constants';
 
 export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
-  const { createPost, listPosts } = useForum();
+  const threadId: string | undefined = route.params?.threadId;
+  const { data: posts = [] } = usePosts(threadId);
+  const createPost = useCreatePost();
   const { user } = useAuth();
   const { theme } = useTheme();
-  const [posts, setPosts] = useState<Post[]>([]);
   const [body, setBody] = useState('');
 
-  useEffect(() => {
-    (async () => {
-      const data = await listPosts(route.params?.threadId);
-      setPosts(data);
-    })();
-  }, [route.params?.threadId, listPosts]);
-
   const onReply = async () => {
-    if (!user) return;
-    const id = await createPost(route.params.threadId, body, []);
+    if (!user || !threadId) return;
+    const id = await createPost.mutateAsync({ threadId, body, mentions: [] });
     if (id) {
       setBody('');
-      const data = await listPosts(route.params?.threadId);
-      setPosts(data);
     }
   };
 
