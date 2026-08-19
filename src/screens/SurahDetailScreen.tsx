@@ -4,7 +4,6 @@ import {
   Text,
   FlatList,
   ScrollView,
-  StyleSheet,
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
@@ -17,15 +16,15 @@ import { AutoplayToggle } from '../components/AutoplayToggle';
 import { AudioTrackingToggle } from '../components/AudioTrackingToggle';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
-import { useTheme, Theme } from '../contexts/ThemeContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserData } from '../contexts/UserDataContext';
 import { useTranslation } from 'react-i18next';
 import { Surah, Verse as VerseType, LastRead } from '../types';
 import { loadSurah } from '../data/quranData';
-import { FONT_SIZES, SPACING } from '../constants';
 import logger from '../utils/logger';
 import { getSurahName } from '../utils/surahName';
+import { createStyles } from './SurahDetailScreen.styles';
 
 interface SurahDetailScreenProps {
   route: {
@@ -371,28 +370,3 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     </SafeAreaView>
   );
 };
-
-const createStyles = (theme: Theme) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.background,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: SPACING.md,
-    fontSize: FONT_SIZES.medium,
-    color: theme.textSecondary,
-  },
-  loadingNote: {
-    marginTop: SPACING.sm,
-    fontSize: FONT_SIZES.small,
-    color: theme.textSecondary,
-  },
-  listContainer: {
-    paddingBottom: SPACING.xl,
-  },
-});

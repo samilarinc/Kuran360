@@ -1,7 +1,7 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import React, { useMemo } from 'react';
+import { TouchableOpacity, Text, ViewStyle, TextStyle } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
-import { SPACING, FONT_SIZES } from '../theme';
+import { createStyles } from './AppButton.styles';
 
 interface AppButtonProps {
     title: string;
@@ -25,58 +25,56 @@ export const AppButton: React.FC<AppButtonProps> = ({
     textStyle,
 }) => {
     const { theme } = useTheme();
+    const styles = useMemo(() => createStyles(theme), [theme]);
 
-    const getBackgroundColor = () => {
-        if (disabled) return theme.border;
+    const getBackgroundStyle = () => {
+        if (disabled) return styles.bgDisabled;
         switch (variant) {
-            case 'primary': return theme.primary;
-            case 'secondary': return theme.secondary; // Or a dedicated secondary color if different
-            case 'outline': return 'transparent';
-            case 'ghost': return 'transparent';
-            default: return theme.primary;
+            case 'primary': return styles.bgPrimary;
+            case 'secondary': return styles.bgSecondary; // Or a dedicated secondary color if different
+            case 'outline': return styles.bgTransparent;
+            case 'ghost': return styles.bgTransparent;
+            default: return styles.bgPrimary;
         }
     };
 
-    const getTextColor = () => {
-        if (disabled) return theme.textSecondary;
+    const getTextColorStyle = () => {
+        if (disabled) return styles.textDisabled;
         switch (variant) {
-            case 'primary': return '#FFFFFF';
-            case 'secondary': return '#FFFFFF';
-            case 'outline': return theme.primary;
-            case 'ghost': return theme.primary;
-            default: return '#FFFFFF';
+            case 'primary': return styles.textWhite;
+            case 'secondary': return styles.textWhite;
+            case 'outline': return styles.textPrimary;
+            case 'ghost': return styles.textPrimary;
+            default: return styles.textWhite;
         }
     };
 
     const getBorder = () => {
         if (variant === 'outline') {
-            return {
-                borderWidth: 1,
-                borderColor: disabled ? theme.border : theme.primary,
-            };
+            return disabled ? styles.borderOutlineDisabled : styles.borderOutline;
         }
         return {};
     };
 
     const getPadding = () => {
         switch (size) {
-            case 'small': return { paddingVertical: SPACING.xs, paddingHorizontal: SPACING.sm };
-            case 'large': return { paddingVertical: SPACING.md, paddingHorizontal: SPACING.xl };
-            default: return { paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md };
+            case 'small': return styles.paddingSmall;
+            case 'large': return styles.paddingLarge;
+            default: return styles.paddingMedium;
         }
     };
 
-    const getFontSize = () => {
+    const getFontSizeStyle = () => {
         switch (size) {
-            case 'small': return FONT_SIZES.small;
-            case 'large': return FONT_SIZES.large;
-            default: return FONT_SIZES.medium;
+            case 'small': return styles.fontSmall;
+            case 'large': return styles.fontLarge;
+            default: return styles.fontMedium;
         }
     };
 
     const buttonStyles = [
         styles.button,
-        { backgroundColor: getBackgroundColor() },
+        getBackgroundStyle(),
         getBorder(),
         getPadding(),
         style,
@@ -90,28 +88,10 @@ export const AppButton: React.FC<AppButtonProps> = ({
             disabled={disabled}
             activeOpacity={0.7}
         >
-            {icon && <Text style={[styles.icon, { color: getTextColor(), marginRight: SPACING.xs }]}>{icon}</Text>}
-            <Text style={[styles.text, { color: getTextColor(), fontSize: getFontSize() }, textStyle]}>
+            {icon && <Text style={[styles.icon, getTextColorStyle(), styles.iconMargin]}>{icon}</Text>}
+            <Text style={[styles.text, getTextColorStyle(), getFontSizeStyle(), textStyle]}>
                 {title}
             </Text>
         </TouchableOpacity>
     );
 };
-
-const styles = StyleSheet.create({
-    button: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 8,
-    },
-    text: {
-        fontWeight: '600',
-    },
-    icon: {
-        fontSize: 18,
-    },
-    disabled: {
-        opacity: 0.6,
-    },
-});

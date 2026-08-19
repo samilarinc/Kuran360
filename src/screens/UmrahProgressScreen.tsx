@@ -5,13 +5,12 @@ import {
     TouchableOpacity,
     SafeAreaView,
     ScrollView,
-    StyleSheet,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createStyles } from './UmrahProgressScreen.styles';
 
 interface UmrahProgressScreenProps {
     onNavigate: () => void;
@@ -106,7 +105,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
     const styles = useMemo(() => createStyles(theme), [theme]);
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={styles.container}>
             <AppHeader
                 title={t('screenTitles.umrahProgress')}
                 showBackButton={true}
@@ -117,23 +116,23 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                 <View style={styles.progressCard}>
                     <View style={styles.progressHeader}>
                         <Text style={[styles.icon, styles.largeIcon]}>🕋</Text>
-                        <Text style={[styles.progressTitle, { color: theme.text }]}>{t('umrahProgressScreen.tawaf')}</Text>
+                        <Text style={styles.progressTitle}>{t('umrahProgressScreen.tawaf')}</Text>
                     </View>
-                    <Text style={[styles.progressCount, { color: theme.primary }]}>
+                    <Text style={styles.progressCount}>
                         {progress.tawafCount} / 7
                     </Text>
                     <View style={styles.buttonRow}>
                         <TouchableOpacity
-                            style={[styles.adjustButton, { backgroundColor: theme.surface, borderColor: theme.border }]}
+                            style={styles.adjustButton}
                             onPress={decrementTawaf}
                         >
-                            <Text style={[styles.adjustButtonText, { color: theme.text }]}>−</Text>
+                            <Text style={styles.adjustButtonText}>−</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={[styles.adjustButton, { backgroundColor: theme.surface, borderColor: theme.border }]}
+                            style={styles.adjustButton}
                             onPress={incrementTawaf}
                         >
-                            <Text style={[styles.adjustButtonText, { color: theme.text }]}>+</Text>
+                            <Text style={styles.adjustButtonText}>+</Text>
                         </TouchableOpacity>
                     </View>
                     {navigation && (
@@ -141,7 +140,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                             style={styles.duaLink}
                             onPress={() => navigation.navigate('UmrahDuas')}
                         >
-                            <Text style={[styles.duaLinkText, { color: theme.primary }]}>{t('umrahProgressScreen.tawafDuas')}</Text>
+                            <Text style={styles.duaLinkText}>{t('umrahProgressScreen.tawafDuas')}</Text>
                         </TouchableOpacity>
                     )}
                 </View>
@@ -150,26 +149,26 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                 <View style={styles.progressCard}>
                     <View style={styles.progressHeader}>
                         <Text style={[styles.icon, styles.largeIcon]}>🏃‍♂️</Text>
-                        <Text style={[styles.progressTitle, { color: theme.text }]}>{t('umrahProgressScreen.say')}</Text>
+                        <Text style={styles.progressTitle}>{t('umrahProgressScreen.say')}</Text>
                     </View>
-                    <Text style={[styles.directionText, { color: theme.textSecondary }]}>
+                    <Text style={styles.directionText}>
                         {progress.sayDirection === 'Safa' ? t('umrahProgressScreen.safaToMerve') : t('umrahProgressScreen.merveToSafa')}
                     </Text>
-                    <Text style={[styles.progressCount, { color: theme.primary }]}>
+                    <Text style={styles.progressCount}>
                         {progress.sayCount} / 7
                     </Text>
                     <View style={styles.buttonRow}>
                         <TouchableOpacity
-                            style={[styles.adjustButton, { backgroundColor: theme.surface, borderColor: theme.border }]}
+                            style={styles.adjustButton}
                             onPress={decrementSay}
                         >
-                            <Text style={[styles.adjustButtonText, { color: theme.text }]}>−</Text>
+                            <Text style={styles.adjustButtonText}>−</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={[styles.adjustButton, { backgroundColor: theme.surface, borderColor: theme.border }]}
+                            style={styles.adjustButton}
                             onPress={incrementSay}
                         >
-                            <Text style={[styles.adjustButtonText, { color: theme.text }]}>+</Text>
+                            <Text style={styles.adjustButtonText}>+</Text>
                         </TouchableOpacity>
                     </View>
                     {navigation && (
@@ -177,7 +176,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                             style={styles.duaLink}
                             onPress={() => navigation.navigate('UmrahDuas')}
                         >
-                            <Text style={[styles.duaLinkText, { color: theme.primary }]}>{t('umrahProgressScreen.sayDuas')}</Text>
+                            <Text style={styles.duaLinkText}>{t('umrahProgressScreen.sayDuas')}</Text>
                         </TouchableOpacity>
                     )}
                 </View>
@@ -186,14 +185,14 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                 <TouchableOpacity
                     style={[
                         styles.ihramCard,
-                        { backgroundColor: progress.isIhram ? theme.primary : theme.surface, borderColor: theme.border }
+                        progress.isIhram ? styles.ihramCardActive : styles.ihramCardInactive,
                     ]}
                     onPress={toggleIhram}
                 >
                     <Text style={[styles.icon, styles.largeIcon]}>🌙</Text>
                     <Text style={[
                         styles.ihramText,
-                        { color: progress.isIhram ? '#FFFFFF' : theme.text }
+                        progress.isIhram ? styles.ihramTextActive : styles.ihramTextInactive,
                     ]}>
                         {progress.isIhram ? t('umrahProgressScreen.inIhram') : t('umrahProgressScreen.notInIhram')}
                     </Text>
@@ -203,116 +202,10 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                         style={styles.duaLinkCenter}
                         onPress={() => navigation.navigate('UmrahDuas')}
                     >
-                        <Text style={[styles.duaLinkText, { color: theme.primary }]}>{t('umrahProgressScreen.ihramDuas')}</Text>
+                        <Text style={styles.duaLinkText}>{t('umrahProgressScreen.ihramDuas')}</Text>
                     </TouchableOpacity>
                 )}
             </ScrollView>
         </SafeAreaView>
     );
 };
-
-const createStyles = (theme: any) => StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    content: {
-        flex: 1,
-        padding: SPACING.lg,
-    },
-    progressCard: {
-        backgroundColor: theme.cardBackground,
-        borderRadius: 16,
-        padding: SPACING.xl,
-        marginBottom: SPACING.lg,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    progressHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: SPACING.md,
-    },
-    icon: {
-        fontSize: FONT_SIZES.xlarge,
-        marginRight: SPACING.sm,
-    },
-    largeIcon: {
-        fontSize: 48,
-    },
-    progressTitle: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
-    },
-    progressCount: {
-        fontSize: 64,
-        fontWeight: 'bold',
-        marginVertical: SPACING.lg,
-    },
-    directionText: {
-        fontSize: FONT_SIZES.large,
-        marginBottom: SPACING.sm,
-    },
-    buttonRow: {
-        flexDirection: 'row',
-        gap: SPACING.md,
-    },
-    adjustButton: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        borderWidth: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    adjustButtonText: {
-        fontSize: 32,
-        fontWeight: 'bold',
-    },
-    ihramCard: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 16,
-        padding: SPACING.xl,
-        marginBottom: SPACING.lg,
-        borderWidth: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    ihramText: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
-        marginLeft: SPACING.md,
-    },
-    resetButton: {
-        borderRadius: 12,
-        padding: SPACING.md,
-        alignItems: 'center',
-        marginTop: SPACING.md,
-    },
-    resetButtonText: {
-        color: '#FFFFFF',
-        fontSize: FONT_SIZES.medium,
-        fontWeight: 'bold',
-    },
-    duaLink: {
-        marginTop: SPACING.md,
-        paddingVertical: SPACING.xs,
-    },
-    duaLinkCenter: {
-        marginTop: SPACING.md,
-        paddingVertical: SPACING.xs,
-        alignItems: 'center',
-    },
-    duaLinkText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-    },
-});

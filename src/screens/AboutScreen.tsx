@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import React, { useMemo } from 'react';
+import { SafeAreaView } from 'react-native';
 import { Mail, GitBranch, Link } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,6 +9,7 @@ import {
 } from '@msarinc/ui';
 import { useTheme } from '../contexts/ThemeContext';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
+import { createStyles } from './AboutScreen.styles';
 
 interface AboutScreenProps {
     navigation: any;
@@ -49,8 +50,9 @@ const AboutScreenContent: React.FC = () => {
 export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
     const { theme } = useTheme();
     const { t } = useTranslation();
+    const styles = useMemo(() => createStyles(theme), [theme]);
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={styles.container}>
             <HeaderWithDarkModeToggle
                 title={t('screenTitles.about')}
                 showBackButton={true}
@@ -62,9 +64,3 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
         </SafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});

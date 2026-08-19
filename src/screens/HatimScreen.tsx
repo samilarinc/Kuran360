@@ -106,32 +106,32 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
 
         return (
             <TouchableOpacity
-                style={[styles.hatimCard, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}
+                style={styles.hatimCard}
                 onPress={() => navigation.navigate('HatimDetail', { hatimId: item.id })}
             >
                 <View style={styles.hatimHeader}>
-                    <Text style={[styles.hatimTitle, { color: theme.text }]} numberOfLines={1}>
+                    <Text style={styles.hatimTitle} numberOfLines={1}>
                         {item.title}
-                        {item.isPrivate && <Text style={{ fontSize: 12, color: '#f44336' }}>{t('hatimScreen.private')}</Text>}
+                        {item.isPrivate && <Text style={styles.privateLabel}>{t('hatimScreen.private')}</Text>}
                     </Text>
                     {item.isCompleted ? (
                         <View style={styles.completedBadge}>
                             <Text style={styles.completedBadgeText}>{t('hatimScreen.completed')}</Text>
                         </View>
                     ) : item.isLocked ? (
-                        <View style={[styles.completedBadge, { backgroundColor: '#607D8B' }]}>
+                        <View style={[styles.completedBadge, styles.lockedBadge]}>
                             <Text style={styles.completedBadgeText}>{t('hatimScreen.locked')}</Text>
                         </View>
                     ) : null}
                 </View>
-                <Text style={[styles.hatimCreator, { color: theme.textSecondary }]}>
+                <Text style={styles.hatimCreator}>
                     {t('hatimScreen.creator', { name: item.creatorName })}
                 </Text>
                 <View style={styles.progressContainer}>
-                    <View style={[styles.progressBar, { backgroundColor: theme.border }]}>
-                        <View style={[styles.progressFill, { width: `${progress}%`, backgroundColor: theme.primary }]} />
+                    <View style={styles.progressBar}>
+                        <View style={[styles.progressFill, { width: `${progress}%` }]} />
                     </View>
-                    <Text style={[styles.progressText, { color: theme.textSecondary }]}>
+                    <Text style={styles.progressText}>
                         {t('hatimScreen.juzProgress', { count: completedParts })}
                     </Text>
                 </View>
@@ -140,7 +140,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={styles.container}>
             <AppHeader
                 title={t('screenTitles.hatim')}
                 showBackButton={true}
@@ -152,7 +152,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                     <ActivityIndicator size="large" color={theme.primary} />
                 </View>
             ) : (
-                <View style={{ flex: 1, maxWidth: 800, width: '100%', alignSelf: 'center' }}>
+                <View style={styles.listWrapper}>
                     <FlatList
                         data={hatims}
                         renderItem={renderHatimItem}
@@ -160,7 +160,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                         contentContainerStyle={styles.listContent}
                         ListEmptyComponent={
                             <View style={styles.emptyContainer}>
-                                <Text style={[styles.emptyText, { color: theme.textSecondary }]}>
+                                <Text style={[styles.emptyText, styles.emptyTextSecondary]}>
                                     {t('hatimScreen.empty')}
                                 </Text>
                             </View>
@@ -176,17 +176,17 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                 onRequestClose={() => setModalVisible(false)}
             >
                 <View style={styles.modalOverlay}>
-                    <View style={[styles.modalContent, { backgroundColor: theme.cardBackground }]}>
-                        <Text style={[styles.modalTitle, { color: theme.text }]}>{t('hatimScreen.createTitle')}</Text>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>{t('hatimScreen.createTitle')}</Text>
                         <TextInput
-                            style={[styles.input, { color: theme.text, borderColor: theme.border }]}
+                            style={styles.input}
                             placeholder={t('hatimScreen.titlePlaceholder')}
                             placeholderTextColor={theme.textSecondary}
                             value={newTitle}
                             onChangeText={setNewTitle}
                         />
                         <TextInput
-                            style={[styles.input, styles.textArea, { color: theme.text, borderColor: theme.border }]}
+                            style={[styles.input, styles.textArea]}
                             placeholder={t('hatimScreen.descriptionPlaceholder')}
                             placeholderTextColor={theme.textSecondary}
                             value={newDesc}
@@ -196,7 +196,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                         />
 
                         <View style={styles.toggleRow}>
-                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>{t('hatimScreen.setDeadline')}</Text>
+                            <Text style={[styles.inputLabel, styles.inputLabelNoMargin]}>{t('hatimScreen.setDeadline')}</Text>
                             <Switch
                                 value={hasDeadline}
                                 onValueChange={setHasDeadline}
@@ -206,7 +206,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                         </View>
 
                         <View style={styles.toggleRow}>
-                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>{t('hatimScreen.privateHatim')}</Text>
+                            <Text style={[styles.inputLabel, styles.inputLabelNoMargin]}>{t('hatimScreen.privateHatim')}</Text>
                             <Switch
                                 value={isPrivate}
                                 onValueChange={setIsPrivate}
@@ -217,24 +217,13 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
 
                         {hasDeadline && (
                             <>
-                                <Text style={[styles.inputLabel, { color: theme.textSecondary }]}>{t('hatimScreen.deadlineLabel')}</Text>
+                                <Text style={[styles.inputLabel, styles.inputLabelSecondary]}>{t('hatimScreen.deadlineLabel')}</Text>
 
                                 {Platform.OS === 'web' ? (
-                                    <View style={{ marginBottom: 16 }}>
+                                    <View style={styles.webDateWrapper}>
                                         <input
                                             type="date"
-                                            style={{
-                                                width: '100%',
-                                                padding: 12,
-                                                borderRadius: 12,
-                                                border: `1px solid ${theme.border}`,
-                                                backgroundColor: 'transparent',
-                                                color: theme.text,
-                                                marginBottom: 8,
-                                                outline: 'none',
-                                                fontFamily: 'inherit',
-                                                fontSize: '16px'
-                                            }}
+                                            style={styles.webDateInput}
                                             onChange={(e: any) => {
                                                 const val = e.target.value;
                                                 if (!val) return;
@@ -247,20 +236,9 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                                             }}
                                             value={newDeadline ? newDeadline.toISOString().split('T')[0] : ''}
                                         />
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <View style={styles.row}>
                                             <select
-                                                style={{
-                                                    flex: 1,
-                                                    padding: 12,
-                                                    borderRadius: 12,
-                                                    border: `1px solid ${theme.border}`,
-                                                    backgroundColor: 'transparent',
-                                                    color: theme.text,
-                                                    outline: 'none',
-                                                    fontFamily: 'inherit',
-                                                    fontSize: '16px',
-                                                    appearance: 'auto'
-                                                }}
+                                                style={styles.webSelect}
                                                 onChange={(e: any) => {
                                                     const h = parseInt(e.target.value);
                                                     const current = newDeadline || new Date();
@@ -273,20 +251,9 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                                                     <option key={i} value={i}>{i.toString().padStart(2, '0')}</option>
                                                 ))}
                                             </select>
-                                            <Text style={{ marginHorizontal: 8, color: theme.text, fontSize: 18, fontWeight: '700' }}>:</Text>
+                                            <Text style={styles.timeSeparator}>:</Text>
                                             <select
-                                                style={{
-                                                    flex: 1,
-                                                    padding: 12,
-                                                    borderRadius: 12,
-                                                    border: `1px solid ${theme.border}`,
-                                                    backgroundColor: 'transparent',
-                                                    color: theme.text,
-                                                    outline: 'none',
-                                                    fontFamily: 'inherit',
-                                                    fontSize: '16px',
-                                                    appearance: 'auto'
-                                                }}
+                                                style={styles.webSelect}
                                                 onChange={(e: any) => {
                                                     const m = parseInt(e.target.value);
                                                     const current = newDeadline || new Date();
@@ -304,7 +271,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                                 ) : (
                                     <>
                                         <TouchableOpacity
-                                            style={[styles.input, { borderColor: theme.border, justifyContent: 'center' }]}
+                                            style={[styles.input, styles.dateTimeButton]}
                                             onPress={() => setShowDatePicker(true)}
                                         >
                                             <Text style={{ color: newDeadline ? theme.text : theme.textSecondary }}>
@@ -342,20 +309,20 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                         )}
                         <View style={styles.modalButtons}>
                             <TouchableOpacity
-                                style={[styles.modalButton, { backgroundColor: theme.border }]}
+                                style={[styles.modalButton, styles.modalButtonCancel]}
                                 onPress={() => setModalVisible(false)}
                             >
-                                <Text style={{ color: theme.text }}>{t('hatimScreen.cancel')}</Text>
+                                <Text style={styles.cancelButtonText}>{t('hatimScreen.cancel')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={[styles.modalButton, { backgroundColor: theme.primary }]}
+                                style={[styles.modalButton, styles.modalButtonPrimary]}
                                 onPress={handleCreate}
                                 disabled={creating}
                             >
                                 {creating ? (
                                     <ActivityIndicator size="small" color="#fff" />
                                 ) : (
-                                    <Text style={{ color: '#fff' }}>{t('hatimScreen.create')}</Text>
+                                    <Text style={styles.whiteText}>{t('hatimScreen.create')}</Text>
                                 )}
                             </TouchableOpacity>
                         </View>
@@ -363,7 +330,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                 </View>
             </Modal>
             <TouchableOpacity
-                style={[styles.fab, { backgroundColor: theme.primary }]}
+                style={styles.fab}
                 onPress={() => setModalVisible(true)}
             >
                 <Text style={styles.fabIcon}>+</Text>

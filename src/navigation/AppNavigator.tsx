@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { Platform, View, ActivityIndicator, BackHandler } from 'react-native';
 import { HomeScreen } from '../screens/HomeScreen';
@@ -31,6 +31,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { Surah } from '../types';
 import { quranData, loadSurah } from '../data/quranData';
 import { NavigationProvider } from '../contexts/NavigationContext';
+import { useTheme } from '../contexts/ThemeContext';
+import { createStyles } from './AppNavigator.styles';
 
 // Safe window access for web platform
 const getWindow = (): any => {
@@ -92,6 +94,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   const { user, loading: authLoading } = useAuth();
   const { audioState } = useGlobalAudio();
   const { settings, updateSettings } = useDebouncedSettings(200);
+  const { theme } = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   useEffect(() => { currentIndexRef.current = currentIndex; }, [currentIndex]);
 
@@ -467,7 +471,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   if (isLoadingRoute) {
     return (
       <NavigationContainer>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" />
         </View>
       </NavigationContainer>

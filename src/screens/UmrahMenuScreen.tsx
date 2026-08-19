@@ -5,12 +5,11 @@ import {
     TouchableOpacity,
     SafeAreaView,
     ScrollView,
-    StyleSheet,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../theme';
+import { createStyles } from './UmrahMenuScreen.styles';
 
 interface UmrahMenuScreenProps {
     navigation: any;
@@ -58,7 +57,7 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
     const styles = useMemo(() => createStyles(theme), [theme]);
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={styles.container}>
             <AppHeader
                 title={t('screenTitles.umrahMenu')}
                 showBackButton={true}
@@ -66,7 +65,7 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
             />
             <ScrollView style={styles.content}>
                 <View style={styles.header}>
-                    <Text style={[styles.headerTitle, { color: theme.text }]}>
+                    <Text style={styles.headerTitle}>
                         {t('umrahMenuScreen.header')}
                     </Text>
                 </View>
@@ -74,7 +73,7 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
                 {menuItems.map((item) => (
                     <TouchableOpacity
                         key={item.id}
-                        style={[styles.menuItem, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}
+                        style={styles.menuItem}
                         onPress={item.onPress}
                         activeOpacity={0.7}
                     >
@@ -82,21 +81,21 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
                             <Text style={styles.icon}>{item.icon}</Text>
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={[styles.title, { color: theme.text }]}>
+                            <Text style={styles.title}>
                                 {item.title}
                             </Text>
-                            <Text style={[styles.description, { color: theme.textSecondary }]}>
+                            <Text style={styles.description}>
                                 {item.description}
                             </Text>
                         </View>
                         <View style={styles.arrowContainer}>
-                            <Text style={[styles.arrow, { color: theme.textSecondary }]}>›</Text>
+                            <Text style={styles.arrow}>›</Text>
                         </View>
                     </TouchableOpacity>
                 ))}
 
-                <View style={[styles.footer, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-                    <Text style={[styles.footerText, { color: theme.textSecondary }]}>
+                <View style={styles.footer}>
+                    <Text style={styles.footerText}>
                         {t('umrahMenuScreen.footer')}
                     </Text>
                 </View>
@@ -104,80 +103,3 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
         </SafeAreaView>
     );
 };
-
-const createStyles = (theme: any) => StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    content: {
-        flex: 1,
-        padding: SPACING.lg,
-    },
-    header: {
-        marginBottom: SPACING.xl,
-        alignItems: 'center',
-    },
-    headerTitle: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
-        marginBottom: SPACING.xs,
-    },
-    headerSubtitle: {
-        fontSize: FONT_SIZES.medium,
-    },
-    menuItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: SPACING.lg,
-        borderRadius: 16,
-        marginBottom: SPACING.md,
-        borderWidth: 1,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    iconContainer: {
-        width: 56,
-        height: 56,
-        borderRadius: 28,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: SPACING.md,
-    },
-    icon: {
-        fontSize: 32,
-    },
-    textContainer: {
-        flex: 1,
-    },
-    title: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: 'bold',
-        marginBottom: SPACING.xs,
-    },
-    description: {
-        fontSize: FONT_SIZES.small,
-    },
-    arrowContainer: {
-        width: 24,
-        height: 24,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    arrow: {
-        fontSize: 32,
-    },
-    footer: {
-        marginTop: SPACING.xl,
-        padding: SPACING.lg,
-        borderRadius: 12,
-        alignItems: 'center',
-        borderWidth: 1,
-    },
-    footerText: {
-        fontSize: FONT_SIZES.medium,
-        fontStyle: 'italic',
-    },
-});

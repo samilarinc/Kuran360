@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useTheme, Theme } from '../contexts/ThemeContext';
+import React, { useMemo } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useTheme } from '../contexts/ThemeContext';
 import { DataUpdateProgress } from './DataUpdateProgress';
-import { FONT_SIZES, SPACING } from '../constants';
+import { createStyles } from './DownloadRequired.styles';
 
 interface DownloadRequiredProps {
     title: string;
@@ -28,7 +28,7 @@ export const DownloadRequired: React.FC<DownloadRequiredProps> = ({
     downloadButtonLabel = '📥 Meal Verilerini İndir',
 }) => {
     const { theme } = useTheme();
-    const styles = createStyles(theme);
+    const styles = useMemo(() => createStyles(theme), [theme]);
     const sizeHint = totalBytes > 0
         ? `\nBu işlem ${(totalBytes / (1024 * 1024)).toFixed(1)}MB veri indirecektir.`
         : '';
@@ -59,54 +59,3 @@ export const DownloadRequired: React.FC<DownloadRequiredProps> = ({
         </View>
     );
 };
-
-const createStyles = (theme: Theme) => StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: SPACING.xl,
-        backgroundColor: theme.background,
-    },
-    card: {
-        backgroundColor: theme.cardBackground,
-        borderRadius: 12,
-        padding: SPACING.xl,
-        margin: SPACING.md,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-        alignItems: 'center',
-        maxWidth: 400,
-        width: '100%',
-    },
-    title: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
-        color: theme.primary,
-        marginBottom: SPACING.md,
-        textAlign: 'center',
-    },
-    description: {
-        fontSize: FONT_SIZES.medium,
-        color: theme.textSecondary,
-        textAlign: 'center',
-        lineHeight: 22,
-        marginBottom: SPACING.xl,
-    },
-    downloadButton: {
-        backgroundColor: theme.primary,
-        paddingHorizontal: SPACING.xl,
-        paddingVertical: SPACING.md,
-        borderRadius: 8,
-        minWidth: 200,
-        alignItems: 'center',
-    },
-    downloadButtonText: {
-        color: theme.headerText,
-        fontSize: FONT_SIZES.large,
-        fontWeight: '600',
-    },
-});

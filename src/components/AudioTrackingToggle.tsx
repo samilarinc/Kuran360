@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
     Text,
     TouchableOpacity,
-    StyleSheet,
 } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { useDebouncedToggle } from '../hooks/useDebouncedState';
+import { createStyles } from './AudioTrackingToggle.styles';
 
 interface AudioTrackingToggleProps {
     isEnabled: boolean;
@@ -17,6 +17,7 @@ export const AudioTrackingToggle: React.FC<AudioTrackingToggleProps> = ({
     onToggle,
 }) => {
     const { theme } = useTheme();
+    const styles = useMemo(() => createStyles(theme), [theme]);
     const { isEnabled: displayState, toggle } = useDebouncedToggle(
         isEnabled,
         onToggle,
@@ -29,38 +30,15 @@ export const AudioTrackingToggle: React.FC<AudioTrackingToggleProps> = ({
             activeOpacity={0.7}
             style={[
                 styles.container,
-                {
-                    backgroundColor: displayState ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-                    borderColor: displayState ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.2)'
-                }
+                displayState ? styles.toggleActive : styles.toggleInactive,
             ]}
         >
-            <Text style={[styles.icon, { color: theme.headerText }]}>
+            <Text style={styles.icon}>
                 {displayState ? '👁️' : '👁️‍🗨️'}
             </Text>
-            <Text style={[styles.label, { color: theme.headerText }]}>
+            <Text style={styles.label}>
                 {displayState ? 'Açık' : 'Kapalı'}
             </Text>
         </TouchableOpacity>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        borderRadius: 8,
-        borderWidth: 1,
-        minWidth: 60,
-    },
-    icon: {
-        fontSize: 16,
-        marginBottom: 2,
-    },
-    label: {
-        fontSize: 10,
-        fontWeight: '500',
-    },
-});

@@ -1,0 +1,367 @@
+import { StyleSheet } from 'react-native';
+import { FONT_SIZES, SPACING } from '../constants';
+
+export const createStyles = (theme: any) => StyleSheet.create({
+  container: {
+    backgroundColor: theme.cardBackground,
+    marginVertical: SPACING.sm,
+    marginHorizontal: SPACING.md,
+    borderRadius: 12,
+    padding: SPACING.md,
+    elevation: 2,
+    shadowColor: theme.text,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2.22,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: SPACING.md,
+  },
+  verseNumber: {
+    backgroundColor: theme.primary,
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  verseNumberText: {
+    color: '#FFFFFF', // Always white for good contrast
+    fontSize: FONT_SIZES.medium,
+    fontWeight: 'bold',
+  },
+  playButton: {
+    backgroundColor: theme.secondary,
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  playButtonActive: {
+    backgroundColor: theme.accent,
+  },
+  playButtonText: {
+    fontSize: FONT_SIZES.large,
+  },
+  playButtonTextActive: {
+    color: theme.headerText,
+  },
+  content: {
+    gap: SPACING.md,
+  },
+  arabicText: {
+    fontSize: FONT_SIZES.arabic,
+    lineHeight: FONT_SIZES.arabic * 1.5,
+    textAlign: 'right',
+    color: theme.text,
+    fontWeight: '600',
+    writingDirection: 'rtl',
+  },
+  inlineArabicRow: {
+    flexDirection: 'row-reverse',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+  },
+  inlineArabicWordWrap: {
+    position: 'relative',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  inlineArabicWord: {
+    borderRadius: 6,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    // keep same font and direction as arabicText; Text merges styles
+    cursor: 'pointer',
+  },
+  inlineArabicWordHover: {
+    color: theme.secondary,
+  },
+  hoverCard: {
+    position: 'absolute',
+    bottom: '100%',
+    right: 0,
+    marginBottom: 8,
+    backgroundColor: theme.cardBackground,
+    borderRadius: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderWidth: 2,
+    borderColor: theme.primary,
+    zIndex: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    elevation: 8,
+    maxWidth: 200,
+    minWidth: 80,
+  },
+  hoverCardText: {
+    color: theme.text,
+    fontSize: FONT_SIZES.medium,
+    fontWeight: '600',
+    textAlign: 'center',
+    lineHeight: FONT_SIZES.medium * 1.2,
+  },
+  inlineSpace: {
+    // Visual spacing between tokens; width is controlled by content (space char)
+  },
+  translationText: {
+    fontSize: FONT_SIZES.translation,
+    lineHeight: FONT_SIZES.translation * 1.4,
+    color: theme.text,
+    textAlign: 'left',
+  },
+  transliterationText: {
+    fontSize: FONT_SIZES.medium,
+    lineHeight: FONT_SIZES.medium * 1.3,
+    color: theme.textSecondary,
+    textAlign: 'left',
+    fontStyle: 'italic',
+  },
+  translationsContainer: {
+    gap: SPACING.sm,
+  },
+  translationContainer: {
+    paddingVertical: SPACING.xs,
+    borderLeftWidth: 3,
+    borderLeftColor: theme.primary,
+    paddingLeft: SPACING.sm,
+  },
+  favoriteTranslationContainer: {
+    backgroundColor: '#FFD700' + '10', // Altın sarısı tint
+    borderLeftColor: '#FFD700',
+    borderLeftWidth: 4,
+    borderRadius: 6,
+    marginVertical: 2,
+  },
+  translationTitle: {
+    fontSize: FONT_SIZES.small,
+    fontWeight: '600',
+    color: theme.primary,
+    marginBottom: 4,
+  },
+  favoriteTranslationTitle: {
+    color: '#B8860B', // Koyu altın
+    fontWeight: '700',
+  },
+  favoriteTranslationTextStyle: {
+    fontWeight: '500',
+    color: theme.text,
+  },
+  wordTranslationsContainer: {
+    marginTop: SPACING.sm,
+    padding: SPACING.sm,
+    backgroundColor: theme.surface,
+    borderRadius: 8,
+  },
+  sectionTitle: {
+    fontSize: FONT_SIZES.small,
+    fontWeight: '600',
+    color: theme.text,
+    marginBottom: SPACING.xs,
+  },
+  wordTranslationsGrid: {
+    flexDirection: 'row-reverse',
+    flexWrap: 'wrap',
+    gap: SPACING.xs,
+    justifyContent: 'flex-end',
+  },
+  wordTranslationItem: {
+    backgroundColor: theme.surface,
+    paddingVertical: 4,
+    paddingHorizontal: SPACING.xs,
+    borderRadius: 6,
+    marginLeft: SPACING.xs,
+    marginBottom: SPACING.xs,
+    minWidth: 60,
+    alignItems: 'center',
+  },
+  wordArabic: {
+    fontSize: FONT_SIZES.small,
+    color: theme.text,
+    fontWeight: '600',
+    textAlign: 'center',
+    writingDirection: 'rtl',
+  },
+  wordTranslation: {
+    fontSize: FONT_SIZES.small - 2,
+    color: theme.textSecondary,
+    textAlign: 'center',
+  },
+  memContainer: {
+    marginTop: SPACING.sm,
+  },
+  memToggle: {
+    alignSelf: 'flex-end',
+    backgroundColor: theme.secondary,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 6,
+    borderRadius: 8,
+  },
+  memToggleText: {
+    color: theme.headerText,
+    fontWeight: '600',
+  },
+  memPanel: {
+    backgroundColor: theme.surface,
+    borderRadius: 10,
+    padding: SPACING.sm,
+    gap: SPACING.sm,
+  },
+  memRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  memLabel: {
+    color: theme.text,
+    fontWeight: '600',
+  },
+  memStepper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  stepBtn: {
+    width: 34,
+    height: 34,
+    borderRadius: 6,
+    backgroundColor: theme.cardBackground,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepText: {
+    color: theme.text,
+    fontSize: FONT_SIZES.large,
+  },
+  memValue: {
+    minWidth: 28,
+    textAlign: 'center',
+    color: theme.text,
+    fontWeight: '600',
+  },
+  memActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: SPACING.sm,
+  },
+  memHint: {
+    color: theme.textSecondary,
+    fontSize: FONT_SIZES.small,
+    textAlign: 'right',
+  },
+  memStartBtn: {
+    backgroundColor: theme.primary,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  memStartBtnDisabled: {
+    opacity: 0.5,
+  },
+  memStartText: {
+    color: '#fff',
+    fontWeight: '700',
+  },
+  memCancelBtn: {
+    backgroundColor: theme.accent,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  memCancelText: {
+    color: theme.headerText,
+    fontWeight: '700',
+  },
+  memToggleContainer: {
+    flexDirection: 'row',
+    borderRadius: 8,
+    backgroundColor: theme.surface,
+    borderWidth: 1,
+    borderColor: theme.border,
+    overflow: 'hidden',
+  },
+  memModeBtn: {
+    flex: 1,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.surface,
+    borderWidth: 0,
+  },
+  memModeBtnLeft: {
+    borderRightWidth: 0.5,
+    borderRightColor: theme.border,
+  },
+  memModeBtnRight: {
+    borderLeftWidth: 0.5,
+    borderLeftColor: theme.border,
+  },
+  memModeBtnActive: {
+    backgroundColor: theme.primary,
+  },
+  memModeText: {
+    fontSize: FONT_SIZES.small,
+    color: theme.text,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  memModeTextActive: {
+    color: '#fff',
+    fontWeight: '700',
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  bookmarkButton: {
+    backgroundColor: theme.surface,
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.primary,
+  },
+  bookmarkIcon: {
+    fontSize: 18,
+  },
+  shareButton: {
+    backgroundColor: theme.surface,
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.secondary,
+  },
+  shareIcon: {
+    fontSize: 16,
+  },
+  allTranslationsButton: {
+    backgroundColor: theme.surface,
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.primary,
+  },
+  allTranslationsIcon: {
+    fontSize: 16,
+  },
+});

@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ThemeToggle, LanguageSelector } from '@msarinc/ui';
 import { useTheme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../constants';
+import { createStyles } from './HeaderWithDarkModeToggle.styles';
 
 const THEME_TOGGLE_LABELS = {
   light: 'Aydınlık',
@@ -40,84 +40,14 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
 }) => {
   const { theme } = useTheme();
   const { i18n } = useTranslation();
-
-  const styles = StyleSheet.create({
-    header: {
-      backgroundColor: theme.primary,
-      paddingVertical: SPACING.xs,
-      paddingHorizontal: SPACING.md,
-      alignItems: 'center',
-      position: 'relative',
-      minHeight: 48,
-      justifyContent: 'center',
-    },
-    title: {
-      fontSize: FONT_SIZES.large,
-      fontWeight: 'bold',
-      color: theme.headerText,
-      marginBottom: subtitle ? 2 : 0,
-      textAlign: 'center',
-    },
-    subtitle: {
-      fontSize: FONT_SIZES.small,
-      color: theme.headerText,
-      opacity: 0.9,
-      textAlign: 'center',
-    },
-    leftButton: {
-      position: 'absolute',
-      left: SPACING.md,
-      top: 0,
-      bottom: 0,
-      justifyContent: 'center',
-      zIndex: 1,
-    },
-    rightButtons: {
-      position: 'absolute',
-      right: SPACING.md,
-      top: 0,
-      bottom: 0,
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: SPACING.xs,
-      zIndex: 1,
-    },
-    backButton: {
-      paddingVertical: 8,
-      paddingHorizontal: 8,
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      borderRadius: 8,
-      minWidth: 32,
-      alignItems: 'center',
-    },
-    backButtonText: {
-      color: theme.headerText,
-      fontSize: 18,
-      fontWeight: '600',
-    },
-    homeButton: {
-      padding: 6,
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      borderRadius: 16,
-      minWidth: 32,
-      alignItems: 'center',
-      marginLeft: SPACING.xs,
-    },
-    homeButtonText: {
-      fontSize: 16,
-    },
-    contentContainer: {
-      alignItems: 'center',
-      paddingHorizontal: SPACING.lg,
-    },
-  });
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
     <View style={styles.header}>
       {/* Sol taraf butonları */}
       {(showBackButton || showHomeButton) && (
         <View style={styles.leftButton}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={styles.leftButtonRow}>
             {showBackButton && onBackPress && (
               <TouchableOpacity onPress={onBackPress}>
                 <View style={styles.backButton}>
@@ -138,7 +68,7 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
 
       <View style={styles.rightButtons}>
         {autoplayToggle && (
-          <View style={{ marginRight: SPACING.xs }}>{autoplayToggle}</View>
+          <View style={styles.autoplayToggleWrapper}>{autoplayToggle}</View>
         )}
         <LanguageSelector
           compact
@@ -150,7 +80,7 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
       </View>
 
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title, subtitle && styles.titleWithSubtitle]}>{title}</Text>
         {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
         {children}
       </View>

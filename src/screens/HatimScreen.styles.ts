@@ -133,5 +133,76 @@ export const createStyles = (theme: any) => {
             marginBottom: SPACING.md,
             paddingVertical: SPACING.xs,
         },
+        privateLabel: {
+            fontSize: 12,
+            color: '#f44336',
+        },
+        lockedBadge: {
+            backgroundColor: '#607D8B',
+        },
+        listWrapper: {
+            flex: 1,
+            maxWidth: 800,
+            width: '100%',
+            alignSelf: 'center',
+        },
+        emptyTextSecondary: {
+            color: theme.textSecondary,
+        },
+        inputLabelNoMargin: {
+            color: theme.textSecondary,
+            marginTop: 0,
+        },
+        inputLabelSecondary: {
+            color: theme.textSecondary,
+        },
+        webDateWrapper: {
+            marginBottom: 16,
+        },
+        webDateInput: {
+            width: '100%',
+            padding: 12,
+            borderRadius: 12,
+            border: `1px solid ${theme.border}`,
+            backgroundColor: 'transparent',
+            color: theme.text,
+            marginBottom: 8,
+            outline: 'none',
+            fontFamily: 'inherit',
+            fontSize: '16px',
+        } as any,
+        webSelect: {
+            flex: 1,
+            padding: 12,
+            borderRadius: 12,
+            border: `1px solid ${theme.border}`,
+            backgroundColor: 'transparent',
+            color: theme.text,
+            outline: 'none',
+            fontFamily: 'inherit',
+            fontSize: '16px',
+            appearance: 'auto',
+        } as any,
+        timeSeparator: {
+            marginHorizontal: 8,
+            color: theme.text,
+            fontSize: 18,
+            fontWeight: '700',
+        },
+        dateTimeButton: {
+            justifyContent: 'center',
+        },
+        modalButtonCancel: {
+            backgroundColor: theme.border,
+        },
+        cancelButtonText: {
+            color: theme.text,
+        },
+        modalButtonPrimary: {
+            backgroundColor: theme.primary,
+        },
+        whiteText: {
+            color: '#fff',
+        },
     });
 };

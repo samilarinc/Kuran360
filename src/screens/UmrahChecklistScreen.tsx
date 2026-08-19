@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     ScrollView,
     TextInput,
     TouchableOpacity,
@@ -18,7 +17,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
 import { AppHeader } from '../components/AppHeader';
-import { SPACING, FONT_SIZES } from '../theme';
+import { createStyles, webDateInputStyle } from './UmrahChecklistScreen.styles';
 
 interface ChecklistData {
     outboundFrom: string;
@@ -81,6 +80,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
 
     const { theme } = useTheme();
     const { t } = useTranslation();
+    const styles = useMemo(() => createStyles(theme), [theme]);
     const [data, setData] = useState<ChecklistData>({
         outboundFrom: '',
         outboundFromName: '',
@@ -332,7 +332,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
         city === 'Mekke' ? t('umrahChecklistScreen.mekke') : t('umrahChecklistScreen.medine');
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={styles.container}>
             <AppHeader
                 title={t('screenTitles.umrahChecklist')}
                 showBackButton={true}
@@ -371,8 +371,8 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
 
             <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
                 {/* COMPACT TRAVEL PLAN CARD */}
-                <View style={[styles.plannerCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-                    <Text style={[styles.plannerTitle, { color: theme.text }]}>
+                <View style={styles.plannerCard}>
+                    <Text style={styles.plannerTitle}>
                         {t('umrahChecklistScreen.travelPlan')}
                     </Text>
 
@@ -381,47 +381,45 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                         <View style={styles.compactTripMain}>
                             <View style={styles.compactCitySelect}>
                                 <TouchableOpacity
-                                    style={[styles.cityChip, { backgroundColor: theme.background, borderColor: theme.border }]}
+                                    style={styles.cityChip}
                                     onPress={() => setShowOutboundPicker(true)}
                                 >
-                                    <Text style={[styles.cityChipText, { color: data.outboundFromName ? theme.text : theme.textSecondary }]}>
+                                    <Text style={[styles.cityChipText, data.outboundFromName ? styles.cityChipTextFilled : styles.cityChipTextPlaceholder]}>
                                         {data.outboundFromName || t('umrahChecklistScreen.from')}
                                     </Text>
-                                    <Text style={{ fontSize: 10, color: theme.textSecondary }}>▼</Text>
+                                    <Text style={styles.chipDropdownArrow}>▼</Text>
                                 </TouchableOpacity>
 
-                                <Text style={[styles.tripArrow, { color: theme.textSecondary }]}>➔</Text>
+                                <Text style={styles.tripArrow}>➔</Text>
 
                                 <View style={styles.destinationChips}>
                                     <TouchableOpacity
                                         style={[
                                             styles.destinationChip,
-                                            { borderColor: theme.border },
-                                            data.outboundTo === 'Mekke' && { backgroundColor: theme.primary, borderColor: theme.primary }
+                                            data.outboundTo === 'Mekke' && styles.destinationChipActive
                                         ]}
                                         onPress={() => updateField('outboundTo', 'Mekke')}
                                     >
-                                        <Text style={[styles.destinationChipText, { color: data.outboundTo === 'Mekke' ? '#FFFFFF' : theme.text }]}>{cityLabel('Mekke')}</Text>
+                                        <Text style={[styles.destinationChipText, data.outboundTo === 'Mekke' && styles.destinationChipTextActive]}>{cityLabel('Mekke')}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[
                                             styles.destinationChip,
-                                            { borderColor: theme.border },
-                                            data.outboundTo === 'Medine' && { backgroundColor: theme.primary, borderColor: theme.primary }
+                                            data.outboundTo === 'Medine' && styles.destinationChipActive
                                         ]}
                                         onPress={() => updateField('outboundTo', 'Medine')}
                                     >
-                                        <Text style={[styles.destinationChipText, { color: data.outboundTo === 'Medine' ? '#FFFFFF' : theme.text }]}>{cityLabel('Medine')}</Text>
+                                        <Text style={[styles.destinationChipText, data.outboundTo === 'Medine' && styles.destinationChipTextActive]}>{cityLabel('Medine')}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
 
                             {/* Outbound Date Row */}
                             <View style={styles.compactDateRow}>
-                                <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>{t('umrahChecklistScreen.outbound')}</Text>
+                                <Text style={styles.compactDateLabel}>{t('umrahChecklistScreen.outbound')}</Text>
                                 {Platform.OS === 'web' ? (
-                                    <View style={{ flex: 1, position: 'relative', height: 35, justifyContent: 'center' }}>
-                                        <Text style={[styles.compactDateText, { color: data.outboundDate ? theme.primary : theme.textSecondary }]}>
+                                    <View style={styles.webDateInputWrapper}>
+                                        <Text style={[styles.compactDateText, data.outboundDate ? styles.compactDateTextFilled : styles.compactDateTextPlaceholder]}>
                                             {formatDateForDisplay(data.outboundDate)}
                                         </Text>
                                         <input
@@ -429,31 +427,16 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                             value={formatDateForInput(data.outboundDate)}
                                             onChange={onOutboundDateChangeWeb}
                                             min={formatDateForInput(new Date())}
-                                            style={{
-                                                position: 'absolute',
-                                                top: 0,
-                                                left: 0,
-                                                right: 0,
-                                                bottom: 0,
-                                                width: '100%',
-                                                height: '100%',
-                                                opacity: 0,
-                                                cursor: 'pointer',
-                                                zIndex: 2,
-                                                border: 'none',
-                                                outline: 'none',
-                                                // @ts-ignore
-                                                appearance: 'none'
-                                            }}
+                                            style={webDateInputStyle}
                                         />
                                     </View>
                                 ) : (
                                     <TouchableOpacity
-                                        style={{ flex: 1 }}
+                                        style={styles.dateTouchable}
                                         onPress={() => setShowOutboundDatePicker(true)}
                                         activeOpacity={0.7}
                                     >
-                                        <Text style={[styles.compactDateText, { color: data.outboundDate ? theme.primary : theme.textSecondary }]}>
+                                        <Text style={[styles.compactDateText, data.outboundDate ? styles.compactDateTextFilled : styles.compactDateTextPlaceholder]}>
                                             {formatDateForDisplay(data.outboundDate)}
                                         </Text>
                                     </TouchableOpacity>
@@ -462,7 +445,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                         </View>
                     </View>
 
-                    <View style={[styles.plannerDivider, { backgroundColor: theme.border }]} />
+                    <View style={styles.plannerDivider} />
 
                     {/* Inbound Row */}
                     <View style={styles.compactTripRow}>
@@ -472,44 +455,42 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                     <TouchableOpacity
                                         style={[
                                             styles.destinationChip,
-                                            { borderColor: theme.border },
-                                            data.inboundFrom === 'Mekke' && { backgroundColor: theme.primary, borderColor: theme.primary }
+                                            data.inboundFrom === 'Mekke' && styles.destinationChipActive
                                         ]}
                                         onPress={() => updateField('inboundFrom', 'Mekke')}
                                     >
-                                        <Text style={[styles.destinationChipText, { color: data.inboundFrom === 'Mekke' ? '#FFFFFF' : theme.text }]}>{cityLabel('Mekke')}</Text>
+                                        <Text style={[styles.destinationChipText, data.inboundFrom === 'Mekke' && styles.destinationChipTextActive]}>{cityLabel('Mekke')}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[
                                             styles.destinationChip,
-                                            { borderColor: theme.border },
-                                            data.inboundFrom === 'Medine' && { backgroundColor: theme.primary, borderColor: theme.primary }
+                                            data.inboundFrom === 'Medine' && styles.destinationChipActive
                                         ]}
                                         onPress={() => updateField('inboundFrom', 'Medine')}
                                     >
-                                        <Text style={[styles.destinationChipText, { color: data.inboundFrom === 'Medine' ? '#FFFFFF' : theme.text }]}>{cityLabel('Medine')}</Text>
+                                        <Text style={[styles.destinationChipText, data.inboundFrom === 'Medine' && styles.destinationChipTextActive]}>{cityLabel('Medine')}</Text>
                                     </TouchableOpacity>
                                 </View>
 
-                                <Text style={[styles.tripArrow, { color: theme.textSecondary }]}>➔</Text>
+                                <Text style={styles.tripArrow}>➔</Text>
 
                                 <TouchableOpacity
-                                    style={[styles.cityChip, { backgroundColor: theme.background, borderColor: theme.border }]}
+                                    style={styles.cityChip}
                                     onPress={() => setShowInboundPicker(true)}
                                 >
-                                    <Text style={[styles.cityChipText, { color: data.inboundToName ? theme.text : theme.textSecondary }]}>
+                                    <Text style={[styles.cityChipText, data.inboundToName ? styles.cityChipTextFilled : styles.cityChipTextPlaceholder]}>
                                         {data.inboundToName || t('umrahChecklistScreen.to')}
                                     </Text>
-                                    <Text style={{ fontSize: 10, color: theme.textSecondary }}>▼</Text>
+                                    <Text style={styles.chipDropdownArrow}>▼</Text>
                                 </TouchableOpacity>
                             </View>
 
                             {/* Inbound Date Row */}
                             <View style={styles.compactDateRow}>
-                                <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>{t('umrahChecklistScreen.inbound')}</Text>
+                                <Text style={styles.compactDateLabel}>{t('umrahChecklistScreen.inbound')}</Text>
                                 {Platform.OS === 'web' ? (
-                                    <View style={{ flex: 1, position: 'relative', height: 35, justifyContent: 'center' }}>
-                                        <Text style={[styles.compactDateText, { color: data.inboundDate ? theme.primary : theme.textSecondary }]}>
+                                    <View style={styles.webDateInputWrapper}>
+                                        <Text style={[styles.compactDateText, data.inboundDate ? styles.compactDateTextFilled : styles.compactDateTextPlaceholder]}>
                                             {formatDateForDisplay(data.inboundDate)}
                                         </Text>
                                         <input
@@ -517,31 +498,16 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                             value={formatDateForInput(data.inboundDate)}
                                             onChange={onInboundDateChangeWeb}
                                             min={formatDateForInput(data.outboundDate || new Date())}
-                                            style={{
-                                                position: 'absolute',
-                                                top: 0,
-                                                left: 0,
-                                                right: 0,
-                                                bottom: 0,
-                                                width: '100%',
-                                                height: '100%',
-                                                opacity: 0,
-                                                cursor: 'pointer',
-                                                zIndex: 2,
-                                                border: 'none',
-                                                outline: 'none',
-                                                // @ts-ignore
-                                                appearance: 'none'
-                                            }}
+                                            style={webDateInputStyle}
                                         />
                                     </View>
                                 ) : (
                                     <TouchableOpacity
-                                        style={{ flex: 1 }}
+                                        style={styles.dateTouchable}
                                         onPress={() => setShowInboundDatePicker(true)}
                                         activeOpacity={0.7}
                                     >
-                                        <Text style={[styles.compactDateText, { color: data.inboundDate ? theme.primary : theme.textSecondary }]}>
+                                        <Text style={[styles.compactDateText, data.inboundDate ? styles.compactDateTextFilled : styles.compactDateTextPlaceholder]}>
                                             {formatDateForDisplay(data.inboundDate)}
                                         </Text>
                                     </TouchableOpacity>
@@ -553,23 +519,23 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                         {data.outboundDate && data.inboundDate && (
                             <View style={styles.plannerActions}>
                                 <TouchableOpacity
-                                    style={[styles.plannerActionBtn, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
+                                    style={styles.plannerActionBtn}
                                     onPress={openSkyscanner}
                                 >
-                                    <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>✈️ Uçak</Text>
+                                    <Text style={styles.plannerActionBtnText}>✈️ Uçak</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={[styles.plannerActionBtn, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
+                                    style={styles.plannerActionBtn}
                                     onPress={openFirstCityHotel}
                                 >
-                                    <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>{t('umrahChecklistScreen.hotel', { city: cityLabel(data.outboundTo) })}</Text>
+                                    <Text style={styles.plannerActionBtnText}>{t('umrahChecklistScreen.hotel', { city: cityLabel(data.outboundTo) })}</Text>
                                 </TouchableOpacity>
                                 {needsTransfer && data.transferDate && (
                                     <TouchableOpacity
-                                        style={[styles.plannerActionBtn, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
+                                        style={styles.plannerActionBtn}
                                         onPress={openSecondCityHotel}
                                     >
-                                        <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>{t('umrahChecklistScreen.hotel', { city: cityLabel(data.inboundFrom) })}</Text>
+                                        <Text style={styles.plannerActionBtnText}>{t('umrahChecklistScreen.hotel', { city: cityLabel(data.inboundFrom) })}</Text>
                                     </TouchableOpacity>
                                 )}
                             </View>
@@ -579,11 +545,11 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                     {/* Modals and Pickers */}
                     <Modal visible={showOutboundPicker} transparent animationType="fade" onRequestClose={() => setShowOutboundPicker(false)}>
                         <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowOutboundPicker(false)}>
-                            <View style={[styles.modalContent, { backgroundColor: theme.surface }]}>
-                                <Text style={[styles.modalTitle, { color: theme.text }]}>{t('umrahChecklistScreen.whereFrom')}</Text>
+                            <View style={styles.modalContent}>
+                                <Text style={styles.modalTitle}>{t('umrahChecklistScreen.whereFrom')}</Text>
                                 {TURKISH_CITIES.map((city) => (
-                                    <TouchableOpacity key={city.code} style={[styles.modalOption, { borderBottomColor: theme.border }]} onPress={() => selectOutboundCity(city)}>
-                                        <Text style={[styles.modalOptionText, { color: theme.text }]}>{city.name}</Text>
+                                    <TouchableOpacity key={city.code} style={styles.modalOption} onPress={() => selectOutboundCity(city)}>
+                                        <Text style={styles.modalOptionText}>{city.name}</Text>
                                     </TouchableOpacity>
                                 ))}
                             </View>
@@ -592,11 +558,11 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
 
                     <Modal visible={showInboundPicker} transparent animationType="fade" onRequestClose={() => setShowInboundPicker(false)}>
                         <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowInboundPicker(false)}>
-                            <View style={[styles.modalContent, { backgroundColor: theme.surface }]}>
-                                <Text style={[styles.modalTitle, { color: theme.text }]}>{t('umrahChecklistScreen.whereTo')}</Text>
+                            <View style={styles.modalContent}>
+                                <Text style={styles.modalTitle}>{t('umrahChecklistScreen.whereTo')}</Text>
                                 {TURKISH_CITIES.map((city) => (
-                                    <TouchableOpacity key={city.code} style={[styles.modalOption, { borderBottomColor: theme.border }]} onPress={() => selectInboundCity(city)}>
-                                        <Text style={[styles.modalOptionText, { color: theme.text }]}>{city.name}</Text>
+                                    <TouchableOpacity key={city.code} style={styles.modalOption} onPress={() => selectInboundCity(city)}>
+                                        <Text style={styles.modalOptionText}>{city.name}</Text>
                                     </TouchableOpacity>
                                 ))}
                             </View>
@@ -611,8 +577,8 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                     )}
 
                     {showIhramReminder && (
-                        <View style={[styles.compactReminder, { backgroundColor: theme.primary + '15' }]}>
-                            <Text style={[styles.compactReminderText, { color: theme.primary }]}>
+                        <View style={styles.compactReminder}>
+                            <Text style={[styles.compactReminderText, styles.reminderTextPrimary]}>
                                 {t('umrahChecklistScreen.ihramReminder')}
                             </Text>
                         </View>
@@ -622,20 +588,20 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
 
                 {/* COMPACT TRANSFER DATE (if needed) */}
                 {needsTransfer && (
-                    <View style={[styles.plannerCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-                        <Text style={[styles.plannerTitle, { color: theme.text }]}>
+                    <View style={styles.plannerCard}>
+                        <Text style={styles.plannerTitle}>
                             {t('umrahChecklistScreen.cityTransfer')}
                         </Text>
-                        <Text style={[styles.compactReminderText, { color: theme.textSecondary, textAlign: 'left', marginBottom: SPACING.sm }]}>
+                        <Text style={[styles.compactReminderText, styles.transferDescriptionText]}>
                             {t('umrahChecklistScreen.transferDateDescription', { from: cityLabel(data.outboundTo), to: cityLabel(data.inboundFrom) })}
                         </Text>
 
                         {/* Compact Date Row for Transfer */}
                         <View style={styles.compactDateRow}>
-                            <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>{t('umrahChecklistScreen.date')}</Text>
+                            <Text style={styles.compactDateLabel}>{t('umrahChecklistScreen.date')}</Text>
                             {Platform.OS === 'web' ? (
-                                <View style={{ flex: 1, position: 'relative', height: 35, justifyContent: 'center' }}>
-                                    <Text style={[styles.compactDateText, { color: data.transferDate ? theme.primary : theme.textSecondary }]}>
+                                <View style={styles.webDateInputWrapper}>
+                                    <Text style={[styles.compactDateText, data.transferDate ? styles.compactDateTextFilled : styles.compactDateTextPlaceholder]}>
                                         {formatDateForDisplay(data.transferDate)}
                                     </Text>
                                     <input
@@ -644,31 +610,16 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                         onChange={onTransferDateChangeWeb}
                                         min={formatDateForInput(data.outboundDate || new Date())}
                                         max={data.inboundDate ? formatDateForInput(data.inboundDate) : undefined}
-                                        style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            right: 0,
-                                            bottom: 0,
-                                            width: '100%',
-                                            height: '100%',
-                                            opacity: 0,
-                                            cursor: 'pointer',
-                                            zIndex: 2,
-                                            border: 'none',
-                                            outline: 'none',
-                                            // @ts-ignore
-                                            appearance: 'none'
-                                        }}
+                                        style={webDateInputStyle}
                                     />
                                 </View>
                             ) : (
                                 <TouchableOpacity
-                                    style={{ flex: 1 }}
+                                    style={styles.dateTouchable}
                                     onPress={() => setShowTransferDatePicker(true)}
                                     activeOpacity={0.7}
                                 >
-                                    <Text style={[styles.compactDateText, { color: data.transferDate ? theme.primary : theme.textSecondary }]}>
+                                    <Text style={[styles.compactDateText, data.transferDate ? styles.compactDateTextFilled : styles.compactDateTextPlaceholder]}>
                                         {formatDateForDisplay(data.transferDate)}
                                     </Text>
                                 </TouchableOpacity>
@@ -678,10 +629,10 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                         {/* Train Button - Show only if transfer date is selected */}
                         {data.transferDate && (
                             <TouchableOpacity
-                                style={[styles.plannerActionBtn, { backgroundColor: theme.primary + '10', borderColor: theme.primary, minHeight: 44 }]}
+                                style={[styles.plannerActionBtn, styles.plannerActionBtnTall]}
                                 onPress={() => openLink('https://sar.hhr.sa/home#/', 'Hızlı Tren')}
                             >
-                                <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>{t('umrahChecklistScreen.trainTicket')}</Text>
+                                <Text style={styles.plannerActionBtnText}>{t('umrahChecklistScreen.trainTicket')}</Text>
                             </TouchableOpacity>
                         )}
 
@@ -701,38 +652,38 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                 {/* External Links Section */}
                 <View style={styles.section}>
                     <TouchableOpacity
-                        style={[styles.linkButton, { backgroundColor: theme.surface, borderColor: theme.border }]}
+                        style={styles.linkButton}
                         onPress={() => openLink('https://visa.visitsaudi.com/', 'E-Vize')}
                     >
-                        <Text style={[styles.linkButtonText, { color: theme.text }]}>
+                        <Text style={styles.linkButtonText}>
                             {t('umrahChecklistScreen.eVisa')}
                         </Text>
                     </TouchableOpacity>
 
-                    <View style={[styles.nusukCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-                        <Text style={[styles.nusukTitle, { color: theme.text }]}>
+                    <View style={styles.nusukCard}>
+                        <Text style={styles.nusukTitle}>
                             {t('umrahChecklistScreen.nusukTitle')}
                         </Text>
-                        <Text style={[styles.nusukDesc, { color: theme.textSecondary }]}>
+                        <Text style={styles.nusukDesc}>
                             {t('umrahChecklistScreen.nusukDescription')}
                         </Text>
                         <View style={styles.appButtonsRow}>
                             <TouchableOpacity
-                                style={[styles.appButton, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
+                                style={styles.appButton}
                                 onPress={() => openLink('https://play.google.com/store/apps/details?id=com.moh.nusukapp&hl=tr', t('umrahChecklistScreen.nusukGooglePlay'))}
                             >
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                                <View style={styles.appButtonContent}>
                                     <Ionicons name="logo-google-playstore" size={18} color={theme.primary} />
-                                    <Text style={[styles.appButtonText, { color: theme.primary }]}>{t('umrahChecklistScreen.googlePlay')}</Text>
+                                    <Text style={styles.appButtonText}>{t('umrahChecklistScreen.googlePlay')}</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={[styles.appButton, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
+                                style={styles.appButton}
                                 onPress={() => openLink('https://apps.apple.com/tr/app/nusuk-%D9%86%D8%B3%D9%83/id6469515422?l=tr', t('umrahChecklistScreen.nusukAppStore'))}
                             >
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                                <View style={styles.appButtonContent}>
                                     <Ionicons name="logo-apple-appstore" size={18} color={theme.primary} />
-                                    <Text style={[styles.appButtonText, { color: theme.primary }]}>{t('umrahChecklistScreen.appStore')}</Text>
+                                    <Text style={styles.appButtonText}>{t('umrahChecklistScreen.appStore')}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -741,26 +692,24 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
 
                 {/* Checklist Section */}
                 <View style={styles.section}>
-                    <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                    <Text style={styles.sectionTitle}>
                         {t('umrahChecklistScreen.checklistTitle')}
                     </Text>
 
                     {CHECKLIST_ITEM_KEYS.map((key) => (
                         <TouchableOpacity
                             key={key}
-                            style={[styles.checklistItem, { backgroundColor: theme.surface, borderColor: theme.border }]}
+                            style={styles.checklistItem}
                             onPress={() => toggleChecklistItem(key)}
                         >
                             <View style={[
                                 styles.checkbox,
-                                { borderColor: theme.border },
-                                data.checklist[key] && { backgroundColor: theme.primary }
+                                data.checklist[key] && styles.checkboxChecked
                             ]}>
                                 {data.checklist[key] && <Text style={styles.checkmark}>✓</Text>}
                             </View>
                             <Text style={[
                                 styles.checklistText,
-                                { color: theme.text },
                                 data.checklist[key] && styles.checkedText
                             ]}>
                                 {t(`umrahChecklistScreen.items.${key}`)}
@@ -769,316 +718,8 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                     ))}
                 </View>
 
-                <View style={{ height: SPACING.xl }} />
+                <View style={styles.bottomSpacer} />
             </ScrollView>
         </SafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    content: {
-        flex: 1,
-        padding: SPACING.md,
-    },
-    section: {
-        marginBottom: SPACING.xl,
-    },
-    sectionTitle: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
-        marginBottom: SPACING.md,
-    },
-    plannerCard: {
-        padding: SPACING.md,
-        borderRadius: 16,
-        borderWidth: 1,
-        marginBottom: SPACING.lg,
-    },
-    plannerTitle: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: 'bold',
-        marginBottom: SPACING.md,
-    },
-    compactTripRow: {
-        paddingVertical: SPACING.xs,
-    },
-    compactTripMain: {
-        gap: SPACING.sm,
-    },
-    compactCitySelect: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: SPACING.sm,
-    },
-    cityChip: {
-        flex: 1,
-        height: 40,
-        borderRadius: 20,
-        borderWidth: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: SPACING.md,
-        gap: 4,
-    },
-    cityChipText: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-    },
-    tripArrow: {
-        fontSize: 16,
-    },
-    destinationChips: {
-        flex: 1,
-        flexDirection: 'row',
-        gap: 6,
-    },
-    destinationChip: {
-        flex: 1,
-        height: 40,
-        borderRadius: 20,
-        borderWidth: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    destinationChipText: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-    },
-    compactDateRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: SPACING.sm,
-        paddingLeft: SPACING.xs,
-    },
-    compactDateLabel: {
-        fontSize: 14,
-        fontWeight: 'bold',
-    },
-    compactDateText: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: 'bold',
-    },
-    plannerDivider: {
-        height: 1,
-        marginVertical: SPACING.md,
-        opacity: 0.5,
-    },
-    plannerActions: {
-        flexDirection: 'row',
-        gap: SPACING.sm,
-        marginTop: SPACING.md,
-    },
-    plannerActionBtn: {
-        flex: 1,
-        height: 44,
-        borderRadius: 12,
-        borderWidth: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    plannerActionBtnText: {
-        fontSize: 14,
-        fontWeight: 'bold',
-    },
-    compactReminder: {
-        marginTop: SPACING.md,
-        padding: SPACING.sm,
-        borderRadius: 10,
-    },
-    compactReminderText: {
-        fontSize: 13,
-        fontWeight: '600',
-        textAlign: 'center',
-    },
-    label: {
-        fontSize: FONT_SIZES.medium,
-        marginBottom: SPACING.xs,
-        marginTop: SPACING.sm,
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: SPACING.md,
-        fontSize: FONT_SIZES.medium,
-    },
-    pickerButton: {
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: SPACING.md,
-        fontSize: FONT_SIZES.medium,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    pickerButtonText: {
-        fontSize: FONT_SIZES.medium,
-    },
-    pickerArrow: {
-        fontSize: FONT_SIZES.small,
-    },
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: SPACING.lg,
-    },
-    modalContent: {
-        width: '100%',
-        maxWidth: 400,
-        borderRadius: 12,
-        padding: SPACING.lg,
-        maxHeight: '80%',
-    },
-    modalTitle: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: 'bold',
-        marginBottom: SPACING.md,
-        textAlign: 'center',
-    },
-    modalOption: {
-        padding: SPACING.md,
-        borderBottomWidth: 1,
-    },
-    modalOptionText: {
-        fontSize: FONT_SIZES.medium,
-        textAlign: 'center',
-    },
-    destinationButtons: {
-        flexDirection: 'row',
-        gap: SPACING.xs,
-    },
-    destinationButton: {
-        flex: 1,
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: SPACING.md,
-        alignItems: 'center',
-    },
-    destinationButtonText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-    },
-    destinationButtonSmall: {
-        flex: 1,
-        borderWidth: 1,
-        borderRadius: 6,
-        padding: SPACING.sm,
-        alignItems: 'center',
-    },
-    destinationButtonTextSmall: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-    },
-    dateButton: {
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: SPACING.md,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    dateButtonText: {
-        fontSize: FONT_SIZES.medium,
-    },
-    reminder: {
-        marginTop: SPACING.md,
-        padding: SPACING.md,
-        borderRadius: 8,
-        borderWidth: 1,
-    },
-    reminderText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-    },
-    infoText: {
-
-        fontSize: FONT_SIZES.small,
-        marginBottom: SPACING.sm,
-        fontStyle: 'italic',
-    },
-    linkButton: {
-        borderWidth: 1,
-        borderRadius: 12,
-        padding: SPACING.md,
-        marginBottom: SPACING.sm,
-        alignItems: 'center',
-    },
-    linkButtonText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-    },
-    appLinks: {
-        marginTop: SPACING.md,
-    },
-    appLinksTitle: {
-        fontSize: FONT_SIZES.medium,
-        marginBottom: SPACING.sm,
-    },
-    nusukCard: {
-        padding: SPACING.md,
-        borderRadius: 16,
-        borderWidth: 1,
-        marginTop: SPACING.sm,
-    },
-    nusukTitle: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: 'bold',
-        marginBottom: 4,
-    },
-    nusukDesc: {
-        fontSize: FONT_SIZES.small,
-        marginBottom: SPACING.md,
-    },
-    appButtonsRow: {
-        flexDirection: 'row',
-        gap: SPACING.sm,
-    },
-    appButton: {
-        flex: 1,
-        borderWidth: 1,
-        borderRadius: 12,
-        paddingVertical: SPACING.md,
-        paddingHorizontal: SPACING.sm,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    appButtonText: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: 'bold',
-    },
-    checklistItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: SPACING.md,
-        borderRadius: 12,
-        marginBottom: SPACING.sm,
-        borderWidth: 1,
-    },
-    checkbox: {
-        width: 24,
-        height: 24,
-        borderRadius: 4,
-        borderWidth: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: SPACING.md,
-    },
-    checkmark: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    checklistText: {
-        fontSize: FONT_SIZES.medium,
-        flex: 1,
-    },
-    checkedText: {
-        textDecorationLine: 'line-through',
-        opacity: 0.6,
-    },
-});

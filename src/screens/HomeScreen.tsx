@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   SafeAreaView,
   ActivityIndicator,
   TouchableOpacity,
@@ -13,11 +12,11 @@ import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle
 import { DownloadRequired } from '../components/DownloadRequired';
 import { quranData } from '../data/quranData';
 import { Surah } from '../types';
-import { useTheme, Theme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../constants';
+import { useTheme } from '../contexts/ThemeContext';
 import { useDownloadData } from '../hooks/useDownloadData';
 import { useTranslation } from 'react-i18next';
 import { getSurahName } from '../utils/surahName';
+import { createStyles } from './HomeScreen.styles';
 
 interface HomeScreenProps {
   navigation: any;
@@ -34,6 +33,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 }) => {
   const { theme } = useTheme();
   const { t } = useTranslation();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [loading, setLoading] = useState(true);
   const {
@@ -85,7 +85,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
   if (loading) {
     return (
-      <SafeAreaView style={createStyles(theme).container}>
+      <SafeAreaView style={styles.container}>
         <HeaderWithDarkModeToggle
           title={t('homeScreen.arabicTitle')}
           subtitle={t('homeScreen.subtitle')}
@@ -94,9 +94,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           showHomeButton={true}
           onHomePress={() => navigation.navigate('Main')}
         />
-        <View style={createStyles(theme).loadingContainer}>
+        <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={theme.primary} />
-          <Text style={createStyles(theme).loadingText}>{t('homeScreen.loading')}</Text>
+          <Text style={styles.loadingText}>{t('homeScreen.loading')}</Text>
         </View>
       </SafeAreaView>
     );
@@ -105,7 +105,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   // Show download screen if data is not available
   if (!isDataAvailable) {
     return (
-      <SafeAreaView style={createStyles(theme).container}>
+      <SafeAreaView style={styles.container}>
         <HeaderWithDarkModeToggle
           title={t('homeScreen.arabicTitle')}
           subtitle={t('homeScreen.subtitle')}
@@ -129,16 +129,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   }
 
   return (
-    <SafeAreaView style={createStyles(theme).container}>
+    <SafeAreaView style={styles.container}>
       <HeaderWithDarkModeToggle
         title={t('homeScreen.arabicTitle')}
         subtitle={t('homeScreen.subtitle')}
         showBackButton={true}
         onBackPress={() => navigation.navigate('Main')}
       />
-      <View style={createStyles(theme).searchContainer}>
+      <View style={styles.searchContainer}>
         <TextInput
-          style={createStyles(theme).searchInput}
+          style={styles.searchInput}
           placeholder={t('homeScreen.searchPlaceholder')}
           placeholderTextColor={theme.textSecondary}
           value={searchQuery}
@@ -148,10 +148,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         />
         {searchQuery.length > 0 && (
           <TouchableOpacity
-            style={createStyles(theme).clearButton}
+            style={styles.clearButton}
             onPress={() => setSearchQuery('')}
           >
-            <Text style={createStyles(theme).clearButtonText}>✕</Text>
+            <Text style={styles.clearButtonText}>✕</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -163,45 +163,3 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     </SafeAreaView>
   );
 };
-
-const createStyles = (theme: Theme) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.background,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: SPACING.xl,
-  },
-  loadingText: {
-    marginTop: SPACING.md,
-    fontSize: FONT_SIZES.medium,
-    color: theme.textSecondary,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: theme.cardBackground,
-    marginHorizontal: SPACING.md,
-    marginTop: SPACING.md,
-    borderRadius: 10,
-    paddingHorizontal: SPACING.md,
-    borderWidth: 1,
-    borderColor: theme.border,
-  },
-  searchInput: {
-    flex: 1,
-    height: 44,
-    fontSize: FONT_SIZES.medium,
-    color: theme.text,
-  },
-  clearButton: {
-    padding: SPACING.xs,
-  },
-  clearButtonText: {
-    fontSize: FONT_SIZES.medium,
-    color: theme.textSecondary,
-  },
-});

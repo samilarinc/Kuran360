@@ -1,12 +1,12 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import {
     Text,
     TouchableOpacity,
-    StyleSheet,
     Animated,
 } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { useDebouncedToggle } from '../hooks/useDebouncedState';
+import { createStyles } from './AutoplayToggle.styles';
 
 interface AutoplayToggleProps {
     isEnabled: boolean;
@@ -18,6 +18,7 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
     onToggle,
 }) => {
     const { theme } = useTheme();
+    const styles = useMemo(() => createStyles(theme), [theme]);
     const slideAnimation = useRef(new Animated.Value(isEnabled ? 1 : 0)).current;
     const { isEnabled: displayState, toggle } = useDebouncedToggle(
         isEnabled,
@@ -52,9 +53,9 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
                 <Animated.View
                     style={[
                         styles.knob,
+                        styles.knobWhite,
                         {
                             transform: [{ translateX }],
-                            backgroundColor: '#FFFFFF',
                         }
                     ]}
                 >
@@ -66,35 +67,3 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
         </TouchableOpacity>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        width: 60,
-        height: 28,
-        borderRadius: 14,
-        justifyContent: 'center',
-        position: 'relative',
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.4)',
-    },
-    knob: {
-        width: 24,
-        height: 24,
-        borderRadius: 12,
-        position: 'absolute',
-        justifyContent: 'center',
-        alignItems: 'center',
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.22,
-        shadowRadius: 2.22,
-    },
-    icon: {
-        fontSize: 12,
-        textAlign: 'center',
-    },
-});

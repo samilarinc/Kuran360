@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     TouchableOpacity,
     SafeAreaView,
     Dimensions,
@@ -23,8 +22,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { useDownloadData } from '../hooks/useDownloadData';
 import { getRandomVerse } from '../data/quranData';
 import { Surah, Verse as VerseType } from '../types';
-import { FONT_SIZES, SPACING } from '../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createStyles } from './RandomVerseScreen.styles';
 
 interface RandomVerseScreenProps {
     navigation: {
@@ -47,6 +46,7 @@ const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation, isDataAvailable }) => {
     const { theme } = useTheme();
     const { t } = useTranslation();
+    const styles = useMemo(() => createStyles(theme), [theme]);
     const { settings } = useDebouncedSettings(200);
     const { audioState, playVerse } = useGlobalAudio();
     const { user } = useAuth();
@@ -198,7 +198,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
 
     if (!isDataAvailable) {
         return (
-            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <SafeAreaView style={styles.container}>
                 <HeaderWithDarkModeToggle
                     title={t('screenTitles.randomVerse')}
                     showBackButton={true}
@@ -222,10 +222,10 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
 
     if (isLoading) {
         return (
-            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator size="large" color={theme.primary} />
-                    <Text style={[styles.loadingText, { color: theme.text }]}>{t('randomVerseScreen.loading')}</Text>
+                    <Text style={styles.loadingText}>{t('randomVerseScreen.loading')}</Text>
                 </View>
             </SafeAreaView>
         );
@@ -233,14 +233,14 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
 
     if (!currentVerse) {
         return (
-            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.errorContainer}>
-                    <Text style={[styles.errorText, { color: theme.text }]}>{t('randomVerseScreen.loadError')}</Text>
+                    <Text style={styles.errorText}>{t('randomVerseScreen.loadError')}</Text>
                     <TouchableOpacity
-                        style={[styles.retryButton, { backgroundColor: theme.primary }]}
+                        style={styles.retryButton}
                         onPress={() => loadRandomVerse(true)}
                     >
-                        <Text style={[styles.retryButtonText, { color: '#FFFFFF' }]}>
+                        <Text style={styles.retryButtonText}>
                             {t('randomVerseScreen.retry')}
                         </Text>
                     </TouchableOpacity>
@@ -250,7 +250,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
     }
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={styles.container}>
             {/* Header */}
             <HeaderWithDarkModeToggle
                 title={t('screenTitles.randomVerse')}
@@ -290,41 +290,41 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
 
             {/* Surah info moved to bottom */}
             <TouchableOpacity
-                style={[styles.surahInfoContainer, { backgroundColor: theme.surface }]}
+                style={styles.surahInfoContainer}
                 onPress={handleGoToSurah}
                 activeOpacity={0.7}
             >
                 <View style={styles.surahInfoContent}>
                     <View style={styles.surahNameSection}>
-                        <Text style={[styles.surahName, { color: theme.text }]}>
+                        <Text style={styles.surahName}>
                             {getSurahName(t, currentVerse.surah)}
                         </Text>
-                        <Text style={[styles.surahArabicName, { color: theme.textSecondary }]}>
+                        <Text style={styles.surahArabicName}>
                             {currentVerse.surah.arabicName}
                         </Text>
                     </View>
-                    <View style={[styles.verseNumberBadge, { backgroundColor: theme.primary }]}>
-                        <Text style={[styles.verseNumberLabel, { color: '#FFFFFF' }]}>
+                    <View style={styles.verseNumberBadge}>
+                        <Text style={styles.verseNumberLabel}>
                             {t('randomVerseScreen.verseBadge')}
                         </Text>
-                        <Text style={[styles.verseNumberText, { color: '#FFFFFF' }]}>
+                        <Text style={styles.verseNumberText}>
                             {currentVerse.verseIndex + 1}
                         </Text>
                     </View>
                 </View>
                 <View style={styles.surahMetaInfo}>
-                    <View style={[styles.metaChip, { backgroundColor: theme.primary + '15' }]}>
-                        <Text style={[styles.metaText, { color: theme.primary }]}>
+                    <View style={styles.metaChip}>
+                        <Text style={styles.metaText}>
                             {t('randomVerseScreen.surahLabel', { number: currentVerse.surah.number })}
                         </Text>
                     </View>
-                    <View style={[styles.metaChip, { backgroundColor: theme.primary + '15' }]}>
-                        <Text style={[styles.metaText, { color: theme.primary }]}>
+                    <View style={styles.metaChip}>
+                        <Text style={styles.metaText}>
                             {t('randomVerseScreen.placeLabel', { place: currentVerse.surah.revelationPlace })}
                         </Text>
                     </View>
-                    <View style={[styles.metaChip, { backgroundColor: theme.primary + '15' }]}>
-                        <Text style={[styles.metaText, { color: theme.primary }]}>
+                    <View style={styles.metaChip}>
+                        <Text style={styles.metaText}>
                             {t('randomVerseScreen.verseCountLabel', { count: currentVerse.surah.verseCount })}
                         </Text>
                     </View>
@@ -332,14 +332,11 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
             </TouchableOpacity>
 
             {/* Bottom actions */}
-            <View style={[styles.bottomActions, { backgroundColor: theme.surface }]}>
+            <View style={styles.bottomActions}>
                 <TouchableOpacity
                     style={[
                         styles.newVerseButton,
-                        {
-                            backgroundColor: theme.primary,
-                            opacity: isLoadingNew ? 0.6 : 1
-                        }
+                        { opacity: isLoadingNew ? 0.6 : 1 },
                     ]}
                     onPress={handleNewRandomVerse}
                     disabled={isLoadingNew || isAnimating}
@@ -347,7 +344,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                     {isLoadingNew ? (
                         <ActivityIndicator size="small" color="#FFFFFF" />
                     ) : (
-                        <Text style={[styles.newVerseButtonText, { color: '#FFFFFF' }]}>
+                        <Text style={styles.newVerseButtonText}>
                             {t('randomVerseScreen.newVerseButton')}
                         </Text>
                     )}
@@ -356,154 +353,3 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
         </SafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: SPACING.md,
-    },
-    loadingText: {
-        fontSize: FONT_SIZES.medium,
-    },
-    errorContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: SPACING.lg,
-        padding: SPACING.lg,
-    },
-    errorText: {
-        fontSize: FONT_SIZES.large,
-        textAlign: 'center',
-    },
-    retryButton: {
-        paddingHorizontal: SPACING.lg,
-        paddingVertical: SPACING.md,
-        borderRadius: 8,
-    },
-    retryButtonText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: 'bold',
-    },
-    verseContainer: {
-        flex: 1,
-        position: 'relative',
-    },
-    verseContent: {
-        flex: 1,
-        width: '100%',
-    },
-    scrollView: {
-        flex: 1,
-    },
-    scrollContentContainer: {
-        flexGrow: 1,
-        paddingBottom: SPACING.xl * 3, // Extra space for surah info and bottom actions
-        paddingHorizontal: SPACING.md,
-    },
-    surahInfoContainer: {
-        padding: SPACING.md,
-        margin: SPACING.md,
-        marginBottom: SPACING.xl, // Extra bottom margin for better scroll space
-        borderRadius: 16,
-        elevation: 3,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-    },
-    surahInfoContent: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: SPACING.xs,
-    },
-    surahNameSection: {
-        alignItems: 'center',
-    },
-    surahName: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: 'bold',
-        marginBottom: 2,
-        textAlign: 'center',
-    },
-    surahArabicName: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '500',
-        textAlign: 'center',
-    },
-    verseNumberBadge: {
-        paddingHorizontal: SPACING.md,
-        paddingVertical: SPACING.sm,
-        borderRadius: 16,
-        minWidth: 60,
-        alignItems: 'center',
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-    },
-    verseNumberLabel: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-        marginBottom: 2,
-        letterSpacing: 0.5,
-    },
-    verseNumberText: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: 'bold',
-    },
-    surahMetaInfo: {
-        flexDirection: 'row',
-        gap: SPACING.sm,
-        marginTop: SPACING.sm,
-    },
-    metaChip: {
-        paddingHorizontal: SPACING.sm,
-        paddingVertical: 4,
-        borderRadius: 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    metaText: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '500',
-    },
-    surahDetails: {
-        fontSize: FONT_SIZES.small,
-        fontStyle: 'italic',
-    },
-    bottomActions: {
-        padding: SPACING.md,
-        paddingBottom: SPACING.xl, // Extra bottom padding for better accessibility
-        borderTopWidth: 1,
-        borderTopColor: '#E0E0E0',
-    },
-    swipeHint: {
-        fontSize: FONT_SIZES.small,
-        textAlign: 'center',
-        marginBottom: SPACING.md,
-        fontStyle: 'italic',
-    },
-    newVerseButton: {
-        paddingVertical: SPACING.md,
-        paddingHorizontal: SPACING.lg,
-        borderRadius: 12,
-        alignItems: 'center',
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-    },
-    newVerseButtonText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: 'bold',
-    },
-});

@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
     View,
     Text,
     TouchableOpacity,
     Modal,
-    StyleSheet,
     ScrollView,
     SafeAreaView,
     Image,
@@ -18,13 +17,13 @@ import { NativeVerseImageDesign } from './NativeVerseImageDesign';
 declare const window: any;
 declare const navigator: any;
 declare const ClipboardItem: any;
-import { useTheme, Theme } from '../contexts/ThemeContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { VerseShareData, ImageSize } from '../types';
 import { ShareService } from '../utils/shareUtils';
-import { FONT_SIZES, SPACING } from '../constants';
 import { IMAGE_SIZES } from '../utils/imageSizes';
 import { useSettings } from '../contexts/SettingsContext';
 import { ARABIC_FONT_OPTIONS, DEFAULT_IMAGE_FONT_ID, getFontOption, loadGoogleFont } from '../constants/fonts';
+import { createStyles } from './ImagePreviewModal.styles';
 
 interface ImagePreviewModalProps {
     isVisible: boolean;
@@ -43,6 +42,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     const [selectedFontId, setSelectedFontId] = React.useState(settings.imageArabicFont ?? DEFAULT_IMAGE_FONT_ID);
     const [fontScale, setFontScale] = React.useState(1.0);
     const { theme } = useTheme();
+    const styles = useMemo(() => createStyles(theme), [theme]);
     const [currentImage, setCurrentImage] = React.useState(imageUrl);
     const [mode, setMode] = React.useState<'light' | 'dark'>('light');
     const [selectedSize, setSelectedSize] = React.useState<ImageSize>(IMAGE_SIZES[6]); // Default to classic
@@ -177,15 +177,15 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
         >
             <View style={styles.overlay}>
                 <SafeAreaView style={styles.container}>
-                    <View style={[styles.modal, { backgroundColor: theme.background }]}>
+                    <View style={styles.modal}>
 
                         {/* Header */}
-                        <View style={[styles.header, { borderBottomColor: theme.border }]}>
-                            <Text style={[styles.title, { color: theme.text }]}>
+                        <View style={styles.header}>
+                            <Text style={styles.title}>
                                 Ayet Resmi
                             </Text>
                             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                                <Text style={[styles.closeButtonText, { color: theme.textSecondary }]}>
+                                <Text style={styles.closeButtonText}>
                                     ✕
                                 </Text>
                             </TouchableOpacity>
@@ -194,7 +194,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
 
                             {/* Image Preview */}
-                            <View style={[styles.imageContainer, { backgroundColor: theme.surface }]}>
+                            <View style={styles.imageContainer}>
                                 <Image
                                     source={{ uri: currentImage }}
                                     style={styles.image}
@@ -204,7 +204,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
                             {/* Font Selection */}
                             <View style={styles.controlSection}>
-                                <Text style={[styles.sectionTitle, { color: theme.text }]}>Yazı Tipi</Text>
+                                <Text style={styles.sectionTitle}>Yazı Tipi</Text>
                                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView}>
                                     <View style={styles.sizeRow}>
                                         {ARABIC_FONT_OPTIONS.map(font => {
@@ -215,17 +215,20 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                                     disabled={isGenerating}
                                                     style={[
                                                         styles.sizeButton,
-                                                        { backgroundColor: isSelected ? theme.primary : theme.cardBackground },
+                                                        isSelected && styles.sizeButtonSelected,
                                                     ]}
                                                     onPress={() => {
                                                         setSelectedFontId(font.id);
                                                         regenerateImage(mode, selectedSize, font.id, fontScale);
                                                     }}
                                                 >
-                                                    <Text style={{ color: isSelected ? '#fff' : theme.text, fontSize: 20, fontFamily: Platform.OS === 'web' ? font.css : undefined }}>
+                                                    <Text style={[
+                                                        isSelected ? styles.fontLabelArSelected : styles.fontLabelArDefault,
+                                                        { fontFamily: Platform.OS === 'web' ? font.css : undefined },
+                                                    ]}>
                                                         {font.labelAr}
                                                     </Text>
-                                                    <Text style={{ color: isSelected ? '#fff' : theme.textSecondary, fontSize: 10, marginTop: 2 }}>
+                                                    <Text style={isSelected ? styles.fontLabelTrSelected : styles.fontLabelTrDefault}>
                                                         {font.label}
                                                     </Text>
                                                 </TouchableOpacity>
@@ -237,12 +240,12 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
                             {/* Font Scale */}
                             <View style={styles.controlSection}>
-                                <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                                <Text style={styles.sectionTitle}>
                                     Yazı Boyutu ({Math.round(fontScale * 100)}%)
                                 </Text>
                                 <View style={styles.controlRow}>
                                     <TouchableOpacity
-                                        style={[styles.controlButton, { backgroundColor: theme.cardBackground, flex: 1 }]}
+                                        style={[styles.controlButton, styles.controlButtonBg, styles.controlButtonFlex]}
                                         disabled={isGenerating || fontScale <= 0.5}
                                         onPress={() => {
                                             const s = Math.max(0.5, Math.round((fontScale - 0.1) * 10) / 10);
@@ -250,20 +253,20 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                             regenerateImage(mode, selectedSize, selectedFontId, s);
                                         }}
                                     >
-                                        <Text style={{ fontSize: 14, color: theme.text, fontWeight: '700' }}>A−</Text>
+                                        <Text style={styles.scaleButtonTextSmall}>A−</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        style={[styles.controlButton, { backgroundColor: theme.cardBackground, flex: 1 }]}
+                                        style={[styles.controlButton, styles.controlButtonBg, styles.controlButtonFlex]}
                                         disabled={isGenerating}
                                         onPress={() => {
                                             setFontScale(1.0);
                                             regenerateImage(mode, selectedSize, selectedFontId, 1.0);
                                         }}
                                     >
-                                        <Text style={[styles.actionText, { color: theme.text, fontSize: 12 }]}>Sıfırla</Text>
+                                        <Text style={[styles.actionText, styles.actionTextSmall]}>Sıfırla</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        style={[styles.controlButton, { backgroundColor: theme.cardBackground, flex: 1 }]}
+                                        style={[styles.controlButton, styles.controlButtonBg, styles.controlButtonFlex]}
                                         disabled={isGenerating || fontScale >= 2.0}
                                         onPress={() => {
                                             const s = Math.min(2.0, Math.round((fontScale + 0.1) * 10) / 10);
@@ -271,22 +274,22 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                             regenerateImage(mode, selectedSize, selectedFontId, s);
                                         }}
                                     >
-                                        <Text style={{ fontSize: 20, color: theme.text, fontWeight: '700' }}>A+</Text>
+                                        <Text style={styles.scaleButtonTextLarge}>A+</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
 
                             {/* Theme Selection */}
                             <View style={styles.controlSection}>
-                                <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                                <Text style={styles.sectionTitle}>
                                     Tema Seçimi
                                 </Text>
                                 <View style={styles.controlRow}>
                                     <TouchableOpacity
                                         style={[
                                             styles.controlButton,
-                                            { backgroundColor: theme.cardBackground },
-                                            mode === 'light' && { backgroundColor: theme.primary }
+                                            styles.controlButtonBg,
+                                            mode === 'light' && styles.controlButtonActive
                                         ]}
                                         onPress={() => regenerateImage('light', selectedSize)}
                                         disabled={isGenerating}
@@ -294,7 +297,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                         <Text style={styles.actionIcon}>🔆</Text>
                                         <Text style={[
                                             styles.actionText,
-                                            { color: mode === 'light' ? '#fff' : theme.text }
+                                            mode === 'light' && styles.textOnPrimary
                                         ]}>
                                             Light
                                         </Text>
@@ -302,8 +305,8 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                     <TouchableOpacity
                                         style={[
                                             styles.controlButton,
-                                            { backgroundColor: theme.cardBackground },
-                                            mode === 'dark' && { backgroundColor: theme.primary }
+                                            styles.controlButtonBg,
+                                            mode === 'dark' && styles.controlButtonActive
                                         ]}
                                         onPress={() => regenerateImage('dark', selectedSize)}
                                         disabled={isGenerating}
@@ -311,7 +314,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                         <Text style={styles.actionIcon}>🌙</Text>
                                         <Text style={[
                                             styles.actionText,
-                                            { color: mode === 'dark' ? '#fff' : theme.text }
+                                            mode === 'dark' && styles.textOnPrimary
                                         ]}>
                                             Dark
                                         </Text>
@@ -321,7 +324,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
                             {/* Size Selection */}
                             <View style={styles.controlSection}>
-                                <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                                <Text style={styles.sectionTitle}>
                                     Boyut Seçimi
                                 </Text>
                                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView}>
@@ -331,8 +334,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                                 key={size.id}
                                                 style={[
                                                     styles.sizeButton,
-                                                    { backgroundColor: theme.cardBackground },
-                                                    selectedSize.id === size.id && { backgroundColor: theme.primary }
+                                                    selectedSize.id === size.id && styles.sizeButtonSelected
                                                 ]}
                                                 onPress={() => regenerateImage(mode, size)}
                                                 disabled={isGenerating}
@@ -340,19 +342,19 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                                 <Text style={styles.sizeIcon}>{size.icon}</Text>
                                                 <Text style={[
                                                     styles.sizeTitle,
-                                                    { color: selectedSize.id === size.id ? '#fff' : theme.text }
+                                                    selectedSize.id === size.id && styles.textOnPrimary
                                                 ]}>
                                                     {size.displayName}
                                                 </Text>
                                                 <Text style={[
                                                     styles.sizeDescription,
-                                                    { color: selectedSize.id === size.id ? '#fff' : theme.textSecondary }
+                                                    selectedSize.id === size.id && styles.textOnPrimary
                                                 ]}>
                                                     {size.description}
                                                 </Text>
                                                 <Text style={[
                                                     styles.sizeDimensions,
-                                                    { color: selectedSize.id === size.id ? '#fff' : theme.textSecondary }
+                                                    selectedSize.id === size.id && styles.textOnPrimary
                                                 ]}>
                                                     {size.width}×{size.height}
                                                 </Text>
@@ -364,7 +366,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
                             {isGenerating && (
                                 <View style={styles.loadingContainer}>
-                                    <Text style={[styles.loadingText, { color: theme.textSecondary }]}>
+                                    <Text style={styles.loadingText}>
                                         🔄 Resim oluşturuluyor...
                                     </Text>
                                 </View>
@@ -372,35 +374,35 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
                             {/* Image Actions */}
                             <View style={styles.actionsContainer}>
-                                <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                                <Text style={styles.sectionTitle}>
                                     Resim İşlemleri
                                 </Text>
 
                                 <View style={styles.actionButtons}>
                                     <TouchableOpacity
-                                        style={[styles.actionButton, { backgroundColor: theme.cardBackground }]}
+                                        style={styles.actionButton}
                                         onPress={handleDownload}
                                     >
                                         <Text style={styles.actionIcon}>📥</Text>
-                                        <Text style={[styles.actionText, { color: theme.text }]}>İndir</Text>
+                                        <Text style={styles.actionText}>İndir</Text>
                                     </TouchableOpacity>
 
                                     {Platform.OS === 'web' && (
                                         <>
                                             <TouchableOpacity
-                                                style={[styles.actionButton, { backgroundColor: theme.cardBackground }]}
+                                                style={styles.actionButton}
                                                 onPress={handleCopy}
                                             >
                                                 <Text style={styles.actionIcon}>📋</Text>
-                                                <Text style={[styles.actionText, { color: theme.text }]}>Kopyala</Text>
+                                                <Text style={styles.actionText}>Kopyala</Text>
                                             </TouchableOpacity>
 
                                             <TouchableOpacity
-                                                style={[styles.actionButton, { backgroundColor: theme.cardBackground }]}
+                                                style={styles.actionButton}
                                                 onPress={handleOpenInNewTab}
                                             >
                                                 <Text style={styles.actionIcon}>🔗</Text>
-                                                <Text style={[styles.actionText, { color: theme.text }]}>Yeni Sekmede Aç</Text>
+                                                <Text style={styles.actionText}>Yeni Sekmede Aç</Text>
                                             </TouchableOpacity>
                                         </>
                                     )}
@@ -409,7 +411,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
                             {/* Share Platforms */}
                             <View style={styles.shareContainer}>
-                                <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                                <Text style={styles.sectionTitle}>
                                     Paylaş
                                 </Text>
 
@@ -417,12 +419,12 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                     {platforms.map((platform) => (
                                         <TouchableOpacity
                                             key={platform.id}
-                                            style={[styles.platformButton, { backgroundColor: theme.cardBackground }]}
+                                            style={styles.platformButton}
                                             onPress={() => handlePlatformShare(platform.id)}
                                             activeOpacity={0.7}
                                         >
                                             <Text style={styles.platformIcon}>{platform.icon}</Text>
-                                            <Text style={[styles.platformName, { color: theme.text }]}>
+                                            <Text style={styles.platformName}>
                                                 {platform.name}
                                             </Text>
                                         </TouchableOpacity>
@@ -431,8 +433,8 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                             </View>
 
                             {/* Verse Info */}
-                            <View style={[styles.verseInfo, { backgroundColor: theme.surface }]}>
-                                <Text style={[styles.verseInfoText, { color: theme.textSecondary }]}>
+                            <View style={styles.verseInfo}>
+                                <Text style={styles.verseInfoText}>
                                     📖 {verseData.surahName} Suresi, {verseData.verseNumber}. Ayet
                                 </Text>
                             </View>
@@ -444,7 +446,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
             {/* Hidden view for capturing on Native */}
             {Platform.OS !== 'web' && (
-                <View style={{ position: 'absolute', left: -9999, top: 0, opacity: 0 }}>
+                <View style={styles.hiddenCapture}>
                     <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
                         <NativeVerseImageDesign
                             verseData={verseData}
@@ -458,179 +460,3 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     );
 };
 
-const styles = StyleSheet.create({
-    overlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.9)',
-        justifyContent: 'center',
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingHorizontal: SPACING.lg,
-    },
-    modal: {
-        borderRadius: 20,
-        maxHeight: '90%',
-        minHeight: '60%',
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: SPACING.lg,
-        paddingVertical: SPACING.md,
-        borderBottomWidth: 1,
-    },
-    title: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: '600',
-    },
-    closeButton: {
-        width: 32,
-        height: 32,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    closeButtonText: {
-        fontSize: 20,
-        fontWeight: '600',
-    },
-    content: {
-        flex: 1,
-    },
-    imageContainer: {
-        margin: SPACING.lg,
-        borderRadius: 12,
-        padding: SPACING.sm,
-        alignItems: 'center',
-    },
-    image: {
-        width: '100%',
-        height: 300,
-        borderRadius: 8,
-    },
-    controlSection: {
-        paddingHorizontal: SPACING.lg,
-        marginBottom: SPACING.md,
-    },
-    controlRow: {
-        flexDirection: 'row',
-        gap: SPACING.sm,
-        justifyContent: 'center',
-    },
-    controlButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: SPACING.md,
-        paddingVertical: SPACING.sm,
-        borderRadius: 8,
-        minWidth: 100,
-        justifyContent: 'center',
-    },
-    sizeScrollView: {
-        marginVertical: SPACING.sm,
-    },
-    sizeRow: {
-        flexDirection: 'row',
-        gap: SPACING.sm,
-        paddingHorizontal: SPACING.sm,
-    },
-    sizeButton: {
-        padding: SPACING.md,
-        borderRadius: 12,
-        alignItems: 'center',
-        minWidth: 120,
-        maxWidth: 140,
-    },
-    sizeIcon: {
-        fontSize: 24,
-        marginBottom: SPACING.xs,
-    },
-    sizeTitle: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-        textAlign: 'center',
-        marginBottom: SPACING.xs,
-    },
-    sizeDescription: {
-        fontSize: FONT_SIZES.small - 2,
-        textAlign: 'center',
-        marginBottom: SPACING.xs,
-    },
-    sizeDimensions: {
-        fontSize: FONT_SIZES.small - 2,
-        textAlign: 'center',
-        fontFamily: 'monospace',
-    },
-    loadingContainer: {
-        alignItems: 'center',
-        paddingVertical: SPACING.md,
-    },
-    loadingText: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '500',
-    },
-    actionsContainer: {
-        paddingHorizontal: SPACING.lg,
-        marginBottom: SPACING.lg,
-    },
-    sectionTitle: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-        marginBottom: SPACING.sm,
-    },
-    actionButtons: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: SPACING.sm,
-    },
-    actionButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: SPACING.md,
-        paddingVertical: SPACING.sm,
-        borderRadius: 8,
-        minWidth: 100,
-    },
-    actionIcon: {
-        fontSize: 18,
-        marginRight: SPACING.xs,
-    },
-    actionText: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '500',
-    },
-    shareContainer: {
-        paddingHorizontal: SPACING.lg,
-        marginBottom: SPACING.lg,
-    },
-    platformList: {
-        gap: SPACING.sm,
-    },
-    platformButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: SPACING.md,
-        paddingHorizontal: SPACING.md,
-        borderRadius: 12,
-    },
-    platformIcon: {
-        fontSize: 20,
-        marginRight: SPACING.md,
-    },
-    platformName: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '500',
-    },
-    verseInfo: {
-        margin: SPACING.lg,
-        padding: SPACING.md,
-        borderRadius: 12,
-        alignItems: 'center',
-    },
-    verseInfoText: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-    },
-});

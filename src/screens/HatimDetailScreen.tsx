@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     FlatList,
     TouchableOpacity,
     ActivityIndicator,
@@ -23,6 +22,7 @@ import { HatimService } from '../services/HatimService';
 import { Hatim, HatimPart } from '../types';
 import { SPACING, FONT_SIZES } from '../constants';
 import { AppHeader } from '../components/AppHeader';
+import { createStyles } from './HatimDetailScreen.styles';
 
 interface HatimDetailScreenProps {
     navigation: any;
@@ -51,6 +51,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     const [hasDeadline, setHasDeadline] = useState(false);
     const [timeLeft, setTimeLeft] = useState<string>('');
     const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const styles = useMemo(() => createStyles(theme), [theme]);
 
     // Responsive grid calculations
     const containerPadding = SPACING.lg * 2;
@@ -269,7 +270,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
 
     if (loading) {
         return (
-            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.center}>
                     <ActivityIndicator size="large" color={theme.primary} />
                 </View>
@@ -279,11 +280,11 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
 
     if (!hatim) {
         return (
-            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.center}>
-                    <Text style={{ color: theme.text }}>{t('hatimDetailScreen.notFound')}</Text>
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: SPACING.sm }}>
-                        <Text style={{ color: theme.primary }}>{t('hatimDetailScreen.goBack')}</Text>
+                    <Text style={styles.notFoundText}>{t('hatimDetailScreen.notFound')}</Text>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.notFoundBackButton}>
+                        <Text style={styles.notFoundBackButtonText}>{t('hatimDetailScreen.goBack')}</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -347,7 +348,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     };
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={styles.container}>
             <AppHeader
                 title={hatim.title}
                 showBackButton={true}
@@ -355,24 +356,24 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             >
                 {hatim.creatorId === user?.uid && (
                     <TouchableOpacity onPress={openEditModal} style={styles.editButton}>
-                        <Text style={[styles.editButtonText, { color: theme.headerText }]}>{t('hatimDetailScreen.edit')}</Text>
+                        <Text style={styles.editButtonText}>{t('hatimDetailScreen.edit')}</Text>
                     </TouchableOpacity>
                 )}
             </AppHeader>
 
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 {/* ... existing stats ... */}
-                <View style={[styles.infoCard, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
-                    <Text style={[styles.description, { color: theme.textSecondary }]}>
+                <View style={styles.infoCard}>
+                    <Text style={styles.description}>
                         {hatim.description || t('hatimDetailScreen.noDescription')}
                     </Text>
                     {hatim.deadline && (
                         <View style={styles.deadlineInfo}>
-                            <Text style={[styles.deadlineText, { color: theme.primary }]}>
+                            <Text style={styles.deadlineText}>
                                 {t('hatimDetailScreen.deadline', { date: formatDate(hatim.deadline) })}
                             </Text>
-                            <View style={[styles.countdownBadge, { backgroundColor: theme.primary + '15' }]}>
-                                <Text style={[styles.countdownText, { color: theme.primary }]}>
+                            <View style={styles.countdownBadge}>
+                                <Text style={styles.countdownText}>
                                     {t('hatimDetailScreen.timeRemaining', { time: timeLeft })}
                                 </Text>
                             </View>
@@ -381,33 +382,29 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
 
                     <View style={styles.statsRow}>
                         <View style={styles.statColumn}>
-                            <Text style={[styles.statValue, { color: '#4CAF50' }]}>{completedCount} / 30</Text>
-                            <Text style={[styles.statLabel, { color: theme.textSecondary }]}>{t('hatimDetailScreen.completedStat')}</Text>
-                            <View style={[styles.miniProgressBarBackground, { backgroundColor: theme.border }]}>
+                            <Text style={[styles.statValue, styles.statValueCompleted]}>{completedCount} / 30</Text>
+                            <Text style={styles.statLabel}>{t('hatimDetailScreen.completedStat')}</Text>
+                            <View style={styles.miniProgressBarBackground}>
                                 <View
                                     style={[
                                         styles.miniProgressBarFill,
-                                        {
-                                            width: `${(completedCount / 30) * 100}%`,
-                                            backgroundColor: '#4CAF50'
-                                        }
+                                        styles.miniProgressFillCompleted,
+                                        { width: `${(completedCount / 30) * 100}%` }
                                     ]}
                                 />
                             </View>
                         </View>
                         <View style={styles.statColumn}>
-                            <Text style={[styles.statValue, { color: theme.primary }]}>
+                            <Text style={[styles.statValue, styles.statValueClaimed]}>
                                 {claimedCount} / 30
                             </Text>
-                            <Text style={[styles.statLabel, { color: theme.textSecondary }]}>{t('hatimDetailScreen.claimedStat')}</Text>
-                            <View style={[styles.miniProgressBarBackground, { backgroundColor: theme.border }]}>
+                            <Text style={styles.statLabel}>{t('hatimDetailScreen.claimedStat')}</Text>
+                            <View style={styles.miniProgressBarBackground}>
                                 <View
                                     style={[
                                         styles.miniProgressBarFill,
-                                        {
-                                            width: `${(claimedCount / 30) * 100}%`,
-                                            backgroundColor: theme.primary
-                                        }
+                                        styles.miniProgressFillClaimed,
+                                        { width: `${(claimedCount / 30) * 100}%` }
                                     ]}
                                 />
                             </View>
@@ -416,7 +413,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                 </View>
 
                 {/* Grid */}
-                <View style={[styles.gridContainer, { width: availableWidth + SPACING.md, alignSelf: 'center' }]}>
+                <View style={[styles.gridContainer, { width: availableWidth + SPACING.md }]}>
                     <View style={styles.grid}>
                         {hatim.parts.map((part) => (
                             <TouchableOpacity
@@ -429,10 +426,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                             : part.claimedById
                                                 ? (part.claimedById === user?.uid ? '#1976D2' : '#78909C')
                                                 : theme.cardBackground,
-                                        borderColor: theme.border,
                                         width: partItemWidth,
-                                        marginRight: SPACING.md / 2,
-                                        marginLeft: SPACING.md / 2,
                                     }
                                 ]}
                                 onPress={() => handlePartPress(part)}
@@ -472,38 +466,38 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                 onRequestClose={() => setPartModalVisible(false)}
             >
                 <View style={styles.modalOverlay}>
-                    <View style={[styles.modalContent, { backgroundColor: theme.cardBackground }]}>
+                    <View style={styles.modalContent}>
                         {selectedPart && (
                             <>
-                                <Text style={[styles.modalTitle, { color: theme.text }]}>
+                                <Text style={styles.modalTitle}>
                                     {t('hatimDetailScreen.partActions', { number: selectedPart.partNumber })}
                                 </Text>
 
                                 {selectedPart.claimedById ? (
                                     <View style={styles.claimInfo}>
-                                        <Text style={[styles.claimText, { color: theme.textSecondary }]}>
-                                            {t('hatimDetailScreen.claimedBy')}<Text style={{ color: theme.text, fontWeight: '700' }}>{selectedPart.claimedById === user?.uid ? (user?.displayName || t('hatimDetailScreen.me')) : selectedPart.claimedByName}</Text>
+                                        <Text style={styles.claimText}>
+                                            {t('hatimDetailScreen.claimedBy')}<Text style={styles.claimedByName}>{selectedPart.claimedById === user?.uid ? (user?.displayName || t('hatimDetailScreen.me')) : selectedPart.claimedByName}</Text>
                                         </Text>
-                                        <Text style={[styles.claimStatus, { color: selectedPart.isCompleted ? '#4CAF50' : '#FF9800' }]}>
+                                        <Text style={[styles.claimStatus, selectedPart.isCompleted ? styles.claimStatusCompleted : styles.claimStatusReading]}>
                                             {t('hatimDetailScreen.status', { status: selectedPart.isCompleted ? t('hatimDetailScreen.statusCompleted') : t('hatimDetailScreen.statusReading') })}
                                         </Text>
 
                                         {/* Page Progress Control */}
                                         {(selectedPart.claimedById === user?.uid || hatim.creatorId === user?.uid) && (
                                             <View style={styles.progressContainer}>
-                                                <Text style={[styles.progressLabel, { color: theme.textSecondary }]}>
+                                                <Text style={styles.progressLabel}>
                                                     {t('hatimDetailScreen.pagesRead', { read: localPages, total: selectedPart.totalPages || 20 })}
                                                 </Text>
                                                 <View style={styles.progressRow}>
                                                     <TouchableOpacity
-                                                        style={[styles.progressBtn, { backgroundColor: theme.border }]}
+                                                        style={styles.progressBtn}
                                                         onPress={() => handleUpdatePages(localPages - 1)}
                                                     >
-                                                        <Text style={{ color: theme.text, fontSize: 20 }}>-</Text>
+                                                        <Text style={styles.progressBtnText}>-</Text>
                                                     </TouchableOpacity>
 
                                                     <TextInput
-                                                        style={[styles.progressInput, { color: theme.text, borderColor: theme.border }]}
+                                                        style={styles.progressInput}
                                                         value={String(localPages)}
                                                         keyboardType="number-pad"
                                                         onChangeText={(val) => {
@@ -514,17 +508,17 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                                     />
 
                                                     <TouchableOpacity
-                                                        style={[styles.progressBtn, { backgroundColor: theme.border }]}
+                                                        style={styles.progressBtn}
                                                         onPress={() => handleUpdatePages(localPages + 1)}
                                                     >
-                                                        <Text style={{ color: theme.text, fontSize: 20 }}>+</Text>
+                                                        <Text style={styles.progressBtnText}>+</Text>
                                                     </TouchableOpacity>
                                                 </View>
                                             </View>
                                         )}
                                     </View>
                                 ) : (
-                                    <Text style={[styles.modalDescription, { color: theme.textSecondary }]}>
+                                    <Text style={styles.modalDescription}>
                                         {t('hatimDetailScreen.notClaimedYet')}
                                     </Text>
                                 )}
@@ -533,7 +527,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                     {selectedPart && (selectedPart.claimedById === user?.uid || (hatim && hatim.creatorId === user?.uid && selectedPart.claimedById)) ? (
                                         <>
                                             <TouchableOpacity
-                                                style={[styles.actionButton, { backgroundColor: selectedPart.isCompleted ? theme.accent : theme.primary }]}
+                                                style={[styles.actionButton, selectedPart.isCompleted ? styles.actionButtonAccent : styles.actionButtonPrimary]}
                                                 onPress={handleToggleCompletion}
                                                 disabled={actionLoading !== null}
                                             >
@@ -547,7 +541,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                             </TouchableOpacity>
 
                                             <TouchableOpacity
-                                                style={[styles.actionButton, { backgroundColor: '#d32f2f', marginTop: SPACING.md }]}
+                                                style={[styles.actionButton, styles.actionButtonDanger]}
                                                 onPress={handleUnclaim}
                                                 disabled={actionLoading !== null}
                                             >
@@ -558,7 +552,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                         </>
                                     ) : selectedPart && !selectedPart.claimedById ? (
                                         <TouchableOpacity
-                                            style={[styles.actionButton, { backgroundColor: theme.primary }]}
+                                            style={[styles.actionButton, styles.actionButtonPrimary]}
                                             onPress={handleClaim}
                                             disabled={actionLoading !== null}
                                         >
@@ -571,10 +565,10 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                     ) : null}
 
                                     <TouchableOpacity
-                                        style={[styles.closeButton, { borderColor: theme.border }]}
+                                        style={styles.closeButton}
                                         onPress={() => setPartModalVisible(false)}
                                     >
-                                        <Text style={{ color: theme.text }}>{t('hatimDetailScreen.close')}</Text>
+                                        <Text style={styles.closeButtonText}>{t('hatimDetailScreen.close')}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </>
@@ -591,11 +585,11 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                 onRequestClose={() => setEditModalVisible(false)}
             >
                 <View style={styles.modalOverlay}>
-                    <View style={[styles.modalContent, { backgroundColor: theme.cardBackground }]}>
-                        <Text style={[styles.modalTitle, { color: theme.text }]}>{t('hatimDetailScreen.editTitle')}</Text>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>{t('hatimDetailScreen.editTitle')}</Text>
 
                         <TextInput
-                            style={[styles.input, { color: theme.text, borderColor: theme.border }]}
+                            style={styles.input}
                             placeholder={t('hatimDetailScreen.titlePlaceholder')}
                             placeholderTextColor={theme.textSecondary}
                             value={editTitle}
@@ -603,7 +597,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                         />
 
                         <TextInput
-                            style={[styles.input, styles.textArea, { color: theme.text, borderColor: theme.border }]}
+                            style={[styles.input, styles.textArea]}
                             placeholder={t('hatimDetailScreen.descriptionPlaceholder')}
                             placeholderTextColor={theme.textSecondary}
                             value={editDesc}
@@ -613,7 +607,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                         />
 
                         <View style={styles.toggleRow}>
-                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>{t('hatimDetailScreen.setDeadline')}</Text>
+                            <Text style={[styles.inputLabel, styles.inputLabelNoMarginTop]}>{t('hatimDetailScreen.setDeadline')}</Text>
                             <Switch
                                 value={hasDeadline}
                                 onValueChange={setHasDeadline}
@@ -623,7 +617,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                         </View>
 
                         <View style={styles.toggleRow}>
-                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>{t('hatimDetailScreen.privateHatim')}</Text>
+                            <Text style={[styles.inputLabel, styles.inputLabelNoMarginTop]}>{t('hatimDetailScreen.privateHatim')}</Text>
                             <Switch
                                 value={editIsPrivate}
                                 onValueChange={setEditIsPrivate}
@@ -633,7 +627,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                         </View>
 
                         <View style={styles.toggleRow}>
-                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>{t('hatimDetailScreen.lockHatim')}</Text>
+                            <Text style={[styles.inputLabel, styles.inputLabelNoMarginTop]}>{t('hatimDetailScreen.lockHatim')}</Text>
                             <Switch
                                 value={editIsLocked}
                                 onValueChange={setEditIsLocked}
@@ -644,10 +638,10 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
 
                         {hasDeadline && (
                             <>
-                                <Text style={[styles.inputLabel, { color: theme.textSecondary }]}>{t('hatimDetailScreen.deadlineLabel')}</Text>
+                                <Text style={styles.inputLabel}>{t('hatimDetailScreen.deadlineLabel')}</Text>
 
                                 {Platform.OS === 'web' ? (
-                                    <View style={{ marginBottom: 16 }}>
+                                    <View style={styles.dateTimeWebContainer}>
                                         <input
                                             type="date"
                                             style={{
@@ -674,7 +668,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                             }}
                                             value={editDeadline ? editDeadline.toISOString().split('T')[0] : ''}
                                         />
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <View style={styles.timeSelectorsRow}>
                                             <select
                                                 style={{
                                                     flex: 1,
@@ -700,7 +694,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                                     <option key={i} value={i}>{i.toString().padStart(2, '0')}</option>
                                                 ))}
                                             </select>
-                                            <Text style={{ marginHorizontal: 8, color: theme.text, fontSize: 18, fontWeight: '700' }}>:</Text>
+                                            <Text style={styles.timeSeparator}>:</Text>
                                             <select
                                                 style={{
                                                     flex: 1,
@@ -731,10 +725,10 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                 ) : (
                                     <>
                                         <TouchableOpacity
-                                            style={[styles.editInputStyle, { borderColor: theme.border, justifyContent: 'center' }]}
+                                            style={styles.editInputStyle}
                                             onPress={() => setShowDatePicker(true)}
                                         >
-                                            <Text style={{ color: editDeadline ? theme.text : theme.textSecondary }}>
+                                            <Text style={editDeadline ? styles.dateTimeTextFilled : styles.dateTimeTextEmpty}>
                                                 {editDeadline
                                                     ? editDeadline.toLocaleString(i18n.language === 'en' ? 'en-US' : 'tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })
                                                     : t('hatimDetailScreen.selectDateTime')}
@@ -768,31 +762,31 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                             </>
                         )}
 
-                        <View style={[styles.modalButtons, { justifyContent: 'space-between', marginTop: SPACING.lg }]}>
+                        <View style={styles.modalButtons}>
                             <TouchableOpacity
-                                style={[styles.modalButton, { backgroundColor: '#FFEBEE', borderWidth: 1, borderColor: '#FFCDD2' }]}
+                                style={[styles.modalButton, styles.deleteModalButton]}
                                 onPress={handleDeleteHatim}
                                 disabled={isUpdating}
                             >
-                                <Text style={{ color: '#D32F2F', fontWeight: '600' }}>{t('hatimDetailScreen.delete')}</Text>
+                                <Text style={styles.deleteModalButtonText}>{t('hatimDetailScreen.delete')}</Text>
                             </TouchableOpacity>
 
-                            <View style={{ flexDirection: 'row' }}>
+                            <View style={styles.modalButtonsRight}>
                                 <TouchableOpacity
-                                    style={[styles.modalButton, { backgroundColor: theme.border, marginRight: SPACING.sm }]}
+                                    style={[styles.modalButton, styles.cancelModalButton]}
                                     onPress={() => setEditModalVisible(false)}
                                 >
-                                    <Text style={{ color: theme.text }}>{t('hatimDetailScreen.cancel')}</Text>
+                                    <Text style={styles.closeButtonText}>{t('hatimDetailScreen.cancel')}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={[styles.modalButton, { backgroundColor: theme.primary }]}
+                                    style={[styles.modalButton, styles.updateModalButton]}
                                     onPress={handleUpdateHatim}
                                     disabled={isUpdating}
                                 >
                                     {isUpdating ? (
                                         <ActivityIndicator size="small" color="#fff" />
                                     ) : (
-                                        <Text style={{ color: '#fff' }}>{t('hatimDetailScreen.update')}</Text>
+                                        <Text style={styles.whiteButtonText}>{t('hatimDetailScreen.update')}</Text>
                                     )}
                                 </TouchableOpacity>
                             </View>
@@ -803,266 +797,3 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         </SafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    editButton: {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        borderRadius: 16,
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        marginLeft: SPACING.xs,
-    },
-    editButtonText: {
-        fontWeight: '600',
-        fontSize: 14,
-    },
-    scrollContent: {
-        padding: SPACING.lg,
-    },
-    infoCard: {
-        padding: SPACING.lg,
-        borderRadius: 16,
-        borderWidth: 1,
-        marginBottom: SPACING.xl,
-    },
-    description: {
-        fontSize: FONT_SIZES.medium,
-        lineHeight: 22,
-        marginBottom: SPACING.lg,
-    },
-    statsRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        borderTopWidth: 1,
-        borderTopColor: 'rgba(0,0,0,0.05)',
-        paddingTop: SPACING.lg,
-    },
-    statColumn: {
-        flex: 1,
-        alignItems: 'center',
-        paddingHorizontal: SPACING.md,
-    },
-    miniProgressBarBackground: {
-        height: 6,
-        width: '100%',
-        borderRadius: 3,
-        overflow: 'hidden',
-        marginTop: SPACING.sm,
-    },
-    miniProgressBarFill: {
-        height: '100%',
-    },
-    gridContainer: {
-        width: '100%',
-    },
-    grid: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-    },
-    partItem: {
-        aspectRatio: 1,
-        borderRadius: 12,
-        borderWidth: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: SPACING.md,
-        padding: SPACING.xs,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-    },
-    partNumber: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: '700',
-    },
-    partClaimant: {
-        fontSize: 10,
-        marginTop: 4,
-    },
-    center: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: SPACING.xl,
-    },
-    modalContent: {
-        width: '100%',
-        maxWidth: 400,
-        padding: SPACING.xl,
-        borderRadius: 24,
-        elevation: 5,
-    },
-    modalTitle: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: '700',
-        marginBottom: SPACING.lg,
-        textAlign: 'center',
-    },
-    modalDescription: {
-        textAlign: 'center',
-        marginBottom: SPACING.xl,
-        fontSize: FONT_SIZES.medium,
-    },
-    claimInfo: {
-        alignItems: 'center',
-        marginBottom: SPACING.xl,
-    },
-    claimText: {
-        fontSize: FONT_SIZES.medium,
-        marginBottom: SPACING.xs,
-    },
-    claimStatus: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '700',
-        textTransform: 'uppercase',
-    },
-    modalButtonsColumn: {
-        width: '100%',
-    },
-    actionButton: {
-        padding: SPACING.md,
-        borderRadius: 12,
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: 50,
-    },
-    actionButtonText: {
-        color: '#fff',
-        fontWeight: '700',
-        fontSize: FONT_SIZES.medium,
-    },
-    closeButton: {
-        marginTop: SPACING.md,
-        padding: SPACING.md,
-        borderRadius: 12,
-        borderWidth: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    progressBarBackground: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 4,
-        backgroundColor: 'rgba(255,255,255,0.2)',
-    },
-    progressBarFill: {
-        height: '100%',
-        backgroundColor: '#4CAF50',
-    },
-    progressContainer: {
-        marginTop: SPACING.lg,
-        alignItems: 'center',
-        width: '100%',
-    },
-    progressLabel: {
-        fontSize: 12,
-        marginBottom: SPACING.sm,
-    },
-    progressRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    progressBtn: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    progressInput: {
-        width: 60,
-        height: 40,
-        borderWidth: 1,
-        borderRadius: 8,
-        marginHorizontal: SPACING.md,
-        textAlign: 'center',
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '700',
-    },
-    statValue: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: '700',
-    },
-    statLabel: {
-        fontSize: 12,
-    },
-    deadlineText: {
-        fontSize: 14,
-        fontWeight: '700',
-        marginTop: SPACING.xs,
-        textAlign: 'center',
-        marginBottom: SPACING.md,
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 12,
-        padding: SPACING.md,
-        marginBottom: SPACING.md,
-    },
-    textArea: {
-        height: 80,
-        textAlignVertical: 'top',
-    },
-    modalButtons: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        marginTop: SPACING.sm,
-    },
-    modalButton: {
-        paddingHorizontal: SPACING.lg,
-        paddingVertical: SPACING.md,
-        borderRadius: 12,
-        marginLeft: SPACING.md,
-        minWidth: 80,
-        alignItems: 'center',
-    },
-    inputLabel: {
-        fontSize: 14,
-        fontWeight: '600',
-        marginBottom: SPACING.xs,
-        marginTop: SPACING.sm,
-    },
-    editInputStyle: {
-        borderWidth: 1,
-        borderRadius: 12,
-        padding: SPACING.md,
-        marginBottom: SPACING.md,
-        minHeight: 50,
-    },
-    toggleRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: SPACING.md,
-        paddingVertical: SPACING.xs,
-    },
-    deadlineInfo: {
-        alignItems: 'center',
-        marginBottom: SPACING.md,
-    },
-    countdownBadge: {
-        paddingHorizontal: 12,
-        paddingVertical: 4,
-        borderRadius: 20,
-        marginTop: 4,
-    },
-    countdownText: {
-        fontSize: 12,
-        fontWeight: '700',
-    },
-});

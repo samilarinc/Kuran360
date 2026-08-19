@@ -1,16 +1,15 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
   FlatList,
   TouchableOpacity,
-  StyleSheet,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Surah } from '../types';
 import { useTheme, Theme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../constants';
 import { getSurahName } from '../utils/surahName';
+import { createStyles } from './SurahList.styles';
 
 interface SurahListProps {
   surahs: Surah[];
@@ -26,23 +25,24 @@ interface SurahItemProps {
 
 const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress, theme }) => {
   const { t } = useTranslation();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   return (
   <TouchableOpacity
-    style={createStyles(theme).surahItem}
+    style={styles.surahItem}
     onPress={() => onPress(surah)}
   >
-    <View style={createStyles(theme).surahNumber}>
-      <Text style={createStyles(theme).surahNumberText}>{surah.number}</Text>
+    <View style={styles.surahNumber}>
+      <Text style={styles.surahNumberText}>{surah.number}</Text>
     </View>
-    <View style={createStyles(theme).surahInfo}>
-      <Text style={createStyles(theme).surahName}>{getSurahName(t, surah)}</Text>
-      <Text style={createStyles(theme).surahArabicName}>{surah.arabicName}</Text>
-      <Text style={createStyles(theme).surahDetails}>
+    <View style={styles.surahInfo}>
+      <Text style={styles.surahName}>{getSurahName(t, surah)}</Text>
+      <Text style={styles.surahArabicName}>{surah.arabicName}</Text>
+      <Text style={styles.surahDetails}>
         {surah.verseCount} ayet • {surah.revelationPlace}
       </Text>
     </View>
-    <View style={createStyles(theme).arrow}>
-      <Text style={createStyles(theme).arrowText}>›</Text>
+    <View style={styles.arrow}>
+      <Text style={styles.arrowText}>›</Text>
     </View>
   </TouchableOpacity>
   );
@@ -51,6 +51,7 @@ const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress, theme }) => {
 export const SurahList: React.FC<SurahListProps> = ({ surahs, onSurahSelect, scrollToSurah }) => {
   const flatListRef = useRef<FlatList>(null);
   const { theme } = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   useEffect(() => {
     if (scrollToSurah && flatListRef.current) {
@@ -77,7 +78,7 @@ export const SurahList: React.FC<SurahListProps> = ({ surahs, onSurahSelect, scr
         <SurahItem surah={item} onPress={onSurahSelect} theme={theme} />
       )}
       keyExtractor={(item) => item.number.toString()}
-      contentContainerStyle={createStyles(theme).container}
+      contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}
       // Disable virtualization since we only have 114 surahs - this ensures
       // all items are always rendered and scrollToIndex works reliably
@@ -97,65 +98,3 @@ export const SurahList: React.FC<SurahListProps> = ({ surahs, onSurahSelect, scr
     />
   );
 };
-
-const createStyles = (theme: Theme) => StyleSheet.create({
-  container: {
-    padding: SPACING.md,
-  },
-  surahItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: theme.cardBackground,
-    marginVertical: SPACING.xs,
-    borderRadius: 12,
-    padding: SPACING.md,
-    elevation: 2,
-    shadowColor: theme.text,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2.22,
-  },
-  surahNumber: {
-    backgroundColor: theme.primary,
-    borderRadius: 25,
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: SPACING.md,
-  },
-  surahNumberText: {
-    color: theme.headerText,
-    fontSize: FONT_SIZES.medium,
-    fontWeight: 'bold',
-  },
-  surahInfo: {
-    flex: 1,
-  },
-  surahName: {
-    fontSize: FONT_SIZES.large,
-    fontWeight: '600',
-    color: theme.text,
-    marginBottom: SPACING.xs,
-  },
-  surahArabicName: {
-    fontSize: FONT_SIZES.large,
-    color: theme.primary,
-    marginBottom: SPACING.xs,
-    textAlign: 'right',
-  },
-  surahDetails: {
-    fontSize: FONT_SIZES.small,
-    color: theme.textSecondary,
-  },
-  arrow: {
-    marginLeft: SPACING.sm,
-  },
-  arrowText: {
-    fontSize: FONT_SIZES.xlarge,
-    color: theme.textSecondary,
-  },
-});

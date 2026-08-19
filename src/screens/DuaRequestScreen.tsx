@@ -6,16 +6,15 @@ import {
     TouchableOpacity,
     SafeAreaView,
     ScrollView,
-    StyleSheet,
     ActivityIndicator,
     Alert,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../theme';
 import { doc, getDoc, collection, addDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
+import { createStyles } from './DuaRequestScreen.styles';
 
 interface DuaRequestScreenProps {
     navigation: any;
@@ -82,7 +81,7 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
 
     if (loading) {
         return (
-            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.centerContainer}>
                     <ActivityIndicator size="large" color={theme.primary} />
                 </View>
@@ -92,15 +91,15 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
 
     if (isSuccess) {
         return (
-            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.centerContainer}>
                     <Text style={styles.successIcon}>✅</Text>
-                    <Text style={[styles.successTitle, { color: theme.text }]}>{t('duaRequestScreen.successTitle')}</Text>
-                    <Text style={[styles.successText, { color: theme.textSecondary }]}>
+                    <Text style={styles.successTitle}>{t('duaRequestScreen.successTitle')}</Text>
+                    <Text style={styles.successText}>
                         {t('duaRequestScreen.successMessage', { name: targetUserName })}
                     </Text>
                     <TouchableOpacity
-                        style={[styles.backButton, { backgroundColor: theme.primary }]}
+                        style={styles.backButton}
                         onPress={() => navigation.navigate('Main')}
                     >
                         <Text style={styles.backButtonText}>{t('duaRequestScreen.backHome')}</Text>
@@ -111,23 +110,23 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
     }
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={styles.container}>
             <AppHeader
                 title={t('screenTitles.duaRequest')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
             />
             <ScrollView style={styles.content}>
-                <View style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-                    <Text style={[styles.infoText, { color: theme.text }]}>
+                <View style={styles.card}>
+                    <Text style={styles.infoText}>
                         {t('duaRequestScreen.sendingToPrefix') ? `${t('duaRequestScreen.sendingToPrefix')} ` : ''}
-                        <Text style={{ fontWeight: 'bold', color: theme.primary }}>{targetUserName}</Text> {t('duaRequestScreen.sendingToSuffix')}
+                        <Text style={styles.infoTextTargetName}>{targetUserName}</Text> {t('duaRequestScreen.sendingToSuffix')}
                     </Text>
 
                     <View style={styles.inputContainer}>
-                        <Text style={[styles.label, { color: theme.textSecondary }]}>{t('duaRequestScreen.nameLabel')}</Text>
+                        <Text style={styles.label}>{t('duaRequestScreen.nameLabel')}</Text>
                         <TextInput
-                            style={[styles.input, { backgroundColor: theme.background, color: theme.text, borderColor: theme.border }]}
+                            style={styles.input}
                             placeholder={t('duaRequestScreen.namePlaceholder')}
                             placeholderTextColor={theme.textSecondary}
                             value={requesterName}
@@ -136,9 +135,9 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
                     </View>
 
                     <View style={styles.inputContainer}>
-                        <Text style={[styles.label, { color: theme.textSecondary }]}>{t('duaRequestScreen.topicLabel')}</Text>
+                        <Text style={styles.label}>{t('duaRequestScreen.topicLabel')}</Text>
                         <TextInput
-                            style={[styles.input, styles.textArea, { backgroundColor: theme.background, color: theme.text, borderColor: theme.border }]}
+                            style={[styles.input, styles.textArea]}
                             placeholder={t('duaRequestScreen.topicPlaceholder')}
                             placeholderTextColor={theme.textSecondary}
                             multiline
@@ -149,7 +148,7 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
                     </View>
 
                     <TouchableOpacity
-                        style={[styles.submitButton, { backgroundColor: theme.primary }, isSubmitting && { opacity: 0.7 }]}
+                        style={[styles.submitButton, isSubmitting && styles.submitButtonDisabled]}
                         onPress={handleSubmit}
                         disabled={isSubmitting}
                     >
@@ -161,98 +160,10 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
                     </TouchableOpacity>
                 </View>
 
-                <Text style={[styles.footerText, { color: theme.textSecondary }]}>
+                <Text style={styles.footerText}>
                     {t('duaRequestScreen.footer')}
                 </Text>
             </ScrollView>
         </SafeAreaView>
     );
 };
-
-const createStyles = (theme: any) => StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    centerContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: SPACING.xl,
-    },
-    content: {
-        flex: 1,
-        padding: SPACING.md,
-    },
-    card: {
-        padding: SPACING.lg,
-        borderRadius: 16,
-        borderWidth: 1,
-        marginTop: SPACING.md,
-    },
-    infoText: {
-        fontSize: FONT_SIZES.medium,
-        marginBottom: SPACING.xl,
-        textAlign: 'center',
-        lineHeight: 24,
-    },
-    inputContainer: {
-        marginBottom: SPACING.lg,
-    },
-    label: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: 'bold',
-        marginBottom: SPACING.xs,
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 12,
-        padding: SPACING.md,
-        fontSize: FONT_SIZES.medium,
-    },
-    textArea: {
-        height: 120,
-        textAlignVertical: 'top',
-    },
-    submitButton: {
-        borderRadius: 12,
-        padding: SPACING.lg,
-        alignItems: 'center',
-        marginTop: SPACING.md,
-    },
-    submitButtonText: {
-        color: '#FFFFFF',
-        fontSize: FONT_SIZES.medium,
-        fontWeight: 'bold',
-    },
-    footerText: {
-        fontSize: FONT_SIZES.small,
-        textAlign: 'center',
-        marginTop: SPACING.xl,
-        fontStyle: 'italic',
-    },
-    successIcon: {
-        fontSize: 64,
-        marginBottom: SPACING.lg,
-    },
-    successTitle: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
-        marginBottom: SPACING.md,
-    },
-    successText: {
-        fontSize: FONT_SIZES.medium,
-        textAlign: 'center',
-        lineHeight: 24,
-        marginBottom: SPACING.xl,
-    },
-    backButton: {
-        paddingVertical: SPACING.md,
-        paddingHorizontal: SPACING.xl,
-        borderRadius: 12,
-    },
-    backButtonText: {
-        color: '#FFFFFF',
-        fontSize: FONT_SIZES.medium,
-        fontWeight: 'bold',
-    },
-});
