@@ -12,12 +12,19 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "August 20, 2026",
+        "bullets": [
+          "The language selector is now fixed in the top bar on every screen; switch between Turkish and English with a single tap."
+        ]
+      },
+      {
         "date": "August 19, 2026",
         "bullets": [
           "About screen: added a language selector and a theme selector.",
           "The theme selector is now fixed in the top bar on every screen; you can switch between light, dark and lights-out modes.",
           "Rebuilt how settings, user data and forum data are fetched and updated; data now syncs more reliably.",
-          "In-app text is now managed from translation files (tr.json/en.json); the changelog moved here too."
+          "In-app text is now managed from translation files (tr.json/en.json); the changelog moved here too.",
+          "Settings, bookmarks, my duas and forum data now stay available on-device even without an internet connection, and sync automatically once you're back online."
         ]
       },
       {

@@ -12,12 +12,19 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "20 Ağustos 2026",
+        "bullets": [
+          "Dil seçici artık üst menüde her sayfada sabit; Türkçe ve İngilizce arasında tek dokunuşla geçiş yapılabiliyor."
+        ]
+      },
+      {
         "date": "19 Ağustos 2026",
         "bullets": [
           "Hakkında sayfasına dil seçici ve tema seçici eklendi.",
           "Tema seçici artık üst menüde her sayfada sabit; aydınlık, karanlık ve ışıklar kapalı olmak üzere 3 mod arasında geçiş yapılabiliyor.",
           "Ayarlar, kullanıcı verileri ve forum verilerinin çekilme/güncellenme altyapısı yenilendi, veriler artık daha güvenilir şekilde senkronlanıyor.",
-          "Uygulama içi metinler artık çeviri dosyalarından (tr.json/en.json) yönetiliyor; changelog da buraya taşındı."
+          "Uygulama içi metinler artık çeviri dosyalarından (tr.json/en.json) yönetiliyor; changelog da buraya taşındı.",
+          "Ayarlar, yer imleri, dua listem ve forum gibi veriler artık internet bağlantısı olmasa da cihazda saklanıp gösteriliyor; bağlantı gelince otomatik senkronlanıyor."
         ]
       },
       {

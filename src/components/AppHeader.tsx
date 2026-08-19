@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { ThemeToggle } from '@msarinc/ui';
+import { useTranslation } from 'react-i18next';
+import { ThemeToggle, LanguageSelector } from '@msarinc/ui';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../theme';
 
@@ -10,6 +11,11 @@ const THEME_TOGGLE_LABELS = {
     lightsOut: 'Işıklar Kapalı',
     accessibilityLabel: (current: string, next: string) => `Tema: ${current}. Değiştirmek için dokun, sıradaki: ${next}`,
 };
+
+const LANGUAGES = [
+    { code: 'tr', label: 'Türkçe' },
+    { code: 'en', label: 'English' },
+];
 
 interface AppHeaderProps {
     title: string;
@@ -47,6 +53,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     children,
 }) => {
     const { theme } = useTheme();
+    const { i18n } = useTranslation();
 
     const styles = StyleSheet.create({
         header: {
@@ -192,6 +199,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                     </TouchableOpacity>
                 )}
 
+                <LanguageSelector
+                    compact
+                    value={i18n.language}
+                    languages={LANGUAGES}
+                    onChange={(code) => i18n.changeLanguage(code)}
+                />
                 <ThemeToggle compact labels={THEME_TOGGLE_LABELS} />
 
                 {showSettingsButton && onSettingsPress && (

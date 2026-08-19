@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { ThemeToggle } from '@msarinc/ui';
+import { useTranslation } from 'react-i18next';
+import { ThemeToggle, LanguageSelector } from '@msarinc/ui';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
 
@@ -10,6 +11,11 @@ const THEME_TOGGLE_LABELS = {
   lightsOut: 'Işıklar Kapalı',
   accessibilityLabel: (current: string, next: string) => `Tema: ${current}. Değiştirmek için dokun, sıradaki: ${next}`,
 };
+
+const LANGUAGES = [
+  { code: 'tr', label: 'Türkçe' },
+  { code: 'en', label: 'English' },
+];
 
 interface HeaderWithDarkModeToggleProps {
   title: string;
@@ -45,6 +51,7 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
   children,
 }) => {
   const { theme } = useTheme();
+  const { i18n } = useTranslation();
 
   const styles = StyleSheet.create({
     header: {
@@ -233,6 +240,12 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
             <Text style={styles.searchButtonText}>🔍</Text>
           </TouchableOpacity>
         )}
+        <LanguageSelector
+          compact
+          value={i18n.language}
+          languages={LANGUAGES}
+          onChange={(code) => i18n.changeLanguage(code)}
+        />
         <ThemeToggle compact labels={THEME_TOGGLE_LABELS} />
         {showSettingsButton && onSettingsPress && (
           <TouchableOpacity

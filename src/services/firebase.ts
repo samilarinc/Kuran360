@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 // @ts-ignore
 import { getAuth, GoogleAuthProvider, initializeAuth, getReactNativePersistence } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from 'firebase/firestore';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -69,7 +69,22 @@ export const auth = Platform.OS === 'web'
         persistence: getReactNativePersistence(AsyncStorage)
     });
 
-export const db = getFirestore(app);
+// Persistent local cache: bookmarks/dua list/forum data (and settings) stay readable
+// and writable offline, then sync once the connection comes back.
+const createFirestore = () => {
+    try {
+        return initializeFirestore(app, {
+            localCache: persistentLocalCache(
+                Platform.OS === 'web' ? { tabManager: persistentMultipleTabManager() } : undefined
+            ),
+        });
+    } catch (error) {
+        console.warn('Firestore persistent cache unavailable, falling back to memory cache:', error);
+        return getFirestore(app);
+    }
+};
+
+export const db = createFirestore();
 export const googleProvider = new GoogleAuthProvider();
 
 export default app;
