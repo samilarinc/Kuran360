@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { usePosts, useCreatePost } from '../contexts/ForumContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -12,6 +13,7 @@ export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ n
   const createPost = useCreatePost();
   const { user } = useAuth();
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const [body, setBody] = useState('');
 
   const onReply = async () => {
@@ -26,7 +28,7 @@ export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ n
   return (
     <SafeAreaView style={styles.container}>
       <HeaderWithDarkModeToggle
-        title="Forum Konusu"
+        title={t('screenTitles.forumThread')}
         showBackButton={true}
         onBackPress={() => navigation.goBack()}
         showHomeButton={true}
@@ -40,18 +42,18 @@ export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ n
             <Text style={styles.postBody}>{item.body}</Text>
           </View>
         )}
-        ListEmptyComponent={<Text style={styles.note}>No replies yet.</Text>}
+        ListEmptyComponent={<Text style={styles.note}>{t('forumThreadScreen.noReplies')}</Text>}
       />
 
       {user ? (
         <View style={styles.replyBox}>
-          <TextInput style={[styles.input, styles.multiline]} value={body} onChangeText={setBody} placeholder="Reply..." multiline />
+          <TextInput style={[styles.input, styles.multiline]} value={body} onChangeText={setBody} placeholder={t('forumThreadScreen.replyPlaceholder')} multiline />
           <TouchableOpacity style={styles.button} onPress={onReply}>
-            <Text style={styles.buttonText}>Send</Text>
+            <Text style={styles.buttonText}>{t('forumThreadScreen.send')}</Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <Text style={styles.note}>Girmek için oturum açın.</Text>
+        <Text style={styles.note}>{t('forumThreadScreen.signInToReply')}</Text>
       )}
     </SafeAreaView>
   );

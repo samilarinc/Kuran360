@@ -20,10 +20,12 @@ import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserData } from '../contexts/UserDataContext';
+import { useTranslation } from 'react-i18next';
 import { Surah, Verse as VerseType, LastRead } from '../types';
 import { loadSurah } from '../data/quranData';
 import { FONT_SIZES, SPACING } from '../constants';
 import logger from '../utils/logger';
+import { getSurahName } from '../utils/surahName';
 
 interface SurahDetailScreenProps {
   route: {
@@ -49,6 +51,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const [currentPaginatedIndex, setCurrentPaginatedIndex] = useState<number>(route.params.verseIndex ?? 0);
   const { settings, updateSettings } = useDebouncedSettings(200); // 200ms debounce for better UX
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { addToLastRead, lastRead } = useUserData();
   const { audioState, playVerse, stop, pause, resume, togglePlayPause, setVersesForAutoplay, changePlaybackRate } = useGlobalAudio();
@@ -171,7 +174,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
       if (!currentVerse) return;
 
-      const surahName = surah.number === 1 ? 'Al-Fatiha' : `Surah ${surah.number}`;
+      const surahName = getSurahName(t, surah);
       const verseText = currentVerse.allTranslations?.[settings.favoriteTranslation] || currentVerse.translation || '';
       if (!verseText.trim()) return;
 
@@ -287,14 +290,14 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={theme.primary} />
-          <Text style={styles.loadingText}>Ayetler yükleniyor...</Text>
-          <Text style={styles.loadingNote}>(Bu işlem sadece bir kez yapılır)</Text>
+          <Text style={styles.loadingText}>{t('surahDetailScreen.loadingVerses')}</Text>
+          <Text style={styles.loadingNote}>{t('surahDetailScreen.loadingNote')}</Text>
         </View>
       ) : (
         <>
           <HeaderWithDarkModeToggle
             title={surah.arabicName}
-            subtitle={`${surah.turkishName || surah.name} • ${surah.verseCount} ayet • ${surah.revelationPlace}`}
+            subtitle={`${getSurahName(t, surah)} • ${surah.verseCount} ayet • ${surah.revelationPlace}`}
             showBackButton={true}
             onBackPress={() => navigation.goBack()}
             showHomeButton={true}

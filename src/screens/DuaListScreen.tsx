@@ -11,6 +11,7 @@ import {
     Platform,
 } from 'react-native';
 
+import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../theme';
@@ -27,6 +28,7 @@ interface DuaListScreenProps {
 
 export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const { user } = useAuth();
     const {
         duaList,
@@ -45,12 +47,12 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
 
     const handleAddDua = (isPersonal: boolean) => {
         if (newTopic.trim() === '') {
-            Alert.alert('Hata', 'Lütfen bir konu girin');
+            Alert.alert(t('duaListScreen.errorTitle'), t('duaListScreen.topicRequired'));
             return;
         }
 
         if (!isPersonal && newPerson.trim() === '') {
-            Alert.alert('Hata', 'Lütfen bir isim girin');
+            Alert.alert(t('duaListScreen.errorTitle'), t('duaListScreen.nameRequired'));
             return;
         }
 
@@ -67,17 +69,17 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
 
     const handleDeleteDua = (id: string) => {
         if (Platform.OS === 'web') {
-            const confirmed = (globalThis as any).confirm?.('Bu duayı silmek istediğinizden emin misiniz?');
+            const confirmed = (globalThis as any).confirm?.(t('duaListScreen.deleteConfirm'));
             if (confirmed) deleteDua(id);
             return;
         }
         Alert.alert(
-            'Sil',
-            'Bu duayı silmek istediğinizden emin misiniz?',
+            t('duaListScreen.deleteTitle'),
+            t('duaListScreen.deleteConfirm'),
             [
-                { text: 'İptal', style: 'cancel' },
+                { text: t('duaListScreen.cancel'), style: 'cancel' },
                 {
-                    text: 'Sil',
+                    text: t('duaListScreen.delete'),
                     style: 'destructive',
                     onPress: () => deleteDua(id),
                 },
@@ -87,19 +89,19 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
 
     const copyRequestLink = () => {
         if (!user) {
-            Alert.alert('Hata', 'Link oluşturmak için giriş yapmalısınız');
+            Alert.alert(t('duaListScreen.errorTitle'), t('duaListScreen.signInToShare'));
             return;
         }
         const link = `https://kuran360.com/dua-request/${user.uid}`;
 
         if (Platform.OS === 'web' && typeof navigator !== 'undefined' && navigator.clipboard) {
             navigator.clipboard.writeText(link);
-            Alert.alert('Başarılı', 'Dua isteme linki kopyalandı! Bu linki arkadaşlarınıza göndererek onlardan dua isteği alabilirsiniz.');
+            Alert.alert(t('duaListScreen.linkCopiedTitle'), t('duaListScreen.linkCopiedMessage'));
         } else {
             Alert.alert(
-                'Dua İsteme Linki',
-                `Link: ${link}\n\nBu linki kopyalayıp arkadaşlarınıza gönderebilirsiniz.`,
-                [{ text: 'Tamam' }]
+                t('duaListScreen.shareLinkTitle'),
+                t('duaListScreen.shareLinkMessage', { link }),
+                [{ text: t('duaListScreen.ok') }]
             );
         }
     };
@@ -111,17 +113,17 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
 
     const handleRejectRequest = (request: DuaRequest) => {
         if (Platform.OS === 'web') {
-            const confirmed = (globalThis as any).confirm?.('Bu dua isteğini reddetmek istediğinizden emin misiniz?');
+            const confirmed = (globalThis as any).confirm?.(t('duaListScreen.rejectConfirm'));
             if (confirmed) rejectDuaRequest(request.id);
             return;
         }
         Alert.alert(
-            'Reddet',
-            'Bu dua isteğini reddetmek istediğinizden emin misiniz?',
+            t('duaListScreen.rejectTitle'),
+            t('duaListScreen.rejectConfirm'),
             [
-                { text: 'Vazgeç', style: 'cancel' },
+                { text: t('duaListScreen.giveUp'), style: 'cancel' },
                 {
-                    text: 'Reddet',
+                    text: t('duaListScreen.reject'),
                     style: 'destructive',
                     onPress: () => rejectDuaRequest(request.id),
                 },
@@ -137,19 +139,19 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
             <AppHeader
-                title="Dua Listem"
+                title={t('screenTitles.duaList')}
                 showBackButton={true}
                 onBackPress={onNavigate}
             />
             <ScrollView style={styles.content}>
                 {/* Compact Request Link Section */}
                 <View style={[styles.compactShareBox, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-                    <Text style={[styles.compactShareText, { color: theme.text }]}>🔗 Linki Paylaş Dua İsteği Topla</Text>
+                    <Text style={[styles.compactShareText, { color: theme.text }]}>{t('duaListScreen.shareBoxText')}</Text>
                     <TouchableOpacity
                         style={[styles.compactCopyButton, { backgroundColor: theme.primary }]}
                         onPress={copyRequestLink}
                     >
-                        <Text style={styles.compactCopyButtonText}>Kopyala</Text>
+                        <Text style={styles.compactCopyButtonText}>{t('duaListScreen.copy')}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -157,7 +159,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 {duaRequests.length > 0 && (
                     <View style={styles.section}>
                         <Text style={[styles.sectionTitle, { color: theme.text }]}>
-                            📥 Yeni Dua İstekleri ({duaRequests.length})
+                            {t('duaListScreen.newRequests', { count: duaRequests.length })}
                         </Text>
                         {duaRequests.map(request => (
                             <View
@@ -177,13 +179,13 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                         style={[styles.actionButton, { backgroundColor: theme.primary }]}
                                         onPress={() => handleAcceptRequest(request)}
                                     >
-                                        <Text style={styles.actionButtonText}>Kabul Et</Text>
+                                        <Text style={styles.actionButtonText}>{t('duaListScreen.accept')}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[styles.actionButton, { backgroundColor: 'transparent', borderWidth: 1, borderColor: theme.textSecondary }]}
                                         onPress={() => handleRejectRequest(request)}
                                     >
-                                        <Text style={[styles.actionButtonText, { color: theme.textSecondary }]}>Vazgeç</Text>
+                                        <Text style={[styles.actionButtonText, { color: theme.textSecondary }]}>{t('duaListScreen.giveUp')}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -195,7 +197,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 <View style={styles.section}>
                     <View style={styles.sectionHeader}>
                         <Text style={[styles.sectionTitle, { color: theme.text }]}>
-                            🤲 Kendim İçin Dualarım
+                            {t('duaListScreen.personalTitle')}
                         </Text>
                         <TouchableOpacity
                             style={[styles.addButton, { backgroundColor: theme.primary }]}
@@ -211,7 +213,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                         <View style={[styles.form, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                             <TextInput
                                 style={[styles.input, { backgroundColor: theme.background, color: theme.text, borderColor: theme.border }]}
-                                placeholder="Dua konusu (örn: Sağlık, kariyer...)"
+                                placeholder={t('duaListScreen.personalTopicPlaceholder')}
                                 placeholderTextColor={theme.textSecondary}
                                 value={newTopic}
                                 onChangeText={setNewTopic}
@@ -220,14 +222,14 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                 style={[styles.submitButton, { backgroundColor: theme.primary }]}
                                 onPress={() => handleAddDua(true)}
                             >
-                                <Text style={styles.submitButtonText}>Ekle</Text>
+                                <Text style={styles.submitButtonText}>{t('duaListScreen.add')}</Text>
                             </TouchableOpacity>
                         </View>
                     )}
 
                     {personalDuas.length === 0 ? (
                         <Text style={[styles.emptyText, { color: theme.textSecondary }]}>
-                            Henüz kişisel dua eklenmedi
+                            {t('duaListScreen.noPersonalDuas')}
                         </Text>
                     ) : (
                         personalDuas.map(dua => (
@@ -269,7 +271,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 <View style={styles.section}>
                     <View style={styles.sectionHeader}>
                         <Text style={[styles.sectionTitle, { color: theme.text }]}>
-                            Başkaları İçin Dualarım
+                            {t('duaListScreen.othersTitle')}
                         </Text>
                         <TouchableOpacity
                             style={[styles.addButton, { backgroundColor: theme.primary }]}
@@ -285,14 +287,14 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                         <View style={[styles.form, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                             <TextInput
                                 style={[styles.input, { backgroundColor: theme.background, color: theme.text, borderColor: theme.border }]}
-                                placeholder="Kimin için? (örn: Anne, arkadaş...)"
+                                placeholder={t('duaListScreen.personPlaceholder')}
                                 placeholderTextColor={theme.textSecondary}
                                 value={newPerson}
                                 onChangeText={setNewPerson}
                             />
                             <TextInput
                                 style={[styles.input, { backgroundColor: theme.background, color: theme.text, borderColor: theme.border }]}
-                                placeholder="Hangi konu? (örn: Sağlık, huzur...)"
+                                placeholder={t('duaListScreen.othersTopicPlaceholder')}
                                 placeholderTextColor={theme.textSecondary}
                                 value={newTopic}
                                 onChangeText={setNewTopic}
@@ -301,14 +303,14 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                 style={[styles.submitButton, { backgroundColor: theme.primary }]}
                                 onPress={() => handleAddDua(false)}
                             >
-                                <Text style={styles.submitButtonText}>Ekle</Text>
+                                <Text style={styles.submitButtonText}>{t('duaListScreen.add')}</Text>
                             </TouchableOpacity>
                         </View>
                     )}
 
                     {othersDuas.length === 0 ? (
                         <Text style={[styles.emptyText, { color: theme.textSecondary }]}>
-                            Henüz başkaları için dua eklenmedi
+                            {t('duaListScreen.noOthersDuas')}
                         </Text>
                     ) : (
                         othersDuas.map(dua => (

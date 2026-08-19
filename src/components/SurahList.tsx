@@ -6,9 +6,11 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Surah } from '../types';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
+import { getSurahName } from '../utils/surahName';
 
 interface SurahListProps {
   surahs: Surah[];
@@ -22,7 +24,9 @@ interface SurahItemProps {
   theme: Theme;
 }
 
-const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress, theme }) => (
+const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress, theme }) => {
+  const { t } = useTranslation();
+  return (
   <TouchableOpacity
     style={createStyles(theme).surahItem}
     onPress={() => onPress(surah)}
@@ -31,7 +35,7 @@ const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress, theme }) => (
       <Text style={createStyles(theme).surahNumberText}>{surah.number}</Text>
     </View>
     <View style={createStyles(theme).surahInfo}>
-      <Text style={createStyles(theme).surahName}>{surah.turkishName || surah.name}</Text>
+      <Text style={createStyles(theme).surahName}>{getSurahName(t, surah)}</Text>
       <Text style={createStyles(theme).surahArabicName}>{surah.arabicName}</Text>
       <Text style={createStyles(theme).surahDetails}>
         {surah.verseCount} ayet • {surah.revelationPlace}
@@ -41,7 +45,8 @@ const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress, theme }) => (
       <Text style={createStyles(theme).arrowText}>›</Text>
     </View>
   </TouchableOpacity>
-);
+  );
+};
 
 export const SurahList: React.FC<SurahListProps> = ({ surahs, onSurahSelect, scrollToSurah }) => {
   const flatListRef = useRef<FlatList>(null);

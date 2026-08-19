@@ -48,10 +48,11 @@ const AboutScreenContent: React.FC = () => {
 
 export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
             <HeaderWithDarkModeToggle
-                title="Hakkında"
+                title={t('screenTitles.about')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
                 showHomeButton={true}

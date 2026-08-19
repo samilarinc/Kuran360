@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import { useTranslation } from 'react-i18next';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { AppHeader } from '../components/AppHeader';
@@ -28,6 +29,7 @@ interface Location {
 
 export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
     const { settings, updateSettings } = useSettings();
     const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
@@ -88,7 +90,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
         try {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                Alert.alert('İzin Reddedildi', 'Konumunuza erişmek için izin vermeniz gerekmektedir.');
+                Alert.alert(t('prayerTimesScreen.permissionDeniedTitle'), t('prayerTimesScreen.permissionDeniedMessage'));
                 return;
             }
 
@@ -150,10 +152,10 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
 
                 // Phase 1: Exact match on district or city
                 for (const term of searchTerms) {
-                    const normalizedTerm = term.toLowerCase();
+                    const normalizedTerm = term.toLocaleLowerCase('tr');
                     bestMatch = locs.find(l =>
-                        l.districtName?.toLowerCase() === normalizedTerm ||
-                        (l.cityName.toLowerCase() === normalizedTerm && !l.districtName)
+                        l.districtName?.toLocaleLowerCase('tr') === normalizedTerm ||
+                        (l.cityName.toLocaleLowerCase('tr') === normalizedTerm && !l.districtName)
                     );
                     if (bestMatch) break;
                 }
@@ -161,10 +163,10 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                 // Phase 2: Fuzzy match if exact failed
                 if (!bestMatch) {
                     for (const term of searchTerms) {
-                        const normalizedTerm = term.toLowerCase();
+                        const normalizedTerm = term.toLocaleLowerCase('tr');
                         bestMatch = locs.find(l =>
-                            (l.districtName && normalizedTerm.includes(l.districtName.toLowerCase())) ||
-                            normalizedTerm.includes(l.cityName.toLowerCase())
+                            (l.districtName && normalizedTerm.includes(l.districtName.toLocaleLowerCase('tr'))) ||
+                            normalizedTerm.includes(l.cityName.toLocaleLowerCase('tr'))
                         );
                         if (bestMatch) break;
                     }
@@ -174,15 +176,15 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                     handleSelectLocation(bestMatch);
                 } else {
                     Alert.alert(
-                        'Konum Bulunamadı',
-                        `Tespit edilen konum (${searchTerms[0] || 'Bilinmiyor'}) için uygun bir vakit dosyası bulunamadı. Lütfen listeden manuel seçiniz.`,
-                        [{ text: 'Tamam' }]
+                        t('prayerTimesScreen.locationNotFoundTitle'),
+                        t('prayerTimesScreen.locationNotFoundMessage', { term: searchTerms[0] || t('prayerTimesScreen.unknown') }),
+                        [{ text: t('prayerTimesScreen.ok') }]
                     );
                 }
             }
         } catch (error) {
             console.error('Error getting location:', error);
-            Alert.alert('Hata', 'Konum bilgisi alınamadı.');
+            Alert.alert(t('prayerTimesScreen.errorTitle'), t('prayerTimesScreen.locationErrorMessage'));
         } finally {
             setLoading(false);
         }
@@ -200,27 +202,27 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
         };
 
         const prayerSchedule = [
-            { label: 'İmsak', time: times.imsak },
-            { label: 'Güneş', time: times.gunes },
-            { label: 'Öğle', time: times.ogle },
-            { label: 'İkindi', time: times.ikindi },
-            { label: 'Akşam', time: times.aksam },
-            { label: 'Yatsı', time: times.yatsi },
+            { key: 'imsak', time: times.imsak },
+            { key: 'gunes', time: times.gunes },
+            { key: 'ogle', time: times.ogle },
+            { key: 'ikindi', time: times.ikindi },
+            { key: 'aksam', time: times.aksam },
+            { key: 'yatsi', time: times.yatsi },
         ];
 
-        let current = 'Yatsı';
+        let current = 'yatsi';
         let nextIndex = 0;
 
         for (let i = 0; i < prayerSchedule.length; i++) {
             const time = parseTime(prayerSchedule[i].time);
             if (currentTime < time) {
                 nextIndex = i;
-                current = i === 0 ? 'Yatsı' : prayerSchedule[i - 1].label;
+                current = i === 0 ? 'yatsi' : prayerSchedule[i - 1].key;
                 break;
             }
             if (i === prayerSchedule.length - 1) {
                 nextIndex = 0; // Next is tomorrow's Imsak
-                current = 'Yatsı';
+                current = 'yatsi';
             }
         }
 
@@ -238,9 +240,11 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
         const mins = diffMinutes % 60;
 
         setNextPrayer({
-            label: next.label,
+            label: next.key,
             time: next.time,
-            remaining: `${hours > 0 ? `${hours} sa ` : ''}${mins} dk`
+            remaining: hours > 0
+                ? t('prayerTimesScreen.remainingHoursMinutes', { hours, minutes: mins })
+                : t('prayerTimesScreen.remainingMinutes', { minutes: mins })
         });
     };
 
@@ -257,15 +261,15 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
 
     const filteredLocations = useMemo(() => {
         if (!searchQuery) return (locations as Location[]).slice(0, 50);
-        const query = searchQuery.toLowerCase();
+        const query = searchQuery.toLocaleLowerCase('tr');
         return (locations as Location[]).filter(l =>
-            l.cityName.toLowerCase().includes(query) ||
-            (l.districtName && l.districtName.toLowerCase().includes(query))
+            l.cityName.toLocaleLowerCase('tr').includes(query) ||
+            (l.districtName && l.districtName.toLocaleLowerCase('tr').includes(query))
         ).slice(0, 50);
     }, [searchQuery]);
 
-    const renderTimeRow = (label: string, time: string, icon: string) => {
-        const isCurrent = currentPrayerLabel === label;
+    const renderTimeRow = (key: string, time: string, icon: string) => {
+        const isCurrent = currentPrayerLabel === key;
         return (
             <View style={[
                 styles.timeRow,
@@ -278,7 +282,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                         styles.timeLabel,
                         { color: theme.textSecondary },
                         isCurrent && [styles.currentTimeLabel, { color: theme.primary }]
-                    ]}>{label}</Text>
+                    ]}>{t(`prayerTimesScreen.prayers.${key}`)}</Text>
                 </View>
                 <Text style={[
                     styles.timeValue,
@@ -300,7 +304,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     return (
         <View style={[styles.container, { backgroundColor: theme.background }]}>
             <AppHeader
-                title="Ezan Vakitleri"
+                title={t('screenTitles.prayerTimes')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
             />
@@ -331,18 +335,18 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                 <View style={[styles.timesCard, { backgroundColor: theme.cardBackground }]}>
                     {nextPrayer && (
                         <View style={[styles.nextPrayerInfo, { borderBottomColor: theme.border }]}>
-                            <Text style={[styles.nextPrayerLabel, { color: theme.textSecondary }]}>{nextPrayer.label} vaktine kalan süre</Text>
+                            <Text style={[styles.nextPrayerLabel, { color: theme.textSecondary }]}>{t('prayerTimesScreen.timeRemaining', { label: t(`prayerTimesScreen.prayers.${nextPrayer.label}`) })}</Text>
                             <Text style={[styles.remainingTime, { color: theme.primary }]}>{nextPrayer.remaining}</Text>
                         </View>
                     )}
                     {todayTimes && (
                         <>
-                            {renderTimeRow('İmsak', todayTimes.imsak, 'sunny-outline')}
-                            {renderTimeRow('Güneş', todayTimes.gunes, 'sunny')}
-                            {renderTimeRow('Öğle', todayTimes.ogle, 'partly-sunny')}
-                            {renderTimeRow('İkindi', todayTimes.ikindi, 'cloudy-night-outline')}
-                            {renderTimeRow('Akşam', todayTimes.aksam, 'moon-outline')}
-                            {renderTimeRow('Yatsı', todayTimes.yatsi, 'moon')}
+                            {renderTimeRow('imsak', todayTimes.imsak, 'sunny-outline')}
+                            {renderTimeRow('gunes', todayTimes.gunes, 'sunny')}
+                            {renderTimeRow('ogle', todayTimes.ogle, 'partly-sunny')}
+                            {renderTimeRow('ikindi', todayTimes.ikindi, 'cloudy-night-outline')}
+                            {renderTimeRow('aksam', todayTimes.aksam, 'moon-outline')}
+                            {renderTimeRow('yatsi', todayTimes.yatsi, 'moon')}
                         </>
                     )}
                 </View>
@@ -354,7 +358,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                 <View style={styles.modalOverlay}>
                     <View style={[styles.modalContent, { backgroundColor: theme.cardBackground }]}>
                         <View style={styles.modalHeader}>
-                            <Text style={[styles.modalTitle, { color: theme.text }]}>Konum Seç</Text>
+                            <Text style={[styles.modalTitle, { color: theme.text }]}>{t('prayerTimesScreen.selectLocation')}</Text>
                             <TouchableOpacity onPress={() => setShowLocationPicker(false)}>
                                 <Ionicons name="close" size={24} color={theme.text} />
                             </TouchableOpacity>
@@ -363,7 +367,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                             <Ionicons name="search" size={20} color={theme.textSecondary} style={styles.searchIcon} />
                             <TextInput
                                 style={[styles.searchInput, { color: theme.text }]}
-                                placeholder="Şehir veya ilçe ara..."
+                                placeholder={t('prayerTimesScreen.searchPlaceholder')}
                                 placeholderTextColor={theme.textSecondary}
                                 value={searchQuery}
                                 onChangeText={setSearchQuery}

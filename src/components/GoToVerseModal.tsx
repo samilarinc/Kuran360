@@ -56,8 +56,8 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
         if (!searchText) return true;
 
         const verseNumber = (index + 1).toString();
-        const translation = getPreferredTranslation(verse).toLowerCase();
-        const search = searchText.toLowerCase();
+        const translation = getPreferredTranslation(verse).toLocaleLowerCase('tr');
+        const search = searchText.toLocaleLowerCase('tr');
 
         return verseNumber.includes(search) || translation.includes(search);
     });

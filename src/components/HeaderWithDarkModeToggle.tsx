@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ThemeToggle, LanguageSelector } from '@msarinc/ui';
 import { useTheme } from '../contexts/ThemeContext';
@@ -24,12 +24,6 @@ interface HeaderWithDarkModeToggleProps {
   onBackPress?: () => void;
   showHomeButton?: boolean;
   onHomePress?: () => void;
-  showSettingsButton?: boolean;
-  onSettingsPress?: () => void;
-  showSearchButton?: boolean;
-  onSearchPress?: () => void;
-  showLogo?: boolean;
-  onLogoPress?: () => void;
   autoplayToggle?: React.ReactNode;
   children?: React.ReactNode;
 }
@@ -41,12 +35,6 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
   onBackPress,
   showHomeButton = false,
   onHomePress,
-  showSettingsButton = false,
-  onSettingsPress,
-  showSearchButton = false,
-  onSearchPress,
-  showLogo = false,
-  onLogoPress,
   autoplayToggle,
   children,
 }) => {
@@ -118,63 +106,9 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
     homeButtonText: {
       fontSize: 16,
     },
-    darkModeToggle: {
-      padding: 6,
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      borderRadius: 16,
-      minWidth: 32,
-      alignItems: 'center',
-    },
-    darkModeIcon: {
-      fontSize: 16,
-    },
-    settingsButton: {
-      padding: 6,
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      borderRadius: 16,
-      minWidth: 32,
-      alignItems: 'center',
-    },
-    settingsButtonText: {
-      fontSize: 16,
-    },
-    searchButton: {
-      padding: 6,
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      borderRadius: 16,
-      minWidth: 32,
-      alignItems: 'center',
-      marginRight: SPACING.xs,
-    },
-    searchButtonText: {
-      fontSize: 16,
-    },
     contentContainer: {
       alignItems: 'center',
       paddingHorizontal: SPACING.lg,
-    },
-    logoContainer: {
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      borderRadius: 16,
-      padding: 6,
-      minWidth: 32,
-      alignItems: 'center',
-    },
-    logoText: {
-      fontSize: 16,
-    },
-    logoImage: {
-      width: 28,
-      height: 28,
-      borderRadius: 14,
-    },
-    logoButton: {
-      padding: 6,
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      borderRadius: 16,
-      minWidth: 32,
-      alignItems: 'center',
-      marginRight: SPACING.xs,
     },
   });
 
@@ -202,43 +136,9 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
         </View>
       )}
 
-      {/* Logo - sadece geri ve home tuşu yokken göster */}
-      {showLogo && onLogoPress && !showBackButton && !showHomeButton && (
-        <TouchableOpacity style={styles.leftButton} onPress={onLogoPress}>
-          <View style={styles.logoContainer}>
-            <Image
-              source={require('../../public/favicon.png')}
-              style={styles.logoImage}
-              resizeMode="contain"
-            />
-          </View>
-        </TouchableOpacity>
-      )}
-
       <View style={styles.rightButtons}>
-        {/* Logo sağ üstte - geri veya home tuşu varken */}
-        {showLogo && onLogoPress && (showBackButton || showHomeButton) && (
-          <TouchableOpacity style={styles.logoButton} onPress={onLogoPress}>
-            <View style={styles.logoContainer}>
-              <Image
-                source={require('../../public/favicon.png')}
-                style={styles.logoImage}
-                resizeMode="contain"
-              />
-            </View>
-          </TouchableOpacity>
-        )}
-        {/* Autoplay toggle always first, then search, then dark mode, then settings */}
         {autoplayToggle && (
           <View style={{ marginRight: SPACING.xs }}>{autoplayToggle}</View>
-        )}
-        {showSearchButton && onSearchPress && (
-          <TouchableOpacity
-            style={styles.searchButton}
-            onPress={onSearchPress}
-          >
-            <Text style={styles.searchButtonText}>🔍</Text>
-          </TouchableOpacity>
         )}
         <LanguageSelector
           compact
@@ -247,14 +147,6 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
           onChange={(code) => i18n.changeLanguage(code)}
         />
         <ThemeToggle compact labels={THEME_TOGGLE_LABELS} />
-        {showSettingsButton && onSettingsPress && (
-          <TouchableOpacity
-            style={styles.settingsButton}
-            onPress={onSettingsPress}
-          >
-            <Text style={styles.settingsButtonText}>⚙️</Text>
-          </TouchableOpacity>
-        )}
       </View>
 
       <View style={styles.contentContainer}>

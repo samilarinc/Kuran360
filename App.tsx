@@ -121,10 +121,11 @@ const App: React.FC = () => {
             }
           } catch { }
 
-          // Register Service Worker for PWA
+          // Register Service Worker for PWA (production only — in dev this makes
+          // Metro's fresh bundles invisible behind the SW's cache-first fetch handler)
           try {
             const nav = (win as any).navigator;
-            if (nav && 'serviceWorker' in nav) {
+            if (nav && 'serviceWorker' in nav && !__DEV__) {
               (win as any).addEventListener('load', () => {
                 nav.serviceWorker
                   .register('/service-worker.js')

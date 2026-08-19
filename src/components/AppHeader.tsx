@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ThemeToggle, LanguageSelector } from '@msarinc/ui';
 import { useTheme } from '../contexts/ThemeContext';
@@ -25,12 +25,6 @@ interface AppHeaderProps {
     onBackPress?: () => void;
     showHomeButton?: boolean;
     onHomePress?: () => void;
-    showSettingsButton?: boolean;
-    onSettingsPress?: () => void;
-    showSearchButton?: boolean;
-    onSearchPress?: () => void;
-    showLogo?: boolean;
-    onLogoPress?: () => void;
     autoplayToggle?: React.ReactNode;
     children?: React.ReactNode;
 }
@@ -43,12 +37,6 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     onBackPress,
     showHomeButton = false,
     onHomePress,
-    showSettingsButton = false,
-    onSettingsPress,
-    showSearchButton = false,
-    onSearchPress,
-    showLogo = false,
-    onLogoPress,
     autoplayToggle,
     children,
 }) => {
@@ -116,18 +104,6 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             fontSize: 18,
             fontWeight: '600',
         },
-        logoContainer: {
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            borderRadius: 16,
-            padding: 6,
-            minWidth: 32,
-            alignItems: 'center',
-        },
-        logoImage: {
-            width: 28,
-            height: 28,
-            borderRadius: 14,
-        },
         contentContainer: {
             alignItems: 'center',
             paddingHorizontal: SPACING.lg,
@@ -158,45 +134,10 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 </View>
             )}
 
-            {/* Logo (Left) - Only when no back/home buttons */}
-            {showLogo && onLogoPress && !showBackButton && !showHomeButton && (
-                <TouchableOpacity style={styles.leftButton} onPress={onLogoPress}>
-                    <View style={styles.logoContainer}>
-                        <Image
-                            source={require('../../public/favicon.png')}
-                            style={styles.logoImage}
-                            resizeMode="contain"
-                        />
-                    </View>
-                </TouchableOpacity>
-            )}
-
             {/* Right Buttons */}
             <View style={styles.rightButtons}>
-                {/* Logo (Right) - When back/home buttons are present */}
-                {showLogo && onLogoPress && (showBackButton || showHomeButton) && (
-                    <TouchableOpacity style={[styles.actionButton, { marginRight: SPACING.xs }]} onPress={onLogoPress}>
-                        <View style={styles.logoContainer}>
-                            <Image
-                                source={require('../../public/favicon.png')}
-                                style={styles.logoImage}
-                                resizeMode="contain"
-                            />
-                        </View>
-                    </TouchableOpacity>
-                )}
-
                 {autoplayToggle && (
                     <View style={{ marginRight: SPACING.xs }}>{autoplayToggle}</View>
-                )}
-
-                {showSearchButton && onSearchPress && (
-                    <TouchableOpacity
-                        style={styles.actionButton}
-                        onPress={onSearchPress}
-                    >
-                        <Text style={styles.actionButtonText}>🔍</Text>
-                    </TouchableOpacity>
                 )}
 
                 <LanguageSelector
@@ -206,15 +147,6 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                     onChange={(code) => i18n.changeLanguage(code)}
                 />
                 <ThemeToggle compact labels={THEME_TOGGLE_LABELS} />
-
-                {showSettingsButton && onSettingsPress && (
-                    <TouchableOpacity
-                        style={styles.actionButton}
-                        onPress={onSettingsPress}
-                    >
-                        <Text style={styles.actionButtonText}>⚙️</Text>
-                    </TouchableOpacity>
-                )}
             </View>
 
             <View style={styles.contentContainer}>

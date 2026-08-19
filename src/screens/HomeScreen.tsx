@@ -16,6 +16,8 @@ import { Surah } from '../types';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
 import { useDownloadData } from '../hooks/useDownloadData';
+import { useTranslation } from 'react-i18next';
+import { getSurahName } from '../utils/surahName';
 
 interface HomeScreenProps {
   navigation: any;
@@ -31,6 +33,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   isDataAvailable
 }) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [loading, setLoading] = useState(true);
   const {
@@ -48,14 +51,14 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     if (!searchQuery.trim()) {
       return surahs;
     }
-    const query = searchQuery.toLowerCase().trim();
+    const query = searchQuery.toLocaleLowerCase('tr').trim();
     return surahs.filter(surah =>
-      (surah.turkishName || surah.name).toLowerCase().includes(query) ||
-      surah.arabicName.toLowerCase().includes(query) ||
-      surah.name.toLowerCase().includes(query) ||
+      getSurahName(t, surah).toLocaleLowerCase('tr').includes(query) ||
+      surah.arabicName.toLocaleLowerCase('tr').includes(query) ||
+      surah.name.toLocaleLowerCase('tr').includes(query) ||
       surah.number.toString() === query
     );
-  }, [surahs, searchQuery]);
+  }, [surahs, searchQuery, t]);
 
   useEffect(() => {
     const loadData = () => {
@@ -84,8 +87,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     return (
       <SafeAreaView style={createStyles(theme).container}>
         <HeaderWithDarkModeToggle
-          title="القرآن الكريم"
-          subtitle="Kur'an-ı Kerim"
+          title={t('homeScreen.arabicTitle')}
+          subtitle={t('homeScreen.subtitle')}
           showBackButton={true}
           onBackPress={() => navigation.navigate('Main')}
           showHomeButton={true}
@@ -93,7 +96,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         />
         <View style={createStyles(theme).loadingContainer}>
           <ActivityIndicator size="large" color={theme.primary} />
-          <Text style={createStyles(theme).loadingText}>Kur'an verileri yükleniyor...</Text>
+          <Text style={createStyles(theme).loadingText}>{t('homeScreen.loading')}</Text>
         </View>
       </SafeAreaView>
     );
@@ -104,16 +107,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     return (
       <SafeAreaView style={createStyles(theme).container}>
         <HeaderWithDarkModeToggle
-          title="القرآن الكريم"
-          subtitle="Kur'an-ı Kerim"
+          title={t('homeScreen.arabicTitle')}
+          subtitle={t('homeScreen.subtitle')}
           showBackButton={true}
           onBackPress={() => navigation.navigate('Main')}
           showHomeButton={true}
           onHomePress={() => navigation.navigate('Main')}
         />
         <DownloadRequired
-          title="Kur'an-ı Kerim Meali"
-          description="Ayetleri okuyabilmek için Türkçe meal verilerini indirmeniz gerekmektedir."
+          title={t('homeScreen.downloadTitle')}
+          description={t('homeScreen.downloadDescription')}
           totalBytes={totalBytesFromDownload}
           downloading={downloading}
           downloadProgress={downloadProgress}
@@ -128,18 +131,15 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   return (
     <SafeAreaView style={createStyles(theme).container}>
       <HeaderWithDarkModeToggle
-        title="القرآن الكريم"
-        subtitle="Kur'an-ı Kerim"
+        title={t('homeScreen.arabicTitle')}
+        subtitle={t('homeScreen.subtitle')}
         showBackButton={true}
         onBackPress={() => navigation.navigate('Main')}
-
-        showSearchButton={true}
-        onSearchPress={() => navigation.navigate('Search')}
       />
       <View style={createStyles(theme).searchContainer}>
         <TextInput
           style={createStyles(theme).searchInput}
-          placeholder="Sure ara... (isim veya numara)"
+          placeholder={t('homeScreen.searchPlaceholder')}
           placeholderTextColor={theme.textSecondary}
           value={searchQuery}
           onChangeText={setSearchQuery}

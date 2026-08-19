@@ -9,6 +9,7 @@ import {
     ScrollView,
     useWindowDimensions,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../theme';
@@ -21,6 +22,7 @@ interface MainScreenProps {
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
     const { theme, isDarkMode, toggleDarkMode } = useTheme();
+    const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
     const { width, height } = useWindowDimensions();
 
@@ -35,64 +37,56 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
     const menuItems = [
         {
             id: 'surahs',
-            title: 'Sureler',
-            // subtitle: 'Kuran-ı Kerim\'i okuyun',
+            title: t('mainScreen.menu.surahs'),
             icon: '📖',
             color: '#2E7D32',
             onPress: () => onNavigate('Home'),
         },
         {
             id: 'random-verse',
-            title: 'Rastgele Ayet',
-            // subtitle: 'Günün ayetini keşfedin',
+            title: t('mainScreen.menu.randomVerse'),
             icon: '✨',
             color: '#FF7043',
             onPress: () => onNavigate('RandomVerse'),
         },
         {
             id: 'search',
-            title: 'Arama',
-            // subtitle: 'Kuran\'da kelime arayın',
+            title: t('mainScreen.menu.search'),
             icon: '🔍',
             color: '#1976D2',
             onPress: () => onNavigate('Search'),
         },
         {
             id: 'settings',
-            title: 'Ayarlar',
-            // subtitle: 'Uygulama tercihleriniz',
+            title: t('mainScreen.menu.settings'),
             icon: '⚙️',
             color: '#6A1B9A',
             onPress: () => onNavigate('Settings'),
         },
         {
             id: 'profile',
-            title: 'Profil',
-            // subtitle: 'Hesabınız ve ayarlarınız',
+            title: t('mainScreen.menu.profile'),
             icon: '👤',
             color: '#455A64',
             onPress: () => onNavigate('Profile'),
         },
         {
             id: 'hatim',
-            title: 'Hatimler',
-            // subtitle: 'Hatim gruplarına katılın',
+            title: t('mainScreen.menu.hatim'),
             icon: '☪️',
             color: '#00695C',
             onPress: () => onNavigate('Hatim'),
         },
         {
             id: 'prayer-times',
-            title: 'Namaz Vakitleri',
-            // subtitle: 'Ezan saatlerini takip edin',
+            title: t('mainScreen.menu.prayerTimes'),
             icon: '🕌',
             color: '#2E7D32',
             onPress: () => onNavigate('PrayerTimes'),
         },
         {
             id: 'hutbe',
-            title: 'Cuma Hutbesi',
-            // subtitle: 'Haftalık cuma hutbesini okuyun',
+            title: t('mainScreen.menu.hutbe'),
             icon: '📜',
             color: '#D84315',
             onPress: async () => {
@@ -104,34 +98,31 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                     if (response.ok && contentType && contentType.includes('application/pdf')) {
                         onNavigate('Hutbe');
                     } else {
-                        Alert.alert('Bilgi', 'Güncel hutbe henüz yüklenmedi.');
+                        Alert.alert(t('mainScreen.hutbeInfoTitle'), t('mainScreen.hutbeInfoMessage'));
                     }
                 } catch (error) {
                     // On catch, we assume something went wrong with the fetch, stay safe
-                    Alert.alert('Hata', 'Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin.');
+                    Alert.alert(t('mainScreen.hutbeErrorTitle'), t('mainScreen.hutbeErrorMessage'));
                 }
             },
         },
         {
             id: 'umrah',
-            title: 'Umre',
-            // subtitle: 'Umre rehberi ve takip',
+            title: t('mainScreen.menu.umrah'),
             icon: '🕋',
             color: '#8E24AA',
             onPress: () => onNavigate('UmrahMenu'),
         },
         {
             id: 'hijri-calendar',
-            title: 'Hicri Takvim',
-            // subtitle: 'Ay takvimi ve İslami günler',
+            title: t('mainScreen.menu.hijriCalendar'),
             icon: '🌙',
             color: '#1a237e',
             onPress: () => onNavigate('HijriCalendar'),
         },
         {
             id: 'about',
-            title: 'Hakkında',
-            // subtitle: 'Uygulama hakkında',
+            title: t('mainScreen.menu.about'),
             icon: 'ℹ️',
             color: '#00897B',
             onPress: () => onNavigate('About'),
@@ -142,11 +133,9 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
 
             <AppHeader
-                title="Kuran-ı Kerim"
-                subtitle="Dijital Mushaf"
+                title={t('mainScreen.appTitle')}
+                subtitle={t('mainScreen.appSubtitle')}
                 large
-                showLogo={false}
-                showSettingsButton={false}
             />
 
             {/* Main Content */}
@@ -155,10 +144,10 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                 showsVerticalScrollIndicator={false}
             >
                 <Text style={[styles.welcomeText, { color: theme.text, fontSize: welcomeFontSize }]}>
-                    Hoş Geldiniz
+                    {t('mainScreen.welcome')}
                 </Text>
                 <Text style={[styles.descriptionText, { color: theme.textSecondary, fontSize: descriptionFontSize, lineHeight: descriptionFontSize * 1.4 }]}>
-                    Kuran-ı Kerim'i okumak, aramak ve dinlemek için bir seçenek belirleyin
+                    {t('mainScreen.description')}
                 </Text>
 
                 {/* Menu Items Grid */}
@@ -185,9 +174,6 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                                     <Text style={[styles.menuTitle, { color: theme.text }]}>
                                         {item.title}
                                     </Text>
-                                    <Text style={[styles.menuSubtitle, { color: theme.textSecondary }]}>
-                                        {item.subtitle}
-                                    </Text>
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -197,10 +183,10 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                 {/* Footer */}
                 <View style={styles.footer}>
                     <Text style={[styles.footerText, { color: theme.textSecondary }]}>
-                        "Yaratan Rabbinin adıyla oku."
+                        {t('mainScreen.footerQuote')}
                     </Text>
                     <Text style={[styles.footerReference, { color: theme.textSecondary }]}>
-                        (Alak Suresi, 1. Ayet)
+                        {t('mainScreen.footerReference')}
                     </Text>
                 </View>
             </ScrollView>

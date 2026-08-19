@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, TextInput, Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserData } from '../contexts/UserDataContext';
@@ -13,6 +14,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
     const { user, userProfile, signOutUser, updateDisplayName, signInWithGoogle } = useAuth();
     const { bookmarks, lastRead, removeBookmark } = useUserData();
     const { theme } = useTheme();
+    const { t, i18n } = useTranslation();
     const [isEditingName, setIsEditingName] = useState(false);
     const [newDisplayName, setNewDisplayName] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
@@ -24,12 +26,12 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
 
     const handleSaveName = async () => {
         if (!newDisplayName.trim()) {
-            Alert.alert('Hata', 'Kullanıcı adı boş olamaz.');
+            Alert.alert(t('profileScreen.nameEmptyTitle'), t('profileScreen.nameEmptyMessage'));
             return;
         }
 
         if (newDisplayName.trim().length < 2) {
-            Alert.alert('Hata', 'Kullanıcı adı en az 2 karakter olmalıdır.');
+            Alert.alert(t('profileScreen.nameEmptyTitle'), t('profileScreen.nameTooShortMessage'));
             return;
         }
 
@@ -37,10 +39,10 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
         try {
             await updateDisplayName(newDisplayName.trim());
             setIsEditingName(false);
-            Alert.alert('Başarılı', 'Kullanıcı adınız güncellendi.');
+            Alert.alert(t('profileScreen.nameUpdatedTitle'), t('profileScreen.nameUpdatedMessage'));
         } catch (error) {
             console.error('Error updating display name:', error);
-            Alert.alert('Hata', 'Kullanıcı adı güncellenirken bir hata oluştu.');
+            Alert.alert(t('profileScreen.nameEmptyTitle'), t('profileScreen.nameUpdateErrorMessage'));
         } finally {
             setIsUpdating(false);
         }
@@ -74,7 +76,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
         >
             <View style={createStyles(theme).listItemContent}>
                 <Text style={createStyles(theme).listItemTitle}>
-                    {item.surahName} - Ayet {item.verseNumber}
+                    {t('profileScreen.verseLabel', { surahName: item.surahName, verseNumber: item.verseNumber })}
                 </Text>
                 <Text style={createStyles(theme).listItemSubtitle} numberOfLines={2}>
                     {item.verseText}
@@ -96,14 +98,14 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
         >
             <View style={createStyles(theme).listItemContent}>
                 <Text style={createStyles(theme).listItemTitle}>
-                    {item.surahName} - Ayet {item.verseNumber}
+                    {t('profileScreen.verseLabel', { surahName: item.surahName, verseNumber: item.verseNumber })}
                 </Text>
                 <Text style={createStyles(theme).listItemSubtitle} numberOfLines={2}>
                     {item.verseText}
                 </Text>
             </View>
             <Text style={createStyles(theme).timeText}>
-                {new Date(item.timestamp).toLocaleDateString('tr-TR')}
+                {new Date(item.timestamp).toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'tr-TR')}
             </Text>
         </TouchableOpacity>
     );
@@ -111,7 +113,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
     return (
         <SafeAreaView style={createStyles(theme).container}>
             <HeaderWithDarkModeToggle
-                title="Profil"
+                title={t('screenTitles.profile')}
                 showBackButton
                 onBackPress={() => navigation.goBack()}
                 showHomeButton={true}
@@ -139,7 +141,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                                 style={createStyles(theme).nameInput}
                                                 value={newDisplayName}
                                                 onChangeText={setNewDisplayName}
-                                                placeholder="Kullanıcı adını girin"
+                                                placeholder={t('profileScreen.namePlaceholder')}
                                                 placeholderTextColor={theme.textSecondary}
                                                 maxLength={50}
                                                 autoFocus
@@ -150,7 +152,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                                     onPress={handleCancelEdit}
                                                     disabled={isUpdating}
                                                 >
-                                                    <Text style={createStyles(theme).cancelButtonText}>İptal</Text>
+                                                    <Text style={createStyles(theme).cancelButtonText}>{t('profileScreen.cancel')}</Text>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity
                                                     style={[createStyles(theme).editButton, createStyles(theme).saveButton]}
@@ -158,7 +160,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                                     disabled={isUpdating}
                                                 >
                                                     <Text style={createStyles(theme).saveButtonText}>
-                                                        {isUpdating ? 'Kaydediliyor...' : 'Kaydet'}
+                                                        {isUpdating ? t('profileScreen.saving') : t('profileScreen.save')}
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -166,7 +168,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                     ) : (
                                         <View style={createStyles(theme).nameContainer}>
                                             <Text style={createStyles(theme).name}>
-                                                {userProfile?.displayName || user.displayName || 'İsimsiz Kullanıcı'}
+                                                {userProfile?.displayName || user.displayName || t('profileScreen.defaultUserName')}
                                             </Text>
                                             <TouchableOpacity
                                                 style={createStyles(theme).editNameButton}
@@ -181,13 +183,13 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                             </View>
 
                             <TouchableOpacity style={createStyles(theme).signOutBtn} onPress={signOutUser}>
-                                <Text style={createStyles(theme).signOutText}>Çıkış Yap</Text>
+                                <Text style={createStyles(theme).signOutText}>{t('profileScreen.signOut')}</Text>
                             </TouchableOpacity>
                         </View>
 
                         {/* Bookmarks Section */}
                         <View style={createStyles(theme).section}>
-                            <Text style={createStyles(theme).sectionTitle}>Favoriler ({bookmarks.length})</Text>
+                            <Text style={createStyles(theme).sectionTitle}>{t('profileScreen.bookmarksTitle', { count: bookmarks.length })}</Text>
                             {bookmarks.length > 0 ? (
                                 bookmarks.map((item) => (
                                     <View key={`${item.surahNumber}-${item.verseNumber}`}>
@@ -195,13 +197,13 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                     </View>
                                 ))
                             ) : (
-                                <Text style={createStyles(theme).emptyText}>Henüz favori ayet eklenmemiş.</Text>
+                                <Text style={createStyles(theme).emptyText}>{t('profileScreen.noBookmarks')}</Text>
                             )}
                         </View>
 
                         {/* Last Read Section */}
                         <View style={createStyles(theme).section}>
-                            <Text style={createStyles(theme).sectionTitle}>Son Okuduklarım ({lastRead.length})</Text>
+                            <Text style={createStyles(theme).sectionTitle}>{t('profileScreen.lastReadTitle', { count: lastRead.length })}</Text>
                             {lastRead.length > 0 ? (
                                 lastRead.map((item) => (
                                     <View key={`${item.surahNumber}-${item.verseNumber}-${item.timestamp}`}>
@@ -209,15 +211,15 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                     </View>
                                 ))
                             ) : (
-                                <Text style={createStyles(theme).emptyText}>Henüz okunmuş ayet bulunmuyor.</Text>
+                                <Text style={createStyles(theme).emptyText}>{t('profileScreen.noLastRead')}</Text>
                             )}
                         </View>
                     </>
                 ) : (
                     <View style={createStyles(theme).card}>
-                        <Text style={[createStyles(theme).email, { marginBottom: SPACING.md }]}>Oturum açılmamış.</Text>
+                        <Text style={[createStyles(theme).email, { marginBottom: SPACING.md }]}>{t('profileScreen.notSignedIn')}</Text>
                         <TouchableOpacity style={createStyles(theme).googleBtn} onPress={signInWithGoogle}>
-                            <Text style={createStyles(theme).googleBtnText}>Google ile Giriş Yap</Text>
+                            <Text style={createStyles(theme).googleBtnText}>{t('profileScreen.signInWithGoogle')}</Text>
                         </TouchableOpacity>
                     </View>
                 )}

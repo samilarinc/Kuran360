@@ -7,6 +7,7 @@ import {
     ScrollView,
     StyleSheet,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../theme';
@@ -28,6 +29,7 @@ const STORAGE_KEY = '@umrah_progress';
 
 export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavigate, navigation }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [progress, setProgress] = useState<UmrahState>({
         tawafCount: 0,
         sayCount: 0,
@@ -106,7 +108,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
             <AppHeader
-                title="Şu an neredeyim?"
+                title={t('screenTitles.umrahProgress')}
                 showBackButton={true}
                 onBackPress={onNavigate}
             />
@@ -115,7 +117,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                 <View style={styles.progressCard}>
                     <View style={styles.progressHeader}>
                         <Text style={[styles.icon, styles.largeIcon]}>🕋</Text>
-                        <Text style={[styles.progressTitle, { color: theme.text }]}>Tavaf</Text>
+                        <Text style={[styles.progressTitle, { color: theme.text }]}>{t('umrahProgressScreen.tawaf')}</Text>
                     </View>
                     <Text style={[styles.progressCount, { color: theme.primary }]}>
                         {progress.tawafCount} / 7
@@ -139,7 +141,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                             style={styles.duaLink}
                             onPress={() => navigation.navigate('UmrahDuas')}
                         >
-                            <Text style={[styles.duaLinkText, { color: theme.primary }]}>Tavaf Duaları →</Text>
+                            <Text style={[styles.duaLinkText, { color: theme.primary }]}>{t('umrahProgressScreen.tawafDuas')}</Text>
                         </TouchableOpacity>
                     )}
                 </View>
@@ -148,10 +150,10 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                 <View style={styles.progressCard}>
                     <View style={styles.progressHeader}>
                         <Text style={[styles.icon, styles.largeIcon]}>🏃‍♂️</Text>
-                        <Text style={[styles.progressTitle, { color: theme.text }]}>Sa'y</Text>
+                        <Text style={[styles.progressTitle, { color: theme.text }]}>{t('umrahProgressScreen.say')}</Text>
                     </View>
                     <Text style={[styles.directionText, { color: theme.textSecondary }]}>
-                        {progress.sayDirection === 'Safa' ? 'Safa → Merve' : 'Merve → Safa'}
+                        {progress.sayDirection === 'Safa' ? t('umrahProgressScreen.safaToMerve') : t('umrahProgressScreen.merveToSafa')}
                     </Text>
                     <Text style={[styles.progressCount, { color: theme.primary }]}>
                         {progress.sayCount} / 7
@@ -175,7 +177,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                             style={styles.duaLink}
                             onPress={() => navigation.navigate('UmrahDuas')}
                         >
-                            <Text style={[styles.duaLinkText, { color: theme.primary }]}>Sa'y Duaları →</Text>
+                            <Text style={[styles.duaLinkText, { color: theme.primary }]}>{t('umrahProgressScreen.sayDuas')}</Text>
                         </TouchableOpacity>
                     )}
                 </View>
@@ -193,7 +195,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                         styles.ihramText,
                         { color: progress.isIhram ? '#FFFFFF' : theme.text }
                     ]}>
-                        {progress.isIhram ? 'İhramdayım' : 'İhramda Değilim'}
+                        {progress.isIhram ? t('umrahProgressScreen.inIhram') : t('umrahProgressScreen.notInIhram')}
                     </Text>
                 </TouchableOpacity>
                 {navigation && (
@@ -201,7 +203,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                         style={styles.duaLinkCenter}
                         onPress={() => navigation.navigate('UmrahDuas')}
                     >
-                        <Text style={[styles.duaLinkText, { color: theme.primary }]}>İhram Duaları →</Text>
+                        <Text style={[styles.duaLinkText, { color: theme.primary }]}>{t('umrahProgressScreen.ihramDuas')}</Text>
                     </TouchableOpacity>
                 )}
             </ScrollView>

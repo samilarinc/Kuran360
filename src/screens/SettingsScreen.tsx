@@ -12,16 +12,10 @@ import {
     Animated,
 } from 'react-native';
 import { ThemeToggle } from '@msarinc/ui';
+import { useTranslation } from 'react-i18next';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { ARABIC_FONT_OPTIONS } from '../constants/fonts';
 import { useTheme } from '../contexts/ThemeContext';
-
-const THEME_TOGGLE_LABELS = {
-    light: 'Aydınlık',
-    dark: 'Karanlık',
-    lightsOut: 'Işıklar Kapalı',
-    accessibilityLabel: (current: string, next: string) => `Tema: ${current}. Değiştirmek için dokun, sıradaki: ${next}`,
-};
 import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion } from '../data/quranData';
 import { AppHeader } from '../components/AppHeader'; // Use AppHeader
 import { AppButton } from '../components/AppButton'; // Use AppButton if needed
@@ -171,6 +165,13 @@ const SettingItem: React.FC<SettingItemProps> = ({
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     const { settings, updateSettings, availableTranslations, availableReciters } = useDebouncedSettings(150);
     const { theme } = useTheme();
+    const { t } = useTranslation();
+    const THEME_TOGGLE_LABELS = {
+        light: t('settingsScreen.theme.light'),
+        dark: t('settingsScreen.theme.dark'),
+        lightsOut: t('settingsScreen.theme.lightsOut'),
+        accessibilityLabel: (current: string, next: string) => t('settingsScreen.theme.accessibilityLabel', { current, next }),
+    };
     const { width: screenWidth } = useWindowDimensions();
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
         audio: false,
@@ -221,9 +222,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         if (currentTranslations.includes(translationName)) {
             if (currentTranslations.length <= 1) {
                 Alert.alert(
-                    'Uyarı',
-                    'En az bir meal seçili olmalıdır.',
-                    [{ text: 'Tamam', style: 'default' }]
+                    t('settingsScreen.minSelectedTranslationTitle'),
+                    t('settingsScreen.minSelectedTranslationMessage'),
+                    [{ text: t('settingsScreen.ok'), style: 'default' }]
                 );
                 return;
             }
@@ -258,13 +259,13 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     };
 
     const handleUpdateData = () => {
-        const title = 'Verileri Güncelle';
-        const message = 'Kur\'an mealleri ve kelime çevirileri sunucudan tekrar indirilecektir. Mevcut verileriniz en güncel sürümle değiştirilecektir. Onaylıyor musunuz?';
+        const title = t('settingsScreen.updateData.title');
+        const message = t('settingsScreen.updateData.message');
 
         const runUpdate = async () => {
             setIsUpdating(true);
             setDownloadProgress(0);
-            setDownloadStatus('İndirme hazırlanıyor...');
+            setDownloadStatus(t('settingsScreen.updateData.preparing'));
 
             const progressCallback: ProgressCallback = (progress, status, downloaded, total) => {
                 setDownloadProgress(progress);
@@ -287,13 +288,13 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         if (win.window?.location) win.window.location.reload();
                     }, 500);
                 } else {
-                    Alert.alert('Başarılı', 'Veriler başarıyla güncellendi.');
+                    Alert.alert(t('settingsScreen.updateData.successTitle'), t('settingsScreen.updateData.successMessage'));
                 }
             } catch (error) {
                 console.error('Update failed:', error);
                 setIsUpdating(false);
-                setDownloadStatus('Hata: ' + (error as Error).message);
-                Alert.alert('Hata', 'Güncelleme sırasında bir sorun oluştu.');
+                setDownloadStatus(t('settingsScreen.updateData.errorPrefix') + (error as Error).message);
+                Alert.alert(t('settingsScreen.updateData.errorTitle'), t('settingsScreen.updateData.errorMessage'));
             }
         };
 
@@ -304,8 +305,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
             }
         } else {
             Alert.alert(title, message, [
-                { text: 'İptal', style: 'cancel' },
-                { text: 'Güncelle', style: 'destructive', onPress: runUpdate }
+                { text: t('settingsScreen.updateData.cancel'), style: 'cancel' },
+                { text: t('settingsScreen.updateData.confirm'), style: 'destructive', onPress: runUpdate }
             ]);
         }
     };
@@ -404,7 +405,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     return (
         <SafeAreaView style={createStyles(theme).container}>
             <AppHeader
-                title="Ayarlar"
+                title={t('settingsScreen.title')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
                 showHomeButton={true}
@@ -418,13 +419,13 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
             >
                 {/* Quick Settings - Always visible */}
                 <View style={createStyles(theme).quickSettingsSection}>
-                    <Text style={createStyles(theme).quickSettingsTitle}>Hızlı Ayarlar</Text>
+                    <Text style={createStyles(theme).quickSettingsTitle}>{t('settingsScreen.quickSettings')}</Text>
                     <View style={createStyles(theme).settingItem}>
                         <View style={createStyles(theme).settingContent}>
                             <Text style={createStyles(theme).settingIcon}>🌙</Text>
                             <View style={createStyles(theme).settingInfo}>
-                                <Text style={createStyles(theme).settingLabel}>Tema</Text>
-                                <Text style={createStyles(theme).settingDescription}>Aydınlık, karanlık veya ışıklar kapalı</Text>
+                                <Text style={createStyles(theme).settingLabel}>{t('settingsScreen.themeLabel')}</Text>
+                                <Text style={createStyles(theme).settingDescription}>{t('settingsScreen.themeDescription')}</Text>
                             </View>
                         </View>
                         <ThemeToggle labels={THEME_TOGGLE_LABELS} compact={false} />
@@ -434,8 +435,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 {/* Audio Settings */}
                 <View style={createStyles(theme).section}>
                     {renderSectionHeader(
-                        "Ses Ayarları",
-                        "Otomatik oynatma ve kıraat seçimi",
+                        t('settingsScreen.sections.audioTitle'),
+                        t('settingsScreen.sections.audioSubtitle'),
                         "audio",
                         "🔊"
                     )}
@@ -443,8 +444,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     {expandedSections.audio && (
                         <View style={createStyles(theme).sectionContent}>
                             <SettingItem
-                                title="Otomatik Oynatma"
-                                description="Bir ayet bitince otomatik olarak sonraki ayete geç"
+                                title={t('settingsScreen.items.autoplayTitle')}
+                                description={t('settingsScreen.items.autoplayDescription')}
                                 value={settings.autoplayEnabled}
                                 onValueChange={(value) => updateSettings({ autoplayEnabled: value })}
                                 icon="⏯️"
@@ -461,8 +462,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 {/* Display Settings */}
                 <View style={createStyles(theme).section}>
                     {renderSectionHeader(
-                        "Görünüm Seçenekleri",
-                        "Ayet görünümü ve kelime çevirileri",
+                        t('settingsScreen.sections.displayTitle'),
+                        t('settingsScreen.sections.displaySubtitle'),
                         "display",
                         "👁️"
                     )}
@@ -470,8 +471,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     {expandedSections.display && (
                         <View style={createStyles(theme).sectionContent}>
                             <SettingItem
-                                title="Türkçe Okunuş"
-                                description="Ayetlerin okunuş şeklini göster"
+                                title={t('settingsScreen.items.transliterationTitle')}
+                                description={t('settingsScreen.items.transliterationDescription')}
                                 value={settings.showTransliteration}
                                 onValueChange={(value) => updateSettings({ showTransliteration: value })}
                                 icon="📝"
@@ -479,8 +480,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                             />
 
                             <SettingItem
-                                title="Kelime Çevirileri"
-                                description="Her kelimenin altında Türkçe karşılığını göster"
+                                title={t('settingsScreen.items.wordTranslationsTitle')}
+                                description={t('settingsScreen.items.wordTranslationsDescription')}
                                 value={settings.showWordTranslations}
                                 onValueChange={(value) => {
                                     if (value && settings.inlineWordTranslations) {
@@ -495,8 +496,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                             />
 
                             <SettingItem
-                                title="Kelime Üstüne Gelince Çeviri"
-                                description="Web'de ayet içinde kelimenin üstüne gelince çeviriyi göster"
+                                title={t('settingsScreen.items.inlineWordTranslationsTitle')}
+                                description={t('settingsScreen.items.inlineWordTranslationsDescription')}
                                 value={settings.inlineWordTranslations}
                                 onValueChange={(value) => {
                                     if (value && settings.showWordTranslations) {
@@ -511,8 +512,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                             />
 
                             <SettingItem
-                                title="Sayfalı Görünüm"
-                                description="Her ayeti ayrı sayfada göster (kaydırarak geçiş)"
+                                title={t('settingsScreen.items.paginatedViewTitle')}
+                                description={t('settingsScreen.items.paginatedViewDescription')}
                                 value={settings.usePaginatedView}
                                 onValueChange={(value) => updateSettings({ usePaginatedView: value })}
                                 icon="📄"
@@ -525,8 +526,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 {/* Font Selection */}
                 <View style={createStyles(theme).section}>
                     {renderSectionHeader(
-                        "Yazı Tipi",
-                        "Okuma ve resim için ayrı font seçin",
+                        t('settingsScreen.sections.fontsTitle'),
+                        t('settingsScreen.sections.fontsSubtitle'),
                         "fonts",
                         "✍️"
                     )}
@@ -552,10 +553,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
 
                         return (
                             <View style={createStyles(theme).sectionContent}>
-                                {([
-                                    { key: 'arabicFont' as const,     icon: '📖', label: 'Kuran Okuma Fontu' },
-                                    { key: 'imageArabicFont' as const, icon: '🖼️', label: 'Resim / Paylaşım Fontu' },
-                                ] as const).map(({ key, icon, label }, groupIdx) => (
+                                {[
+                                    { key: 'arabicFont' as const, icon: '📖', label: t('settingsScreen.fonts.readingFont') },
+                                    { key: 'imageArabicFont' as const, icon: '🖼️', label: t('settingsScreen.fonts.imageFont') },
+                                ].map(({ key, icon, label }, groupIdx) => (
                                     <View key={key} style={{ marginBottom: groupIdx === 0 ? SPACING.lg : 0 }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.sm, gap: SPACING.xs }}>
                                             <Text style={{ fontSize: 13 }}>{icon}</Text>
@@ -598,8 +599,11 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 {/* Translation Selection */}
                 <View style={createStyles(theme).section}>
                     {renderSectionHeader(
-                        "Meal Seçimi",
-                        `${settings.selectedTranslations.length} meal seçili • Favori: ${settings.favoriteTranslation.substring(0, 20)}${settings.favoriteTranslation.length > 20 ? '...' : ''}`,
+                        t('settingsScreen.sections.translationsTitle'),
+                        t('settingsScreen.sections.translationsSubtitle', {
+                            count: settings.selectedTranslations.length,
+                            favorite: `${settings.favoriteTranslation.substring(0, 20)}${settings.favoriteTranslation.length > 20 ? '...' : ''}`,
+                        }),
                         "translations",
                         "📖"
                     )}
@@ -611,20 +615,20 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                     style={[createStyles(theme).actionButton, createStyles(theme).primaryActionButton]}
                                     onPress={selectAllTranslations}
                                 >
-                                    <Text style={createStyles(theme).primaryActionButtonText}>Tümünü Seç</Text>
+                                    <Text style={createStyles(theme).primaryActionButtonText}>{t('settingsScreen.translations.selectAll')}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[createStyles(theme).actionButton, createStyles(theme).secondaryActionButton]}
                                     onPress={selectDefaultTranslations}
                                 >
-                                    <Text style={createStyles(theme).secondaryActionButtonText}>Varsayılan</Text>
+                                    <Text style={createStyles(theme).secondaryActionButtonText}>{t('settingsScreen.translations.selectDefault')}</Text>
                                 </TouchableOpacity>
                             </View>
 
                             {/* Favori Meal Açıklaması */}
                             <View style={createStyles(theme).favoriteExplanation}>
                                 <Text style={createStyles(theme).favoriteExplanationText}>
-                                    ⭐ Favori meal ayetlerde öncelikli olarak gösterilir
+                                    {t('settingsScreen.translations.favoriteExplanation')}
                                 </Text>
                             </View>
 
@@ -640,8 +644,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 {/* System Settings */}
                 <View style={createStyles(theme).section}>
                     {renderSectionHeader(
-                        "Sistem & Veri",
-                        "Uygulama verilerini yönet ve güncelle",
+                        t('settingsScreen.sections.systemTitle'),
+                        t('settingsScreen.sections.systemSubtitle'),
                         "system",
                         "⚙️"
                     )}
@@ -660,7 +664,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                 </View>
                             ) : dataVersion === '3.1' ? (
                                 <Text style={[createStyles(theme).footerText, { padding: SPACING.md, textAlign: 'center' }]}>
-                                    ✅ Meal verileri güncel (v3.1)
+                                    {t('settingsScreen.dataUpToDate')}
                                 </Text>
                             ) : (
                                 <TouchableOpacity
@@ -668,7 +672,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                     onPress={handleUpdateData}
                                     activeOpacity={0.7}
                                 >
-                                    <Text style={createStyles(theme).updateButtonText}>📥 Meal Verilerini Güncelle</Text>
+                                    <Text style={createStyles(theme).updateButtonText}>{t('settingsScreen.updateButton')}</Text>
                                 </TouchableOpacity>
                             )}
                         </View>
@@ -677,7 +681,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
 
                 <View style={createStyles(theme).footer}>
                     <Text style={createStyles(theme).footerText}>
-                        💡 Seçili mealler ayetlerin altında gösterilecektir
+                        {t('settingsScreen.footer')}
                     </Text>
                 </View>
             </ScrollView>

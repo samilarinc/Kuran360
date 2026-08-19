@@ -15,6 +15,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
 import { AppHeader } from '../components/AppHeader';
 import { SPACING, FONT_SIZES } from '../theme';
@@ -34,27 +35,27 @@ interface ChecklistData {
     checklist: Record<string, boolean>;
 }
 
-const CHECKLIST_ITEMS: { key: string; label: string }[] = [
-    { key: 'planeTicketPurchased', label: 'Uçak bileti aldım' },
-    { key: 'trainTicketPurchased', label: 'Tren bileti aldım (Mekke-Medine) / Tren biletine gerek yok' },
-    { key: 'visaObtained', label: 'Vize aldım' },
-    { key: 'hotelBooked', label: 'Otel rezervasyonu yaptım' },
-    { key: 'ihramReady', label: 'İhram hazır' },
-    { key: 'clothesReady', label: 'Kıyafetlerim hazır' },
-    { key: 'nusukReady', label: 'Nusuk indirdim' },
-    { key: 'phoneSimReady', label: 'SIM kartım hazır' },
-    { key: 'duaShareReady', label: 'Dua linkimi arkadaşlarımla paylaşıp duaları kaydettim' },
-    { key: 'currencyReady', label: 'Riyal olarak nakit param hazır' },
-    { key: 'dovizEkstreReady', label: 'Kredi kartıma döviz ekstresi açtırdım' },
-    { key: 'roamingChecked', label: 'Telefonumun yurt dışı kullanımını kontrol ettim' },
-    { key: 'powerBankReady', label: 'Powerbank hazır' },
-    { key: 'mapsDownloaded', label: 'Offline haritaları indirdim' },
-    { key: 'duaListPrepared', label: 'Dua listemi hazırladım' },
-    { key: 'zikirmatikReady', label: 'Zikirmatik / tesbih hazır' },
-    { key: 'umrahGuideSaved', label: 'Umre rehberi (PDF/video) kaydettim' },
-    { key: 'bagForHaram', label: 'Harem için küçük çanta/omuz çantası hazır' },
-    { key: 'personalMedications', label: 'Kendi ilaçlarımı hazırladım' },
-    { key: 'hygieneKit', label: 'Kişisel bakım ve hijyen malzemeleri hazır' },
+const CHECKLIST_ITEM_KEYS: string[] = [
+    'planeTicketPurchased',
+    'trainTicketPurchased',
+    'visaObtained',
+    'hotelBooked',
+    'ihramReady',
+    'clothesReady',
+    'nusukReady',
+    'phoneSimReady',
+    'duaShareReady',
+    'currencyReady',
+    'dovizEkstreReady',
+    'roamingChecked',
+    'powerBankReady',
+    'mapsDownloaded',
+    'duaListPrepared',
+    'zikirmatikReady',
+    'umrahGuideSaved',
+    'bagForHaram',
+    'personalMedications',
+    'hygieneKit',
 ];
 
 type CityOption = {
@@ -79,6 +80,7 @@ interface UmrahChecklistScreenProps {
 export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNavigate, navigation }) => {
 
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [data, setData] = useState<ChecklistData>({
         outboundFrom: '',
         outboundFromName: '',
@@ -154,10 +156,10 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
             if (supported) {
                 await Linking.openURL(url);
             } else {
-                Alert.alert('Hata', `${label} açılamadı`);
+                Alert.alert(t('umrahChecklistScreen.linkOpenErrorTitle'), t('umrahChecklistScreen.linkOpenError', { label }));
             }
         } catch (error) {
-            Alert.alert('Hata', `Bağlantı açılırken bir hata oluştu`);
+            Alert.alert(t('umrahChecklistScreen.linkOpenErrorTitle'), t('umrahChecklistScreen.linkOpenGenericError'));
         }
     };
 
@@ -184,7 +186,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
     };
 
     const formatDateForDisplay = (date: Date | null): string => {
-        if (!date) return 'Tarih seçin';
+        if (!date) return t('umrahChecklistScreen.selectDate');
 
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -216,8 +218,8 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
             openLink(url, 'Skyscanner');
         } else {
             Alert.alert(
-                'Eksik Bilgi',
-                'Skyscanner araması için çıkış/dönüş şehri ve tarihlerini doldurmalısınız.'
+                t('umrahChecklistScreen.missingInfoTitle'),
+                t('umrahChecklistScreen.missingInfoMessage')
             );
         }
     };
@@ -326,10 +328,13 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
     const needsTransfer = data.outboundTo !== data.inboundFrom;
     const showIhramReminder = data.outboundTo === 'Mekke';
 
+    const cityLabel = (city: 'Mekke' | 'Medine'): string =>
+        city === 'Mekke' ? t('umrahChecklistScreen.mekke') : t('umrahChecklistScreen.medine');
+
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
             <AppHeader
-                title="Umre Hazırlık Listesi"
+                title={t('screenTitles.umrahChecklist')}
                 showBackButton={true}
                 onBackPress={onNavigate}
             />
@@ -368,7 +373,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                 {/* COMPACT TRAVEL PLAN CARD */}
                 <View style={[styles.plannerCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                     <Text style={[styles.plannerTitle, { color: theme.text }]}>
-                        ✈️ Seyahat Planı
+                        {t('umrahChecklistScreen.travelPlan')}
                     </Text>
 
                     {/* Outbound Row */}
@@ -380,7 +385,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                     onPress={() => setShowOutboundPicker(true)}
                                 >
                                     <Text style={[styles.cityChipText, { color: data.outboundFromName ? theme.text : theme.textSecondary }]}>
-                                        {data.outboundFromName || 'Nereden?'}
+                                        {data.outboundFromName || t('umrahChecklistScreen.from')}
                                     </Text>
                                     <Text style={{ fontSize: 10, color: theme.textSecondary }}>▼</Text>
                                 </TouchableOpacity>
@@ -396,7 +401,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                         ]}
                                         onPress={() => updateField('outboundTo', 'Mekke')}
                                     >
-                                        <Text style={[styles.destinationChipText, { color: data.outboundTo === 'Mekke' ? '#FFFFFF' : theme.text }]}>Mekke</Text>
+                                        <Text style={[styles.destinationChipText, { color: data.outboundTo === 'Mekke' ? '#FFFFFF' : theme.text }]}>{cityLabel('Mekke')}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[
@@ -406,14 +411,14 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                         ]}
                                         onPress={() => updateField('outboundTo', 'Medine')}
                                     >
-                                        <Text style={[styles.destinationChipText, { color: data.outboundTo === 'Medine' ? '#FFFFFF' : theme.text }]}>Medine</Text>
+                                        <Text style={[styles.destinationChipText, { color: data.outboundTo === 'Medine' ? '#FFFFFF' : theme.text }]}>{cityLabel('Medine')}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
 
                             {/* Outbound Date Row */}
                             <View style={styles.compactDateRow}>
-                                <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>Gidiş:</Text>
+                                <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>{t('umrahChecklistScreen.outbound')}</Text>
                                 {Platform.OS === 'web' ? (
                                     <View style={{ flex: 1, position: 'relative', height: 35, justifyContent: 'center' }}>
                                         <Text style={[styles.compactDateText, { color: data.outboundDate ? theme.primary : theme.textSecondary }]}>
@@ -472,7 +477,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                         ]}
                                         onPress={() => updateField('inboundFrom', 'Mekke')}
                                     >
-                                        <Text style={[styles.destinationChipText, { color: data.inboundFrom === 'Mekke' ? '#FFFFFF' : theme.text }]}>Mekke</Text>
+                                        <Text style={[styles.destinationChipText, { color: data.inboundFrom === 'Mekke' ? '#FFFFFF' : theme.text }]}>{cityLabel('Mekke')}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[
@@ -482,7 +487,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                         ]}
                                         onPress={() => updateField('inboundFrom', 'Medine')}
                                     >
-                                        <Text style={[styles.destinationChipText, { color: data.inboundFrom === 'Medine' ? '#FFFFFF' : theme.text }]}>Medine</Text>
+                                        <Text style={[styles.destinationChipText, { color: data.inboundFrom === 'Medine' ? '#FFFFFF' : theme.text }]}>{cityLabel('Medine')}</Text>
                                     </TouchableOpacity>
                                 </View>
 
@@ -493,7 +498,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                     onPress={() => setShowInboundPicker(true)}
                                 >
                                     <Text style={[styles.cityChipText, { color: data.inboundToName ? theme.text : theme.textSecondary }]}>
-                                        {data.inboundToName || 'Nereye?'}
+                                        {data.inboundToName || t('umrahChecklistScreen.to')}
                                     </Text>
                                     <Text style={{ fontSize: 10, color: theme.textSecondary }}>▼</Text>
                                 </TouchableOpacity>
@@ -501,7 +506,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
 
                             {/* Inbound Date Row */}
                             <View style={styles.compactDateRow}>
-                                <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>Dönüş:</Text>
+                                <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>{t('umrahChecklistScreen.inbound')}</Text>
                                 {Platform.OS === 'web' ? (
                                     <View style={{ flex: 1, position: 'relative', height: 35, justifyContent: 'center' }}>
                                         <Text style={[styles.compactDateText, { color: data.inboundDate ? theme.primary : theme.textSecondary }]}>
@@ -557,14 +562,14 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                     style={[styles.plannerActionBtn, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
                                     onPress={openFirstCityHotel}
                                 >
-                                    <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>🏨 {data.outboundTo}</Text>
+                                    <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>{t('umrahChecklistScreen.hotel', { city: cityLabel(data.outboundTo) })}</Text>
                                 </TouchableOpacity>
                                 {needsTransfer && data.transferDate && (
                                     <TouchableOpacity
                                         style={[styles.plannerActionBtn, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
                                         onPress={openSecondCityHotel}
                                     >
-                                        <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>🏨 {data.inboundFrom}</Text>
+                                        <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>{t('umrahChecklistScreen.hotel', { city: cityLabel(data.inboundFrom) })}</Text>
                                     </TouchableOpacity>
                                 )}
                             </View>
@@ -575,7 +580,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                     <Modal visible={showOutboundPicker} transparent animationType="fade" onRequestClose={() => setShowOutboundPicker(false)}>
                         <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowOutboundPicker(false)}>
                             <View style={[styles.modalContent, { backgroundColor: theme.surface }]}>
-                                <Text style={[styles.modalTitle, { color: theme.text }]}>Nereden Gidiyorsunuz?</Text>
+                                <Text style={[styles.modalTitle, { color: theme.text }]}>{t('umrahChecklistScreen.whereFrom')}</Text>
                                 {TURKISH_CITIES.map((city) => (
                                     <TouchableOpacity key={city.code} style={[styles.modalOption, { borderBottomColor: theme.border }]} onPress={() => selectOutboundCity(city)}>
                                         <Text style={[styles.modalOptionText, { color: theme.text }]}>{city.name}</Text>
@@ -588,7 +593,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                     <Modal visible={showInboundPicker} transparent animationType="fade" onRequestClose={() => setShowInboundPicker(false)}>
                         <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowInboundPicker(false)}>
                             <View style={[styles.modalContent, { backgroundColor: theme.surface }]}>
-                                <Text style={[styles.modalTitle, { color: theme.text }]}>Nereye Dönüyorsunuz?</Text>
+                                <Text style={[styles.modalTitle, { color: theme.text }]}>{t('umrahChecklistScreen.whereTo')}</Text>
                                 {TURKISH_CITIES.map((city) => (
                                     <TouchableOpacity key={city.code} style={[styles.modalOption, { borderBottomColor: theme.border }]} onPress={() => selectInboundCity(city)}>
                                         <Text style={[styles.modalOptionText, { color: theme.text }]}>{city.name}</Text>
@@ -608,7 +613,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                     {showIhramReminder && (
                         <View style={[styles.compactReminder, { backgroundColor: theme.primary + '15' }]}>
                             <Text style={[styles.compactReminderText, { color: theme.primary }]}>
-                                💡 İlk durak Mekke: Havalimanında ihrama girmelisiniz.
+                                {t('umrahChecklistScreen.ihramReminder')}
                             </Text>
                         </View>
                     )}
@@ -619,15 +624,15 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                 {needsTransfer && (
                     <View style={[styles.plannerCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                         <Text style={[styles.plannerTitle, { color: theme.text }]}>
-                            🚄 Şehirlerarası Geçiş
+                            {t('umrahChecklistScreen.cityTransfer')}
                         </Text>
                         <Text style={[styles.compactReminderText, { color: theme.textSecondary, textAlign: 'left', marginBottom: SPACING.sm }]}>
-                            {data.outboundTo} → {data.inboundFrom} arası geçiş tarihi
+                            {t('umrahChecklistScreen.transferDateDescription', { from: cityLabel(data.outboundTo), to: cityLabel(data.inboundFrom) })}
                         </Text>
 
                         {/* Compact Date Row for Transfer */}
                         <View style={styles.compactDateRow}>
-                            <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>Tarih:</Text>
+                            <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>{t('umrahChecklistScreen.date')}</Text>
                             {Platform.OS === 'web' ? (
                                 <View style={{ flex: 1, position: 'relative', height: 35, justifyContent: 'center' }}>
                                     <Text style={[styles.compactDateText, { color: data.transferDate ? theme.primary : theme.textSecondary }]}>
@@ -676,7 +681,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                 style={[styles.plannerActionBtn, { backgroundColor: theme.primary + '10', borderColor: theme.primary, minHeight: 44 }]}
                                 onPress={() => openLink('https://sar.hhr.sa/home#/', 'Hızlı Tren')}
                             >
-                                <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>🚄 Haramain Hızlı Tren Bileti</Text>
+                                <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>{t('umrahChecklistScreen.trainTicket')}</Text>
                             </TouchableOpacity>
                         )}
 
@@ -700,34 +705,34 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                         onPress={() => openLink('https://visa.visitsaudi.com/', 'E-Vize')}
                     >
                         <Text style={[styles.linkButtonText, { color: theme.text }]}>
-                            📄 Suudi Arabistan E-Vize
+                            {t('umrahChecklistScreen.eVisa')}
                         </Text>
                     </TouchableOpacity>
 
                     <View style={[styles.nusukCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                         <Text style={[styles.nusukTitle, { color: theme.text }]}>
-                            🕌 Nusuk Uygulaması
+                            {t('umrahChecklistScreen.nusukTitle')}
                         </Text>
                         <Text style={[styles.nusukDesc, { color: theme.textSecondary }]}>
-                            Umre izni ve kayıt işlemleri için gerekli
+                            {t('umrahChecklistScreen.nusukDescription')}
                         </Text>
                         <View style={styles.appButtonsRow}>
                             <TouchableOpacity
                                 style={[styles.appButton, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
-                                onPress={() => openLink('https://play.google.com/store/apps/details?id=com.moh.nusukapp&hl=tr', 'Nusuk - Google Play')}
+                                onPress={() => openLink('https://play.google.com/store/apps/details?id=com.moh.nusukapp&hl=tr', t('umrahChecklistScreen.nusukGooglePlay'))}
                             >
                                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                                     <Ionicons name="logo-google-playstore" size={18} color={theme.primary} />
-                                    <Text style={[styles.appButtonText, { color: theme.primary }]}>Google Play</Text>
+                                    <Text style={[styles.appButtonText, { color: theme.primary }]}>{t('umrahChecklistScreen.googlePlay')}</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[styles.appButton, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
-                                onPress={() => openLink('https://apps.apple.com/tr/app/nusuk-%D9%86%D8%B3%D9%83/id6469515422?l=tr', 'Nusuk - App Store')}
+                                onPress={() => openLink('https://apps.apple.com/tr/app/nusuk-%D9%86%D8%B3%D9%83/id6469515422?l=tr', t('umrahChecklistScreen.nusukAppStore'))}
                             >
                                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                                     <Ionicons name="logo-apple-appstore" size={18} color={theme.primary} />
-                                    <Text style={[styles.appButtonText, { color: theme.primary }]}>App Store</Text>
+                                    <Text style={[styles.appButtonText, { color: theme.primary }]}>{t('umrahChecklistScreen.appStore')}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -737,28 +742,28 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                 {/* Checklist Section */}
                 <View style={styles.section}>
                     <Text style={[styles.sectionTitle, { color: theme.text }]}>
-                        Yapılacaklar Listesi
+                        {t('umrahChecklistScreen.checklistTitle')}
                     </Text>
 
-                    {CHECKLIST_ITEMS.map((item) => (
+                    {CHECKLIST_ITEM_KEYS.map((key) => (
                         <TouchableOpacity
-                            key={item.key}
+                            key={key}
                             style={[styles.checklistItem, { backgroundColor: theme.surface, borderColor: theme.border }]}
-                            onPress={() => toggleChecklistItem(item.key)}
+                            onPress={() => toggleChecklistItem(key)}
                         >
                             <View style={[
                                 styles.checkbox,
                                 { borderColor: theme.border },
-                                data.checklist[item.key] && { backgroundColor: theme.primary }
+                                data.checklist[key] && { backgroundColor: theme.primary }
                             ]}>
-                                {data.checklist[item.key] && <Text style={styles.checkmark}>✓</Text>}
+                                {data.checklist[key] && <Text style={styles.checkmark}>✓</Text>}
                             </View>
                             <Text style={[
                                 styles.checklistText,
                                 { color: theme.text },
-                                data.checklist[item.key] && styles.checkedText
+                                data.checklist[key] && styles.checkedText
                             ]}>
-                                {item.label}
+                                {t(`umrahChecklistScreen.items.${key}`)}
                             </Text>
                         </TouchableOpacity>
                     ))}

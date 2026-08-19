@@ -11,7 +11,9 @@ import {
     Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
+import { getSurahName } from '../utils/surahName';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { DownloadRequired } from '../components/DownloadRequired';
@@ -41,6 +43,7 @@ type SurahFilter = 'all' | number;
 export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAvailable }) => {
     const { settings, availableTranslations } = useDebouncedSettings(300);
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const navHelpers = useNavigationHelpers();
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -316,7 +319,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                 setSearchResults(results);
             } catch (error) {
                 console.error('Search error:', error);
-                Alert.alert('Hata', 'Arama sırasında bir hata oluştu.');
+                Alert.alert(t('searchScreen.searchErrorTitle'), t('searchScreen.searchErrorMessage'));
             } finally {
                 setIsSearching(false);
             }
@@ -329,15 +332,15 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
         return (
             <SafeAreaView style={createStyles(theme).container}>
                 <HeaderWithDarkModeToggle
-                    title="Ara"
+                    title={t('searchScreen.title')}
                     showBackButton={true}
                     onBackPress={() => navigation.goBack()}
                     showHomeButton={true}
                     onHomePress={() => navigation.navigate('Main')}
                 />
                 <DownloadRequired
-                    title="Kur'an-ı Kerim Meali"
-                    description="Arama yapabilmek için Türkçe meal verilerini indirmeniz gerekmektedir."
+                    title={t('searchScreen.downloadTitle')}
+                    description={t('searchScreen.downloadDescription')}
                     totalBytes={totalBytes}
                     downloading={downloading}
                     downloadProgress={downloadProgress}
@@ -351,15 +354,15 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
 
     const renderSearchScopeSelector = () => (
         <View style={createStyles(theme).selectorContainer}>
-            <Text style={createStyles(theme).selectorTitle}>Arama Kapsamı:</Text>
+            <Text style={createStyles(theme).selectorTitle}>{t('searchScreen.scope.title')}</Text>
             <View style={createStyles(theme).selectorGrid}>
                 {[
-                    { key: 'everywhere', label: 'Her Yerde', icon: '🌍' },
-                    { key: 'favorite', label: 'Favori Meal', icon: '⭐' },
-                    { key: 'selected', label: 'Seçili Meal', icon: '📖' },
-                    { key: 'all-translations', label: 'Bütün Mealler', icon: '📚' },
-                    { key: 'arabic', label: 'Arapça', icon: '🔤' },
-                    { key: 'transliteration', label: 'Okunuş', icon: '📝' },
+                    { key: 'everywhere', label: t('searchScreen.scope.everywhere'), icon: '🌍' },
+                    { key: 'favorite', label: t('searchScreen.scope.favorite'), icon: '⭐' },
+                    { key: 'selected', label: t('searchScreen.scope.selected'), icon: '📖' },
+                    { key: 'all-translations', label: t('searchScreen.scope.allTranslations'), icon: '📚' },
+                    { key: 'arabic', label: t('searchScreen.scope.arabic'), icon: '🔤' },
+                    { key: 'transliteration', label: t('searchScreen.scope.transliteration'), icon: '📝' },
                 ].map((option) => (
                     <TouchableOpacity
                         key={option.key}
@@ -387,7 +390,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
 
         return (
             <View style={createStyles(theme).selectorContainer}>
-                <Text style={createStyles(theme).selectorTitle}>Meal Seçimi:</Text>
+                <Text style={createStyles(theme).selectorTitle}>{t('searchScreen.translationSelector.title')}</Text>
                 <View style={createStyles(theme).selectorGrid}>
                     <TouchableOpacity
                         style={[
@@ -400,7 +403,9 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                             createStyles(theme).selectorOptionText,
                             createStyles(theme).selectorOptionTextSelected,
                         ]}>
-                            Seçili Meal {selectedTranslation ? `(${selectedTranslation.length > 20 ? selectedTranslation.substring(0, 20) + '...' : selectedTranslation})` : ''}
+                            {t('searchScreen.translationSelector.selected', {
+                                translation: selectedTranslation ? `(${selectedTranslation.length > 20 ? selectedTranslation.substring(0, 20) + '...' : selectedTranslation})` : '',
+                            })}
                         </Text>
                         <Text style={createStyles(theme).toggleIcon}>
                             {showTranslationDropdown ? '▲' : '▼'}
@@ -447,7 +452,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
 
     const renderSurahFilter = () => (
         <View style={createStyles(theme).selectorContainer}>
-            <Text style={createStyles(theme).selectorTitle}>Sure Filtresi:</Text>
+            <Text style={createStyles(theme).selectorTitle}>{t('searchScreen.surahFilter.title')}</Text>
             <View style={createStyles(theme).selectorGrid}>
                 <TouchableOpacity
                     style={[
@@ -464,7 +469,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                         createStyles(theme).selectorOptionText,
                         surahFilter === 'all' && createStyles(theme).selectorOptionTextSelected
                     ]}>
-                        Tüm Sureler
+                        {t('searchScreen.surahFilter.all')}
                     </Text>
                 </TouchableOpacity>
 
@@ -482,7 +487,10 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                         createStyles(theme).selectorOptionText,
                         surahFilter !== 'all' && createStyles(theme).selectorOptionTextSelected
                     ]}>
-                        Seçili Sure {selectedSurah ? `(${selectedSurah}. ${quranData.surahs.find(s => s.number === selectedSurah)?.turkishName})` : ''}
+                        {t('searchScreen.surahFilter.selectedSurah')} {selectedSurah ? (() => {
+                            const s = quranData.surahs.find(s => s.number === selectedSurah);
+                            return s ? `(${selectedSurah}. ${getSurahName(t, s)})` : '';
+                        })() : ''}
                     </Text>
                     <Text style={createStyles(theme).toggleIcon}>
                         {showSpecificSurah ? '▲' : '▼'}
@@ -516,7 +524,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                                         createStyles(theme).selectorOptionText,
                                         selectedSurah === surah.number && createStyles(theme).selectorOptionTextSelected
                                     ]}>
-                                        {surah.number}. {surah.turkishName || surah.name}
+                                        {surah.number}. {getSurahName(t, surah)}
                                     </Text>
                                 </TouchableOpacity>
                             ))}
@@ -560,12 +568,12 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
             >
                 <View style={createStyles(theme).resultHeader}>
                     <Text style={createStyles(theme).resultSurahInfo}>
-                        {result.surah.turkishName || result.surah.name} - Ayet {result.verse.number}
+                        {t('searchScreen.resultVerse', { surahName: getSurahName(t, result.surah), verseNumber: result.verse.number })}
                     </Text>
                     <Text style={createStyles(theme).resultMatchType}>
-                        {result.matchedField === 'arabic' ? '🔤 Arapça' :
-                            result.matchedField === 'transliteration' ? '📝 Okunuş' :
-                                `📖 ${result.translationName || 'Meal'}`}
+                        {result.matchedField === 'arabic' ? t('searchScreen.matchField.arabic') :
+                            result.matchedField === 'transliteration' ? t('searchScreen.matchField.transliteration') :
+                                t('searchScreen.matchField.translation', { translation: result.translationName || t('searchScreen.defaultTranslationLabel') })}
                     </Text>
                 </View>
 
@@ -586,9 +594,9 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
         return (
             <View style={createStyles(theme).historyContainer}>
                 <View style={createStyles(theme).historyHeader}>
-                    <Text style={createStyles(theme).historyTitle}>Arama Geçmişi</Text>
+                    <Text style={createStyles(theme).historyTitle}>{t('searchScreen.history.title')}</Text>
                     <TouchableOpacity onPress={clearSearchHistory}>
-                        <Text style={createStyles(theme).clearHistoryText}>Temizle</Text>
+                        <Text style={createStyles(theme).clearHistoryText}>{t('searchScreen.history.clear')}</Text>
                     </TouchableOpacity>
                 </View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -614,7 +622,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
     return (
         <SafeAreaView style={createStyles(theme).container}>
             <HeaderWithDarkModeToggle
-                title="Ara"
+                title={t('searchScreen.title')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
                 showHomeButton={true}
@@ -632,7 +640,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                 <View style={createStyles(theme).searchContainer}>
                     <TextInput
                         style={createStyles(theme).searchInput}
-                        placeholder="Aranacak kelime veya cümle..."
+                        placeholder={t('searchScreen.placeholder')}
                         placeholderTextColor={theme.secondary}
                         value={searchQuery}
                         onChangeText={setSearchQuery}
@@ -658,7 +666,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                     onPress={() => setExpandedFilters(!expandedFilters)}
                 >
                     <Text style={createStyles(theme).filtersToggleText}>
-                        🔍 Arama Filtreleri
+                        {t('searchScreen.filtersToggle')}
                     </Text>
                     <Text style={createStyles(theme).filtersToggleIcon}>
                         {expandedFilters ? '▲' : '▼'}
@@ -673,7 +681,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
 
                         {/* Fuzzy Search Toggle */}
                         <View style={createStyles(theme).selectorContainer}>
-                            <Text style={createStyles(theme).selectorTitle}>Arama Tipi:</Text>
+                            <Text style={createStyles(theme).selectorTitle}>{t('searchScreen.matchType.type')}</Text>
                             <View style={createStyles(theme).selectorGrid}>
                                 <TouchableOpacity
                                     style={[
@@ -686,7 +694,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                                         createStyles(theme).selectorOptionText,
                                         !useFuzzySearch && createStyles(theme).selectorOptionTextSelected
                                     ]}>
-                                        🎯 Kesin Eşleşme
+                                        {t('searchScreen.matchType.exact')}
                                     </Text>
                                 </TouchableOpacity>
 
@@ -701,7 +709,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                                         createStyles(theme).selectorOptionText,
                                         useFuzzySearch && createStyles(theme).selectorOptionTextSelected
                                     ]}>
-                                        🔍 Benzer Arama
+                                        {t('searchScreen.matchType.fuzzy')}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -712,7 +720,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                 {/* Results */}
                 <View style={createStyles(theme).resultsContainer}>
                     <Text style={createStyles(theme).resultsHeader}>
-                        {searchQuery.length >= 2 ? `${searchResults.length} sonuç bulundu` : 'Aramak için en az 2 karakter girin'}
+                        {searchQuery.length >= 2 ? t('searchScreen.resultsCount', { count: searchResults.length }) : t('searchScreen.resultsMinChars')}
                     </Text>
 
                     <View>

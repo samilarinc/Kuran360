@@ -11,10 +11,12 @@ import {
     PanResponder,
     ScrollView,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Verse } from '../components/Verse';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { DownloadRequired } from '../components/DownloadRequired';
 import { useTheme } from '../contexts/ThemeContext';
+import { getSurahName } from '../utils/surahName';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -44,6 +46,7 @@ const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation, isDataAvailable }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const { settings } = useDebouncedSettings(200);
     const { audioState, playVerse } = useGlobalAudio();
     const { user } = useAuth();
@@ -197,15 +200,15 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
         return (
             <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
                 <HeaderWithDarkModeToggle
-                    title="Rastgele Ayet"
+                    title={t('screenTitles.randomVerse')}
                     showBackButton={true}
                     onBackPress={navigation.goBack}
                     showHomeButton={true}
                     onHomePress={() => navigation.navigate('Main')}
                 />
                 <DownloadRequired
-                    title="Kur'an-ı Kerim Meali"
-                    description="Ayetleri okuyabilmek için Türkçe meal verilerini indirmeniz gerekmektedir."
+                    title={t('homeScreen.downloadTitle')}
+                    description={t('homeScreen.downloadDescription')}
                     totalBytes={totalBytes}
                     downloading={downloading}
                     downloadProgress={downloadProgress}
@@ -222,7 +225,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
             <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator size="large" color={theme.primary} />
-                    <Text style={[styles.loadingText, { color: theme.text }]}>Rastgele ayet yükleniyor...</Text>
+                    <Text style={[styles.loadingText, { color: theme.text }]}>{t('randomVerseScreen.loading')}</Text>
                 </View>
             </SafeAreaView>
         );
@@ -232,13 +235,13 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
         return (
             <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
                 <View style={styles.errorContainer}>
-                    <Text style={[styles.errorText, { color: theme.text }]}>Ayet yüklenemedi</Text>
+                    <Text style={[styles.errorText, { color: theme.text }]}>{t('randomVerseScreen.loadError')}</Text>
                     <TouchableOpacity
                         style={[styles.retryButton, { backgroundColor: theme.primary }]}
                         onPress={() => loadRandomVerse(true)}
                     >
                         <Text style={[styles.retryButtonText, { color: '#FFFFFF' }]}>
-                            Tekrar Dene
+                            {t('randomVerseScreen.retry')}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -250,7 +253,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
             {/* Header */}
             <HeaderWithDarkModeToggle
-                title="Rastgele Ayet"
+                title={t('screenTitles.randomVerse')}
                 showBackButton={true}
                 onBackPress={navigation.goBack}
                 showHomeButton={true}
@@ -294,7 +297,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                 <View style={styles.surahInfoContent}>
                     <View style={styles.surahNameSection}>
                         <Text style={[styles.surahName, { color: theme.text }]}>
-                            {currentVerse.surah.name}
+                            {getSurahName(t, currentVerse.surah)}
                         </Text>
                         <Text style={[styles.surahArabicName, { color: theme.textSecondary }]}>
                             {currentVerse.surah.arabicName}
@@ -302,7 +305,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                     </View>
                     <View style={[styles.verseNumberBadge, { backgroundColor: theme.primary }]}>
                         <Text style={[styles.verseNumberLabel, { color: '#FFFFFF' }]}>
-                            AYET
+                            {t('randomVerseScreen.verseBadge')}
                         </Text>
                         <Text style={[styles.verseNumberText, { color: '#FFFFFF' }]}>
                             {currentVerse.verseIndex + 1}
@@ -312,17 +315,17 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                 <View style={styles.surahMetaInfo}>
                     <View style={[styles.metaChip, { backgroundColor: theme.primary + '15' }]}>
                         <Text style={[styles.metaText, { color: theme.primary }]}>
-                            📚 {currentVerse.surah.number}. Sure
+                            {t('randomVerseScreen.surahLabel', { number: currentVerse.surah.number })}
                         </Text>
                     </View>
                     <View style={[styles.metaChip, { backgroundColor: theme.primary + '15' }]}>
                         <Text style={[styles.metaText, { color: theme.primary }]}>
-                            📍 {currentVerse.surah.revelationPlace}
+                            {t('randomVerseScreen.placeLabel', { place: currentVerse.surah.revelationPlace })}
                         </Text>
                     </View>
                     <View style={[styles.metaChip, { backgroundColor: theme.primary + '15' }]}>
                         <Text style={[styles.metaText, { color: theme.primary }]}>
-                            📖 {currentVerse.surah.verseCount} Ayet
+                            {t('randomVerseScreen.verseCountLabel', { count: currentVerse.surah.verseCount })}
                         </Text>
                     </View>
                 </View>
@@ -345,7 +348,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                         <ActivityIndicator size="small" color="#FFFFFF" />
                     ) : (
                         <Text style={[styles.newVerseButtonText, { color: '#FFFFFF' }]}>
-                            ✨ Yeni Rastgele Ayet
+                            {t('randomVerseScreen.newVerseButton')}
                         </Text>
                     )}
                 </TouchableOpacity>

@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     Platform,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { ShareModal } from '../components/ShareModal';
 import { useTheme } from '../contexts/ThemeContext';
@@ -16,6 +17,7 @@ import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { getSurahsList } from '../data/quranData';
 import { Verse as VerseType, VerseShareData } from '../types';
 import { FONT_SIZES, SPACING } from '../constants';
+import { getSurahName as getLocalizedSurahName } from '../utils/surahName';
 
 interface AllTranslationsScreenProps {
     navigation: any;
@@ -29,6 +31,7 @@ interface AllTranslationsScreenProps {
 export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ navigation, route }) => {
     const { verse } = route.params;
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const { settings } = useSettings();
     const { settings: debouncedSettings, updateSettings } = useDebouncedSettings(200);
     const [shareModalVisible, setShareModalVisible] = useState(false);
@@ -38,7 +41,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
     const getSurahName = () => {
         const surahs = getSurahsList();
         const surah = surahs.find(s => s.number === verse.surahNumber);
-        return surah?.turkishName || surah?.name || `${verse.surahNumber}. Sure`;
+        return surah ? getLocalizedSurahName(t, surah) : `${verse.surahNumber}`;
     };
 
     // Mevcut olan tüm mealleri al
@@ -195,7 +198,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
         return (
             <SafeAreaView style={styles.container}>
                 <HeaderWithDarkModeToggle
-                    title="Bütün Mealler"
+                    title={t('screenTitles.allTranslations')}
                     showBackButton={true}
                     onBackPress={() => navigation.goBack()}
                     showHomeButton={true}
@@ -203,7 +206,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                 />
                 <View style={styles.emptyState}>
                     <Text style={styles.emptyStateText}>
-                        Bu ayet için meal bulunamadı.
+                        {t('allTranslationsScreen.noTranslationsFound')}
                     </Text>
                 </View>
             </SafeAreaView>
@@ -213,8 +216,8 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
     return (
         <SafeAreaView style={styles.container}>
             <HeaderWithDarkModeToggle
-                title="Bütün Mealler"
-                subtitle={`${getSurahName()} - ${verse.number}. Ayet`}
+                title={t('screenTitles.allTranslations')}
+                subtitle={t('allTranslationsScreen.verseSubtitle', { surahName: getSurahName(), verseNumber: verse.number })}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
                 showHomeButton={true}
@@ -232,7 +235,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                             {getSurahName()}
                         </Text>
                         <Text style={styles.verseNumber}>
-                            {verse.number}. Ayet
+                            {t('allTranslationsScreen.verseBadge', { verseNumber: verse.number })}
                         </Text>
                     </View>
                 </View>
@@ -261,7 +264,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                                         style={styles.shareButton}
                                         onPress={() => handleShare(translationName)}
                                     >
-                                        <Text style={styles.shareButtonText}>Paylaş</Text>
+                                        <Text style={styles.shareButtonText}>{t('allTranslationsScreen.share')}</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <Text style={[

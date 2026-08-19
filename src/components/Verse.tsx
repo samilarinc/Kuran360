@@ -18,6 +18,8 @@ import { useGlobalAudio } from '../contexts/AudioContext';
 import { ShareModal } from './ShareModal';
 import { ShareService } from '../utils/shareUtils';
 import { getSurahsList } from '../data/quranData';
+import { useTranslation } from 'react-i18next';
+import { getSurahName as getLocalizedSurahName } from '../utils/surahName';
 
 interface VerseProps {
   verse: VerseType;
@@ -32,6 +34,7 @@ interface VerseProps {
 export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount, showBookmarkButton = false, showMemorization = true, navigation }) => {
   const { settings } = useSettings();
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const arabicFontOption = getFontOption(settings.arabicFont);
   const arabicFontCss = Platform.OS === 'web' ? arabicFontOption.css : undefined;
   const styles = useMemo(() => createStyles(theme, arabicFontCss), [theme, arabicFontCss]);
@@ -218,7 +221,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   const getSurahName = () => {
     const surahs = getSurahsList();
     const surah = surahs.find(s => s.number === verse.surahNumber);
-    return surah?.turkishName || surah?.name || `${verse.surahNumber}. Sure`;
+    return surah ? getLocalizedSurahName(t, surah) : `${verse.surahNumber}. Sure`;
   };
 
   // Share data için gerekli bilgileri hazırla

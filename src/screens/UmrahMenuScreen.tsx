@@ -7,6 +7,7 @@ import {
     ScrollView,
     StyleSheet,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../theme';
@@ -17,36 +18,37 @@ interface UmrahMenuScreenProps {
 
 export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
 
     const menuItems = [
         {
             id: 'umrah-checklist',
-            title: 'Hazırlık Listesi',
-            description: 'Umre öncesi yapılacaklar',
+            title: t('umrahMenuScreen.checklistTitle'),
+            description: t('umrahMenuScreen.checklistDescription'),
             icon: '✅',
             color: '#1565C0',
             onPress: () => navigation.navigate('UmrahChecklist'),
         },
         {
             id: 'umrah-progress',
-            title: 'Şu an neredeyim?',
-            description: 'Tavaf ve Sa\'y takibi yapın',
+            title: t('umrahMenuScreen.progressTitle'),
+            description: t('umrahMenuScreen.progressDescription'),
             icon: '🕋',
             color: '#8E24AA',
             onPress: () => navigation.navigate('UmrahProgress'),
         },
         {
             id: 'dua-list',
-            title: 'Dua Listem',
-            description: 'Kişisel dua çizelgesi oluşturun',
+            title: t('umrahMenuScreen.duaListTitle'),
+            description: t('umrahMenuScreen.duaListDescription'),
             icon: '🤲',
             color: '#558B2F',
             onPress: () => navigation.navigate('DuaList'),
         },
         {
             id: 'umrah-duas',
-            title: 'Umre Duaları',
-            description: 'Umre ibadetinde okunacak dualar',
+            title: t('umrahMenuScreen.duasTitle'),
+            description: t('umrahMenuScreen.duasDescription'),
             icon: '📿',
             color: '#C2185B',
             onPress: () => navigation.navigate('UmrahDuas'),
@@ -58,14 +60,14 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
             <AppHeader
-                title="Umre Rehberi"
+                title={t('screenTitles.umrahMenu')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
             />
             <ScrollView style={styles.content}>
                 <View style={styles.header}>
                     <Text style={[styles.headerTitle, { color: theme.text }]}>
-                        Umre İbadetiniz İçin Araçlar
+                        {t('umrahMenuScreen.header')}
                     </Text>
                 </View>
 
@@ -95,7 +97,7 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
 
                 <View style={[styles.footer, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                     <Text style={[styles.footerText, { color: theme.textSecondary }]}>
-                        🤲 Allah kabul etsin
+                        {t('umrahMenuScreen.footer')}
                     </Text>
                 </View>
             </ScrollView>

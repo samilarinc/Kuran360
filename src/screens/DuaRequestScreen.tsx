@@ -10,6 +10,7 @@ import {
     ActivityIndicator,
     Alert,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../theme';
@@ -23,6 +24,7 @@ interface DuaRequestScreenProps {
 
 export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, userId }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [targetUserName, setTargetUserName] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [requesterName, setRequesterName] = useState('');
@@ -38,11 +40,11 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
                 if (profileDoc.exists()) {
                     setTargetUserName(profileDoc.data().displayName);
                 } else {
-                    setTargetUserName('Bilinmeyen Kullanıcı');
+                    setTargetUserName(t('duaRequestScreen.unknownUser'));
                 }
             } catch (error) {
                 console.error('Error fetching target user:', error);
-                setTargetUserName('Bilinmeyen Kullanıcı');
+                setTargetUserName(t('duaRequestScreen.unknownUser'));
             } finally {
                 setLoading(false);
             }
@@ -54,7 +56,7 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
 
     const handleSubmit = async () => {
         if (!requesterName.trim() || !topic.trim()) {
-            Alert.alert('Hata', 'Lütfen tüm alanları doldurun');
+            Alert.alert(t('duaRequestScreen.errorTitle'), t('duaRequestScreen.fillAllFields'));
             return;
         }
 
@@ -70,7 +72,7 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
             setIsSuccess(true);
         } catch (error) {
             console.error('Error submitting dua request:', error);
-            Alert.alert('Hata', 'Dua isteği gönderilemedi. Lütfen tekrar deneyin.');
+            Alert.alert(t('duaRequestScreen.errorTitle'), t('duaRequestScreen.submitError'));
         } finally {
             setIsSubmitting(false);
         }
@@ -93,16 +95,15 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
             <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
                 <View style={styles.centerContainer}>
                     <Text style={styles.successIcon}>✅</Text>
-                    <Text style={[styles.successTitle, { color: theme.text }]}>Dua İsteğiniz İletildi</Text>
+                    <Text style={[styles.successTitle, { color: theme.text }]}>{t('duaRequestScreen.successTitle')}</Text>
                     <Text style={[styles.successText, { color: theme.textSecondary }]}>
-                        {targetUserName} isimli kullanıcıya dua isteğiniz başarıyla gönderildi.
-                        Allah dualarınızı kabul eylesin.
+                        {t('duaRequestScreen.successMessage', { name: targetUserName })}
                     </Text>
                     <TouchableOpacity
                         style={[styles.backButton, { backgroundColor: theme.primary }]}
                         onPress={() => navigation.navigate('Main')}
                     >
-                        <Text style={styles.backButtonText}>Ana Sayfaya Dön</Text>
+                        <Text style={styles.backButtonText}>{t('duaRequestScreen.backHome')}</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -112,21 +113,22 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
             <AppHeader
-                title="Dua İsteği Gönder"
+                title={t('screenTitles.duaRequest')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
             />
             <ScrollView style={styles.content}>
                 <View style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                     <Text style={[styles.infoText, { color: theme.text }]}>
-                        <Text style={{ fontWeight: 'bold', color: theme.primary }}>{targetUserName}</Text> isimli kullanıcıya dua isteği göndermek üzeresiniz.
+                        {t('duaRequestScreen.sendingToPrefix') ? `${t('duaRequestScreen.sendingToPrefix')} ` : ''}
+                        <Text style={{ fontWeight: 'bold', color: theme.primary }}>{targetUserName}</Text> {t('duaRequestScreen.sendingToSuffix')}
                     </Text>
 
                     <View style={styles.inputContainer}>
-                        <Text style={[styles.label, { color: theme.textSecondary }]}>İsminiz</Text>
+                        <Text style={[styles.label, { color: theme.textSecondary }]}>{t('duaRequestScreen.nameLabel')}</Text>
                         <TextInput
                             style={[styles.input, { backgroundColor: theme.background, color: theme.text, borderColor: theme.border }]}
-                            placeholder="Adınız ve Soyadınız"
+                            placeholder={t('duaRequestScreen.namePlaceholder')}
                             placeholderTextColor={theme.textSecondary}
                             value={requesterName}
                             onChangeText={setRequesterName}
@@ -134,10 +136,10 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
                     </View>
 
                     <View style={styles.inputContainer}>
-                        <Text style={[styles.label, { color: theme.textSecondary }]}>Dua Konusu veya Özel Duanız</Text>
+                        <Text style={[styles.label, { color: theme.textSecondary }]}>{t('duaRequestScreen.topicLabel')}</Text>
                         <TextInput
                             style={[styles.input, styles.textArea, { backgroundColor: theme.background, color: theme.text, borderColor: theme.border }]}
-                            placeholder="Neyin için dua edilmesini istersiniz?"
+                            placeholder={t('duaRequestScreen.topicPlaceholder')}
                             placeholderTextColor={theme.textSecondary}
                             multiline
                             numberOfLines={4}
@@ -154,13 +156,13 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
                         {isSubmitting ? (
                             <ActivityIndicator color="#FFFFFF" />
                         ) : (
-                            <Text style={styles.submitButtonText}>Dua İsteğini Gönder</Text>
+                            <Text style={styles.submitButtonText}>{t('duaRequestScreen.submit')}</Text>
                         )}
                     </TouchableOpacity>
                 </View>
 
                 <Text style={[styles.footerText, { color: theme.textSecondary }]}>
-                    Bu istek, kullanıcının "Başkaları İçin Dualarım" sekmesinde görünecek ve kabul edildiğinde listesine eklenecektir.
+                    {t('duaRequestScreen.footer')}
                 </Text>
             </ScrollView>
         </SafeAreaView>

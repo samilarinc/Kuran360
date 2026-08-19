@@ -105,6 +105,7 @@ export const createStyles = (theme: any) => {
         },
         menuItem: {
             ...common.card,
+            borderWidth: 1,
             padding: SPACING.md,
             alignItems: 'center',
             justifyContent: 'center',

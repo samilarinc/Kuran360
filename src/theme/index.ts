@@ -33,19 +33,19 @@ export const LIGHT_COLORS: Theme = {
 };
 
 export const LIGHTS_OUT_COLORS: Theme = {
-    primary: '#56A35A',
-    secondary: '#56A35A',
-    accent: '#FFC107',
+    primary: '#356B3B', // Saf siyah zeminde göz almasın diye koyulaştırıldı
+    secondary: '#356B3B',
+    accent: '#D6A000', // FFC107 saf siyahta göz aldığı için hafif karartıldı
     background: '#000000',
     surface: '#0A0A0A',
-    text: '#FFFFFF',
-    textSecondary: '#A1A1AA',
-    success: '#4CAF50',
-    error: '#F44336',
-    warning: '#FF9800',
-    headerText: '#FFFFFF',
+    text: '#D8D8DC', // Saf beyaz yerine hafif karartılmış, göz yormasın diye
+    textSecondary: '#8E8E93',
+    success: '#3E8E45',
+    error: '#C4453D',
+    warning: '#D6A000',
+    headerText: '#D8D8DC',
     cardBackground: '#000000',
-    border: '#1A1A1A',
+    border: '#3A3A3C', // #1A1A1A siyah zemine (#000000/cardBackground) çok yakındı, hiç görünmüyordu
 };
 
 export const DARK_COLORS: Theme = {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { useThreads, useCreateThread } from '../contexts/ForumContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -12,6 +13,7 @@ export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const createThread = useCreateThread();
   const { user } = useAuth();
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [mentions, setMentions] = useState<VerseMention[]>([]);
@@ -31,19 +33,19 @@ export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <HeaderWithDarkModeToggle
-        title="Forum"
+        title={t('screenTitles.forum')}
         showHomeButton={true}
         onHomePress={() => navigation.navigate('Main')}
       />
       {user ? (
         <View style={styles.card}>
-          <Text style={styles.label}>Title</Text>
-          <TextInput style={styles.input} value={title} onChangeText={setTitle} placeholder="Question title" />
-          <Text style={styles.label}>Body</Text>
-          <TextInput style={[styles.input, styles.multiline]} value={body} onChangeText={setBody} placeholder="Ask your question..." multiline />
+          <Text style={styles.label}>{t('forumScreen.titleLabel')}</Text>
+          <TextInput style={styles.input} value={title} onChangeText={setTitle} placeholder={t('forumScreen.titlePlaceholder')} />
+          <Text style={styles.label}>{t('forumScreen.bodyLabel')}</Text>
+          <TextInput style={[styles.input, styles.multiline]} value={body} onChangeText={setBody} placeholder={t('forumScreen.bodyPlaceholder')} multiline />
           {/* Minimal mentions input: allow single mention for now via simple pattern S:V */}
-          <Text style={styles.label}>Mention (S:V)</Text>
-          <TextInput style={styles.input} placeholder="e.g. 2:255" onSubmitEditing={(e) => {
+          <Text style={styles.label}>{t('forumScreen.mentionLabel')}</Text>
+          <TextInput style={styles.input} placeholder={t('forumScreen.mentionPlaceholder')} onSubmitEditing={(e) => {
             const v = e.nativeEvent.text.trim();
             const match = v.match(/^(\d+):(\d+)$/);
             if (match) {
@@ -51,11 +53,11 @@ export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             }
           }} />
           <TouchableOpacity style={styles.button} onPress={onCreate}>
-            <Text style={styles.buttonText}>Create Thread</Text>
+            <Text style={styles.buttonText}>{t('forumScreen.createThread')}</Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <Text style={styles.note}>Girmek için oturum açın.</Text>
+        <Text style={styles.note}>{t('forumScreen.signInToPost')}</Text>
       )}
 
       <FlatList
@@ -64,10 +66,10 @@ export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.thread} onPress={() => navigation.navigate('ForumThread', { threadId: item.id })}>
             <Text style={styles.threadTitle}>{item.title}</Text>
-            <Text style={styles.threadMeta}>{item.replyCount} replies</Text>
+            <Text style={styles.threadMeta}>{t('forumScreen.replies', { count: item.replyCount })}</Text>
           </TouchableOpacity>
         )}
-        ListEmptyComponent={<Text style={styles.note}>No threads yet.</Text>}
+        ListEmptyComponent={<Text style={styles.note}>{t('forumScreen.noThreads')}</Text>}
       />
     </SafeAreaView>
   );

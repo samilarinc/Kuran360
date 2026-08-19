@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
+import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
 import { AppButton } from '../components/AppButton';
@@ -18,6 +19,7 @@ import { createStyles } from './HutbeScreen.styles';
 
 export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
     const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
     // Add cache busting to ensure the latest PDF is always fetched
@@ -45,15 +47,15 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         return (
             <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
                 <AppHeader
-                    title="Hata"
+                    title={t('hutbeScreen.errorTitle')}
                     showBackButton={true}
                     onBackPress={() => navigation.goBack()}
                 />
                 <View style={[styles.mobileContainer, { flex: 1 }]}>
                     <Ionicons name="warning-outline" size={80} color={theme.error} />
-                    <Text style={[styles.mobileText, { color: theme.textSecondary }]}>Hutbe dosyası bulunamadı.</Text>
+                    <Text style={[styles.mobileText, { color: theme.textSecondary }]}>{t('hutbeScreen.notFound')}</Text>
                     <AppButton
-                        title="Geri Dön"
+                        title={t('hutbeScreen.goBack')}
                         onPress={() => navigation.goBack()}
                         variant="primary"
                         style={{ backgroundColor: theme.error }}
@@ -66,7 +68,7 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
             <AppHeader
-                title="Cuma Hutbesi"
+                title={t('screenTitles.hutbe')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
             />
@@ -84,14 +86,14 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                             height: Dimensions.get('window').height - 100,
                             border: 'none',
                         }}
-                        title="Cuma Hutbesi"
+                        title={t('screenTitles.hutbe')}
                     />
                 ) : (
                     <View style={styles.mobileContainer}>
                         <Ionicons name="document-text-outline" size={80} color={theme.primary} />
-                        <Text style={[styles.mobileText, { color: theme.textSecondary }]}>Hutbeyi okumak için butona tıklayın.</Text>
+                        <Text style={[styles.mobileText, { color: theme.textSecondary }]}>{t('hutbeScreen.tapToOpen')}</Text>
                         <AppButton
-                            title="Hutbeyi Aç"
+                            title={t('hutbeScreen.openHutbe')}
                             onPress={handleOpenInBrowser}
                         />
                     </View>

@@ -16,6 +16,7 @@ import {
     Switch
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { HatimService } from '../services/HatimService';
@@ -32,6 +33,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     const { width } = useWindowDimensions();
     const { hatimId } = route.params;
     const { theme } = useTheme();
+    const { t, i18n } = useTranslation();
     const { user } = useAuth();
     const [hatim, setHatim] = useState<Hatim | null>(null);
     const [loading, setLoading] = useState(true);
@@ -68,7 +70,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             setHatim(data);
         } catch (error) {
             console.error('Error fetching hatim detail:', error);
-            Alert.alert('Hata', 'Hatim detayları yüklenirken bir sorun oluştu.');
+            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), t('hatimDetailScreen.loadErrorMessage'));
         } finally {
             setLoading(false);
         }
@@ -77,7 +79,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     useEffect(() => {
         fetchHatim().then(() => {
             if (user && hatimId) {
-                HatimService.syncUserName(hatimId, user.uid, user.displayName || 'İsimsiz');
+                HatimService.syncUserName(hatimId, user.uid, user.displayName || t('profileScreen.defaultUserName'));
             }
         });
     }, [fetchHatim, user?.uid, user?.displayName]);
@@ -88,7 +90,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         const difference = hatim.deadline - now;
 
         if (difference <= 0) {
-            setTimeLeft('Süre doldu');
+            setTimeLeft(t('hatimDetailScreen.timeUp'));
             return;
         }
 
@@ -97,9 +99,9 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         const minutes = Math.floor((difference / 1000 / 60) % 60);
 
         let res = '';
-        if (days > 0) res += `${days} gün `;
-        if (hours > 0) res += `${hours} saat `;
-        res += `${minutes} dk`;
+        if (days > 0) res += t('hatimDetailScreen.days', { count: days });
+        if (hours > 0) res += t('hatimDetailScreen.hours', { count: hours });
+        res += t('hatimDetailScreen.minutes', { count: minutes });
         setTimeLeft(res);
     }, [hatim?.deadline]);
 
@@ -112,9 +114,9 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     const handlePartPress = (part: HatimPart) => {
         if (hatim?.isLocked) {
             if (Platform.OS === 'web') {
-                (globalThis as any).alert?.('Bu hatim kilitlenmiştir, işlem yapılamaz.');
+                (globalThis as any).alert?.(t('hatimDetailScreen.lockedMessage'));
             } else {
-                Alert.alert('Kilitli', 'Bu hatim kilitlenmiştir, işlem yapılamaz.');
+                Alert.alert(t('hatimDetailScreen.lockedTitle'), t('hatimDetailScreen.lockedMessage'));
             }
             return;
         }
@@ -134,11 +136,11 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         if (!user || !hatim || !selectedPart) return;
         try {
             setActionLoading(selectedPart.partNumber);
-            await HatimService.claimPart(hatimId, selectedPart.partNumber, user.uid, user.displayName || 'İsimsiz');
+            await HatimService.claimPart(hatimId, selectedPart.partNumber, user.uid, user.displayName || t('profileScreen.defaultUserName'));
             setPartModalVisible(false);
             await fetchHatim(); // Wait for fetch
         } catch (error: any) {
-            Alert.alert('Hata', error.message);
+            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), error.message);
         } finally {
             setActionLoading(null);
         }
@@ -152,7 +154,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             setPartModalVisible(false);
             await fetchHatim(); // Wait for fetch
         } catch (error: any) {
-            Alert.alert('Hata', error.message);
+            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), error.message);
         } finally {
             setActionLoading(null);
         }
@@ -176,7 +178,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             setPartModalVisible(false);
             await fetchHatim();
         } catch (error: any) {
-            Alert.alert('Hata', error.message);
+            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), error.message);
         } finally {
             setActionLoading(null);
         }
@@ -235,7 +237,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             setEditModalVisible(false);
             await fetchHatim();
         } catch (error: any) {
-            Alert.alert('Hata', 'Güncelleme sırasında bir sorun oluştu.');
+            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), t('hatimDetailScreen.updateErrorMessage'));
         } finally {
             setIsUpdating(false);
         }
@@ -279,9 +281,9 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         return (
             <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
                 <View style={styles.center}>
-                    <Text style={{ color: theme.text }}>Hatim bulunamadı.</Text>
+                    <Text style={{ color: theme.text }}>{t('hatimDetailScreen.notFound')}</Text>
                     <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: SPACING.sm }}>
-                        <Text style={{ color: theme.primary }}>Geri Dön</Text>
+                        <Text style={{ color: theme.primary }}>{t('hatimDetailScreen.goBack')}</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -293,7 +295,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
 
     const formatDate = (timestamp: number) => {
         const date = new Date(timestamp);
-        return date.toLocaleDateString('tr-TR', {
+        return date.toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'tr-TR', {
             day: 'numeric',
             month: 'long',
             year: 'numeric',
@@ -305,7 +307,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
 
     const handleDeleteHatim = async () => {
         if (Platform.OS === 'web') {
-            if ((globalThis as any).confirm?.('Bu hatimi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
+            if ((globalThis as any).confirm?.(t('hatimDetailScreen.deleteMessage'))) {
                 try {
                     setIsUpdating(true);
                     await HatimService.deleteHatim(hatimId);
@@ -313,7 +315,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                     navigation.goBack();
                 } catch (error) {
                     console.log(error);
-                    (globalThis as any).alert?.('Silme işlemi sırasında bir sorun oluştu.');
+                    (globalThis as any).alert?.(t('hatimDetailScreen.deleteErrorMessage'));
                     setIsUpdating(false);
                 }
             }
@@ -321,12 +323,12 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         }
 
         Alert.alert(
-            'Hatimi Sil',
-            'Bu hatimi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.',
+            t('hatimDetailScreen.deleteTitle'),
+            t('hatimDetailScreen.deleteMessage'),
             [
-                { text: 'İptal', style: 'cancel' },
+                { text: t('hatimDetailScreen.cancel'), style: 'cancel' },
                 {
-                    text: 'Sil',
+                    text: t('hatimDetailScreen.delete'),
                     style: 'destructive',
                     onPress: async () => {
                         try {
@@ -335,7 +337,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                             setEditModalVisible(false);
                             navigation.goBack();
                         } catch (error) {
-                            Alert.alert('Hata', 'Silme işlemi sırasında bir sorun oluştu.');
+                            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), t('hatimDetailScreen.deleteErrorMessage'));
                             setIsUpdating(false);
                         }
                     }
@@ -353,7 +355,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             >
                 {hatim.creatorId === user?.uid && (
                     <TouchableOpacity onPress={openEditModal} style={styles.editButton}>
-                        <Text style={[styles.editButtonText, { color: theme.headerText }]}>Düzenle</Text>
+                        <Text style={[styles.editButtonText, { color: theme.headerText }]}>{t('hatimDetailScreen.edit')}</Text>
                     </TouchableOpacity>
                 )}
             </AppHeader>
@@ -362,16 +364,16 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                 {/* ... existing stats ... */}
                 <View style={[styles.infoCard, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
                     <Text style={[styles.description, { color: theme.textSecondary }]}>
-                        {hatim.description || 'Açıklama belirtilmemiş.'}
+                        {hatim.description || t('hatimDetailScreen.noDescription')}
                     </Text>
                     {hatim.deadline && (
                         <View style={styles.deadlineInfo}>
                             <Text style={[styles.deadlineText, { color: theme.primary }]}>
-                                Son Katılım: {formatDate(hatim.deadline)}
+                                {t('hatimDetailScreen.deadline', { date: formatDate(hatim.deadline) })}
                             </Text>
                             <View style={[styles.countdownBadge, { backgroundColor: theme.primary + '15' }]}>
                                 <Text style={[styles.countdownText, { color: theme.primary }]}>
-                                    Kalan Süre: {timeLeft}
+                                    {t('hatimDetailScreen.timeRemaining', { time: timeLeft })}
                                 </Text>
                             </View>
                         </View>
@@ -380,7 +382,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                     <View style={styles.statsRow}>
                         <View style={styles.statColumn}>
                             <Text style={[styles.statValue, { color: '#4CAF50' }]}>{completedCount} / 30</Text>
-                            <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Tamamlanan</Text>
+                            <Text style={[styles.statLabel, { color: theme.textSecondary }]}>{t('hatimDetailScreen.completedStat')}</Text>
                             <View style={[styles.miniProgressBarBackground, { backgroundColor: theme.border }]}>
                                 <View
                                     style={[
@@ -397,7 +399,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                             <Text style={[styles.statValue, { color: theme.primary }]}>
                                 {claimedCount} / 30
                             </Text>
-                            <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Alınan Cüz</Text>
+                            <Text style={[styles.statLabel, { color: theme.textSecondary }]}>{t('hatimDetailScreen.claimedStat')}</Text>
                             <View style={[styles.miniProgressBarBackground, { backgroundColor: theme.border }]}>
                                 <View
                                     style={[
@@ -444,7 +446,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                             {part.partNumber}
                                         </Text>
                                         <Text style={[styles.partClaimant, { color: part.claimedById ? 'rgba(255,255,255,0.8)' : theme.textSecondary, fontSize: claimantFontSize }]} numberOfLines={1}>
-                                            {part.claimedById === user?.uid ? (user?.displayName || 'Ben') : (part.claimedByName || 'Müsait')}
+                                            {part.claimedById === user?.uid ? (user?.displayName || t('hatimDetailScreen.me')) : (part.claimedByName || t('hatimDetailScreen.available'))}
                                         </Text>
                                         {part.claimedById && !part.isCompleted && (
                                             <View style={styles.progressBarBackground}>
@@ -474,23 +476,23 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                         {selectedPart && (
                             <>
                                 <Text style={[styles.modalTitle, { color: theme.text }]}>
-                                    {selectedPart.partNumber}. Cüz İşlemleri
+                                    {t('hatimDetailScreen.partActions', { number: selectedPart.partNumber })}
                                 </Text>
 
                                 {selectedPart.claimedById ? (
                                     <View style={styles.claimInfo}>
                                         <Text style={[styles.claimText, { color: theme.textSecondary }]}>
-                                            Bu cüzü alan: <Text style={{ color: theme.text, fontWeight: '700' }}>{selectedPart.claimedById === user?.uid ? (user?.displayName || 'Ben') : selectedPart.claimedByName}</Text>
+                                            {t('hatimDetailScreen.claimedBy')}<Text style={{ color: theme.text, fontWeight: '700' }}>{selectedPart.claimedById === user?.uid ? (user?.displayName || t('hatimDetailScreen.me')) : selectedPart.claimedByName}</Text>
                                         </Text>
                                         <Text style={[styles.claimStatus, { color: selectedPart.isCompleted ? '#4CAF50' : '#FF9800' }]}>
-                                            Durum: {selectedPart.isCompleted ? 'Tamamlandı' : 'Okunuyor'}
+                                            {t('hatimDetailScreen.status', { status: selectedPart.isCompleted ? t('hatimDetailScreen.statusCompleted') : t('hatimDetailScreen.statusReading') })}
                                         </Text>
 
                                         {/* Page Progress Control */}
                                         {(selectedPart.claimedById === user?.uid || hatim.creatorId === user?.uid) && (
                                             <View style={styles.progressContainer}>
                                                 <Text style={[styles.progressLabel, { color: theme.textSecondary }]}>
-                                                    Okunan Sayfa: {localPages} / {selectedPart.totalPages || 20}
+                                                    {t('hatimDetailScreen.pagesRead', { read: localPages, total: selectedPart.totalPages || 20 })}
                                                 </Text>
                                                 <View style={styles.progressRow}>
                                                     <TouchableOpacity
@@ -523,7 +525,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                     </View>
                                 ) : (
                                     <Text style={[styles.modalDescription, { color: theme.textSecondary }]}>
-                                        Bu cüz henüz alınmamış. Almak istiyor musunuz?
+                                        {t('hatimDetailScreen.notClaimedYet')}
                                     </Text>
                                 )}
 
@@ -539,7 +541,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                                     <ActivityIndicator size="small" color="#fff" />
                                                 ) : (
                                                     <Text style={styles.actionButtonText}>
-                                                        {selectedPart.isCompleted ? 'Tamamlanmadı İşaretle' : 'Tamamlandı İşaretle'}
+                                                        {selectedPart.isCompleted ? t('hatimDetailScreen.markIncomplete') : t('hatimDetailScreen.markComplete')}
                                                     </Text>
                                                 )}
                                             </TouchableOpacity>
@@ -550,7 +552,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                                 disabled={actionLoading !== null}
                                             >
                                                 <Text style={styles.actionButtonText}>
-                                                    {selectedPart.claimedById === user?.uid ? 'Cüzü Bırak' : 'Cüzü İptal Et (Yönetici)'}
+                                                    {selectedPart.claimedById === user?.uid ? t('hatimDetailScreen.releasePart') : t('hatimDetailScreen.unclaimPart')}
                                                 </Text>
                                             </TouchableOpacity>
                                         </>
@@ -563,7 +565,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                             {actionLoading === selectedPart.partNumber ? (
                                                 <ActivityIndicator size="small" color="#fff" />
                                             ) : (
-                                                <Text style={styles.actionButtonText}>Cüzü Üzerine Al</Text>
+                                                <Text style={styles.actionButtonText}>{t('hatimDetailScreen.claimPart')}</Text>
                                             )}
                                         </TouchableOpacity>
                                     ) : null}
@@ -572,7 +574,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                         style={[styles.closeButton, { borderColor: theme.border }]}
                                         onPress={() => setPartModalVisible(false)}
                                     >
-                                        <Text style={{ color: theme.text }}>Kapat</Text>
+                                        <Text style={{ color: theme.text }}>{t('hatimDetailScreen.close')}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </>
@@ -590,11 +592,11 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             >
                 <View style={styles.modalOverlay}>
                     <View style={[styles.modalContent, { backgroundColor: theme.cardBackground }]}>
-                        <Text style={[styles.modalTitle, { color: theme.text }]}>Hatimi Düzenle</Text>
+                        <Text style={[styles.modalTitle, { color: theme.text }]}>{t('hatimDetailScreen.editTitle')}</Text>
 
                         <TextInput
                             style={[styles.input, { color: theme.text, borderColor: theme.border }]}
-                            placeholder="Hatim Başlığı"
+                            placeholder={t('hatimDetailScreen.titlePlaceholder')}
                             placeholderTextColor={theme.textSecondary}
                             value={editTitle}
                             onChangeText={setEditTitle}
@@ -602,7 +604,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
 
                         <TextInput
                             style={[styles.input, styles.textArea, { color: theme.text, borderColor: theme.border }]}
-                            placeholder="Açıklama"
+                            placeholder={t('hatimDetailScreen.descriptionPlaceholder')}
                             placeholderTextColor={theme.textSecondary}
                             value={editDesc}
                             onChangeText={setEditDesc}
@@ -611,7 +613,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                         />
 
                         <View style={styles.toggleRow}>
-                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>Bitiş Tarihi Belirle</Text>
+                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>{t('hatimDetailScreen.setDeadline')}</Text>
                             <Switch
                                 value={hasDeadline}
                                 onValueChange={setHasDeadline}
@@ -621,7 +623,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                         </View>
 
                         <View style={styles.toggleRow}>
-                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>Gizli Hatim</Text>
+                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>{t('hatimDetailScreen.privateHatim')}</Text>
                             <Switch
                                 value={editIsPrivate}
                                 onValueChange={setEditIsPrivate}
@@ -631,7 +633,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                         </View>
 
                         <View style={styles.toggleRow}>
-                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>Hatimi Kilitle (Salt Okunur)</Text>
+                            <Text style={[styles.inputLabel, { color: theme.textSecondary, marginTop: 0 }]}>{t('hatimDetailScreen.lockHatim')}</Text>
                             <Switch
                                 value={editIsLocked}
                                 onValueChange={setEditIsLocked}
@@ -642,7 +644,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
 
                         {hasDeadline && (
                             <>
-                                <Text style={[styles.inputLabel, { color: theme.textSecondary }]}>Son Katılım Tarihi</Text>
+                                <Text style={[styles.inputLabel, { color: theme.textSecondary }]}>{t('hatimDetailScreen.deadlineLabel')}</Text>
 
                                 {Platform.OS === 'web' ? (
                                     <View style={{ marginBottom: 16 }}>
@@ -734,8 +736,8 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                         >
                                             <Text style={{ color: editDeadline ? theme.text : theme.textSecondary }}>
                                                 {editDeadline
-                                                    ? editDeadline.toLocaleString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })
-                                                    : 'Tarih ve Saat Seçin'}
+                                                    ? editDeadline.toLocaleString(i18n.language === 'en' ? 'en-US' : 'tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })
+                                                    : t('hatimDetailScreen.selectDateTime')}
                                             </Text>
                                         </TouchableOpacity>
 
@@ -747,7 +749,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                                 onChange={onDateChange}
                                                 minimumDate={new Date()}
                                                 is24Hour={true}
-                                                locale="tr-TR"
+                                                locale={i18n.language === 'en' ? 'en-US' : 'tr-TR'}
                                             />
                                         )}
 
@@ -758,7 +760,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                                 display={Platform.OS === 'android' ? 'spinner' : 'default'}
                                                 onChange={onTimeChange}
                                                 is24Hour={true}
-                                                locale="tr-TR"
+                                                locale={i18n.language === 'en' ? 'en-US' : 'tr-TR'}
                                             />
                                         )}
                                     </>
@@ -772,7 +774,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                 onPress={handleDeleteHatim}
                                 disabled={isUpdating}
                             >
-                                <Text style={{ color: '#D32F2F', fontWeight: '600' }}>Sil</Text>
+                                <Text style={{ color: '#D32F2F', fontWeight: '600' }}>{t('hatimDetailScreen.delete')}</Text>
                             </TouchableOpacity>
 
                             <View style={{ flexDirection: 'row' }}>
@@ -780,7 +782,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                     style={[styles.modalButton, { backgroundColor: theme.border, marginRight: SPACING.sm }]}
                                     onPress={() => setEditModalVisible(false)}
                                 >
-                                    <Text style={{ color: theme.text }}>İptal</Text>
+                                    <Text style={{ color: theme.text }}>{t('hatimDetailScreen.cancel')}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[styles.modalButton, { backgroundColor: theme.primary }]}
@@ -790,7 +792,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                     {isUpdating ? (
                                         <ActivityIndicator size="small" color="#fff" />
                                     ) : (
-                                        <Text style={{ color: '#fff' }}>Güncelle</Text>
+                                        <Text style={{ color: '#fff' }}>{t('hatimDetailScreen.update')}</Text>
                                     )}
                                 </TouchableOpacity>
                             </View>

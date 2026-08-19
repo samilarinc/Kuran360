@@ -7,6 +7,7 @@ import {
     ScrollView,
     StyleSheet,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../theme';
@@ -242,6 +243,7 @@ const UMRAH_DUAS: DuaCategory[] = [
 
 export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
     const [expandedDua, setExpandedDua] = useState<string | null>(null);
 
@@ -258,13 +260,13 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
             <AppHeader
-                title="Umre Duaları"
+                title={t('screenTitles.umrahDuas')}
                 showBackButton={true}
                 onBackPress={onNavigate}
             />
             <ScrollView style={styles.content}>
                 <Text style={[styles.description, { color: theme.textSecondary }]}>
-                    Umre ibadetiniz sırasında okuyabileceğiniz dualar
+                    {t('umrahDuasScreen.description')}
                 </Text>
 
                 {UMRAH_DUAS.map(category => (
@@ -309,7 +311,7 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
                                             <View style={styles.duaContent}>
                                                 <View style={styles.textBlock}>
                                                     <Text style={[styles.label, { color: theme.textSecondary }]}>
-                                                        Arapça:
+                                                        {t('umrahDuasScreen.arabicLabel')}
                                                     </Text>
                                                     <Text style={[styles.arabicText, { color: theme.text }]}>
                                                         {dua.arabic}
@@ -318,7 +320,7 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
 
                                                 <View style={styles.textBlock}>
                                                     <Text style={[styles.label, { color: theme.textSecondary }]}>
-                                                        Okunuşu:
+                                                        {t('umrahDuasScreen.transliterationLabel')}
                                                     </Text>
                                                     <Text style={[styles.transliterationText, { color: theme.text }]}>
                                                         {dua.transliteration}
@@ -327,7 +329,7 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
 
                                                 <View style={styles.textBlock}>
                                                     <Text style={[styles.label, { color: theme.textSecondary }]}>
-                                                        Anlamı:
+                                                        {t('umrahDuasScreen.meaningLabel')}
                                                     </Text>
                                                     <Text style={[styles.turkishText, { color: theme.text }]}>
                                                         {dua.turkish}
