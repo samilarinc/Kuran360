@@ -97,50 +97,92 @@ export const createStyles = (theme: any) => {
             marginBottom: SPACING.xl,
             paddingHorizontal: SPACING.md,
         },
-        menuContainer: {
+        heroCard: {
             flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            paddingVertical: SPACING.md,
-        },
-        menuItem: {
-            ...common.card,
-            borderWidth: 1,
-            padding: SPACING.md,
             alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: 110,
+            borderRadius: 18,
+            padding: SPACING.lg,
+            marginBottom: SPACING.lg,
+            elevation: 3,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.15,
+            shadowRadius: 6,
         },
-        menuItemContent: {
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        iconContainer: {
-            width: 52,
-            height: 52,
-            borderRadius: 26,
+        heroIconWrap: {
+            width: 48,
+            height: 48,
+            borderRadius: 14,
+            backgroundColor: 'rgba(255,255,255,0.18)',
             justifyContent: 'center',
             alignItems: 'center',
-            marginBottom: SPACING.sm,
+            marginRight: SPACING.md,
         },
-        menuIcon: {
-            fontSize: 26,
+        heroIcon: {
+            fontSize: 24,
         },
-        menuTextContainer: {
-            alignItems: 'center',
+        heroTextWrap: {
+            flex: 1,
         },
-        menuTitle: {
-            fontSize: FONT_SIZES.medium,
+        heroTitle: {
+            fontSize: FONT_SIZES.large,
             fontWeight: '700',
-            textAlign: 'center',
-            color: theme.text,
+            color: '#fff',
         },
-        menuSubtitle: {
+        heroSubtitle: {
             fontSize: FONT_SIZES.small,
-            lineHeight: FONT_SIZES.small * 1.3,
-            color: theme.textSecondary,
-            textAlign: 'center',
+            color: 'rgba(255,255,255,0.85)',
             marginTop: 2,
+        },
+        heroChevron: {
+            fontSize: FONT_SIZES.xlarge,
+            color: 'rgba(255,255,255,0.85)',
+            fontWeight: '300',
+        },
+        sectionBlock: {
+            marginBottom: SPACING.lg,
+        },
+        sectionHeader: {
+            fontSize: FONT_SIZES.small,
+            fontWeight: '600',
+            letterSpacing: 0.5,
+            marginBottom: SPACING.sm,
+            marginLeft: SPACING.xs,
+        },
+        sectionCard: {
+            borderRadius: 16,
+            borderWidth: 1,
+            overflow: 'hidden',
+        },
+        menuRow: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: SPACING.sm + 4,
+            paddingHorizontal: SPACING.md,
+        },
+        menuRowDivider: {
+            borderBottomWidth: 1,
+        },
+        rowIconWrap: {
+            width: 36,
+            height: 36,
+            borderRadius: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginRight: SPACING.md,
+        },
+        rowIcon: {
+            fontSize: 18,
+        },
+        rowTitle: {
+            flex: 1,
+            fontSize: FONT_SIZES.medium,
+            fontWeight: '500',
+        },
+        rowChevron: {
+            fontSize: FONT_SIZES.large,
+            fontWeight: '300',
+            marginLeft: SPACING.sm,
         },
         footer: {
             alignItems: 'center',

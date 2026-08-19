@@ -27,105 +27,52 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
     const { width, height } = useWindowDimensions();
 
     const isUltraNarrow = width < 360;
-    const numColumns = 3;
-    const horizontalPadding = SPACING.lg * 2;
-    const cardWidth = Math.floor((width - horizontalPadding) / numColumns) - SPACING.sm;
 
     const welcomeFontSize = isUltraNarrow ? FONT_SIZES.large : FONT_SIZES.xlarge;
     const descriptionFontSize = isUltraNarrow ? FONT_SIZES.small : FONT_SIZES.medium;
 
-    const menuItems = [
+    const handleHutbePress = async () => {
+        try {
+            const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
+            const response = await fetch(baseUrl + '/hutbe/hutbe.pdf', { method: 'HEAD' });
+            const contentType = response.headers.get('content-type');
+            // In many dev environments, a missing file returns index.html (text/html)
+            if (response.ok && contentType && contentType.includes('application/pdf')) {
+                onNavigate('Hutbe');
+            } else {
+                Alert.alert(t('mainScreen.hutbeInfoTitle'), t('mainScreen.hutbeInfoMessage'));
+            }
+        } catch (error) {
+            // On catch, we assume something went wrong with the fetch, stay safe
+            Alert.alert(t('mainScreen.hutbeErrorTitle'), t('mainScreen.hutbeErrorMessage'));
+        }
+    };
+
+    const sections: { title: string; items: { id: string; title: string; icon: string; onPress: () => void }[] }[] = [
         {
-            id: 'surahs',
-            title: t('mainScreen.menu.surahs'),
-            icon: '📖',
-            color: '#2E7D32',
-            onPress: () => onNavigate('Home'),
+            title: t('mainScreen.sections.quran'),
+            items: [
+                { id: 'random-verse', title: t('mainScreen.menu.randomVerse'), icon: '✨', onPress: () => onNavigate('RandomVerse') },
+                { id: 'search', title: t('mainScreen.menu.search'), icon: '🔍', onPress: () => onNavigate('Search') },
+                { id: 'hatim', title: t('mainScreen.menu.hatim'), icon: '☪️', onPress: () => onNavigate('Hatim') },
+            ],
         },
         {
-            id: 'random-verse',
-            title: t('mainScreen.menu.randomVerse'),
-            icon: '✨',
-            color: '#FF7043',
-            onPress: () => onNavigate('RandomVerse'),
+            title: t('mainScreen.sections.worship'),
+            items: [
+                { id: 'prayer-times', title: t('mainScreen.menu.prayerTimes'), icon: '🕌', onPress: () => onNavigate('PrayerTimes') },
+                { id: 'hutbe', title: t('mainScreen.menu.hutbe'), icon: '📜', onPress: handleHutbePress },
+                { id: 'umrah', title: t('mainScreen.menu.umrah'), icon: '🕋', onPress: () => onNavigate('UmrahMenu') },
+                { id: 'hijri-calendar', title: t('mainScreen.menu.hijriCalendar'), icon: '🌙', onPress: () => onNavigate('HijriCalendar') },
+            ],
         },
         {
-            id: 'search',
-            title: t('mainScreen.menu.search'),
-            icon: '🔍',
-            color: '#1976D2',
-            onPress: () => onNavigate('Search'),
-        },
-        {
-            id: 'settings',
-            title: t('mainScreen.menu.settings'),
-            icon: '⚙️',
-            color: '#6A1B9A',
-            onPress: () => onNavigate('Settings'),
-        },
-        {
-            id: 'profile',
-            title: t('mainScreen.menu.profile'),
-            icon: '👤',
-            color: '#455A64',
-            onPress: () => onNavigate('Profile'),
-        },
-        {
-            id: 'hatim',
-            title: t('mainScreen.menu.hatim'),
-            icon: '☪️',
-            color: '#00695C',
-            onPress: () => onNavigate('Hatim'),
-        },
-        {
-            id: 'prayer-times',
-            title: t('mainScreen.menu.prayerTimes'),
-            icon: '🕌',
-            color: '#2E7D32',
-            onPress: () => onNavigate('PrayerTimes'),
-        },
-        {
-            id: 'hutbe',
-            title: t('mainScreen.menu.hutbe'),
-            icon: '📜',
-            color: '#D84315',
-            onPress: async () => {
-                try {
-                    const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
-                    const response = await fetch(baseUrl + '/hutbe/hutbe.pdf', { method: 'HEAD' });
-                    const contentType = response.headers.get('content-type');
-                    // In many dev environments, a missing file returns index.html (text/html)
-                    if (response.ok && contentType && contentType.includes('application/pdf')) {
-                        onNavigate('Hutbe');
-                    } else {
-                        Alert.alert(t('mainScreen.hutbeInfoTitle'), t('mainScreen.hutbeInfoMessage'));
-                    }
-                } catch (error) {
-                    // On catch, we assume something went wrong with the fetch, stay safe
-                    Alert.alert(t('mainScreen.hutbeErrorTitle'), t('mainScreen.hutbeErrorMessage'));
-                }
-            },
-        },
-        {
-            id: 'umrah',
-            title: t('mainScreen.menu.umrah'),
-            icon: '🕋',
-            color: '#8E24AA',
-            onPress: () => onNavigate('UmrahMenu'),
-        },
-        {
-            id: 'hijri-calendar',
-            title: t('mainScreen.menu.hijriCalendar'),
-            icon: '🌙',
-            color: '#1a237e',
-            onPress: () => onNavigate('HijriCalendar'),
-        },
-        {
-            id: 'about',
-            title: t('mainScreen.menu.about'),
-            icon: 'ℹ️',
-            color: '#00897B',
-            onPress: () => onNavigate('About'),
+            title: t('mainScreen.sections.app'),
+            items: [
+                { id: 'profile', title: t('mainScreen.menu.profile'), icon: '👤', onPress: () => onNavigate('Profile') },
+                { id: 'settings', title: t('mainScreen.menu.settings'), icon: '⚙️', onPress: () => onNavigate('Settings') },
+                { id: 'about', title: t('mainScreen.menu.about'), icon: 'ℹ️', onPress: () => onNavigate('About') },
+            ],
         },
     ];
 
@@ -150,35 +97,51 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                     {t('mainScreen.description')}
                 </Text>
 
-                {/* Menu Items Grid */}
-                <View style={styles.menuContainer}>
-                    {menuItems.map((item) => (
-                        <TouchableOpacity
-                            key={item.id}
-                            style={[
-                                styles.menuItem,
-                                {
-                                    width: cardWidth,
-                                    backgroundColor: theme.cardBackground,
-                                    borderColor: theme.border,
-                                }
-                            ]}
-                            onPress={item.onPress}
-                            activeOpacity={0.7}
-                        >
-                            <View style={styles.menuItemContent}>
-                                <View style={[styles.iconContainer, { backgroundColor: item.color + '20' }]}>
-                                    <Text style={styles.menuIcon}>{item.icon}</Text>
-                                </View>
-                                <View style={styles.menuTextContainer}>
-                                    <Text style={[styles.menuTitle, { color: theme.text }]}>
+                {/* Featured action */}
+                <TouchableOpacity
+                    style={[styles.heroCard, { backgroundColor: theme.primary }]}
+                    onPress={() => onNavigate('Home')}
+                    activeOpacity={0.85}
+                >
+                    <View style={styles.heroIconWrap}>
+                        <Text style={styles.heroIcon}>📖</Text>
+                    </View>
+                    <View style={styles.heroTextWrap}>
+                        <Text style={styles.heroTitle}>{t('mainScreen.menu.surahs')}</Text>
+                        <Text style={styles.heroSubtitle}>{t('mainScreen.heroSubtitle')}</Text>
+                    </View>
+                    <Text style={styles.heroChevron}>›</Text>
+                </TouchableOpacity>
+
+                {/* Menu Sections */}
+                {sections.map((section) => (
+                    <View key={section.title} style={styles.sectionBlock}>
+                        <Text style={[styles.sectionHeader, { color: theme.textSecondary }]}>
+                            {section.title}
+                        </Text>
+                        <View style={[styles.sectionCard, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
+                            {section.items.map((item, index) => (
+                                <TouchableOpacity
+                                    key={item.id}
+                                    style={[
+                                        styles.menuRow,
+                                        index < section.items.length - 1 && [styles.menuRowDivider, { borderBottomColor: theme.border }],
+                                    ]}
+                                    onPress={item.onPress}
+                                    activeOpacity={0.6}
+                                >
+                                    <View style={[styles.rowIconWrap, { backgroundColor: theme.primary + '15' }]}>
+                                        <Text style={styles.rowIcon}>{item.icon}</Text>
+                                    </View>
+                                    <Text style={[styles.rowTitle, { color: theme.text }]}>
                                         {item.title}
                                     </Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
-                </View>
+                                    <Text style={[styles.rowChevron, { color: theme.textSecondary }]}>›</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    </View>
+                ))}
 
                 {/* Footer */}
                 <View style={styles.footer}>

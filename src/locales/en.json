@@ -554,6 +554,12 @@
       "hijriCalendar": "Hijri Calendar",
       "about": "About"
     },
+    "sections": {
+      "quran": "Quran",
+      "worship": "Worship",
+      "app": "App"
+    },
+    "heroSubtitle": "Read the Quran surah by surah",
     "hutbeInfoTitle": "Info",
     "hutbeInfoMessage": "The latest sermon hasn't been uploaded yet.",
     "hutbeErrorTitle": "Error",
@@ -581,6 +587,7 @@
           "Fixed missing borders on the main menu cards and top bar buttons in lights-out theme.",
           "Removed the search button from the Surahs screen; search and settings are now only accessible from the main menu.",
           "The whole app UI is being moved into translation files (in progress).",
+          "Redesigned the main menu: a featured Surahs button and a clean, grouped list replace the colorful icon grid.",
           "Fixed some surahs not being found in the surah search due to Turkish uppercase/lowercase İ/i mismatches (e.g. İsra).",
           "Consolidated the surahs' English names, previously duplicated in a couple of places, into a single translation file.",
           "Surah names (Turkish and English) now come entirely from translation files; the surah list, search and surah detail screen show the name in the active language.",
