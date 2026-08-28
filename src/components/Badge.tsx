@@ -39,7 +39,7 @@ export const Badge: React.FC<BadgeProps> = ({
                 size === 'small' ? styles.sizeSmall : styles.sizeMedium,
                 { borderRadius: shape === 'pill' ? 999 : (size === 'small' ? 8 : 12) },
                 { backgroundColor: variant === 'solid' ? baseColor : baseColor + '15' },
-                icon && styles.withIcon,
+                !!icon && styles.withIcon,
                 style,
             ]}
         >
