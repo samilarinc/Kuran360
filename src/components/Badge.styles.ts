@@ -5,6 +5,11 @@ export const createStyles = (theme: any) => StyleSheet.create({
     badge: {
         alignSelf: 'flex-start',
     },
+    withIcon: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+    },
     sizeSmall: {
         paddingHorizontal: SPACING.sm,
         paddingVertical: 2,

@@ -75,10 +75,10 @@
     "loadError": "Couldn't load the verse",
     "retry": "Try Again",
     "verseBadge": "VERSE",
-    "surahLabel": "📚 Surah {{number}}",
-    "placeLabel": "📍 {{place}}",
-    "verseCountLabel": "📖 {{count}} Verses",
-    "newVerseButton": "✨ New Random Verse"
+    "surahLabel": "Surah {{number}}",
+    "placeLabel": "{{place}}",
+    "verseCountLabel": "{{count}} Verses",
+    "newVerseButton": "New Random Verse"
   },
   "duaListScreen": {
     "topicRequired": "Please enter a topic",
@@ -98,11 +98,11 @@
     "rejectTitle": "Reject",
     "giveUp": "Cancel",
     "reject": "Reject",
-    "shareBoxText": "🔗 Share the Link to Collect Dua Requests",
+    "shareBoxText": "Share the Link to Collect Dua Requests",
     "copy": "Copy",
-    "newRequests": "📥 New Dua Requests ({{count}})",
+    "newRequests": "New Dua Requests ({{count}})",
     "accept": "Accept",
-    "personalTitle": "🤲 My Duas for Myself",
+    "personalTitle": "My Duas for Myself",
     "personalTopicPlaceholder": "Dua topic (e.g. Health, career...)",
     "add": "Add",
     "noPersonalDuas": "No personal duas added yet",
@@ -155,8 +155,7 @@
     "duaListDescription": "Create a personal dua checklist",
     "duasTitle": "Umrah Duas",
     "duasDescription": "Duas to recite during umrah",
-    "header": "Tools for Your Umrah",
-    "footer": "🤲 May Allah accept it"
+    "header": "Tools for Your Umrah"
   },
   "umrahProgressScreen": {
     "tawaf": "Tawaf",
@@ -170,7 +169,6 @@
     "ihramDuas": "Ihram Duas →"
   },
   "umrahDuasScreen": {
-    "description": "Duas you can recite during your umrah",
     "arabicLabel": "Arabic:",
     "transliterationLabel": "Transliteration:",
     "meaningLabel": "Meaning:"
@@ -204,24 +202,24 @@
     "selectDate": "Select a date",
     "missingInfoTitle": "Missing Information",
     "missingInfoMessage": "You need to fill in the departure/return city and dates to search Skyscanner.",
-    "travelPlan": "✈️ Travel Plan",
+    "travelPlan": "Travel Plan",
     "from": "From?",
     "to": "To?",
     "outbound": "Depart:",
     "inbound": "Return:",
-    "flight": "✈️ Flight",
-    "hotel": "🏨 {{city}}",
+    "flight": "Flight",
+    "hotel": "{{city}}",
     "whereFrom": "Where are you departing from?",
     "whereTo": "Where are you returning to?",
-    "ihramReminder": "💡 First stop Makkah: you need to enter ihram at the airport.",
-    "cityTransfer": "🚄 Intercity Transfer",
+    "ihramReminder": "First stop Makkah: you need to enter ihram at the airport.",
+    "cityTransfer": "Intercity Transfer",
     "transferDateDescription": "Transfer date from {{from}} to {{to}}",
     "date": "Date:",
-    "trainTicket": "🚄 Haramain High-Speed Train Ticket",
+    "trainTicket": "Haramain High-Speed Train Ticket",
     "trainLabel": "High-Speed Train",
-    "eVisa": "📄 Saudi Arabia E-Visa",
+    "eVisa": "Saudi Arabia E-Visa",
     "eVisaLabel": "E-Visa",
-    "nusukTitle": "🕌 Nusuk App",
+    "nusukTitle": "Nusuk App",
     "nusukDescription": "Required for umrah permit and registration",
     "nusukGooglePlay": "Nusuk - Google Play",
     "nusukAppStore": "Nusuk - App Store",
@@ -449,7 +447,7 @@
       "title": "Search History",
       "clear": "Clear"
     },
-    "filtersToggle": "🔍 Search Filters",
+    "filtersToggle": "Search Filters",
     "scope": {
       "title": "Search Scope:",
       "everywhere": "Everywhere",
@@ -470,16 +468,16 @@
     },
     "matchType": {
       "type": "Search Type:",
-      "exact": "🎯 Exact Match",
-      "fuzzy": "🔍 Fuzzy Search"
+      "exact": "Exact Match",
+      "fuzzy": "Fuzzy Search"
     },
     "resultsCount": "{{count}} results found",
     "resultsMinChars": "Enter at least 2 characters to search",
     "resultVerse": "{{surahName}} - Verse {{verseNumber}}",
     "matchField": {
-      "arabic": "🔤 Arabic",
-      "transliteration": "📝 Transliteration",
-      "translation": "📖 {{translation}}"
+      "arabic": "Arabic",
+      "transliteration": "Transliteration",
+      "translation": "{{translation}}"
     },
     "defaultTranslationLabel": "Translation"
   },
@@ -544,7 +542,7 @@
       "selectDefault": "Default"
     },
     "dataUpToDate": "Translation data is up to date (v3.1)",
-    "updateButton": "📥 Update Translation Data"
+    "updateButton": "Update Translation Data"
   },
   "homeScreen": {
     "arabicTitle": "القرآن الكريم",

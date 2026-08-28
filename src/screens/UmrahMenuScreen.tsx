@@ -6,6 +6,7 @@ import {
     ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { ListChecks, Navigation, HandHeart, BookHeart } from 'lucide-react-native';
 import { AppHeader } from '../components/AppHeader';
 import { MenuListRow } from '../components/MenuListRow';
 import { useTheme } from '../contexts/ThemeContext';
@@ -24,7 +25,7 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
             id: 'umrah-checklist',
             title: t('umrahMenuScreen.checklistTitle'),
             description: t('umrahMenuScreen.checklistDescription'),
-            icon: '✅',
+            Icon: ListChecks,
             color: '#1565C0',
             onPress: () => navigation.navigate('UmrahChecklist'),
         },
@@ -32,7 +33,7 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
             id: 'umrah-progress',
             title: t('umrahMenuScreen.progressTitle'),
             description: t('umrahMenuScreen.progressDescription'),
-            icon: '🕋',
+            Icon: Navigation,
             color: '#8E24AA',
             onPress: () => navigation.navigate('UmrahProgress'),
         },
@@ -40,7 +41,7 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
             id: 'dua-list',
             title: t('umrahMenuScreen.duaListTitle'),
             description: t('umrahMenuScreen.duaListDescription'),
-            icon: '🤲',
+            Icon: HandHeart,
             color: '#558B2F',
             onPress: () => navigation.navigate('DuaList'),
         },
@@ -48,7 +49,7 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
             id: 'umrah-duas',
             title: t('umrahMenuScreen.duasTitle'),
             description: t('umrahMenuScreen.duasDescription'),
-            icon: '📿',
+            Icon: BookHeart,
             color: '#C2185B',
             onPress: () => navigation.navigate('UmrahDuas'),
         },
@@ -74,7 +75,7 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
                     <MenuListRow
                         key={item.id}
                         variant="card"
-                        icon={item.icon}
+                        icon={<item.Icon size={26} color={item.color} />}
                         iconColor={item.color + '15'}
                         title={item.title}
                         subtitle={item.description}
@@ -82,11 +83,6 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
                     />
                 ))}
 
-                <View style={styles.footer}>
-                    <Text style={styles.footerText}>
-                        {t('umrahMenuScreen.footer')}
-                    </Text>
-                </View>
             </ScrollView>
         </SafeAreaView>
     );

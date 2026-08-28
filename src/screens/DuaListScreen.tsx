@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
+import { Link2, Inbox, HandHeart } from 'lucide-react-native';
 import { AppHeader } from '../components/AppHeader';
 import { AppButton } from '../components/AppButton';
 import { useTheme } from '../contexts/ThemeContext';
@@ -146,7 +147,10 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
             <ScrollView style={styles.content}>
                 {/* Compact Request Link Section */}
                 <View style={styles.compactShareBox}>
-                    <Text style={styles.compactShareText}>{t('duaListScreen.shareBoxText')}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flex: 1 }}>
+                        <Link2 size={16} color={theme.text} />
+                        <Text style={styles.compactShareText}>{t('duaListScreen.shareBoxText')}</Text>
+                    </View>
                     <AppButton
                         title={t('duaListScreen.copy')}
                         onPress={copyRequestLink}
@@ -158,9 +162,12 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 {/* Pending Requests Section */}
                 {duaRequests.length > 0 && (
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>
-                            {t('duaListScreen.newRequests', { count: duaRequests.length })}
-                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                            <Inbox size={18} color={theme.text} />
+                            <Text style={[styles.sectionTitle, { marginBottom: 0 }]}>
+                                {t('duaListScreen.newRequests', { count: duaRequests.length })}
+                            </Text>
+                        </View>
                         {duaRequests.map(request => (
                             <View
                                 key={request.id}
@@ -199,9 +206,12 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 {/* Personal Duas Section */}
                 <View style={styles.section}>
                     <View style={styles.sectionHeader}>
-                        <Text style={styles.sectionTitle}>
-                            {t('duaListScreen.personalTitle')}
-                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                            <HandHeart size={18} color={theme.text} />
+                            <Text style={[styles.sectionTitle, { marginBottom: 0 }]}>
+                                {t('duaListScreen.personalTitle')}
+                            </Text>
+                        </View>
                         <TouchableOpacity
                             style={styles.addButton}
                             onPress={() => setShowPersonalForm(!showPersonalForm)}

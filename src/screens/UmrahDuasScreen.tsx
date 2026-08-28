@@ -264,10 +264,6 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
                 onBackPress={onNavigate}
             />
             <ScrollView style={styles.content}>
-                <Text style={styles.description}>
-                    {t('umrahDuasScreen.description')}
-                </Text>
-
                 {UMRAH_DUAS.map(category => (
                     <View key={category.id} style={styles.categoryContainer}>
                         <TouchableOpacity

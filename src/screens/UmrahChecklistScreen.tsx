@@ -15,6 +15,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import { Plane, Hotel, Lightbulb, TrainFront, FileText, Landmark } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
 import { AppHeader } from '../components/AppHeader';
@@ -374,9 +375,12 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
             <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
                 {/* COMPACT TRAVEL PLAN CARD */}
                 <View style={styles.plannerCard}>
-                    <Text style={styles.plannerTitle}>
-                        {t('umrahChecklistScreen.travelPlan')}
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+                        <Plane size={16} color={theme.text} />
+                        <Text style={[styles.plannerTitle, { marginBottom: 0 }]}>
+                            {t('umrahChecklistScreen.travelPlan')}
+                        </Text>
+                    </View>
 
                     {/* Outbound Row */}
                     <View style={styles.compactTripRow}>
@@ -524,13 +528,15 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                     variant="outline"
                                     style={styles.plannerActionBtn}
                                     textStyle={styles.plannerActionBtnText}
-                                    title="✈️ Uçak"
+                                    icon={<Plane size={14} color={theme.primary} />}
+                                    title={t('umrahChecklistScreen.flight')}
                                     onPress={openSkyscanner}
                                 />
                                 <AppButton
                                     variant="outline"
                                     style={styles.plannerActionBtn}
                                     textStyle={styles.plannerActionBtnText}
+                                    icon={<Hotel size={14} color={theme.primary} />}
                                     title={t('umrahChecklistScreen.hotel', { city: cityLabel(data.outboundTo) })}
                                     onPress={openFirstCityHotel}
                                 />
@@ -539,6 +545,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                         variant="outline"
                                         style={styles.plannerActionBtn}
                                         textStyle={styles.plannerActionBtnText}
+                                        icon={<Hotel size={14} color={theme.primary} />}
                                         title={t('umrahChecklistScreen.hotel', { city: cityLabel(data.inboundFrom) })}
                                         onPress={openSecondCityHotel}
                                     />
@@ -582,7 +589,8 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                     )}
 
                     {showIhramReminder && (
-                        <View style={styles.compactReminder}>
+                        <View style={[styles.compactReminder, { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' }]}>
+                            <Lightbulb size={14} color={theme.primary} />
                             <Text style={[styles.compactReminderText, styles.reminderTextPrimary]}>
                                 {t('umrahChecklistScreen.ihramReminder')}
                             </Text>
@@ -594,9 +602,12 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                 {/* COMPACT TRANSFER DATE (if needed) */}
                 {needsTransfer && (
                     <View style={styles.plannerCard}>
-                        <Text style={styles.plannerTitle}>
-                            {t('umrahChecklistScreen.cityTransfer')}
-                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+                            <TrainFront size={16} color={theme.text} />
+                            <Text style={[styles.plannerTitle, { marginBottom: 0 }]}>
+                                {t('umrahChecklistScreen.cityTransfer')}
+                            </Text>
+                        </View>
                         <Text style={[styles.compactReminderText, styles.transferDescriptionText]}>
                             {t('umrahChecklistScreen.transferDateDescription', { from: cityLabel(data.outboundTo), to: cityLabel(data.inboundFrom) })}
                         </Text>
@@ -637,6 +648,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                                 variant="outline"
                                 style={StyleSheet.flatten([styles.plannerActionBtn, styles.plannerActionBtnTall])}
                                 textStyle={styles.plannerActionBtnText}
+                                icon={<TrainFront size={14} color={theme.primary} />}
                                 title={t('umrahChecklistScreen.trainTicket')}
                                 onPress={() => openLink('https://sar.hhr.sa/home#/', 'Hızlı Tren')}
                             />
@@ -658,18 +670,22 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                 {/* External Links Section */}
                 <View style={styles.section}>
                     <TouchableOpacity
-                        style={styles.linkButton}
+                        style={[styles.linkButton, { flexDirection: 'row', alignItems: 'center', gap: 6 }]}
                         onPress={() => openLink('https://visa.visitsaudi.com/', 'E-Vize')}
                     >
+                        <FileText size={16} color={theme.text} />
                         <Text style={styles.linkButtonText}>
                             {t('umrahChecklistScreen.eVisa')}
                         </Text>
                     </TouchableOpacity>
 
                     <View style={styles.nusukCard}>
-                        <Text style={styles.nusukTitle}>
-                            {t('umrahChecklistScreen.nusukTitle')}
-                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                            <Landmark size={16} color={theme.text} />
+                            <Text style={[styles.nusukTitle, { marginBottom: 0 }]}>
+                                {t('umrahChecklistScreen.nusukTitle')}
+                            </Text>
+                        </View>
                         <Text style={styles.nusukDesc}>
                             {t('umrahChecklistScreen.nusukDescription')}
                         </Text>

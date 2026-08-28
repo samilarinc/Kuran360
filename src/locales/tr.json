@@ -75,10 +75,10 @@
     "loadError": "Ayet yüklenemedi",
     "retry": "Tekrar Dene",
     "verseBadge": "AYET",
-    "surahLabel": "📚 {{number}}. Sure",
-    "placeLabel": "📍 {{place}}",
-    "verseCountLabel": "📖 {{count}} Ayet",
-    "newVerseButton": "✨ Yeni Rastgele Ayet"
+    "surahLabel": "{{number}}. Sure",
+    "placeLabel": "{{place}}",
+    "verseCountLabel": "{{count}} Ayet",
+    "newVerseButton": "Yeni Rastgele Ayet"
   },
   "duaListScreen": {
     "topicRequired": "Lütfen bir konu girin",
@@ -98,11 +98,11 @@
     "rejectTitle": "Reddet",
     "giveUp": "Vazgeç",
     "reject": "Reddet",
-    "shareBoxText": "🔗 Linki Paylaş Dua İsteği Topla",
+    "shareBoxText": "Linki Paylaş Dua İsteği Topla",
     "copy": "Kopyala",
-    "newRequests": "📥 Yeni Dua İstekleri ({{count}})",
+    "newRequests": "Yeni Dua İstekleri ({{count}})",
     "accept": "Kabul Et",
-    "personalTitle": "🤲 Kendim İçin Dualarım",
+    "personalTitle": "Kendim İçin Dualarım",
     "personalTopicPlaceholder": "Dua konusu (örn: Sağlık, kariyer...)",
     "add": "Ekle",
     "noPersonalDuas": "Henüz kişisel dua eklenmedi",
@@ -155,8 +155,7 @@
     "duaListDescription": "Kişisel dua çizelgesi oluşturun",
     "duasTitle": "Umre Duaları",
     "duasDescription": "Umre ibadetinde okunacak dualar",
-    "header": "Umre İbadetiniz İçin Araçlar",
-    "footer": "🤲 Allah kabul etsin"
+    "header": "Umre İbadetiniz İçin Araçlar"
   },
   "umrahProgressScreen": {
     "tawaf": "Tavaf",
@@ -170,7 +169,6 @@
     "ihramDuas": "İhram Duaları →"
   },
   "umrahDuasScreen": {
-    "description": "Umre ibadetiniz sırasında okuyabileceğiniz dualar",
     "arabicLabel": "Arapça:",
     "transliterationLabel": "Okunuşu:",
     "meaningLabel": "Anlamı:"
@@ -204,24 +202,24 @@
     "selectDate": "Tarih seçin",
     "missingInfoTitle": "Eksik Bilgi",
     "missingInfoMessage": "Skyscanner araması için çıkış/dönüş şehri ve tarihlerini doldurmalısınız.",
-    "travelPlan": "✈️ Seyahat Planı",
+    "travelPlan": "Seyahat Planı",
     "from": "Nereden?",
     "to": "Nereye?",
     "outbound": "Gidiş:",
     "inbound": "Dönüş:",
-    "flight": "✈️ Uçak",
-    "hotel": "🏨 {{city}}",
+    "flight": "Uçak",
+    "hotel": "{{city}}",
     "whereFrom": "Nereden Gidiyorsunuz?",
     "whereTo": "Nereye Dönüyorsunuz?",
-    "ihramReminder": "💡 İlk durak Mekke: Havalimanında ihrama girmelisiniz.",
-    "cityTransfer": "🚄 Şehirlerarası Geçiş",
+    "ihramReminder": "İlk durak Mekke: Havalimanında ihrama girmelisiniz.",
+    "cityTransfer": "Şehirlerarası Geçiş",
     "transferDateDescription": "{{from}} → {{to}} arası geçiş tarihi",
     "date": "Tarih:",
-    "trainTicket": "🚄 Haramain Hızlı Tren Bileti",
+    "trainTicket": "Haramain Hızlı Tren Bileti",
     "trainLabel": "Hızlı Tren",
-    "eVisa": "📄 Suudi Arabistan E-Vize",
+    "eVisa": "Suudi Arabistan E-Vize",
     "eVisaLabel": "E-Vize",
-    "nusukTitle": "🕌 Nusuk Uygulaması",
+    "nusukTitle": "Nusuk Uygulaması",
     "nusukDescription": "Umre izni ve kayıt işlemleri için gerekli",
     "nusukGooglePlay": "Nusuk - Google Play",
     "nusukAppStore": "Nusuk - App Store",
@@ -449,7 +447,7 @@
       "title": "Arama Geçmişi",
       "clear": "Temizle"
     },
-    "filtersToggle": "🔍 Arama Filtreleri",
+    "filtersToggle": "Arama Filtreleri",
     "scope": {
       "title": "Arama Kapsamı:",
       "everywhere": "Her Yerde",
@@ -470,16 +468,16 @@
     },
     "matchType": {
       "type": "Arama Tipi:",
-      "exact": "🎯 Kesin Eşleşme",
-      "fuzzy": "🔍 Benzer Arama"
+      "exact": "Kesin Eşleşme",
+      "fuzzy": "Benzer Arama"
     },
     "resultsCount": "{{count}} sonuç bulundu",
     "resultsMinChars": "Aramak için en az 2 karakter girin",
     "resultVerse": "{{surahName}} - Ayet {{verseNumber}}",
     "matchField": {
-      "arabic": "🔤 Arapça",
-      "transliteration": "📝 Okunuş",
-      "translation": "📖 {{translation}}"
+      "arabic": "Arapça",
+      "transliteration": "Okunuş",
+      "translation": "{{translation}}"
     },
     "defaultTranslationLabel": "Meal"
   },
@@ -544,7 +542,7 @@
       "selectDefault": "Varsayılan"
     },
     "dataUpToDate": "Meal verileri güncel (v3.1)",
-    "updateButton": "📥 Meal Verilerini Güncelle"
+    "updateButton": "Meal Verilerini Güncelle"
   },
   "homeScreen": {
     "arabicTitle": "القرآن الكريم",

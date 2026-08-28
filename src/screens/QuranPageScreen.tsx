@@ -193,7 +193,7 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
                         {spacedArabicText(verse)}
                         {'\u00A0'}
                         <Text style={[styles.verseNumberMark, { fontSize: Math.max(14, fontSize * 0.6) }]}>
-                          {`\ufd3e${formatVerseNumber(verse.number, settings.verseNumberStyle)}\ufd3f`}
+                          {`\ufd3f${formatVerseNumber(verse.number, settings.verseNumberStyle)}\ufd3e`}
                         </Text>
                         {' '}
                       </React.Fragment>

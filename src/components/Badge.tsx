@@ -9,6 +9,7 @@ export type BadgeSize = 'small' | 'medium';
 
 interface BadgeProps {
     label: string;
+    icon?: React.ReactNode;
     variant?: BadgeVariant;
     color?: string;
     shape?: BadgeShape;
@@ -19,6 +20,7 @@ interface BadgeProps {
 
 export const Badge: React.FC<BadgeProps> = ({
     label,
+    icon,
     variant = 'solid',
     color,
     shape = 'rounded',
@@ -37,9 +39,11 @@ export const Badge: React.FC<BadgeProps> = ({
                 size === 'small' ? styles.sizeSmall : styles.sizeMedium,
                 { borderRadius: shape === 'pill' ? 999 : (size === 'small' ? 8 : 12) },
                 { backgroundColor: variant === 'solid' ? baseColor : baseColor + '15' },
+                icon && styles.withIcon,
                 style,
             ]}
         >
+            {icon}
             <Text
                 style={[
                     styles.text,

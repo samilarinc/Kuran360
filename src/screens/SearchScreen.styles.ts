@@ -39,10 +39,6 @@ export const createStyles = (theme: Theme) => {
         ...common.text,
         fontWeight: '600',
     },
-    filtersToggleIcon: {
-        fontSize: FONT_SIZES.small,
-        color: theme.secondary,
-    },
     filtersContainer: {
         backgroundColor: theme.cardBackground,
         borderRadius: 12,
@@ -95,7 +91,6 @@ export const createStyles = (theme: Theme) => {
         borderColor: theme.primary,
     },
     selectorIcon: {
-        fontSize: 16,
         marginRight: SPACING.xs,
     },
     selectorOptionText: {

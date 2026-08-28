@@ -32,6 +32,7 @@ import {
     Star,
     Check,
     CircleCheckBig,
+    Download,
     type LucideIcon,
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
@@ -737,6 +738,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                     variant="outline"
                                     size="medium"
                                     title={t('settingsScreen.updateButton')}
+                                    icon={<Download size={16} color={theme.primary} />}
                                     onPress={handleUpdateData}
                                     style={createStyles(theme).updateButton}
                                 />

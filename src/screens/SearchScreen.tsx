@@ -8,6 +8,7 @@ import {
     Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Globe, Star, BookOpen, Library, Type, PenLine, ChevronUp, ChevronDown, Target, Search as SearchIcon, Filter } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { getSurahName } from '../utils/surahName';
@@ -357,12 +358,12 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
             <Text style={styles.selectorTitle}>{t('searchScreen.scope.title')}</Text>
             <View style={styles.selectorGrid}>
                 {[
-                    { key: 'everywhere', label: t('searchScreen.scope.everywhere'), icon: '🌍' },
-                    { key: 'favorite', label: t('searchScreen.scope.favorite'), icon: '⭐' },
-                    { key: 'selected', label: t('searchScreen.scope.selected'), icon: '📖' },
-                    { key: 'all-translations', label: t('searchScreen.scope.allTranslations'), icon: '📚' },
-                    { key: 'arabic', label: t('searchScreen.scope.arabic'), icon: '🔤' },
-                    { key: 'transliteration', label: t('searchScreen.scope.transliteration'), icon: '📝' },
+                    { key: 'everywhere', label: t('searchScreen.scope.everywhere'), Icon: Globe },
+                    { key: 'favorite', label: t('searchScreen.scope.favorite'), Icon: Star },
+                    { key: 'selected', label: t('searchScreen.scope.selected'), Icon: BookOpen },
+                    { key: 'all-translations', label: t('searchScreen.scope.allTranslations'), Icon: Library },
+                    { key: 'arabic', label: t('searchScreen.scope.arabic'), Icon: Type },
+                    { key: 'transliteration', label: t('searchScreen.scope.transliteration'), Icon: PenLine },
                 ].map((option) => (
                     <TouchableOpacity
                         key={option.key}
@@ -372,7 +373,11 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                         ]}
                         onPress={() => setSearchScope(option.key as SearchScope)}
                     >
-                        <Text style={styles.selectorIcon}>{option.icon}</Text>
+                        <option.Icon
+                            size={14}
+                            color={searchScope === option.key ? '#FFFFFF' : theme.text}
+                            style={styles.selectorIcon}
+                        />
                         <Text style={[
                             styles.selectorOptionText,
                             searchScope === option.key && styles.selectorOptionTextSelected
@@ -570,11 +575,20 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                     <Text style={styles.resultSurahInfo}>
                         {t('searchScreen.resultVerse', { surahName: getSurahName(t, result.surah), verseNumber: formatVerseNumber(result.verse.number, settings.verseNumberStyle) })}
                     </Text>
-                    <Text style={styles.resultMatchType}>
-                        {result.matchedField === 'arabic' ? t('searchScreen.matchField.arabic') :
-                            result.matchedField === 'transliteration' ? t('searchScreen.matchField.transliteration') :
-                                t('searchScreen.matchField.translation', { translation: result.translationName || t('searchScreen.defaultTranslationLabel') })}
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                        {result.matchedField === 'arabic' ? (
+                            <Type size={12} color={theme.secondary} />
+                        ) : result.matchedField === 'transliteration' ? (
+                            <PenLine size={12} color={theme.secondary} />
+                        ) : (
+                            <BookOpen size={12} color={theme.secondary} />
+                        )}
+                        <Text style={styles.resultMatchType}>
+                            {result.matchedField === 'arabic' ? t('searchScreen.matchField.arabic') :
+                                result.matchedField === 'transliteration' ? t('searchScreen.matchField.transliteration') :
+                                    t('searchScreen.matchField.translation', { translation: result.translationName || t('searchScreen.defaultTranslationLabel') })}
+                        </Text>
+                    </View>
                 </View>
 
                 {result.matchedField === 'arabic' && (
@@ -659,12 +673,17 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                     style={styles.filtersToggle}
                     onPress={() => setExpandedFilters(!expandedFilters)}
                 >
-                    <Text style={styles.filtersToggleText}>
-                        {t('searchScreen.filtersToggle')}
-                    </Text>
-                    <Text style={styles.filtersToggleIcon}>
-                        {expandedFilters ? '▲' : '▼'}
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                        <Filter size={14} color={theme.text} />
+                        <Text style={styles.filtersToggleText}>
+                            {t('searchScreen.filtersToggle')}
+                        </Text>
+                    </View>
+                    {expandedFilters ? (
+                        <ChevronUp size={16} color={theme.textSecondary} />
+                    ) : (
+                        <ChevronDown size={16} color={theme.textSecondary} />
+                    )}
                 </TouchableOpacity>
 
                 {expandedFilters && (
@@ -684,6 +703,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                                     ]}
                                     onPress={() => setUseFuzzySearch(false)}
                                 >
+                                    <Target size={14} color={!useFuzzySearch ? '#FFFFFF' : theme.text} style={styles.selectorIcon} />
                                     <Text style={[
                                         styles.selectorOptionText,
                                         !useFuzzySearch && styles.selectorOptionTextSelected
@@ -699,6 +719,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                                     ]}
                                     onPress={() => setUseFuzzySearch(true)}
                                 >
+                                    <SearchIcon size={14} color={useFuzzySearch ? '#FFFFFF' : theme.text} style={styles.selectorIcon} />
                                     <Text style={[
                                         styles.selectorOptionText,
                                         useFuzzySearch && styles.selectorOptionTextSelected

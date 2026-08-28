@@ -10,6 +10,7 @@ import {
     ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { BookOpen, MapPin, ListOrdered, Sparkles } from 'lucide-react-native';
 import { Verse } from '../components/Verse';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { DownloadRequired } from '../components/DownloadRequired';
@@ -307,9 +308,9 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                     </View>
                 </View>
                 <View style={styles.surahMetaInfo}>
-                    <Badge variant="tint" label={t('randomVerseScreen.surahLabel', { number: currentVerse.surah.number })} />
-                    <Badge variant="tint" label={t('randomVerseScreen.placeLabel', { place: currentVerse.surah.revelationPlace })} />
-                    <Badge variant="tint" label={t('randomVerseScreen.verseCountLabel', { count: currentVerse.surah.verseCount })} />
+                    <Badge variant="tint" icon={<BookOpen size={12} color={theme.primary} />} label={t('randomVerseScreen.surahLabel', { number: currentVerse.surah.number })} />
+                    <Badge variant="tint" icon={<MapPin size={12} color={theme.primary} />} label={t('randomVerseScreen.placeLabel', { place: currentVerse.surah.revelationPlace })} />
+                    <Badge variant="tint" icon={<ListOrdered size={12} color={theme.primary} />} label={t('randomVerseScreen.verseCountLabel', { count: currentVerse.surah.verseCount })} />
                 </View>
             </TouchableOpacity>
 
@@ -317,6 +318,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
             <View style={styles.bottomActions}>
                 <AppButton
                     title={t('randomVerseScreen.newVerseButton')}
+                    icon={<Sparkles size={16} color="#fff" />}
                     onPress={handleNewRandomVerse}
                     variant="primary"
                     loading={isLoadingNew}
