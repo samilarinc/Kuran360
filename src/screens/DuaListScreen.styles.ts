@@ -25,10 +25,8 @@ export const createStyles = (theme: any) => {
             marginBottom: SPACING.md,
         },
         sectionTitle: {
-            fontSize: FONT_SIZES.large,
-            fontWeight: 'bold',
+            ...common.title,
             marginBottom: SPACING.sm,
-            color: theme.text,
         },
         addButton: {
             width: 36,

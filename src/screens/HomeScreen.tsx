@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import {
-  View,
-  Text,
   SafeAreaView,
-  ActivityIndicator,
-  TouchableOpacity,
-  TextInput,
 } from 'react-native';
 import { SurahList } from '../components/SurahList';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { DownloadRequired } from '../components/DownloadRequired';
+import { LoadingView } from '../components/LoadingView';
+import { SearchInput } from '../components/SearchInput';
 import { quranData } from '../data/quranData';
 import { Surah } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
@@ -94,10 +91,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           showHomeButton={true}
           onHomePress={() => navigation.navigate('Main')}
         />
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={theme.primary} />
-          <Text style={styles.loadingText}>{t('homeScreen.loading')}</Text>
-        </View>
+        <LoadingView text={t('homeScreen.loading')} />
       </SafeAreaView>
     );
   }
@@ -136,25 +130,15 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         showBackButton={true}
         onBackPress={() => navigation.navigate('Main')}
       />
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder={t('homeScreen.searchPlaceholder')}
-          placeholderTextColor={theme.textSecondary}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          autoCorrect={false}
-          autoCapitalize="none"
-        />
-        {searchQuery.length > 0 && (
-          <TouchableOpacity
-            style={styles.clearButton}
-            onPress={() => setSearchQuery('')}
-          >
-            <Text style={styles.clearButtonText}>✕</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      <SearchInput
+        style={styles.searchContainer}
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholder={t('homeScreen.searchPlaceholder')}
+        onClear={() => setSearchQuery('')}
+        autoCorrect={false}
+        autoCapitalize="none"
+      />
       <SurahList
         surahs={filteredSurahs}
         onSurahSelect={handleSurahSelect}

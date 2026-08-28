@@ -584,7 +584,10 @@
         "bullets": [
           "Buttons across the app now share a single component for a more consistent look and feel.",
           "Progress bars (Hatim screens, data update screen) now share a single component.",
-          "Consolidated duplicated card styles across several screens (Profile, Forum, Dua Request, Hatim Detail)."
+          "Consolidated duplicated card styles across several screens (Profile, Forum, Dua Request, Hatim Detail).",
+          "Status labels (completed, locked, time remaining, etc.) now share a single component.",
+          "Loading screens (Home, Surah Detail, Random Verse, Hatim, Prayer Times, and others) now share a single component.",
+          "Search boxes (Home, Search, Prayer Times location picker) now share a single component."
         ]
       },
       {

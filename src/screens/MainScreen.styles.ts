@@ -143,9 +143,7 @@ export const createStyles = (theme: any) => {
             marginBottom: SPACING.lg,
         },
         sectionHeader: {
-            fontSize: FONT_SIZES.small,
-            fontWeight: '600',
-            letterSpacing: 0.5,
+            ...common.sectionLabel,
             marginBottom: SPACING.sm,
             marginLeft: SPACING.xs,
         },

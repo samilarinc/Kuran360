@@ -12,6 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { AppButton } from '../components/AppButton';
+import { LoadingView } from '../components/LoadingView';
 import { useTheme } from '../contexts/ThemeContext';
 import { doc, getDoc, collection, addDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
@@ -83,9 +84,7 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
     if (loading) {
         return (
             <SafeAreaView style={styles.container}>
-                <View style={styles.centerContainer}>
-                    <ActivityIndicator size="large" color={theme.primary} />
-                </View>
+                <LoadingView />
             </SafeAreaView>
         );
     }

@@ -117,7 +117,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                 {/* Menu Sections */}
                 {sections.map((section) => (
                     <View key={section.title} style={styles.sectionBlock}>
-                        <Text style={[styles.sectionHeader, { color: theme.textSecondary }]}>
+                        <Text style={styles.sectionHeader}>
                             {section.title}
                         </Text>
                         <View style={[styles.sectionCard, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>

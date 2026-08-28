@@ -161,17 +161,9 @@ export const createStyles = (theme: any) => {
         color: theme.primary,
     },
     countdownBadge: {
-        ...common.badge,
         paddingHorizontal: 12,
-        borderRadius: 20,
         marginTop: 4,
         alignSelf: 'center',
-        backgroundColor: theme.primary + '15',
-    },
-    countdownText: {
-        ...common.badgeText,
-        fontWeight: '700',
-        color: theme.primary,
     },
     textArea: {
         height: 80,

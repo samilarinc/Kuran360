@@ -24,6 +24,8 @@ import { SPACING, FONT_SIZES } from '../constants';
 import { AppHeader } from '../components/AppHeader';
 import { AppButton } from '../components/AppButton';
 import { ProgressBar } from '../components/ProgressBar';
+import { Badge } from '../components/Badge';
+import { LoadingView } from '../components/LoadingView';
 import { createStyles } from './HatimDetailScreen.styles';
 
 interface HatimDetailScreenProps {
@@ -273,9 +275,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     if (loading) {
         return (
             <SafeAreaView style={styles.container}>
-                <View style={styles.center}>
-                    <ActivityIndicator size="large" color={theme.primary} />
-                </View>
+                <LoadingView />
             </SafeAreaView>
         );
     }
@@ -381,11 +381,13 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                             <Text style={styles.deadlineText}>
                                 {t('hatimDetailScreen.deadline', { date: formatDate(hatim.deadline) })}
                             </Text>
-                            <View style={styles.countdownBadge}>
-                                <Text style={styles.countdownText}>
-                                    {t('hatimDetailScreen.timeRemaining', { time: timeLeft })}
-                                </Text>
-                            </View>
+                            <Badge
+                                label={t('hatimDetailScreen.timeRemaining', { time: timeLeft })}
+                                variant="tint"
+                                shape="pill"
+                                style={styles.countdownBadge}
+                                textStyle={{ fontWeight: '700' }}
+                            />
                         </View>
                     )}
 

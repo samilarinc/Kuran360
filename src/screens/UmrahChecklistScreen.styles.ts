@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { SPACING, FONT_SIZES } from '../theme';
+import { createCommonStyles } from '../theme/common.styles';
 
 // Plain (non-RN) CSS object for the invisible web <input type="date"> overlay.
 // Not run through StyleSheet.create since it uses DOM-only CSS properties
@@ -21,7 +22,10 @@ export const webDateInputStyle: any = {
     appearance: 'none',
 };
 
-export const createStyles = (theme: any) => StyleSheet.create({
+export const createStyles = (theme: any) => {
+    const common = createCommonStyles(theme);
+
+    return StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: theme.background,
@@ -34,10 +38,8 @@ export const createStyles = (theme: any) => StyleSheet.create({
         marginBottom: SPACING.xl,
     },
     sectionTitle: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
+        ...common.titleLarge,
         marginBottom: SPACING.md,
-        color: theme.text,
     },
     plannerCard: {
         padding: SPACING.md,
@@ -415,4 +417,5 @@ export const createStyles = (theme: any) => StyleSheet.create({
     bottomSpacer: {
         height: SPACING.xl,
     },
-});
+    });
+};

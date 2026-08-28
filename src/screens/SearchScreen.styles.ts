@@ -17,23 +17,18 @@ export const createStyles = (theme: Theme) => {
         padding: SPACING.lg,
     },
     searchContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+        paddingHorizontal: 0,
         marginBottom: SPACING.lg,
     },
     searchInput: {
-        flex: 1,
         height: 50,
         backgroundColor: theme.cardBackground,
         borderRadius: 25,
         paddingHorizontal: SPACING.lg,
-        fontSize: FONT_SIZES.medium,
-        color: theme.text,
         borderWidth: 2,
         borderColor: theme.border,
-    },
-    searchSpinner: {
-        marginLeft: SPACING.sm,
     },
     filtersToggle: {
         flexDirection: 'row',

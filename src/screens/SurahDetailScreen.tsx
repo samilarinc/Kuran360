@@ -6,7 +6,6 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
-  ActivityIndicator,
   Platform,
 } from 'react-native';
 import { Verse } from '../components/Verse';
@@ -14,6 +13,7 @@ import { PaginatedVerseView } from '../components/PaginatedVerseView';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { AutoplayToggle } from '../components/AutoplayToggle';
 import { AudioTrackingToggle } from '../components/AudioTrackingToggle';
+import { LoadingView } from '../components/LoadingView';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { useTheme } from '../contexts/ThemeContext';
@@ -287,11 +287,10 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={theme.primary} />
-          <Text style={styles.loadingText}>{t('surahDetailScreen.loadingVerses')}</Text>
-          <Text style={styles.loadingNote}>{t('surahDetailScreen.loadingNote')}</Text>
-        </View>
+        <LoadingView
+          text={t('surahDetailScreen.loadingVerses')}
+          note={t('surahDetailScreen.loadingNote')}
+        />
       ) : (
         <>
           <HeaderWithDarkModeToggle

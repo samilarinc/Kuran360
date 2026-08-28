@@ -11,15 +11,6 @@ export const createStyles = (theme: any) => {
             flex: 1,
             backgroundColor: theme.background,
         },
-        loadingContainer: {
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: SPACING.md,
-        },
-        loadingText: {
-            ...common.text,
-        },
         errorContainer: {
             flex: 1,
             justifyContent: 'center',
@@ -104,16 +95,6 @@ export const createStyles = (theme: any) => {
             flexDirection: 'row',
             gap: SPACING.sm,
             marginTop: SPACING.sm,
-        },
-        metaChip: {
-            ...common.badge,
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: theme.primary + '15',
-        },
-        metaText: {
-            ...common.badgeText,
-            color: theme.primary,
         },
         surahDetails: {
             fontSize: FONT_SIZES.small,

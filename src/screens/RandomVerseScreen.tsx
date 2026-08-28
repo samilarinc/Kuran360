@@ -15,6 +15,8 @@ import { Verse } from '../components/Verse';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { DownloadRequired } from '../components/DownloadRequired';
 import { AppButton } from '../components/AppButton';
+import { Badge } from '../components/Badge';
+import { LoadingView } from '../components/LoadingView';
 import { useTheme } from '../contexts/ThemeContext';
 import { getSurahName } from '../utils/surahName';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
@@ -225,10 +227,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
     if (isLoading) {
         return (
             <SafeAreaView style={styles.container}>
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color={theme.primary} />
-                    <Text style={styles.loadingText}>{t('randomVerseScreen.loading')}</Text>
-                </View>
+                <LoadingView text={t('randomVerseScreen.loading')} />
             </SafeAreaView>
         );
     }
@@ -314,21 +313,9 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                     </View>
                 </View>
                 <View style={styles.surahMetaInfo}>
-                    <View style={styles.metaChip}>
-                        <Text style={styles.metaText}>
-                            {t('randomVerseScreen.surahLabel', { number: currentVerse.surah.number })}
-                        </Text>
-                    </View>
-                    <View style={styles.metaChip}>
-                        <Text style={styles.metaText}>
-                            {t('randomVerseScreen.placeLabel', { place: currentVerse.surah.revelationPlace })}
-                        </Text>
-                    </View>
-                    <View style={styles.metaChip}>
-                        <Text style={styles.metaText}>
-                            {t('randomVerseScreen.verseCountLabel', { count: currentVerse.surah.verseCount })}
-                        </Text>
-                    </View>
+                    <Badge variant="tint" label={t('randomVerseScreen.surahLabel', { number: currentVerse.surah.number })} />
+                    <Badge variant="tint" label={t('randomVerseScreen.placeLabel', { place: currentVerse.surah.revelationPlace })} />
+                    <Badge variant="tint" label={t('randomVerseScreen.verseCountLabel', { count: currentVerse.surah.verseCount })} />
                 </View>
             </TouchableOpacity>
 

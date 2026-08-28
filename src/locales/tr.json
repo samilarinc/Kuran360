@@ -584,7 +584,10 @@
         "bullets": [
           "Uygulama genelindeki butonlar ortak bir bileşene taşınarak görünüm ve davranış tutarlılığı artırıldı.",
           "İlerleme çubukları (Hatim sayfaları, veri güncelleme ekranı) ortak bir bileşene taşındı.",
-          "Kart görünümündeki bazı ekranlarda (Profil, Forum, Dua İsteği, Hatim Detayı) tekrar eden stiller ortaklandı."
+          "Kart görünümündeki bazı ekranlarda (Profil, Forum, Dua İsteği, Hatim Detayı) tekrar eden stiller ortaklandı.",
+          "Durum etiketleri (tamamlandı, kilitli, kalan süre vb.) ortak bir bileşene taşındı.",
+          "Yükleniyor ekranları (Ana Sayfa, Sure Detayı, Rastgele Ayet, Hatim, Namaz Vakitleri ve diğerleri) tek bir bileşenden besleniyor.",
+          "Arama kutuları (Ana Sayfa, Arama, Namaz Vakitleri konum seçimi) ortak bir bileşene taşındı."
         ]
       },
       {

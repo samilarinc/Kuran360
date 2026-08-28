@@ -57,17 +57,6 @@ export const createStyles = (theme: any) => {
             ...common.title,
             fontWeight: '600',
         },
-        completedBadge: {
-            ...common.badge,
-            backgroundColor: '#2E7D32',
-            borderRadius: 8,
-            alignSelf: 'center',
-        },
-        completedBadgeText: {
-            color: '#fff',
-            fontSize: 10,
-            fontWeight: '700',
-        },
         hatimCreator: {
             ...common.smallText,
             marginBottom: SPACING.md,
@@ -125,9 +114,6 @@ export const createStyles = (theme: any) => {
         privateLabel: {
             fontSize: 12,
             color: '#f44336',
-        },
-        lockedBadge: {
-            backgroundColor: '#607D8B',
         },
         listWrapper: {
             flex: 1,

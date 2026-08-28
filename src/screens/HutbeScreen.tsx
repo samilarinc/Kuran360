@@ -3,7 +3,6 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ActivityIndicator,
     SafeAreaView,
     Platform,
     Dimensions,
@@ -14,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
 import { useTheme } from '../contexts/ThemeContext';
 import { AppButton } from '../components/AppButton';
+import { LoadingView } from '../components/LoadingView';
 import { SPACING, FONT_SIZES } from '../theme';
 import { createStyles } from './HutbeScreen.styles';
 
@@ -75,9 +75,7 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
             <View style={styles.content}>
                 {exists === null ? (
-                    <View style={styles.mobileContainer}>
-                        <ActivityIndicator size="large" color={theme.primary} />
-                    </View>
+                    <LoadingView />
                 ) : Platform.OS === 'web' ? (
                     <iframe
                         src={pdfUrl}

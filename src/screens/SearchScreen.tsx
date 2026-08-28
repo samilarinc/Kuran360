@@ -5,8 +5,6 @@ import {
     SafeAreaView,
     ScrollView,
     TouchableOpacity,
-    TextInput,
-    ActivityIndicator,
     Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,6 +14,7 @@ import { getSurahName } from '../utils/surahName';
 import { useTheme } from '../contexts/ThemeContext';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { DownloadRequired } from '../components/DownloadRequired';
+import { SearchInput } from '../components/SearchInput';
 import { useNavigationHelpers } from '../contexts/NavigationContext';
 import { Verse, Surah } from '../types';
 import { quranData, loadSurah } from '../data/quranData';
@@ -637,25 +636,19 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                 showsVerticalScrollIndicator={false}
             >
                 {/* Search Input */}
-                <View style={styles.searchContainer}>
-                    <TextInput
-                        style={styles.searchInput}
-                        placeholder={t('searchScreen.placeholder')}
-                        placeholderTextColor={theme.secondary}
-                        value={searchQuery}
-                        onChangeText={setSearchQuery}
-                        returnKeyType="search"
-                        autoFocus={true}
-                        onFocus={() => setShowHistory(true)}
-                        onBlur={() => setTimeout(() => setShowHistory(false), 200)}
-                    />
-                    {isSearching && (
-                        <ActivityIndicator
-                            style={styles.searchSpinner}
-                            color={theme.primary}
-                        />
-                    )}
-                </View>
+                <SearchInput
+                    style={styles.searchContainer}
+                    inputStyle={styles.searchInput}
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                    placeholder={t('searchScreen.placeholder')}
+                    placeholderColor={theme.secondary}
+                    returnKeyType="search"
+                    autoFocus={true}
+                    loading={isSearching}
+                    onFocus={() => setShowHistory(true)}
+                    onBlur={() => setTimeout(() => setShowHistory(false), 200)}
+                />
 
                 {/* Search History */}
                 {renderSearchHistory()}

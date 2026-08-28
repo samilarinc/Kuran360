@@ -6,11 +6,6 @@ export const createStyles = (theme: any) => {
 
     return StyleSheet.create({
         ...common,
-        loadingContainer: {
-            ...common.container,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
         header: {
             flexDirection: 'row',
             alignItems: 'center',
@@ -140,25 +135,11 @@ export const createStyles = (theme: any) => {
             marginBottom: 0,
         },
         searchContainer: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: theme.background, // Alternating bg
             borderRadius: 8,
             paddingHorizontal: 12,
             marginBottom: 16,
-            borderWidth: 1,
             borderColor: theme.border,
             width: '100%',
-            overflow: 'hidden',
-        },
-        searchIcon: {
-            marginRight: 8,
-        },
-        searchInput: {
-            flex: 1,
-            height: 40,
-            fontSize: 16,
-            color: theme.text,
         },
         locationList: {
             flex: 1,

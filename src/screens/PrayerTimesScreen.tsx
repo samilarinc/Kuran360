@@ -4,10 +4,8 @@ import {
     Text,
     ScrollView,
     TouchableOpacity,
-    ActivityIndicator,
     Alert,
     Platform,
-    TextInput,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
@@ -16,6 +14,8 @@ import { useSettings } from '../contexts/SettingsContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { AppHeader } from '../components/AppHeader';
 import { AppButton } from '../components/AppButton';
+import { LoadingView } from '../components/LoadingView';
+import { SearchInput } from '../components/SearchInput';
 import { SPACING, FONT_SIZES } from '../theme';
 import { PrayerTime } from '../types';
 import locations from '../data/locations.json';
@@ -295,11 +295,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     };
 
     if (loading && !todayTimes) {
-        return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color={theme.primary} />
-            </View>
-        );
+        return <LoadingView />;
     }
 
     return (
@@ -370,16 +366,13 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                                 <Ionicons name="close" size={24} color={theme.text} />
                             </TouchableOpacity>
                         </View>
-                        <View style={[styles.searchContainer, { backgroundColor: theme.background }]}>
-                            <Ionicons name="search" size={20} color={theme.textSecondary} style={styles.searchIcon} />
-                            <TextInput
-                                style={[styles.searchInput, { color: theme.text }]}
-                                placeholder={t('prayerTimesScreen.searchPlaceholder')}
-                                placeholderTextColor={theme.textSecondary}
-                                value={searchQuery}
-                                onChangeText={setSearchQuery}
-                            />
-                        </View>
+                        <SearchInput
+                            style={[styles.searchContainer, { backgroundColor: theme.background }]}
+                            icon
+                            value={searchQuery}
+                            onChangeText={setSearchQuery}
+                            placeholder={t('prayerTimesScreen.searchPlaceholder')}
+                        />
                         <ScrollView style={styles.locationList}>
                             {filteredLocations.map((loc) => (
                                 <TouchableOpacity

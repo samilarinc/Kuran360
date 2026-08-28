@@ -20,6 +20,8 @@ import { Hatim } from '../types';
 import { SPACING, FONT_SIZES } from '../theme';
 import { AppHeader } from '../components/AppHeader';
 import { ProgressBar } from '../components/ProgressBar';
+import { Badge } from '../components/Badge';
+import { LoadingView } from '../components/LoadingView';
 import { createStyles } from './HatimScreen.styles';
 
 interface HatimScreenProps {
@@ -116,13 +118,9 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                         {item.isPrivate && <Text style={styles.privateLabel}>{t('hatimScreen.private')}</Text>}
                     </Text>
                     {item.isCompleted ? (
-                        <View style={styles.completedBadge}>
-                            <Text style={styles.completedBadgeText}>{t('hatimScreen.completed')}</Text>
-                        </View>
+                        <Badge label={t('hatimScreen.completed')} color="#2E7D32" size="small" />
                     ) : item.isLocked ? (
-                        <View style={[styles.completedBadge, styles.lockedBadge]}>
-                            <Text style={styles.completedBadgeText}>{t('hatimScreen.locked')}</Text>
-                        </View>
+                        <Badge label={t('hatimScreen.locked')} color="#607D8B" size="small" />
                     ) : null}
                 </View>
                 <Text style={styles.hatimCreator}>
@@ -147,9 +145,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
             />
 
             {loading ? (
-                <View style={styles.center}>
-                    <ActivityIndicator size="large" color={theme.primary} />
-                </View>
+                <LoadingView />
             ) : (
                 <View style={styles.listWrapper}>
                     <FlatList
