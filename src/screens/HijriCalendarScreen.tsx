@@ -402,6 +402,8 @@ export const HijriCalendarScreen: React.FC<{ navigation: any }> = ({ navigation 
         title={lang === 'tr' ? 'HİCRÎ AY TAKVİMİ' : 'التقويم الهجري'}
         showBackButton
         onBackPress={() => navigation.goBack()}
+        showHomeButton
+        onHomePress={() => navigation.navigate('Main')}
         autoplayToggle={
           <TouchableOpacity onPress={() => setLang(l => l === 'tr' ? 'ar' : 'tr')}
             style={{ backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 16, paddingHorizontal: 10, paddingVertical: 6, minWidth: 32, alignItems: 'center' }}>

@@ -142,6 +142,8 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                 title={t('screenTitles.hatim')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
             />
 
             {loading ? (

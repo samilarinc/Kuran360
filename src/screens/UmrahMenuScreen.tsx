@@ -63,6 +63,8 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
                 title={t('screenTitles.umrahMenu')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
             />
             <ScrollView style={styles.content}>
                 <View style={styles.header}>

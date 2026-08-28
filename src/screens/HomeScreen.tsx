@@ -129,6 +129,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         subtitle={t('homeScreen.subtitle')}
         showBackButton={true}
         onBackPress={() => navigation.navigate('Main')}
+        showHomeButton={true}
+        onHomePress={() => navigation.navigate('Main')}
       />
       <SearchInput
         style={styles.searchContainer}

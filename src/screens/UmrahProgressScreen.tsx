@@ -111,6 +111,8 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                 title={t('screenTitles.umrahProgress')}
                 showBackButton={true}
                 onBackPress={onNavigate}
+                showHomeButton={true}
+                onHomePress={onNavigate}
             />
             <ScrollView style={styles.content}>
                 {/* Tawaf Progress */}

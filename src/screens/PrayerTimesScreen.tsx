@@ -304,6 +304,8 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                 title={t('screenTitles.prayerTimes')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
             />
 
             <ScrollView contentContainerStyle={styles.content}>

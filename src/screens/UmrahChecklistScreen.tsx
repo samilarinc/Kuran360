@@ -340,6 +340,8 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                 title={t('screenTitles.umrahChecklist')}
                 showBackButton={true}
                 onBackPress={onNavigate}
+                showHomeButton={true}
+                onHomePress={onNavigate}
             />
             {/* Web-specific style to clean up the date input appearance */}
             {Platform.OS === 'web' && (

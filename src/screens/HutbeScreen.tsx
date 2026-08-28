@@ -50,6 +50,8 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                     title={t('hutbeScreen.errorTitle')}
                     showBackButton={true}
                     onBackPress={() => navigation.goBack()}
+                    showHomeButton={true}
+                    onHomePress={() => navigation.navigate('Main')}
                 />
                 <View style={[styles.mobileContainer, { flex: 1 }]}>
                     <Ionicons name="warning-outline" size={80} color={theme.error} />
@@ -71,6 +73,8 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 title={t('screenTitles.hutbe')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
             />
 
             <View style={styles.content}>

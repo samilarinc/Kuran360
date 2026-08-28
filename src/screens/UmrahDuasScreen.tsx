@@ -262,6 +262,8 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
                 title={t('screenTitles.umrahDuas')}
                 showBackButton={true}
                 onBackPress={onNavigate}
+                showHomeButton={true}
+                onHomePress={onNavigate}
             />
             <ScrollView style={styles.content}>
                 {UMRAH_DUAS.map(category => (

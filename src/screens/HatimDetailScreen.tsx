@@ -357,6 +357,8 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                 title={hatim.title}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
             >
                 {hatim.creatorId === user?.uid && (
                     <AppButton

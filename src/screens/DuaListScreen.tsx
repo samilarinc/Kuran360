@@ -143,6 +143,8 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 title={t('screenTitles.duaList')}
                 showBackButton={true}
                 onBackPress={onNavigate}
+                showHomeButton={true}
+                onHomePress={onNavigate}
             />
             <ScrollView style={styles.content}>
                 {/* Compact Request Link Section */}

@@ -116,6 +116,8 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
                 title={t('screenTitles.duaRequest')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
             />
             <ScrollView style={styles.content}>
                 <View style={styles.card}>

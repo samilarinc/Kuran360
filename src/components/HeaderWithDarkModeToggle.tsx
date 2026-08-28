@@ -71,7 +71,7 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
           compact
           value={i18n.language}
           languages={LANGUAGES}
-          onChange={(code) => i18n.changeLanguage(code)}
+          onChange={(code: string) => i18n.changeLanguage(code)}
         />
         <ThemeToggle compact labels={THEME_TOGGLE_LABELS} />
       </View>
