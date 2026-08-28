@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { Verse } from '../components/Verse';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { DownloadRequired } from '../components/DownloadRequired';
+import { AppButton } from '../components/AppButton';
 import { useTheme } from '../contexts/ThemeContext';
 import { getSurahName } from '../utils/surahName';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
@@ -23,6 +24,7 @@ import { useDownloadData } from '../hooks/useDownloadData';
 import { getRandomVerse } from '../data/quranData';
 import { Surah, Verse as VerseType } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SPACING } from '../constants';
 import { createStyles } from './RandomVerseScreen.styles';
 
 interface RandomVerseScreenProps {
@@ -236,14 +238,13 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
             <SafeAreaView style={styles.container}>
                 <View style={styles.errorContainer}>
                     <Text style={styles.errorText}>{t('randomVerseScreen.loadError')}</Text>
-                    <TouchableOpacity
-                        style={styles.retryButton}
+                    <AppButton
+                        title={t('randomVerseScreen.retry')}
                         onPress={() => loadRandomVerse(true)}
-                    >
-                        <Text style={styles.retryButtonText}>
-                            {t('randomVerseScreen.retry')}
-                        </Text>
-                    </TouchableOpacity>
+                        variant="primary"
+                        size="medium"
+                        style={{ paddingHorizontal: SPACING.lg, paddingVertical: SPACING.md }}
+                    />
                 </View>
             </SafeAreaView>
         );

@@ -4,11 +4,12 @@ import {
     Text,
     SafeAreaView,
     ScrollView,
-    TouchableOpacity,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { ShareModal } from '../components/ShareModal';
+import { AppButton } from '../components/AppButton';
+import { SPACING } from '../theme';
 import { useTheme } from '../contexts/ThemeContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
@@ -142,12 +143,14 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                                     ]}>
                                         {isFavorite && '⭐ '}{translationName}
                                     </Text>
-                                    <TouchableOpacity
-                                        style={styles.shareButton}
+                                    <AppButton
+                                        title={t('allTranslationsScreen.share')}
                                         onPress={() => handleShare(translationName)}
-                                    >
-                                        <Text style={styles.shareButtonText}>{t('allTranslationsScreen.share')}</Text>
-                                    </TouchableOpacity>
+                                        variant="secondary"
+                                        size="small"
+                                        textStyle={{ color: theme.headerText }}
+                                        style={{ marginLeft: SPACING.sm }}
+                                    />
                                 </View>
                                 <Text style={[
                                     styles.translationText,

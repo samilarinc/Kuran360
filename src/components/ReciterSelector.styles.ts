@@ -1,19 +1,18 @@
 import { StyleSheet } from 'react-native';
 import { FONT_SIZES, SPACING } from '../constants';
+import { createCommonStyles } from '../theme/common.styles';
 
-export const createStyles = (theme: any) => StyleSheet.create({
+export const createStyles = (theme: any) => {
+    const common = createCommonStyles(theme);
+    return StyleSheet.create({
     container: {
         marginVertical: SPACING.md,
     },
     sectionTitle: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: 'bold',
-        color: theme.text,
-        marginBottom: SPACING.xs,
+        ...common.title,
     },
     sectionDescription: {
-        fontSize: FONT_SIZES.small,
-        color: theme.textSecondary,
+        ...common.smallText,
         marginBottom: SPACING.md,
         lineHeight: 20,
     },
@@ -24,20 +23,12 @@ export const createStyles = (theme: any) => StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: SPACING.md,
-        paddingHorizontal: SPACING.md,
+        ...common.card,
         borderRadius: 12,
-        backgroundColor: theme.cardBackground,
+        marginBottom: 0,
         borderWidth: 1,
         borderColor: theme.border,
         // 3D effect
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.1,
         shadowRadius: 2,
     },
     selectedReciterItem: {
@@ -100,4 +91,5 @@ export const createStyles = (theme: any) => StyleSheet.create({
         borderRadius: 5,
         backgroundColor: theme.primary,
     },
-});
+    });
+};

@@ -597,7 +597,13 @@
           "The Hatims list and hatim detail screens were fully moved into translation files.",
           "The Dua List, Dua Request and Forum screens were fully moved into translation files.",
           "The Umrah Guide, Where Am I Now, Umrah Duas and Umrah Checklist screens were fully moved into translation files.",
-          "Remaining text on the Surah Detail screen was moved into translation files too. App-wide UI text migration into translation files is now complete (the Hijri Calendar screen keeps its own dedicated Turkish/Arabic language toggle by design)."
+          "Remaining text on the Surah Detail screen was moved into translation files too. App-wide UI text migration into translation files is now complete (the Hijri Calendar screen keeps its own dedicated Turkish/Arabic language toggle by design).",
+          "The flight/hotel/train action buttons on the Umrah Checklist screen now use the shared button component.",
+          "Menu rows on the main menu, Umrah Guide and Surahs list now use a shared component.",
+          "Cleaned up card, modal and badge styling in the Go to Verse, Image Preview, Share, Reciter Selector and Download Required components using shared styles; the Download Required screen's button now uses the shared button component.",
+          "Cleaned up card, badge, empty state and button styling on the Forum, All Translations, Prayer Times and Umrah screens using shared styles; some buttons now use the shared button component.",
+          "Cleaned up card, badge and text styling on the Settings and Hatim screens using shared styles; some buttons now use the shared button component.",
+          "Cleaned up text, badge and button styling on the Dua List, Dua Request, Profile, Random Verse and Search screens using shared styles; some buttons now use the shared button component."
         ]
       },
       {

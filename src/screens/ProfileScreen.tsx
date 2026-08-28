@@ -2,12 +2,14 @@ import React, { useState, useMemo } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, TextInput, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
+import { AppButton } from '../components/AppButton';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserData } from '../contexts/UserDataContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { auth } from '../services/firebase';
 import { GoogleAuthProvider, signInWithPopup, signInWithCredential } from 'firebase/auth';
 import Constants from 'expo-constants';
+import { SPACING } from '../constants';
 import { createStyles } from './ProfileScreen.styles';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
@@ -183,9 +185,13 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                 </View>
                             </View>
 
-                            <TouchableOpacity style={styles.signOutBtn} onPress={signOutUser}>
-                                <Text style={styles.signOutText}>{t('profileScreen.signOut')}</Text>
-                            </TouchableOpacity>
+                            <AppButton
+                                title={t('profileScreen.signOut')}
+                                onPress={signOutUser}
+                                variant="primary"
+                                size="medium"
+                                style={{ marginTop: SPACING.lg }}
+                            />
                         </View>
 
                         {/* Bookmarks Section */}
@@ -219,9 +225,13 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                 ) : (
                     <View style={styles.card}>
                         <Text style={[styles.email, styles.notSignedInText]}>{t('profileScreen.notSignedIn')}</Text>
-                        <TouchableOpacity style={styles.googleBtn} onPress={signInWithGoogle}>
-                            <Text style={styles.googleBtnText}>{t('profileScreen.signInWithGoogle')}</Text>
-                        </TouchableOpacity>
+                        <AppButton
+                            title={t('profileScreen.signInWithGoogle')}
+                            onPress={signInWithGoogle}
+                            variant="primary"
+                            size="medium"
+                            style={{ backgroundColor: '#DB4437' }}
+                        />
                     </View>
                 )}
             </ScrollView >

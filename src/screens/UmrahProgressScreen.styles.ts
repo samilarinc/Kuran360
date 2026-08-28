@@ -1,7 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { FONT_SIZES, SPACING } from '../theme';
+import { createCommonStyles } from '../theme/common.styles';
 
-export const createStyles = (theme: any) => StyleSheet.create({
+export const createStyles = (theme: any) => {
+    const common = createCommonStyles(theme);
+
+    return StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: theme.background,
@@ -11,14 +15,11 @@ export const createStyles = (theme: any) => StyleSheet.create({
         padding: SPACING.lg,
     },
     progressCard: {
-        backgroundColor: theme.cardBackground,
-        borderRadius: 16,
+        ...common.card,
         padding: SPACING.xl,
         marginBottom: SPACING.lg,
         alignItems: 'center',
-        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
         shadowRadius: 4,
         elevation: 3,
     },
@@ -35,9 +36,8 @@ export const createStyles = (theme: any) => StyleSheet.create({
         fontSize: 48,
     },
     progressTitle: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
-        color: theme.text,
+        ...common.titleLarge,
+        marginBottom: 0,
     },
     progressCount: {
         fontSize: 64,
@@ -70,16 +70,14 @@ export const createStyles = (theme: any) => StyleSheet.create({
         color: theme.text,
     },
     ihramCard: {
+        ...common.card,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 16,
         padding: SPACING.xl,
         marginBottom: SPACING.lg,
         borderWidth: 2,
-        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
         shadowRadius: 4,
         elevation: 3,
         borderColor: theme.border,
@@ -126,4 +124,5 @@ export const createStyles = (theme: any) => StyleSheet.create({
         fontWeight: '600',
         color: theme.primary,
     },
-});
+    });
+};

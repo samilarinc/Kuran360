@@ -597,7 +597,13 @@
           "Hatimler ve hatim detay sayfaları tamamen çeviri dosyalarına taşındı.",
           "Dua Listem, Dua İsteği Gönder ve Forum sayfaları tamamen çeviri dosyalarına taşındı.",
           "Umre Rehberi, Şu An Neredeyim, Umre Duaları ve Umre Hazırlık Listesi sayfaları tamamen çeviri dosyalarına taşındı.",
-          "Sure Detay sayfasındaki kalan metinler de çeviri dosyalarına taşındı. Uygulama genelinde arayüz metinlerinin çeviri dosyalarına taşınması tamamlandı (Hicri Takvim, kendi Türkçe/Arapça dil seçeneğiyle bilinçli olarak ayrı tutuldu)."
+          "Sure Detay sayfasındaki kalan metinler de çeviri dosyalarına taşındı. Uygulama genelinde arayüz metinlerinin çeviri dosyalarına taşınması tamamlandı (Hicri Takvim, kendi Türkçe/Arapça dil seçeneğiyle bilinçli olarak ayrı tutuldu).",
+          "Umre Kontrol Listesi ekranındaki uçak/otel/tren aksiyon butonları ortak buton bileşenine taşındı.",
+          "Ana menü, Umre Rehberi ve Sureler listesindeki menü satırları ortak bir bileşene taşındı.",
+          "Ayete Git, Resim Önizleme, Paylaş, Okuyucu Seçici ve İndirme Gerekli bileşenlerindeki kart, pencere ve rozet görünümleri ortak stillerle sadeleştirildi; İndirme Gerekli ekranındaki buton ortak buton bileşenine taşındı.",
+          "Forum, Bütün Mealler, Namaz Vakitleri ve Umre sayfalarındaki kart, rozet, boş durum ve buton görünümleri ortak stillerle sadeleştirildi; bazı butonlar ortak buton bileşenine taşındı.",
+          "Ayarlar ve Hatim sayfalarındaki kart, rozet ve metin görünümleri ortak stillerle sadeleştirildi; bazı butonlar ortak buton bileşenine taşındı.",
+          "Dua Listem, Dua İsteği, Profil, Rastgele Ayet ve Arama sayfalarındaki metin, rozet ve buton görünümleri ortak stillerle sadeleştirildi; bazı butonlar ortak buton bileşenine taşındı."
         ]
       },
       {

@@ -107,4 +107,73 @@ export const createCommonStyles = (theme: any) => StyleSheet.create({
     listContent: {
         padding: SPACING.lg,
     },
+
+    // Typography variants
+    titleLarge: {
+        fontSize: FONT_SIZES.xlarge,
+        fontWeight: 'bold',
+        color: theme.text,
+        marginBottom: SPACING.xs,
+    },
+    sectionLabel: {
+        fontSize: FONT_SIZES.small,
+        fontWeight: '600',
+        color: theme.textSecondary,
+        letterSpacing: 0.5,
+    },
+
+    // Empty states
+    emptyState: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: SPACING.xl,
+    },
+    emptyStateText: {
+        fontSize: FONT_SIZES.medium,
+        color: theme.textSecondary,
+        textAlign: 'center',
+        fontStyle: 'italic',
+    },
+
+    // Modal variants
+    modalOverlayDark: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.9)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: SPACING.xl,
+        ...Platform.select({
+            web: {
+                // @ts-ignore
+                position: 'fixed' as any,
+                top: 0, left: 0, right: 0, bottom: 0,
+            }
+        })
+    },
+    modalOverlayBottom: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'flex-end',
+        alignItems: 'stretch',
+        ...Platform.select({
+            web: {
+                // @ts-ignore
+                position: 'fixed' as any,
+                top: 0, left: 0, right: 0, bottom: 0,
+            }
+        })
+    },
+
+    // Badges / tags
+    badge: {
+        paddingHorizontal: SPACING.sm,
+        paddingVertical: 4,
+        borderRadius: 12,
+        alignSelf: 'flex-start',
+    },
+    badgeText: {
+        fontSize: FONT_SIZES.small,
+        fontWeight: '600',
+    },
 });

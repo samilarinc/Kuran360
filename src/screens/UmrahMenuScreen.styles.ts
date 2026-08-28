@@ -23,55 +23,6 @@ export const createStyles = (theme: any) => StyleSheet.create({
     headerSubtitle: {
         fontSize: FONT_SIZES.medium,
     },
-    menuItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: SPACING.lg,
-        borderRadius: 16,
-        marginBottom: SPACING.md,
-        borderWidth: 1,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-        backgroundColor: theme.cardBackground,
-        borderColor: theme.border,
-    },
-    iconContainer: {
-        width: 56,
-        height: 56,
-        borderRadius: 28,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: SPACING.md,
-    },
-    icon: {
-        fontSize: 32,
-    },
-    textContainer: {
-        flex: 1,
-    },
-    title: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: 'bold',
-        marginBottom: SPACING.xs,
-        color: theme.text,
-    },
-    description: {
-        fontSize: FONT_SIZES.small,
-        color: theme.textSecondary,
-    },
-    arrowContainer: {
-        width: 24,
-        height: 24,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    arrow: {
-        fontSize: 32,
-        color: theme.textSecondary,
-    },
     footer: {
         marginTop: SPACING.xl,
         padding: SPACING.lg,

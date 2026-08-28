@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { SPACING, FONT_SIZES } from '../theme';
+import { SPACING } from '../theme';
 import { createCommonStyles } from '../theme/common.styles';
 
 export const createStyles = (theme: any) => {
@@ -58,10 +58,10 @@ export const createStyles = (theme: any) => {
             fontWeight: '600',
         },
         completedBadge: {
+            ...common.badge,
             backgroundColor: '#2E7D32',
-            paddingHorizontal: 8,
-            paddingVertical: 4,
             borderRadius: 8,
+            alignSelf: 'center',
         },
         completedBadgeText: {
             color: '#fff',
@@ -69,9 +69,8 @@ export const createStyles = (theme: any) => {
             fontWeight: '700',
         },
         hatimCreator: {
-            fontSize: FONT_SIZES.small,
+            ...common.smallText,
             marginBottom: SPACING.md,
-            color: theme.textSecondary,
         },
         progressContainer: {
             marginTop: SPACING.sm,
@@ -88,19 +87,17 @@ export const createStyles = (theme: any) => {
             backgroundColor: theme.primary,
         },
         progressText: {
-            fontSize: 12,
+            ...common.smallText,
             textAlign: 'right',
-            color: theme.textSecondary,
         },
         emptyContainer: {
             padding: SPACING.xl,
             alignItems: 'center',
         },
         emptyText: {
+            ...common.text,
             textAlign: 'center',
-            fontSize: FONT_SIZES.medium,
             opacity: 0.7,
-            color: theme.text,
         },
         textArea: {
             height: 80,

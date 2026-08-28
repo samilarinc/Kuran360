@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { SPACING, FONT_SIZES } from '../constants';
+import { createCommonStyles } from '../theme/common.styles';
 
-export const createStyles = (theme: any) => StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: theme.background,
-    },
+export const createStyles = (theme: any) => {
+    const common = createCommonStyles(theme);
+
+    return StyleSheet.create({
+    ...common,
     notFoundText: {
         color: theme.text,
     },
@@ -39,10 +40,9 @@ export const createStyles = (theme: any) => StyleSheet.create({
         borderColor: theme.border,
     },
     description: {
-        fontSize: FONT_SIZES.medium,
+        ...common.subtitle,
         lineHeight: 22,
         marginBottom: SPACING.lg,
-        color: theme.textSecondary,
     },
     statsRow: {
         flexDirection: 'row',
@@ -83,17 +83,13 @@ export const createStyles = (theme: any) => StyleSheet.create({
         justifyContent: 'center',
     },
     partItem: {
+        ...common.card,
         aspectRatio: 1,
         borderRadius: 12,
         borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: SPACING.md,
         padding: SPACING.xs,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
         shadowRadius: 2,
         borderColor: theme.border,
         marginRight: SPACING.md / 2,
@@ -112,42 +108,22 @@ export const createStyles = (theme: any) => StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: SPACING.xl,
-    },
     modalContent: {
-        width: '100%',
+        ...common.modalContent,
         maxWidth: 400,
-        padding: SPACING.xl,
-        borderRadius: 24,
-        elevation: 5,
-        backgroundColor: theme.cardBackground,
-    },
-    modalTitle: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: '700',
-        marginBottom: SPACING.lg,
-        textAlign: 'center',
-        color: theme.text,
     },
     modalDescription: {
+        ...common.subtitle,
         textAlign: 'center',
         marginBottom: SPACING.xl,
-        fontSize: FONT_SIZES.medium,
-        color: theme.textSecondary,
     },
     claimInfo: {
         alignItems: 'center',
         marginBottom: SPACING.xl,
     },
     claimText: {
-        fontSize: FONT_SIZES.medium,
+        ...common.subtitle,
         marginBottom: SPACING.xs,
-        color: theme.textSecondary,
     },
     claimedByName: {
         color: theme.text,
@@ -219,9 +195,8 @@ export const createStyles = (theme: any) => StyleSheet.create({
         width: '100%',
     },
     progressLabel: {
-        fontSize: 12,
+        ...common.smallText,
         marginBottom: SPACING.sm,
-        color: theme.textSecondary,
     },
     progressRow: {
         flexDirection: 'row',
@@ -263,8 +238,7 @@ export const createStyles = (theme: any) => StyleSheet.create({
         color: theme.primary,
     },
     statLabel: {
-        fontSize: 12,
-        color: theme.textSecondary,
+        ...common.smallText,
     },
     deadlineText: {
         fontSize: 14,
@@ -275,24 +249,17 @@ export const createStyles = (theme: any) => StyleSheet.create({
         color: theme.primary,
     },
     countdownBadge: {
+        ...common.badge,
         paddingHorizontal: 12,
-        paddingVertical: 4,
         borderRadius: 20,
         marginTop: 4,
+        alignSelf: 'center',
         backgroundColor: theme.primary + '15',
     },
     countdownText: {
-        fontSize: 12,
+        ...common.badgeText,
         fontWeight: '700',
         color: theme.primary,
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 12,
-        padding: SPACING.md,
-        marginBottom: SPACING.md,
-        color: theme.text,
-        borderColor: theme.border,
     },
     textArea: {
         height: 80,
@@ -344,12 +311,8 @@ export const createStyles = (theme: any) => StyleSheet.create({
         marginTop: 0,
     },
     editInputStyle: {
-        borderWidth: 1,
-        borderRadius: 12,
-        padding: SPACING.md,
-        marginBottom: SPACING.md,
+        ...common.input,
         minHeight: 50,
-        borderColor: theme.border,
         justifyContent: 'center',
     },
     dateTimeTextFilled: {
@@ -382,4 +345,5 @@ export const createStyles = (theme: any) => StyleSheet.create({
         fontSize: 18,
         fontWeight: '700',
     },
-});
+    });
+};

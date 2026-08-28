@@ -10,6 +10,7 @@ import {
     SafeAreaView,
     Alert,
     Modal,
+    StyleSheet,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,6 +18,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
 import { AppHeader } from '../components/AppHeader';
+import { AppButton } from '../components/AppButton';
 import { createStyles, webDateInputStyle } from './UmrahChecklistScreen.styles';
 
 interface ChecklistData {
@@ -518,25 +520,28 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                         {/* Travel Action Buttons - Show only if dates are selected */}
                         {data.outboundDate && data.inboundDate && (
                             <View style={styles.plannerActions}>
-                                <TouchableOpacity
+                                <AppButton
+                                    variant="outline"
                                     style={styles.plannerActionBtn}
+                                    textStyle={styles.plannerActionBtnText}
+                                    title="✈️ Uçak"
                                     onPress={openSkyscanner}
-                                >
-                                    <Text style={styles.plannerActionBtnText}>✈️ Uçak</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
+                                />
+                                <AppButton
+                                    variant="outline"
                                     style={styles.plannerActionBtn}
+                                    textStyle={styles.plannerActionBtnText}
+                                    title={t('umrahChecklistScreen.hotel', { city: cityLabel(data.outboundTo) })}
                                     onPress={openFirstCityHotel}
-                                >
-                                    <Text style={styles.plannerActionBtnText}>{t('umrahChecklistScreen.hotel', { city: cityLabel(data.outboundTo) })}</Text>
-                                </TouchableOpacity>
+                                />
                                 {needsTransfer && data.transferDate && (
-                                    <TouchableOpacity
+                                    <AppButton
+                                        variant="outline"
                                         style={styles.plannerActionBtn}
+                                        textStyle={styles.plannerActionBtnText}
+                                        title={t('umrahChecklistScreen.hotel', { city: cityLabel(data.inboundFrom) })}
                                         onPress={openSecondCityHotel}
-                                    >
-                                        <Text style={styles.plannerActionBtnText}>{t('umrahChecklistScreen.hotel', { city: cityLabel(data.inboundFrom) })}</Text>
-                                    </TouchableOpacity>
+                                    />
                                 )}
                             </View>
                         )}
@@ -628,12 +633,13 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
 
                         {/* Train Button - Show only if transfer date is selected */}
                         {data.transferDate && (
-                            <TouchableOpacity
-                                style={[styles.plannerActionBtn, styles.plannerActionBtnTall]}
+                            <AppButton
+                                variant="outline"
+                                style={StyleSheet.flatten([styles.plannerActionBtn, styles.plannerActionBtnTall])}
+                                textStyle={styles.plannerActionBtnText}
+                                title={t('umrahChecklistScreen.trainTicket')}
                                 onPress={() => openLink('https://sar.hhr.sa/home#/', 'Hızlı Tren')}
-                            >
-                                <Text style={styles.plannerActionBtnText}>{t('umrahChecklistScreen.trainTicket')}</Text>
-                            </TouchableOpacity>
+                            />
                         )}
 
                         {Platform.OS !== 'web' && showTransferDatePicker && (

@@ -1,7 +1,12 @@
 import { StyleSheet, Platform } from 'react-native';
 import { FONT_SIZES, SPACING } from '../constants';
+import { createCommonStyles } from '../theme/common.styles';
 
-export const createStyles = (theme: any) => StyleSheet.create({
+export const createStyles = (theme: any) => {
+    const common = createCommonStyles(theme);
+
+    return StyleSheet.create({
+    ...common,
     container: {
         flex: 1,
         backgroundColor: theme.background,
@@ -40,29 +45,25 @@ export const createStyles = (theme: any) => StyleSheet.create({
         fontWeight: '600',
     },
     verseNumber: {
+        ...common.badge,
         backgroundColor: theme.primary,
         color: theme.headerText,
         fontSize: FONT_SIZES.small,
         fontWeight: 'bold',
-        paddingHorizontal: SPACING.sm,
         paddingVertical: SPACING.xs,
-        borderRadius: 12,
     },
     translationsContainer: {
         flex: 1,
     },
     translationItem: {
-        backgroundColor: theme.cardBackground,
+        ...common.card,
         marginHorizontal: SPACING.md,
-        marginVertical: SPACING.xs,
+        marginTop: SPACING.xs,
+        marginBottom: SPACING.xs,
         padding: SPACING.md,
         borderRadius: 12,
         borderLeftWidth: 4,
         borderLeftColor: theme.primary,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
         shadowRadius: 2,
     },
     favoriteTranslationItem: {
@@ -85,18 +86,6 @@ export const createStyles = (theme: any) => StyleSheet.create({
         color: '#B8860B',
         fontWeight: '700',
     },
-    shareButton: {
-        backgroundColor: theme.secondary,
-        paddingHorizontal: SPACING.sm,
-        paddingVertical: SPACING.xs,
-        borderRadius: 8,
-        marginLeft: SPACING.sm,
-    },
-    shareButtonText: {
-        color: theme.headerText,
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-    },
     translationText: {
         fontSize: FONT_SIZES.medium,
         lineHeight: FONT_SIZES.medium * 1.4,
@@ -106,15 +95,9 @@ export const createStyles = (theme: any) => StyleSheet.create({
     favoriteTranslationText: {
         fontWeight: '500',
     },
-    emptyState: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: SPACING.xl,
-    },
     emptyStateText: {
-        fontSize: FONT_SIZES.medium,
-        color: theme.textSecondary,
-        textAlign: 'center',
+        ...common.emptyStateText,
+        fontStyle: 'normal',
     },
-});
+    });
+};

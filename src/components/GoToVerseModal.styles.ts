@@ -1,15 +1,16 @@
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 import { FONT_SIZES, SPACING } from '../constants';
 import { Theme } from '../contexts/ThemeContext';
+import { createCommonStyles } from '../theme/common.styles';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-export const createStyles = (theme: Theme) => StyleSheet.create({
+export const createStyles = (theme: Theme) => {
+    const common = createCommonStyles(theme);
+    return StyleSheet.create({
     overlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        justifyContent: 'center',
-        alignItems: 'center',
+        ...common.modalOverlay,
+        padding: 0,
     },
     modalContainer: {
         backgroundColor: theme.cardBackground,
@@ -31,9 +32,9 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         borderBottomColor: theme.background,
     },
     title: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: 'bold',
+        ...common.title,
         color: theme.primary,
+        marginBottom: 0,
     },
     closeButton: {
         padding: SPACING.xs,
@@ -50,8 +51,7 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         borderBottomColor: theme.background,
     },
     searchLabel: {
-        fontSize: FONT_SIZES.small,
-        color: theme.textSecondary,
+        ...common.smallText,
         marginBottom: SPACING.xs,
     },
     searchInputContainer: {
@@ -109,7 +109,8 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         fontWeight: 'bold',
     },
     currentLabel: {
-        fontSize: FONT_SIZES.small,
+        ...common.badge,
+        ...common.badgeText,
         color: theme.primary,
         fontWeight: '500',
         backgroundColor: theme.primary + '20',
@@ -118,8 +119,7 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         borderRadius: 4,
     },
     versePreview: {
-        fontSize: FONT_SIZES.small,
-        color: theme.textSecondary,
+        ...common.smallText,
         lineHeight: 18,
     },
     currentVersePreview: {
@@ -145,4 +145,5 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         color: theme.primary,
         fontWeight: '500',
     },
-});
+    });
+};

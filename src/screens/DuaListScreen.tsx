@@ -12,6 +12,7 @@ import {
 
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
+import { AppButton } from '../components/AppButton';
 import { useTheme } from '../contexts/ThemeContext';
 import { useUserData } from '../contexts/UserDataContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -146,12 +147,12 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 {/* Compact Request Link Section */}
                 <View style={styles.compactShareBox}>
                     <Text style={styles.compactShareText}>{t('duaListScreen.shareBoxText')}</Text>
-                    <TouchableOpacity
-                        style={styles.compactCopyButton}
+                    <AppButton
+                        title={t('duaListScreen.copy')}
                         onPress={copyRequestLink}
-                    >
-                        <Text style={styles.compactCopyButtonText}>{t('duaListScreen.copy')}</Text>
-                    </TouchableOpacity>
+                        variant="primary"
+                        size="small"
+                    />
                 </View>
 
                 {/* Pending Requests Section */}
@@ -174,18 +175,21 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                     </Text>
                                 </View>
                                 <View style={styles.requestActions}>
-                                    <TouchableOpacity
-                                        style={[styles.actionButton, styles.actionButtonAccept]}
+                                    <AppButton
+                                        title={t('duaListScreen.accept')}
                                         onPress={() => handleAcceptRequest(request)}
-                                    >
-                                        <Text style={styles.actionButtonText}>{t('duaListScreen.accept')}</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={[styles.actionButton, styles.actionButtonReject]}
+                                        variant="primary"
+                                        size="small"
+                                        style={styles.actionButton}
+                                    />
+                                    <AppButton
+                                        title={t('duaListScreen.giveUp')}
                                         onPress={() => handleRejectRequest(request)}
-                                    >
-                                        <Text style={[styles.actionButtonText, styles.actionButtonTextReject]}>{t('duaListScreen.giveUp')}</Text>
-                                    </TouchableOpacity>
+                                        variant="outline"
+                                        size="small"
+                                        style={{ flex: 1, borderColor: theme.textSecondary }}
+                                        textStyle={{ color: theme.textSecondary }}
+                                    />
                                 </View>
                             </View>
                         ))}
@@ -217,12 +221,12 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                 value={newTopic}
                                 onChangeText={setNewTopic}
                             />
-                            <TouchableOpacity
-                                style={styles.submitButton}
+                            <AppButton
+                                title={t('duaListScreen.add')}
                                 onPress={() => handleAddDua(true)}
-                            >
-                                <Text style={styles.submitButtonText}>{t('duaListScreen.add')}</Text>
-                            </TouchableOpacity>
+                                variant="primary"
+                                size="medium"
+                            />
                         </View>
                     )}
 
@@ -296,12 +300,12 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                 value={newTopic}
                                 onChangeText={setNewTopic}
                             />
-                            <TouchableOpacity
-                                style={styles.submitButton}
+                            <AppButton
+                                title={t('duaListScreen.add')}
                                 onPress={() => handleAddDua(false)}
-                            >
-                                <Text style={styles.submitButtonText}>{t('duaListScreen.add')}</Text>
-                            </TouchableOpacity>
+                                variant="primary"
+                                size="medium"
+                            />
                         </View>
                     )}
 

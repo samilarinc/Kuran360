@@ -154,35 +154,8 @@ export const createStyles = (theme: any) => {
             borderWidth: 1,
             overflow: 'hidden',
         },
-        menuRow: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingVertical: SPACING.sm + 4,
-            paddingHorizontal: SPACING.md,
-        },
         menuRowDivider: {
             borderBottomWidth: 1,
-        },
-        rowIconWrap: {
-            width: 36,
-            height: 36,
-            borderRadius: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginRight: SPACING.md,
-        },
-        rowIcon: {
-            fontSize: 18,
-        },
-        rowTitle: {
-            flex: 1,
-            fontSize: FONT_SIZES.medium,
-            fontWeight: '500',
-        },
-        rowChevron: {
-            fontSize: FONT_SIZES.large,
-            fontWeight: '300',
-            marginLeft: SPACING.sm,
         },
         footer: {
             alignItems: 'center',

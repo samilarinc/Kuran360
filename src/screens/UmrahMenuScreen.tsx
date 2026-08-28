@@ -2,12 +2,12 @@ import React, { useMemo } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
     SafeAreaView,
     ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
+import { MenuListRow } from '../components/MenuListRow';
 import { useTheme } from '../contexts/ThemeContext';
 import { createStyles } from './UmrahMenuScreen.styles';
 
@@ -71,27 +71,15 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
                 </View>
 
                 {menuItems.map((item) => (
-                    <TouchableOpacity
+                    <MenuListRow
                         key={item.id}
-                        style={styles.menuItem}
+                        variant="card"
+                        icon={item.icon}
+                        iconColor={item.color + '15'}
+                        title={item.title}
+                        subtitle={item.description}
                         onPress={item.onPress}
-                        activeOpacity={0.7}
-                    >
-                        <View style={[styles.iconContainer, { backgroundColor: item.color + '15' }]}>
-                            <Text style={styles.icon}>{item.icon}</Text>
-                        </View>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.title}>
-                                {item.title}
-                            </Text>
-                            <Text style={styles.description}>
-                                {item.description}
-                            </Text>
-                        </View>
-                        <View style={styles.arrowContainer}>
-                            <Text style={styles.arrow}>›</Text>
-                        </View>
-                    </TouchableOpacity>
+                    />
                 ))}
 
                 <View style={styles.footer}>

@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
+import { AppButton } from '../components/AppButton';
 import { usePosts, useCreatePost } from '../contexts/ForumContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -48,9 +49,7 @@ export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ n
       {user ? (
         <View style={styles.replyBox}>
           <TextInput style={[styles.input, styles.multiline]} value={body} onChangeText={setBody} placeholder={t('forumThreadScreen.replyPlaceholder')} multiline />
-          <TouchableOpacity style={styles.button} onPress={onReply}>
-            <Text style={styles.buttonText}>{t('forumThreadScreen.send')}</Text>
-          </TouchableOpacity>
+          <AppButton title={t('forumThreadScreen.send')} onPress={onReply} variant="primary" />
         </View>
       ) : (
         <Text style={styles.note}>{t('forumThreadScreen.signInToReply')}</Text>

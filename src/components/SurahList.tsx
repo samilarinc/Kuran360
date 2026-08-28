@@ -1,15 +1,13 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import {
-  View,
-  Text,
   FlatList,
-  TouchableOpacity,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Surah } from '../types';
 import { useTheme, Theme } from '../contexts/ThemeContext';
 import { getSurahName } from '../utils/surahName';
 import { createStyles } from './SurahList.styles';
+import { MenuListRow } from './MenuListRow';
 
 interface SurahListProps {
   surahs: Surah[];
@@ -27,24 +25,20 @@ const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress, theme }) => {
   const { t } = useTranslation();
   const styles = useMemo(() => createStyles(theme), [theme]);
   return (
-  <TouchableOpacity
-    style={styles.surahItem}
-    onPress={() => onPress(surah)}
-  >
-    <View style={styles.surahNumber}>
-      <Text style={styles.surahNumberText}>{surah.number}</Text>
-    </View>
-    <View style={styles.surahInfo}>
-      <Text style={styles.surahName}>{getSurahName(t, surah)}</Text>
-      <Text style={styles.surahArabicName}>{surah.arabicName}</Text>
-      <Text style={styles.surahDetails}>
-        {surah.verseCount} ayet • {surah.revelationPlace}
-      </Text>
-    </View>
-    <View style={styles.arrow}>
-      <Text style={styles.arrowText}>›</Text>
-    </View>
-  </TouchableOpacity>
+    <MenuListRow
+      variant="list"
+      containerStyle={styles.surahItem}
+      icon={String(surah.number)}
+      iconColor={theme.primary}
+      iconStyle={styles.surahNumber}
+      iconTextStyle={styles.surahNumberText}
+      title={getSurahName(t, surah)}
+      titleStyle={styles.surahName}
+      subtitle={surah.arabicName}
+      caption={`${surah.verseCount} ayet • ${surah.revelationPlace}`}
+      chevronStyle={styles.arrowText}
+      onPress={() => onPress(surah)}
+    />
   );
 };
 

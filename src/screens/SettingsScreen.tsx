@@ -611,18 +611,20 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     {expandedSections.translations && (
                         <View style={createStyles(theme).sectionContent}>
                             <View style={createStyles(theme).translationActions}>
-                                <TouchableOpacity
-                                    style={[createStyles(theme).actionButton, createStyles(theme).primaryActionButton]}
+                                <AppButton
+                                    variant="primary"
+                                    size="small"
+                                    title={t('settingsScreen.translations.selectAll')}
                                     onPress={selectAllTranslations}
-                                >
-                                    <Text style={createStyles(theme).primaryActionButtonText}>{t('settingsScreen.translations.selectAll')}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={[createStyles(theme).actionButton, createStyles(theme).secondaryActionButton]}
+                                    style={createStyles(theme).actionButton}
+                                />
+                                <AppButton
+                                    variant="outline"
+                                    size="small"
+                                    title={t('settingsScreen.translations.selectDefault')}
                                     onPress={selectDefaultTranslations}
-                                >
-                                    <Text style={createStyles(theme).secondaryActionButtonText}>{t('settingsScreen.translations.selectDefault')}</Text>
-                                </TouchableOpacity>
+                                    style={{ ...createStyles(theme).actionButton, ...createStyles(theme).secondaryActionButton }}
+                                />
                             </View>
 
                             {/* Favori Meal Açıklaması */}
@@ -667,13 +669,13 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                     {t('settingsScreen.dataUpToDate')}
                                 </Text>
                             ) : (
-                                <TouchableOpacity
-                                    style={createStyles(theme).updateButton}
+                                <AppButton
+                                    variant="outline"
+                                    size="medium"
+                                    title={t('settingsScreen.updateButton')}
                                     onPress={handleUpdateData}
-                                    activeOpacity={0.7}
-                                >
-                                    <Text style={createStyles(theme).updateButtonText}>{t('settingsScreen.updateButton')}</Text>
-                                </TouchableOpacity>
+                                    style={createStyles(theme).updateButton}
+                                />
                             )}
                         </View>
                     )}

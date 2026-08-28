@@ -1,11 +1,14 @@
 import { StyleSheet } from 'react-native';
 import { FONT_SIZES, SPACING } from '../constants';
+import { createCommonStyles } from '../theme/common.styles';
 
-export const createStyles = (theme: any) => StyleSheet.create({
+export const createStyles = (theme: any) => {
+    const common = createCommonStyles(theme);
+    return StyleSheet.create({
     overlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.9)',
-        justifyContent: 'center',
+        ...common.modalOverlayDark,
+        alignItems: 'stretch',
+        padding: 0,
     },
     container: {
         flex: 1,
@@ -245,4 +248,5 @@ export const createStyles = (theme: any) => StyleSheet.create({
         color: theme.text,
         fontWeight: '700',
     },
-});
+    });
+};

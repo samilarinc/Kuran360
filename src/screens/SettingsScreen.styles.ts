@@ -7,9 +7,6 @@ export const createStyles = (theme: any) => {
 
     return StyleSheet.create({
         ...common,
-        container: {
-            ...common.container,
-        },
         content: {
             flex: 1,
         },
@@ -20,39 +17,27 @@ export const createStyles = (theme: any) => {
 
         // Quick Settings Section
         quickSettingsSection: {
-            backgroundColor: theme.cardBackground,
-            borderRadius: 16,
+            ...common.card,
+            padding: 0,
             marginTop: SPACING.md,
             marginBottom: SPACING.lg,
             overflow: 'hidden',
-            elevation: 2,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.1,
-            shadowRadius: 3,
         },
         quickSettingsTitle: {
-            fontSize: FONT_SIZES.small,
-            fontWeight: '600',
+            ...common.sectionLabel,
             color: theme.secondary,
+            textTransform: 'uppercase',
             paddingHorizontal: SPACING.lg,
             paddingTop: SPACING.md,
             paddingBottom: SPACING.xs,
-            textTransform: 'uppercase',
-            letterSpacing: 0.5,
         },
 
         // Section Styles
         section: {
-            backgroundColor: theme.cardBackground,
-            borderRadius: 16,
+            ...common.card,
+            padding: 0,
             marginBottom: SPACING.lg,
             overflow: 'hidden',
-            elevation: 2,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.1,
-            shadowRadius: 3,
         },
         sectionHeader: {
             flexDirection: 'row',
@@ -76,13 +61,12 @@ export const createStyles = (theme: any) => {
             flex: 1,
         },
         sectionTitle: {
-            fontSize: FONT_SIZES.medium,
+            ...common.text,
             fontWeight: '600',
-            color: theme.text,
             marginBottom: 2,
         },
         sectionSubtitle: {
-            fontSize: FONT_SIZES.small,
+            ...common.smallText,
             color: theme.secondary,
         },
         expandButton: {
@@ -136,16 +120,15 @@ export const createStyles = (theme: any) => {
             marginRight: SPACING.md,
         },
         settingLabel: {
-            fontSize: FONT_SIZES.medium,
+            ...common.text,
             fontWeight: '500',
-            color: theme.text,
             marginBottom: 2,
         },
         settingLabelDisabled: {
             color: theme.secondary,
         },
         settingDescription: {
-            fontSize: FONT_SIZES.small,
+            ...common.smallText,
             color: theme.secondary,
             lineHeight: 18,
         },
@@ -214,26 +197,9 @@ export const createStyles = (theme: any) => {
             paddingVertical: SPACING.sm,
             paddingHorizontal: SPACING.md,
             borderRadius: 12,
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        primaryActionButton: {
-            backgroundColor: theme.primary,
         },
         secondaryActionButton: {
-            backgroundColor: 'transparent',
             borderWidth: 1.5,
-            borderColor: theme.primary,
-        },
-        primaryActionButtonText: {
-            color: '#FFFFFF',
-            fontSize: FONT_SIZES.small,
-            fontWeight: '600',
-        },
-        secondaryActionButtonText: {
-            color: theme.primary,
-            fontSize: FONT_SIZES.small,
-            fontWeight: '600',
         },
         translationsContainer: {
             paddingHorizontal: SPACING.lg,
@@ -342,7 +308,7 @@ export const createStyles = (theme: any) => {
             marginBottom: SPACING.xl,
         },
         footerText: {
-            fontSize: FONT_SIZES.small,
+            ...common.smallText,
             color: theme.secondary,
             textAlign: 'center',
             fontStyle: 'italic',
@@ -373,20 +339,9 @@ export const createStyles = (theme: any) => {
         // Update Button
         updateButton: {
             backgroundColor: theme.primary + '10',
-            borderWidth: 1,
-            borderColor: theme.primary,
             borderRadius: 12,
             padding: SPACING.md,
             margin: SPACING.lg,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        updateButtonText: {
-            color: theme.primary,
-            fontSize: FONT_SIZES.medium,
-            fontWeight: '600',
-            marginLeft: SPACING.sm,
         },
     });
 };

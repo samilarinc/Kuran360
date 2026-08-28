@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { DataUpdateProgress } from './DataUpdateProgress';
+import { AppButton } from './AppButton';
 import { createStyles } from './DownloadRequired.styles';
 
 interface DownloadRequiredProps {
@@ -48,12 +49,14 @@ export const DownloadRequired: React.FC<DownloadRequiredProps> = ({
                         theme={theme}
                     />
                 ) : (
-                    <TouchableOpacity
-                        style={styles.downloadButton}
+                    <AppButton
+                        title={downloadButtonLabel}
                         onPress={onDownloadPress}
-                    >
-                        <Text style={styles.downloadButtonText}>{downloadButtonLabel}</Text>
-                    </TouchableOpacity>
+                        variant="primary"
+                        size="large"
+                        style={styles.downloadButton}
+                        textStyle={styles.downloadButtonText}
+                    />
                 )}
             </View>
         </View>

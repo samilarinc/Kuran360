@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
+import { MenuListRow } from '../components/MenuListRow';
 import { useTheme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../theme';
 import { Alert, Platform } from 'react-native';
@@ -121,23 +122,18 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                         </Text>
                         <View style={[styles.sectionCard, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
                             {section.items.map((item, index) => (
-                                <TouchableOpacity
+                                <View
                                     key={item.id}
-                                    style={[
-                                        styles.menuRow,
-                                        index < section.items.length - 1 && [styles.menuRowDivider, { borderBottomColor: theme.border }],
-                                    ]}
-                                    onPress={item.onPress}
-                                    activeOpacity={0.6}
+                                    style={index < section.items.length - 1 && [styles.menuRowDivider, { borderBottomColor: theme.border }]}
                                 >
-                                    <View style={[styles.rowIconWrap, { backgroundColor: theme.primary + '15' }]}>
-                                        <Text style={styles.rowIcon}>{item.icon}</Text>
-                                    </View>
-                                    <Text style={[styles.rowTitle, { color: theme.text }]}>
-                                        {item.title}
-                                    </Text>
-                                    <Text style={[styles.rowChevron, { color: theme.textSecondary }]}>›</Text>
-                                </TouchableOpacity>
+                                    <MenuListRow
+                                        variant="list"
+                                        icon={item.icon}
+                                        iconColor={theme.primary + '15'}
+                                        title={item.title}
+                                        onPress={item.onPress}
+                                    />
+                                </View>
                             ))}
                         </View>
                     </View>

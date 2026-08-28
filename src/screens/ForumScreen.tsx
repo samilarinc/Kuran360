@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
+import { AppButton } from '../components/AppButton';
 import { useThreads, useCreateThread } from '../contexts/ForumContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -52,9 +53,7 @@ export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               setMentions([{ surahNumber: parseInt(match[1], 10), verseNumber: parseInt(match[2], 10) }]);
             }
           }} />
-          <TouchableOpacity style={styles.button} onPress={onCreate}>
-            <Text style={styles.buttonText}>{t('forumScreen.createThread')}</Text>
-          </TouchableOpacity>
+          <AppButton title={t('forumScreen.createThread')} onPress={onCreate} variant="primary" />
         </View>
       ) : (
         <Text style={styles.note}>{t('forumScreen.signInToPost')}</Text>

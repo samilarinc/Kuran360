@@ -1,7 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { FONT_SIZES, SPACING } from '../theme';
+import { createCommonStyles } from '../theme/common.styles';
 
-export const createStyles = (theme: any) => StyleSheet.create({
+export const createStyles = (theme: any) => {
+    const common = createCommonStyles(theme);
+
+    return StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: theme.background,
@@ -11,11 +15,8 @@ export const createStyles = (theme: any) => StyleSheet.create({
         padding: SPACING.md,
     },
     description: {
-        fontSize: FONT_SIZES.medium,
+        ...common.emptyStateText,
         marginBottom: SPACING.lg,
-        textAlign: 'center',
-        fontStyle: 'italic',
-        color: theme.textSecondary,
     },
     categoryContainer: {
         marginBottom: SPACING.md,
@@ -41,12 +42,10 @@ export const createStyles = (theme: any) => StyleSheet.create({
         color: theme.text,
     },
     categoryCount: {
-        fontSize: FONT_SIZES.small,
-        color: theme.textSecondary,
+        ...common.smallText,
     },
     expandIcon: {
-        fontSize: FONT_SIZES.medium,
-        color: theme.textSecondary,
+        ...common.subtitle,
     },
     duasContainer: {
         marginTop: SPACING.sm,
@@ -101,4 +100,5 @@ export const createStyles = (theme: any) => StyleSheet.create({
         lineHeight: 24,
         color: theme.text,
     },
-});
+    });
+};

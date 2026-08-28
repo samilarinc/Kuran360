@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
+import { AppButton } from '../components/AppButton';
 import { useTheme } from '../contexts/ThemeContext';
 import { doc, getDoc, collection, addDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
@@ -98,12 +99,13 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
                     <Text style={styles.successText}>
                         {t('duaRequestScreen.successMessage', { name: targetUserName })}
                     </Text>
-                    <TouchableOpacity
-                        style={styles.backButton}
+                    <AppButton
+                        title={t('duaRequestScreen.backHome')}
                         onPress={() => navigation.navigate('Main')}
-                    >
-                        <Text style={styles.backButtonText}>{t('duaRequestScreen.backHome')}</Text>
-                    </TouchableOpacity>
+                        variant="primary"
+                        size="large"
+                        style={{ borderRadius: 12 }}
+                    />
                 </View>
             </SafeAreaView>
         );

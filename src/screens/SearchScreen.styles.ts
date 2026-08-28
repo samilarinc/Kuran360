@@ -1,8 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '../contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '../constants';
+import { createCommonStyles } from '../theme/common.styles';
 
-export const createStyles = (theme: Theme) => StyleSheet.create({
+export const createStyles = (theme: Theme) => {
+    const common = createCommonStyles(theme as any);
+
+    return StyleSheet.create({
+    ...common,
     container: {
         flex: 1,
         backgroundColor: theme.background,
@@ -40,9 +45,8 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         marginBottom: SPACING.md,
     },
     filtersToggleText: {
-        fontSize: FONT_SIZES.medium,
+        ...common.text,
         fontWeight: '600',
-        color: theme.text,
     },
     filtersToggleIcon: {
         fontSize: FONT_SIZES.small,
@@ -69,12 +73,10 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         fontWeight: '600',
     },
     selectorTitle: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
+        ...common.sectionLabel,
         color: theme.secondary,
         marginBottom: SPACING.xs,
         textTransform: 'uppercase',
-        letterSpacing: 0.5,
     },
     selectorScroll: {
         flexDirection: 'row',
@@ -142,12 +144,11 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         marginBottom: SPACING.xs,
     },
     resultSurahInfo: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
+        ...common.badgeText,
         color: theme.primary,
     },
     resultMatchType: {
-        fontSize: FONT_SIZES.small,
+        ...common.smallText,
         color: theme.secondary,
         fontStyle: 'italic',
     },
@@ -160,8 +161,7 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         lineHeight: FONT_SIZES.arabic * 1.8,
     },
     resultText: {
-        fontSize: FONT_SIZES.medium,
-        color: theme.text,
+        ...common.text,
         lineHeight: FONT_SIZES.medium * 1.5,
     },
     resultTextContainer: {
@@ -189,9 +189,8 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         marginBottom: SPACING.sm,
     },
     historyTitle: {
-        fontSize: FONT_SIZES.medium,
+        ...common.text,
         fontWeight: '600',
-        color: theme.text,
     },
     clearHistoryText: {
         fontSize: FONT_SIZES.small,
@@ -225,4 +224,5 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
     scrollContentPadding: {
         padding: SPACING.lg,
     },
-});
+    });
+};

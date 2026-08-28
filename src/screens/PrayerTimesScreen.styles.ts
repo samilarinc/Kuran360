@@ -6,10 +6,6 @@ export const createStyles = (theme: any) => {
 
     return StyleSheet.create({
         ...common,
-        container: {
-            ...common.container,
-            backgroundColor: theme.background, // Explicitly ensure background
-        },
         loadingContainer: {
             ...common.container,
             justifyContent: 'center',
@@ -41,15 +37,12 @@ export const createStyles = (theme: any) => {
             padding: 16,
         },
         currentLocationCard: {
+            ...common.card,
             backgroundColor: theme.primary,
-            borderRadius: 16,
             padding: 24,
             alignItems: 'center',
-            marginBottom: 16,
             elevation: 4,
-            shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
             shadowRadius: 4,
         },
         locationName: {
@@ -133,9 +126,6 @@ export const createStyles = (theme: any) => {
             fontSize: 28,
             fontWeight: 'bold',
             color: theme.primary,
-        },
-        modalOverlay: {
-            ...common.modalOverlay,
         },
         modalContent: {
             ...common.modalContent,
