@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { ThemeToggle, LanguageSelector } from '@msarinc/ui';
+import { ThemeToggle, LanguageSelector, HeaderNavButtons } from '@msarinc/ui';
 import { useTheme } from '../contexts/ThemeContext';
 import { createStyles } from './AppHeader.styles';
 
@@ -41,7 +41,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     children,
 }) => {
     const { theme } = useTheme();
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
     const styles = useMemo(() => createStyles(theme, large, !!subtitle), [theme, large, subtitle]);
 
     return (
@@ -49,22 +49,16 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             {/* Left Buttons: Back & Home */}
             {(showBackButton || showHomeButton) && (
                 <View style={styles.leftButton}>
-                    <View style={styles.leftButtonRow}>
-                        {showBackButton && onBackPress && (
-                            <TouchableOpacity onPress={onBackPress}>
-                                <View style={[styles.actionButton, styles.backButton]}>
-                                    <Text style={[styles.actionButtonText, styles.backButtonText]}>←</Text>
-                                </View>
-                            </TouchableOpacity>
-                        )}
-                        {showHomeButton && onHomePress && (
-                            <TouchableOpacity onPress={onHomePress}>
-                                <View style={styles.actionButton}>
-                                    <Text style={styles.actionButtonText}>🏠</Text>
-                                </View>
-                            </TouchableOpacity>
-                        )}
-                    </View>
+                    <HeaderNavButtons
+                        showBack={showBackButton}
+                        onBackPress={onBackPress}
+                        showHome={showHomeButton}
+                        onHomePress={onHomePress}
+                        labels={{
+                            back: t('header.backButton'),
+                            home: t('header.homeButton'),
+                        }}
+                    />
                 </View>
             )}
 

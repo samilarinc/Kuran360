@@ -22,7 +22,8 @@ import { VerseShareData, ImageSize } from '../types';
 import { ShareService } from '../utils/shareUtils';
 import { IMAGE_SIZES } from '../utils/imageSizes';
 import { useSettings } from '../contexts/SettingsContext';
-import { ARABIC_FONT_OPTIONS, DEFAULT_IMAGE_FONT_ID, getFontOption, loadGoogleFont } from '../constants/fonts';
+import { formatVerseNumber } from '../utils/numerals';
+import { ARABIC_FONT_OPTIONS, DEFAULT_IMAGE_FONT_ID, getFontOption, getArabicFontFamily } from '../constants/fonts';
 import { createStyles } from './ImagePreviewModal.styles';
 
 interface ImagePreviewModalProps {
@@ -57,16 +58,10 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
         const useFontId = fontId ?? selectedFontId;
         const useScale = scale ?? fontScale;
         const fontOption = getFontOption(useFontId);
-        const fontCss = fontOption.css;
+        // Bundled via expo-font and loaded before the app renders (see App.tsx), so it's
+        // already available here - no runtime font loading needed.
+        const fontCss = getArabicFontFamily(fontOption);
         setIsGenerating(true);
-
-        // Inject Google Fonts link then wait for the specific font to load
-        loadGoogleFont(fontOption);
-        if (typeof document !== 'undefined' && document.fonts?.load) {
-            try {
-                await document.fonts.load(`16px ${fontCss}`);
-            } catch (_) {}
-        }
 
         try {
             if (Platform.OS === 'web') {
@@ -224,7 +219,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                                 >
                                                     <Text style={[
                                                         isSelected ? styles.fontLabelArSelected : styles.fontLabelArDefault,
-                                                        { fontFamily: Platform.OS === 'web' ? font.css : undefined },
+                                                        { fontFamily: getArabicFontFamily(font) },
                                                     ]}>
                                                         {font.labelAr}
                                                     </Text>
@@ -435,7 +430,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                             {/* Verse Info */}
                             <View style={styles.verseInfo}>
                                 <Text style={styles.verseInfoText}>
-                                    📖 {verseData.surahName} Suresi, {verseData.verseNumber}. Ayet
+                                    📖 {verseData.surahName} Suresi, {formatVerseNumber(verseData.verseNumber, settings.verseNumberStyle)}. Ayet
                                 </Text>
                             </View>
 

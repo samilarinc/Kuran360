@@ -17,6 +17,7 @@ import { useGlobalAudio } from '../contexts/AudioContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import logger from '../utils/logger';
+import { formatVerseNumber } from '../utils/numerals';
 import { createStyles } from './PaginatedVerseView.styles';
 
 const getScreenDimensions = () => Dimensions.get('window');
@@ -335,8 +336,8 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                         activeOpacity={0.8}
                     >
                         <Text style={styles.verseNumberButtonText}>
-                            Ayet {currentVerse.number}
-                            <Text style={styles.verseTotal}> / {verses.length}</Text>
+                            Ayet {formatVerseNumber(currentVerse.number, settings.verseNumberStyle)}
+                            <Text style={styles.verseTotal}> / {formatVerseNumber(verses.length, settings.verseNumberStyle)}</Text>
                         </Text>
                     </TouchableOpacity>
                 </View>

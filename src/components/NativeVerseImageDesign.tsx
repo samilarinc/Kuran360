@@ -5,6 +5,8 @@ import {
 } from 'react-native';
 import { VerseShareData, ImageSize } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
+import { useSettings } from '../contexts/SettingsContext';
+import { formatVerseNumber } from '../utils/numerals';
 import { createStyles } from './NativeVerseImageDesign.styles';
 
 interface NativeVerseImageDesignProps {
@@ -19,6 +21,7 @@ export const NativeVerseImageDesign: React.FC<NativeVerseImageDesignProps> = ({
     size,
 }) => {
     const { theme } = useTheme();
+    const { settings } = useSettings();
     const styles = useMemo(() => createStyles(theme), [theme]);
     const isDark = themeMode === 'dark';
     const { arabicText, translation, surahName, verseNumber } = verseData;
@@ -63,7 +66,7 @@ export const NativeVerseImageDesign: React.FC<NativeVerseImageDesignProps> = ({
                 {/* Title */}
                 <View style={styles.titleContainer}>
                     <Text style={[styles.title, { color: palette.accent, fontSize: titleFontSize }]}>
-                        {surahName} Suresi - {verseNumber}. Ayet
+                        {surahName} Suresi - {formatVerseNumber(verseNumber, settings.verseNumberStyle)}. Ayet
                     </Text>
                     <View style={[styles.titleLine, { backgroundColor: palette.accent, width: Math.min(300, size.width * 0.4) }]} />
                 </View>

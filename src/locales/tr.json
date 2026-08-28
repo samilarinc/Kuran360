@@ -1,4 +1,8 @@
 {
+  "header": {
+    "backButton": "Geri",
+    "homeButton": "Ana Sayfa"
+  },
   "screenTitles": {
     "about": "Hakkında",
     "hatim": "Hatimler",
@@ -230,15 +234,21 @@
   },
   "surahDetailScreen": {
     "loadingVerses": "Ayetler yükleniyor...",
-    "loadingNote": "(Bu işlem sadece bir kez yapılır)"
+    "loadingNote": "(Bu işlem sadece bir kez yapılır)",
+    "decreaseFontSize": "Yazıyı küçült",
+    "increaseFontSize": "Yazıyı büyüt"
   },
   "quranPageScreen": {
-    "pageTitle": "Sayfa {{page}}",
     "loading": "Sayfa yükleniyor...",
     "previousPage": "‹ Önceki",
     "nextPage": "Sonraki ›",
     "decreaseFontSize": "Yazıyı küçült",
-    "increaseFontSize": "Yazıyı büyüt"
+    "increaseFontSize": "Yazıyı büyüt",
+    "noTranslation": "Hiçbiri",
+    "wordByWordTranslation": "Kelime Meali",
+    "chooseTranslation": "Meal Seç",
+    "searchTranslation": "Meal ara...",
+    "translationLabel": "Meal: {{translation}}"
   },
   "hatimDetailScreen": {
     "loadErrorTitle": "Hata",
@@ -521,7 +531,9 @@
       "inlineWordTranslationsTitle": "Kelime Üstüne Gelince Çeviri",
       "inlineWordTranslationsDescription": "Web'de ayet içinde kelimenin üstüne gelince çeviriyi göster",
       "paginatedViewTitle": "Sayfalı Görünüm",
-      "paginatedViewDescription": "Her ayeti ayrı sayfada göster (kaydırarak geçiş)"
+      "paginatedViewDescription": "Her ayeti ayrı sayfada göster (kaydırarak geçiş)",
+      "arabicVerseNumbersTitle": "Arapça Durak Numaraları",
+      "arabicVerseNumbersDescription": "Ayet numaralarını Arapça rakamlarla göster (٣) yerine Latin rakamlarla (3)"
     },
     "fonts": {
       "readingFont": "Kuran Okuma Fontu",
@@ -593,12 +605,17 @@
         "bullets": [
           "Uygulama genelindeki butonlar ortak bir bileşene taşınarak görünüm ve davranış tutarlılığı artırıldı.",
           "İlerleme çubukları (Hatim sayfaları, veri güncelleme ekranı) ortak bir bileşene taşındı.",
-      "Mushaf sayfa görünümü eklendi: 604 sayfalık standart Kur'an dizilimine göre ayetleri sayfa sayfa okuyabilir, sayfalar arasında gezinebilirsiniz.",
-      "Sayfa görünümünün üst çubuğuna, Arapça metin boyutunu büyütüp küçültebileceğiniz bir kontrol eklendi.",
+          "Mushaf sayfa görünümü eklendi: 604 sayfalık standart Kur'an dizilimine göre ayetleri sayfa sayfa okuyabilir, sayfalar arasında gezinebilirsiniz.",
+          "Sayfa görünümünün üst çubuğuna, Arapça metin boyutunu büyütüp küçültebileceğiniz bir kontrol eklendi.",
+          "Sayfa görünümüne meal seçici eklendi: istediğiniz meali (veya kelime kelime meali) seçip ayetlerin altında görebilirsiniz.",
           "Kart görünümündeki bazı ekranlarda (Profil, Forum, Dua İsteği, Hatim Detayı) tekrar eden stiller ortaklandı.",
           "Durum etiketleri (tamamlandı, kilitli, kalan süre vb.) ortak bir bileşene taşındı.",
           "Yükleniyor ekranları (Ana Sayfa, Sure Detayı, Rastgele Ayet, Hatim, Namaz Vakitleri ve diğerleri) tek bir bileşenden besleniyor.",
-          "Arama kutuları (Ana Sayfa, Arama, Namaz Vakitleri konum seçimi) ortak bir bileşene taşındı."
+          "Arama kutuları (Ana Sayfa, Arama, Namaz Vakitleri konum seçimi) ortak bir bileşene taşındı.",
+          "Sayfa görünümünün üst çubuğundaki gereksiz sayfa numarası yazısı kaldırıldı; sure adı daha belirgin şekilde gösteriliyor.",
+          "Yeni ayar: Ayet numaralarını Arapça rakamlarla (٣) ya da Latin rakamlarla (3) gösterme seçeneği eklendi.",
+          "Sure görünümüne de, sayfa görünümündeki gibi Arapça metin boyutunu büyütüp küçültebileceğiniz bir kontrol eklendi.",
+          "Geri ve ana sayfa butonları, uygulama genelinde ortak ve modern bir tasarıma kavuştu."
         ]
       },
       {

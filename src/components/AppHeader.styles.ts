@@ -32,11 +32,6 @@ export const createStyles = (theme: any, large: boolean, hasSubtitle: boolean) =
         justifyContent: 'center',
         zIndex: 1,
     },
-    leftButtonRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: SPACING.xs,
-    },
     rightButtons: {
         position: 'absolute',
         right: SPACING.md,
@@ -49,26 +44,6 @@ export const createStyles = (theme: any, large: boolean, hasSubtitle: boolean) =
     },
     autoplayToggleWrapper: {
         marginRight: SPACING.xs,
-    },
-    actionButton: {
-        padding: 6,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        borderRadius: 16,
-        minWidth: 32,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    actionButtonText: {
-        fontSize: 16,
-        color: theme.headerText,
-    },
-    backButton: {
-        paddingVertical: 8,
-        paddingHorizontal: 8,
-    },
-    backButtonText: {
-        fontSize: 18,
-        fontWeight: '600',
     },
     contentContainer: {
         alignItems: 'center',

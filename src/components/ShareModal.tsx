@@ -17,7 +17,8 @@ import { ShareService } from '../utils/shareUtils';
 import { ImagePreviewModal } from './ImagePreviewModal';
 import { IMAGE_SIZES, getDefaultImageSize } from '../utils/imageSizes';
 import { useSettings } from '../contexts/SettingsContext';
-import { getFontOption } from '../constants/fonts';
+import { formatVerseNumber } from '../utils/numerals';
+import { getFontOption, getArabicFontFamily } from '../constants/fonts';
 import { ArabicText } from './ArabicText';
 import { createStyles } from './ShareModal.styles';
 
@@ -35,7 +36,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { settings } = useSettings();
-  const imageFontCss = getFontOption(settings.imageArabicFont).css;
+  const imageFontCss = getArabicFontFamily(getFontOption(settings.imageArabicFont));
   const [imagePreviewVisible, setImagePreviewVisible] = useState(false);
   const [generatedImageUrl, setGeneratedImageUrl] = useState('');
   const [selectedSize, setSelectedSize] = useState<ImageSize>(getDefaultImageSize());
@@ -156,7 +157,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                   "{verseData.translation}"
                 </Text>
                 <Text style={styles.verseInfo}>
-                  📖 {verseData.surahName} Suresi, {verseData.verseNumber}. Ayet
+                  📖 {verseData.surahName} Suresi, {formatVerseNumber(verseData.verseNumber, settings.verseNumberStyle)}. Ayet
                 </Text>
               </View>
 

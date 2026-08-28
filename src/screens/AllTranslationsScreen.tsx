@@ -17,6 +17,7 @@ import { useSettings } from '../contexts/SettingsContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { Verse as VerseType, VerseShareData } from '../types';
 import { getSurahNameByNumber } from '../utils/surahName';
+import { formatVerseNumber } from '../utils/numerals';
 import { createStyles } from './AllTranslationsScreen.styles';
 
 interface AllTranslationsScreenProps {
@@ -95,7 +96,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
         <SafeAreaView style={styles.container}>
             <HeaderWithDarkModeToggle
                 title={t('screenTitles.allTranslations')}
-                subtitle={t('allTranslationsScreen.verseSubtitle', { surahName, verseNumber: verse.number })}
+                subtitle={t('allTranslationsScreen.verseSubtitle', { surahName, verseNumber: formatVerseNumber(verse.number, settings.verseNumberStyle) })}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
                 showHomeButton={true}
@@ -112,7 +113,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                         <Text style={styles.surahInfo}>
                             {surahName}
                         </Text>
-                        <Badge label={t('allTranslationsScreen.verseBadge', { verseNumber: verse.number })} />
+                        <Badge label={t('allTranslationsScreen.verseBadge', { verseNumber: formatVerseNumber(verse.number, settings.verseNumberStyle) })} />
                     </View>
                 </View>
 

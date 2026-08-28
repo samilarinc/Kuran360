@@ -14,7 +14,7 @@ import {
 import { ThemeToggle } from '@msarinc/ui';
 import { useTranslation } from 'react-i18next';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
-import { ARABIC_FONT_OPTIONS } from '../constants/fonts';
+import { ARABIC_FONT_OPTIONS, getArabicFontFamily } from '../constants/fonts';
 import { useTheme } from '../contexts/ThemeContext';
 import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion } from '../data/quranData';
 import { AppHeader } from '../components/AppHeader'; // Use AppHeader
@@ -519,6 +519,15 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                 icon="📄"
                                 theme={theme}
                             />
+
+                            <SettingItem
+                                title={t('settingsScreen.items.arabicVerseNumbersTitle')}
+                                description={t('settingsScreen.items.arabicVerseNumbersDescription')}
+                                value={settings.verseNumberStyle === 'arabic'}
+                                onValueChange={(value) => updateSettings({ verseNumberStyle: value ? 'arabic' : 'latin' })}
+                                icon="🔢"
+                                theme={theme}
+                            />
                         </View>
                     )}
                 </View>
@@ -578,7 +587,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                                                 isSelected && { backgroundColor: theme.primary, borderColor: theme.primary },
                                                             ]}
                                                         >
-                                                            <Text style={[createStyles(theme).fontChipArabic, { fontFamily: Platform.OS === 'web' ? font.css : undefined, color: isSelected ? '#fff' : theme.text }]}>
+                                                            <Text style={[createStyles(theme).fontChipArabic, { fontFamily: getArabicFontFamily(font), color: isSelected ? '#fff' : theme.text }]}>
                                                                 {font.labelAr}
                                                             </Text>
                                                             <Text style={[createStyles(theme).fontChipLabel, { color: isSelected ? 'rgba(255,255,255,0.8)' : theme.textSecondary }]}>

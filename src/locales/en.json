@@ -1,4 +1,8 @@
 {
+  "header": {
+    "backButton": "Back",
+    "homeButton": "Home"
+  },
   "screenTitles": {
     "about": "About",
     "hatim": "Hatims",
@@ -230,15 +234,21 @@
   },
   "surahDetailScreen": {
     "loadingVerses": "Loading verses...",
-    "loadingNote": "(This only happens once)"
+    "loadingNote": "(This only happens once)",
+    "decreaseFontSize": "Decrease text size",
+    "increaseFontSize": "Increase text size"
   },
   "quranPageScreen": {
-    "pageTitle": "Page {{page}}",
     "loading": "Loading page...",
     "previousPage": "‹ Previous",
     "nextPage": "Next ›",
     "decreaseFontSize": "Decrease text size",
-    "increaseFontSize": "Increase text size"
+    "increaseFontSize": "Increase text size",
+    "noTranslation": "None",
+    "wordByWordTranslation": "Word-by-word Translation",
+    "chooseTranslation": "Choose Translation",
+    "searchTranslation": "Search translation...",
+    "translationLabel": "Translation: {{translation}}"
   },
   "hatimDetailScreen": {
     "loadErrorTitle": "Error",
@@ -521,7 +531,9 @@
       "inlineWordTranslationsTitle": "Translation on Hover",
       "inlineWordTranslationsDescription": "On web, show the translation when hovering over a word in a verse",
       "paginatedViewTitle": "Paginated View",
-      "paginatedViewDescription": "Show each verse on its own page (swipe to move on)"
+      "paginatedViewDescription": "Show each verse on its own page (swipe to move on)",
+      "arabicVerseNumbersTitle": "Arabic Verse Numbers",
+      "arabicVerseNumbersDescription": "Show verse numbers in Arabic-Indic digits (٣) instead of Latin digits (3)"
     },
     "fonts": {
       "readingFont": "Quran Reading Font",
@@ -593,12 +605,16 @@
         "bullets": [
           "Buttons across the app now share a single component for a more consistent look and feel.",
           "Progress bars (Hatim screens, data update screen) now share a single component.",
-    "Added a Mushaf page view: read the Quran page by page following the standard 604-page layout, with page navigation.",
-    "The page view's top bar now has a control to increase or decrease the Arabic text size.",
+          "Added a Mushaf page view: read the Quran page by page following the standard 604-page layout, with page navigation.",
+          "The page view's top bar now has a control to increase or decrease the Arabic text size.",
+          "Added a translation picker to the page view: choose a translation (or word-by-word translation) to show below the verses.",
           "Consolidated duplicated card styles across several screens (Profile, Forum, Dua Request, Hatim Detail).",
           "Status labels (completed, locked, time remaining, etc.) now share a single component.",
           "Loading screens (Home, Surah Detail, Random Verse, Hatim, Prayer Times, and others) now share a single component.",
-          "Search boxes (Home, Search, Prayer Times location picker) now share a single component."
+          "Search boxes (Home, Search, Prayer Times location picker) now share a single component.",
+          "Removed the redundant page number text from the page view's top bar; the surah name is now shown more prominently instead.",
+          "New setting: choose whether verse numbers are shown in Arabic digits (٣) or Latin digits (3).",
+          "Added the same Arabic text size control from the page view to the surah view."
         ]
       },
       {

@@ -19,6 +19,7 @@ import { useNavigationHelpers } from '../contexts/NavigationContext';
 import { Verse, Surah } from '../types';
 import { quranData, loadSurah } from '../data/quranData';
 import { useDownloadData } from '../hooks/useDownloadData';
+import { formatVerseNumber } from '../utils/numerals';
 import { createStyles } from './SearchScreen.styles';
 
 interface SearchScreenProps {
@@ -567,7 +568,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
             >
                 <View style={styles.resultHeader}>
                     <Text style={styles.resultSurahInfo}>
-                        {t('searchScreen.resultVerse', { surahName: getSurahName(t, result.surah), verseNumber: result.verse.number })}
+                        {t('searchScreen.resultVerse', { surahName: getSurahName(t, result.surah), verseNumber: formatVerseNumber(result.verse.number, settings.verseNumberStyle) })}
                     </Text>
                     <Text style={styles.resultMatchType}>
                         {result.matchedField === 'arabic' ? t('searchScreen.matchField.arabic') :

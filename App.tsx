@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import './src/i18n';
+import { useFonts } from 'expo-font';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider as MsarincThemeProvider } from '@msarinc/ui';
 import { AppNavigator } from './src/navigation/AppNavigator';
@@ -13,6 +14,7 @@ import { StatusBarManager } from './src/components/StatusBarManager';
 import { ThemeSyncBridge } from './src/components/ThemeSyncBridge';
 import { LIGHT_COLORS as COLORS } from './src/theme';
 import { isDataCached, hasAnyData } from './src/data/quranData';
+import { BUNDLED_FONTS } from './src/constants/fonts';
 import { Platform } from 'react-native';
 
 const queryClient = new QueryClient();
@@ -20,6 +22,7 @@ const queryClient = new QueryClient();
 const App: React.FC = () => {
   const [isAppReady, setIsAppReady] = useState(false);
   const [isDataAvailable, setIsDataAvailable] = useState(false);
+  const [fontsLoaded] = useFonts(BUNDLED_FONTS);
 
   useEffect(() => {
     const checkDataAvailability = async () => {
@@ -64,38 +67,6 @@ const App: React.FC = () => {
             } catch { }
           };
           ensureFavicon();
-
-          // Inject Arabic-capable fonts for better shaping on Linux Chrome
-          try {
-            const fontLinkId = 'arabic-fonts';
-            if (!doc.getElementById(fontLinkId)) {
-              const linkEl = doc.createElement('link');
-              linkEl.id = fontLinkId;
-              linkEl.rel = 'stylesheet';
-              linkEl.href = 'https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap';
-              doc.head && doc.head.appendChild(linkEl);
-            }
-          } catch { }
-
-          // Global CSS override: react-native-web doesn't correctly pass
-          // comma-separated fontFamily to the DOM, so Arabic fonts never get
-          // applied. This forces the correct font on all RTL text elements,
-          // ensuring Quranic marks like U+06EA (medli esre) render properly.
-          try {
-            const arabicStyleId = 'arabic-font-override';
-            if (!doc.getElementById(arabicStyleId)) {
-              const styleEl = doc.createElement('style');
-              styleEl.id = arabicStyleId;
-              styleEl.textContent = `
-                [dir="rtl"],
-                [style*="direction: rtl"],
-                [style*="direction:rtl"] {
-                  font-family: "Scheherazade New", "Noto Naskh Arabic", "Amiri", "Traditional Arabic", "Arabic Typesetting", serif !important;
-                }
-              `;
-              doc.head && doc.head.appendChild(styleEl);
-            }
-          } catch { }
 
           // Add PWA manifest
           try {
@@ -191,7 +162,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  if (!isAppReady) {
+  if (!isAppReady || !fontsLoaded) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primary }}>
         <ActivityIndicator size="large" color="#ffffff" />

@@ -11,7 +11,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserData } from '../contexts/UserDataContext';
 import logger from '../utils/logger';
-import { getFontOption, loadGoogleFont } from '../constants/fonts';
+import { getFontOption, getArabicFontFamily } from '../constants/fonts';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { ShareModal } from './ShareModal';
 import { ArabicText } from './ArabicText';
@@ -19,6 +19,7 @@ import { ShareService } from '../utils/shareUtils';
 import { getSurahsList } from '../data/quranData';
 import { useTranslation } from 'react-i18next';
 import { getSurahNameByNumber } from '../utils/surahName';
+import { formatVerseNumber } from '../utils/numerals';
 import { createStyles } from './Verse.styles';
 
 interface VerseProps {
@@ -36,15 +37,9 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   const { theme } = useTheme();
   const { t } = useTranslation();
   const arabicFontOption = getFontOption(settings.arabicFont);
-  const arabicFontCss = Platform.OS === 'web' ? arabicFontOption.css : undefined;
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const arabicFontFamily = Platform.select({
-    web: arabicFontCss ?? '"Scheherazade New", serif',
-    default: undefined as any,
-  });
-  useEffect(() => {
-    if (Platform.OS === 'web') loadGoogleFont(arabicFontOption);
-  }, [settings.arabicFont]);
+  // Matches styles.arabicText's fontWeight: '600' below
+  const arabicFontFamily = getArabicFontFamily(arabicFontOption, true);
   const { user } = useAuth();
   const { addBookmark, removeBookmark, isBookmarked, bookmarks } = useUserData();
   const { startMemorization, cancelMemorization } = useGlobalAudio();
@@ -142,7 +137,11 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   // Inline hover translations in the main Arabic line (web only)
   const InlineArabicWithHover: React.FC = () => {
     if (Platform.OS !== 'web' || !settings.inlineWordTranslations || verse.wordTranslations.length === 0) {
-      return <ArabicText style={styles.arabicText}>{verse.arabicText}</ArabicText>;
+      return (
+        <ArabicText style={[styles.arabicText, { fontSize: settings.surahFontSize, lineHeight: settings.surahFontSize * 1.5 }]}>
+          {verse.arabicText}
+        </ArabicText>
+      );
     }
 
     // Build lookup map
@@ -174,7 +173,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
               <Text
                 style={[
                   styles.arabicText,
-                  { fontFamily: arabicFontFamily },
+                  { fontFamily: arabicFontFamily, fontSize: settings.surahFontSize, lineHeight: settings.surahFontSize * 1.5 },
                   styles.inlineArabicWord,
                   isHover && styles.inlineArabicWordHover,
                 ]}
@@ -240,7 +239,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.verseNumber}>
-          <Text style={styles.verseNumberText}>{verse.number}</Text>
+          <Text style={styles.verseNumberText}>{formatVerseNumber(verse.number, settings.verseNumberStyle)}</Text>
         </View>
         <View style={styles.headerActions}>
           {showBookmarkButton && user && (

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
+import { FontSizeToggle } from '@msarinc/ui';
 import { Verse } from '../components/Verse';
 import { PaginatedVerseView } from '../components/PaginatedVerseView';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
@@ -25,6 +26,10 @@ import { loadSurah } from '../data/quranData';
 import logger from '../utils/logger';
 import { getSurahName } from '../utils/surahName';
 import { createStyles } from './SurahDetailScreen.styles';
+
+const MIN_FONT_SIZE = 18;
+const MAX_FONT_SIZE = 44;
+const FONT_SIZE_STEP = 2;
 
 interface SurahDetailScreenProps {
   route: {
@@ -284,6 +289,10 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   // Memoize styles to prevent re-creation on every render
   const styles = useMemo(() => createStyles(theme), [theme]);
 
+  const fontSize = settings.surahFontSize;
+  const decreaseFontSize = () => updateSettings({ surahFontSize: Math.max(MIN_FONT_SIZE, fontSize - FONT_SIZE_STEP) });
+  const increaseFontSize = () => updateSettings({ surahFontSize: Math.min(MAX_FONT_SIZE, fontSize + FONT_SIZE_STEP) });
+
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
@@ -304,6 +313,18 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               <AutoplayToggle
                 isEnabled={settings.autoplayEnabled}
                 onToggle={handleAutoplayToggle}
+              />
+            }
+            fontSizeToggle={
+              <FontSizeToggle
+                onDecrease={decreaseFontSize}
+                onIncrease={increaseFontSize}
+                disabledDecrease={fontSize <= MIN_FONT_SIZE}
+                disabledIncrease={fontSize >= MAX_FONT_SIZE}
+                labels={{
+                  decrease: t('surahDetailScreen.decreaseFontSize'),
+                  increase: t('surahDetailScreen.increaseFontSize'),
+                }}
               />
             }
           />

@@ -35,10 +35,6 @@ export const createStyles = (theme: any) => StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
-  leftButtonRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   rightButtons: {
     position: 'absolute',
     right: SPACING.md,
@@ -51,30 +47,6 @@ export const createStyles = (theme: any) => StyleSheet.create({
   },
   autoplayToggleWrapper: {
     marginRight: SPACING.xs,
-  },
-  backButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 8,
-    minWidth: 32,
-    alignItems: 'center',
-  },
-  backButtonText: {
-    color: theme.headerText,
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  homeButton: {
-    padding: 6,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 16,
-    minWidth: 32,
-    alignItems: 'center',
-    marginLeft: SPACING.xs,
-  },
-  homeButtonText: {
-    fontSize: 16,
   },
   contentContainer: {
     alignItems: 'center',

@@ -58,6 +58,9 @@ export interface AppSettings {
   arabicFont: string;      // font id for Quran reading
   imageArabicFont: string; // font id for image generation
   quranPageFontSize: number; // Arabic text size (px) in the mushaf page view
+  surahFontSize: number; // Arabic text size (px) in the surah (verse list) view
+  quranPageTranslation: string; // translation shown below verses in the page view; '' = none, see WORD_BY_WORD_TRANSLATION_ID
+  verseNumberStyle: 'latin' | 'arabic'; // digit style used for ayet numbers throughout the app
   // Prayer times
   prayerLocation?: {
     id: string;
