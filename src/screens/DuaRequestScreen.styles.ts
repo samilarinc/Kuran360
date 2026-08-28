@@ -19,12 +19,9 @@ export const createStyles = (theme: any) => {
             padding: SPACING.md,
         },
         card: {
-            padding: SPACING.lg,
-            borderRadius: 16,
-            borderWidth: 1,
+            ...common.infoCard,
             marginTop: SPACING.md,
             backgroundColor: theme.surface,
-            borderColor: theme.border,
         },
         infoText: {
             ...common.text,

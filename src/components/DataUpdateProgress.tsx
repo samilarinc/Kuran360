@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { Theme } from '../theme';
+import { ProgressBar } from './ProgressBar';
 import { createStyles } from './DataUpdateProgress.styles';
 
 interface DataUpdateProgressProps {
@@ -22,9 +23,12 @@ export const DataUpdateProgress: React.FC<DataUpdateProgressProps> = ({
 
     return (
         <View style={styles.downloadProgress}>
-            <View style={styles.progressBarContainer}>
-                <View style={[styles.progressBar, { width: `${progress}%` }]} />
-            </View>
+            <ProgressBar
+                progress={progress}
+                trackColor={theme.border + '40'}
+                fillColor={theme.primary}
+                style={styles.progressBarContainer}
+            />
             <Text style={styles.progressText}>
                 %{Math.round(progress)} - {status}
                 {totalBytes && totalBytes > 0 && downloadedBytes !== undefined && downloadedBytes > 0 && (

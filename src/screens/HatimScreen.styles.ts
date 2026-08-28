@@ -76,15 +76,7 @@ export const createStyles = (theme: any) => {
             marginTop: SPACING.sm,
         },
         progressBar: {
-            height: 8,
-            borderRadius: 4,
-            overflow: 'hidden',
             marginBottom: SPACING.xs,
-            backgroundColor: theme.border,
-        },
-        progressFill: {
-            height: '100%',
-            backgroundColor: theme.primary,
         },
         progressText: {
             ...common.smallText,

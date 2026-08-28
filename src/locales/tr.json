@@ -582,7 +582,9 @@
       {
         "date": "28 Ağustos 2026",
         "bullets": [
-          "Uygulama genelindeki butonlar ortak bir bileşene taşınarak görünüm ve davranış tutarlılığı artırıldı."
+          "Uygulama genelindeki butonlar ortak bir bileşene taşınarak görünüm ve davranış tutarlılığı artırıldı.",
+          "İlerleme çubukları (Hatim sayfaları, veri güncelleme ekranı) ortak bir bileşene taşındı.",
+          "Kart görünümündeki bazı ekranlarda (Profil, Forum, Dua İsteği, Hatim Detayı) tekrar eden stiller ortaklandı."
         ]
       },
       {

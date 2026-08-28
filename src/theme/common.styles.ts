@@ -37,6 +37,15 @@ export const createCommonStyles = (theme: any) => StyleSheet.create({
         marginBottom: SPACING.md,
     },
 
+    // Bordered info card (card + border, no shadow)
+    infoCard: {
+        backgroundColor: theme.cardBackground,
+        borderRadius: 16,
+        padding: SPACING.lg,
+        borderWidth: 1,
+        borderColor: theme.border,
+    },
+
     // Typography
     title: {
         fontSize: FONT_SIZES.large,

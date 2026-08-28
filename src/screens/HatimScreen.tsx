@@ -19,6 +19,7 @@ import { HatimService } from '../services/HatimService';
 import { Hatim } from '../types';
 import { SPACING, FONT_SIZES } from '../theme';
 import { AppHeader } from '../components/AppHeader';
+import { ProgressBar } from '../components/ProgressBar';
 import { createStyles } from './HatimScreen.styles';
 
 interface HatimScreenProps {
@@ -128,9 +129,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                     {t('hatimScreen.creator', { name: item.creatorName })}
                 </Text>
                 <View style={styles.progressContainer}>
-                    <View style={styles.progressBar}>
-                        <View style={[styles.progressFill, { width: `${progress}%` }]} />
-                    </View>
+                    <ProgressBar progress={progress} style={styles.progressBar} />
                     <Text style={styles.progressText}>
                         {t('hatimScreen.juzProgress', { count: completedParts })}
                     </Text>

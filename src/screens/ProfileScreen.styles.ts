@@ -11,11 +11,8 @@ export const createStyles = (theme: Theme) => {
         container: { flex: 1, backgroundColor: theme.background },
         content: { padding: SPACING.lg },
         card: {
-            backgroundColor: theme.cardBackground,
+            ...common.infoCard,
             borderRadius: 12,
-            padding: SPACING.lg,
-            borderWidth: 1,
-            borderColor: theme.border,
         },
         avatarRow: { flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.md },
         avatar: { width: 64, height: 64, borderRadius: 32, marginRight: SPACING.md },
@@ -79,12 +76,9 @@ export const createStyles = (theme: Theme) => {
             fontWeight: '600',
         },
         section: {
-            marginTop: SPACING.lg,
-            backgroundColor: theme.cardBackground,
+            ...common.infoCard,
             borderRadius: 12,
-            padding: SPACING.lg,
-            borderWidth: 1,
-            borderColor: theme.border,
+            marginTop: SPACING.lg,
         },
         sectionTitle: {
             ...common.title,

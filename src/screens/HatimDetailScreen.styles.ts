@@ -14,12 +14,8 @@ export const createStyles = (theme: any) => {
         padding: SPACING.lg,
     },
     infoCard: {
-        padding: SPACING.lg,
-        borderRadius: 16,
-        borderWidth: 1,
+        ...common.infoCard,
         marginBottom: SPACING.xl,
-        backgroundColor: theme.cardBackground,
-        borderColor: theme.border,
     },
     description: {
         ...common.subtitle,
@@ -39,21 +35,7 @@ export const createStyles = (theme: any) => {
         paddingHorizontal: SPACING.md,
     },
     miniProgressBarBackground: {
-        height: 6,
-        width: '100%',
-        borderRadius: 3,
-        overflow: 'hidden',
         marginTop: SPACING.sm,
-        backgroundColor: theme.border,
-    },
-    miniProgressBarFill: {
-        height: '100%',
-    },
-    miniProgressFillCompleted: {
-        backgroundColor: '#4CAF50',
-    },
-    miniProgressFillClaimed: {
-        backgroundColor: theme.primary,
     },
     gridContainer: {
         width: '100%',
@@ -130,12 +112,6 @@ export const createStyles = (theme: any) => {
         bottom: 0,
         left: 0,
         right: 0,
-        height: 4,
-        backgroundColor: 'rgba(255,255,255,0.2)',
-    },
-    progressBarFill: {
-        height: '100%',
-        backgroundColor: '#4CAF50',
     },
     progressContainer: {
         marginTop: SPACING.lg,

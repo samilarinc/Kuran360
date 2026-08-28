@@ -1,4 +1,5 @@
 export { AppButton } from './AppButton';
+export { ProgressBar } from './ProgressBar';
 export { Verse } from './Verse';
 export { SurahList } from './SurahList';
 export { PaginatedVerseView } from './PaginatedVerseView';

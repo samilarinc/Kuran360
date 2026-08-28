@@ -23,6 +23,7 @@ import { Hatim, HatimPart } from '../types';
 import { SPACING, FONT_SIZES } from '../constants';
 import { AppHeader } from '../components/AppHeader';
 import { AppButton } from '../components/AppButton';
+import { ProgressBar } from '../components/ProgressBar';
 import { createStyles } from './HatimDetailScreen.styles';
 
 interface HatimDetailScreenProps {
@@ -392,30 +393,24 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                         <View style={styles.statColumn}>
                             <Text style={[styles.statValue, styles.statValueCompleted]}>{completedCount} / 30</Text>
                             <Text style={styles.statLabel}>{t('hatimDetailScreen.completedStat')}</Text>
-                            <View style={styles.miniProgressBarBackground}>
-                                <View
-                                    style={[
-                                        styles.miniProgressBarFill,
-                                        styles.miniProgressFillCompleted,
-                                        { width: `${(completedCount / 30) * 100}%` }
-                                    ]}
-                                />
-                            </View>
+                            <ProgressBar
+                                progress={(completedCount / 30) * 100}
+                                height={6}
+                                fillColor="#4CAF50"
+                                style={styles.miniProgressBarBackground}
+                            />
                         </View>
                         <View style={styles.statColumn}>
                             <Text style={[styles.statValue, styles.statValueClaimed]}>
                                 {claimedCount} / 30
                             </Text>
                             <Text style={styles.statLabel}>{t('hatimDetailScreen.claimedStat')}</Text>
-                            <View style={styles.miniProgressBarBackground}>
-                                <View
-                                    style={[
-                                        styles.miniProgressBarFill,
-                                        styles.miniProgressFillClaimed,
-                                        { width: `${(claimedCount / 30) * 100}%` }
-                                    ]}
-                                />
-                            </View>
+                            <ProgressBar
+                                progress={(claimedCount / 30) * 100}
+                                height={6}
+                                fillColor={theme.primary}
+                                style={styles.miniProgressBarBackground}
+                            />
                         </View>
                     </View>
                 </View>
@@ -451,12 +446,13 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                             {part.claimedById === user?.uid ? (user?.displayName || t('hatimDetailScreen.me')) : (part.claimedByName || t('hatimDetailScreen.available'))}
                                         </Text>
                                         {part.claimedById && !part.isCompleted && (
-                                            <View style={styles.progressBarBackground}>
-                                                <View style={[
-                                                    styles.progressBarFill,
-                                                    { width: `${((part.pagesRead || 0) / (part.totalPages || 20)) * 100}%` }
-                                                ]} />
-                                            </View>
+                                            <ProgressBar
+                                                progress={((part.pagesRead || 0) / (part.totalPages || 20)) * 100}
+                                                height={4}
+                                                trackColor="rgba(255,255,255,0.2)"
+                                                fillColor="#4CAF50"
+                                                style={styles.progressBarBackground}
+                                            />
                                         )}
                                     </>
                                 )}

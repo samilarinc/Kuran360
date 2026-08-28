@@ -582,7 +582,9 @@
       {
         "date": "August 28, 2026",
         "bullets": [
-          "Buttons across the app now share a single component for a more consistent look and feel."
+          "Buttons across the app now share a single component for a more consistent look and feel.",
+          "Progress bars (Hatim screens, data update screen) now share a single component.",
+          "Consolidated duplicated card styles across several screens (Profile, Forum, Dua Request, Hatim Detail)."
         ]
       },
       {

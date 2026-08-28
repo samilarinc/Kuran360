@@ -8,17 +8,7 @@ export const createStyles = (theme: any) => StyleSheet.create({
         paddingVertical: SPACING.md,
     },
     progressBarContainer: {
-        width: '100%',
-        height: 8,
-        borderRadius: 4,
         marginBottom: SPACING.md,
-        overflow: 'hidden',
-        backgroundColor: theme.border + '40',
-    },
-    progressBar: {
-        height: '100%',
-        borderRadius: 4,
-        backgroundColor: theme.primary,
     },
     progressText: {
         fontSize: FONT_SIZES.medium,
