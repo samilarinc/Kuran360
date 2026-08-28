@@ -5,7 +5,6 @@ import {
     TouchableOpacity,
     SafeAreaView,
     Dimensions,
-    ActivityIndicator,
     Animated,
     PanResponder,
     ScrollView,
@@ -17,6 +16,7 @@ import { DownloadRequired } from '../components/DownloadRequired';
 import { AppButton } from '../components/AppButton';
 import { Badge } from '../components/Badge';
 import { LoadingView } from '../components/LoadingView';
+import { ErrorView } from '../components/ErrorView';
 import { useTheme } from '../contexts/ThemeContext';
 import { getSurahName } from '../utils/surahName';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
@@ -26,7 +26,6 @@ import { useDownloadData } from '../hooks/useDownloadData';
 import { getRandomVerse } from '../data/quranData';
 import { Surah, Verse as VerseType } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SPACING } from '../constants';
 import { createStyles } from './RandomVerseScreen.styles';
 
 interface RandomVerseScreenProps {
@@ -235,16 +234,11 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
     if (!currentVerse) {
         return (
             <SafeAreaView style={styles.container}>
-                <View style={styles.errorContainer}>
-                    <Text style={styles.errorText}>{t('randomVerseScreen.loadError')}</Text>
-                    <AppButton
-                        title={t('randomVerseScreen.retry')}
-                        onPress={() => loadRandomVerse(true)}
-                        variant="primary"
-                        size="medium"
-                        style={{ paddingHorizontal: SPACING.lg, paddingVertical: SPACING.md }}
-                    />
-                </View>
+                <ErrorView
+                    text={t('randomVerseScreen.loadError')}
+                    retryText={t('randomVerseScreen.retry')}
+                    onRetry={() => loadRandomVerse(true)}
+                />
             </SafeAreaView>
         );
     }
@@ -321,22 +315,13 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
 
             {/* Bottom actions */}
             <View style={styles.bottomActions}>
-                <TouchableOpacity
-                    style={[
-                        styles.newVerseButton,
-                        { opacity: isLoadingNew ? 0.6 : 1 },
-                    ]}
+                <AppButton
+                    title={t('randomVerseScreen.newVerseButton')}
                     onPress={handleNewRandomVerse}
-                    disabled={isLoadingNew || isAnimating}
-                >
-                    {isLoadingNew ? (
-                        <ActivityIndicator size="small" color="#FFFFFF" />
-                    ) : (
-                        <Text style={styles.newVerseButtonText}>
-                            {t('randomVerseScreen.newVerseButton')}
-                        </Text>
-                    )}
-                </TouchableOpacity>
+                    variant="primary"
+                    loading={isLoadingNew}
+                    disabled={isAnimating}
+                />
             </View>
         </SafeAreaView>
     );

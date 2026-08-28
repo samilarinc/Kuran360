@@ -1,12 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING } from '../constants';
+import { SPACING } from '../theme';
+import { createCommonStyles } from '../theme/common.styles';
 
-export const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.background,
-  },
-  listContainer: {
-    paddingBottom: SPACING.xl,
-  },
-});
+export const createStyles = (theme: any) => {
+  const common = createCommonStyles(theme);
+
+  return StyleSheet.create({
+    container: common.container,
+    listContainer: {
+      paddingBottom: SPACING.xl,
+    },
+  });
+};

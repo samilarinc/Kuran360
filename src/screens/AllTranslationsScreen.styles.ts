@@ -1,5 +1,5 @@
-import { StyleSheet, Platform } from 'react-native';
-import { FONT_SIZES, SPACING } from '../constants';
+import { StyleSheet } from 'react-native';
+import { FONT_SIZES, SPACING, FAVORITE_COLOR, FAVORITE_COLOR_DARK } from '../theme';
 import { createCommonStyles } from '../theme/common.styles';
 
 export const createStyles = (theme: any) => {
@@ -7,10 +7,6 @@ export const createStyles = (theme: any) => {
 
     return StyleSheet.create({
     ...common,
-    container: {
-        flex: 1,
-        backgroundColor: theme.background,
-    },
     content: {
         flex: 1,
     },
@@ -28,10 +24,6 @@ export const createStyles = (theme: any) => {
         fontWeight: '600',
         writingDirection: 'rtl',
         marginBottom: SPACING.sm,
-        fontFamily: Platform.select({
-            web: '"Scheherazade New", "Noto Naskh Arabic", Amiri, serif',
-            default: undefined as any,
-        }),
     },
     verseInfo: {
         flexDirection: 'row',
@@ -43,14 +35,6 @@ export const createStyles = (theme: any) => {
         fontSize: FONT_SIZES.medium,
         color: theme.textSecondary,
         fontWeight: '600',
-    },
-    verseNumber: {
-        ...common.badge,
-        backgroundColor: theme.primary,
-        color: theme.headerText,
-        fontSize: FONT_SIZES.small,
-        fontWeight: 'bold',
-        paddingVertical: SPACING.xs,
     },
     translationsContainer: {
         flex: 1,
@@ -67,8 +51,8 @@ export const createStyles = (theme: any) => {
         shadowRadius: 2,
     },
     favoriteTranslationItem: {
-        backgroundColor: '#FFD700' + '10',
-        borderLeftColor: '#FFD700',
+        backgroundColor: FAVORITE_COLOR + '10',
+        borderLeftColor: FAVORITE_COLOR,
     },
     translationHeader: {
         flexDirection: 'row',
@@ -83,7 +67,7 @@ export const createStyles = (theme: any) => {
         flex: 1,
     },
     favoriteTranslationName: {
-        color: '#B8860B',
+        color: FAVORITE_COLOR_DARK,
         fontWeight: '700',
     },
     translationText: {

@@ -9,13 +9,14 @@ import { useTranslation } from 'react-i18next';
 import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
 import { ShareModal } from '../components/ShareModal';
 import { AppButton } from '../components/AppButton';
+import { ArabicText } from '../components/ArabicText';
+import { Badge } from '../components/Badge';
 import { SPACING } from '../theme';
 import { useTheme } from '../contexts/ThemeContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
-import { getSurahsList } from '../data/quranData';
 import { Verse as VerseType, VerseShareData } from '../types';
-import { getSurahName as getLocalizedSurahName } from '../utils/surahName';
+import { getSurahNameByNumber } from '../utils/surahName';
 import { createStyles } from './AllTranslationsScreen.styles';
 
 interface AllTranslationsScreenProps {
@@ -36,12 +37,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
     const [shareModalVisible, setShareModalVisible] = useState(false);
     const [selectedTranslation, setSelectedTranslation] = useState<string>(debouncedSettings.favoriteTranslation);
 
-    // Surah ismini al
-    const getSurahName = () => {
-        const surahs = getSurahsList();
-        const surah = surahs.find(s => s.number === verse.surahNumber);
-        return surah ? getLocalizedSurahName(t, surah) : `${verse.surahNumber}`;
-    };
+    const surahName = useMemo(() => getSurahNameByNumber(t, verse.surahNumber), [t, verse.surahNumber]);
 
     // Mevcut olan tüm mealleri al
     const availableTranslations = useMemo(() => {
@@ -58,7 +54,6 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
 
     // Seçilen meal ile share data oluştur
     const shareData: VerseShareData = useMemo(() => {
-        const surahName = getSurahName();
         const translation = verse.allTranslations?.[selectedTranslation] || verse.translation || '';
 
         return {
@@ -68,7 +63,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
             verseNumber: verse.number,
             surahNumber: verse.surahNumber,
         };
-    }, [verse, selectedTranslation]);
+    }, [verse, selectedTranslation, surahName]);
 
     const handleShare = (translationName: string) => {
         setSelectedTranslation(translationName);
@@ -100,7 +95,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
         <SafeAreaView style={styles.container}>
             <HeaderWithDarkModeToggle
                 title={t('screenTitles.allTranslations')}
-                subtitle={t('allTranslationsScreen.verseSubtitle', { surahName: getSurahName(), verseNumber: verse.number })}
+                subtitle={t('allTranslationsScreen.verseSubtitle', { surahName, verseNumber: verse.number })}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
                 showHomeButton={true}
@@ -110,16 +105,14 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
             <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
                 {/* Ayet Header */}
                 <View style={styles.verseHeader}>
-                    <Text style={styles.arabicText}>
+                    <ArabicText style={styles.arabicText}>
                         {verse.arabicText}
-                    </Text>
+                    </ArabicText>
                     <View style={styles.verseInfo}>
                         <Text style={styles.surahInfo}>
-                            {getSurahName()}
+                            {surahName}
                         </Text>
-                        <Text style={styles.verseNumber}>
-                            {t('allTranslationsScreen.verseBadge', { verseNumber: verse.number })}
-                        </Text>
+                        <Badge label={t('allTranslationsScreen.verseBadge', { verseNumber: verse.number })} />
                     </View>
                 </View>
 

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING } from '../constants';
+import { FONT_SIZES, SPACING } from '../theme';
 import { createCommonStyles } from '../theme/common.styles';
 
 export const createStyles = (theme: any) => {
@@ -7,22 +7,6 @@ export const createStyles = (theme: any) => {
 
     return StyleSheet.create({
         ...common,
-        container: {
-            flex: 1,
-            backgroundColor: theme.background,
-        },
-        errorContainer: {
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: SPACING.lg,
-            padding: SPACING.lg,
-        },
-        errorText: {
-            fontSize: FONT_SIZES.large,
-            textAlign: 'center',
-            color: theme.text,
-        },
         verseContainer: {
             flex: 1,
             position: 'relative',
@@ -112,23 +96,6 @@ export const createStyles = (theme: any) => {
             textAlign: 'center',
             marginBottom: SPACING.md,
             fontStyle: 'italic',
-        },
-        newVerseButton: {
-            paddingVertical: SPACING.md,
-            paddingHorizontal: SPACING.lg,
-            borderRadius: 12,
-            alignItems: 'center',
-            elevation: 2,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            backgroundColor: theme.primary,
-        },
-        newVerseButtonText: {
-            fontSize: FONT_SIZES.medium,
-            fontWeight: 'bold',
-            color: '#FFFFFF',
         },
     });
 };

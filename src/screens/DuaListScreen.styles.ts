@@ -7,10 +7,6 @@ export const createStyles = (theme: any) => {
 
     return StyleSheet.create({
         ...common,
-        container: {
-            flex: 1,
-            backgroundColor: theme.background,
-        },
         content: {
             flex: 1,
             padding: SPACING.md,

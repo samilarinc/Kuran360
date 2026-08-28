@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../constants';
+import { FONT_SIZES, SPACING } from '../theme';
 import { createCommonStyles } from '../theme/common.styles';
 
 export const createStyles = (theme: Theme) => {
@@ -8,10 +8,6 @@ export const createStyles = (theme: Theme) => {
 
     return StyleSheet.create({
     ...common,
-    container: {
-        flex: 1,
-        backgroundColor: theme.background,
-    },
     content: {
         flex: 1,
         padding: SPACING.lg,

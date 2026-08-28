@@ -20,7 +20,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { HatimService } from '../services/HatimService';
 import { Hatim, HatimPart } from '../types';
-import { SPACING, FONT_SIZES } from '../constants';
+import { SPACING, FONT_SIZES } from '../theme';
 import { AppHeader } from '../components/AppHeader';
 import { AppButton } from '../components/AppButton';
 import { ProgressBar } from '../components/ProgressBar';

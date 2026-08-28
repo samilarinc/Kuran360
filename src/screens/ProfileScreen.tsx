@@ -9,7 +9,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { auth } from '../services/firebase';
 import { GoogleAuthProvider, signInWithPopup, signInWithCredential } from 'firebase/auth';
 import Constants from 'expo-constants';
-import { SPACING } from '../constants';
+import { SPACING } from '../theme';
 import { createStyles } from './ProfileScreen.styles';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {

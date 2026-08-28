@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING } from '../constants';
+import { FONT_SIZES, SPACING, FAVORITE_COLOR, FAVORITE_COLOR_DARK } from '../theme';
 
 export const createStyles = (theme: any) => StyleSheet.create({
   container: {
@@ -137,8 +137,8 @@ export const createStyles = (theme: any) => StyleSheet.create({
     paddingLeft: SPACING.sm,
   },
   favoriteTranslationContainer: {
-    backgroundColor: '#FFD700' + '10', // Altın sarısı tint
-    borderLeftColor: '#FFD700',
+    backgroundColor: FAVORITE_COLOR + '10', // Altın sarısı tint
+    borderLeftColor: FAVORITE_COLOR,
     borderLeftWidth: 4,
     borderRadius: 6,
     marginVertical: 2,
@@ -150,7 +150,7 @@ export const createStyles = (theme: any) => StyleSheet.create({
     marginBottom: 4,
   },
   favoriteTranslationTitle: {
-    color: '#B8860B', // Koyu altın
+    color: FAVORITE_COLOR_DARK,
     fontWeight: '700',
   },
   favoriteTranslationTextStyle: {

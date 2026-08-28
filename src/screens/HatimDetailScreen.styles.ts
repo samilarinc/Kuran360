@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { SPACING, FONT_SIZES } from '../constants';
+import { SPACING, FONT_SIZES } from '../theme';
 import { createCommonStyles } from '../theme/common.styles';
 
 export const createStyles = (theme: any) => {

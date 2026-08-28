@@ -11,7 +11,7 @@ import { ThemeProvider } from './src/contexts/ThemeContext';
 import { AudioProvider } from './src/contexts/AudioContext';
 import { StatusBarManager } from './src/components/StatusBarManager';
 import { ThemeSyncBridge } from './src/components/ThemeSyncBridge';
-import { COLORS } from './src/constants';
+import { LIGHT_COLORS as COLORS } from './src/theme';
 import { isDataCached, hasAnyData } from './src/data/quranData';
 import { Platform } from 'react-native';
 

@@ -7,10 +7,6 @@ export const createStyles = (theme: any) => {
 
     return StyleSheet.create({
         ...common,
-        container: {
-            flex: 1,
-            backgroundColor: theme.background,
-        },
         centerContainer: {
             ...common.emptyState,
         },

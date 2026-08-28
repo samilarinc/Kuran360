@@ -6,10 +6,7 @@ export const createStyles = (theme: any) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: theme.background,
-    },
+    container: common.container,
     content: {
         flex: 1,
         padding: SPACING.md,

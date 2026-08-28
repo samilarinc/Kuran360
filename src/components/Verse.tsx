@@ -14,10 +14,11 @@ import logger from '../utils/logger';
 import { getFontOption, loadGoogleFont } from '../constants/fonts';
 import { useGlobalAudio } from '../contexts/AudioContext';
 import { ShareModal } from './ShareModal';
+import { ArabicText } from './ArabicText';
 import { ShareService } from '../utils/shareUtils';
 import { getSurahsList } from '../data/quranData';
 import { useTranslation } from 'react-i18next';
-import { getSurahName as getLocalizedSurahName } from '../utils/surahName';
+import { getSurahNameByNumber } from '../utils/surahName';
 import { createStyles } from './Verse.styles';
 
 interface VerseProps {
@@ -112,7 +113,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         <View style={styles.wordTranslationsGrid}>
           {verse.wordTranslations.map((word, index) => (
             <View key={index} style={styles.wordTranslationItem}>
-              <Text style={[styles.wordArabic, { fontFamily: arabicFontFamily }]}>{word.arabic}</Text>
+              <ArabicText style={styles.wordArabic}>{word.arabic}</ArabicText>
               <Text style={styles.wordTranslation}>{word.translation}</Text>
             </View>
           ))}
@@ -141,7 +142,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   // Inline hover translations in the main Arabic line (web only)
   const InlineArabicWithHover: React.FC = () => {
     if (Platform.OS !== 'web' || !settings.inlineWordTranslations || verse.wordTranslations.length === 0) {
-      return <Text style={[styles.arabicText, { fontFamily: arabicFontFamily }]}>{verse.arabicText}</Text>;
+      return <ArabicText style={styles.arabicText}>{verse.arabicText}</ArabicText>;
     }
 
     // Build lookup map
@@ -221,16 +222,9 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
     }
   };
 
-  // Sure adını almak için yardımcı fonksiyon
-  const getSurahName = () => {
-    const surahs = getSurahsList();
-    const surah = surahs.find(s => s.number === verse.surahNumber);
-    return surah ? getLocalizedSurahName(t, surah) : `${verse.surahNumber}. Sure`;
-  };
-
   // Share data için gerekli bilgileri hazırla
   const shareData: VerseShareData = useMemo(() => {
-    const surahName = getSurahName();
+    const surahName = getSurahNameByNumber(t, verse.surahNumber);
     const translation = verse.allTranslations?.[settings.favoriteTranslation] || verse.translation || '';
 
     return {

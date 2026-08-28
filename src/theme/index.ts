@@ -1,4 +1,17 @@
 
+// Audio file naming format: SSSAAA.mp3 where SSS = surah number, AAA = verse number
+export const AUDIO_FILE_FORMAT = (surahNumber: number, verseNumber: number): string => {
+    const surah = surahNumber.toString().padStart(3, '0');
+    const verse = verseNumber.toString().padStart(3, '0');
+    return `${surah}${verse}.mp3`;
+};
+
+// Surah introduction audio format: SSS000.mp3
+export const SURAH_INTRO_FORMAT = (surahNumber: number): string => {
+    const surah = surahNumber.toString().padStart(3, '0');
+    return `${surah}000.mp3`;
+};
+
 export interface Theme {
     primary: string;
     secondary: string;
@@ -83,3 +96,7 @@ export const SPACING = {
     lg: 24,
     xl: 32,
 } as const;
+
+// Favorite-translation highlight (gold accent), shared by Verse and AllTranslationsScreen
+export const FAVORITE_COLOR = '#FFD700';
+export const FAVORITE_COLOR_DARK = '#B8860B';

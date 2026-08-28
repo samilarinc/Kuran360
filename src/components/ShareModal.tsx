@@ -18,6 +18,7 @@ import { ImagePreviewModal } from './ImagePreviewModal';
 import { IMAGE_SIZES, getDefaultImageSize } from '../utils/imageSizes';
 import { useSettings } from '../contexts/SettingsContext';
 import { getFontOption } from '../constants/fonts';
+import { ArabicText } from './ArabicText';
 import { createStyles } from './ShareModal.styles';
 
 interface ShareModalProps {
@@ -148,9 +149,9 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 
               {/* Verse Preview */}
               <View style={styles.versePreview}>
-                <Text style={styles.arabicText}>
+                <ArabicText style={styles.arabicText}>
                   {verseData.arabicText}
-                </Text>
+                </ArabicText>
                 <Text style={styles.translationText}>
                   "{verseData.translation}"
                 </Text>
