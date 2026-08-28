@@ -29,8 +29,4 @@ export const createStyles = (theme: any) => StyleSheet.create({
     knobWhite: {
         backgroundColor: '#FFFFFF',
     },
-    icon: {
-        fontSize: 12,
-        textAlign: 'center',
-    },
 });

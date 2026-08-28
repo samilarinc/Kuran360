@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import {
-    Text,
     TouchableOpacity,
     Animated,
 } from 'react-native';
+import { Play, Pause } from 'lucide-react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { useDebouncedToggle } from '../hooks/useDebouncedState';
 import { createStyles } from './AutoplayToggle.styles';
@@ -59,9 +59,11 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
                         }
                     ]}
                 >
-                    <Text style={styles.icon}>
-                        {displayState ? '▶️' : '⏸️'}
-                    </Text>
+                    {displayState ? (
+                        <Play size={13} color={theme.primary} fill={theme.primary} />
+                    ) : (
+                        <Pause size={13} color={theme.textSecondary} fill={theme.textSecondary} />
+                    )}
                 </Animated.View>
             </Animated.View>
         </TouchableOpacity>

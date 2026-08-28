@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
+import { Bookmark, Library, Share2, Play, Square, BrainCircuit } from 'lucide-react-native';
 import { Verse as VerseType, VerseShareData } from '../types';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -21,6 +22,11 @@ import { useTranslation } from 'react-i18next';
 import { getSurahNameByNumber } from '../utils/surahName';
 import { formatVerseNumber } from '../utils/numerals';
 import { createStyles } from './Verse.styles';
+
+const BOOKMARK_COLOR = '#F43F5E';
+const ALL_TRANSLATIONS_COLOR = '#6366F1';
+const SHARE_COLOR = '#F97316';
+const PLAY_COLOR = '#10B981';
 
 interface VerseProps {
   verse: VerseType;
@@ -244,41 +250,43 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         <View style={styles.headerActions}>
           {showBookmarkButton && user && (
             <TouchableOpacity
-              style={styles.bookmarkButton}
+              style={[styles.bookmarkButton, { backgroundColor: BOOKMARK_COLOR + '1A', borderColor: BOOKMARK_COLOR }]}
               onPress={handleBookmarkToggle}
             >
-              <Text style={styles.bookmarkIcon}>
-                {isBookmarked(verse.surahNumber, verse.number) ? '🔖' : '📌'}
-              </Text>
+              <Bookmark
+                size={18}
+                color={BOOKMARK_COLOR}
+                fill={isBookmarked(verse.surahNumber, verse.number) ? BOOKMARK_COLOR : 'transparent'}
+              />
             </TouchableOpacity>
           )}
           {navigation && (
             <TouchableOpacity
-              style={styles.allTranslationsButton}
+              style={[styles.allTranslationsButton, { backgroundColor: ALL_TRANSLATIONS_COLOR + '1A', borderColor: ALL_TRANSLATIONS_COLOR }]}
               onPress={() => navigation.navigate('AllTranslations', { verse })}
             >
-              <Text style={styles.allTranslationsIcon}>📚</Text>
+              <Library size={18} color={ALL_TRANSLATIONS_COLOR} />
             </TouchableOpacity>
           )}
           <TouchableOpacity
-            style={styles.shareButton}
+            style={[styles.shareButton, { backgroundColor: SHARE_COLOR + '1A', borderColor: SHARE_COLOR }]}
             onPress={() => setShareModalVisible(true)}
           >
-            <Text style={styles.shareIcon}>📤</Text>
+            <Share2 size={16} color={SHARE_COLOR} />
           </TouchableOpacity>
           <TouchableOpacity
             style={[
               styles.playButton,
+              { backgroundColor: PLAY_COLOR },
               isPlaying && styles.playButtonActive
             ]}
             onPress={() => onPlayPress(verse)}
           >
-            <Text style={[
-              styles.playButtonText,
-              isPlaying && styles.playButtonTextActive
-            ]}>
-              {isPlaying ? '⏹️' : '▶️'}
-            </Text>
+            {isPlaying ? (
+              <Square size={20} color="#fff" fill="#fff" />
+            ) : (
+              <Play size={22} color="#fff" fill="#fff" />
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -301,7 +309,8 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
           <View style={styles.memContainer}>
             {!memOpen ? (
               <TouchableOpacity style={styles.memToggle} onPress={() => setMemOpen(true)}>
-                <Text style={styles.memToggleText}>🧠 Ezberle</Text>
+                <BrainCircuit size={18} color={theme.headerText} />
+                <Text style={styles.memToggleText}>Ezberle</Text>
               </TouchableOpacity>
             ) : (
               <View style={styles.memPanel}>

@@ -47,12 +47,6 @@ export const createStyles = (theme: any) => StyleSheet.create({
   playButtonActive: {
     backgroundColor: theme.accent,
   },
-  playButtonText: {
-    fontSize: FONT_SIZES.large,
-  },
-  playButtonTextActive: {
-    color: theme.headerText,
-  },
   content: {
     gap: SPACING.md,
   },
@@ -202,6 +196,9 @@ export const createStyles = (theme: any) => StyleSheet.create({
   },
   memToggle: {
     alignSelf: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
     backgroundColor: theme.secondary,
     paddingHorizontal: SPACING.sm,
     paddingVertical: 6,
@@ -326,42 +323,27 @@ export const createStyles = (theme: any) => StyleSheet.create({
     gap: SPACING.sm,
   },
   bookmarkButton: {
-    backgroundColor: theme.surface,
     borderRadius: 20,
     width: 40,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: theme.primary,
-  },
-  bookmarkIcon: {
-    fontSize: 18,
+    borderWidth: 1.5,
   },
   shareButton: {
-    backgroundColor: theme.surface,
     borderRadius: 20,
     width: 40,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: theme.secondary,
-  },
-  shareIcon: {
-    fontSize: 16,
+    borderWidth: 1.5,
   },
   allTranslationsButton: {
-    backgroundColor: theme.surface,
     borderRadius: 20,
     width: 40,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: theme.primary,
-  },
-  allTranslationsIcon: {
-    fontSize: 16,
+    borderWidth: 1.5,
   },
 });

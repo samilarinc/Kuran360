@@ -42,9 +42,9 @@ export const createStyles = (theme: any) => {
         },
         // Icon container — list variant
         listIconContainer: {
-            width: 36,
-            height: 36,
-            borderRadius: 10,
+            width: 40,
+            height: 40,
+            borderRadius: 12,
             justifyContent: 'center',
             alignItems: 'center',
             marginRight: SPACING.md,
@@ -74,7 +74,7 @@ export const createStyles = (theme: any) => {
         },
         listTitle: {
             fontSize: FONT_SIZES.medium,
-            fontWeight: '500',
+            fontWeight: '600',
             color: theme.text,
         },
         listSubtitle: {

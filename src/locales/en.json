@@ -541,12 +541,10 @@
     },
     "translations": {
       "selectAll": "Select All",
-      "selectDefault": "Default",
-      "favoriteExplanation": "⭐ The favorite translation is shown first on verses"
+      "selectDefault": "Default"
     },
-    "dataUpToDate": "✅ Translation data is up to date (v3.1)",
-    "updateButton": "📥 Update Translation Data",
-    "footer": "💡 Selected translations will be shown under the verses"
+    "dataUpToDate": "Translation data is up to date (v3.1)",
+    "updateButton": "📥 Update Translation Data"
   },
   "homeScreen": {
     "arabicTitle": "القرآن الكريم",

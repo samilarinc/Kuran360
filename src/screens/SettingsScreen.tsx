@@ -12,6 +12,28 @@ import {
     Animated,
 } from 'react-native';
 import { ThemeToggle } from '@msarinc/ui';
+import {
+    Palette,
+    Volume2,
+    Repeat,
+    Eye,
+    PenLine,
+    Type,
+    MousePointerClick,
+    FileText,
+    Hash,
+    PenTool,
+    BookOpen,
+    Image as ImageIcon,
+    Languages,
+    Settings2,
+    ChevronUp,
+    ChevronDown,
+    Star,
+    Check,
+    CircleCheckBig,
+    type LucideIcon,
+} from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
 import { ARABIC_FONT_OPTIONS, getArabicFontFamily } from '../constants/fonts';
@@ -26,6 +48,21 @@ import { FONT_SIZES, SPACING } from '../theme'; // Import from theme
 interface SettingsScreenProps {
     navigation: any;
 }
+
+const COLORS = {
+    theme: '#F59E0B',
+    audio: '#F59E0B',
+    autoplay: '#F59E0B',
+    display: '#3B82F6',
+    transliteration: '#8B5CF6',
+    wordTranslations: '#10B981',
+    inlineWordTranslations: '#F97316',
+    paginatedView: '#0EA5E9',
+    verseNumbers: '#EC4899',
+    fonts: '#14B8A6',
+    translations: '#6366F1',
+    system: '#64748B',
+};
 
 interface ModernSwitchProps {
     value: boolean;
@@ -127,7 +164,8 @@ interface SettingItemProps {
     description: string;
     value: boolean;
     onValueChange: (value: boolean) => void;
-    icon?: string;
+    icon?: React.ReactNode;
+    iconColor?: string;
     theme: any;
     disabled?: boolean;
 }
@@ -138,12 +176,17 @@ const SettingItem: React.FC<SettingItemProps> = ({
     value,
     onValueChange,
     icon,
+    iconColor,
     theme,
     disabled = false
 }) => (
     <View style={[createStyles(theme).settingItem, disabled && createStyles(theme).settingItemDisabled]}>
         <View style={createStyles(theme).settingContent}>
-            {icon && <Text style={createStyles(theme).settingIcon}>{icon}</Text>}
+            {icon && (
+                <View style={[createStyles(theme).settingIconWrap, iconColor && { backgroundColor: iconColor + '1A' }, disabled && { opacity: 0.5 }]}>
+                    {icon}
+                </View>
+            )}
             <View style={createStyles(theme).settingInfo}>
                 <Text style={[createStyles(theme).settingLabel, disabled && createStyles(theme).settingLabelDisabled]}>
                     {title}
@@ -311,32 +354,36 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         }
     };
 
-    const renderSectionHeader = (title: string, subtitle: string, sectionKey: string, icon: string) => (
-        <TouchableOpacity
-            style={createStyles(theme).sectionHeader}
-            onPress={() => toggleSection(sectionKey)}
-            activeOpacity={0.8}
-        >
-            <View style={createStyles(theme).sectionHeaderContent}>
-                <Text style={createStyles(theme).sectionIcon}>{icon}</Text>
-                <View style={createStyles(theme).sectionHeaderText}>
-                    <Text style={createStyles(theme).sectionTitle}>{title}</Text>
-                    <Text style={createStyles(theme).sectionSubtitle}>{subtitle}</Text>
+    const renderSectionHeader = (title: string, subtitle: string, sectionKey: string, Icon: LucideIcon, color: string) => {
+        const isExpanded = expandedSections[sectionKey];
+        return (
+            <TouchableOpacity
+                style={createStyles(theme).sectionHeader}
+                onPress={() => toggleSection(sectionKey)}
+                activeOpacity={0.8}
+            >
+                <View style={createStyles(theme).sectionHeaderContent}>
+                    <View style={[createStyles(theme).sectionIconWrap, { backgroundColor: color + '1A' }]}>
+                        <Icon size={20} color={color} />
+                    </View>
+                    <View style={createStyles(theme).sectionHeaderText}>
+                        <Text style={createStyles(theme).sectionTitle}>{title}</Text>
+                        <Text style={createStyles(theme).sectionSubtitle}>{subtitle}</Text>
+                    </View>
                 </View>
-            </View>
-            <View style={[
-                createStyles(theme).expandButton,
-                expandedSections[sectionKey] && createStyles(theme).expandButtonActive
-            ]}>
-                <Text style={[
-                    createStyles(theme).expandIcon,
-                    expandedSections[sectionKey] && createStyles(theme).expandIconActive
+                <View style={[
+                    createStyles(theme).expandButton,
+                    isExpanded && createStyles(theme).expandButtonActive
                 ]}>
-                    {expandedSections[sectionKey] ? '▲' : '▼'}
-                </Text>
-            </View>
-        </TouchableOpacity>
-    );
+                    {isExpanded ? (
+                        <ChevronUp size={16} color={theme.primary} />
+                    ) : (
+                        <ChevronDown size={16} color={theme.secondary} />
+                    )}
+                </View>
+            </TouchableOpacity>
+        );
+    };
 
     const renderTranslationItem = (translationName: string, index: number) => {
         const isSelected = settings.selectedTranslations.includes(translationName);
@@ -379,7 +426,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         createStyles(theme).modernCheckbox,
                         isSelected && createStyles(theme).modernCheckboxSelected
                     ]}>
-                        {isSelected && <Text style={createStyles(theme).modernCheckmark}>✓</Text>}
+                        {isSelected && <Check size={14} color="#FFFFFF" strokeWidth={3} />}
                     </View>
                 </TouchableOpacity>
 
@@ -390,12 +437,11 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         onPress={toggleFavorite}
                         activeOpacity={0.7}
                     >
-                        <Text style={[
-                            createStyles(theme).favoriteIcon,
-                            isFavorite && createStyles(theme).favoriteIconActive
-                        ]}>
-                            {isFavorite ? '★' : '☆'}
-                        </Text>
+                        <Star
+                            size={18}
+                            color={isFavorite ? '#FFD700' : theme.border}
+                            fill={isFavorite ? '#FFD700' : 'transparent'}
+                        />
                     </TouchableOpacity>
                 )}
             </View>
@@ -422,7 +468,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     <Text style={createStyles(theme).quickSettingsTitle}>{t('settingsScreen.quickSettings')}</Text>
                     <View style={createStyles(theme).settingItem}>
                         <View style={createStyles(theme).settingContent}>
-                            <Text style={createStyles(theme).settingIcon}>🌙</Text>
+                            <View style={[createStyles(theme).settingIconWrap, { backgroundColor: COLORS.theme + '1A' }]}>
+                                <Palette size={18} color={COLORS.theme} />
+                            </View>
                             <View style={createStyles(theme).settingInfo}>
                                 <Text style={createStyles(theme).settingLabel}>{t('settingsScreen.themeLabel')}</Text>
                                 <Text style={createStyles(theme).settingDescription}>{t('settingsScreen.themeDescription')}</Text>
@@ -438,7 +486,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         t('settingsScreen.sections.audioTitle'),
                         t('settingsScreen.sections.audioSubtitle'),
                         "audio",
-                        "🔊"
+                        Volume2,
+                        COLORS.audio
                     )}
 
                     {expandedSections.audio && (
@@ -448,7 +497,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                 description={t('settingsScreen.items.autoplayDescription')}
                                 value={settings.autoplayEnabled}
                                 onValueChange={(value) => updateSettings({ autoplayEnabled: value })}
-                                icon="⏯️"
+                                icon={<Repeat size={17} color={COLORS.autoplay} />}
+                                iconColor={COLORS.autoplay}
                                 theme={theme}
                             />
 
@@ -465,7 +515,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         t('settingsScreen.sections.displayTitle'),
                         t('settingsScreen.sections.displaySubtitle'),
                         "display",
-                        "👁️"
+                        Eye,
+                        COLORS.display
                     )}
 
                     {expandedSections.display && (
@@ -475,7 +526,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                 description={t('settingsScreen.items.transliterationDescription')}
                                 value={settings.showTransliteration}
                                 onValueChange={(value) => updateSettings({ showTransliteration: value })}
-                                icon="📝"
+                                icon={<PenLine size={16} color={COLORS.transliteration} />}
+                                iconColor={COLORS.transliteration}
                                 theme={theme}
                             />
 
@@ -490,7 +542,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                         updateSettings({ showWordTranslations: value });
                                     }
                                 }}
-                                icon="🔤"
+                                icon={<Type size={16} color={COLORS.wordTranslations} />}
+                                iconColor={COLORS.wordTranslations}
                                 theme={theme}
                                 disabled={settings.inlineWordTranslations}
                             />
@@ -506,7 +559,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                         updateSettings({ inlineWordTranslations: value });
                                     }
                                 }}
-                                icon="🖱️"
+                                icon={<MousePointerClick size={16} color={COLORS.inlineWordTranslations} />}
+                                iconColor={COLORS.inlineWordTranslations}
                                 theme={theme}
                                 disabled={settings.showWordTranslations}
                             />
@@ -516,7 +570,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                 description={t('settingsScreen.items.paginatedViewDescription')}
                                 value={settings.usePaginatedView}
                                 onValueChange={(value) => updateSettings({ usePaginatedView: value })}
-                                icon="📄"
+                                icon={<FileText size={16} color={COLORS.paginatedView} />}
+                                iconColor={COLORS.paginatedView}
                                 theme={theme}
                             />
 
@@ -525,7 +580,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                 description={t('settingsScreen.items.arabicVerseNumbersDescription')}
                                 value={settings.verseNumberStyle === 'arabic'}
                                 onValueChange={(value) => updateSettings({ verseNumberStyle: value ? 'arabic' : 'latin' })}
-                                icon="🔢"
+                                icon={<Hash size={16} color={COLORS.verseNumbers} />}
+                                iconColor={COLORS.verseNumbers}
                                 theme={theme}
                             />
                         </View>
@@ -538,7 +594,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         t('settingsScreen.sections.fontsTitle'),
                         t('settingsScreen.sections.fontsSubtitle'),
                         "fonts",
-                        "✍️"
+                        PenTool,
+                        COLORS.fonts
                     )}
                     {expandedSections.fonts && (() => {
                         // Section padding ~32px each side + sectionContent padding ~16px = ~96px total
@@ -563,12 +620,12 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         return (
                             <View style={createStyles(theme).sectionContent}>
                                 {[
-                                    { key: 'arabicFont' as const, icon: '📖', label: t('settingsScreen.fonts.readingFont') },
-                                    { key: 'imageArabicFont' as const, icon: '🖼️', label: t('settingsScreen.fonts.imageFont') },
-                                ].map(({ key, icon, label }, groupIdx) => (
+                                    { key: 'arabicFont' as const, Icon: BookOpen, label: t('settingsScreen.fonts.readingFont') },
+                                    { key: 'imageArabicFont' as const, Icon: ImageIcon, label: t('settingsScreen.fonts.imageFont') },
+                                ].map(({ key, Icon, label }, groupIdx) => (
                                     <View key={key} style={{ marginBottom: groupIdx === 0 ? SPACING.lg : 0 }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.sm, gap: SPACING.xs }}>
-                                            <Text style={{ fontSize: 13 }}>{icon}</Text>
+                                            <Icon size={14} color={theme.textSecondary} />
                                             <Text style={{ fontSize: 13, fontWeight: '600', color: theme.textSecondary, letterSpacing: 0.3 }}>
                                                 {label}
                                             </Text>
@@ -614,7 +671,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                             favorite: `${settings.favoriteTranslation.substring(0, 20)}${settings.favoriteTranslation.length > 20 ? '...' : ''}`,
                         }),
                         "translations",
-                        "📖"
+                        Languages,
+                        COLORS.translations
                     )}
 
                     {expandedSections.translations && (
@@ -636,13 +694,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                 />
                             </View>
 
-                            {/* Favori Meal Açıklaması */}
-                            <View style={createStyles(theme).favoriteExplanation}>
-                                <Text style={createStyles(theme).favoriteExplanationText}>
-                                    {t('settingsScreen.translations.favoriteExplanation')}
-                                </Text>
-                            </View>
-
                             <View style={createStyles(theme).translationsContainer}>
                                 {filteredTranslations.map((translation, index) =>
                                     renderTranslationItem(translation, index)
@@ -658,7 +709,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         t('settingsScreen.sections.systemTitle'),
                         t('settingsScreen.sections.systemSubtitle'),
                         "system",
-                        "⚙️"
+                        Settings2,
+                        COLORS.system
                     )}
 
                     {expandedSections.system && (
@@ -674,9 +726,12 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                                     />
                                 </View>
                             ) : dataVersion === '3.1' ? (
-                                <Text style={[createStyles(theme).footerText, { padding: SPACING.md, textAlign: 'center' }]}>
-                                    {t('settingsScreen.dataUpToDate')}
-                                </Text>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: SPACING.xs, padding: SPACING.md }}>
+                                    <CircleCheckBig size={16} color={COLORS.system} />
+                                    <Text style={createStyles(theme).footerText}>
+                                        {t('settingsScreen.dataUpToDate')}
+                                    </Text>
+                                </View>
                             ) : (
                                 <AppButton
                                     variant="outline"
@@ -688,12 +743,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                             )}
                         </View>
                     )}
-                </View>
-
-                <View style={createStyles(theme).footer}>
-                    <Text style={createStyles(theme).footerText}>
-                        {t('settingsScreen.footer')}
-                    </Text>
                 </View>
             </ScrollView>
         </SafeAreaView>

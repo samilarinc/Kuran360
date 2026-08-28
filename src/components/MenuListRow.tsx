@@ -4,7 +4,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { createStyles } from './MenuListRow.styles';
 
 interface MenuListRowProps {
-    icon?: string;              // emoji or number string rendered inside the icon circle
+    icon?: string | React.ReactNode; // emoji/number string, or a custom icon element (e.g. a lucide icon)
     iconColor?: string;         // tint for the icon circle background (e.g. item.color + '15')
     title: string;
     subtitle?: string;
@@ -60,9 +60,13 @@ export const MenuListRow: React.FC<MenuListRowProps> = ({
                         iconStyle,
                     ]}
                 >
-                    <Text style={[isCard ? styles.cardIcon : styles.listIcon, iconTextStyle]}>
-                        {icon}
-                    </Text>
+                    {typeof icon === 'string' ? (
+                        <Text style={[isCard ? styles.cardIcon : styles.listIcon, iconTextStyle]}>
+                            {icon}
+                        </Text>
+                    ) : (
+                        icon
+                    )}
                 </View>
             )}
 

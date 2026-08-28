@@ -118,9 +118,6 @@ export const createStyles = (theme: any) => {
             alignItems: 'center',
             marginRight: SPACING.md,
         },
-        heroIcon: {
-            fontSize: 24,
-        },
         heroTextWrap: {
             flex: 1,
         },
@@ -134,10 +131,14 @@ export const createStyles = (theme: any) => {
             color: 'rgba(255,255,255,0.85)',
             marginTop: 2,
         },
-        heroChevron: {
-            fontSize: FONT_SIZES.xlarge,
-            color: 'rgba(255,255,255,0.85)',
-            fontWeight: '300',
+        heroChevronWrap: {
+            width: 32,
+            height: 32,
+            borderRadius: 16,
+            backgroundColor: 'rgba(255,255,255,0.22)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginLeft: SPACING.sm,
         },
         sectionBlock: {
             marginBottom: SPACING.lg,
@@ -151,6 +152,11 @@ export const createStyles = (theme: any) => {
             borderRadius: 16,
             borderWidth: 1,
             overflow: 'hidden',
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.06,
+            shadowRadius: 6,
+            elevation: 2,
         },
         menuRowDivider: {
             borderBottomWidth: 1,

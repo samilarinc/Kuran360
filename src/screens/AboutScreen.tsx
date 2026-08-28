@@ -37,9 +37,10 @@ const AboutScreenContent: React.FC = () => {
                 name: 'Muhammed Şamil Arınç',
                 role: t('about.role'),
                 contacts: [
-                    { icon: Mail, label: 'msamilarinc@gmail.com', url: 'mailto:msamilarinc@gmail.com' },
-                    { icon: GitBranch, label: 'github.com/samilarinc', url: 'https://github.com/samilarinc' },
-                    { icon: Link, label: 'linkedin.com/in/samil-arinc', url: 'https://www.linkedin.com/in/samil-arinc/' },
+                    { icon: Mail, label: 'Email (msamilarinc@gmail.com)', url: 'mailto:msamilarinc@gmail.com' },
+                    { icon: GitBranch, label: 'GitHub (samilarinc)', url: 'https://github.com/samilarinc' },
+                    { icon: Link, label: 'LinkedIn (samil-arinc)', url: 'https://www.linkedin.com/in/samil-arinc/' },
+                    { icon: Link, label: 'Website (msarinc.com.tr)', url: 'https://www.msarinc.com.tr' },
                 ],
             }}
             sections={sections}

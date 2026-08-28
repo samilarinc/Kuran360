@@ -53,8 +53,12 @@ export const createStyles = (theme: any) => {
             alignItems: 'center',
             flex: 1,
         },
-        sectionIcon: {
-            fontSize: 24,
+        sectionIconWrap: {
+            width: 40,
+            height: 40,
+            borderRadius: 12,
+            justifyContent: 'center',
+            alignItems: 'center',
             marginRight: SPACING.md,
         },
         sectionHeaderText: {
@@ -81,14 +85,6 @@ export const createStyles = (theme: any) => {
         expandButtonActive: {
             backgroundColor: theme.primary + '20',
         },
-        expandIcon: {
-            fontSize: 12,
-            color: theme.secondary,
-            fontWeight: '600',
-        },
-        expandIconActive: {
-            color: theme.primary,
-        },
         sectionContent: {
             backgroundColor: theme.cardBackground,
         },
@@ -111,8 +107,12 @@ export const createStyles = (theme: any) => {
             alignItems: 'center',
             flex: 1,
         },
-        settingIcon: {
-            fontSize: 20,
+        settingIconWrap: {
+            width: 36,
+            height: 36,
+            borderRadius: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
             marginRight: SPACING.md,
         },
         settingInfo: {
@@ -205,22 +205,6 @@ export const createStyles = (theme: any) => {
             paddingHorizontal: SPACING.lg,
             paddingBottom: SPACING.md,
         },
-        favoriteExplanation: {
-            paddingHorizontal: SPACING.lg,
-            paddingVertical: SPACING.sm,
-            backgroundColor: '#FFD700' + '10',
-            marginHorizontal: SPACING.lg,
-            marginBottom: SPACING.sm,
-            borderRadius: 8,
-            borderLeftWidth: 3,
-            borderLeftColor: '#FFD700',
-        },
-        favoriteExplanationText: {
-            fontSize: FONT_SIZES.small,
-            color: '#B8860B',
-            fontStyle: 'italic',
-            textAlign: 'center',
-        },
         translationItem: {
             flexDirection: 'row',
             alignItems: 'center',
@@ -274,13 +258,6 @@ export const createStyles = (theme: any) => {
             borderRadius: 12,
             backgroundColor: 'transparent',
         },
-        favoriteIcon: {
-            fontSize: 20,
-            color: theme.border,
-        },
-        favoriteIconActive: {
-            color: '#FFD700', // Altın sarısı
-        },
         modernCheckbox: {
             width: 24,
             height: 24,
@@ -294,11 +271,6 @@ export const createStyles = (theme: any) => {
         modernCheckboxSelected: {
             backgroundColor: theme.primary,
             borderColor: theme.primary,
-        },
-        modernCheckmark: {
-            color: '#FFFFFF',
-            fontSize: 14,
-            fontWeight: 'bold',
         },
         // Footer
         footer: {

@@ -541,12 +541,10 @@
     },
     "translations": {
       "selectAll": "Tümünü Seç",
-      "selectDefault": "Varsayılan",
-      "favoriteExplanation": "⭐ Favori meal ayetlerde öncelikli olarak gösterilir"
+      "selectDefault": "Varsayılan"
     },
-    "dataUpToDate": "✅ Meal verileri güncel (v3.1)",
-    "updateButton": "📥 Meal Verilerini Güncelle",
-    "footer": "💡 Seçili mealler ayetlerin altında gösterilecektir"
+    "dataUpToDate": "Meal verileri güncel (v3.1)",
+    "updateButton": "📥 Meal Verilerini Güncelle"
   },
   "homeScreen": {
     "arabicTitle": "القرآن الكريم",
@@ -595,7 +593,6 @@
     "bugsSectionTitle": "Bilinen Hatalar ve Planlanan Güncellemeler",
     "bugsSectionBullets": [
       "Kelime çevirisi açılınca kelime anlamı olmayanlar görünmüyor, örnek: İnşirah ilk ayet",
-      "Kuran sayfası görünümü eklenecek",
       "Sayfa sesleri eklenecek, ayrıca 30. cüzdeki sayfadan daha kısa sureler için sesler üretilmeli"
     ],
     "updatesSectionTitle": "Güncelleme Notları",
