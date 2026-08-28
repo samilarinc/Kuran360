@@ -58,11 +58,6 @@ export const createStyles = (theme: any) => {
             width: '100%',
             marginBottom: 8,
         },
-        gpsButton: {
-            padding: 8,
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            borderRadius: 20,
-        },
         dateText: {
             fontSize: 16,
             color: 'rgba(255,255,255,0.9)',

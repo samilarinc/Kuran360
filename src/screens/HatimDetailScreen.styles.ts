@@ -10,24 +10,6 @@ export const createStyles = (theme: any) => {
     notFoundText: {
         color: theme.text,
     },
-    notFoundBackButton: {
-        padding: SPACING.sm,
-    },
-    notFoundBackButtonText: {
-        color: theme.primary,
-    },
-    editButton: {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        borderRadius: 16,
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        marginLeft: SPACING.xs,
-    },
-    editButtonText: {
-        fontWeight: '600',
-        fontSize: 14,
-        color: theme.headerText,
-    },
     scrollContent: {
         padding: SPACING.lg,
     },
@@ -143,40 +125,6 @@ export const createStyles = (theme: any) => {
     modalButtonsColumn: {
         width: '100%',
     },
-    actionButton: {
-        padding: SPACING.md,
-        borderRadius: 12,
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: 50,
-    },
-    actionButtonAccent: {
-        backgroundColor: theme.accent,
-    },
-    actionButtonPrimary: {
-        backgroundColor: theme.primary,
-    },
-    actionButtonDanger: {
-        backgroundColor: '#d32f2f',
-        marginTop: SPACING.md,
-    },
-    actionButtonText: {
-        color: '#fff',
-        fontWeight: '700',
-        fontSize: FONT_SIZES.medium,
-    },
-    closeButton: {
-        marginTop: SPACING.md,
-        padding: SPACING.md,
-        borderRadius: 12,
-        borderWidth: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderColor: theme.border,
-    },
-    closeButtonText: {
-        color: theme.text,
-    },
     progressBarBackground: {
         position: 'absolute',
         bottom: 0,
@@ -202,18 +150,6 @@ export const createStyles = (theme: any) => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    progressBtn: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: theme.border,
-    },
-    progressBtnText: {
-        color: theme.text,
-        fontSize: 20,
     },
     progressInput: {
         width: 60,
@@ -278,27 +214,8 @@ export const createStyles = (theme: any) => {
         minWidth: 80,
         alignItems: 'center',
     },
-    deleteModalButton: {
-        backgroundColor: '#FFEBEE',
-        borderWidth: 1,
-        borderColor: '#FFCDD2',
-    },
-    deleteModalButtonText: {
-        color: '#D32F2F',
-        fontWeight: '600',
-    },
     modalButtonsRight: {
         flexDirection: 'row',
-    },
-    cancelModalButton: {
-        backgroundColor: theme.border,
-        marginRight: SPACING.sm,
-    },
-    updateModalButton: {
-        backgroundColor: theme.primary,
-    },
-    whiteButtonText: {
-        color: '#fff',
     },
     inputLabel: {
         fontSize: 14,

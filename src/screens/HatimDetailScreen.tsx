@@ -22,6 +22,7 @@ import { HatimService } from '../services/HatimService';
 import { Hatim, HatimPart } from '../types';
 import { SPACING, FONT_SIZES } from '../constants';
 import { AppHeader } from '../components/AppHeader';
+import { AppButton } from '../components/AppButton';
 import { createStyles } from './HatimDetailScreen.styles';
 
 interface HatimDetailScreenProps {
@@ -283,9 +284,11 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             <SafeAreaView style={styles.container}>
                 <View style={styles.center}>
                     <Text style={styles.notFoundText}>{t('hatimDetailScreen.notFound')}</Text>
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.notFoundBackButton}>
-                        <Text style={styles.notFoundBackButtonText}>{t('hatimDetailScreen.goBack')}</Text>
-                    </TouchableOpacity>
+                    <AppButton
+                        title={t('hatimDetailScreen.goBack')}
+                        onPress={() => navigation.goBack()}
+                        variant="ghost"
+                    />
                 </View>
             </SafeAreaView>
         );
@@ -355,9 +358,14 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                 onBackPress={() => navigation.goBack()}
             >
                 {hatim.creatorId === user?.uid && (
-                    <TouchableOpacity onPress={openEditModal} style={styles.editButton}>
-                        <Text style={styles.editButtonText}>{t('hatimDetailScreen.edit')}</Text>
-                    </TouchableOpacity>
+                    <AppButton
+                        title={t('hatimDetailScreen.edit')}
+                        onPress={openEditModal}
+                        variant="translucent"
+                        shape="pill"
+                        size="small"
+                        style={{ marginLeft: SPACING.xs }}
+                    />
                 )}
             </AppHeader>
 
@@ -489,12 +497,15 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                                     {t('hatimDetailScreen.pagesRead', { read: localPages, total: selectedPart.totalPages || 20 })}
                                                 </Text>
                                                 <View style={styles.progressRow}>
-                                                    <TouchableOpacity
-                                                        style={styles.progressBtn}
+                                                    <AppButton
+                                                        title="-"
                                                         onPress={() => handleUpdatePages(localPages - 1)}
-                                                    >
-                                                        <Text style={styles.progressBtnText}>-</Text>
-                                                    </TouchableOpacity>
+                                                        variant="secondary"
+                                                        shape="circle"
+                                                        size="small"
+                                                        style={{ backgroundColor: theme.border }}
+                                                        textStyle={{ color: theme.text }}
+                                                    />
 
                                                     <TextInput
                                                         style={styles.progressInput}
@@ -507,12 +518,15 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                                         }}
                                                     />
 
-                                                    <TouchableOpacity
-                                                        style={styles.progressBtn}
+                                                    <AppButton
+                                                        title="+"
                                                         onPress={() => handleUpdatePages(localPages + 1)}
-                                                    >
-                                                        <Text style={styles.progressBtnText}>+</Text>
-                                                    </TouchableOpacity>
+                                                        variant="secondary"
+                                                        shape="circle"
+                                                        size="small"
+                                                        style={{ backgroundColor: theme.border }}
+                                                        textStyle={{ color: theme.text }}
+                                                    />
                                                 </View>
                                             </View>
                                         )}
@@ -526,50 +540,40 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                                 <View style={styles.modalButtonsColumn}>
                                     {selectedPart && (selectedPart.claimedById === user?.uid || (hatim && hatim.creatorId === user?.uid && selectedPart.claimedById)) ? (
                                         <>
-                                            <TouchableOpacity
-                                                style={[styles.actionButton, selectedPart.isCompleted ? styles.actionButtonAccent : styles.actionButtonPrimary]}
+                                            <AppButton
+                                                title={selectedPart.isCompleted ? t('hatimDetailScreen.markIncomplete') : t('hatimDetailScreen.markComplete')}
                                                 onPress={handleToggleCompletion}
+                                                variant={selectedPart.isCompleted ? 'secondary' : 'primary'}
+                                                style={[{ width: '100%' }, selectedPart.isCompleted ? { backgroundColor: theme.accent } : undefined]}
+                                                loading={actionLoading === selectedPart.partNumber}
                                                 disabled={actionLoading !== null}
-                                            >
-                                                {actionLoading === selectedPart.partNumber ? (
-                                                    <ActivityIndicator size="small" color="#fff" />
-                                                ) : (
-                                                    <Text style={styles.actionButtonText}>
-                                                        {selectedPart.isCompleted ? t('hatimDetailScreen.markIncomplete') : t('hatimDetailScreen.markComplete')}
-                                                    </Text>
-                                                )}
-                                            </TouchableOpacity>
+                                            />
 
-                                            <TouchableOpacity
-                                                style={[styles.actionButton, styles.actionButtonDanger]}
+                                            <AppButton
+                                                title={selectedPart.claimedById === user?.uid ? t('hatimDetailScreen.releasePart') : t('hatimDetailScreen.unclaimPart')}
                                                 onPress={handleUnclaim}
+                                                variant="danger"
+                                                style={{ width: '100%', marginTop: SPACING.md }}
                                                 disabled={actionLoading !== null}
-                                            >
-                                                <Text style={styles.actionButtonText}>
-                                                    {selectedPart.claimedById === user?.uid ? t('hatimDetailScreen.releasePart') : t('hatimDetailScreen.unclaimPart')}
-                                                </Text>
-                                            </TouchableOpacity>
+                                            />
                                         </>
                                     ) : selectedPart && !selectedPart.claimedById ? (
-                                        <TouchableOpacity
-                                            style={[styles.actionButton, styles.actionButtonPrimary]}
+                                        <AppButton
+                                            title={t('hatimDetailScreen.claimPart')}
                                             onPress={handleClaim}
+                                            variant="primary"
+                                            style={{ width: '100%' }}
+                                            loading={actionLoading === selectedPart.partNumber}
                                             disabled={actionLoading !== null}
-                                        >
-                                            {actionLoading === selectedPart.partNumber ? (
-                                                <ActivityIndicator size="small" color="#fff" />
-                                            ) : (
-                                                <Text style={styles.actionButtonText}>{t('hatimDetailScreen.claimPart')}</Text>
-                                            )}
-                                        </TouchableOpacity>
+                                        />
                                     ) : null}
 
-                                    <TouchableOpacity
-                                        style={styles.closeButton}
+                                    <AppButton
+                                        title={t('hatimDetailScreen.close')}
                                         onPress={() => setPartModalVisible(false)}
-                                    >
-                                        <Text style={styles.closeButtonText}>{t('hatimDetailScreen.close')}</Text>
-                                    </TouchableOpacity>
+                                        variant="outline"
+                                        style={{ width: '100%', marginTop: SPACING.md }}
+                                    />
                                 </View>
                             </>
                         )}
@@ -763,32 +767,31 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                         )}
 
                         <View style={styles.modalButtons}>
-                            <TouchableOpacity
-                                style={[styles.modalButton, styles.deleteModalButton]}
+                            <AppButton
+                                title={t('hatimDetailScreen.delete')}
                                 onPress={handleDeleteHatim}
                                 disabled={isUpdating}
-                            >
-                                <Text style={styles.deleteModalButtonText}>{t('hatimDetailScreen.delete')}</Text>
-                            </TouchableOpacity>
+                                variant="outline"
+                                style={[styles.modalButton, { borderColor: '#FFCDD2', backgroundColor: '#FFEBEE' }]}
+                                textStyle={{ color: '#D32F2F' }}
+                            />
 
                             <View style={styles.modalButtonsRight}>
-                                <TouchableOpacity
-                                    style={[styles.modalButton, styles.cancelModalButton]}
+                                <AppButton
+                                    title={t('hatimDetailScreen.cancel')}
                                     onPress={() => setEditModalVisible(false)}
-                                >
-                                    <Text style={styles.closeButtonText}>{t('hatimDetailScreen.cancel')}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={[styles.modalButton, styles.updateModalButton]}
+                                    variant="secondary"
+                                    style={[styles.modalButton, { marginRight: SPACING.sm, backgroundColor: theme.border }]}
+                                    textStyle={{ color: theme.text }}
+                                />
+                                <AppButton
+                                    title={t('hatimDetailScreen.update')}
                                     onPress={handleUpdateHatim}
+                                    loading={isUpdating}
                                     disabled={isUpdating}
-                                >
-                                    {isUpdating ? (
-                                        <ActivityIndicator size="small" color="#fff" />
-                                    ) : (
-                                        <Text style={styles.whiteButtonText}>{t('hatimDetailScreen.update')}</Text>
-                                    )}
-                                </TouchableOpacity>
+                                    variant="primary"
+                                    style={styles.modalButton}
+                                />
                             </View>
                         </View>
                     </View>

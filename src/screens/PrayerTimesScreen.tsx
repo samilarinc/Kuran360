@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { AppHeader } from '../components/AppHeader';
+import { AppButton } from '../components/AppButton';
 import { SPACING, FONT_SIZES } from '../theme';
 import { PrayerTime } from '../types';
 import locations from '../data/locations.json';
@@ -317,15 +318,21 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                             {settings.prayerLocation?.districtName ? `, ${settings.prayerLocation.districtName}` : ''}
                         </Text>
                         <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity
+                            <AppButton
                                 onPress={() => setShowLocationPicker(true)}
-                                style={[styles.gpsButton, { marginRight: 8, backgroundColor: 'rgba(255,255,255,0.2)' }]}
-                            >
-                                <Ionicons name="search" size={24} color="#FFF" />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleUseGPS} style={styles.gpsButton}>
-                                <Ionicons name="locate" size={24} color="#FFF" />
-                            </TouchableOpacity>
+                                variant="translucent"
+                                shape="circle"
+                                size="small"
+                                icon={<Ionicons name="search" size={24} color="#FFF" />}
+                                style={{ marginRight: 8 }}
+                            />
+                            <AppButton
+                                onPress={handleUseGPS}
+                                variant="translucent"
+                                shape="circle"
+                                size="small"
+                                icon={<Ionicons name="locate" size={24} color="#FFF" />}
+                            />
                         </View>
                     </View>
                     <Text style={[styles.dateText, { color: 'rgba(255,255,255,0.9)' }]}>{todayTimes?.miladi}</Text>

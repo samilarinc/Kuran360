@@ -580,6 +580,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "August 28, 2026",
+        "bullets": [
+          "Buttons across the app now share a single component for a more consistent look and feel."
+        ]
+      },
+      {
         "date": "August 20, 2026",
         "bullets": [
           "The language selector is now fixed in the top bar on every screen; switch between Turkish and English with a single tap.",

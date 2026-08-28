@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '../components/AppHeader';
+import { AppButton } from '../components/AppButton';
 import { useTheme } from '../contexts/ThemeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStyles } from './UmrahProgressScreen.styles';
@@ -122,26 +123,33 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                         {progress.tawafCount} / 7
                     </Text>
                     <View style={styles.buttonRow}>
-                        <TouchableOpacity
-                            style={styles.adjustButton}
+                        <AppButton
+                            title="−"
                             onPress={decrementTawaf}
-                        >
-                            <Text style={styles.adjustButtonText}>−</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
+                            variant="outline"
+                            shape="circle"
+                            size="large"
                             style={styles.adjustButton}
+                            textStyle={styles.adjustButtonText}
+                        />
+                        <AppButton
+                            title="+"
                             onPress={incrementTawaf}
-                        >
-                            <Text style={styles.adjustButtonText}>+</Text>
-                        </TouchableOpacity>
+                            variant="outline"
+                            shape="circle"
+                            size="large"
+                            style={styles.adjustButton}
+                            textStyle={styles.adjustButtonText}
+                        />
                     </View>
                     {navigation && (
-                        <TouchableOpacity
-                            style={styles.duaLink}
+                        <AppButton
+                            title={t('umrahProgressScreen.tawafDuas')}
                             onPress={() => navigation.navigate('UmrahDuas')}
-                        >
-                            <Text style={styles.duaLinkText}>{t('umrahProgressScreen.tawafDuas')}</Text>
-                        </TouchableOpacity>
+                            variant="ghost"
+                            style={styles.duaLink}
+                            textStyle={styles.duaLinkText}
+                        />
                     )}
                 </View>
 
@@ -158,26 +166,33 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                         {progress.sayCount} / 7
                     </Text>
                     <View style={styles.buttonRow}>
-                        <TouchableOpacity
-                            style={styles.adjustButton}
+                        <AppButton
+                            title="−"
                             onPress={decrementSay}
-                        >
-                            <Text style={styles.adjustButtonText}>−</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
+                            variant="outline"
+                            shape="circle"
+                            size="large"
                             style={styles.adjustButton}
+                            textStyle={styles.adjustButtonText}
+                        />
+                        <AppButton
+                            title="+"
                             onPress={incrementSay}
-                        >
-                            <Text style={styles.adjustButtonText}>+</Text>
-                        </TouchableOpacity>
+                            variant="outline"
+                            shape="circle"
+                            size="large"
+                            style={styles.adjustButton}
+                            textStyle={styles.adjustButtonText}
+                        />
                     </View>
                     {navigation && (
-                        <TouchableOpacity
-                            style={styles.duaLink}
+                        <AppButton
+                            title={t('umrahProgressScreen.sayDuas')}
                             onPress={() => navigation.navigate('UmrahDuas')}
-                        >
-                            <Text style={styles.duaLinkText}>{t('umrahProgressScreen.sayDuas')}</Text>
-                        </TouchableOpacity>
+                            variant="ghost"
+                            style={styles.duaLink}
+                            textStyle={styles.duaLinkText}
+                        />
                     )}
                 </View>
 
@@ -198,12 +213,13 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                     </Text>
                 </TouchableOpacity>
                 {navigation && (
-                    <TouchableOpacity
-                        style={styles.duaLinkCenter}
+                    <AppButton
+                        title={t('umrahProgressScreen.ihramDuas')}
                         onPress={() => navigation.navigate('UmrahDuas')}
-                    >
-                        <Text style={styles.duaLinkText}>{t('umrahProgressScreen.ihramDuas')}</Text>
-                    </TouchableOpacity>
+                        variant="ghost"
+                        style={styles.duaLinkCenter}
+                        textStyle={styles.duaLinkText}
+                    />
                 )}
             </ScrollView>
         </SafeAreaView>

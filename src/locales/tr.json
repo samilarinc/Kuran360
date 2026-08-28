@@ -580,6 +580,12 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "28 Ağustos 2026",
+        "bullets": [
+          "Uygulama genelindeki butonlar ortak bir bileşene taşınarak görünüm ve davranış tutarlılığı artırıldı."
+        ]
+      },
+      {
         "date": "20 Ağustos 2026",
         "bullets": [
           "Dil seçici artık üst menüde her sayfada sabit; Türkçe ve İngilizce arasında tek dokunuşla geçiş yapılabiliyor.",

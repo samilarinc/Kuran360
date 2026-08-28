@@ -55,12 +55,7 @@ export const createStyles = (theme: any) => {
         gap: SPACING.md,
     },
     adjustButton: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
         borderWidth: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: theme.surface,
         borderColor: theme.border,
     },

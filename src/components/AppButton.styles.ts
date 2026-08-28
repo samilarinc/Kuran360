@@ -17,14 +17,23 @@ export const createStyles = (theme: any) => StyleSheet.create({
     disabled: {
         opacity: 0.6,
     },
-    iconMargin: {
+    iconMarginRight: {
         marginRight: SPACING.xs,
+    },
+    iconMarginLeft: {
+        marginLeft: SPACING.xs,
     },
     bgPrimary: {
         backgroundColor: theme.primary,
     },
     bgSecondary: {
         backgroundColor: theme.secondary,
+    },
+    bgDanger: {
+        backgroundColor: theme.error,
+    },
+    bgTranslucent: {
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
     },
     bgTransparent: {
         backgroundColor: 'transparent',
@@ -48,6 +57,24 @@ export const createStyles = (theme: any) => StyleSheet.create({
     borderOutlineDisabled: {
         borderWidth: 1,
         borderColor: theme.border,
+    },
+    shapePill: {
+        borderRadius: 999,
+    },
+    shapeCircleSmall: {
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+    },
+    shapeCircleMedium: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+    },
+    shapeCircleLarge: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
     },
     paddingSmall: {
         paddingVertical: SPACING.xs,
