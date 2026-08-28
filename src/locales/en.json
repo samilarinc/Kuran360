@@ -232,6 +232,14 @@
     "loadingVerses": "Loading verses...",
     "loadingNote": "(This only happens once)"
   },
+  "quranPageScreen": {
+    "pageTitle": "Page {{page}}",
+    "loading": "Loading page...",
+    "previousPage": "‹ Previous",
+    "nextPage": "Next ›",
+    "decreaseFontSize": "Decrease text size",
+    "increaseFontSize": "Increase text size"
+  },
   "hatimDetailScreen": {
     "loadErrorTitle": "Error",
     "loadErrorMessage": "Something went wrong while loading the hatim details.",
@@ -545,6 +553,7 @@
       "surahs": "Surahs",
       "randomVerse": "Random Verse",
       "search": "Search",
+      "quranPage": "Page View",
       "settings": "Settings",
       "profile": "Profile",
       "hatim": "Hatims",
@@ -584,6 +593,8 @@
         "bullets": [
           "Buttons across the app now share a single component for a more consistent look and feel.",
           "Progress bars (Hatim screens, data update screen) now share a single component.",
+    "Added a Mushaf page view: read the Quran page by page following the standard 604-page layout, with page navigation.",
+    "The page view's top bar now has a control to increase or decrease the Arabic text size.",
           "Consolidated duplicated card styles across several screens (Profile, Forum, Dua Request, Hatim Detail).",
           "Status labels (completed, locked, time remaining, etc.) now share a single component.",
           "Loading screens (Home, Surah Detail, Random Verse, Hatim, Prayer Times, and others) now share a single component.",

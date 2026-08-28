@@ -23,6 +23,7 @@ import { UmrahMenuScreen } from '../screens/UmrahMenuScreen';
 import { UmrahChecklistScreen } from '../screens/UmrahChecklistScreen';
 import { DuaRequestScreen } from '../screens/DuaRequestScreen';
 import { HijriCalendarScreen } from '../screens/HijriCalendarScreen';
+import { QuranPageScreen } from '../screens/QuranPageScreen';
 import { ForumProvider } from '../contexts/ForumContext';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useGlobalAudio } from '../contexts/AudioContext';
@@ -68,10 +69,11 @@ export type RootStackParamList = {
   UmrahChecklist: undefined;
   DuaRequest: { userId: string };
   HijriCalendar: undefined;
+  QuranPage: { pageNumber?: number };
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -80,6 +82,7 @@ type NavigationHistoryItem = {
     userId?: string;
     lastSelectedSurah?: Surah;
     verse?: any;
+    pageNumber?: number;
   };
 };
 
@@ -156,6 +159,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return route.params?.userId ? `/dua-request/${route.params.userId}` : '/dua-list';
       case 'HijriCalendar':
         return '/hijri-calendar';
+      case 'QuranPage':
+        return `/page/${route.params?.pageNumber ?? 1}`;
       default:
         return '/';
     }
@@ -240,6 +245,11 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
     if (pathname === '/hijri-calendar') {
       return { screen: 'HijriCalendar' };
+    }
+
+    const pageMatch = pathname.match(/^\/page\/(\d+)$/);
+    if (pageMatch) {
+      return { screen: 'QuranPage', params: { pageNumber: parseInt(pageMatch[1], 10) } };
     }
 
     // Check for verse-specific URLs: /surah/1/verse/3
@@ -364,7 +374,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = {
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -423,6 +433,22 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         screen: 'SurahDetail',
         params: { surah, verseIndex }
       };
+      const url = buildUrl(route);
+      const windowObj = getWindow();
+      if (windowObj && windowObj.history) {
+        try {
+          const doc = (globalThis as any).document;
+          if (doc) doc.title = 'Kuran360';
+        } catch { }
+        windowObj.history.replaceState({ navIndex: currentIndexRef.current }, 'Kuran360', url);
+      }
+    }
+  }, [buildUrl]);
+
+  // Turning a mushaf page updates the URL in place instead of pushing new history entries
+  const updatePageUrl = useCallback((pageNumber: number) => {
+    if (Platform.OS === 'web') {
+      const route: NavigationHistoryItem = { screen: 'QuranPage', params: { pageNumber } };
       const url = buildUrl(route);
       const windowObj = getWindow();
       if (windowObj && windowObj.history) {
@@ -562,6 +588,12 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <DuaRequestScreen navigation={navigation} userId={currentRoute.params.userId} />
             ) : currentRoute.screen === 'HijriCalendar' ? (
               <HijriCalendarScreen navigation={navigation} />
+            ) : currentRoute.screen === 'QuranPage' ? (
+              <QuranPageScreen
+                navigation={navigation}
+                route={{ params: { pageNumber: currentRoute.params?.pageNumber } }}
+                updatePageUrl={updatePageUrl}
+              />
             ) : (
               <MainScreen
                 onNavigate={(screen) => {

@@ -25,6 +25,7 @@ interface HeaderWithDarkModeToggleProps {
   showHomeButton?: boolean;
   onHomePress?: () => void;
   autoplayToggle?: React.ReactNode;
+  fontSizeToggle?: React.ReactNode;
   children?: React.ReactNode;
 }
 
@@ -36,6 +37,7 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
   showHomeButton = false,
   onHomePress,
   autoplayToggle,
+  fontSizeToggle,
   children,
 }) => {
   const { theme } = useTheme();
@@ -70,6 +72,7 @@ export const HeaderWithDarkModeToggle: React.FC<HeaderWithDarkModeToggleProps> =
         {autoplayToggle && (
           <View style={styles.autoplayToggleWrapper}>{autoplayToggle}</View>
         )}
+        {fontSizeToggle}
         <LanguageSelector
           compact
           value={i18n.language}

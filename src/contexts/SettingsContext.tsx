@@ -28,6 +28,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     audioPlayMode: 'stopAtEnd',
     arabicFont: DEFAULT_ARABIC_FONT_ID,
     imageArabicFont: DEFAULT_IMAGE_FONT_ID,
+    quranPageFontSize: 28,
     prayerLocation: {
         id: '9541',
         cityName: 'Istanbul',

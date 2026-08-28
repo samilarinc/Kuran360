@@ -232,6 +232,14 @@
     "loadingVerses": "Ayetler yükleniyor...",
     "loadingNote": "(Bu işlem sadece bir kez yapılır)"
   },
+  "quranPageScreen": {
+    "pageTitle": "Sayfa {{page}}",
+    "loading": "Sayfa yükleniyor...",
+    "previousPage": "‹ Önceki",
+    "nextPage": "Sonraki ›",
+    "decreaseFontSize": "Yazıyı küçült",
+    "increaseFontSize": "Yazıyı büyüt"
+  },
   "hatimDetailScreen": {
     "loadErrorTitle": "Hata",
     "loadErrorMessage": "Hatim detayları yüklenirken bir sorun oluştu.",
@@ -545,6 +553,7 @@
       "surahs": "Sureler",
       "randomVerse": "Rastgele Ayet",
       "search": "Arama",
+      "quranPage": "Sayfa Görünümü",
       "settings": "Ayarlar",
       "profile": "Profil",
       "hatim": "Hatimler",
@@ -584,6 +593,8 @@
         "bullets": [
           "Uygulama genelindeki butonlar ortak bir bileşene taşınarak görünüm ve davranış tutarlılığı artırıldı.",
           "İlerleme çubukları (Hatim sayfaları, veri güncelleme ekranı) ortak bir bileşene taşındı.",
+      "Mushaf sayfa görünümü eklendi: 604 sayfalık standart Kur'an dizilimine göre ayetleri sayfa sayfa okuyabilir, sayfalar arasında gezinebilirsiniz.",
+      "Sayfa görünümünün üst çubuğuna, Arapça metin boyutunu büyütüp küçültebileceğiniz bir kontrol eklendi.",
           "Kart görünümündeki bazı ekranlarda (Profil, Forum, Dua İsteği, Hatim Detayı) tekrar eden stiller ortaklandı.",
           "Durum etiketleri (tamamlandı, kilitli, kalan süre vb.) ortak bir bileşene taşındı.",
           "Yükleniyor ekranları (Ana Sayfa, Sure Detayı, Rastgele Ayet, Hatim, Namaz Vakitleri ve diğerleri) tek bir bileşenden besleniyor.",

@@ -18,7 +18,7 @@ import { Alert, Platform } from 'react-native';
 import { createStyles } from './MainScreen.styles';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'HijriCalendar') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'HijriCalendar' | 'QuranPage') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -55,6 +55,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             items: [
                 { id: 'random-verse', title: t('mainScreen.menu.randomVerse'), icon: '✨', onPress: () => onNavigate('RandomVerse') },
                 { id: 'search', title: t('mainScreen.menu.search'), icon: '🔍', onPress: () => onNavigate('Search') },
+                { id: 'quran-page', title: t('mainScreen.menu.quranPage'), icon: '📖', onPress: () => onNavigate('QuranPage') },
                 { id: 'hatim', title: t('mainScreen.menu.hatim'), icon: '☪️', onPress: () => onNavigate('Hatim') },
             ],
         },

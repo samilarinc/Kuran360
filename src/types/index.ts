@@ -57,6 +57,7 @@ export interface AppSettings {
   // Font settings
   arabicFont: string;      // font id for Quran reading
   imageArabicFont: string; // font id for image generation
+  quranPageFontSize: number; // Arabic text size (px) in the mushaf page view
   // Prayer times
   prayerLocation?: {
     id: string;
