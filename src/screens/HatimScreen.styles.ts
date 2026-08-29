@@ -80,37 +80,6 @@ export const createStyles = (theme: any) => {
             textAlign: 'center',
             opacity: 0.7,
         },
-        textArea: {
-            height: 80,
-            textAlignVertical: 'top',
-        },
-        modalButtons: {
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            marginTop: SPACING.sm,
-        },
-        modalButton: {
-            paddingHorizontal: SPACING.lg,
-            paddingVertical: SPACING.md,
-            borderRadius: 12,
-            marginLeft: SPACING.md,
-            minWidth: 80,
-            alignItems: 'center',
-        },
-        inputLabel: {
-            fontSize: 14,
-            fontWeight: '600',
-            marginBottom: SPACING.xs,
-            marginTop: SPACING.sm,
-            color: theme.text,
-        },
-        toggleRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: SPACING.md,
-            paddingVertical: SPACING.xs,
-        },
         privateLabel: {
             fontSize: 12,
             color: '#f44336',
@@ -158,26 +127,11 @@ export const createStyles = (theme: any) => {
             fontSize: '16px',
             appearance: 'auto',
         } as any,
-        timeSeparator: {
-            marginHorizontal: 8,
-            color: theme.text,
-            fontSize: 18,
-            fontWeight: '700',
-        },
         dateTimeButton: {
             justifyContent: 'center',
         },
-        modalButtonCancel: {
-            backgroundColor: theme.border,
-        },
         cancelButtonText: {
             color: theme.text,
-        },
-        modalButtonPrimary: {
-            backgroundColor: theme.primary,
-        },
-        whiteText: {
-            color: '#fff',
         },
     });
 };

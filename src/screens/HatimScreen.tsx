@@ -304,7 +304,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                                 )}
                             </>
                         )}
-                        <View style={styles.modalButtons}>
+                        <View style={styles.modalButtonsRow}>
                             <TouchableOpacity
                                 style={[styles.modalButton, styles.modalButtonCancel]}
                                 onPress={() => setModalVisible(false)}
@@ -319,7 +319,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                                 {creating ? (
                                     <ActivityIndicator size="small" color="#fff" />
                                 ) : (
-                                    <Text style={styles.whiteText}>{t('hatimScreen.create')}</Text>
+                                    <Text style={styles.modalButtonTextWhite}>{t('hatimScreen.create')}</Text>
                                 )}
                             </TouchableOpacity>
                         </View>

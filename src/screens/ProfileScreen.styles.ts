@@ -9,10 +9,7 @@ export const createStyles = (theme: Theme) => {
     return StyleSheet.create({
         ...common,
         content: { padding: SPACING.lg },
-        card: {
-            ...common.infoCard,
-            borderRadius: 12,
-        },
+        card: common.sectionCard,
         avatarRow: { flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.md },
         avatar: { width: 64, height: 64, borderRadius: 32, marginRight: SPACING.md },
         avatarFallback: { backgroundColor: theme.primary + '20', alignItems: 'center', justifyContent: 'center' },
@@ -75,8 +72,7 @@ export const createStyles = (theme: Theme) => {
             fontWeight: '600',
         },
         section: {
-            ...common.infoCard,
-            borderRadius: 12,
+            ...common.sectionCard,
             marginTop: SPACING.lg,
         },
         sectionTitle: {

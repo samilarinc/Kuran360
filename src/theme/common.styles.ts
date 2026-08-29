@@ -45,6 +45,14 @@ export const createCommonStyles = (theme: any) => StyleSheet.create({
         borderWidth: 1,
         borderColor: theme.border,
     },
+    // infoCard variant with the tighter 12px radius used by most screen sections
+    sectionCard: {
+        backgroundColor: theme.cardBackground,
+        borderRadius: 12,
+        padding: SPACING.lg,
+        borderWidth: 1,
+        borderColor: theme.border,
+    },
 
     // Typography
     title: {
@@ -184,5 +192,60 @@ export const createCommonStyles = (theme: any) => StyleSheet.create({
     badgeText: {
         fontSize: FONT_SIZES.small,
         fontWeight: '600',
+    },
+
+    // Forms
+    textArea: {
+        height: 80,
+        textAlignVertical: 'top',
+    },
+    inputLabel: {
+        fontSize: 14,
+        fontWeight: '600',
+        marginBottom: SPACING.xs,
+        marginTop: SPACING.sm,
+        color: theme.text,
+    },
+    toggleRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: SPACING.md,
+        paddingVertical: SPACING.xs,
+    },
+    note: {
+        color: theme.textSecondary,
+        textAlign: 'center',
+        marginVertical: SPACING.md,
+    },
+    timeSeparator: {
+        marginHorizontal: 8,
+        color: theme.text,
+        fontSize: 18,
+        fontWeight: '700',
+    },
+
+    // Modal action buttons
+    modalButtonsRow: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        marginTop: SPACING.sm,
+    },
+    modalButton: {
+        paddingHorizontal: SPACING.lg,
+        paddingVertical: SPACING.md,
+        borderRadius: 12,
+        marginLeft: SPACING.md,
+        minWidth: 80,
+        alignItems: 'center',
+    },
+    modalButtonCancel: {
+        backgroundColor: theme.border,
+    },
+    modalButtonPrimary: {
+        backgroundColor: theme.primary,
+    },
+    modalButtonTextWhite: {
+        color: '#fff',
     },
 });

@@ -165,31 +165,16 @@ export const createStyles = (theme: any) => {
         marginTop: 4,
         alignSelf: 'center',
     },
-    textArea: {
-        height: 80,
-        textAlignVertical: 'top',
-    },
     modalButtons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: SPACING.lg,
     },
-    modalButton: {
-        paddingHorizontal: SPACING.lg,
-        paddingVertical: SPACING.md,
-        borderRadius: 12,
-        marginLeft: SPACING.md,
-        minWidth: 80,
-        alignItems: 'center',
-    },
     modalButtonsRight: {
         flexDirection: 'row',
     },
     inputLabel: {
-        fontSize: 14,
-        fontWeight: '600',
-        marginBottom: SPACING.xs,
-        marginTop: SPACING.sm,
+        ...common.inputLabel,
         color: theme.textSecondary,
     },
     inputLabelNoMarginTop: {
@@ -206,13 +191,6 @@ export const createStyles = (theme: any) => {
     dateTimeTextEmpty: {
         color: theme.textSecondary,
     },
-    toggleRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: SPACING.md,
-        paddingVertical: SPACING.xs,
-    },
     deadlineInfo: {
         alignItems: 'center',
         marginBottom: SPACING.md,
@@ -223,12 +201,6 @@ export const createStyles = (theme: any) => {
     timeSelectorsRow: {
         flexDirection: 'row',
         alignItems: 'center',
-    },
-    timeSeparator: {
-        marginHorizontal: 8,
-        color: theme.text,
-        fontSize: 18,
-        fontWeight: '700',
     },
     });
 };

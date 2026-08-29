@@ -11,9 +11,9 @@ export const createStyles = (theme: Theme) => {
     header: { fontSize: FONT_SIZES.large, fontWeight: '700', color: theme.text, marginBottom: SPACING.md },
     post: { padding: SPACING.md, borderRadius: 12, backgroundColor: theme.cardBackground, borderWidth: 1, borderColor: theme.border, marginBottom: SPACING.sm },
     postBody: { ...common.text },
-    note: { color: theme.textSecondary, textAlign: 'center', marginVertical: SPACING.md },
+    note: common.note,
     replyBox: { backgroundColor: theme.cardBackground, borderRadius: 12, padding: SPACING.md, borderColor: theme.border, borderWidth: 1 },
     input: { backgroundColor: theme.surface, borderColor: theme.border, borderWidth: 1, borderRadius: 8, padding: 10, color: theme.text, marginBottom: SPACING.sm },
-    multiline: { minHeight: 80, textAlignVertical: 'top' },
+    multiline: { ...common.textArea, minHeight: 80 },
   });
 };
