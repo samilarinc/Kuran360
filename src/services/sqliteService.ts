@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import logger from '../utils/logger';
+import logger from '@/utils/logger';
 
 interface VerseData {
     surah_number: number;

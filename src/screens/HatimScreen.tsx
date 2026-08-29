@@ -13,15 +13,15 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../contexts/ThemeContext';
-import { useAuth } from '../contexts/AuthContext';
-import { HatimService } from '../services/HatimService';
-import { Hatim } from '../types';
-import { SPACING, FONT_SIZES } from '../theme';
-import { AppHeader } from '../components/AppHeader';
-import { ProgressBar } from '../components/ProgressBar';
-import { Badge } from '../components/Badge';
-import { LoadingView } from '../components/LoadingView';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { HatimService } from '@/services/HatimService';
+import { Hatim } from '@/types';
+import { SPACING, FONT_SIZES } from '@/theme';
+import { AppHeader } from '@/components/AppHeader';
+import { ProgressBar } from '@/components/ProgressBar';
+import { Badge } from '@/components/Badge';
+import { LoadingView } from '@/components/LoadingView';
 import { createStyles } from './HatimScreen.styles';
 
 interface HatimScreenProps {

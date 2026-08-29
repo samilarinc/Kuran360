@@ -6,18 +6,18 @@ import {
     ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { ShareModal } from '../components/ShareModal';
-import { AppButton } from '../components/AppButton';
-import { ArabicText } from '../components/ArabicText';
-import { Badge } from '../components/Badge';
-import { SPACING } from '../theme';
-import { useTheme } from '../contexts/ThemeContext';
-import { useSettings } from '../contexts/SettingsContext';
-import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
-import { Verse as VerseType, VerseShareData } from '../types';
-import { getSurahNameByNumber } from '../utils/surahName';
-import { formatVerseNumber } from '../utils/numerals';
+import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { ShareModal } from '@/components/ShareModal';
+import { AppButton } from '@/components/AppButton';
+import { ArabicText } from '@/components/ArabicText';
+import { Badge } from '@/components/Badge';
+import { SPACING } from '@/theme';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useSettings } from '@/contexts/SettingsContext';
+import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { Verse as VerseType, VerseShareData } from '@/types';
+import { getSurahNameByNumber } from '@/utils/surahName';
+import { formatVerseNumber } from '@/utils/numerals';
 import { createStyles } from './AllTranslationsScreen.styles';
 
 interface AllTranslationsScreenProps {

@@ -1,7 +1,7 @@
 import { StyleSheet, Platform, Dimensions } from 'react-native';
-import { FONT_SIZES, SPACING } from '../theme';
-import { Theme } from '../contexts/ThemeContext';
-import { createCommonStyles } from '../theme/common.styles';
+import { FONT_SIZES, SPACING } from '@/theme';
+import { Theme } from '@/contexts/ThemeContext';
+import { createCommonStyles } from '@/theme/common.styles';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleProp, ViewStyle, TextStyle } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { createStyles } from './MenuListRow.styles';
 
 interface MenuListRowProps {

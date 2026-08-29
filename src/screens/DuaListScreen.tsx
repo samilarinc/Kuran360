@@ -12,12 +12,12 @@ import {
 
 import { useTranslation } from 'react-i18next';
 import { Link2, Inbox, HandHeart } from 'lucide-react-native';
-import { AppHeader } from '../components/AppHeader';
-import { AppButton } from '../components/AppButton';
-import { useTheme } from '../contexts/ThemeContext';
-import { useUserData } from '../contexts/UserDataContext';
-import { useAuth } from '../contexts/AuthContext';
-import { DuaRequest } from '../types';
+import { AppHeader } from '@/components/AppHeader';
+import { AppButton } from '@/components/AppButton';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useUserData } from '@/contexts/UserDataContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { DuaRequest } from '@/types';
 import { createStyles } from './DuaListScreen.styles';
 
 declare const navigator: any;

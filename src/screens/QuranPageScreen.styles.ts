@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { SPACING, FONT_SIZES } from '../theme';
-import { TRANSLATION_FONT_FAMILY } from '../constants/fonts';
-import { createCommonStyles } from '../theme/common.styles';
+import { SPACING, FONT_SIZES } from '@/theme';
+import { TRANSLATION_FONT_FAMILY } from '@/constants/fonts';
+import { createCommonStyles } from '@/theme/common.styles';
 
 export const createStyles = (theme: any) => {
   const common = createCommonStyles(theme);

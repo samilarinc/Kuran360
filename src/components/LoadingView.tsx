@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { createStyles } from './LoadingView.styles';
 
 interface LoadingViewProps {

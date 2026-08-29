@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING } from '../theme';
+import { FONT_SIZES, SPACING } from '@/theme';
 
 export const createStyles = (theme: any, large: boolean, hasSubtitle: boolean) => StyleSheet.create({
     header: {

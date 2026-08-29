@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { SPACING, FONT_SIZES } from '../theme';
-import { createCommonStyles } from '../theme/common.styles';
+import { SPACING, FONT_SIZES } from '@/theme';
+import { createCommonStyles } from '@/theme/common.styles';
 
 // Plain (non-RN) CSS object for the invisible web <input type="date"> overlay.
 // Not run through StyleSheet.create since it uses DOM-only CSS properties

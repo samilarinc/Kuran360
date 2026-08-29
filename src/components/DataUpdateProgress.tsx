@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
-import { Theme } from '../theme';
+import { Theme } from '@/theme';
 import { ProgressBar } from './ProgressBar';
 import { createStyles } from './DataUpdateProgress.styles';
 

@@ -9,7 +9,7 @@ import {
     TextInput,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { createStyles } from './TranslationPickerModal.styles';
 
 export interface TranslationPickerOption {

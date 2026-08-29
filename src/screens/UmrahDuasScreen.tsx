@@ -7,8 +7,8 @@ import {
     ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { AppHeader } from '../components/AppHeader';
-import { useTheme } from '../contexts/ThemeContext';
+import { AppHeader } from '@/components/AppHeader';
+import { useTheme } from '@/contexts/ThemeContext';
 import { createStyles } from './UmrahDuasScreen.styles';
 
 interface UmrahDuasScreenProps {

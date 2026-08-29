@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../theme';
+import { Theme } from '@/contexts/ThemeContext';
+import { FONT_SIZES, SPACING } from '@/theme';
 
 export const createStyles = (theme: Theme, isCompact: boolean, isMedium: boolean) => StyleSheet.create({
     audioBar: {

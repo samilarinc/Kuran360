@@ -1,8 +1,8 @@
-import { QuranData, Surah, Verse } from '../types';
+import { QuranData, Surah, Verse } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
-import logger from '../utils/logger';
-import { sqliteHelper } from '../services/sqliteService';
+import logger from '@/utils/logger';
+import { sqliteHelper } from '@/services/sqliteService';
 
 interface VerseData {
   surah_number: number;

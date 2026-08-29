@@ -10,11 +10,11 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { useTranslation } from 'react-i18next';
-import { AppHeader } from '../components/AppHeader';
-import { useTheme } from '../contexts/ThemeContext';
-import { AppButton } from '../components/AppButton';
-import { LoadingView } from '../components/LoadingView';
-import { SPACING, FONT_SIZES } from '../theme';
+import { AppHeader } from '@/components/AppHeader';
+import { useTheme } from '@/contexts/ThemeContext';
+import { AppButton } from '@/components/AppButton';
+import { LoadingView } from '@/components/LoadingView';
+import { SPACING, FONT_SIZES } from '@/theme';
 import { createStyles } from './HutbeScreen.styles';
 
 export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { ActivityIndicator, TouchableOpacity, Text, StyleProp, ViewStyle, TextStyle } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { createStyles } from './AppButton.styles';
 
 export type AppButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'translucent';

@@ -3,9 +3,9 @@ import {
   FlatList,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Surah } from '../types';
-import { useTheme, Theme } from '../contexts/ThemeContext';
-import { getSurahName } from '../utils/surahName';
+import { Surah } from '@/types';
+import { useTheme, Theme } from '@/contexts/ThemeContext';
+import { getSurahName } from '@/utils/surahName';
 import { createStyles } from './SurahList.styles';
 import { MenuListRow } from './MenuListRow';
 

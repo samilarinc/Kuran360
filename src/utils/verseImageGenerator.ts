@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
-import { VerseShareData, ImageSize, ImageGenerationOptions } from '../types';
+import { VerseShareData, ImageSize, ImageGenerationOptions } from '@/types';
 import { getDefaultImageSize } from './imageSizes';
-import { DEFAULT_IMAGE_FONT_ID, getArabicFontFamily, getFontOption } from '../constants/fonts';
+import { DEFAULT_IMAGE_FONT_ID, getArabicFontFamily, getFontOption } from '@/constants/fonts';
 
 const DEFAULT_ARABIC_FONT_CSS = getArabicFontFamily(getFontOption(DEFAULT_IMAGE_FONT_ID));
 

@@ -4,9 +4,9 @@ import {
     Text,
     TouchableOpacity,
 } from 'react-native';
-import { useSettings } from '../contexts/SettingsContext';
-import { useTheme } from '../contexts/ThemeContext';
-import { useGlobalAudio } from '../contexts/AudioContext';
+import { useSettings } from '@/contexts/SettingsContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useGlobalAudio } from '@/contexts/AudioContext';
 import { createStyles } from './ReciterSelector.styles';
 
 export const ReciterSelector: React.FC = () => {

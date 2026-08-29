@@ -14,7 +14,7 @@ import {
     or
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { Hatim, HatimPart } from '../types';
+import { Hatim, HatimPart } from '@/types';
 
 const HATIMS_COLLECTION = 'hatims';
 

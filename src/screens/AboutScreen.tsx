@@ -7,9 +7,9 @@ import {
     type AboutSection,
     type AboutUpdate,
 } from '@msarinc/ui';
-import { useTheme } from '../contexts/ThemeContext';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { createCommonStyles as createStyles } from '../theme/common.styles';
+import { useTheme } from '@/contexts/ThemeContext';
+import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { createCommonStyles as createStyles } from '@/theme/common.styles';
 
 interface AboutScreenProps {
     navigation: any;

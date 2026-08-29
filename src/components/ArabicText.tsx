@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, StyleProp, TextStyle } from 'react-native';
-import { useSettings } from '../contexts/SettingsContext';
-import { getFontOption, getArabicFontFamily } from '../constants/fonts';
+import { useSettings } from '@/contexts/SettingsContext';
+import { getFontOption, getArabicFontFamily } from '@/constants/fonts';
 
 interface ArabicTextProps {
     children: React.ReactNode;

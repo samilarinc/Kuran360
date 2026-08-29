@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useTheme as useMsarincTheme } from '@msarinc/ui';
-import { useSettings } from '../contexts/SettingsContext';
+import { useSettings } from '@/contexts/SettingsContext';
 
 /**
  * settings.theme (Firestore/AsyncStorage üzerinden useQuery ile senkron) ile

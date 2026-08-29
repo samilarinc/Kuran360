@@ -4,9 +4,9 @@ import {
   PanResponder, Animated, Easing, Modal, Platform, useWindowDimensions, ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme } from '../contexts/ThemeContext';
-import { SPACING, FONT_SIZES } from '../theme';
-import { AppHeader } from '../components/AppHeader';
+import { useTheme } from '@/contexts/ThemeContext';
+import { SPACING, FONT_SIZES } from '@/theme';
+import { AppHeader } from '@/components/AppHeader';
 
 // ── Calendar math ─────────────────────────────────────────────────────────────
 

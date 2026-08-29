@@ -5,10 +5,10 @@ import {
     TouchableOpacity,
     useWindowDimensions,
 } from 'react-native';
-import { useGlobalAudio } from '../contexts/AudioContext';
-import { useNavigationHelpers } from '../contexts/NavigationContext';
-import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
-import { useTheme } from '../contexts/ThemeContext';
+import { useGlobalAudio } from '@/contexts/AudioContext';
+import { useNavigationHelpers } from '@/contexts/NavigationContext';
+import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { useTheme } from '@/contexts/ThemeContext';
 import { AudioTrackingToggle } from './AudioTrackingToggle';
 import { createStyles } from './GlobalAudioBar.styles';
 

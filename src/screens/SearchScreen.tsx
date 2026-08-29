@@ -10,17 +10,17 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Globe, Star, BookOpen, Library, Type, PenLine, ChevronUp, ChevronDown, Target, Search as SearchIcon, Filter } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
-import { getSurahName } from '../utils/surahName';
-import { useTheme } from '../contexts/ThemeContext';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { DownloadRequired } from '../components/DownloadRequired';
-import { SearchInput } from '../components/SearchInput';
-import { useNavigationHelpers } from '../contexts/NavigationContext';
-import { Verse, Surah } from '../types';
-import { quranData, loadSurah } from '../data/quranData';
-import { useDownloadData } from '../hooks/useDownloadData';
-import { formatVerseNumber } from '../utils/numerals';
+import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { getSurahName } from '@/utils/surahName';
+import { useTheme } from '@/contexts/ThemeContext';
+import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { DownloadRequired } from '@/components/DownloadRequired';
+import { SearchInput } from '@/components/SearchInput';
+import { useNavigationHelpers } from '@/contexts/NavigationContext';
+import { Verse, Surah } from '@/types';
+import { quranData, loadSurah } from '@/data/quranData';
+import { useDownloadData } from '@/hooks/useDownloadData';
+import { formatVerseNumber } from '@/utils/numerals';
 import { createStyles } from './SearchScreen.styles';
 
 interface SearchScreenProps {

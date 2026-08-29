@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { AppButton } from '../components/AppButton';
-import { useThreads, useCreateThread } from '../contexts/ForumContext';
-import { useAuth } from '../contexts/AuthContext';
-import { useTheme } from '../contexts/ThemeContext';
-import { VerseMention } from '../types';
+import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppButton } from '@/components/AppButton';
+import { useThreads, useCreateThread } from '@/contexts/ForumContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { VerseMention } from '@/types';
 import { createStyles } from './ForumScreen.styles';
 
 export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {

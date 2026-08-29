@@ -4,8 +4,8 @@ import {
     Animated,
 } from 'react-native';
 import { Play, Pause } from 'lucide-react-native';
-import { useTheme } from '../contexts/ThemeContext';
-import { useDebouncedToggle } from '../hooks/useDebouncedState';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useDebouncedToggle } from '@/hooks/useDebouncedState';
 import { createStyles } from './AutoplayToggle.styles';
 
 interface AutoplayToggleProps {

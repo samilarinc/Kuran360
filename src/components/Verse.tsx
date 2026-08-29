@@ -6,21 +6,21 @@ import {
   Platform,
 } from 'react-native';
 import { Bookmark, Library, Share2, Play, Square, BrainCircuit } from 'lucide-react-native';
-import { Verse as VerseType, VerseShareData } from '../types';
-import { useSettings } from '../contexts/SettingsContext';
-import { useTheme } from '../contexts/ThemeContext';
-import { useAuth } from '../contexts/AuthContext';
-import { useUserData } from '../contexts/UserDataContext';
-import logger from '../utils/logger';
-import { getFontOption, getArabicFontFamily } from '../constants/fonts';
-import { useGlobalAudio } from '../contexts/AudioContext';
+import { Verse as VerseType, VerseShareData } from '@/types';
+import { useSettings } from '@/contexts/SettingsContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUserData } from '@/contexts/UserDataContext';
+import logger from '@/utils/logger';
+import { getFontOption, getArabicFontFamily } from '@/constants/fonts';
+import { useGlobalAudio } from '@/contexts/AudioContext';
 import { ShareModal } from './ShareModal';
 import { ArabicText } from './ArabicText';
-import { ShareService } from '../utils/shareUtils';
-import { getSurahsList } from '../data/quranData';
+import { ShareService } from '@/utils/shareUtils';
+import { getSurahsList } from '@/data/quranData';
 import { useTranslation } from 'react-i18next';
-import { getSurahNameByNumber } from '../utils/surahName';
-import { formatVerseNumber } from '../utils/numerals';
+import { getSurahNameByNumber } from '@/utils/surahName';
+import { formatVerseNumber } from '@/utils/numerals';
 import { createStyles } from './Verse.styles';
 
 const BOOKMARK_COLOR = '#F43F5E';

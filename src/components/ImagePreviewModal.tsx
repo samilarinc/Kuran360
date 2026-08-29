@@ -17,13 +17,13 @@ import { NativeVerseImageDesign } from './NativeVerseImageDesign';
 declare const window: any;
 declare const navigator: any;
 declare const ClipboardItem: any;
-import { useTheme } from '../contexts/ThemeContext';
-import { VerseShareData, ImageSize } from '../types';
-import { ShareService } from '../utils/shareUtils';
-import { IMAGE_SIZES } from '../utils/imageSizes';
-import { useSettings } from '../contexts/SettingsContext';
-import { formatVerseNumber } from '../utils/numerals';
-import { ARABIC_FONT_OPTIONS, DEFAULT_IMAGE_FONT_ID, getFontOption, getArabicFontFamily } from '../constants/fonts';
+import { useTheme } from '@/contexts/ThemeContext';
+import { VerseShareData, ImageSize } from '@/types';
+import { ShareService } from '@/utils/shareUtils';
+import { IMAGE_SIZES } from '@/utils/imageSizes';
+import { useSettings } from '@/contexts/SettingsContext';
+import { formatVerseNumber } from '@/utils/numerals';
+import { ARABIC_FONT_OPTIONS, DEFAULT_IMAGE_FONT_ID, getFontOption, getArabicFontFamily } from '@/constants/fonts';
 import { createStyles } from './ImagePreviewModal.styles';
 
 interface ImagePreviewModalProps {

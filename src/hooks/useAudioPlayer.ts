@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
-import { Verse as VerseType, AudioState } from '../types';
-import { loadSurah } from '../data/quranData';
-import { useSettings } from '../contexts/SettingsContext';
-import logger from '../utils/logger';
+import { Verse as VerseType, AudioState } from '@/types';
+import { loadSurah } from '@/data/quranData';
+import { useSettings } from '@/contexts/SettingsContext';
+import logger from '@/utils/logger';
 import { Platform } from 'react-native';
 
 export const useAudioPlayer = () => {

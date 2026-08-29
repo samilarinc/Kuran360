@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { auth, googleProvider } from '../services/firebase';
+import { auth, googleProvider } from '@/services/firebase';
 import {
     User,
     signInWithPopup,
@@ -15,7 +15,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as AuthSession from 'expo-auth-session';
 import { Platform } from 'react-native';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../services/firebase';
+import { db } from '@/services/firebase';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -101,7 +101,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         // Fallback for web builds
         if (Platform.OS === 'web') {
             try {
-                const { googleConfig } = require('../config/firebase-config.js');
+                const { googleConfig } = require('@/config/firebase-config.js');
                 return {
                     webClientId: googleConfig.webClientId,
                     iosClientId: googleConfig.iosClientId,

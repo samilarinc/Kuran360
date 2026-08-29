@@ -1,5 +1,5 @@
-import { Surah, Verse } from '../types';
-import { AUDIO_FILE_FORMAT } from '../theme';
+import { Surah, Verse } from '@/types';
+import { AUDIO_FILE_FORMAT } from '@/theme';
 
 // Helper function to create a verse
 export const createVerse = (

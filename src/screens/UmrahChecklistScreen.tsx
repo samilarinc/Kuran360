@@ -17,9 +17,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { Plane, Hotel, Lightbulb, TrainFront, FileText, Landmark } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../contexts/ThemeContext';
-import { AppHeader } from '../components/AppHeader';
-import { AppButton } from '../components/AppButton';
+import { useTheme } from '@/contexts/ThemeContext';
+import { AppHeader } from '@/components/AppHeader';
+import { AppButton } from '@/components/AppButton';
 import { createStyles, webDateInputStyle } from './UmrahChecklistScreen.styles';
 
 interface ChecklistData {

@@ -27,7 +27,7 @@ const getFirebaseConfig = () => {
     if (Platform.OS === 'web') {
         // Import the fallback config dynamically
         try {
-            const { firebaseConfig } = require('../config/firebase-config.js');
+            const { firebaseConfig } = require('@/config/firebase-config.js');
             return firebaseConfig;
         } catch (error) {
             console.warn('Failed to load fallback config:', error);

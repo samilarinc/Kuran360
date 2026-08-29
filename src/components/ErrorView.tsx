@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleProp, ViewStyle } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { AppButton } from './AppButton';
 import { createStyles } from './ErrorView.styles';
 

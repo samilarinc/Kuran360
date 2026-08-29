@@ -1,4 +1,4 @@
-import { ImageSize } from '../types';
+import { ImageSize } from '@/types';
 
 export const IMAGE_SIZES: ImageSize[] = [
     {

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { SPACING, FONT_SIZES } from '../theme';
+import { SPACING, FONT_SIZES } from '@/theme';
 
 export const createStyles = (theme: any) => StyleSheet.create({
     button: {

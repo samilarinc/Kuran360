@@ -2,10 +2,10 @@ import React, { createContext, useContext, ReactNode } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../services/firebase';
+import { db } from '@/services/firebase';
 import { useAuth } from './AuthContext';
-import { AppSettings, SettingsContextType } from '../types';
-import { DEFAULT_ARABIC_FONT_ID, DEFAULT_IMAGE_FONT_ID } from '../constants/fonts';
+import { AppSettings, SettingsContextType } from '@/types';
+import { DEFAULT_ARABIC_FONT_ID, DEFAULT_IMAGE_FONT_ID } from '@/constants/fonts';
 
 const ASYNC_STORAGE_KEY = 'quran_app_settings';
 

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING, FAVORITE_COLOR, FAVORITE_COLOR_DARK } from '../theme';
-import { createCommonStyles } from '../theme/common.styles';
+import { FONT_SIZES, SPACING, FAVORITE_COLOR, FAVORITE_COLOR_DARK } from '@/theme';
+import { createCommonStyles } from '@/theme/common.styles';
 
 export const createStyles = (theme: any) => {
     const common = createCommonStyles(theme);

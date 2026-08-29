@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { SPACING } from '../theme';
-import { createCommonStyles } from '../theme/common.styles';
+import { SPACING } from '@/theme';
+import { createCommonStyles } from '@/theme/common.styles';
 
 export const createStyles = (theme: any) => {
   const common = createCommonStyles(theme);

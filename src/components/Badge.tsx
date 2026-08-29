@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleProp, ViewStyle, TextStyle } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { createStyles } from './Badge.styles';
 
 export type BadgeVariant = 'solid' | 'tint';

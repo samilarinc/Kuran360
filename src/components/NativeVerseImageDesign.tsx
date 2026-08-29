@@ -3,10 +3,10 @@ import {
     View,
     Text,
 } from 'react-native';
-import { VerseShareData, ImageSize } from '../types';
-import { useTheme } from '../contexts/ThemeContext';
-import { useSettings } from '../contexts/SettingsContext';
-import { formatVerseNumber } from '../utils/numerals';
+import { VerseShareData, ImageSize } from '@/types';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useSettings } from '@/contexts/SettingsContext';
+import { formatVerseNumber } from '@/utils/numerals';
 import { createStyles } from './NativeVerseImageDesign.styles';
 
 interface NativeVerseImageDesignProps {

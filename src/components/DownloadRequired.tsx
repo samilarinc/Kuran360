@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { DataUpdateProgress } from './DataUpdateProgress';
 import { AppButton } from './AppButton';
 import { createStyles } from './DownloadRequired.styles';

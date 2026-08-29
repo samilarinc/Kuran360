@@ -10,15 +10,15 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useTranslation } from 'react-i18next';
-import { useSettings } from '../contexts/SettingsContext';
-import { useTheme } from '../contexts/ThemeContext';
-import { AppHeader } from '../components/AppHeader';
-import { AppButton } from '../components/AppButton';
-import { LoadingView } from '../components/LoadingView';
-import { SearchInput } from '../components/SearchInput';
-import { SPACING, FONT_SIZES } from '../theme';
-import { PrayerTime } from '../types';
-import locations from '../data/locations.json';
+import { useSettings } from '@/contexts/SettingsContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { AppHeader } from '@/components/AppHeader';
+import { AppButton } from '@/components/AppButton';
+import { LoadingView } from '@/components/LoadingView';
+import { SearchInput } from '@/components/SearchInput';
+import { SPACING, FONT_SIZES } from '@/theme';
+import { PrayerTime } from '@/types';
+import locations from '@/data/locations.json';
 import { createStyles } from './PrayerTimesScreen.styles';
 
 interface Location {

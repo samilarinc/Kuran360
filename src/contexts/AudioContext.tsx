@@ -1,6 +1,6 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useAudioPlayer } from '../hooks/useAudioPlayer';
-import { Verse as VerseType, AudioState } from '../types';
+import { useAudioPlayer } from '@/hooks/useAudioPlayer';
+import { Verse as VerseType, AudioState } from '@/types';
 
 interface AudioContextType {
     audioState: AudioState;

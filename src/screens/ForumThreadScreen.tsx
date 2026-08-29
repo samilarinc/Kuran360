@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { AppButton } from '../components/AppButton';
-import { usePosts, useCreatePost } from '../contexts/ForumContext';
-import { useAuth } from '../contexts/AuthContext';
-import { useTheme } from '../contexts/ThemeContext';
+import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppButton } from '@/components/AppButton';
+import { usePosts, useCreatePost } from '@/contexts/ForumContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { createStyles } from './ForumThreadScreen.styles';
 
 export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ navigation, route }) => {

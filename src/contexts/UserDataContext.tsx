@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useEffect, ReactNode, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
-import { db } from '../services/firebase';
+import { db } from '@/services/firebase';
 import { useAuth } from './AuthContext';
-import { Bookmark, LastRead, UserData, DuaItem, DuaRequest } from '../types';
+import { Bookmark, LastRead, UserData, DuaItem, DuaRequest } from '@/types';
 import { collection, onSnapshot, query, where, orderBy, deleteDoc, addDoc } from 'firebase/firestore';
 
 type UserDataContextType = {

@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ListChecks, Navigation, HandHeart, BookHeart } from 'lucide-react-native';
-import { AppHeader } from '../components/AppHeader';
-import { MenuListRow } from '../components/MenuListRow';
-import { useTheme } from '../contexts/ThemeContext';
+import { AppHeader } from '@/components/AppHeader';
+import { MenuListRow } from '@/components/MenuListRow';
+import { useTheme } from '@/contexts/ThemeContext';
 import { createStyles } from './UmrahMenuScreen.styles';
 
 interface UmrahMenuScreenProps {

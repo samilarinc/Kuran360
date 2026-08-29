@@ -9,17 +9,17 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FontSizeToggle } from '@msarinc/ui';
-import { ArabicText } from '../components/ArabicText';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { LoadingView } from '../components/LoadingView';
-import { TranslationPickerModal, TranslationPickerOption } from '../components/TranslationPickerModal';
-import { useTheme } from '../contexts/ThemeContext';
-import { useSettings } from '../contexts/SettingsContext';
-import { Verse as VerseType } from '../types';
-import { loadSurah } from '../data/quranData';
-import { getVerseRangesForPage, TOTAL_MUSHAF_PAGES } from '../data/pageMapping';
-import { getSurahNameByNumber } from '../utils/surahName';
-import { formatVerseNumber } from '../utils/numerals';
+import { ArabicText } from '@/components/ArabicText';
+import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { LoadingView } from '@/components/LoadingView';
+import { TranslationPickerModal, TranslationPickerOption } from '@/components/TranslationPickerModal';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useSettings } from '@/contexts/SettingsContext';
+import { Verse as VerseType } from '@/types';
+import { loadSurah } from '@/data/quranData';
+import { getVerseRangesForPage, TOTAL_MUSHAF_PAGES } from '@/data/pageMapping';
+import { getSurahNameByNumber } from '@/utils/surahName';
+import { formatVerseNumber } from '@/utils/numerals';
 import { createStyles } from './QuranPageScreen.styles';
 
 const MIN_FONT_SIZE = 18;

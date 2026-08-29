@@ -1,15 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, TextInput, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { AppButton } from '../components/AppButton';
-import { useAuth } from '../contexts/AuthContext';
-import { useUserData } from '../contexts/UserDataContext';
-import { useTheme } from '../contexts/ThemeContext';
-import { auth } from '../services/firebase';
+import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppButton } from '@/components/AppButton';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUserData } from '@/contexts/UserDataContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { auth } from '@/services/firebase';
 import { GoogleAuthProvider, signInWithPopup, signInWithCredential } from 'firebase/auth';
 import Constants from 'expo-constants';
-import { SPACING } from '../theme';
+import { SPACING } from '@/theme';
 import { createStyles } from './ProfileScreen.styles';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {

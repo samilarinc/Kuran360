@@ -8,9 +8,9 @@ import {
     SafeAreaView,
     TextInput,
 } from 'react-native';
-import { Verse as VerseType } from '../types';
-import { useSettings } from '../contexts/SettingsContext';
-import { useTheme } from '../contexts/ThemeContext';
+import { Verse as VerseType } from '@/types';
+import { useSettings } from '@/contexts/SettingsContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { createStyles } from './GoToVerseModal.styles';
 
 interface GoToVerseModalProps {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, Platform } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export const StatusBarManager: React.FC = () => {
   const { theme, isDarkMode } = useTheme();

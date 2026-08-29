@@ -25,10 +25,10 @@ import {
     ChevronRight,
     type LucideIcon,
 } from 'lucide-react-native';
-import { AppHeader } from '../components/AppHeader';
-import { MenuListRow } from '../components/MenuListRow';
-import { useTheme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../theme';
+import { AppHeader } from '@/components/AppHeader';
+import { MenuListRow } from '@/components/MenuListRow';
+import { useTheme } from '@/contexts/ThemeContext';
+import { FONT_SIZES, SPACING } from '@/theme';
 import { Alert, Platform } from 'react-native';
 import { createStyles } from './MainScreen.styles';
 

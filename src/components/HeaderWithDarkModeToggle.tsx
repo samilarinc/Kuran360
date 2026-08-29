@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ThemeToggle, LanguageSelector, HeaderNavButtons } from '@msarinc/ui';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { createStyles } from './HeaderWithDarkModeToggle.styles';
 
 const THEME_TOGGLE_LABELS = {

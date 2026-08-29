@@ -10,12 +10,12 @@ import {
     Alert,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { AppHeader } from '../components/AppHeader';
-import { AppButton } from '../components/AppButton';
-import { LoadingView } from '../components/LoadingView';
-import { useTheme } from '../contexts/ThemeContext';
+import { AppHeader } from '@/components/AppHeader';
+import { AppButton } from '@/components/AppButton';
+import { LoadingView } from '@/components/LoadingView';
+import { useTheme } from '@/contexts/ThemeContext';
 import { doc, getDoc, collection, addDoc } from 'firebase/firestore';
-import { db } from '../services/firebase';
+import { db } from '@/services/firebase';
 import { createStyles } from './DuaRequestScreen.styles';
 
 interface DuaRequestScreenProps {

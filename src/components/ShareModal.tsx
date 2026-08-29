@@ -9,16 +9,16 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import ViewShot, { captureRef } from 'react-native-view-shot';
 import { NativeVerseImageDesign } from './NativeVerseImageDesign';
-import { VerseShareData, ImageSize } from '../types';
-import { ShareService } from '../utils/shareUtils';
+import { VerseShareData, ImageSize } from '@/types';
+import { ShareService } from '@/utils/shareUtils';
 import { ImagePreviewModal } from './ImagePreviewModal';
-import { IMAGE_SIZES, getDefaultImageSize } from '../utils/imageSizes';
-import { useSettings } from '../contexts/SettingsContext';
-import { formatVerseNumber } from '../utils/numerals';
-import { getFontOption, getArabicFontFamily } from '../constants/fonts';
+import { IMAGE_SIZES, getDefaultImageSize } from '@/utils/imageSizes';
+import { useSettings } from '@/contexts/SettingsContext';
+import { formatVerseNumber } from '@/utils/numerals';
+import { getFontOption, getArabicFontFamily } from '@/constants/fonts';
 import { ArabicText } from './ArabicText';
 import { createStyles } from './ShareModal.styles';
 

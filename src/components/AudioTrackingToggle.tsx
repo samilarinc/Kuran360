@@ -3,8 +3,8 @@ import {
     Text,
     TouchableOpacity,
 } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
-import { useDebouncedToggle } from '../hooks/useDebouncedState';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useDebouncedToggle } from '@/hooks/useDebouncedState';
 import { createStyles } from './AudioTrackingToggle.styles';
 
 interface AudioTrackingToggleProps {

@@ -8,7 +8,7 @@ try {
 } catch (e: any) {
     // Web veya modül yoksa sorun değil
 }
-import { VerseShareData, ShareOptions, ImageGenerationOptions } from '../types';
+import { VerseShareData, ShareOptions, ImageGenerationOptions } from '@/types';
 import { VerseImageGenerator } from './verseImageGenerator';
 import { getDefaultImageSize } from './imageSizes';
 

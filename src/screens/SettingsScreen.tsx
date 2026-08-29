@@ -36,15 +36,15 @@ import {
     type LucideIcon,
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
-import { ARABIC_FONT_OPTIONS, getArabicFontFamily } from '../constants/fonts';
-import { useTheme } from '../contexts/ThemeContext';
-import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion } from '../data/quranData';
-import { AppHeader } from '../components/AppHeader'; // Use AppHeader
-import { AppButton } from '../components/AppButton'; // Use AppButton if needed
-import { ReciterSelector } from '../components/ReciterSelector';
-import { DataUpdateProgress } from '../components/DataUpdateProgress';
-import { FONT_SIZES, SPACING } from '../theme'; // Import from theme
+import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { ARABIC_FONT_OPTIONS, getArabicFontFamily } from '@/constants/fonts';
+import { useTheme } from '@/contexts/ThemeContext';
+import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion } from '@/data/quranData';
+import { AppHeader } from '@/components/AppHeader'; // Use AppHeader
+import { AppButton } from '@/components/AppButton'; // Use AppButton if needed
+import { ReciterSelector } from '@/components/ReciterSelector';
+import { DataUpdateProgress } from '@/components/DataUpdateProgress';
+import { FONT_SIZES, SPACING } from '@/theme'; // Import from theme
 
 interface SettingsScreenProps {
     navigation: any;

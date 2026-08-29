@@ -7,9 +7,9 @@ import {
     ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { AppHeader } from '../components/AppHeader';
-import { AppButton } from '../components/AppButton';
-import { useTheme } from '../contexts/ThemeContext';
+import { AppHeader } from '@/components/AppHeader';
+import { AppButton } from '@/components/AppButton';
+import { useTheme } from '@/contexts/ThemeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStyles } from './UmrahProgressScreen.styles';
 

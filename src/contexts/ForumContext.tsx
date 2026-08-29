@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addDoc, collection, doc, getDocs, limit, orderBy, query, updateDoc, where } from 'firebase/firestore';
-import { db } from '../services/firebase';
+import { db } from '@/services/firebase';
 import { useAuth } from './AuthContext';
-import { Post, Thread, VerseMention } from '../types';
+import { Post, Thread, VerseMention } from '@/types';
 
 type CreateThreadInput = { title: string; body: string; mentions: VerseMention[] };
 type CreatePostInput = { threadId: string; body: string; mentions: VerseMention[] };

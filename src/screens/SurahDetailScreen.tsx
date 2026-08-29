@@ -9,22 +9,22 @@ import {
   Platform,
 } from 'react-native';
 import { FontSizeToggle } from '@msarinc/ui';
-import { Verse } from '../components/Verse';
-import { PaginatedVerseView } from '../components/PaginatedVerseView';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { AutoplayToggle } from '../components/AutoplayToggle';
-import { AudioTrackingToggle } from '../components/AudioTrackingToggle';
-import { LoadingView } from '../components/LoadingView';
-import { useGlobalAudio } from '../contexts/AudioContext';
-import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
-import { useTheme } from '../contexts/ThemeContext';
-import { useAuth } from '../contexts/AuthContext';
-import { useUserData } from '../contexts/UserDataContext';
+import { Verse } from '@/components/Verse';
+import { PaginatedVerseView } from '@/components/PaginatedVerseView';
+import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AutoplayToggle } from '@/components/AutoplayToggle';
+import { AudioTrackingToggle } from '@/components/AudioTrackingToggle';
+import { LoadingView } from '@/components/LoadingView';
+import { useGlobalAudio } from '@/contexts/AudioContext';
+import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUserData } from '@/contexts/UserDataContext';
 import { useTranslation } from 'react-i18next';
-import { Surah, Verse as VerseType, LastRead } from '../types';
-import { loadSurah } from '../data/quranData';
-import logger from '../utils/logger';
-import { getSurahName } from '../utils/surahName';
+import { Surah, Verse as VerseType, LastRead } from '@/types';
+import { loadSurah } from '@/data/quranData';
+import logger from '@/utils/logger';
+import { getSurahName } from '@/utils/surahName';
 import { createStyles } from './SurahDetailScreen.styles';
 
 const MIN_FONT_SIZE = 18;

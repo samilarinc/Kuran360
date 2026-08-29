@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import { createCommonStyles } from '../theme/common.styles';
+import { createCommonStyles } from '@/theme/common.styles';
 
 export const createStyles = (theme: any) => {
     const common = createCommonStyles(theme);

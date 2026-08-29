@@ -2,17 +2,17 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {
   SafeAreaView,
 } from 'react-native';
-import { SurahList } from '../components/SurahList';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { DownloadRequired } from '../components/DownloadRequired';
-import { LoadingView } from '../components/LoadingView';
-import { SearchInput } from '../components/SearchInput';
-import { quranData } from '../data/quranData';
-import { Surah } from '../types';
-import { useTheme } from '../contexts/ThemeContext';
-import { useDownloadData } from '../hooks/useDownloadData';
+import { SurahList } from '@/components/SurahList';
+import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { DownloadRequired } from '@/components/DownloadRequired';
+import { LoadingView } from '@/components/LoadingView';
+import { SearchInput } from '@/components/SearchInput';
+import { quranData } from '@/data/quranData';
+import { Surah } from '@/types';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useDownloadData } from '@/hooks/useDownloadData';
 import { useTranslation } from 'react-i18next';
-import { getSurahName } from '../utils/surahName';
+import { getSurahName } from '@/utils/surahName';
 import { createStyles } from './HomeScreen.styles';
 
 interface HomeScreenProps {

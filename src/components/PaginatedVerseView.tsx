@@ -11,13 +11,13 @@ import {
 } from 'react-native';
 import { Verse } from './Verse';
 import { GoToVerseModal } from './GoToVerseModal';
-import { Verse as VerseType } from '../types';
-import { useSettings } from '../contexts/SettingsContext';
-import { useGlobalAudio } from '../contexts/AudioContext';
-import { useTheme } from '../contexts/ThemeContext';
-import { useAuth } from '../contexts/AuthContext';
-import logger from '../utils/logger';
-import { formatVerseNumber } from '../utils/numerals';
+import { Verse as VerseType } from '@/types';
+import { useSettings } from '@/contexts/SettingsContext';
+import { useGlobalAudio } from '@/contexts/AudioContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import logger from '@/utils/logger';
+import { formatVerseNumber } from '@/utils/numerals';
 import { createStyles } from './PaginatedVerseView.styles';
 
 const getScreenDimensions = () => Dimensions.get('window');
