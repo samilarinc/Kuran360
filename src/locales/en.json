@@ -597,6 +597,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "August 29, 2026",
+        "bullets": [
+          "Fixed an issue on the web version where the page could get stuck showing an old (cached) version after a new update was released."
+        ]
+      },
+      {
         "date": "August 28, 2026",
         "bullets": [
           "Buttons across the app now share a single component for a more consistent look and feel.",

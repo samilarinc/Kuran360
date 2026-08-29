@@ -596,6 +596,12 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "29 Ağustos 2026",
+        "bullets": [
+          "Web sürümünde, yeni bir güncelleme yayınlandığında sayfanın eski (önbelleğe alınmış) haliyle takılı kalması sorunu giderildi."
+        ]
+      },
+      {
         "date": "28 Ağustos 2026",
         "bullets": [
           "Uygulama genelindeki butonlar ortak bir bileşene taşınarak görünüm ve davranış tutarlılığı artırıldı.",
