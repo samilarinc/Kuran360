@@ -1,5 +1,5 @@
-import { Surah, Verse } from '../types';
-import { AUDIO_FILE_FORMAT } from '../constants';
+import { Surah, Verse } from '@/types';
+import { AUDIO_FILE_FORMAT } from '@/theme';
 
 // Helper function to create a verse
 export const createVerse = (
@@ -24,7 +24,6 @@ export const createSurah = (
   number: number,
   name: string,
   arabicName: string,
-  englishName: string,
   revelationPlace: string,
   verseCount: number,
   verses: Verse[]
@@ -32,7 +31,6 @@ export const createSurah = (
   number,
   name,
   arabicName,
-  englishName,
   revelationPlace,
   verseCount,
   verses,
@@ -41,8 +39,8 @@ export const createSurah = (
 // Future: You can use this to bulk import verses from a CSV or JSON file
 export const importVersesFromData = (csvData: string[][]): Verse[] => {
   return csvData.map(row => createVerse(
-    parseInt(row[0]), // surah number
-    parseInt(row[1]), // verse number
+    parseInt(row[0], 10), // surah number
+    parseInt(row[1], 10), // verse number
     row[2], // arabic text
     row[3], // translation
     row[4] || ''  // transliteration
@@ -56,7 +54,6 @@ export const ADDITIONAL_SURAHS: Partial<Surah>[] = [
     number: 3,
     name: 'Al-Imran',
     arabicName: 'آل عمران',
-    englishName: 'The Family of Imran',
     revelationPlace: 'Medina',
     verseCount: 200,
     verses: [],
@@ -65,7 +62,6 @@ export const ADDITIONAL_SURAHS: Partial<Surah>[] = [
     number: 4,
     name: 'An-Nisa',
     arabicName: 'النساء',
-    englishName: 'The Women',
     revelationPlace: 'Medina',
     verseCount: 176,
     verses: [],

@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, TextInput, Alert } from 'react-native';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { useAuth } from '../contexts/AuthContext';
-import { useUserData } from '../contexts/UserDataContext';
-import { useTheme, Theme } from '../contexts/ThemeContext';
-import { SPACING, FONT_SIZES } from '../constants';
-import { auth } from '../services/firebase';
-import { GoogleAuthProvider, signInWithPopup, signInWithCredential } from 'firebase/auth';
-import Constants from 'expo-constants';
+import React, { useState, useMemo } from 'react';
+import { View, Text, SafeAreaView, TouchableOpacity, Image, ScrollView, TextInput, Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { AppHeader } from '@/components/AppHeader';
+import { AppButton } from '@/components/AppButton';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUserData } from '@/contexts/UserDataContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { SPACING } from '@/theme';
+import { createCommonStyles } from '@/theme/common.styles';
+import { createStyles } from './ProfileScreen.styles';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { user, userProfile, signOutUser, updateDisplayName, signInWithGoogle } = useAuth();
     const { bookmarks, lastRead, removeBookmark } = useUserData();
     const { theme } = useTheme();
+    const { t, i18n } = useTranslation();
+    const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
     const [isEditingName, setIsEditingName] = useState(false);
     const [newDisplayName, setNewDisplayName] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
@@ -24,12 +28,12 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
 
     const handleSaveName = async () => {
         if (!newDisplayName.trim()) {
-            Alert.alert('Hata', 'Kullanıcı adı boş olamaz.');
+            Alert.alert(t('profileScreen.nameEmptyTitle'), t('profileScreen.nameEmptyMessage'));
             return;
         }
 
         if (newDisplayName.trim().length < 2) {
-            Alert.alert('Hata', 'Kullanıcı adı en az 2 karakter olmalıdır.');
+            Alert.alert(t('profileScreen.nameEmptyTitle'), t('profileScreen.nameTooShortMessage'));
             return;
         }
 
@@ -37,10 +41,10 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
         try {
             await updateDisplayName(newDisplayName.trim());
             setIsEditingName(false);
-            Alert.alert('Başarılı', 'Kullanıcı adınız güncellendi.');
+            Alert.alert(t('profileScreen.nameUpdatedTitle'), t('profileScreen.nameUpdatedMessage'));
         } catch (error) {
             console.error('Error updating display name:', error);
-            Alert.alert('Hata', 'Kullanıcı adı güncellenirken bir hata oluştu.');
+            Alert.alert(t('profileScreen.nameEmptyTitle'), t('profileScreen.nameUpdateErrorMessage'));
         } finally {
             setIsUpdating(false);
         }
@@ -69,125 +73,129 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
 
     const renderBookmark = ({ item }: { item: any }) => (
         <TouchableOpacity
-            style={createStyles(theme).listItem}
+            style={styles.listItem}
             onPress={() => handleBookmarkPress(item)}
         >
-            <View style={createStyles(theme).listItemContent}>
-                <Text style={createStyles(theme).listItemTitle}>
-                    {item.surahName} - Ayet {item.verseNumber}
+            <View style={styles.listItemContent}>
+                <Text style={styles.listItemTitle}>
+                    {t('profileScreen.verseLabel', { surahName: item.surahName, verseNumber: item.verseNumber })}
                 </Text>
-                <Text style={createStyles(theme).listItemSubtitle} numberOfLines={2}>
+                <Text style={styles.listItemSubtitle} numberOfLines={2}>
                     {item.verseText}
                 </Text>
             </View>
             <TouchableOpacity
-                style={createStyles(theme).removeButton}
+                style={styles.removeButton}
                 onPress={() => removeBookmark(item.id)}
             >
-                <Text style={createStyles(theme).removeButtonText}>✕</Text>
+                <Text style={styles.removeButtonText}>✕</Text>
             </TouchableOpacity>
         </TouchableOpacity>
     );
 
     const renderLastRead = ({ item }: { item: any }) => (
         <TouchableOpacity
-            style={createStyles(theme).listItem}
+            style={styles.listItem}
             onPress={() => handleLastReadPress(item)}
         >
-            <View style={createStyles(theme).listItemContent}>
-                <Text style={createStyles(theme).listItemTitle}>
-                    {item.surahName} - Ayet {item.verseNumber}
+            <View style={styles.listItemContent}>
+                <Text style={styles.listItemTitle}>
+                    {t('profileScreen.verseLabel', { surahName: item.surahName, verseNumber: item.verseNumber })}
                 </Text>
-                <Text style={createStyles(theme).listItemSubtitle} numberOfLines={2}>
+                <Text style={styles.listItemSubtitle} numberOfLines={2}>
                     {item.verseText}
                 </Text>
             </View>
-            <Text style={createStyles(theme).timeText}>
-                {new Date(item.timestamp).toLocaleDateString('tr-TR')}
+            <Text style={styles.timeText}>
+                {new Date(item.timestamp).toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'tr-TR')}
             </Text>
         </TouchableOpacity>
     );
 
     return (
-        <SafeAreaView style={createStyles(theme).container}>
-            <HeaderWithDarkModeToggle
-                title="Profil"
+        <SafeAreaView style={common.container}>
+            <AppHeader
+                title={t('screenTitles.profile')}
                 showBackButton
                 onBackPress={() => navigation.goBack()}
                 showHomeButton={true}
                 onHomePress={() => navigation.navigate('Main')}
             />
 
-            <ScrollView style={createStyles(theme).content}>
+            <ScrollView style={styles.content}>
                 {user ? (
                     <>
-                        <View style={createStyles(theme).card}>
-                            <View style={createStyles(theme).avatarRow}>
+                        <View style={common.sectionCard}>
+                            <View style={styles.avatarRow}>
                                 {user.photoURL ? (
-                                    <Image source={{ uri: user.photoURL }} style={createStyles(theme).avatar} />
+                                    <Image source={{ uri: user.photoURL }} style={styles.avatar} />
                                 ) : (
-                                    <View style={[createStyles(theme).avatar, createStyles(theme).avatarFallback]}>
-                                        <Text style={createStyles(theme).avatarInitials}>
+                                    <View style={[styles.avatar, styles.avatarFallback]}>
+                                        <Text style={styles.avatarInitials}>
                                             {(userProfile?.displayName || user.displayName)?.charAt(0) || 'U'}
                                         </Text>
                                     </View>
                                 )}
-                                <View style={{ flex: 1 }}>
+                                <View style={common.flex1}>
                                     {isEditingName ? (
-                                        <View style={createStyles(theme).editNameContainer}>
+                                        <View style={common.flex1}>
                                             <TextInput
-                                                style={createStyles(theme).nameInput}
+                                                style={styles.nameInput}
                                                 value={newDisplayName}
                                                 onChangeText={setNewDisplayName}
-                                                placeholder="Kullanıcı adını girin"
+                                                placeholder={t('profileScreen.namePlaceholder')}
                                                 placeholderTextColor={theme.textSecondary}
                                                 maxLength={50}
                                                 autoFocus
                                             />
-                                            <View style={createStyles(theme).editButtonRow}>
+                                            <View style={styles.editButtonRow}>
                                                 <TouchableOpacity
-                                                    style={[createStyles(theme).editButton, createStyles(theme).cancelButton]}
+                                                    style={[styles.editButton, styles.cancelButton]}
                                                     onPress={handleCancelEdit}
                                                     disabled={isUpdating}
                                                 >
-                                                    <Text style={createStyles(theme).cancelButtonText}>İptal</Text>
+                                                    <Text style={styles.cancelButtonText}>{t('profileScreen.cancel')}</Text>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity
-                                                    style={[createStyles(theme).editButton, createStyles(theme).saveButton]}
+                                                    style={[styles.editButton, styles.saveButton]}
                                                     onPress={handleSaveName}
                                                     disabled={isUpdating}
                                                 >
-                                                    <Text style={createStyles(theme).saveButtonText}>
-                                                        {isUpdating ? 'Kaydediliyor...' : 'Kaydet'}
+                                                    <Text style={styles.saveButtonText}>
+                                                        {isUpdating ? t('profileScreen.saving') : t('profileScreen.save')}
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
                                         </View>
                                     ) : (
-                                        <View style={createStyles(theme).nameContainer}>
-                                            <Text style={createStyles(theme).name}>
-                                                {userProfile?.displayName || user.displayName || 'İsimsiz Kullanıcı'}
+                                        <View style={styles.nameContainer}>
+                                            <Text style={styles.name}>
+                                                {userProfile?.displayName || user.displayName || t('profileScreen.defaultUserName')}
                                             </Text>
                                             <TouchableOpacity
-                                                style={createStyles(theme).editNameButton}
+                                                style={styles.editNameButton}
                                                 onPress={handleEditName}
                                             >
-                                                <Text style={createStyles(theme).editNameButtonText}>✏️</Text>
+                                                <Text style={styles.editNameButtonText}>✏️</Text>
                                             </TouchableOpacity>
                                         </View>
                                     )}
-                                    <Text style={createStyles(theme).email}>{user.email || '—'}</Text>
+                                    <Text style={styles.email}>{user.email || '—'}</Text>
                                 </View>
                             </View>
 
-                            <TouchableOpacity style={createStyles(theme).signOutBtn} onPress={signOutUser}>
-                                <Text style={createStyles(theme).signOutText}>Çıkış Yap</Text>
-                            </TouchableOpacity>
+                            <AppButton
+                                title={t('profileScreen.signOut')}
+                                onPress={signOutUser}
+                                variant="primary"
+                                size="medium"
+                                style={{ marginTop: SPACING.lg }}
+                            />
                         </View>
 
                         {/* Bookmarks Section */}
-                        <View style={createStyles(theme).section}>
-                            <Text style={createStyles(theme).sectionTitle}>Favoriler ({bookmarks.length})</Text>
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>{t('profileScreen.bookmarksTitle', { count: bookmarks.length })}</Text>
                             {bookmarks.length > 0 ? (
                                 bookmarks.map((item) => (
                                     <View key={`${item.surahNumber}-${item.verseNumber}`}>
@@ -195,13 +203,13 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                     </View>
                                 ))
                             ) : (
-                                <Text style={createStyles(theme).emptyText}>Henüz favori ayet eklenmemiş.</Text>
+                                <Text style={styles.emptyText}>{t('profileScreen.noBookmarks')}</Text>
                             )}
                         </View>
 
                         {/* Last Read Section */}
-                        <View style={createStyles(theme).section}>
-                            <Text style={createStyles(theme).sectionTitle}>Son Okuduklarım ({lastRead.length})</Text>
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>{t('profileScreen.lastReadTitle', { count: lastRead.length })}</Text>
                             {lastRead.length > 0 ? (
                                 lastRead.map((item) => (
                                     <View key={`${item.surahNumber}-${item.verseNumber}-${item.timestamp}`}>
@@ -209,166 +217,23 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                     </View>
                                 ))
                             ) : (
-                                <Text style={createStyles(theme).emptyText}>Henüz okunmuş ayet bulunmuyor.</Text>
+                                <Text style={styles.emptyText}>{t('profileScreen.noLastRead')}</Text>
                             )}
                         </View>
                     </>
                 ) : (
-                    <View style={createStyles(theme).card}>
-                        <Text style={[createStyles(theme).email, { marginBottom: SPACING.md }]}>Oturum açılmamış.</Text>
-                        <TouchableOpacity style={createStyles(theme).googleBtn} onPress={signInWithGoogle}>
-                            <Text style={createStyles(theme).googleBtnText}>Google ile Giriş Yap</Text>
-                        </TouchableOpacity>
+                    <View style={common.sectionCard}>
+                        <Text style={[styles.email, styles.notSignedInText]}>{t('profileScreen.notSignedIn')}</Text>
+                        <AppButton
+                            title={t('profileScreen.signInWithGoogle')}
+                            onPress={signInWithGoogle}
+                            variant="primary"
+                            size="medium"
+                            style={{ backgroundColor: '#DB4437' }}
+                        />
                     </View>
                 )}
             </ScrollView >
         </SafeAreaView >
     );
 };
-
-const createStyles = (theme: Theme) => StyleSheet.create({
-    container: { flex: 1, backgroundColor: theme.background },
-    content: { padding: SPACING.lg },
-    card: {
-        backgroundColor: theme.cardBackground,
-        borderRadius: 12,
-        padding: SPACING.lg,
-        borderWidth: 1,
-        borderColor: theme.border,
-    },
-    avatarRow: { flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.md },
-    avatar: { width: 64, height: 64, borderRadius: 32, marginRight: SPACING.md },
-    avatarFallback: { backgroundColor: theme.primary + '20', alignItems: 'center', justifyContent: 'center' },
-    avatarInitials: { fontSize: 24, color: theme.primary, fontWeight: '700' },
-    nameContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
-    name: { fontSize: FONT_SIZES.large, color: theme.text, fontWeight: '600', flex: 1 },
-    email: { fontSize: FONT_SIZES.small, color: theme.secondary },
-    editNameButton: {
-        padding: SPACING.xs,
-        marginLeft: SPACING.sm,
-        backgroundColor: theme.surface,
-        borderRadius: 6,
-        borderWidth: 1,
-        borderColor: theme.border,
-    },
-    editNameButtonText: {
-        fontSize: 14,
-    },
-    editNameContainer: {
-        flex: 1,
-    },
-    nameInput: {
-        fontSize: FONT_SIZES.large,
-        color: theme.text,
-        fontWeight: '600',
-        borderWidth: 1,
-        borderColor: theme.border,
-        borderRadius: 8,
-        padding: SPACING.sm,
-        backgroundColor: theme.surface,
-        marginBottom: SPACING.sm,
-    },
-    editButtonRow: {
-        flexDirection: 'row',
-        gap: SPACING.sm,
-    },
-    editButton: {
-        flex: 1,
-        paddingVertical: SPACING.xs,
-        paddingHorizontal: SPACING.sm,
-        borderRadius: 6,
-        alignItems: 'center',
-    },
-    cancelButton: {
-        backgroundColor: theme.surface,
-        borderWidth: 1,
-        borderColor: theme.border,
-    },
-    cancelButtonText: {
-        color: theme.textSecondary,
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-    },
-    saveButton: {
-        backgroundColor: theme.primary,
-    },
-    saveButtonText: {
-        color: '#fff',
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-    },
-    signOutBtn: {
-        marginTop: SPACING.lg,
-        backgroundColor: theme.primary,
-        paddingVertical: SPACING.sm,
-        borderRadius: 8,
-        alignItems: 'center',
-    },
-    signOutText: { color: '#fff', fontWeight: '600' },
-    googleBtn: {
-        backgroundColor: '#DB4437',
-        paddingVertical: SPACING.sm,
-        borderRadius: 8,
-        alignItems: 'center',
-    },
-    googleBtnText: { color: '#fff', fontWeight: '600' },
-    section: {
-        marginTop: SPACING.lg,
-        backgroundColor: theme.cardBackground,
-        borderRadius: 12,
-        padding: SPACING.lg,
-        borderWidth: 1,
-        borderColor: theme.border,
-    },
-    sectionTitle: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: '600',
-        color: theme.text,
-        marginBottom: SPACING.md,
-    },
-    listItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: SPACING.sm,
-        backgroundColor: theme.surface,
-        borderRadius: 8,
-        marginBottom: SPACING.sm,
-        borderWidth: 1,
-        borderColor: theme.border,
-    },
-    listItemContent: {
-        flex: 1,
-        marginRight: SPACING.sm,
-    },
-    listItemTitle: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-        color: theme.text,
-        marginBottom: 4,
-    },
-    listItemSubtitle: {
-        fontSize: FONT_SIZES.small,
-        color: theme.textSecondary,
-        lineHeight: FONT_SIZES.small * 1.4,
-    },
-    removeButton: {
-        padding: SPACING.xs,
-        backgroundColor: theme.accent,
-        borderRadius: 6,
-    },
-    removeButtonText: {
-        fontSize: 16,
-    },
-    timeText: {
-        fontSize: FONT_SIZES.small,
-        color: theme.textSecondary,
-        fontStyle: 'italic',
-    },
-    emptyText: {
-        fontSize: FONT_SIZES.medium,
-        color: theme.textSecondary,
-        textAlign: 'center',
-        fontStyle: 'italic',
-        paddingVertical: SPACING.lg,
-    },
-});

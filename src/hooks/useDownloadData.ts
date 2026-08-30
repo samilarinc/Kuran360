@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-import { isDataCached, loadAllVerses, ProgressCallback } from '../data/quranData';
+import { isDataCached, loadAllVerses, ProgressCallback } from '@/data/quranData';
 
 interface UseDownloadDataOptions {
     isDataAvailable: boolean;

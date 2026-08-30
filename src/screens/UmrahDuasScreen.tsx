@@ -5,11 +5,12 @@ import {
     TouchableOpacity,
     SafeAreaView,
     ScrollView,
-    StyleSheet,
 } from 'react-native';
-import { AppHeader } from '../components/AppHeader';
-import { useTheme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../theme';
+import { useTranslation } from 'react-i18next';
+import { AppHeader } from '@/components/AppHeader';
+import { useTheme } from '@/contexts/ThemeContext';
+import { createCommonStyles } from '@/theme/common.styles';
+import { createStyles } from './UmrahDuasScreen.styles';
 
 interface UmrahDuasScreenProps {
     onNavigate: () => void;
@@ -242,6 +243,7 @@ const UMRAH_DUAS: DuaCategory[] = [
 
 export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
     const [expandedDua, setExpandedDua] = useState<string | null>(null);
 
@@ -254,53 +256,49 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
     };
 
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={common.container}>
             <AppHeader
-                title="Umre Duaları"
+                title={t('screenTitles.umrahDuas')}
                 showBackButton={true}
                 onBackPress={onNavigate}
+                showHomeButton={true}
+                onHomePress={onNavigate}
             />
             <ScrollView style={styles.content}>
-                <Text style={[styles.description, { color: theme.textSecondary }]}>
-                    Umre ibadetiniz sırasında okuyabileceğiniz dualar
-                </Text>
-
                 {UMRAH_DUAS.map(category => (
                     <View key={category.id} style={styles.categoryContainer}>
                         <TouchableOpacity
-                            style={[
-                                styles.categoryHeader,
-                                { backgroundColor: theme.cardBackground, borderColor: theme.border }
-                            ]}
+                            style={styles.categoryHeader}
                             onPress={() => toggleCategory(category.id)}
                         >
                             <View style={styles.categoryTitleContainer}>
-                                <Text style={[styles.categoryTitle, { color: theme.text }]}>
+                                <Text style={styles.categoryTitle}>
                                     {category.title}
                                 </Text>
-                                <Text style={[styles.categoryCount, { color: theme.textSecondary }]}>
+                                <Text style={common.smallText}>
                                     ({category.duas.length})
                                 </Text>
                             </View>
-                            <Text style={[styles.expandIcon, { color: theme.textSecondary }]}>
+                            <Text style={common.subtitle}>
                                 {expandedCategory === category.id ? '▼' : '▶'}
                             </Text>
                         </TouchableOpacity>
 
                         {expandedCategory === category.id && (
-                            <View style={[styles.duasContainer, { backgroundColor: theme.surface }]}>
+                            <View style={styles.duasContainer}>
                                 {category.duas.map(dua => (
                                     <View key={dua.id} style={styles.duaItem}>
                                         <TouchableOpacity
-                                            style={[styles.duaHeader, { borderColor: theme.border }]}
+                                            style={styles.duaHeader}
                                             onPress={() => toggleDua(dua.id)}
                                         >
-                                            <Text style={[styles.duaTitle, { color: theme.primary }]}>
+                                            <Text style={styles.duaTitle}>
                                                 {dua.title}
                                             </Text>
-                                            <Text style={[styles.expandIcon, { color: theme.textSecondary }]}>
+                                            <Text style={common.subtitle}>
                                                 {expandedDua === dua.id ? '▲' : '▼'}
                                             </Text>
                                         </TouchableOpacity>
@@ -308,28 +306,28 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
                                         {expandedDua === dua.id && (
                                             <View style={styles.duaContent}>
                                                 <View style={styles.textBlock}>
-                                                    <Text style={[styles.label, { color: theme.textSecondary }]}>
-                                                        Arapça:
+                                                    <Text style={styles.label}>
+                                                        {t('umrahDuasScreen.arabicLabel')}
                                                     </Text>
-                                                    <Text style={[styles.arabicText, { color: theme.text }]}>
+                                                    <Text style={styles.arabicText}>
                                                         {dua.arabic}
                                                     </Text>
                                                 </View>
 
                                                 <View style={styles.textBlock}>
-                                                    <Text style={[styles.label, { color: theme.textSecondary }]}>
-                                                        Okunuşu:
+                                                    <Text style={styles.label}>
+                                                        {t('umrahDuasScreen.transliterationLabel')}
                                                     </Text>
-                                                    <Text style={[styles.transliterationText, { color: theme.text }]}>
+                                                    <Text style={styles.transliterationText}>
                                                         {dua.transliteration}
                                                     </Text>
                                                 </View>
 
                                                 <View style={styles.textBlock}>
-                                                    <Text style={[styles.label, { color: theme.textSecondary }]}>
-                                                        Anlamı:
+                                                    <Text style={styles.label}>
+                                                        {t('umrahDuasScreen.meaningLabel')}
                                                     </Text>
-                                                    <Text style={[styles.turkishText, { color: theme.text }]}>
+                                                    <Text style={styles.turkishText}>
                                                         {dua.turkish}
                                                     </Text>
                                                 </View>
@@ -345,91 +343,3 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
         </SafeAreaView>
     );
 };
-
-const createStyles = (theme: any) => StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    content: {
-        flex: 1,
-        padding: SPACING.md,
-    },
-    description: {
-        fontSize: FONT_SIZES.medium,
-        marginBottom: SPACING.lg,
-        textAlign: 'center',
-        fontStyle: 'italic',
-    },
-    categoryContainer: {
-        marginBottom: SPACING.md,
-    },
-    categoryHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: SPACING.md,
-        borderRadius: 12,
-        borderWidth: 1,
-    },
-    categoryTitleContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    categoryTitle: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: 'bold',
-        marginRight: SPACING.xs,
-    },
-    categoryCount: {
-        fontSize: FONT_SIZES.small,
-    },
-    expandIcon: {
-        fontSize: FONT_SIZES.medium,
-    },
-    duasContainer: {
-        marginTop: SPACING.sm,
-        borderRadius: 12,
-        overflow: 'hidden',
-    },
-    duaItem: {
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(0,0,0,0.1)',
-    },
-    duaHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: SPACING.md,
-    },
-    duaTitle: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-        flex: 1,
-    },
-    duaContent: {
-        padding: SPACING.md,
-        paddingTop: 0,
-    },
-    textBlock: {
-        marginBottom: SPACING.md,
-    },
-    label: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: 'bold',
-        marginBottom: SPACING.xs,
-    },
-    arabicText: {
-        fontSize: FONT_SIZES.xlarge,
-        textAlign: 'right',
-        lineHeight: 36,
-    },
-    transliterationText: {
-        fontSize: FONT_SIZES.medium,
-        fontStyle: 'italic',
-        lineHeight: 24,
-    },
-    turkishText: {
-        fontSize: FONT_SIZES.medium,
-        lineHeight: 24,
-    },
-});

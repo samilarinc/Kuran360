@@ -1,22 +1,24 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
     View,
     Text,
     ScrollView,
     TouchableOpacity,
-    ActivityIndicator,
     Alert,
     Platform,
-    TextInput,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
-import { useSettings } from '../contexts/SettingsContext';
-import { useTheme } from '../contexts/ThemeContext';
-import { AppHeader } from '../components/AppHeader';
-import { SPACING, FONT_SIZES } from '../theme';
-import { PrayerTime } from '../types';
-import locations from '../data/locations.json';
+import { useTranslation } from 'react-i18next';
+import { useSettings } from '@/contexts/SettingsContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { AppHeader } from '@/components/AppHeader';
+import { AppButton } from '@/components/AppButton';
+import { LoadingView } from '@/components/LoadingView';
+import { SearchInput } from '@/components/SearchInput';
+import { PrayerTime } from '@/types';
+import locations from '@/data/locations.json';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './PrayerTimesScreen.styles';
 
 interface Location {
@@ -28,9 +30,11 @@ interface Location {
 
 export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
     const { settings, updateSettings } = useSettings();
-    const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
+    const [, setPrayerTimes] = useState<PrayerTime[]>([]);
     const [loading, setLoading] = useState(true);
     const [todayTimes, setTodayTimes] = useState<PrayerTime | null>(null);
     const [nextPrayer, setNextPrayer] = useState<{ label: string, time: string, remaining: string } | null>(null);
@@ -38,21 +42,65 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     const [showLocationPicker, setShowLocationPicker] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Load prayer times when location changes
-    useEffect(() => {
-        loadPrayerTimes();
-    }, [settings.prayerLocation?.id]);
+    const updatePrayerStatus = useCallback((times: PrayerTime | null = todayTimes) => {
+        if (!times) return;
 
-    // Update prayer status periodically
-    useEffect(() => {
-        updatePrayerStatus();
-        const timer = setInterval(() => {
-            updatePrayerStatus();
-        }, 60000);
-        return () => clearInterval(timer);
-    }, [todayTimes]);
+        const now = new Date();
+        const currentTime = now.getHours() * 60 + now.getMinutes();
 
-    const loadPrayerTimes = async () => {
+        const parseTime = (timeStr: string) => {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            return hours * 60 + minutes;
+        };
+
+        const prayerSchedule = [
+            { key: 'imsak', time: times.imsak },
+            { key: 'gunes', time: times.gunes },
+            { key: 'ogle', time: times.ogle },
+            { key: 'ikindi', time: times.ikindi },
+            { key: 'aksam', time: times.aksam },
+            { key: 'yatsi', time: times.yatsi },
+        ];
+
+        let current = 'yatsi';
+        let nextIndex = 0;
+
+        for (let i = 0; i < prayerSchedule.length; i++) {
+            const time = parseTime(prayerSchedule[i].time);
+            if (currentTime < time) {
+                nextIndex = i;
+                current = i === 0 ? 'yatsi' : prayerSchedule[i - 1].key;
+                break;
+            }
+            if (i === prayerSchedule.length - 1) {
+                nextIndex = 0; // Next is tomorrow's Imsak
+                current = 'yatsi';
+            }
+        }
+
+        setCurrentPrayerLabel(current);
+
+        const next = prayerSchedule[nextIndex];
+        let nextTimeMinutes = parseTime(next.time);
+
+        if (nextIndex === 0 && currentTime >= parseTime(prayerSchedule[prayerSchedule.length - 1].time)) {
+            nextTimeMinutes += 24 * 60; // Tomorrow's Imsak
+        }
+
+        const diffMinutes = nextTimeMinutes - currentTime;
+        const hours = Math.floor(diffMinutes / 60);
+        const mins = diffMinutes % 60;
+
+        setNextPrayer({
+            label: next.key,
+            time: next.time,
+            remaining: hours > 0
+                ? t('prayerTimesScreen.remainingHoursMinutes', { hours, minutes: mins })
+                : t('prayerTimesScreen.remainingMinutes', { minutes: mins })
+        });
+    }, [todayTimes, t]);
+
+    const loadPrayerTimes = useCallback(async () => {
         const locationId = settings.prayerLocation?.id || '9541'; // Default to Istanbul
         const selectedLocation = (locations as Location[]).find(l => l.id === locationId);
 
@@ -73,7 +121,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
             const oneDay = 1000 * 60 * 60 * 24;
             const dayOfYear = Math.floor(diff / oneDay);
 
-            const today = data.find((t: PrayerTime) => t.date_index === dayOfYear);
+            const today = data.find((pt: PrayerTime) => pt.date_index === dayOfYear);
             setTodayTimes(today || data[0]);
             updatePrayerStatus(today || data[0]);
         } catch (error) {
@@ -81,14 +129,28 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
         } finally {
             setLoading(false);
         }
-    };
+    }, [settings.prayerLocation?.id, updatePrayerStatus]);
+
+    // Load prayer times when location changes
+    useEffect(() => {
+        loadPrayerTimes();
+    }, [loadPrayerTimes]);
+
+    // Update prayer status periodically
+    useEffect(() => {
+        updatePrayerStatus();
+        const timer = setInterval(() => {
+            updatePrayerStatus();
+        }, 60000);
+        return () => clearInterval(timer);
+    }, [updatePrayerStatus]);
 
     const handleUseGPS = async () => {
         setLoading(true);
         try {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                Alert.alert('İzin Reddedildi', 'Konumunuza erişmek için izin vermeniz gerekmektedir.');
+                Alert.alert(t('prayerTimesScreen.permissionDeniedTitle'), t('prayerTimesScreen.permissionDeniedMessage'));
                 return;
             }
 
@@ -150,10 +212,10 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
 
                 // Phase 1: Exact match on district or city
                 for (const term of searchTerms) {
-                    const normalizedTerm = term.toLowerCase();
+                    const normalizedTerm = term.toLocaleLowerCase('tr');
                     bestMatch = locs.find(l =>
-                        l.districtName?.toLowerCase() === normalizedTerm ||
-                        (l.cityName.toLowerCase() === normalizedTerm && !l.districtName)
+                        l.districtName?.toLocaleLowerCase('tr') === normalizedTerm ||
+                        (l.cityName.toLocaleLowerCase('tr') === normalizedTerm && !l.districtName)
                     );
                     if (bestMatch) break;
                 }
@@ -161,10 +223,10 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                 // Phase 2: Fuzzy match if exact failed
                 if (!bestMatch) {
                     for (const term of searchTerms) {
-                        const normalizedTerm = term.toLowerCase();
+                        const normalizedTerm = term.toLocaleLowerCase('tr');
                         bestMatch = locs.find(l =>
-                            (l.districtName && normalizedTerm.includes(l.districtName.toLowerCase())) ||
-                            normalizedTerm.includes(l.cityName.toLowerCase())
+                            (l.districtName && normalizedTerm.includes(l.districtName.toLocaleLowerCase('tr'))) ||
+                            normalizedTerm.includes(l.cityName.toLocaleLowerCase('tr'))
                         );
                         if (bestMatch) break;
                     }
@@ -174,74 +236,18 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                     handleSelectLocation(bestMatch);
                 } else {
                     Alert.alert(
-                        'Konum Bulunamadı',
-                        `Tespit edilen konum (${searchTerms[0] || 'Bilinmiyor'}) için uygun bir vakit dosyası bulunamadı. Lütfen listeden manuel seçiniz.`,
-                        [{ text: 'Tamam' }]
+                        t('prayerTimesScreen.locationNotFoundTitle'),
+                        t('prayerTimesScreen.locationNotFoundMessage', { term: searchTerms[0] || t('prayerTimesScreen.unknown') }),
+                        [{ text: t('prayerTimesScreen.ok') }]
                     );
                 }
             }
         } catch (error) {
             console.error('Error getting location:', error);
-            Alert.alert('Hata', 'Konum bilgisi alınamadı.');
+            Alert.alert(t('prayerTimesScreen.errorTitle'), t('prayerTimesScreen.locationErrorMessage'));
         } finally {
             setLoading(false);
         }
-    };
-
-    const updatePrayerStatus = (times: PrayerTime | null = todayTimes) => {
-        if (!times) return;
-
-        const now = new Date();
-        const currentTime = now.getHours() * 60 + now.getMinutes();
-
-        const parseTime = (timeStr: string) => {
-            const [hours, minutes] = timeStr.split(':').map(Number);
-            return hours * 60 + minutes;
-        };
-
-        const prayerSchedule = [
-            { label: 'İmsak', time: times.imsak },
-            { label: 'Güneş', time: times.gunes },
-            { label: 'Öğle', time: times.ogle },
-            { label: 'İkindi', time: times.ikindi },
-            { label: 'Akşam', time: times.aksam },
-            { label: 'Yatsı', time: times.yatsi },
-        ];
-
-        let current = 'Yatsı';
-        let nextIndex = 0;
-
-        for (let i = 0; i < prayerSchedule.length; i++) {
-            const time = parseTime(prayerSchedule[i].time);
-            if (currentTime < time) {
-                nextIndex = i;
-                current = i === 0 ? 'Yatsı' : prayerSchedule[i - 1].label;
-                break;
-            }
-            if (i === prayerSchedule.length - 1) {
-                nextIndex = 0; // Next is tomorrow's Imsak
-                current = 'Yatsı';
-            }
-        }
-
-        setCurrentPrayerLabel(current);
-
-        const next = prayerSchedule[nextIndex];
-        let nextTimeMinutes = parseTime(next.time);
-
-        if (nextIndex === 0 && currentTime >= parseTime(prayerSchedule[prayerSchedule.length - 1].time)) {
-            nextTimeMinutes += 24 * 60; // Tomorrow's Imsak
-        }
-
-        const diffMinutes = nextTimeMinutes - currentTime;
-        const hours = Math.floor(diffMinutes / 60);
-        const mins = diffMinutes % 60;
-
-        setNextPrayer({
-            label: next.label,
-            time: next.time,
-            remaining: `${hours > 0 ? `${hours} sa ` : ''}${mins} dk`
-        });
     };
 
     const handleSelectLocation = (location: Location) => {
@@ -257,15 +263,15 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
 
     const filteredLocations = useMemo(() => {
         if (!searchQuery) return (locations as Location[]).slice(0, 50);
-        const query = searchQuery.toLowerCase();
+        const query = searchQuery.toLocaleLowerCase('tr');
         return (locations as Location[]).filter(l =>
-            l.cityName.toLowerCase().includes(query) ||
-            (l.districtName && l.districtName.toLowerCase().includes(query))
+            l.cityName.toLocaleLowerCase('tr').includes(query) ||
+            (l.districtName && l.districtName.toLocaleLowerCase('tr').includes(query))
         ).slice(0, 50);
     }, [searchQuery]);
 
-    const renderTimeRow = (label: string, time: string, icon: string) => {
-        const isCurrent = currentPrayerLabel === label;
+    const renderTimeRow = (key: string, time: string, icon: string) => {
+        const isCurrent = currentPrayerLabel === key;
         return (
             <View style={[
                 styles.timeRow,
@@ -278,7 +284,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                         styles.timeLabel,
                         { color: theme.textSecondary },
                         isCurrent && [styles.currentTimeLabel, { color: theme.primary }]
-                    ]}>{label}</Text>
+                    ]}>{t(`prayerTimesScreen.prayers.${key}`)}</Text>
                 </View>
                 <Text style={[
                     styles.timeValue,
@@ -290,19 +296,17 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     };
 
     if (loading && !todayTimes) {
-        return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color={theme.primary} />
-            </View>
-        );
+        return <LoadingView />;
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.background }]}>
+        <View style={[common.container, { backgroundColor: theme.background }]}>
             <AppHeader
-                title="Ezan Vakitleri"
+                title={t('screenTitles.prayerTimes')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
             />
 
             <ScrollView contentContainerStyle={styles.content}>
@@ -313,15 +317,21 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                             {settings.prayerLocation?.districtName ? `, ${settings.prayerLocation.districtName}` : ''}
                         </Text>
                         <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity
+                            <AppButton
                                 onPress={() => setShowLocationPicker(true)}
-                                style={[styles.gpsButton, { marginRight: 8, backgroundColor: 'rgba(255,255,255,0.2)' }]}
-                            >
-                                <Ionicons name="search" size={24} color="#FFF" />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleUseGPS} style={styles.gpsButton}>
-                                <Ionicons name="locate" size={24} color="#FFF" />
-                            </TouchableOpacity>
+                                variant="translucent"
+                                shape="circle"
+                                size="small"
+                                icon={<Ionicons name="search" size={24} color="#FFF" />}
+                                style={{ marginRight: 8 }}
+                            />
+                            <AppButton
+                                onPress={handleUseGPS}
+                                variant="translucent"
+                                shape="circle"
+                                size="small"
+                                icon={<Ionicons name="locate" size={24} color="#FFF" />}
+                            />
                         </View>
                     </View>
                     <Text style={[styles.dateText, { color: 'rgba(255,255,255,0.9)' }]}>{todayTimes?.miladi}</Text>
@@ -331,18 +341,18 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                 <View style={[styles.timesCard, { backgroundColor: theme.cardBackground }]}>
                     {nextPrayer && (
                         <View style={[styles.nextPrayerInfo, { borderBottomColor: theme.border }]}>
-                            <Text style={[styles.nextPrayerLabel, { color: theme.textSecondary }]}>{nextPrayer.label} vaktine kalan süre</Text>
+                            <Text style={[styles.nextPrayerLabel, { color: theme.textSecondary }]}>{t('prayerTimesScreen.timeRemaining', { label: t(`prayerTimesScreen.prayers.${nextPrayer.label}`) })}</Text>
                             <Text style={[styles.remainingTime, { color: theme.primary }]}>{nextPrayer.remaining}</Text>
                         </View>
                     )}
                     {todayTimes && (
                         <>
-                            {renderTimeRow('İmsak', todayTimes.imsak, 'sunny-outline')}
-                            {renderTimeRow('Güneş', todayTimes.gunes, 'sunny')}
-                            {renderTimeRow('Öğle', todayTimes.ogle, 'partly-sunny')}
-                            {renderTimeRow('İkindi', todayTimes.ikindi, 'cloudy-night-outline')}
-                            {renderTimeRow('Akşam', todayTimes.aksam, 'moon-outline')}
-                            {renderTimeRow('Yatsı', todayTimes.yatsi, 'moon')}
+                            {renderTimeRow('imsak', todayTimes.imsak, 'sunny-outline')}
+                            {renderTimeRow('gunes', todayTimes.gunes, 'sunny')}
+                            {renderTimeRow('ogle', todayTimes.ogle, 'partly-sunny')}
+                            {renderTimeRow('ikindi', todayTimes.ikindi, 'cloudy-night-outline')}
+                            {renderTimeRow('aksam', todayTimes.aksam, 'moon-outline')}
+                            {renderTimeRow('yatsi', todayTimes.yatsi, 'moon')}
                         </>
                     )}
                 </View>
@@ -351,25 +361,22 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
             </ScrollView>
 
             {showLocationPicker && (
-                <View style={styles.modalOverlay}>
+                <View style={common.modalOverlay}>
                     <View style={[styles.modalContent, { backgroundColor: theme.cardBackground }]}>
                         <View style={styles.modalHeader}>
-                            <Text style={[styles.modalTitle, { color: theme.text }]}>Konum Seç</Text>
+                            <Text style={[styles.modalTitle, { color: theme.text }]}>{t('prayerTimesScreen.selectLocation')}</Text>
                             <TouchableOpacity onPress={() => setShowLocationPicker(false)}>
                                 <Ionicons name="close" size={24} color={theme.text} />
                             </TouchableOpacity>
                         </View>
-                        <View style={[styles.searchContainer, { backgroundColor: theme.background }]}>
-                            <Ionicons name="search" size={20} color={theme.textSecondary} style={styles.searchIcon} />
-                            <TextInput
-                                style={[styles.searchInput, { color: theme.text }]}
-                                placeholder="Şehir veya ilçe ara..."
-                                placeholderTextColor={theme.textSecondary}
-                                value={searchQuery}
-                                onChangeText={setSearchQuery}
-                            />
-                        </View>
-                        <ScrollView style={styles.locationList}>
+                        <SearchInput
+                            style={[styles.searchContainer, { backgroundColor: theme.background }]}
+                            icon
+                            value={searchQuery}
+                            onChangeText={setSearchQuery}
+                            placeholder={t('prayerTimesScreen.searchPlaceholder')}
+                        />
+                        <ScrollView style={common.flex1}>
                             {filteredLocations.map((loc) => (
                                 <TouchableOpacity
                                     key={loc.id}

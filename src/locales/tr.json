@@ -1,0 +1,795 @@
+{
+  "header": {
+    "backButton": "Geri",
+    "homeButton": "Ana Sayfa"
+  },
+  "screenTitles": {
+    "about": "Hakkında",
+    "hatim": "Hatimler",
+    "forum": "Forum",
+    "forumThread": "Forum Konusu",
+    "duaRequest": "Dua İsteği Gönder",
+    "duaList": "Dua Listem",
+    "randomVerse": "Rastgele Ayet",
+    "profile": "Profil",
+    "allTranslations": "Bütün Mealler",
+    "umrahChecklist": "Umre Hazırlık Listesi",
+    "umrahMenu": "Umre Rehberi",
+    "umrahProgress": "Şu an neredeyim?",
+    "umrahDuas": "Umre Duaları",
+    "prayerTimes": "Ezan Vakitleri",
+    "hutbe": "Cuma Hutbesi"
+  },
+  "allTranslationsScreen": {
+    "noTranslationsFound": "Bu ayet için meal bulunamadı.",
+    "verseSubtitle": "{{surahName}} - {{verseNumber}}. Ayet",
+    "verseBadge": "{{verseNumber}}. Ayet",
+    "share": "Paylaş"
+  },
+  "profileScreen": {
+    "nameEmptyTitle": "Hata",
+    "nameEmptyMessage": "Kullanıcı adı boş olamaz.",
+    "nameTooShortMessage": "Kullanıcı adı en az 2 karakter olmalıdır.",
+    "nameUpdatedTitle": "Başarılı",
+    "nameUpdatedMessage": "Kullanıcı adınız güncellendi.",
+    "nameUpdateErrorMessage": "Kullanıcı adı güncellenirken bir hata oluştu.",
+    "verseLabel": "{{surahName}} - Ayet {{verseNumber}}",
+    "namePlaceholder": "Kullanıcı adını girin",
+    "cancel": "İptal",
+    "saving": "Kaydediliyor...",
+    "save": "Kaydet",
+    "defaultUserName": "İsimsiz Kullanıcı",
+    "signOut": "Çıkış Yap",
+    "bookmarksTitle": "Favoriler ({{count}})",
+    "noBookmarks": "Henüz favori ayet eklenmemiş.",
+    "lastReadTitle": "Son Okuduklarım ({{count}})",
+    "noLastRead": "Henüz okunmuş ayet bulunmuyor.",
+    "notSignedIn": "Oturum açılmamış.",
+    "signInWithGoogle": "Google ile Giriş Yap"
+  },
+  "prayerTimesScreen": {
+    "permissionDeniedTitle": "İzin Reddedildi",
+    "permissionDeniedMessage": "Konumunuza erişmek için izin vermeniz gerekmektedir.",
+    "locationNotFoundTitle": "Konum Bulunamadı",
+    "locationNotFoundMessage": "Tespit edilen konum ({{term}}) için uygun bir vakit dosyası bulunamadı. Lütfen listeden manuel seçiniz.",
+    "unknown": "Bilinmiyor",
+    "ok": "Tamam",
+    "errorTitle": "Hata",
+    "locationErrorMessage": "Konum bilgisi alınamadı.",
+    "prayers": {
+      "imsak": "İmsak",
+      "gunes": "Güneş",
+      "ogle": "Öğle",
+      "ikindi": "İkindi",
+      "aksam": "Akşam",
+      "yatsi": "Yatsı"
+    },
+    "timeRemaining": "{{label}} vaktine kalan süre",
+    "remainingHoursMinutes": "{{hours}} sa {{minutes}} dk",
+    "remainingMinutes": "{{minutes}} dk",
+    "selectLocation": "Konum Seç",
+    "searchPlaceholder": "Şehir veya ilçe ara..."
+  },
+  "randomVerseScreen": {
+    "loading": "Rastgele ayet yükleniyor...",
+    "loadError": "Ayet yüklenemedi",
+    "retry": "Tekrar Dene",
+    "verseBadge": "AYET",
+    "surahLabel": "{{number}}. Sure",
+    "placeLabel": "{{place}}",
+    "verseCountLabel": "{{count}} Ayet",
+    "newVerseButton": "Yeni Rastgele Ayet"
+  },
+  "duaListScreen": {
+    "topicRequired": "Lütfen bir konu girin",
+    "nameRequired": "Lütfen bir isim girin",
+    "errorTitle": "Hata",
+    "deleteConfirm": "Bu duayı silmek istediğinizden emin misiniz?",
+    "deleteTitle": "Sil",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "signInToShare": "Link oluşturmak için giriş yapmalısınız",
+    "linkCopiedTitle": "Başarılı",
+    "linkCopiedMessage": "Dua isteme linki kopyalandı! Bu linki arkadaşlarınıza göndererek onlardan dua isteği alabilirsiniz.",
+    "shareLinkTitle": "Dua İsteme Linki",
+    "shareLinkMessage": "Link: {{link}}\n\nBu linki kopyalayıp arkadaşlarınıza gönderebilirsiniz.",
+    "ok": "Tamam",
+    "rejectConfirm": "Bu dua isteğini reddetmek istediğinizden emin misiniz?",
+    "rejectTitle": "Reddet",
+    "giveUp": "Vazgeç",
+    "reject": "Reddet",
+    "shareBoxText": "Linki Paylaş Dua İsteği Topla",
+    "copy": "Kopyala",
+    "newRequests": "Yeni Dua İstekleri ({{count}})",
+    "accept": "Kabul Et",
+    "personalTitle": "Kendim İçin Dualarım",
+    "personalTopicPlaceholder": "Dua konusu (örn: Sağlık, kariyer...)",
+    "add": "Ekle",
+    "noPersonalDuas": "Henüz kişisel dua eklenmedi",
+    "othersTitle": "Başkaları İçin Dualarım",
+    "personPlaceholder": "Kimin için? (örn: Anne, arkadaş...)",
+    "othersTopicPlaceholder": "Hangi konu? (örn: Sağlık, huzur...)",
+    "noOthersDuas": "Henüz başkaları için dua eklenmedi"
+  },
+  "duaRequestScreen": {
+    "unknownUser": "Bilinmeyen Kullanıcı",
+    "errorTitle": "Hata",
+    "fillAllFields": "Lütfen tüm alanları doldurun",
+    "submitError": "Dua isteği gönderilemedi. Lütfen tekrar deneyin.",
+    "successTitle": "Dua İsteğiniz İletildi",
+    "successMessage": "{{name}} isimli kullanıcıya dua isteğiniz başarıyla gönderildi. Allah dualarınızı kabul eylesin.",
+    "backHome": "Ana Sayfaya Dön",
+    "sendingToPrefix": "",
+    "sendingToSuffix": "isimli kullanıcıya dua isteği göndermek üzeresiniz.",
+    "nameLabel": "İsminiz",
+    "namePlaceholder": "Adınız ve Soyadınız",
+    "topicLabel": "Dua Konusu veya Özel Duanız",
+    "topicPlaceholder": "Neyin için dua edilmesini istersiniz?",
+    "submit": "Dua İsteğini Gönder",
+    "footer": "Bu istek, kullanıcının \"Başkaları İçin Dualarım\" sekmesinde görünecek ve kabul edildiğinde listesine eklenecektir."
+  },
+  "forumScreen": {
+    "titleLabel": "Başlık",
+    "titlePlaceholder": "Soru başlığı",
+    "bodyLabel": "İçerik",
+    "bodyPlaceholder": "Sorunuzu yazın...",
+    "mentionLabel": "Ayet Bağlantısı (Sure:Ayet)",
+    "mentionPlaceholder": "örn. 2:255",
+    "createThread": "Konu Oluştur",
+    "signInToPost": "Girmek için oturum açın.",
+    "noThreads": "Henüz konu yok.",
+    "replies": "{{count}} yanıt"
+  },
+  "forumThreadScreen": {
+    "replyPlaceholder": "Yanıtınız...",
+    "send": "Gönder",
+    "noReplies": "Henüz yanıt yok.",
+    "signInToReply": "Girmek için oturum açın."
+  },
+  "umrahMenuScreen": {
+    "checklistTitle": "Hazırlık Listesi",
+    "checklistDescription": "Umre öncesi yapılacaklar",
+    "progressTitle": "Şu an neredeyim?",
+    "progressDescription": "Tavaf ve Sa'y takibi yapın",
+    "duaListTitle": "Dua Listem",
+    "duaListDescription": "Kişisel dua çizelgesi oluşturun",
+    "duasTitle": "Umre Duaları",
+    "duasDescription": "Umre ibadetinde okunacak dualar",
+    "header": "Umre İbadetiniz İçin Araçlar"
+  },
+  "umrahProgressScreen": {
+    "tawaf": "Tavaf",
+    "tawafDuas": "Tavaf Duaları →",
+    "say": "Sa'y",
+    "safaToMerve": "Safa → Merve",
+    "merveToSafa": "Merve → Safa",
+    "sayDuas": "Sa'y Duaları →",
+    "inIhram": "İhramdayım",
+    "notInIhram": "İhramda Değilim",
+    "ihramDuas": "İhram Duaları →"
+  },
+  "umrahDuasScreen": {
+    "arabicLabel": "Arapça:",
+    "transliterationLabel": "Okunuşu:",
+    "meaningLabel": "Anlamı:"
+  },
+  "umrahChecklistScreen": {
+    "items": {
+      "planeTicketPurchased": "Uçak bileti aldım",
+      "trainTicketPurchased": "Tren bileti aldım (Mekke-Medine) / Tren biletine gerek yok",
+      "visaObtained": "Vize aldım",
+      "hotelBooked": "Otel rezervasyonu yaptım",
+      "ihramReady": "İhram hazır",
+      "clothesReady": "Kıyafetlerim hazır",
+      "nusukReady": "Nusuk indirdim",
+      "phoneSimReady": "SIM kartım hazır",
+      "duaShareReady": "Dua linkimi arkadaşlarımla paylaşıp duaları kaydettim",
+      "currencyReady": "Riyal olarak nakit param hazır",
+      "dovizEkstreReady": "Kredi kartıma döviz ekstresi açtırdım",
+      "roamingChecked": "Telefonumun yurt dışı kullanımını kontrol ettim",
+      "powerBankReady": "Powerbank hazır",
+      "mapsDownloaded": "Offline haritaları indirdim",
+      "duaListPrepared": "Dua listemi hazırladım",
+      "zikirmatikReady": "Zikirmatik / tesbih hazır",
+      "umrahGuideSaved": "Umre rehberi (PDF/video) kaydettim",
+      "bagForHaram": "Harem için küçük çanta/omuz çantası hazır",
+      "personalMedications": "Kendi ilaçlarımı hazırladım",
+      "hygieneKit": "Kişisel bakım ve hijyen malzemeleri hazır"
+    },
+    "linkOpenErrorTitle": "Hata",
+    "linkOpenError": "{{label}} açılamadı",
+    "linkOpenGenericError": "Bağlantı açılırken bir hata oluştu",
+    "selectDate": "Tarih seçin",
+    "missingInfoTitle": "Eksik Bilgi",
+    "missingInfoMessage": "Skyscanner araması için çıkış/dönüş şehri ve tarihlerini doldurmalısınız.",
+    "travelPlan": "Seyahat Planı",
+    "from": "Nereden?",
+    "to": "Nereye?",
+    "outbound": "Gidiş:",
+    "inbound": "Dönüş:",
+    "flight": "Uçak",
+    "hotel": "{{city}}",
+    "whereFrom": "Nereden Gidiyorsunuz?",
+    "whereTo": "Nereye Dönüyorsunuz?",
+    "ihramReminder": "İlk durak Mekke: Havalimanında ihrama girmelisiniz.",
+    "cityTransfer": "Şehirlerarası Geçiş",
+    "transferDateDescription": "{{from}} → {{to}} arası geçiş tarihi",
+    "date": "Tarih:",
+    "trainTicket": "Haramain Hızlı Tren Bileti",
+    "trainLabel": "Hızlı Tren",
+    "eVisa": "Suudi Arabistan E-Vize",
+    "eVisaLabel": "E-Vize",
+    "nusukTitle": "Nusuk Uygulaması",
+    "nusukDescription": "Umre izni ve kayıt işlemleri için gerekli",
+    "nusukGooglePlay": "Nusuk - Google Play",
+    "nusukAppStore": "Nusuk - App Store",
+    "googlePlay": "Google Play",
+    "appStore": "App Store",
+    "bookingLabel": "Booking.com",
+    "checklistTitle": "Yapılacaklar Listesi",
+    "mekke": "Mekke",
+    "medine": "Medine"
+  },
+  "surahDetailScreen": {
+    "loadingVerses": "Ayetler yükleniyor...",
+    "loadingNote": "(Bu işlem sadece bir kez yapılır)",
+    "decreaseFontSize": "Yazıyı küçült",
+    "increaseFontSize": "Yazıyı büyüt"
+  },
+  "quranPageScreen": {
+    "loading": "Sayfa yükleniyor...",
+    "previousPage": "‹ Önceki",
+    "nextPage": "Sonraki ›",
+    "decreaseFontSize": "Yazıyı küçült",
+    "increaseFontSize": "Yazıyı büyüt",
+    "noTranslation": "Hiçbiri",
+    "wordByWordTranslation": "Kelime Meali",
+    "chooseTranslation": "Meal Seç",
+    "searchTranslation": "Meal ara...",
+    "translationLabel": "Meal: {{translation}}"
+  },
+  "hatimDetailScreen": {
+    "loadErrorTitle": "Hata",
+    "loadErrorMessage": "Hatim detayları yüklenirken bir sorun oluştu.",
+    "timeUp": "Süre doldu",
+    "days": "{{count}} gün ",
+    "hours": "{{count}} saat ",
+    "minutes": "{{count}} dk",
+    "lockedTitle": "Kilitli",
+    "lockedMessage": "Bu hatim kilitlenmiştir, işlem yapılamaz.",
+    "updateErrorMessage": "Güncelleme sırasında bir sorun oluştu.",
+    "notFound": "Hatim bulunamadı.",
+    "goBack": "Geri Dön",
+    "deleteTitle": "Hatimi Sil",
+    "deleteMessage": "Bu hatimi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "deleteErrorMessage": "Silme işlemi sırasında bir sorun oluştu.",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "noDescription": "Açıklama belirtilmemiş.",
+    "deadline": "Son Katılım: {{date}}",
+    "timeRemaining": "Kalan Süre: {{time}}",
+    "completedStat": "Tamamlanan",
+    "claimedStat": "Alınan Cüz",
+    "me": "Ben",
+    "available": "Müsait",
+    "partActions": "{{number}}. Cüz İşlemleri",
+    "claimedBy": "Bu cüzü alan: ",
+    "status": "Durum: {{status}}",
+    "statusCompleted": "Tamamlandı",
+    "statusReading": "Okunuyor",
+    "pagesRead": "Okunan Sayfa: {{read}} / {{total}}",
+    "notClaimedYet": "Bu cüz henüz alınmamış. Almak istiyor musunuz?",
+    "markIncomplete": "Tamamlanmadı İşaretle",
+    "markComplete": "Tamamlandı İşaretle",
+    "releasePart": "Cüzü Bırak",
+    "unclaimPart": "Cüzü İptal Et (Yönetici)",
+    "claimPart": "Cüzü Üzerine Al",
+    "close": "Kapat",
+    "editTitle": "Hatimi Düzenle",
+    "titlePlaceholder": "Hatim Başlığı",
+    "descriptionPlaceholder": "Açıklama",
+    "setDeadline": "Bitiş Tarihi Belirle",
+    "privateHatim": "Gizli Hatim",
+    "lockHatim": "Hatimi Kilitle (Salt Okunur)",
+    "deadlineLabel": "Son Katılım Tarihi",
+    "selectDateTime": "Tarih ve Saat Seçin",
+    "update": "Güncelle"
+  },
+  "hatimScreen": {
+    "private": " (Gizli)",
+    "completed": "Tamamlandı",
+    "locked": "Kilitli",
+    "creator": "Oluşturan: {{name}}",
+    "juzProgress": "{{count}} / 30 Cüz",
+    "empty": "Henüz hatim bulunmuyor. İlkini siz oluşturun!",
+    "createTitle": "Yeni Hatim Oluştur",
+    "titlePlaceholder": "Hatim Başlığı",
+    "descriptionPlaceholder": "Açıklama (Opsiyonel)",
+    "setDeadline": "Bitiş Tarihi Belirle",
+    "privateHatim": "Gizli Hatim",
+    "deadlineLabel": "Son Katılım Tarihi",
+    "selectDateTime": "Tarih ve Saat Seçin",
+    "cancel": "İptal",
+    "create": "Oluştur"
+  },
+  "hutbeScreen": {
+    "errorTitle": "Hata",
+    "goBack": "Geri Dön",
+    "openHutbe": "Hutbeyi Aç",
+    "notFound": "Hutbe dosyası bulunamadı.",
+    "tapToOpen": "Hutbeyi okumak için butona tıklayın."
+  },
+  "surahNames": {
+    "1": "Fatiha",
+    "2": "Bakara",
+    "3": "Al-i İmran",
+    "4": "Nisa",
+    "5": "Maide",
+    "6": "Enam",
+    "7": "Araf",
+    "8": "Enfal",
+    "9": "Tevbe",
+    "10": "Yunus",
+    "11": "Hud",
+    "12": "Yusuf",
+    "13": "Rad",
+    "14": "İbrahim",
+    "15": "Hicr",
+    "16": "Nahl",
+    "17": "İsra",
+    "18": "Kehf",
+    "19": "Meryem",
+    "20": "Taha",
+    "21": "Enbiya",
+    "22": "Hac",
+    "23": "Muminun",
+    "24": "Nur",
+    "25": "Furkan",
+    "26": "Şuara",
+    "27": "Neml",
+    "28": "Kasas",
+    "29": "Ankebut",
+    "30": "Rum",
+    "31": "Lokman",
+    "32": "Secde",
+    "33": "Ahzab",
+    "34": "Sebe",
+    "35": "Fatır",
+    "36": "Yasin",
+    "37": "Saffat",
+    "38": "Sad",
+    "39": "Zümer",
+    "40": "Mümin",
+    "41": "Fussilet",
+    "42": "Şura",
+    "43": "Zuhruf",
+    "44": "Duhan",
+    "45": "Casiye",
+    "46": "Ahkaf",
+    "47": "Muhammed",
+    "48": "Fetih",
+    "49": "Hucurat",
+    "50": "Kaf",
+    "51": "Zariyat",
+    "52": "Tur",
+    "53": "Necm",
+    "54": "Kamer",
+    "55": "Rahman",
+    "56": "Vakia",
+    "57": "Hadid",
+    "58": "Mücadele",
+    "59": "Haşr",
+    "60": "Mümtehine",
+    "61": "Saff",
+    "62": "Cuma",
+    "63": "Münafikun",
+    "64": "Teğabün",
+    "65": "Talak",
+    "66": "Tahrim",
+    "67": "Mülk",
+    "68": "Kalem",
+    "69": "Hakka",
+    "70": "Mearic",
+    "71": "Nuh",
+    "72": "Cin",
+    "73": "Müzzemmil",
+    "74": "Müddessir",
+    "75": "Kıyamet",
+    "76": "İnsan",
+    "77": "Mürselat",
+    "78": "Nebe",
+    "79": "Naziat",
+    "80": "Abese",
+    "81": "Tekvir",
+    "82": "İnfitar",
+    "83": "Mutaffifin",
+    "84": "İnşikak",
+    "85": "Buruc",
+    "86": "Tarık",
+    "87": "Ala",
+    "88": "Gaşiye",
+    "89": "Fecr",
+    "90": "Beled",
+    "91": "Şems",
+    "92": "Leyl",
+    "93": "Duha",
+    "94": "İnşirah",
+    "95": "Tin",
+    "96": "Alak",
+    "97": "Kadir",
+    "98": "Beyyine",
+    "99": "Zilzal",
+    "100": "Adiyat",
+    "101": "Karia",
+    "102": "Tekasür",
+    "103": "Asr",
+    "104": "Hümeze",
+    "105": "Fil",
+    "106": "Kureyş",
+    "107": "Maun",
+    "108": "Kevser",
+    "109": "Kafirun",
+    "110": "Nasr",
+    "111": "Tebbet",
+    "112": "İhlas",
+    "113": "Felak",
+    "114": "Nas"
+  },
+  "searchScreen": {
+    "title": "Ara",
+    "downloadTitle": "Kur'an-ı Kerim Meali",
+    "downloadDescription": "Arama yapabilmek için Türkçe meal verilerini indirmeniz gerekmektedir.",
+    "searchErrorTitle": "Hata",
+    "searchErrorMessage": "Arama sırasında bir hata oluştu.",
+    "placeholder": "Aranacak kelime veya cümle...",
+    "history": {
+      "title": "Arama Geçmişi",
+      "clear": "Temizle"
+    },
+    "filtersToggle": "Arama Filtreleri",
+    "scope": {
+      "title": "Arama Kapsamı:",
+      "everywhere": "Her Yerde",
+      "favorite": "Favori Meal",
+      "selected": "Seçili Meal",
+      "allTranslations": "Bütün Mealler",
+      "arabic": "Arapça",
+      "transliteration": "Okunuş"
+    },
+    "translationSelector": {
+      "title": "Meal Seçimi:",
+      "selected": "Seçili Meal {{translation}}"
+    },
+    "surahFilter": {
+      "title": "Sure Filtresi:",
+      "all": "Tüm Sureler",
+      "selectedSurah": "Seçili Sure"
+    },
+    "matchType": {
+      "type": "Arama Tipi:",
+      "exact": "Kesin Eşleşme",
+      "fuzzy": "Benzer Arama"
+    },
+    "resultsCount": "{{count}} sonuç bulundu",
+    "resultsMinChars": "Aramak için en az 2 karakter girin",
+    "resultVerse": "{{surahName}} - Ayet {{verseNumber}}",
+    "matchField": {
+      "arabic": "Arapça",
+      "transliteration": "Okunuş",
+      "translation": "{{translation}}"
+    },
+    "defaultTranslationLabel": "Meal"
+  },
+  "settingsScreen": {
+    "title": "Ayarlar",
+    "theme": {
+      "light": "Aydınlık",
+      "dark": "Karanlık",
+      "lightsOut": "Işıklar Kapalı",
+      "accessibilityLabel": "Tema: {{current}}. Değiştirmek için dokun, sıradaki: {{next}}"
+    },
+    "minSelectedTranslationTitle": "Uyarı",
+    "minSelectedTranslationMessage": "En az bir meal seçili olmalıdır.",
+    "ok": "Tamam",
+    "updateData": {
+      "title": "Verileri Güncelle",
+      "message": "Kur'an mealleri ve kelime çevirileri sunucudan tekrar indirilecektir. Mevcut verileriniz en güncel sürümle değiştirilecektir. Onaylıyor musunuz?",
+      "preparing": "İndirme hazırlanıyor...",
+      "successTitle": "Başarılı",
+      "successMessage": "Veriler başarıyla güncellendi.",
+      "errorTitle": "Hata",
+      "errorPrefix": "Hata: ",
+      "errorMessage": "Güncelleme sırasında bir sorun oluştu.",
+      "cancel": "İptal",
+      "confirm": "Güncelle"
+    },
+    "quickSettings": "Hızlı Ayarlar",
+    "themeLabel": "Tema",
+    "themeDescription": "Aydınlık, karanlık veya ışıklar kapalı",
+    "sections": {
+      "audioTitle": "Ses Ayarları",
+      "audioSubtitle": "Otomatik oynatma ve kıraat seçimi",
+      "displayTitle": "Görünüm Seçenekleri",
+      "displaySubtitle": "Ayet görünümü ve kelime çevirileri",
+      "fontsTitle": "Yazı Tipi",
+      "fontsSubtitle": "Okuma ve resim için ayrı font seçin",
+      "translationsTitle": "Meal Seçimi",
+      "translationsSubtitle": "{{count}} meal seçili • Favori: {{favorite}}",
+      "systemTitle": "Sistem & Veri",
+      "systemSubtitle": "Uygulama verilerini yönet ve güncelle"
+    },
+    "items": {
+      "autoplayTitle": "Otomatik Oynatma",
+      "autoplayDescription": "Bir ayet bitince otomatik olarak sonraki ayete geç",
+      "transliterationTitle": "Türkçe Okunuş",
+      "transliterationDescription": "Ayetlerin okunuş şeklini göster",
+      "wordTranslationsTitle": "Kelime Çevirileri",
+      "wordTranslationsDescription": "Her kelimenin altında Türkçe karşılığını göster",
+      "inlineWordTranslationsTitle": "Kelime Üstüne Gelince Çeviri",
+      "inlineWordTranslationsDescription": "Web'de ayet içinde kelimenin üstüne gelince çeviriyi göster",
+      "paginatedViewTitle": "Sayfalı Görünüm",
+      "paginatedViewDescription": "Her ayeti ayrı sayfada göster (kaydırarak geçiş)",
+      "arabicVerseNumbersTitle": "Arapça Durak Numaraları",
+      "arabicVerseNumbersDescription": "Ayet numaralarını Arapça rakamlarla göster (٣) yerine Latin rakamlarla (3)"
+    },
+    "fonts": {
+      "readingFont": "Kuran Okuma Fontu",
+      "imageFont": "Resim / Paylaşım Fontu"
+    },
+    "translations": {
+      "selectAll": "Tümünü Seç",
+      "selectDefault": "Varsayılan"
+    },
+    "dataUpToDate": "Meal verileri güncel (v3.1)",
+    "updateButton": "Meal Verilerini Güncelle"
+  },
+  "homeScreen": {
+    "arabicTitle": "القرآن الكريم",
+    "subtitle": "Kur'an-ı Kerim",
+    "loading": "Kur'an verileri yükleniyor...",
+    "downloadTitle": "Kur'an-ı Kerim Meali",
+    "downloadDescription": "Ayetleri okuyabilmek için Türkçe meal verilerini indirmeniz gerekmektedir.",
+    "searchPlaceholder": "Sure ara... (isim veya numara)"
+  },
+  "mainScreen": {
+    "appTitle": "Kuran-ı Kerim",
+    "appSubtitle": "Dijital Mushaf",
+    "welcome": "Hoş Geldiniz",
+    "description": "Kuran-ı Kerim'i okumak, aramak ve dinlemek için bir seçenek belirleyin",
+    "menu": {
+      "surahs": "Sureler",
+      "randomVerse": "Rastgele Ayet",
+      "search": "Arama",
+      "quranPage": "Sayfa Görünümü",
+      "settings": "Ayarlar",
+      "profile": "Profil",
+      "hatim": "Hatimler",
+      "prayerTimes": "Namaz Vakitleri",
+      "hutbe": "Cuma Hutbesi",
+      "umrah": "Umre",
+      "hijriCalendar": "Hicri Takvim",
+      "about": "Hakkında"
+    },
+    "sections": {
+      "quran": "Kur'an",
+      "worship": "İbadet",
+      "app": "Uygulama"
+    },
+    "heroSubtitle": "Kur'an-ı Kerim'i sure sure oku",
+    "hutbeInfoTitle": "Bilgi",
+    "hutbeInfoMessage": "Güncel hutbe henüz yüklenmedi.",
+    "hutbeErrorTitle": "Hata",
+    "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin.",
+    "footerQuote": "\"Yaratan Rabbinin adıyla oku.\"",
+    "footerReference": "(Alak Suresi, 1. Ayet)"
+  },
+  "about": {
+    "role": "Tasarımcı",
+    "projectSectionTitle": "Proje Hakkında",
+    "projectSectionText": "Bu uygulama tamamen kişisel bir projedir ve herhangi bir ticari/kar amacı yoktur. Projenin ilerleyen aşamalarında açık kaynak olarak paylaşılması planlanmaktadır.",
+    "bugsSectionTitle": "Bilinen Hatalar ve Planlanan Güncellemeler",
+    "bugsSectionBullets": [
+      "Kelime çevirisi açılınca kelime anlamı olmayanlar görünmüyor, örnek: İnşirah ilk ayet",
+      "Sayfa sesleri eklenecek, ayrıca 30. cüzdeki sayfadan daha kısa sureler için sesler üretilmeli"
+    ],
+    "updatesSectionTitle": "Güncelleme Notları",
+    "updates": [
+      {
+        "date": "30 Ağustos 2026",
+        "bullets": [
+          "Uygulama genelinde kod bakımı ve sadeleştirme yapıldı (görsel değişiklik yok).",
+          "Ayet paylaşım ekranındaki eski emoji simgeler, modern ikonlarla değiştirildi."
+        ]
+      },
+      {
+        "date": "29 Ağustos 2026",
+        "bullets": [
+          "Web sürümünde, yeni bir güncelleme yayınlandığında sayfanın eski (önbelleğe alınmış) haliyle takılı kalması sorunu giderildi."
+        ]
+      },
+      {
+        "date": "28 Ağustos 2026",
+        "bullets": [
+          "Uygulama genelindeki butonlar ortak bir bileşene taşınarak görünüm ve davranış tutarlılığı artırıldı.",
+          "İlerleme çubukları (Hatim sayfaları, veri güncelleme ekranı) ortak bir bileşene taşındı.",
+          "Mushaf sayfa görünümü eklendi: 604 sayfalık standart Kur'an dizilimine göre ayetleri sayfa sayfa okuyabilir, sayfalar arasında gezinebilirsiniz.",
+          "Sayfa görünümünün üst çubuğuna, Arapça metin boyutunu büyütüp küçültebileceğiniz bir kontrol eklendi.",
+          "Sayfa görünümüne meal seçici eklendi: istediğiniz meali (veya kelime kelime meali) seçip ayetlerin altında görebilirsiniz.",
+          "Kart görünümündeki bazı ekranlarda (Profil, Forum, Dua İsteği, Hatim Detayı) tekrar eden stiller ortaklandı.",
+          "Durum etiketleri (tamamlandı, kilitli, kalan süre vb.) ortak bir bileşene taşındı.",
+          "Yükleniyor ekranları (Ana Sayfa, Sure Detayı, Rastgele Ayet, Hatim, Namaz Vakitleri ve diğerleri) tek bir bileşenden besleniyor.",
+          "Arama kutuları (Ana Sayfa, Arama, Namaz Vakitleri konum seçimi) ortak bir bileşene taşındı.",
+          "Sayfa görünümünün üst çubuğundaki gereksiz sayfa numarası yazısı kaldırıldı; sure adı daha belirgin şekilde gösteriliyor.",
+          "Yeni ayar: Ayet numaralarını Arapça rakamlarla (٣) ya da Latin rakamlarla (3) gösterme seçeneği eklendi.",
+          "Sure görünümüne de, sayfa görünümündeki gibi Arapça metin boyutunu büyütüp küçültebileceğiniz bir kontrol eklendi.",
+          "Geri ve ana sayfa butonları, uygulama genelinde ortak ve modern bir tasarıma kavuştu."
+        ]
+      },
+      {
+        "date": "20 Ağustos 2026",
+        "bullets": [
+          "Dil seçici artık üst menüde her sayfada sabit; Türkçe ve İngilizce arasında tek dokunuşla geçiş yapılabiliyor.",
+          "Işıklar Kapalı temasında üst menünün yeşili ve beyaz metinler gözü yormasın diye hafifçe karartıldı.",
+          "Işıklar Kapalı temasında ana menü kartlarında ve üst menü butonlarında kaybolan kenarlıklar düzeltildi.",
+          "Sureler sayfasındaki arama butonu kaldırıldı; arama ve ayarlara artık sadece ana menüden ulaşılıyor.",
+          "Uygulama arayüzünün tamamı çeviri dosyalarına taşınıyor (devam ediyor).",
+          "Ana menü sadeleştirildi: renkli ikon ızgarası yerine, öne çıkan Sureler butonu ve gruplanmış, temiz bir liste tasarımı.",
+          "Sure arama alanında büyük İ/küçük i uyumsuzluğu yüzünden bazı surelerin bulunamaması düzeltildi (ör. İsra).",
+          "Surelerin İngilizce isimleri birden fazla yerdeki tekrar eden tanımlardan çıkarılıp tek bir çeviri dosyasında toplandı.",
+          "Sure isimleri (Türkçe ve İngilizce) artık tamamen çeviri dosyalarından geliyor; sure listesi, arama ve sure detay sayfası aktif dile göre ismi gösteriyor.",
+          "Işıklar Kapalı temasında ekranlar arası tema geçişinde oluşan bir donma/sonsuz döngü hatası düzeltildi.",
+          "Arama, Rastgele Ayet, Profil, Bütün Mealler ve Cuma Hutbesi sayfaları dahil, uygulamanın büyük bölümünün arayüz metinleri çeviri dosyalarına taşındı.",
+          "Namaz Vakitleri sayfasındaki şehir/ilçe aramasında büyük/küçük İ harfi hatası düzeltildi.",
+          "Hatimler ve hatim detay sayfaları tamamen çeviri dosyalarına taşındı.",
+          "Dua Listem, Dua İsteği Gönder ve Forum sayfaları tamamen çeviri dosyalarına taşındı.",
+          "Umre Rehberi, Şu An Neredeyim, Umre Duaları ve Umre Hazırlık Listesi sayfaları tamamen çeviri dosyalarına taşındı.",
+          "Sure Detay sayfasındaki kalan metinler de çeviri dosyalarına taşındı. Uygulama genelinde arayüz metinlerinin çeviri dosyalarına taşınması tamamlandı (Hicri Takvim, kendi Türkçe/Arapça dil seçeneğiyle bilinçli olarak ayrı tutuldu).",
+          "Umre Kontrol Listesi ekranındaki uçak/otel/tren aksiyon butonları ortak buton bileşenine taşındı.",
+          "Ana menü, Umre Rehberi ve Sureler listesindeki menü satırları ortak bir bileşene taşındı.",
+          "Ayete Git, Resim Önizleme, Paylaş, Okuyucu Seçici ve İndirme Gerekli bileşenlerindeki kart, pencere ve rozet görünümleri ortak stillerle sadeleştirildi; İndirme Gerekli ekranındaki buton ortak buton bileşenine taşındı.",
+          "Forum, Bütün Mealler, Namaz Vakitleri ve Umre sayfalarındaki kart, rozet, boş durum ve buton görünümleri ortak stillerle sadeleştirildi; bazı butonlar ortak buton bileşenine taşındı.",
+          "Ayarlar ve Hatim sayfalarındaki kart, rozet ve metin görünümleri ortak stillerle sadeleştirildi; bazı butonlar ortak buton bileşenine taşındı.",
+          "Dua Listem, Dua İsteği, Profil, Rastgele Ayet ve Arama sayfalarındaki metin, rozet ve buton görünümleri ortak stillerle sadeleştirildi; bazı butonlar ortak buton bileşenine taşındı."
+        ]
+      },
+      {
+        "date": "19 Ağustos 2026",
+        "bullets": [
+          "Hakkında sayfasına dil seçici ve tema seçici eklendi.",
+          "Tema seçici artık üst menüde her sayfada sabit; aydınlık, karanlık ve ışıklar kapalı olmak üzere 3 mod arasında geçiş yapılabiliyor.",
+          "Ayarlar, kullanıcı verileri ve forum verilerinin çekilme/güncellenme altyapısı yenilendi, veriler artık daha güvenilir şekilde senkronlanıyor.",
+          "Uygulama içi metinler artık çeviri dosyalarından (tr.json/en.json) yönetiliyor; changelog da buraya taşındı.",
+          "Ayarlar, yer imleri, dua listem ve forum gibi veriler artık internet bağlantısı olmasa da cihazda saklanıp gösteriliyor; bağlantı gelince otomatik senkronlanıyor."
+        ]
+      },
+      {
+        "date": "29 Haziran 2026",
+        "bullets": [
+          "Dua Listem: Dua silme ve dua isteği reddetme düzeltildi.",
+          "Meal Güncelleme: \"Hayır\" denildiğinde indirme başlamıyordu, düzeltildi. Veriler zaten güncel ise güncelleme butonu gizleniyor.",
+          "PWA Geri Tuşu: Android'de telefon geri tuşu uygulamadan çıkartıyordu, artık uygulama içinde geri gidiyor.",
+          "Yazı Tipi Seçimi: Kuran okuma ve paylaşım resimleri için ayrı Arapça font seçimi eklendi; resim önizleme ekranında A+/A− ile yazı boyutu ayarlanabiliyor.",
+          "Ana Menü: Sağ üstteki ayarlar ikonu kaldırıldı.",
+          "Sure Görünümü: Yer iminden ayet açılırken doğru ayete kayıyor."
+        ]
+      },
+      {
+        "date": "22 Haziran 2026",
+        "bullets": [
+          "Hicri Takvim: Takvim sayfası tasarlandı ve eklendi (Teşekkürler MHS).",
+          "Ana Menü: Giriş menüsü grid haline getirildi.",
+          "Topbar: Üstmenü küçültüldü."
+        ]
+      },
+      {
+        "date": "4 Haziran 2026",
+        "bullets": [
+          "Özbekçe Meal: Yeni Özbekçe (Kiril) ve Özbekçe (Latin) mealler eklendi.",
+          "Meal Verileri: Artık meal verileri gzip ile sıkıştırılıp 80 MB yerine 20 MB olarak indiriliyor (Teşekkürler 'kucukaslan')."
+        ]
+      },
+      {
+        "date": "1 Haziran 2026",
+        "bullets": [
+          "Qar'i Kaldırıldı: Minshawi Mujawwad kıraatte sorunları olduğu için şu anlık deaktive edildi (Teşekkürler 'ssargin'). bkz. video: https://youtu.be/dveu8DRo5Rk?si=oT3qaBZzKP8gydGG",
+          "Rastgele ayet sayfasında veri yoksa indirme ekranı gösteriliyor.",
+          "Arama sayfasında veri yokken indirme ekranı gösteriliyor.",
+          "İndirme ekranı ortak componente taşındı.",
+          "İndirme işlemi ortak hook'a taşındı.",
+          "Arama normalize edildi ve fuzzy highlight eklendi.",
+          "Arapça yazılarda medli esre hatası giderildi (Teşekkürler 'ferdogan')."
+        ]
+      },
+      {
+        "date": "22 Şubat 2026",
+        "bullets": [
+          "\"Şu an neredeyim?\" ekranı ile tavaf ve sa'y takibi eklendi (Umre Desteği).",
+          "Dua Listem: Kişisel ve başkaları için özel dua çizelgesi özelliği eklendi.",
+          "Umre Duaları: İhram, tavaf, sa'y ve diğer umre ibadet dualarını kapsayan rehber eklendi.",
+          "Hazırlık Listesi: Gidiş/dönüş uçuş bilgileri, platform-uyumlu tarih seçici (web/mobil), otomatik Skyscanner entegrasyonu."
+        ]
+      },
+      {
+        "date": "12 Şubat 2026",
+        "bullets": [
+          "PWA Desteği: Web uygulaması artık Progressive Web App olarak cihazlara kurulabilir ve offline çalışabilir."
+        ]
+      },
+      {
+        "date": "12 Ocak 2026",
+        "bullets": [
+          "Yeni Mealler: Kürtçe (Kurmancî) Latin ve Arap harfli Diyanet mealleri ile Ömer Çelik Meali sisteme eklendi.",
+          "Veri Altyapısı: Versiyon bazlı dinamik meal listeleme ve büyük veri dosyaları için yeni işleme motoru entegre edildi."
+        ]
+      },
+      {
+        "date": "26 Aralık 2025",
+        "bullets": [
+          "Hatim Sayfası: Kullanıcıların birlikte hatim indirebileceği interaktif hatim sistemi eklendi.",
+          "Namaz Vakitleri: 2025 yılı için tüm Türkiye il ve ilçelerini kapsayan, konuma duyarlı ezan vakitleri eklendi.",
+          "Cuma Hutbesi: Haftalık cuma hutbelerinin PDF formatında okunabileceği özel bölüm eklendi.",
+          "Konum Servisleri: GPS tabanlı otomatik konum tespiti ve manuel şehir/ilçe seçimi entegre edildi."
+        ]
+      },
+      {
+        "date": "16 Aralık 2024",
+        "bullets": [
+          "SQLite veritabanı desteği eklendi (Android/iOS)",
+          "Composite primary key ile (sure, ayet) hızlı sorgulama",
+          "Transaction-based batch insert operasyonları",
+          "IndexedDB veri yapısı tamamen yenilendi - ayetler artık tekil olarak saklanıyor",
+          "Veri indirme progress bar'ı gerçek zamanlı byte gösterimi ile güncellendi",
+          "Sure listesine arama özelliği eklendi",
+          "URL yapısı iyileştirildi - okunan ayet URL'de görünüyor",
+          "Rastgele ayet ve favori kaldırma emoji'leri güncellendi",
+          "Favori kaldırma butonu hatası düzeltildi",
+          "AsyncStorage size limit sorunları çözüldü",
+          "Performans iyileştirmeleri ve memory optimizasyonu"
+        ]
+      },
+      {
+        "date": "19 Eylül 2025",
+        "bullets": [
+          "Rastgele ayet sayfası kaydırma fixlendi",
+          "Ses önizleme hatası düzeltildi",
+          "Header ve Footer küçültüldü, alttaki instruction kaldırıldı",
+          "Bütün mealleri göster tuşu eklendi",
+          "Bütün mealleri göster sayfasına farklı meal ile ayet paylaşma eklendi",
+          "Bütün sayfalara home butonu eklendi",
+          "Resim oluşturmada farklı modlar ve boyutlarda fotoğraf üretme seçeneği eklendi"
+        ]
+      },
+      {
+        "date": "10 Eylül 2025",
+        "bullets": [
+          "Google Analytics eklendi",
+          "Ayet paylaşma eklendi",
+          "Resimli ayet paylaşma eklendi",
+          "Dark Mode ayet paylaşma eklendi"
+        ]
+      },
+      {
+        "date": "06 Eylül 2025",
+        "bullets": [
+          "Rastgele ayet sayfası eklendi",
+          "Ezber moduna \"Ayet Ayet\" seçeneği eklendi",
+          "Okuyucu seçiminde ses önizleme özelliği eklendi",
+          "Sayfalı görünümde dinamik sayfa göstergesi eklendi",
+          "Ayete git butonunda toplam ayet sayısı gösterimi eklendi",
+          "Ayete git modal'ında favori meal desteği düzeltildi"
+        ]
+      },
+      {
+        "date": "05 Eylül 2025",
+        "bullets": [
+          "Hakkında sayfasına güncelleme notları eklendi",
+          "Yeni kariler eklendi",
+          "Ezber modu için tekrar sayısı özelliği eklendi",
+          "Audio oynatıcı performans iyileştirmeleri",
+          "UI geliştirmeleri ve hata düzeltmeleri"
+        ]
+      }
+    ]
+  }
+}

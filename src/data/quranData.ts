@@ -1,8 +1,8 @@
-import { QuranData, Surah, Verse } from '../types';
+import { QuranData, Surah, Verse } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
-import logger from '../utils/logger';
-import { sqliteHelper } from '../services/sqliteService';
+import logger from '@/utils/logger';
+import { sqliteHelper } from '@/services/sqliteService';
 
 interface VerseData {
   surah_number: number;
@@ -331,75 +331,6 @@ class IndexedDBHelper {
 // Create singleton instance
 const idbHelper = new IndexedDBHelper();
 
-// Cross-platform storage utility - now primarily uses IndexedDB for web
-const Storage = {
-  async getItem(key: string): Promise<string | null> {
-    if (Platform.OS === 'web') {
-      // For web, we now use the new IndexedDB structure
-      // This is kept for backward compatibility with other data
-      try {
-        const db = await idbHelper.openDB();
-        const transaction = db.transaction(['cache'], 'readonly');
-        const store = transaction.objectStore('cache');
-
-        return new Promise((resolve, reject) => {
-          const request = store.get(key);
-          request.onerror = () => reject(request.error);
-          request.onsuccess = () => {
-            const result = request.result;
-            resolve(result ? result.value : null);
-          };
-        });
-      } catch (error) {
-        console.warn('IndexedDB cache read failed:', error);
-        return null;
-      }
-    } else {
-      return await AsyncStorage.getItem(key);
-    }
-  },
-
-  async setItem(key: string, value: string): Promise<void> {
-    if (Platform.OS === 'web') {
-      try {
-        const db = await idbHelper.openDB();
-        const transaction = db.transaction(['cache'], 'readwrite');
-        const store = transaction.objectStore('cache');
-
-        return new Promise((resolve, reject) => {
-          const request = store.put({ key, value });
-          request.onerror = () => reject(request.error);
-          request.onsuccess = () => resolve();
-        });
-      } catch (error) {
-        console.warn('IndexedDB cache write failed:', error);
-      }
-    } else {
-      await AsyncStorage.setItem(key, value);
-    }
-  },
-
-  async removeItem(key: string): Promise<void> {
-    if (Platform.OS === 'web') {
-      try {
-        const db = await idbHelper.openDB();
-        const transaction = db.transaction(['cache'], 'readwrite');
-        const store = transaction.objectStore('cache');
-
-        await new Promise<void>((resolve, reject) => {
-          const request = store.delete(key);
-          request.onerror = () => reject(request.error);
-          request.onsuccess = () => resolve();
-        });
-      } catch (error) {
-        console.warn('IndexedDB cache delete failed:', error);
-      }
-    } else {
-      await AsyncStorage.removeItem(key);
-    }
-  }
-};
-
 // Progress callback type
 export type ProgressCallback = (progress: number, status: string, downloadedBytes?: number, totalBytes?: number) => void;
 
@@ -655,133 +586,122 @@ function convertToAppFormat(verseData: VerseData): Verse {
   };
 }
 
-// Function to load a single verse - now uses IndexedDB for web and SQLite for mobile
-async function requireVerse(surahNumber: number, verseNumber: number): Promise<VerseData | null> {
-  if (Platform.OS === 'web') {
-    // Use IndexedDB for web
-    return await idbHelper.getVerse(surahNumber, verseNumber);
-  } else {
-    // Use SQLite for mobile
-    return await sqliteHelper.getVerse(surahNumber, verseNumber);
-  }
-}
-
 // Complete Surah metadata (all 114 surahs) with Turkish names
 const SURAH_METADATA = [
-  { number: 1, name: 'Fatiha', turkishName: 'Fatiha', arabicName: 'الْفَاتِحَة', englishName: 'The Opening', revelationPlace: 'Mekkî', verseCount: 7 },
-  { number: 2, name: 'Bakara', turkishName: 'Bakara', arabicName: 'الْبَقَرَة', englishName: 'The Cow', revelationPlace: 'Medenî', verseCount: 286 },
-  { number: 3, name: 'Al-i İmran', turkishName: 'Al-i İmran', arabicName: 'آل عِمْرَان', englishName: 'The Family of Imran', revelationPlace: 'Medenî', verseCount: 200 },
-  { number: 4, name: 'Nisa', turkishName: 'Nisa', arabicName: 'النِّسَاء', englishName: 'The Women', revelationPlace: 'Medenî', verseCount: 176 },
-  { number: 5, name: 'Maide', turkishName: 'Maide', arabicName: 'الْمَائِدَة', englishName: 'The Table Spread', revelationPlace: 'Medenî', verseCount: 120 },
-  { number: 6, name: 'Enam', turkishName: 'Enam', arabicName: 'الْأَنْعَام', englishName: 'The Cattle', revelationPlace: 'Mekkî', verseCount: 165 },
-  { number: 7, name: 'Araf', turkishName: 'Araf', arabicName: 'الْأَعْرَاف', englishName: 'The Heights', revelationPlace: 'Mekkî', verseCount: 206 },
-  { number: 8, name: 'Enfal', turkishName: 'Enfal', arabicName: 'الْأَنْفَال', englishName: 'The Spoils of War', revelationPlace: 'Medenî', verseCount: 75 },
-  { number: 9, name: 'Tevbe', turkishName: 'Tevbe', arabicName: 'التَّوْبَة', englishName: 'The Repentance', revelationPlace: 'Medenî', verseCount: 129 },
-  { number: 10, name: 'Yunus', turkishName: 'Yunus', arabicName: 'يُونُس', englishName: 'Jonah', revelationPlace: 'Mekkî', verseCount: 109 },
-  { number: 11, name: 'Hud', turkishName: 'Hud', arabicName: 'هُود', englishName: 'Hud', revelationPlace: 'Mekkî', verseCount: 123 },
-  { number: 12, name: 'Yusuf', turkishName: 'Yusuf', arabicName: 'يُوسُف', englishName: 'Joseph', revelationPlace: 'Mekkî', verseCount: 111 },
-  { number: 13, name: 'Rad', turkishName: 'Rad', arabicName: 'الرَّعْد', englishName: 'The Thunder', revelationPlace: 'Medenî', verseCount: 43 },
-  { number: 14, name: 'İbrahim', turkishName: 'İbrahim', arabicName: 'إِبْرَاهِيم', englishName: 'Abraham', revelationPlace: 'Mekkî', verseCount: 52 },
-  { number: 15, name: 'Hicr', turkishName: 'Hicr', arabicName: 'الْحِجْر', englishName: 'The Rocky Tract', revelationPlace: 'Mekkî', verseCount: 99 },
-  { number: 16, name: 'Nahl', turkishName: 'Nahl', arabicName: 'النَّحْل', englishName: 'The Bee', revelationPlace: 'Mekkî', verseCount: 128 },
-  { number: 17, name: 'İsra', turkishName: 'İsra', arabicName: 'الْإِسْرَاء', englishName: 'The Night Journey', revelationPlace: 'Mekkî', verseCount: 111 },
-  { number: 18, name: 'Kehf', turkishName: 'Kehf', arabicName: 'الْكَهْف', englishName: 'The Cave', revelationPlace: 'Mekkî', verseCount: 110 },
-  { number: 19, name: 'Meryem', turkishName: 'Meryem', arabicName: 'مَرْيَم', englishName: 'Mary', revelationPlace: 'Mekkî', verseCount: 98 },
-  { number: 20, name: 'Taha', turkishName: 'Taha', arabicName: 'طه', englishName: 'Ta-Ha', revelationPlace: 'Mekkî', verseCount: 135 },
-  { number: 21, name: 'Enbiya', turkishName: 'Enbiya', arabicName: 'الْأَنْبِيَاء', englishName: 'The Prophets', revelationPlace: 'Mekkî', verseCount: 112 },
-  { number: 22, name: 'Hac', turkishName: 'Hac', arabicName: 'الْحَجّ', englishName: 'The Pilgrimage', revelationPlace: 'Medenî', verseCount: 78 },
-  { number: 23, name: 'Muminun', turkishName: 'Muminun', arabicName: 'الْمُؤْمِنُون', englishName: 'The Believers', revelationPlace: 'Mekkî', verseCount: 118 },
-  { number: 24, name: 'Nur', turkishName: 'Nur', arabicName: 'النُّور', englishName: 'The Light', revelationPlace: 'Medenî', verseCount: 64 },
-  { number: 25, name: 'Furkan', turkishName: 'Furkan', arabicName: 'الْفُرْقَان', englishName: 'The Criterion', revelationPlace: 'Mekkî', verseCount: 77 },
-  { number: 26, name: 'Şuara', turkishName: 'Şuara', arabicName: 'الشُّعَرَاء', englishName: 'The Poets', revelationPlace: 'Mekkî', verseCount: 227 },
-  { number: 27, name: 'Neml', turkishName: 'Neml', arabicName: 'النَّمْل', englishName: 'The Ant', revelationPlace: 'Mekkî', verseCount: 93 },
-  { number: 28, name: 'Kasas', turkishName: 'Kasas', arabicName: 'الْقَصَص', englishName: 'The Stories', revelationPlace: 'Mekkî', verseCount: 88 },
-  { number: 29, name: 'Ankebut', turkishName: 'Ankebut', arabicName: 'الْعَنْكَبُوت', englishName: 'The Spider', revelationPlace: 'Mekkî', verseCount: 69 },
-  { number: 30, name: 'Rum', turkishName: 'Rum', arabicName: 'الرُّوم', englishName: 'The Romans', revelationPlace: 'Mekkî', verseCount: 60 },
-  { number: 31, name: 'Lokman', turkishName: 'Lokman', arabicName: 'لُقْمَان', englishName: 'Luqman', revelationPlace: 'Mekkî', verseCount: 34 },
-  { number: 32, name: 'Secde', turkishName: 'Secde', arabicName: 'السَّجْدَة', englishName: 'The Prostration', revelationPlace: 'Mekkî', verseCount: 30 },
-  { number: 33, name: 'Ahzab', turkishName: 'Ahzab', arabicName: 'الْأَحْزَاب', englishName: 'The Clans', revelationPlace: 'Medenî', verseCount: 73 },
-  { number: 34, name: 'Sebe', turkishName: 'Sebe', arabicName: 'سَبَأ', englishName: 'Sheba', revelationPlace: 'Mekkî', verseCount: 54 },
-  { number: 35, name: 'Fatır', turkishName: 'Fatır', arabicName: 'فَاطِر', englishName: 'Originator', revelationPlace: 'Mekkî', verseCount: 45 },
-  { number: 36, name: 'Yasin', turkishName: 'Yasin', arabicName: 'يس', englishName: 'Ya Sin', revelationPlace: 'Mekkî', verseCount: 83 },
-  { number: 37, name: 'Saffat', turkishName: 'Saffat', arabicName: 'الصَّافَّات', englishName: 'Those Who Set The Ranks', revelationPlace: 'Mekkî', verseCount: 182 },
-  { number: 38, name: 'Sad', turkishName: 'Sad', arabicName: 'ص', englishName: 'The Letter Sad', revelationPlace: 'Mekkî', verseCount: 88 },
-  { number: 39, name: 'Zümer', turkishName: 'Zümer', arabicName: 'الزُّمَر', englishName: 'The Troops', revelationPlace: 'Mekkî', verseCount: 75 },
-  { number: 40, name: 'Mümin', turkishName: 'Mümin', arabicName: 'غَافِر', englishName: 'The Forgiver', revelationPlace: 'Mekkî', verseCount: 85 },
-  { number: 41, name: 'Fussilet', turkishName: 'Fussilet', arabicName: 'فُصِّلَت', englishName: 'Explained In Detail', revelationPlace: 'Mekkî', verseCount: 54 },
-  { number: 42, name: 'Şura', turkishName: 'Şura', arabicName: 'الشُّورَى', englishName: 'The Consultation', revelationPlace: 'Mekkî', verseCount: 53 },
-  { number: 43, name: 'Zuhruf', turkishName: 'Zuhruf', arabicName: 'الزُّخْرُف', englishName: 'The Ornaments Of Gold', revelationPlace: 'Mekkî', verseCount: 89 },
-  { number: 44, name: 'Duhan', turkishName: 'Duhan', arabicName: 'الدُّخَان', englishName: 'The Smoke', revelationPlace: 'Mekkî', verseCount: 59 },
-  { number: 45, name: 'Casiye', turkishName: 'Casiye', arabicName: 'الْجَاثِيَة', englishName: 'The Crouching', revelationPlace: 'Mekkî', verseCount: 37 },
-  { number: 46, name: 'Ahkaf', turkishName: 'Ahkaf', arabicName: 'الْأَحْقَاف', englishName: 'The Wind-Curved Sandhills', revelationPlace: 'Mekkî', verseCount: 35 },
-  { number: 47, name: 'Muhammed', turkishName: 'Muhammed', arabicName: 'مُحَمَّد', englishName: 'Muhammad', revelationPlace: 'Medenî', verseCount: 38 },
-  { number: 48, name: 'Fetih', turkishName: 'Fetih', arabicName: 'الْفَتْح', englishName: 'The Victory', revelationPlace: 'Medenî', verseCount: 29 },
-  { number: 49, name: 'Hucurat', turkishName: 'Hucurat', arabicName: 'الْحُجُرَات', englishName: 'The Rooms', revelationPlace: 'Medenî', verseCount: 18 },
-  { number: 50, name: 'Kaf', turkishName: 'Kaf', arabicName: 'ق', englishName: 'The Letter Qaf', revelationPlace: 'Mekkî', verseCount: 45 },
-  { number: 51, name: 'Zariyat', turkishName: 'Zariyat', arabicName: 'الذَّارِيَات', englishName: 'The Winnowing Winds', revelationPlace: 'Mekkî', verseCount: 60 },
-  { number: 52, name: 'Tur', turkishName: 'Tur', arabicName: 'الطُّور', englishName: 'The Mount', revelationPlace: 'Mekkî', verseCount: 49 },
-  { number: 53, name: 'Necm', turkishName: 'Necm', arabicName: 'النَّجْم', englishName: 'The Star', revelationPlace: 'Mekkî', verseCount: 62 },
-  { number: 54, name: 'Kamer', turkishName: 'Kamer', arabicName: 'الْقَمَر', englishName: 'The Moon', revelationPlace: 'Mekkî', verseCount: 55 },
-  { number: 55, name: 'Rahman', turkishName: 'Rahman', arabicName: 'الرَّحْمَن', englishName: 'The Beneficent', revelationPlace: 'Medenî', verseCount: 78 },
-  { number: 56, name: 'Vakia', turkishName: 'Vakia', arabicName: 'الْوَاقِعَة', englishName: 'The Inevitable', revelationPlace: 'Mekkî', verseCount: 96 },
-  { number: 57, name: 'Hadid', turkishName: 'Hadid', arabicName: 'الْحَدِيد', englishName: 'The Iron', revelationPlace: 'Medenî', verseCount: 29 },
-  { number: 58, name: 'Mücadele', turkishName: 'Mücadele', arabicName: 'الْمُجَادَلَة', englishName: 'The Pleading Woman', revelationPlace: 'Medenî', verseCount: 22 },
-  { number: 59, name: 'Haşr', turkishName: 'Haşr', arabicName: 'الْحَشْر', englishName: 'The Exile', revelationPlace: 'Medenî', verseCount: 24 },
-  { number: 60, name: 'Mümtehine', turkishName: 'Mümtehine', arabicName: 'الْمُمْتَحَنَة', englishName: 'She That Is To Be Examined', revelationPlace: 'Medenî', verseCount: 13 },
-  { number: 61, name: 'Saff', turkishName: 'Saff', arabicName: 'الصَّف', englishName: 'The Ranks', revelationPlace: 'Medenî', verseCount: 14 },
-  { number: 62, name: 'Cuma', turkishName: 'Cuma', arabicName: 'الْجُمُعَة', englishName: 'The Congregation', revelationPlace: 'Medenî', verseCount: 11 },
-  { number: 63, name: 'Münafikun', turkishName: 'Münafikun', arabicName: 'الْمُنَافِقُون', englishName: 'The Hypocrites', revelationPlace: 'Medenî', verseCount: 11 },
-  { number: 64, name: 'Teğabün', turkishName: 'Teğabün', arabicName: 'التَّغَابُن', englishName: 'The Mutual Disillusion', revelationPlace: 'Medenî', verseCount: 18 },
-  { number: 65, name: 'Talak', turkishName: 'Talak', arabicName: 'الطَّلَاق', englishName: 'The Divorce', revelationPlace: 'Medenî', verseCount: 12 },
-  { number: 66, name: 'Tahrim', turkishName: 'Tahrim', arabicName: 'التَّحْرِيم', englishName: 'The Prohibition', revelationPlace: 'Medenî', verseCount: 12 },
-  { number: 67, name: 'Mülk', turkishName: 'Mülk', arabicName: 'الْمُلْك', englishName: 'The Sovereignty', revelationPlace: 'Mekkî', verseCount: 30 },
-  { number: 68, name: 'Kalem', turkishName: 'Kalem', arabicName: 'الْقَلَم', englishName: 'The Pen', revelationPlace: 'Mekkî', verseCount: 52 },
-  { number: 69, name: 'Hakka', turkishName: 'Hakka', arabicName: 'الْحَاقَّة', englishName: 'The Reality', revelationPlace: 'Mekkî', verseCount: 52 },
-  { number: 70, name: 'Mearic', turkishName: 'Mearic', arabicName: 'الْمَعَارِج', englishName: 'The Ascending Stairways', revelationPlace: 'Mekkî', verseCount: 44 },
-  { number: 71, name: 'Nuh', turkishName: 'Nuh', arabicName: 'نُوح', englishName: 'Noah', revelationPlace: 'Mekkî', verseCount: 28 },
-  { number: 72, name: 'Cin', turkishName: 'Cin', arabicName: 'الْجِنّ', englishName: 'The Jinn', revelationPlace: 'Mekkî', verseCount: 28 },
-  { number: 73, name: 'Müzzemmil', turkishName: 'Müzzemmil', arabicName: 'الْمُزَّمِّل', englishName: 'The Enshrouded One', revelationPlace: 'Mekkî', verseCount: 20 },
-  { number: 74, name: 'Müddessir', turkishName: 'Müddessir', arabicName: 'الْمُدَّثِّر', englishName: 'The Cloaked One', revelationPlace: 'Mekkî', verseCount: 56 },
-  { number: 75, name: 'Kıyamet', turkishName: 'Kıyamet', arabicName: 'الْقِيَامَة', englishName: 'The Resurrection', revelationPlace: 'Mekkî', verseCount: 40 },
-  { number: 76, name: 'İnsan', turkishName: 'İnsan', arabicName: 'الْإِنْسَان', englishName: 'The Human', revelationPlace: 'Medenî', verseCount: 31 },
-  { number: 77, name: 'Mürselat', turkishName: 'Mürselat', arabicName: 'الْمُرْسَلَات', englishName: 'The Emissaries', revelationPlace: 'Mekkî', verseCount: 50 },
-  { number: 78, name: 'Nebe', turkishName: 'Nebe', arabicName: 'النَّبَأ', englishName: 'The Tidings', revelationPlace: 'Mekkî', verseCount: 40 },
-  { number: 79, name: 'Naziat', turkishName: 'Naziat', arabicName: 'النَّازِعَات', englishName: 'Those Who Drag Forth', revelationPlace: 'Mekkî', verseCount: 46 },
-  { number: 80, name: 'Abese', turkishName: 'Abese', arabicName: 'عَبَسَ', englishName: 'He Frowned', revelationPlace: 'Mekkî', verseCount: 42 },
-  { number: 81, name: 'Tekvir', turkishName: 'Tekvir', arabicName: 'التَّكْوِير', englishName: 'The Overthrowing', revelationPlace: 'Mekkî', verseCount: 29 },
-  { number: 82, name: 'İnfitar', turkishName: 'İnfitar', arabicName: 'الْإِنْفِطَار', englishName: 'The Cleaving', revelationPlace: 'Mekkî', verseCount: 19 },
-  { number: 83, name: 'Mutaffifin', turkishName: 'Mutaffifin', arabicName: 'الْمُطَفِّفِين', englishName: 'The Defrauding', revelationPlace: 'Mekkî', verseCount: 36 },
-  { number: 84, name: 'İnşikak', turkishName: 'İnşikak', arabicName: 'الْإِنْشِقَاق', englishName: 'The Sundering', revelationPlace: 'Mekkî', verseCount: 25 },
-  { number: 85, name: 'Buruc', turkishName: 'Buruc', arabicName: 'الْبُرُوج', englishName: 'The Mansions Of The Stars', revelationPlace: 'Mekkî', verseCount: 22 },
-  { number: 86, name: 'Tarık', turkishName: 'Tarık', arabicName: 'الطَّارِق', englishName: 'The Morning Star', revelationPlace: 'Mekkî', verseCount: 17 },
-  { number: 87, name: 'Ala', turkishName: 'Ala', arabicName: 'الْأَعْلَى', englishName: 'The Most High', revelationPlace: 'Mekkî', verseCount: 19 },
-  { number: 88, name: 'Gaşiye', turkishName: 'Gaşiye', arabicName: 'الْغَاشِيَة', englishName: 'The Overwhelming', revelationPlace: 'Mekkî', verseCount: 26 },
-  { number: 89, name: 'Fecr', turkishName: 'Fecr', arabicName: 'الْفَجْر', englishName: 'The Dawn', revelationPlace: 'Mekkî', verseCount: 30 },
-  { number: 90, name: 'Beled', turkishName: 'Beled', arabicName: 'الْبَلَد', englishName: 'The City', revelationPlace: 'Mekkî', verseCount: 20 },
-  { number: 91, name: 'Şems', turkishName: 'Şems', arabicName: 'الشَّمْس', englishName: 'The Sun', revelationPlace: 'Mekkî', verseCount: 15 },
-  { number: 92, name: 'Leyl', turkishName: 'Leyl', arabicName: 'اللَّيْل', englishName: 'The Night', revelationPlace: 'Mekkî', verseCount: 21 },
-  { number: 93, name: 'Duha', turkishName: 'Duha', arabicName: 'الضُّحَى', englishName: 'The Morning Hours', revelationPlace: 'Mekkî', verseCount: 11 },
-  { number: 94, name: 'İnşirah', turkishName: 'İnşirah', arabicName: 'الشَّرْح', englishName: 'The Relief', revelationPlace: 'Mekkî', verseCount: 8 },
-  { number: 95, name: 'Tin', turkishName: 'Tin', arabicName: 'التِّين', englishName: 'The Fig', revelationPlace: 'Mekkî', verseCount: 8 },
-  { number: 96, name: 'Alak', turkishName: 'Alak', arabicName: 'الْعَلَق', englishName: 'The Clot', revelationPlace: 'Mekkî', verseCount: 19 },
-  { number: 97, name: 'Kadir', turkishName: 'Kadir', arabicName: 'الْقَدْر', englishName: 'The Power', revelationPlace: 'Mekkî', verseCount: 5 },
-  { number: 98, name: 'Beyyine', turkishName: 'Beyyine', arabicName: 'الْبَيِّنَة', englishName: 'The Clear Proof', revelationPlace: 'Medenî', verseCount: 8 },
-  { number: 99, name: 'Zilzal', turkishName: 'Zilzal', arabicName: 'الزَّلْزَلَة', englishName: 'The Earthquake', revelationPlace: 'Medenî', verseCount: 8 },
-  { number: 100, name: 'Adiyat', turkishName: 'Adiyat', arabicName: 'الْعَادِيَات', englishName: 'The Courser', revelationPlace: 'Mekkî', verseCount: 11 },
-  { number: 101, name: 'Karia', turkishName: 'Karia', arabicName: 'الْقَارِعَة', englishName: 'The Calamity', revelationPlace: 'Mekkî', verseCount: 11 },
-  { number: 102, name: 'Tekasür', turkishName: 'Tekasür', arabicName: 'التَّكَاثُر', englishName: 'The Rivalry In World Increase', revelationPlace: 'Mekkî', verseCount: 8 },
-  { number: 103, name: 'Asr', turkishName: 'Asr', arabicName: 'الْعَصْر', englishName: 'The Declining Day', revelationPlace: 'Mekkî', verseCount: 3 },
-  { number: 104, name: 'Hümeze', turkishName: 'Hümeze', arabicName: 'الْهُمَزَة', englishName: 'The Traducer', revelationPlace: 'Mekkî', verseCount: 9 },
-  { number: 105, name: 'Fil', turkishName: 'Fil', arabicName: 'الْفِيل', englishName: 'The Elephant', revelationPlace: 'Mekkî', verseCount: 5 },
-  { number: 106, name: 'Kureyş', turkishName: 'Kureyş', arabicName: 'قُرَيْش', englishName: 'Quraysh', revelationPlace: 'Mekkî', verseCount: 4 },
-  { number: 107, name: 'Maun', turkishName: 'Maun', arabicName: 'الْمَاعُون', englishName: 'The Small Kindnesses', revelationPlace: 'Mekkî', verseCount: 7 },
-  { number: 108, name: 'Kevser', turkishName: 'Kevser', arabicName: 'الْكَوْثَر', englishName: 'The Abundance', revelationPlace: 'Mekkî', verseCount: 3 },
-  { number: 109, name: 'Kafirun', turkishName: 'Kafirun', arabicName: 'الْكَافِرُون', englishName: 'The Disbelievers', revelationPlace: 'Mekkî', verseCount: 6 },
-  { number: 110, name: 'Nasr', turkishName: 'Nasr', arabicName: 'النَّصْر', englishName: 'The Divine Support', revelationPlace: 'Medenî', verseCount: 3 },
-  { number: 111, name: 'Tebbet', turkishName: 'Tebbet', arabicName: 'الْمَسَد', englishName: 'The Palm Fibre', revelationPlace: 'Mekkî', verseCount: 5 },
-  { number: 112, name: 'İhlas', turkishName: 'İhlas', arabicName: 'الْإِخْلَاص', englishName: 'The Sincerity', revelationPlace: 'Mekkî', verseCount: 4 },
-  { number: 113, name: 'Felak', turkishName: 'Felak', arabicName: 'الْفَلَق', englishName: 'The Daybreak', revelationPlace: 'Mekkî', verseCount: 5 },
-  { number: 114, name: 'Nas', turkishName: 'Nas', arabicName: 'النَّاس', englishName: 'Mankind', revelationPlace: 'Mekkî', verseCount: 6 }];
+  { number: 1, name: 'Fatiha', arabicName: 'الْفَاتِحَة', revelationPlace: 'Mekkî', verseCount: 7 },
+  { number: 2, name: 'Bakara', arabicName: 'الْبَقَرَة', revelationPlace: 'Medenî', verseCount: 286 },
+  { number: 3, name: 'Al-i İmran', arabicName: 'آل عِمْرَان', revelationPlace: 'Medenî', verseCount: 200 },
+  { number: 4, name: 'Nisa', arabicName: 'النِّسَاء', revelationPlace: 'Medenî', verseCount: 176 },
+  { number: 5, name: 'Maide', arabicName: 'الْمَائِدَة', revelationPlace: 'Medenî', verseCount: 120 },
+  { number: 6, name: 'Enam', arabicName: 'الْأَنْعَام', revelationPlace: 'Mekkî', verseCount: 165 },
+  { number: 7, name: 'Araf', arabicName: 'الْأَعْرَاف', revelationPlace: 'Mekkî', verseCount: 206 },
+  { number: 8, name: 'Enfal', arabicName: 'الْأَنْفَال', revelationPlace: 'Medenî', verseCount: 75 },
+  { number: 9, name: 'Tevbe', arabicName: 'التَّوْبَة', revelationPlace: 'Medenî', verseCount: 129 },
+  { number: 10, name: 'Yunus', arabicName: 'يُونُس', revelationPlace: 'Mekkî', verseCount: 109 },
+  { number: 11, name: 'Hud', arabicName: 'هُود', revelationPlace: 'Mekkî', verseCount: 123 },
+  { number: 12, name: 'Yusuf', arabicName: 'يُوسُف', revelationPlace: 'Mekkî', verseCount: 111 },
+  { number: 13, name: 'Rad', arabicName: 'الرَّعْد', revelationPlace: 'Medenî', verseCount: 43 },
+  { number: 14, name: 'İbrahim', arabicName: 'إِبْرَاهِيم', revelationPlace: 'Mekkî', verseCount: 52 },
+  { number: 15, name: 'Hicr', arabicName: 'الْحِجْر', revelationPlace: 'Mekkî', verseCount: 99 },
+  { number: 16, name: 'Nahl', arabicName: 'النَّحْل', revelationPlace: 'Mekkî', verseCount: 128 },
+  { number: 17, name: 'İsra', arabicName: 'الْإِسْرَاء', revelationPlace: 'Mekkî', verseCount: 111 },
+  { number: 18, name: 'Kehf', arabicName: 'الْكَهْف', revelationPlace: 'Mekkî', verseCount: 110 },
+  { number: 19, name: 'Meryem', arabicName: 'مَرْيَم', revelationPlace: 'Mekkî', verseCount: 98 },
+  { number: 20, name: 'Taha', arabicName: 'طه', revelationPlace: 'Mekkî', verseCount: 135 },
+  { number: 21, name: 'Enbiya', arabicName: 'الْأَنْبِيَاء', revelationPlace: 'Mekkî', verseCount: 112 },
+  { number: 22, name: 'Hac', arabicName: 'الْحَجّ', revelationPlace: 'Medenî', verseCount: 78 },
+  { number: 23, name: 'Muminun', arabicName: 'الْمُؤْمِنُون', revelationPlace: 'Mekkî', verseCount: 118 },
+  { number: 24, name: 'Nur', arabicName: 'النُّور', revelationPlace: 'Medenî', verseCount: 64 },
+  { number: 25, name: 'Furkan', arabicName: 'الْفُرْقَان', revelationPlace: 'Mekkî', verseCount: 77 },
+  { number: 26, name: 'Şuara', arabicName: 'الشُّعَرَاء', revelationPlace: 'Mekkî', verseCount: 227 },
+  { number: 27, name: 'Neml', arabicName: 'النَّمْل', revelationPlace: 'Mekkî', verseCount: 93 },
+  { number: 28, name: 'Kasas', arabicName: 'الْقَصَص', revelationPlace: 'Mekkî', verseCount: 88 },
+  { number: 29, name: 'Ankebut', arabicName: 'الْعَنْكَبُوت', revelationPlace: 'Mekkî', verseCount: 69 },
+  { number: 30, name: 'Rum', arabicName: 'الرُّوم', revelationPlace: 'Mekkî', verseCount: 60 },
+  { number: 31, name: 'Lokman', arabicName: 'لُقْمَان', revelationPlace: 'Mekkî', verseCount: 34 },
+  { number: 32, name: 'Secde', arabicName: 'السَّجْدَة', revelationPlace: 'Mekkî', verseCount: 30 },
+  { number: 33, name: 'Ahzab', arabicName: 'الْأَحْزَاب', revelationPlace: 'Medenî', verseCount: 73 },
+  { number: 34, name: 'Sebe', arabicName: 'سَبَأ', revelationPlace: 'Mekkî', verseCount: 54 },
+  { number: 35, name: 'Fatır', arabicName: 'فَاطِر', revelationPlace: 'Mekkî', verseCount: 45 },
+  { number: 36, name: 'Yasin', arabicName: 'يس', revelationPlace: 'Mekkî', verseCount: 83 },
+  { number: 37, name: 'Saffat', arabicName: 'الصَّافَّات', revelationPlace: 'Mekkî', verseCount: 182 },
+  { number: 38, name: 'Sad', arabicName: 'ص', revelationPlace: 'Mekkî', verseCount: 88 },
+  { number: 39, name: 'Zümer', arabicName: 'الزُّمَر', revelationPlace: 'Mekkî', verseCount: 75 },
+  { number: 40, name: 'Mümin', arabicName: 'غَافِر', revelationPlace: 'Mekkî', verseCount: 85 },
+  { number: 41, name: 'Fussilet', arabicName: 'فُصِّلَت', revelationPlace: 'Mekkî', verseCount: 54 },
+  { number: 42, name: 'Şura', arabicName: 'الشُّورَى', revelationPlace: 'Mekkî', verseCount: 53 },
+  { number: 43, name: 'Zuhruf', arabicName: 'الزُّخْرُف', revelationPlace: 'Mekkî', verseCount: 89 },
+  { number: 44, name: 'Duhan', arabicName: 'الدُّخَان', revelationPlace: 'Mekkî', verseCount: 59 },
+  { number: 45, name: 'Casiye', arabicName: 'الْجَاثِيَة', revelationPlace: 'Mekkî', verseCount: 37 },
+  { number: 46, name: 'Ahkaf', arabicName: 'الْأَحْقَاف', revelationPlace: 'Mekkî', verseCount: 35 },
+  { number: 47, name: 'Muhammed', arabicName: 'مُحَمَّد', revelationPlace: 'Medenî', verseCount: 38 },
+  { number: 48, name: 'Fetih', arabicName: 'الْفَتْح', revelationPlace: 'Medenî', verseCount: 29 },
+  { number: 49, name: 'Hucurat', arabicName: 'الْحُجُرَات', revelationPlace: 'Medenî', verseCount: 18 },
+  { number: 50, name: 'Kaf', arabicName: 'ق', revelationPlace: 'Mekkî', verseCount: 45 },
+  { number: 51, name: 'Zariyat', arabicName: 'الذَّارِيَات', revelationPlace: 'Mekkî', verseCount: 60 },
+  { number: 52, name: 'Tur', arabicName: 'الطُّور', revelationPlace: 'Mekkî', verseCount: 49 },
+  { number: 53, name: 'Necm', arabicName: 'النَّجْم', revelationPlace: 'Mekkî', verseCount: 62 },
+  { number: 54, name: 'Kamer', arabicName: 'الْقَمَر', revelationPlace: 'Mekkî', verseCount: 55 },
+  { number: 55, name: 'Rahman', arabicName: 'الرَّحْمَن', revelationPlace: 'Medenî', verseCount: 78 },
+  { number: 56, name: 'Vakia', arabicName: 'الْوَاقِعَة', revelationPlace: 'Mekkî', verseCount: 96 },
+  { number: 57, name: 'Hadid', arabicName: 'الْحَدِيد', revelationPlace: 'Medenî', verseCount: 29 },
+  { number: 58, name: 'Mücadele', arabicName: 'الْمُجَادَلَة', revelationPlace: 'Medenî', verseCount: 22 },
+  { number: 59, name: 'Haşr', arabicName: 'الْحَشْر', revelationPlace: 'Medenî', verseCount: 24 },
+  { number: 60, name: 'Mümtehine', arabicName: 'الْمُمْتَحَنَة', revelationPlace: 'Medenî', verseCount: 13 },
+  { number: 61, name: 'Saff', arabicName: 'الصَّف', revelationPlace: 'Medenî', verseCount: 14 },
+  { number: 62, name: 'Cuma', arabicName: 'الْجُمُعَة', revelationPlace: 'Medenî', verseCount: 11 },
+  { number: 63, name: 'Münafikun', arabicName: 'الْمُنَافِقُون', revelationPlace: 'Medenî', verseCount: 11 },
+  { number: 64, name: 'Teğabün', arabicName: 'التَّغَابُن', revelationPlace: 'Medenî', verseCount: 18 },
+  { number: 65, name: 'Talak', arabicName: 'الطَّلَاق', revelationPlace: 'Medenî', verseCount: 12 },
+  { number: 66, name: 'Tahrim', arabicName: 'التَّحْرِيم', revelationPlace: 'Medenî', verseCount: 12 },
+  { number: 67, name: 'Mülk', arabicName: 'الْمُلْك', revelationPlace: 'Mekkî', verseCount: 30 },
+  { number: 68, name: 'Kalem', arabicName: 'الْقَلَم', revelationPlace: 'Mekkî', verseCount: 52 },
+  { number: 69, name: 'Hakka', arabicName: 'الْحَاقَّة', revelationPlace: 'Mekkî', verseCount: 52 },
+  { number: 70, name: 'Mearic', arabicName: 'الْمَعَارِج', revelationPlace: 'Mekkî', verseCount: 44 },
+  { number: 71, name: 'Nuh', arabicName: 'نُوح', revelationPlace: 'Mekkî', verseCount: 28 },
+  { number: 72, name: 'Cin', arabicName: 'الْجِنّ', revelationPlace: 'Mekkî', verseCount: 28 },
+  { number: 73, name: 'Müzzemmil', arabicName: 'الْمُزَّمِّل', revelationPlace: 'Mekkî', verseCount: 20 },
+  { number: 74, name: 'Müddessir', arabicName: 'الْمُدَّثِّر', revelationPlace: 'Mekkî', verseCount: 56 },
+  { number: 75, name: 'Kıyamet', arabicName: 'الْقِيَامَة', revelationPlace: 'Mekkî', verseCount: 40 },
+  { number: 76, name: 'İnsan', arabicName: 'الْإِنْسَان', revelationPlace: 'Medenî', verseCount: 31 },
+  { number: 77, name: 'Mürselat', arabicName: 'الْمُرْسَلَات', revelationPlace: 'Mekkî', verseCount: 50 },
+  { number: 78, name: 'Nebe', arabicName: 'النَّبَأ', revelationPlace: 'Mekkî', verseCount: 40 },
+  { number: 79, name: 'Naziat', arabicName: 'النَّازِعَات', revelationPlace: 'Mekkî', verseCount: 46 },
+  { number: 80, name: 'Abese', arabicName: 'عَبَسَ', revelationPlace: 'Mekkî', verseCount: 42 },
+  { number: 81, name: 'Tekvir', arabicName: 'التَّكْوِير', revelationPlace: 'Mekkî', verseCount: 29 },
+  { number: 82, name: 'İnfitar', arabicName: 'الْإِنْفِطَار', revelationPlace: 'Mekkî', verseCount: 19 },
+  { number: 83, name: 'Mutaffifin', arabicName: 'الْمُطَفِّفِين', revelationPlace: 'Mekkî', verseCount: 36 },
+  { number: 84, name: 'İnşikak', arabicName: 'الْإِنْشِقَاق', revelationPlace: 'Mekkî', verseCount: 25 },
+  { number: 85, name: 'Buruc', arabicName: 'الْبُرُوج', revelationPlace: 'Mekkî', verseCount: 22 },
+  { number: 86, name: 'Tarık', arabicName: 'الطَّارِق', revelationPlace: 'Mekkî', verseCount: 17 },
+  { number: 87, name: 'Ala', arabicName: 'الْأَعْلَى', revelationPlace: 'Mekkî', verseCount: 19 },
+  { number: 88, name: 'Gaşiye', arabicName: 'الْغَاشِيَة', revelationPlace: 'Mekkî', verseCount: 26 },
+  { number: 89, name: 'Fecr', arabicName: 'الْفَجْر', revelationPlace: 'Mekkî', verseCount: 30 },
+  { number: 90, name: 'Beled', arabicName: 'الْبَلَد', revelationPlace: 'Mekkî', verseCount: 20 },
+  { number: 91, name: 'Şems', arabicName: 'الشَّمْس', revelationPlace: 'Mekkî', verseCount: 15 },
+  { number: 92, name: 'Leyl', arabicName: 'اللَّيْل', revelationPlace: 'Mekkî', verseCount: 21 },
+  { number: 93, name: 'Duha', arabicName: 'الضُّحَى', revelationPlace: 'Mekkî', verseCount: 11 },
+  { number: 94, name: 'İnşirah', arabicName: 'الشَّرْح', revelationPlace: 'Mekkî', verseCount: 8 },
+  { number: 95, name: 'Tin', arabicName: 'التِّين', revelationPlace: 'Mekkî', verseCount: 8 },
+  { number: 96, name: 'Alak', arabicName: 'الْعَلَق', revelationPlace: 'Mekkî', verseCount: 19 },
+  { number: 97, name: 'Kadir', arabicName: 'الْقَدْر', revelationPlace: 'Mekkî', verseCount: 5 },
+  { number: 98, name: 'Beyyine', arabicName: 'الْبَيِّنَة', revelationPlace: 'Medenî', verseCount: 8 },
+  { number: 99, name: 'Zilzal', arabicName: 'الزَّلْزَلَة', revelationPlace: 'Medenî', verseCount: 8 },
+  { number: 100, name: 'Adiyat', arabicName: 'الْعَادِيَات', revelationPlace: 'Mekkî', verseCount: 11 },
+  { number: 101, name: 'Karia', arabicName: 'الْقَارِعَة', revelationPlace: 'Mekkî', verseCount: 11 },
+  { number: 102, name: 'Tekasür', arabicName: 'التَّكَاثُر', revelationPlace: 'Mekkî', verseCount: 8 },
+  { number: 103, name: 'Asr', arabicName: 'الْعَصْر', revelationPlace: 'Mekkî', verseCount: 3 },
+  { number: 104, name: 'Hümeze', arabicName: 'الْهُمَزَة', revelationPlace: 'Mekkî', verseCount: 9 },
+  { number: 105, name: 'Fil', arabicName: 'الْفِيل', revelationPlace: 'Mekkî', verseCount: 5 },
+  { number: 106, name: 'Kureyş', arabicName: 'قُرَيْش', revelationPlace: 'Mekkî', verseCount: 4 },
+  { number: 107, name: 'Maun', arabicName: 'الْمَاعُون', revelationPlace: 'Mekkî', verseCount: 7 },
+  { number: 108, name: 'Kevser', arabicName: 'الْكَوْثَر', revelationPlace: 'Mekkî', verseCount: 3 },
+  { number: 109, name: 'Kafirun', arabicName: 'الْكَافِرُون', revelationPlace: 'Mekkî', verseCount: 6 },
+  { number: 110, name: 'Nasr', arabicName: 'النَّصْر', revelationPlace: 'Medenî', verseCount: 3 },
+  { number: 111, name: 'Tebbet', arabicName: 'الْمَسَد', revelationPlace: 'Mekkî', verseCount: 5 },
+  { number: 112, name: 'İhlas', arabicName: 'الْإِخْلَاص', revelationPlace: 'Mekkî', verseCount: 4 },
+  { number: 113, name: 'Felak', arabicName: 'الْفَلَق', revelationPlace: 'Mekkî', verseCount: 5 },
+  { number: 114, name: 'Nas', arabicName: 'النَّاس', revelationPlace: 'Mekkî', verseCount: 6 }];
 
 // Cache for loaded surahs
 const loadedSurahs = new Map<number, Surah>();
@@ -818,7 +738,6 @@ export async function loadSurah(surahNumber: number): Promise<Surah | null> {
     number: surahMeta.number,
     name: surahMeta.name,
     arabicName: surahMeta.arabicName,
-    englishName: surahMeta.englishName,
     revelationPlace: surahMeta.revelationPlace,
     verseCount: surahMeta.verseCount,
     verses: verses

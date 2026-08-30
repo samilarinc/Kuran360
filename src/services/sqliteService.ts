@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import logger from '../utils/logger';
+import logger from '@/utils/logger';
 
 interface VerseData {
     surah_number: number;
@@ -15,7 +15,6 @@ interface VerseData {
 }
 
 const DB_NAME = 'quran.db';
-const DB_VERSION = 1;
 
 class SQLiteHelper {
     private db: SQLite.SQLiteDatabase | null = null;

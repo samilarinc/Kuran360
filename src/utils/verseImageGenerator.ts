@@ -1,6 +1,9 @@
 import { Platform } from 'react-native';
-import { VerseShareData, ImageSize, ImageGenerationOptions } from '../types';
+import { VerseShareData, ImageSize, ImageGenerationOptions } from '@/types';
 import { getDefaultImageSize } from './imageSizes';
+import { DEFAULT_IMAGE_FONT_ID, getArabicFontFamily, getFontOption } from '@/constants/fonts';
+
+const DEFAULT_ARABIC_FONT_CSS = getArabicFontFamily(getFontOption(DEFAULT_IMAGE_FONT_ID));
 
 // Web globals for canvas
 declare const document: any;
@@ -83,7 +86,7 @@ export class VerseImageGenerator {
 
       console.log('Ayet resmi çiziliyor...');
       const palette = this.getPalette(options?.themeMode || 'light');
-      const arabicFontCss = options?.arabicFontCss ?? '"Scheherazade New", serif';
+      const arabicFontCss = options?.arabicFontCss ?? DEFAULT_ARABIC_FONT_CSS;
       const fontScale = options?.fontScale ?? 1.0;
 
       // Ensure the selected font is loaded before drawing on canvas
@@ -142,7 +145,7 @@ export class VerseImageGenerator {
   /**
    * Canvas'a ayet resmini çizer
    */
-  private static async drawVerseImage(ctx: CanvasRenderingContext2D, verseData: VerseShareData, palette: VerseImagePalette, imageSize: ImageSize, arabicFontCss: string = '"Scheherazade New", serif', fontScale: number = 1.0): Promise<void> {
+  private static async drawVerseImage(ctx: CanvasRenderingContext2D, verseData: VerseShareData, palette: VerseImagePalette, imageSize: ImageSize, arabicFontCss: string = DEFAULT_ARABIC_FONT_CSS, fontScale: number = 1.0): Promise<void> {
     const { arabicText, translation, surahName, verseNumber } = verseData;
 
     this.drawBackground(ctx, palette, imageSize);
@@ -336,7 +339,7 @@ export class VerseImageGenerator {
   /**
    * Arapça metni çizer
    */
-  private static async drawArabicText(ctx: CanvasRenderingContext2D, arabicText: string, fontSize: number, startY: number, precomputedLines?: string[], lineHeightOverride?: number, palette?: VerseImagePalette, imageSize?: ImageSize, padding?: number, arabicFontCss: string = '"Scheherazade New", serif'): Promise<void> {
+  private static async drawArabicText(ctx: CanvasRenderingContext2D, arabicText: string, fontSize: number, startY: number, precomputedLines?: string[], lineHeightOverride?: number, palette?: VerseImagePalette, imageSize?: ImageSize, padding?: number, arabicFontCss: string = DEFAULT_ARABIC_FONT_CSS): Promise<void> {
     ctx.fillStyle = palette?.text || this.TEXT_COLOR;
     ctx.font = `${fontSize}px ${arabicFontCss}`;
     // Blok ortalama: tüm satırlar için en geniş satırı bulup bloğu ortala

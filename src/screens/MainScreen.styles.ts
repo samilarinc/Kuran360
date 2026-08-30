@@ -1,72 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING } from '../theme';
-import { createCommonStyles } from '../theme/common.styles';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
+import { createCommonStyles } from '@/theme/common.styles';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-        ...common,
-        header: {
-            paddingHorizontal: SPACING.lg,
-            alignItems: 'center',
-            borderBottomLeftRadius: 30,
-            borderBottomRightRadius: 30,
-            elevation: 8,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.15,
-            shadowRadius: 8,
-            position: 'relative',
-            backgroundColor: theme.cardBackground, // Ensure header has bg
-        },
-        darkModeToggle: {
-            position: 'absolute',
-            right: SPACING.md,
-            top: SPACING.lg,
-            padding: 6,
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            borderRadius: 16,
-            minWidth: 32,
-            alignItems: 'center',
-            zIndex: 1,
-        },
-        darkModeIcon: {
-            fontSize: 16,
-            color: theme.text,
-        },
-        logoContainer: {
-            alignItems: 'center',
-        },
-        logoPlaceholder: {
-            width: 80,
-            height: 80,
-            borderRadius: 40,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: SPACING.md,
-            elevation: 4,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            backgroundColor: theme.background,
-        },
-        logoText: {
-            fontSize: 30,
-            marginBottom: -5,
-            color: theme.primary,
-        },
-        logoTextArabic: {
-            fontSize: 18,
-            fontWeight: '600',
-            fontFamily: 'serif',
-            color: theme.primary,
-        },
-        logoImage: {
-            width: 50,
-            height: 50,
-        },
         appTitle: {
             ...common.title,
             fontSize: FONT_SIZES.xlarge,
@@ -97,49 +36,66 @@ export const createStyles = (theme: any) => {
             marginBottom: SPACING.xl,
             paddingHorizontal: SPACING.md,
         },
-        menuContainer: {
+        heroCard: {
             flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            paddingVertical: SPACING.md,
-        },
-        menuItem: {
-            ...common.card,
-            padding: SPACING.md,
             alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: 110,
+            borderRadius: 18,
+            padding: SPACING.lg,
+            marginBottom: SPACING.lg,
+            elevation: 3,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.15,
+            shadowRadius: 6,
         },
-        menuItemContent: {
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        iconContainer: {
-            width: 52,
-            height: 52,
-            borderRadius: 26,
+        heroIconWrap: {
+            width: 48,
+            height: 48,
+            borderRadius: 14,
+            backgroundColor: 'rgba(255,255,255,0.18)',
             justifyContent: 'center',
             alignItems: 'center',
-            marginBottom: SPACING.sm,
+            marginRight: SPACING.md,
         },
-        menuIcon: {
-            fontSize: 26,
-        },
-        menuTextContainer: {
-            alignItems: 'center',
-        },
-        menuTitle: {
-            fontSize: FONT_SIZES.medium,
+        heroTitle: {
+            fontSize: FONT_SIZES.large,
             fontWeight: '700',
-            textAlign: 'center',
-            color: theme.text,
+            color: '#fff',
         },
-        menuSubtitle: {
+        heroSubtitle: {
             fontSize: FONT_SIZES.small,
-            lineHeight: FONT_SIZES.small * 1.3,
-            color: theme.textSecondary,
-            textAlign: 'center',
+            color: 'rgba(255,255,255,0.85)',
             marginTop: 2,
+        },
+        heroChevronWrap: {
+            width: 32,
+            height: 32,
+            borderRadius: 16,
+            backgroundColor: 'rgba(255,255,255,0.22)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginLeft: SPACING.sm,
+        },
+        sectionBlock: {
+            marginBottom: SPACING.lg,
+        },
+        sectionHeader: {
+            ...common.sectionLabel,
+            marginBottom: SPACING.sm,
+            marginLeft: SPACING.xs,
+        },
+        sectionCard: {
+            borderRadius: 16,
+            borderWidth: 1,
+            overflow: 'hidden',
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.06,
+            shadowRadius: 6,
+            elevation: 2,
+        },
+        menuRowDivider: {
+            borderBottomWidth: 1,
         },
         footer: {
             alignItems: 'center',
@@ -147,9 +103,7 @@ export const createStyles = (theme: any) => {
             paddingHorizontal: SPACING.lg,
         },
         footerText: {
-            ...common.smallText,
-            fontStyle: 'italic',
-            textAlign: 'center',
+            ...common.footerText,
             marginBottom: SPACING.xs,
         },
         footerReference: {

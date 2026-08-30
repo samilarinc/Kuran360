@@ -5,12 +5,14 @@ import {
     TouchableOpacity,
     SafeAreaView,
     ScrollView,
-    StyleSheet,
 } from 'react-native';
-import { AppHeader } from '../components/AppHeader';
-import { useTheme } from '../contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '../theme';
+import { useTranslation } from 'react-i18next';
+import { AppHeader } from '@/components/AppHeader';
+import { AppButton } from '@/components/AppButton';
+import { useTheme } from '@/contexts/ThemeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createCommonStyles } from '@/theme/common.styles';
+import { createStyles } from './UmrahProgressScreen.styles';
 
 interface UmrahProgressScreenProps {
     onNavigate: () => void;
@@ -28,6 +30,7 @@ const STORAGE_KEY = '@umrah_progress';
 
 export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavigate, navigation }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [progress, setProgress] = useState<UmrahState>({
         tawafCount: 0,
         sayCount: 0,
@@ -92,55 +95,56 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
         saveProgress({ ...progress, isIhram: !progress.isIhram });
     };
 
-    const resetProgress = () => {
-        saveProgress({
-            tawafCount: 0,
-            sayCount: 0,
-            sayDirection: 'Safa',
-            isIhram: false,
-        });
-    };
-
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={common.container}>
             <AppHeader
-                title="Şu an neredeyim?"
+                title={t('screenTitles.umrahProgress')}
                 showBackButton={true}
                 onBackPress={onNavigate}
+                showHomeButton={true}
+                onHomePress={onNavigate}
             />
             <ScrollView style={styles.content}>
                 {/* Tawaf Progress */}
                 <View style={styles.progressCard}>
                     <View style={styles.progressHeader}>
                         <Text style={[styles.icon, styles.largeIcon]}>🕋</Text>
-                        <Text style={[styles.progressTitle, { color: theme.text }]}>Tavaf</Text>
+                        <Text style={styles.progressTitle}>{t('umrahProgressScreen.tawaf')}</Text>
                     </View>
-                    <Text style={[styles.progressCount, { color: theme.primary }]}>
+                    <Text style={styles.progressCount}>
                         {progress.tawafCount} / 7
                     </Text>
                     <View style={styles.buttonRow}>
-                        <TouchableOpacity
-                            style={[styles.adjustButton, { backgroundColor: theme.surface, borderColor: theme.border }]}
+                        <AppButton
+                            title="−"
                             onPress={decrementTawaf}
-                        >
-                            <Text style={[styles.adjustButtonText, { color: theme.text }]}>−</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.adjustButton, { backgroundColor: theme.surface, borderColor: theme.border }]}
+                            variant="outline"
+                            shape="circle"
+                            size="large"
+                            style={styles.adjustButton}
+                            textStyle={styles.adjustButtonText}
+                        />
+                        <AppButton
+                            title="+"
                             onPress={incrementTawaf}
-                        >
-                            <Text style={[styles.adjustButtonText, { color: theme.text }]}>+</Text>
-                        </TouchableOpacity>
+                            variant="outline"
+                            shape="circle"
+                            size="large"
+                            style={styles.adjustButton}
+                            textStyle={styles.adjustButtonText}
+                        />
                     </View>
                     {navigation && (
-                        <TouchableOpacity
-                            style={styles.duaLink}
+                        <AppButton
+                            title={t('umrahProgressScreen.tawafDuas')}
                             onPress={() => navigation.navigate('UmrahDuas')}
-                        >
-                            <Text style={[styles.duaLinkText, { color: theme.primary }]}>Tavaf Duaları →</Text>
-                        </TouchableOpacity>
+                            variant="ghost"
+                            style={styles.duaLink}
+                            textStyle={styles.duaLinkText}
+                        />
                     )}
                 </View>
 
@@ -148,35 +152,42 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                 <View style={styles.progressCard}>
                     <View style={styles.progressHeader}>
                         <Text style={[styles.icon, styles.largeIcon]}>🏃‍♂️</Text>
-                        <Text style={[styles.progressTitle, { color: theme.text }]}>Sa'y</Text>
+                        <Text style={styles.progressTitle}>{t('umrahProgressScreen.say')}</Text>
                     </View>
-                    <Text style={[styles.directionText, { color: theme.textSecondary }]}>
-                        {progress.sayDirection === 'Safa' ? 'Safa → Merve' : 'Merve → Safa'}
+                    <Text style={styles.directionText}>
+                        {progress.sayDirection === 'Safa' ? t('umrahProgressScreen.safaToMerve') : t('umrahProgressScreen.merveToSafa')}
                     </Text>
-                    <Text style={[styles.progressCount, { color: theme.primary }]}>
+                    <Text style={styles.progressCount}>
                         {progress.sayCount} / 7
                     </Text>
                     <View style={styles.buttonRow}>
-                        <TouchableOpacity
-                            style={[styles.adjustButton, { backgroundColor: theme.surface, borderColor: theme.border }]}
+                        <AppButton
+                            title="−"
                             onPress={decrementSay}
-                        >
-                            <Text style={[styles.adjustButtonText, { color: theme.text }]}>−</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.adjustButton, { backgroundColor: theme.surface, borderColor: theme.border }]}
+                            variant="outline"
+                            shape="circle"
+                            size="large"
+                            style={styles.adjustButton}
+                            textStyle={styles.adjustButtonText}
+                        />
+                        <AppButton
+                            title="+"
                             onPress={incrementSay}
-                        >
-                            <Text style={[styles.adjustButtonText, { color: theme.text }]}>+</Text>
-                        </TouchableOpacity>
+                            variant="outline"
+                            shape="circle"
+                            size="large"
+                            style={styles.adjustButton}
+                            textStyle={styles.adjustButtonText}
+                        />
                     </View>
                     {navigation && (
-                        <TouchableOpacity
-                            style={styles.duaLink}
+                        <AppButton
+                            title={t('umrahProgressScreen.sayDuas')}
                             onPress={() => navigation.navigate('UmrahDuas')}
-                        >
-                            <Text style={[styles.duaLinkText, { color: theme.primary }]}>Sa'y Duaları →</Text>
-                        </TouchableOpacity>
+                            variant="ghost"
+                            style={styles.duaLink}
+                            textStyle={styles.duaLinkText}
+                        />
                     )}
                 </View>
 
@@ -184,133 +195,28 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                 <TouchableOpacity
                     style={[
                         styles.ihramCard,
-                        { backgroundColor: progress.isIhram ? theme.primary : theme.surface, borderColor: theme.border }
+                        progress.isIhram ? styles.ihramCardActive : styles.ihramCardInactive,
                     ]}
                     onPress={toggleIhram}
                 >
                     <Text style={[styles.icon, styles.largeIcon]}>🌙</Text>
                     <Text style={[
                         styles.ihramText,
-                        { color: progress.isIhram ? '#FFFFFF' : theme.text }
+                        progress.isIhram ? styles.ihramTextActive : styles.ihramTextInactive,
                     ]}>
-                        {progress.isIhram ? 'İhramdayım' : 'İhramda Değilim'}
+                        {progress.isIhram ? t('umrahProgressScreen.inIhram') : t('umrahProgressScreen.notInIhram')}
                     </Text>
                 </TouchableOpacity>
                 {navigation && (
-                    <TouchableOpacity
-                        style={styles.duaLinkCenter}
+                    <AppButton
+                        title={t('umrahProgressScreen.ihramDuas')}
                         onPress={() => navigation.navigate('UmrahDuas')}
-                    >
-                        <Text style={[styles.duaLinkText, { color: theme.primary }]}>İhram Duaları →</Text>
-                    </TouchableOpacity>
+                        variant="ghost"
+                        style={styles.duaLinkCenter}
+                        textStyle={styles.duaLinkText}
+                    />
                 )}
             </ScrollView>
         </SafeAreaView>
     );
 };
-
-const createStyles = (theme: any) => StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    content: {
-        flex: 1,
-        padding: SPACING.lg,
-    },
-    progressCard: {
-        backgroundColor: theme.cardBackground,
-        borderRadius: 16,
-        padding: SPACING.xl,
-        marginBottom: SPACING.lg,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    progressHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: SPACING.md,
-    },
-    icon: {
-        fontSize: FONT_SIZES.xlarge,
-        marginRight: SPACING.sm,
-    },
-    largeIcon: {
-        fontSize: 48,
-    },
-    progressTitle: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
-    },
-    progressCount: {
-        fontSize: 64,
-        fontWeight: 'bold',
-        marginVertical: SPACING.lg,
-    },
-    directionText: {
-        fontSize: FONT_SIZES.large,
-        marginBottom: SPACING.sm,
-    },
-    buttonRow: {
-        flexDirection: 'row',
-        gap: SPACING.md,
-    },
-    adjustButton: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        borderWidth: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    adjustButtonText: {
-        fontSize: 32,
-        fontWeight: 'bold',
-    },
-    ihramCard: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 16,
-        padding: SPACING.xl,
-        marginBottom: SPACING.lg,
-        borderWidth: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    ihramText: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
-        marginLeft: SPACING.md,
-    },
-    resetButton: {
-        borderRadius: 12,
-        padding: SPACING.md,
-        alignItems: 'center',
-        marginTop: SPACING.md,
-    },
-    resetButtonText: {
-        color: '#FFFFFF',
-        fontSize: FONT_SIZES.medium,
-        fontWeight: 'bold',
-    },
-    duaLink: {
-        marginTop: SPACING.md,
-        paddingVertical: SPACING.xs,
-    },
-    duaLinkCenter: {
-        marginTop: SPACING.md,
-        paddingVertical: SPACING.xs,
-        alignItems: 'center',
-    },
-    duaLinkText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-    },
-});

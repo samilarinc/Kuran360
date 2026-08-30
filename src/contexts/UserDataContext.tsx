@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
-import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
-import { db } from '../services/firebase';
+import React, { createContext, useContext, useEffect, ReactNode } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { doc, setDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { db } from '@/services/firebase';
 import { useAuth } from './AuthContext';
-import { Bookmark, LastRead, UserData, DuaItem, DuaRequest } from '../types';
-import { collection, onSnapshot, query, where, orderBy, deleteDoc, addDoc } from 'firebase/firestore';
+import { Bookmark, LastRead, UserData, DuaItem, DuaRequest } from '@/types';
+import { collection, onSnapshot, query, where, orderBy, deleteDoc } from 'firebase/firestore';
 
 type UserDataContextType = {
     bookmarks: Bookmark[];
@@ -25,68 +26,82 @@ type UserDataContextType = {
 
 const UserDataContext = createContext<UserDataContextType | undefined>(undefined);
 
+const EMPTY_USER_DATA: UserData = { bookmarks: [], lastRead: [], duaList: [] };
+
 export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { user } = useAuth();
-    const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
-    const [lastRead, setLastRead] = useState<LastRead[]>([]);
-    const [duaList, setDuaList] = useState<DuaItem[]>([]);
-    const [duaRequests, setDuaRequests] = useState<DuaRequest[]>([]);
-    const [loading, setLoading] = useState(false);
+    const queryClient = useQueryClient();
+    const userDataKey = ['userData', user?.uid ?? null];
+    const duaRequestsKey = ['duaRequests', user?.uid ?? null];
 
-    // Load user data when user changes
+    // Firestore onSnapshot listeners push live updates into the React Query cache;
+    // useQuery just exposes that cache as regular query state to the rest of the app.
+    const { data: userData = EMPTY_USER_DATA, isLoading } = useQuery({
+        queryKey: userDataKey,
+        queryFn: () => EMPTY_USER_DATA,
+        enabled: !!user?.uid,
+        staleTime: Infinity,
+    });
+
+    const { data: duaRequests = [] } = useQuery<DuaRequest[]>({
+        queryKey: duaRequestsKey,
+        queryFn: () => [],
+        enabled: !!user?.uid,
+        staleTime: Infinity,
+    });
+
     useEffect(() => {
-        let unsubRequests: () => void;
-        let unsubUserData: () => void;
-
-        if (user?.uid) {
-            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
-            unsubUserData = onSnapshot(userDocRef, (snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.data() as UserData;
-                    setBookmarks(data.bookmarks || []);
-                    setLastRead(data.lastRead || []);
-                    setDuaList(data.duaList || []);
-                } else {
-                    // Create initial document if it doesn't exist
-                    const initialData: UserData = { bookmarks: [], lastRead: [], duaList: [] };
-                    setDoc(userDocRef, initialData);
-                }
-            }, (error) => {
-                console.error('Error listening to user data:', error);
-            });
-
-            // Listen to dua requests
-            const requestsRef = collection(db, 'users', user.uid, 'duaRequests');
-            const q = query(requestsRef, where('status', '==', 'pending'), orderBy('createdAt', 'desc'));
-
-            unsubRequests = onSnapshot(q, (snapshot) => {
-                const requests: DuaRequest[] = [];
-                snapshot.forEach((doc) => {
-                    requests.push({ id: doc.id, ...doc.data() } as DuaRequest);
-                });
-                setDuaRequests(requests);
-            }, (error) => {
-                console.error('Error listening to dua requests:', error);
-            });
-        } else {
-            // Clear data when user logs out
-            setBookmarks([]);
-            setLastRead([]);
-            setDuaList([]);
-            setDuaRequests([]);
+        if (!user?.uid) {
+            queryClient.setQueryData(userDataKey, EMPTY_USER_DATA);
+            queryClient.setQueryData(duaRequestsKey, []);
+            return;
         }
 
+        const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
+        const unsubUserData = onSnapshot(userDocRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.data() as UserData;
+                queryClient.setQueryData(userDataKey, {
+                    bookmarks: data.bookmarks || [],
+                    lastRead: data.lastRead || [],
+                    duaList: data.duaList || [],
+                });
+            } else {
+                setDoc(userDocRef, EMPTY_USER_DATA);
+            }
+        }, (error) => {
+            console.error('Error listening to user data:', error);
+        });
+
+        const requestsRef = collection(db, 'users', user.uid, 'duaRequests');
+        const q = query(requestsRef, where('status', '==', 'pending'), orderBy('createdAt', 'desc'));
+        const unsubRequests = onSnapshot(q, (snapshot) => {
+            const requests: DuaRequest[] = [];
+            snapshot.forEach((d) => requests.push({ id: d.id, ...d.data() } as DuaRequest));
+            queryClient.setQueryData(duaRequestsKey, requests);
+        }, (error) => {
+            console.error('Error listening to dua requests:', error);
+        });
+
         return () => {
-            if (unsubUserData) unsubUserData();
-            if (unsubRequests) unsubRequests();
+            unsubUserData();
+            unsubRequests();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user?.uid]);
 
+    const { bookmarks, lastRead, duaList = [] } = userData;
+
+    const addBookmarkMutation = useMutation({
+        mutationFn: async (newBookmark: Bookmark) => {
+            if (!user?.uid) return;
+            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
+            await updateDoc(userDocRef, { bookmarks: arrayUnion(newBookmark) });
+        },
+    });
 
     const addBookmark = async (surahNumber: number, verseNumber: number, surahName: string, verseText: string, note?: string) => {
         if (!user?.uid) return;
-
-        // Validate inputs to prevent undefined data in Firebase
         if (!surahNumber || !verseNumber || !surahName || !verseText) {
             console.error('Invalid bookmark data:', { surahNumber, verseNumber, surahName, verseText });
             return;
@@ -105,26 +120,26 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
             : { ...base };
 
         try {
-            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
-            await updateDoc(userDocRef, {
-                bookmarks: arrayUnion(newBookmark)
-            });
+            await addBookmarkMutation.mutateAsync(newBookmark);
         } catch (error) {
             console.error('Error adding bookmark:', error);
         }
     };
 
+    const removeBookmarkMutation = useMutation({
+        mutationFn: async (bookmarkToRemove: Bookmark) => {
+            if (!user?.uid) return;
+            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
+            await updateDoc(userDocRef, { bookmarks: arrayRemove(bookmarkToRemove) });
+        },
+    });
+
     const removeBookmark = async (bookmarkId: string) => {
         if (!user?.uid) return;
-
         const bookmarkToRemove = bookmarks.find(b => b.id === bookmarkId);
         if (!bookmarkToRemove) return;
-
         try {
-            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
-            await updateDoc(userDocRef, {
-                bookmarks: arrayRemove(bookmarkToRemove)
-            });
+            await removeBookmarkMutation.mutateAsync(bookmarkToRemove);
         } catch (error) {
             console.error('Error removing bookmark:', error);
         }
@@ -134,13 +149,16 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         return bookmarks.some(b => b.surahNumber === surahNumber && b.verseNumber === verseNumber);
     };
 
-    // Throttle duplicate lastRead writes for the same verse within 10 seconds
-    const lastReadCacheRef = useRef<string | null>(null);
+    const updateLastReadMutation = useMutation({
+        mutationFn: async (updatedLastRead: LastRead[]) => {
+            if (!user?.uid) return;
+            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
+            await updateDoc(userDocRef, { lastRead: updatedLastRead });
+        },
+    });
 
     const addToLastRead = async (surahNumber: number, verseNumber: number, surahName: string, verseText: string) => {
         if (!user?.uid) return;
-
-        // Validate inputs to prevent undefined data in Firebase
         if (!surahNumber || !verseNumber || !surahName || !verseText) {
             console.error('Invalid last read data:', { surahNumber, verseNumber, surahName, verseText });
             return;
@@ -156,41 +174,39 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         };
 
         try {
-            const cacheKey = `${surahNumber}-${verseNumber}`;
-
-            // Check if this verse is already in the recent readings
             const existingIndex = lastRead.findIndex(lr =>
                 lr.surahNumber === surahNumber && lr.verseNumber === verseNumber
             );
 
             let updatedLastRead: LastRead[];
-
             if (existingIndex !== -1) {
-                // Verse already exists, update its timestamp and move to front
                 updatedLastRead = [
                     newLastRead,
                     ...lastRead.filter((_, index) => index !== existingIndex)
                 ];
             } else {
-                // New verse, add to front and remove oldest if we have more than 5
                 updatedLastRead = [newLastRead, ...lastRead];
                 if (updatedLastRead.length > 5) {
                     updatedLastRead = updatedLastRead.slice(0, 5);
                 }
             }
 
-            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
-            await updateDoc(userDocRef, {
-                lastRead: updatedLastRead
-            });
+            await updateLastReadMutation.mutateAsync(updatedLastRead);
         } catch (error) {
             console.error('Error updating last read:', error);
         }
     };
 
+    const addDuaMutation = useMutation({
+        mutationFn: async (newDua: DuaItem) => {
+            if (!user?.uid) return;
+            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
+            await updateDoc(userDocRef, { duaList: arrayUnion(newDua) });
+        },
+    });
+
     const addDua = async (person: string, topic: string, isPersonal: boolean) => {
         if (!user?.uid) return;
-
         const newDua: DuaItem = {
             id: Date.now().toString(),
             person,
@@ -199,29 +215,26 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
             isPersonal,
             createdAt: Date.now(),
         };
-
         try {
-            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
-            await updateDoc(userDocRef, {
-                duaList: arrayUnion(newDua)
-            });
+            await addDuaMutation.mutateAsync(newDua);
         } catch (error) {
             console.error('Error adding dua:', error);
         }
     };
 
+    const setDuaListMutation = useMutation({
+        mutationFn: async (updatedDuaList: DuaItem[]) => {
+            if (!user?.uid) return;
+            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
+            await updateDoc(userDocRef, { duaList: updatedDuaList });
+        },
+    });
+
     const updateDua = async (duaId: string, updates: Partial<DuaItem>) => {
         if (!user?.uid) return;
-
-        const updatedDuaList = duaList.map(dua =>
-            dua.id === duaId ? { ...dua, ...updates } : dua
-        );
-
+        const updatedDuaList = duaList.map(dua => dua.id === duaId ? { ...dua, ...updates } : dua);
         try {
-            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
-            await updateDoc(userDocRef, {
-                duaList: updatedDuaList
-            });
+            await setDuaListMutation.mutateAsync(updatedDuaList);
         } catch (error) {
             console.error('Error updating dua:', error);
         }
@@ -229,29 +242,27 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     const deleteDua = async (duaId: string) => {
         if (!user?.uid) return;
-
         const updatedDuaList = duaList.filter(dua => dua.id !== duaId);
-
         try {
-            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
-            await updateDoc(userDocRef, {
-                duaList: updatedDuaList
-            });
+            await setDuaListMutation.mutateAsync(updatedDuaList);
         } catch (error) {
             console.error('Error deleting dua:', error);
         }
     };
 
+    const rejectDuaRequestMutation = useMutation({
+        mutationFn: async (requestId: string) => {
+            if (!user?.uid) return;
+            const requestRef = doc(db, 'users', user.uid, 'duaRequests', requestId);
+            await deleteDoc(requestRef);
+        },
+    });
+
     const acceptDuaRequest = async (request: DuaRequest) => {
         if (!user?.uid) return;
-
         try {
-            // Add to dua list
             await addDua(request.requesterName, request.topic, false);
-
-            // Delete request
-            const requestRef = doc(db, 'users', user.uid, 'duaRequests', request.id);
-            await deleteDoc(requestRef);
+            await rejectDuaRequestMutation.mutateAsync(request.id);
         } catch (error) {
             console.error('Error accepting dua request:', error);
         }
@@ -259,10 +270,8 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     const rejectDuaRequest = async (requestId: string) => {
         if (!user?.uid) return;
-
         try {
-            const requestRef = doc(db, 'users', user.uid, 'duaRequests', requestId);
-            await deleteDoc(requestRef);
+            await rejectDuaRequestMutation.mutateAsync(requestId);
         } catch (error) {
             console.error('Error rejecting dua request:', error);
         }
@@ -282,7 +291,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         deleteDua,
         acceptDuaRequest,
         rejectDuaRequest,
-        loading,
+        loading: !!user?.uid && isLoading,
     };
 
     return (

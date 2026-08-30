@@ -4,13 +4,11 @@
 const isDev = (() => {
     try {
         // __DEV__ is available in React Native/Expo
-        // eslint-disable-next-line no-undef
         if (typeof __DEV__ !== 'undefined') return (__DEV__ as unknown) as boolean;
     } catch (_) {
         // ignore
     }
     // Fallback to NODE_ENV for web
-    // eslint-disable-next-line no-undef
     return typeof process !== 'undefined' && (process as any)?.env?.NODE_ENV !== 'production';
 })();
 

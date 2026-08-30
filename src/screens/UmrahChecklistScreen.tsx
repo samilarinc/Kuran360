@@ -1,23 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    ScrollView,
-    TextInput,
-    TouchableOpacity,
-    Linking,
-    Platform,
-    SafeAreaView,
-    Alert,
-    Modal,
-} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useState, useEffect, useMemo } from 'react';
+import { View, ScrollView, Linking, Platform, SafeAreaView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '../contexts/ThemeContext';
-import { AppHeader } from '../components/AppHeader';
-import { SPACING, FONT_SIZES } from '../theme';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '@/contexts/ThemeContext';
+import { AppHeader } from '@/components/AppHeader';
+import { TravelPlannerCard } from '@/components/TravelPlannerCard';
+import { TransferDateCard } from '@/components/TransferDateCard';
+import { NusukLinksSection } from '@/components/NusukLinksSection';
+import { ChecklistSection } from '@/components/ChecklistSection';
+import { CityOption } from '@/components/CityPickerModal';
+import { createCommonStyles } from '@/theme/common.styles';
+import { SPACING } from '@/theme';
 
 interface ChecklistData {
     outboundFrom: string;
@@ -34,33 +27,28 @@ interface ChecklistData {
     checklist: Record<string, boolean>;
 }
 
-const CHECKLIST_ITEMS: { key: string; label: string }[] = [
-    { key: 'planeTicketPurchased', label: 'Uçak bileti aldım' },
-    { key: 'trainTicketPurchased', label: 'Tren bileti aldım (Mekke-Medine) / Tren biletine gerek yok' },
-    { key: 'visaObtained', label: 'Vize aldım' },
-    { key: 'hotelBooked', label: 'Otel rezervasyonu yaptım' },
-    { key: 'ihramReady', label: 'İhram hazır' },
-    { key: 'clothesReady', label: 'Kıyafetlerim hazır' },
-    { key: 'nusukReady', label: 'Nusuk indirdim' },
-    { key: 'phoneSimReady', label: 'SIM kartım hazır' },
-    { key: 'duaShareReady', label: 'Dua linkimi arkadaşlarımla paylaşıp duaları kaydettim' },
-    { key: 'currencyReady', label: 'Riyal olarak nakit param hazır' },
-    { key: 'dovizEkstreReady', label: 'Kredi kartıma döviz ekstresi açtırdım' },
-    { key: 'roamingChecked', label: 'Telefonumun yurt dışı kullanımını kontrol ettim' },
-    { key: 'powerBankReady', label: 'Powerbank hazır' },
-    { key: 'mapsDownloaded', label: 'Offline haritaları indirdim' },
-    { key: 'duaListPrepared', label: 'Dua listemi hazırladım' },
-    { key: 'zikirmatikReady', label: 'Zikirmatik / tesbih hazır' },
-    { key: 'umrahGuideSaved', label: 'Umre rehberi (PDF/video) kaydettim' },
-    { key: 'bagForHaram', label: 'Harem için küçük çanta/omuz çantası hazır' },
-    { key: 'personalMedications', label: 'Kendi ilaçlarımı hazırladım' },
-    { key: 'hygieneKit', label: 'Kişisel bakım ve hijyen malzemeleri hazır' },
+const CHECKLIST_ITEM_KEYS: string[] = [
+    'planeTicketPurchased',
+    'trainTicketPurchased',
+    'visaObtained',
+    'hotelBooked',
+    'ihramReady',
+    'clothesReady',
+    'nusukReady',
+    'phoneSimReady',
+    'duaShareReady',
+    'currencyReady',
+    'dovizEkstreReady',
+    'roamingChecked',
+    'powerBankReady',
+    'mapsDownloaded',
+    'duaListPrepared',
+    'zikirmatikReady',
+    'umrahGuideSaved',
+    'bagForHaram',
+    'personalMedications',
+    'hygieneKit',
 ];
-
-type CityOption = {
-    name: string;
-    code: string;
-};
 
 const TURKISH_CITIES: CityOption[] = [
     { name: 'Ankara', code: 'esb' },
@@ -76,9 +64,11 @@ interface UmrahChecklistScreenProps {
     navigation: any;
 }
 
-export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNavigate, navigation }) => {
+export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNavigate }) => {
 
     const { theme } = useTheme();
+    const { t } = useTranslation();
+    const styles = useMemo(() => createCommonStyles(theme), [theme]);
     const [data, setData] = useState<ChecklistData>({
         outboundFrom: '',
         outboundFromName: '',
@@ -154,22 +144,11 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
             if (supported) {
                 await Linking.openURL(url);
             } else {
-                Alert.alert('Hata', `${label} açılamadı`);
+                Alert.alert(t('umrahChecklistScreen.linkOpenErrorTitle'), t('umrahChecklistScreen.linkOpenError', { label }));
             }
         } catch (error) {
-            Alert.alert('Hata', `Bağlantı açılırken bir hata oluştu`);
+            Alert.alert(t('umrahChecklistScreen.linkOpenErrorTitle'), t('umrahChecklistScreen.linkOpenGenericError'));
         }
-    };
-
-    const formatDateForSkyscanner = (date: Date | null): string => {
-        // Output format: YYMMDD
-        if (!date) return '';
-
-        const year = date.getFullYear().toString().slice(-2);
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-
-        return `${year}${month}${day}`;
     };
 
     const formatDateForSkyscannerLong = (date: Date | null): string => {
@@ -184,7 +163,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
     };
 
     const formatDateForDisplay = (date: Date | null): string => {
-        if (!date) return 'Tarih seçin';
+        if (!date) return t('umrahChecklistScreen.selectDate');
 
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -216,8 +195,8 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
             openLink(url, 'Skyscanner');
         } else {
             Alert.alert(
-                'Eksik Bilgi',
-                'Skyscanner araması için çıkış/dönüş şehri ve tarihlerini doldurmalısınız.'
+                t('umrahChecklistScreen.missingInfoTitle'),
+                t('umrahChecklistScreen.missingInfoMessage')
             );
         }
     };
@@ -326,12 +305,17 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
     const needsTransfer = data.outboundTo !== data.inboundFrom;
     const showIhramReminder = data.outboundTo === 'Mekke';
 
+    const cityLabel = (city: 'Mekke' | 'Medine'): string =>
+        city === 'Mekke' ? t('umrahChecklistScreen.mekke') : t('umrahChecklistScreen.medine');
+
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={styles.container}>
             <AppHeader
-                title="Umre Hazırlık Listesi"
+                title={t('screenTitles.umrahChecklist')}
                 showBackButton={true}
                 onBackPress={onNavigate}
+                showHomeButton={true}
+                onHomePress={onNavigate}
             />
             {/* Web-specific style to clean up the date input appearance */}
             {Platform.OS === 'web' && (
@@ -364,716 +348,75 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                 `}} />
             )}
 
-            <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-                {/* COMPACT TRAVEL PLAN CARD */}
-                <View style={[styles.plannerCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-                    <Text style={[styles.plannerTitle, { color: theme.text }]}>
-                        ✈️ Seyahat Planı
-                    </Text>
+            <ScrollView style={{ flex: 1, padding: SPACING.md }} showsVerticalScrollIndicator={false}>
+                <TravelPlannerCard
+                    outboundFromName={data.outboundFromName}
+                    outboundTo={data.outboundTo}
+                    outboundDate={data.outboundDate}
+                    inboundFrom={data.inboundFrom}
+                    inboundToName={data.inboundToName}
+                    inboundDate={data.inboundDate}
+                    transferDate={data.transferDate}
+                    needsTransfer={needsTransfer}
+                    showIhramReminder={showIhramReminder}
+                    cities={TURKISH_CITIES}
+                    cityLabel={cityLabel}
+                    formatDateForDisplay={formatDateForDisplay}
+                    formatDateForInput={formatDateForInput}
+                    showOutboundPicker={showOutboundPicker}
+                    showInboundPicker={showInboundPicker}
+                    showOutboundDatePicker={showOutboundDatePicker}
+                    showInboundDatePicker={showInboundDatePicker}
+                    onOutboundCityPress={() => setShowOutboundPicker(true)}
+                    onOutboundToChange={(city) => updateField('outboundTo', city)}
+                    onInboundFromChange={(city) => updateField('inboundFrom', city)}
+                    onInboundCityPress={() => setShowInboundPicker(true)}
+                    onOutboundDateChangeWeb={onOutboundDateChangeWeb}
+                    onInboundDateChangeWeb={onInboundDateChangeWeb}
+                    onRequestOutboundDatePicker={() => setShowOutboundDatePicker(true)}
+                    onRequestInboundDatePicker={() => setShowInboundDatePicker(true)}
+                    onOutboundDateChange={onOutboundDateChange}
+                    onInboundDateChange={onInboundDateChange}
+                    onSelectOutboundCity={selectOutboundCity}
+                    onSelectInboundCity={selectInboundCity}
+                    onCloseOutboundPicker={() => setShowOutboundPicker(false)}
+                    onCloseInboundPicker={() => setShowInboundPicker(false)}
+                    onOpenSkyscanner={openSkyscanner}
+                    onOpenFirstCityHotel={openFirstCityHotel}
+                    onOpenSecondCityHotel={openSecondCityHotel}
+                />
 
-                    {/* Outbound Row */}
-                    <View style={styles.compactTripRow}>
-                        <View style={styles.compactTripMain}>
-                            <View style={styles.compactCitySelect}>
-                                <TouchableOpacity
-                                    style={[styles.cityChip, { backgroundColor: theme.background, borderColor: theme.border }]}
-                                    onPress={() => setShowOutboundPicker(true)}
-                                >
-                                    <Text style={[styles.cityChipText, { color: data.outboundFromName ? theme.text : theme.textSecondary }]}>
-                                        {data.outboundFromName || 'Nereden?'}
-                                    </Text>
-                                    <Text style={{ fontSize: 10, color: theme.textSecondary }}>▼</Text>
-                                </TouchableOpacity>
-
-                                <Text style={[styles.tripArrow, { color: theme.textSecondary }]}>➔</Text>
-
-                                <View style={styles.destinationChips}>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.destinationChip,
-                                            { borderColor: theme.border },
-                                            data.outboundTo === 'Mekke' && { backgroundColor: theme.primary, borderColor: theme.primary }
-                                        ]}
-                                        onPress={() => updateField('outboundTo', 'Mekke')}
-                                    >
-                                        <Text style={[styles.destinationChipText, { color: data.outboundTo === 'Mekke' ? '#FFFFFF' : theme.text }]}>Mekke</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.destinationChip,
-                                            { borderColor: theme.border },
-                                            data.outboundTo === 'Medine' && { backgroundColor: theme.primary, borderColor: theme.primary }
-                                        ]}
-                                        onPress={() => updateField('outboundTo', 'Medine')}
-                                    >
-                                        <Text style={[styles.destinationChipText, { color: data.outboundTo === 'Medine' ? '#FFFFFF' : theme.text }]}>Medine</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
-                            {/* Outbound Date Row */}
-                            <View style={styles.compactDateRow}>
-                                <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>Gidiş:</Text>
-                                {Platform.OS === 'web' ? (
-                                    <View style={{ flex: 1, position: 'relative', height: 35, justifyContent: 'center' }}>
-                                        <Text style={[styles.compactDateText, { color: data.outboundDate ? theme.primary : theme.textSecondary }]}>
-                                            {formatDateForDisplay(data.outboundDate)}
-                                        </Text>
-                                        <input
-                                            type="date"
-                                            value={formatDateForInput(data.outboundDate)}
-                                            onChange={onOutboundDateChangeWeb}
-                                            min={formatDateForInput(new Date())}
-                                            style={{
-                                                position: 'absolute',
-                                                top: 0,
-                                                left: 0,
-                                                right: 0,
-                                                bottom: 0,
-                                                width: '100%',
-                                                height: '100%',
-                                                opacity: 0,
-                                                cursor: 'pointer',
-                                                zIndex: 2,
-                                                border: 'none',
-                                                outline: 'none',
-                                                // @ts-ignore
-                                                appearance: 'none'
-                                            }}
-                                        />
-                                    </View>
-                                ) : (
-                                    <TouchableOpacity
-                                        style={{ flex: 1 }}
-                                        onPress={() => setShowOutboundDatePicker(true)}
-                                        activeOpacity={0.7}
-                                    >
-                                        <Text style={[styles.compactDateText, { color: data.outboundDate ? theme.primary : theme.textSecondary }]}>
-                                            {formatDateForDisplay(data.outboundDate)}
-                                        </Text>
-                                    </TouchableOpacity>
-                                )}
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={[styles.plannerDivider, { backgroundColor: theme.border }]} />
-
-                    {/* Inbound Row */}
-                    <View style={styles.compactTripRow}>
-                        <View style={styles.compactTripMain}>
-                            <View style={styles.compactCitySelect}>
-                                <View style={styles.destinationChips}>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.destinationChip,
-                                            { borderColor: theme.border },
-                                            data.inboundFrom === 'Mekke' && { backgroundColor: theme.primary, borderColor: theme.primary }
-                                        ]}
-                                        onPress={() => updateField('inboundFrom', 'Mekke')}
-                                    >
-                                        <Text style={[styles.destinationChipText, { color: data.inboundFrom === 'Mekke' ? '#FFFFFF' : theme.text }]}>Mekke</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.destinationChip,
-                                            { borderColor: theme.border },
-                                            data.inboundFrom === 'Medine' && { backgroundColor: theme.primary, borderColor: theme.primary }
-                                        ]}
-                                        onPress={() => updateField('inboundFrom', 'Medine')}
-                                    >
-                                        <Text style={[styles.destinationChipText, { color: data.inboundFrom === 'Medine' ? '#FFFFFF' : theme.text }]}>Medine</Text>
-                                    </TouchableOpacity>
-                                </View>
-
-                                <Text style={[styles.tripArrow, { color: theme.textSecondary }]}>➔</Text>
-
-                                <TouchableOpacity
-                                    style={[styles.cityChip, { backgroundColor: theme.background, borderColor: theme.border }]}
-                                    onPress={() => setShowInboundPicker(true)}
-                                >
-                                    <Text style={[styles.cityChipText, { color: data.inboundToName ? theme.text : theme.textSecondary }]}>
-                                        {data.inboundToName || 'Nereye?'}
-                                    </Text>
-                                    <Text style={{ fontSize: 10, color: theme.textSecondary }}>▼</Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            {/* Inbound Date Row */}
-                            <View style={styles.compactDateRow}>
-                                <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>Dönüş:</Text>
-                                {Platform.OS === 'web' ? (
-                                    <View style={{ flex: 1, position: 'relative', height: 35, justifyContent: 'center' }}>
-                                        <Text style={[styles.compactDateText, { color: data.inboundDate ? theme.primary : theme.textSecondary }]}>
-                                            {formatDateForDisplay(data.inboundDate)}
-                                        </Text>
-                                        <input
-                                            type="date"
-                                            value={formatDateForInput(data.inboundDate)}
-                                            onChange={onInboundDateChangeWeb}
-                                            min={formatDateForInput(data.outboundDate || new Date())}
-                                            style={{
-                                                position: 'absolute',
-                                                top: 0,
-                                                left: 0,
-                                                right: 0,
-                                                bottom: 0,
-                                                width: '100%',
-                                                height: '100%',
-                                                opacity: 0,
-                                                cursor: 'pointer',
-                                                zIndex: 2,
-                                                border: 'none',
-                                                outline: 'none',
-                                                // @ts-ignore
-                                                appearance: 'none'
-                                            }}
-                                        />
-                                    </View>
-                                ) : (
-                                    <TouchableOpacity
-                                        style={{ flex: 1 }}
-                                        onPress={() => setShowInboundDatePicker(true)}
-                                        activeOpacity={0.7}
-                                    >
-                                        <Text style={[styles.compactDateText, { color: data.inboundDate ? theme.primary : theme.textSecondary }]}>
-                                            {formatDateForDisplay(data.inboundDate)}
-                                        </Text>
-                                    </TouchableOpacity>
-                                )}
-                            </View>
-                        </View>
-
-                        {/* Travel Action Buttons - Show only if dates are selected */}
-                        {data.outboundDate && data.inboundDate && (
-                            <View style={styles.plannerActions}>
-                                <TouchableOpacity
-                                    style={[styles.plannerActionBtn, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
-                                    onPress={openSkyscanner}
-                                >
-                                    <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>✈️ Uçak</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={[styles.plannerActionBtn, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
-                                    onPress={openFirstCityHotel}
-                                >
-                                    <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>🏨 {data.outboundTo}</Text>
-                                </TouchableOpacity>
-                                {needsTransfer && data.transferDate && (
-                                    <TouchableOpacity
-                                        style={[styles.plannerActionBtn, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
-                                        onPress={openSecondCityHotel}
-                                    >
-                                        <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>🏨 {data.inboundFrom}</Text>
-                                    </TouchableOpacity>
-                                )}
-                            </View>
-                        )}
-                    </View>
-
-                    {/* Modals and Pickers */}
-                    <Modal visible={showOutboundPicker} transparent animationType="fade" onRequestClose={() => setShowOutboundPicker(false)}>
-                        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowOutboundPicker(false)}>
-                            <View style={[styles.modalContent, { backgroundColor: theme.surface }]}>
-                                <Text style={[styles.modalTitle, { color: theme.text }]}>Nereden Gidiyorsunuz?</Text>
-                                {TURKISH_CITIES.map((city) => (
-                                    <TouchableOpacity key={city.code} style={[styles.modalOption, { borderBottomColor: theme.border }]} onPress={() => selectOutboundCity(city)}>
-                                        <Text style={[styles.modalOptionText, { color: theme.text }]}>{city.name}</Text>
-                                    </TouchableOpacity>
-                                ))}
-                            </View>
-                        </TouchableOpacity>
-                    </Modal>
-
-                    <Modal visible={showInboundPicker} transparent animationType="fade" onRequestClose={() => setShowInboundPicker(false)}>
-                        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowInboundPicker(false)}>
-                            <View style={[styles.modalContent, { backgroundColor: theme.surface }]}>
-                                <Text style={[styles.modalTitle, { color: theme.text }]}>Nereye Dönüyorsunuz?</Text>
-                                {TURKISH_CITIES.map((city) => (
-                                    <TouchableOpacity key={city.code} style={[styles.modalOption, { borderBottomColor: theme.border }]} onPress={() => selectInboundCity(city)}>
-                                        <Text style={[styles.modalOptionText, { color: theme.text }]}>{city.name}</Text>
-                                    </TouchableOpacity>
-                                ))}
-                            </View>
-                        </TouchableOpacity>
-                    </Modal>
-
-                    {Platform.OS !== 'web' && showOutboundDatePicker && (
-                        <DateTimePicker value={data.outboundDate || new Date()} mode="date" display="default" onChange={onOutboundDateChange} minimumDate={new Date()} />
-                    )}
-                    {Platform.OS !== 'web' && showInboundDatePicker && (
-                        <DateTimePicker value={data.inboundDate || new Date()} mode="date" display="default" onChange={onInboundDateChange} minimumDate={data.outboundDate || new Date()} />
-                    )}
-
-                    {showIhramReminder && (
-                        <View style={[styles.compactReminder, { backgroundColor: theme.primary + '15' }]}>
-                            <Text style={[styles.compactReminderText, { color: theme.primary }]}>
-                                💡 İlk durak Mekke: Havalimanında ihrama girmelisiniz.
-                            </Text>
-                        </View>
-                    )}
-                </View>
-
-
-                {/* COMPACT TRANSFER DATE (if needed) */}
                 {needsTransfer && (
-                    <View style={[styles.plannerCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-                        <Text style={[styles.plannerTitle, { color: theme.text }]}>
-                            🚄 Şehirlerarası Geçiş
-                        </Text>
-                        <Text style={[styles.compactReminderText, { color: theme.textSecondary, textAlign: 'left', marginBottom: SPACING.sm }]}>
-                            {data.outboundTo} → {data.inboundFrom} arası geçiş tarihi
-                        </Text>
-
-                        {/* Compact Date Row for Transfer */}
-                        <View style={styles.compactDateRow}>
-                            <Text style={[styles.compactDateLabel, { color: theme.textSecondary }]}>Tarih:</Text>
-                            {Platform.OS === 'web' ? (
-                                <View style={{ flex: 1, position: 'relative', height: 35, justifyContent: 'center' }}>
-                                    <Text style={[styles.compactDateText, { color: data.transferDate ? theme.primary : theme.textSecondary }]}>
-                                        {formatDateForDisplay(data.transferDate)}
-                                    </Text>
-                                    <input
-                                        type="date"
-                                        value={formatDateForInput(data.transferDate)}
-                                        onChange={onTransferDateChangeWeb}
-                                        min={formatDateForInput(data.outboundDate || new Date())}
-                                        max={data.inboundDate ? formatDateForInput(data.inboundDate) : undefined}
-                                        style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            right: 0,
-                                            bottom: 0,
-                                            width: '100%',
-                                            height: '100%',
-                                            opacity: 0,
-                                            cursor: 'pointer',
-                                            zIndex: 2,
-                                            border: 'none',
-                                            outline: 'none',
-                                            // @ts-ignore
-                                            appearance: 'none'
-                                        }}
-                                    />
-                                </View>
-                            ) : (
-                                <TouchableOpacity
-                                    style={{ flex: 1 }}
-                                    onPress={() => setShowTransferDatePicker(true)}
-                                    activeOpacity={0.7}
-                                >
-                                    <Text style={[styles.compactDateText, { color: data.transferDate ? theme.primary : theme.textSecondary }]}>
-                                        {formatDateForDisplay(data.transferDate)}
-                                    </Text>
-                                </TouchableOpacity>
-                            )}
-                        </View>
-
-                        {/* Train Button - Show only if transfer date is selected */}
-                        {data.transferDate && (
-                            <TouchableOpacity
-                                style={[styles.plannerActionBtn, { backgroundColor: theme.primary + '10', borderColor: theme.primary, minHeight: 44 }]}
-                                onPress={() => openLink('https://sar.hhr.sa/home#/', 'Hızlı Tren')}
-                            >
-                                <Text style={[styles.plannerActionBtnText, { color: theme.primary }]}>🚄 Haramain Hızlı Tren Bileti</Text>
-                            </TouchableOpacity>
-                        )}
-
-                        {Platform.OS !== 'web' && showTransferDatePicker && (
-                            <DateTimePicker
-                                value={data.transferDate || data.outboundDate || new Date()}
-                                mode="date"
-                                display="default"
-                                onChange={onTransferDateChange}
-                                minimumDate={data.outboundDate || new Date()}
-                                maximumDate={data.inboundDate || undefined}
-                            />
-                        )}
-                    </View>
+                    <TransferDateCard
+                        fromCityLabel={cityLabel(data.outboundTo)}
+                        toCityLabel={cityLabel(data.inboundFrom)}
+                        transferDate={data.transferDate}
+                        outboundDate={data.outboundDate}
+                        inboundDate={data.inboundDate}
+                        formatDateForDisplay={formatDateForDisplay}
+                        formatDateForInput={formatDateForInput}
+                        showTransferDatePicker={showTransferDatePicker}
+                        onChangeWeb={onTransferDateChangeWeb}
+                        onRequestDatePicker={() => setShowTransferDatePicker(true)}
+                        onDateChange={onTransferDateChange}
+                        onOpenTrainTicket={() => openLink('https://sar.hhr.sa/home#/', 'Hızlı Tren')}
+                    />
                 )}
 
-                {/* External Links Section */}
-                <View style={styles.section}>
-                    <TouchableOpacity
-                        style={[styles.linkButton, { backgroundColor: theme.surface, borderColor: theme.border }]}
-                        onPress={() => openLink('https://visa.visitsaudi.com/', 'E-Vize')}
-                    >
-                        <Text style={[styles.linkButtonText, { color: theme.text }]}>
-                            📄 Suudi Arabistan E-Vize
-                        </Text>
-                    </TouchableOpacity>
+                <NusukLinksSection
+                    onOpenEVisa={() => openLink('https://visa.visitsaudi.com/', 'E-Vize')}
+                    onOpenGooglePlay={() => openLink('https://play.google.com/store/apps/details?id=com.moh.nusukapp&hl=tr', t('umrahChecklistScreen.nusukGooglePlay'))}
+                    onOpenAppStore={() => openLink('https://apps.apple.com/tr/app/nusuk-%D9%86%D8%B3%D9%83/id6469515422?l=tr', t('umrahChecklistScreen.nusukAppStore'))}
+                />
 
-                    <View style={[styles.nusukCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-                        <Text style={[styles.nusukTitle, { color: theme.text }]}>
-                            🕌 Nusuk Uygulaması
-                        </Text>
-                        <Text style={[styles.nusukDesc, { color: theme.textSecondary }]}>
-                            Umre izni ve kayıt işlemleri için gerekli
-                        </Text>
-                        <View style={styles.appButtonsRow}>
-                            <TouchableOpacity
-                                style={[styles.appButton, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
-                                onPress={() => openLink('https://play.google.com/store/apps/details?id=com.moh.nusukapp&hl=tr', 'Nusuk - Google Play')}
-                            >
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                                    <Ionicons name="logo-google-playstore" size={18} color={theme.primary} />
-                                    <Text style={[styles.appButtonText, { color: theme.primary }]}>Google Play</Text>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[styles.appButton, { backgroundColor: theme.primary + '10', borderColor: theme.primary }]}
-                                onPress={() => openLink('https://apps.apple.com/tr/app/nusuk-%D9%86%D8%B3%D9%83/id6469515422?l=tr', 'Nusuk - App Store')}
-                            >
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                                    <Ionicons name="logo-apple-appstore" size={18} color={theme.primary} />
-                                    <Text style={[styles.appButtonText, { color: theme.primary }]}>App Store</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-
-                {/* Checklist Section */}
-                <View style={styles.section}>
-                    <Text style={[styles.sectionTitle, { color: theme.text }]}>
-                        Yapılacaklar Listesi
-                    </Text>
-
-                    {CHECKLIST_ITEMS.map((item) => (
-                        <TouchableOpacity
-                            key={item.key}
-                            style={[styles.checklistItem, { backgroundColor: theme.surface, borderColor: theme.border }]}
-                            onPress={() => toggleChecklistItem(item.key)}
-                        >
-                            <View style={[
-                                styles.checkbox,
-                                { borderColor: theme.border },
-                                data.checklist[item.key] && { backgroundColor: theme.primary }
-                            ]}>
-                                {data.checklist[item.key] && <Text style={styles.checkmark}>✓</Text>}
-                            </View>
-                            <Text style={[
-                                styles.checklistText,
-                                { color: theme.text },
-                                data.checklist[item.key] && styles.checkedText
-                            ]}>
-                                {item.label}
-                            </Text>
-                        </TouchableOpacity>
-                    ))}
-                </View>
+                <ChecklistSection
+                    itemKeys={CHECKLIST_ITEM_KEYS}
+                    checklist={data.checklist}
+                    onToggleItem={toggleChecklistItem}
+                />
 
                 <View style={{ height: SPACING.xl }} />
             </ScrollView>
         </SafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    content: {
-        flex: 1,
-        padding: SPACING.md,
-    },
-    section: {
-        marginBottom: SPACING.xl,
-    },
-    sectionTitle: {
-        fontSize: FONT_SIZES.xlarge,
-        fontWeight: 'bold',
-        marginBottom: SPACING.md,
-    },
-    plannerCard: {
-        padding: SPACING.md,
-        borderRadius: 16,
-        borderWidth: 1,
-        marginBottom: SPACING.lg,
-    },
-    plannerTitle: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: 'bold',
-        marginBottom: SPACING.md,
-    },
-    compactTripRow: {
-        paddingVertical: SPACING.xs,
-    },
-    compactTripMain: {
-        gap: SPACING.sm,
-    },
-    compactCitySelect: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: SPACING.sm,
-    },
-    cityChip: {
-        flex: 1,
-        height: 40,
-        borderRadius: 20,
-        borderWidth: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: SPACING.md,
-        gap: 4,
-    },
-    cityChipText: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-    },
-    tripArrow: {
-        fontSize: 16,
-    },
-    destinationChips: {
-        flex: 1,
-        flexDirection: 'row',
-        gap: 6,
-    },
-    destinationChip: {
-        flex: 1,
-        height: 40,
-        borderRadius: 20,
-        borderWidth: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    destinationChipText: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-    },
-    compactDateRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: SPACING.sm,
-        paddingLeft: SPACING.xs,
-    },
-    compactDateLabel: {
-        fontSize: 14,
-        fontWeight: 'bold',
-    },
-    compactDateText: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: 'bold',
-    },
-    plannerDivider: {
-        height: 1,
-        marginVertical: SPACING.md,
-        opacity: 0.5,
-    },
-    plannerActions: {
-        flexDirection: 'row',
-        gap: SPACING.sm,
-        marginTop: SPACING.md,
-    },
-    plannerActionBtn: {
-        flex: 1,
-        height: 44,
-        borderRadius: 12,
-        borderWidth: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    plannerActionBtnText: {
-        fontSize: 14,
-        fontWeight: 'bold',
-    },
-    compactReminder: {
-        marginTop: SPACING.md,
-        padding: SPACING.sm,
-        borderRadius: 10,
-    },
-    compactReminderText: {
-        fontSize: 13,
-        fontWeight: '600',
-        textAlign: 'center',
-    },
-    label: {
-        fontSize: FONT_SIZES.medium,
-        marginBottom: SPACING.xs,
-        marginTop: SPACING.sm,
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: SPACING.md,
-        fontSize: FONT_SIZES.medium,
-    },
-    pickerButton: {
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: SPACING.md,
-        fontSize: FONT_SIZES.medium,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    pickerButtonText: {
-        fontSize: FONT_SIZES.medium,
-    },
-    pickerArrow: {
-        fontSize: FONT_SIZES.small,
-    },
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: SPACING.lg,
-    },
-    modalContent: {
-        width: '100%',
-        maxWidth: 400,
-        borderRadius: 12,
-        padding: SPACING.lg,
-        maxHeight: '80%',
-    },
-    modalTitle: {
-        fontSize: FONT_SIZES.large,
-        fontWeight: 'bold',
-        marginBottom: SPACING.md,
-        textAlign: 'center',
-    },
-    modalOption: {
-        padding: SPACING.md,
-        borderBottomWidth: 1,
-    },
-    modalOptionText: {
-        fontSize: FONT_SIZES.medium,
-        textAlign: 'center',
-    },
-    destinationButtons: {
-        flexDirection: 'row',
-        gap: SPACING.xs,
-    },
-    destinationButton: {
-        flex: 1,
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: SPACING.md,
-        alignItems: 'center',
-    },
-    destinationButtonText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-    },
-    destinationButtonSmall: {
-        flex: 1,
-        borderWidth: 1,
-        borderRadius: 6,
-        padding: SPACING.sm,
-        alignItems: 'center',
-    },
-    destinationButtonTextSmall: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '600',
-    },
-    dateButton: {
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: SPACING.md,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    dateButtonText: {
-        fontSize: FONT_SIZES.medium,
-    },
-    reminder: {
-        marginTop: SPACING.md,
-        padding: SPACING.md,
-        borderRadius: 8,
-        borderWidth: 1,
-    },
-    reminderText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-    },
-    infoText: {
-
-        fontSize: FONT_SIZES.small,
-        marginBottom: SPACING.sm,
-        fontStyle: 'italic',
-    },
-    linkButton: {
-        borderWidth: 1,
-        borderRadius: 12,
-        padding: SPACING.md,
-        marginBottom: SPACING.sm,
-        alignItems: 'center',
-    },
-    linkButtonText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-    },
-    appLinks: {
-        marginTop: SPACING.md,
-    },
-    appLinksTitle: {
-        fontSize: FONT_SIZES.medium,
-        marginBottom: SPACING.sm,
-    },
-    nusukCard: {
-        padding: SPACING.md,
-        borderRadius: 16,
-        borderWidth: 1,
-        marginTop: SPACING.sm,
-    },
-    nusukTitle: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: 'bold',
-        marginBottom: 4,
-    },
-    nusukDesc: {
-        fontSize: FONT_SIZES.small,
-        marginBottom: SPACING.md,
-    },
-    appButtonsRow: {
-        flexDirection: 'row',
-        gap: SPACING.sm,
-    },
-    appButton: {
-        flex: 1,
-        borderWidth: 1,
-        borderRadius: 12,
-        paddingVertical: SPACING.md,
-        paddingHorizontal: SPACING.sm,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    appButtonText: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: 'bold',
-    },
-    checklistItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: SPACING.md,
-        borderRadius: 12,
-        marginBottom: SPACING.sm,
-        borderWidth: 1,
-    },
-    checkbox: {
-        width: 24,
-        height: 24,
-        borderRadius: 4,
-        borderWidth: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: SPACING.md,
-    },
-    checkmark: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    checklistText: {
-        fontSize: FONT_SIZES.medium,
-        flex: 1,
-    },
-    checkedText: {
-        textDecorationLine: 'line-through',
-        opacity: 0.6,
-    },
-});

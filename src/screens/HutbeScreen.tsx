@@ -1,24 +1,26 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
-    ActivityIndicator,
     SafeAreaView,
     Platform,
     Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
-import { AppHeader } from '../components/AppHeader';
-import { useTheme } from '../contexts/ThemeContext';
-import { AppButton } from '../components/AppButton';
-import { SPACING, FONT_SIZES } from '../theme';
+import { useTranslation } from 'react-i18next';
+import { AppHeader } from '@/components/AppHeader';
+import { useTheme } from '@/contexts/ThemeContext';
+import { AppButton } from '@/components/AppButton';
+import { LoadingView } from '@/components/LoadingView';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './HutbeScreen.styles';
 
 export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
     const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
     // Add cache busting to ensure the latest PDF is always fetched
     const pdfUrl = useMemo(() => `${baseUrl}/hutbe/hutbe.pdf?t=${Date.now()}`, [baseUrl]);
@@ -35,7 +37,7 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             }
         };
         checkPdf();
-    }, []);
+    }, [pdfUrl]);
 
     const handleOpenInBrowser = async () => {
         await WebBrowser.openBrowserAsync(pdfUrl);
@@ -43,17 +45,19 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     if (exists === false) {
         return (
-            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <SafeAreaView style={[common.container, { backgroundColor: theme.background }]}>
                 <AppHeader
-                    title="Hata"
+                    title={t('hutbeScreen.errorTitle')}
                     showBackButton={true}
                     onBackPress={() => navigation.goBack()}
+                    showHomeButton={true}
+                    onHomePress={() => navigation.navigate('Main')}
                 />
                 <View style={[styles.mobileContainer, { flex: 1 }]}>
                     <Ionicons name="warning-outline" size={80} color={theme.error} />
-                    <Text style={[styles.mobileText, { color: theme.textSecondary }]}>Hutbe dosyası bulunamadı.</Text>
+                    <Text style={[styles.mobileText, { color: theme.textSecondary }]}>{t('hutbeScreen.notFound')}</Text>
                     <AppButton
-                        title="Geri Dön"
+                        title={t('hutbeScreen.goBack')}
                         onPress={() => navigation.goBack()}
                         variant="primary"
                         style={{ backgroundColor: theme.error }}
@@ -64,18 +68,18 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={[common.container, { backgroundColor: theme.background }]}>
             <AppHeader
-                title="Cuma Hutbesi"
+                title={t('screenTitles.hutbe')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
+                showHomeButton={true}
+                onHomePress={() => navigation.navigate('Main')}
             />
 
-            <View style={styles.content}>
+            <View style={common.flex1}>
                 {exists === null ? (
-                    <View style={styles.mobileContainer}>
-                        <ActivityIndicator size="large" color={theme.primary} />
-                    </View>
+                    <LoadingView />
                 ) : Platform.OS === 'web' ? (
                     <iframe
                         src={pdfUrl}
@@ -84,14 +88,14 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                             height: Dimensions.get('window').height - 100,
                             border: 'none',
                         }}
-                        title="Cuma Hutbesi"
+                        title={t('screenTitles.hutbe')}
                     />
                 ) : (
                     <View style={styles.mobileContainer}>
                         <Ionicons name="document-text-outline" size={80} color={theme.primary} />
-                        <Text style={[styles.mobileText, { color: theme.textSecondary }]}>Hutbeyi okumak için butona tıklayın.</Text>
+                        <Text style={[styles.mobileText, { color: theme.textSecondary }]}>{t('hutbeScreen.tapToOpen')}</Text>
                         <AppButton
-                            title="Hutbeyi Aç"
+                            title={t('hutbeScreen.openHutbe')}
                             onPress={handleOpenInBrowser}
                         />
                     </View>

@@ -2,20 +2,24 @@ import React, { useState, useMemo } from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     SafeAreaView,
     ScrollView,
-    TouchableOpacity,
-    Platform,
 } from 'react-native';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { ShareModal } from '../components/ShareModal';
-import { useTheme } from '../contexts/ThemeContext';
-import { useSettings } from '../contexts/SettingsContext';
-import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
-import { getSurahsList } from '../data/quranData';
-import { Verse as VerseType, VerseShareData } from '../types';
-import { FONT_SIZES, SPACING } from '../constants';
+import { useTranslation } from 'react-i18next';
+import { AppHeader } from '@/components/AppHeader';
+import { ShareModal } from '@/components/ShareModal';
+import { AppButton } from '@/components/AppButton';
+import { ArabicText } from '@/components/ArabicText';
+import { Badge } from '@/components/Badge';
+import { SPACING } from '@/theme';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useSettings } from '@/contexts/SettingsContext';
+import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { Verse as VerseType, VerseShareData } from '@/types';
+import { getSurahNameByNumber } from '@/utils/surahName';
+import { formatVerseNumber } from '@/utils/numerals';
+import { createCommonStyles } from '@/theme/common.styles';
+import { createStyles } from './AllTranslationsScreen.styles';
 
 interface AllTranslationsScreenProps {
     navigation: any;
@@ -29,17 +33,13 @@ interface AllTranslationsScreenProps {
 export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ navigation, route }) => {
     const { verse } = route.params;
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const { settings } = useSettings();
-    const { settings: debouncedSettings, updateSettings } = useDebouncedSettings(200);
+    const { settings: debouncedSettings } = useDebouncedSettings(200);
     const [shareModalVisible, setShareModalVisible] = useState(false);
     const [selectedTranslation, setSelectedTranslation] = useState<string>(debouncedSettings.favoriteTranslation);
 
-    // Surah ismini al
-    const getSurahName = () => {
-        const surahs = getSurahsList();
-        const surah = surahs.find(s => s.number === verse.surahNumber);
-        return surah?.turkishName || surah?.name || `${verse.surahNumber}. Sure`;
-    };
+    const surahName = useMemo(() => getSurahNameByNumber(t, verse.surahNumber), [t, verse.surahNumber]);
 
     // Mevcut olan tüm mealleri al
     const availableTranslations = useMemo(() => {
@@ -56,7 +56,6 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
 
     // Seçilen meal ile share data oluştur
     const shareData: VerseShareData = useMemo(() => {
-        const surahName = getSurahName();
         const translation = verse.allTranslations?.[selectedTranslation] || verse.translation || '';
 
         return {
@@ -66,144 +65,29 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
             verseNumber: verse.number,
             surahNumber: verse.surahNumber,
         };
-    }, [verse, selectedTranslation]);
+    }, [verse, selectedTranslation, surahName]);
 
     const handleShare = (translationName: string) => {
         setSelectedTranslation(translationName);
         setShareModalVisible(true);
     };
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: theme.background,
-        },
-        content: {
-            flex: 1,
-        },
-        verseHeader: {
-            backgroundColor: theme.cardBackground,
-            padding: SPACING.lg,
-            borderBottomWidth: 1,
-            borderBottomColor: theme.border,
-        },
-        arabicText: {
-            fontSize: FONT_SIZES.arabic,
-            lineHeight: FONT_SIZES.arabic * 1.5,
-            textAlign: 'right',
-            color: theme.text,
-            fontWeight: '600',
-            writingDirection: 'rtl',
-            marginBottom: SPACING.sm,
-            fontFamily: Platform.select({
-                web: '"Scheherazade New", "Noto Naskh Arabic", Amiri, serif',
-                default: undefined as any,
-            }),
-        },
-        verseInfo: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: SPACING.sm,
-        },
-        surahInfo: {
-            fontSize: FONT_SIZES.medium,
-            color: theme.textSecondary,
-            fontWeight: '600',
-        },
-        verseNumber: {
-            backgroundColor: theme.primary,
-            color: theme.headerText,
-            fontSize: FONT_SIZES.small,
-            fontWeight: 'bold',
-            paddingHorizontal: SPACING.sm,
-            paddingVertical: SPACING.xs,
-            borderRadius: 12,
-        },
-        translationsContainer: {
-            flex: 1,
-        },
-        translationItem: {
-            backgroundColor: theme.cardBackground,
-            marginHorizontal: SPACING.md,
-            marginVertical: SPACING.xs,
-            padding: SPACING.md,
-            borderRadius: 12,
-            borderLeftWidth: 4,
-            borderLeftColor: theme.primary,
-            elevation: 2,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.1,
-            shadowRadius: 2,
-        },
-        favoriteTranslationItem: {
-            backgroundColor: '#FFD700' + '10',
-            borderLeftColor: '#FFD700',
-        },
-        translationHeader: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: SPACING.sm,
-        },
-        translationName: {
-            fontSize: FONT_SIZES.medium,
-            fontWeight: '600',
-            color: theme.primary,
-            flex: 1,
-        },
-        favoriteTranslationName: {
-            color: '#B8860B',
-            fontWeight: '700',
-        },
-        shareButton: {
-            backgroundColor: theme.secondary,
-            paddingHorizontal: SPACING.sm,
-            paddingVertical: SPACING.xs,
-            borderRadius: 8,
-            marginLeft: SPACING.sm,
-        },
-        shareButtonText: {
-            color: theme.headerText,
-            fontSize: FONT_SIZES.small,
-            fontWeight: '600',
-        },
-        translationText: {
-            fontSize: FONT_SIZES.medium,
-            lineHeight: FONT_SIZES.medium * 1.4,
-            color: theme.text,
-            textAlign: 'left',
-        },
-        favoriteTranslationText: {
-            fontWeight: '500',
-        },
-        emptyState: {
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: SPACING.xl,
-        },
-        emptyStateText: {
-            fontSize: FONT_SIZES.medium,
-            color: theme.textSecondary,
-            textAlign: 'center',
-        },
-    });
+    const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     if (availableTranslations.length === 0) {
         return (
-            <SafeAreaView style={styles.container}>
-                <HeaderWithDarkModeToggle
-                    title="Bütün Mealler"
+            <SafeAreaView style={common.container}>
+                <AppHeader
+                    title={t('screenTitles.allTranslations')}
                     showBackButton={true}
                     onBackPress={() => navigation.goBack()}
                     showHomeButton={true}
                     onHomePress={() => navigation.navigate('Main')}
                 />
-                <View style={styles.emptyState}>
+                <View style={common.emptyState}>
                     <Text style={styles.emptyStateText}>
-                        Bu ayet için meal bulunamadı.
+                        {t('allTranslationsScreen.noTranslationsFound')}
                     </Text>
                 </View>
             </SafeAreaView>
@@ -211,34 +95,32 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <HeaderWithDarkModeToggle
-                title="Bütün Mealler"
-                subtitle={`${getSurahName()} - ${verse.number}. Ayet`}
+        <SafeAreaView style={common.container}>
+            <AppHeader
+                title={t('screenTitles.allTranslations')}
+                subtitle={t('allTranslationsScreen.verseSubtitle', { surahName, verseNumber: formatVerseNumber(verse.number, settings.verseNumberStyle) })}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
                 showHomeButton={true}
                 onHomePress={() => navigation.navigate('Main')}
             />
 
-            <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+            <ScrollView style={common.flex1} showsVerticalScrollIndicator={false}>
                 {/* Ayet Header */}
                 <View style={styles.verseHeader}>
-                    <Text style={styles.arabicText}>
+                    <ArabicText style={styles.arabicText}>
                         {verse.arabicText}
-                    </Text>
+                    </ArabicText>
                     <View style={styles.verseInfo}>
                         <Text style={styles.surahInfo}>
-                            {getSurahName()}
+                            {surahName}
                         </Text>
-                        <Text style={styles.verseNumber}>
-                            {verse.number}. Ayet
-                        </Text>
+                        <Badge label={t('allTranslationsScreen.verseBadge', { verseNumber: formatVerseNumber(verse.number, settings.verseNumberStyle) })} />
                     </View>
                 </View>
 
                 {/* Meal Listesi */}
-                <View style={styles.translationsContainer}>
+                <View style={common.flex1}>
                     {availableTranslations.map(([translationName, translationText]) => {
                         const isFavorite = translationName === debouncedSettings.favoriteTranslation;
 
@@ -257,12 +139,14 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                                     ]}>
                                         {isFavorite && '⭐ '}{translationName}
                                     </Text>
-                                    <TouchableOpacity
-                                        style={styles.shareButton}
+                                    <AppButton
+                                        title={t('allTranslationsScreen.share')}
                                         onPress={() => handleShare(translationName)}
-                                    >
-                                        <Text style={styles.shareButtonText}>Paylaş</Text>
-                                    </TouchableOpacity>
+                                        variant="secondary"
+                                        size="small"
+                                        textStyle={{ color: theme.headerText }}
+                                        style={{ marginLeft: SPACING.sm }}
+                                    />
                                 </View>
                                 <Text style={[
                                     styles.translationText,

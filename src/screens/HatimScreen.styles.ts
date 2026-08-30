@@ -1,24 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { SPACING, FONT_SIZES } from '../theme';
-import { createCommonStyles } from '../theme/common.styles';
+import { SPACING, Theme } from '@/theme';
+import { createCommonStyles } from '@/theme/common.styles';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-        ...common,
-        // Screen specific overrides or additions
-        addButton: {
-            position: 'absolute',
-            right: SPACING.md,
-            top: SPACING.lg,
-            padding: SPACING.xs,
-        },
-        addIcon: {
-            fontSize: 32,
-            fontWeight: '300',
-            color: theme.text,
-        },
         fab: {
             position: 'absolute',
             right: SPACING.lg,
@@ -57,81 +44,81 @@ export const createStyles = (theme: any) => {
             ...common.title,
             fontWeight: '600',
         },
-        completedBadge: {
-            backgroundColor: '#2E7D32',
-            paddingHorizontal: 8,
-            paddingVertical: 4,
-            borderRadius: 8,
-        },
-        completedBadgeText: {
-            color: '#fff',
-            fontSize: 10,
-            fontWeight: '700',
-        },
         hatimCreator: {
-            fontSize: FONT_SIZES.small,
+            ...common.smallText,
             marginBottom: SPACING.md,
-            color: theme.textSecondary,
         },
         progressContainer: {
             marginTop: SPACING.sm,
         },
         progressBar: {
-            height: 8,
-            borderRadius: 4,
-            overflow: 'hidden',
             marginBottom: SPACING.xs,
-            backgroundColor: theme.border,
-        },
-        progressFill: {
-            height: '100%',
-            backgroundColor: theme.primary,
         },
         progressText: {
-            fontSize: 12,
+            ...common.smallText,
             textAlign: 'right',
-            color: theme.textSecondary,
         },
         emptyContainer: {
             padding: SPACING.xl,
             alignItems: 'center',
         },
         emptyText: {
+            ...common.text,
             textAlign: 'center',
-            fontSize: FONT_SIZES.medium,
             opacity: 0.7,
-            color: theme.text,
         },
-        textArea: {
-            height: 80,
-            textAlignVertical: 'top',
+        privateLabel: {
+            fontSize: 12,
+            color: '#f44336',
         },
-        modalButtons: {
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            marginTop: SPACING.sm,
+        listWrapper: {
+            flex: 1,
+            maxWidth: 800,
+            width: '100%',
+            alignSelf: 'center',
         },
-        modalButton: {
-            paddingHorizontal: SPACING.lg,
-            paddingVertical: SPACING.md,
+        emptyTextSecondary: {
+            color: theme.textSecondary,
+        },
+        inputLabelNoMargin: {
+            color: theme.textSecondary,
+            marginTop: 0,
+        },
+        inputLabelSecondary: {
+            color: theme.textSecondary,
+        },
+        webDateWrapper: {
+            marginBottom: 16,
+        },
+        webDateInput: {
+            width: '100%',
+            padding: 12,
             borderRadius: 12,
-            marginLeft: SPACING.md,
-            minWidth: 80,
-            alignItems: 'center',
-        },
-        inputLabel: {
-            fontSize: 14,
-            fontWeight: '600',
-            marginBottom: SPACING.xs,
-            marginTop: SPACING.sm,
+            border: `1px solid ${theme.border}`,
+            backgroundColor: 'transparent',
             color: theme.text,
+            marginBottom: 8,
+            outline: 'none',
+            fontFamily: 'inherit',
+            fontSize: '16px',
+        } as any,
+        webSelect: {
+            flex: 1,
+            padding: 12,
+            borderRadius: 12,
+            border: `1px solid ${theme.border}`,
+            backgroundColor: 'transparent',
+            color: theme.text,
+            outline: 'none',
+            fontFamily: 'inherit',
+            fontSize: '16px',
+            appearance: 'auto',
+        } as any,
+        dateTimeButton: {
+            justifyContent: 'center',
         },
-        toggleRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: SPACING.md,
-            paddingVertical: SPACING.xs,
+        cancelButtonText: {
+            color: theme.text,
         },
     });
 };

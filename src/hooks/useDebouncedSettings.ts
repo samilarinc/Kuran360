@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
-import { useSettings } from '../contexts/SettingsContext';
-import { AppSettings } from '../types';
+import { useSettings } from '@/contexts/SettingsContext';
+import { AppSettings } from '@/types';
 
 interface DebouncedUpdateFunction {
     (newSettings: Partial<AppSettings>): void;

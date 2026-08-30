@@ -1,4 +1,4 @@
-import { Verse } from '../types';
+import { Verse } from '@/types';
 import logger from './logger';
 
 class AudioManager {

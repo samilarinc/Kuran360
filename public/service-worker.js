@@ -1,28 +1,7 @@
-/* eslint-disable no-restricted-globals */
-const CACHE_NAME = 'kuran360-v1';
-const urlsToCache = [
-  '/',
-  '/static/js/bundle.js',
-  '/static/js/main.chunk.js',
-  '/static/js/vendors~main.chunk.js',
-  '/manifest.json',
-  '/favicon.png',
-];
+const CACHE_NAME = 'kuran360-v2';
 
-// Install event - cache resources
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache.map(url => new Request(url, { cache: 'reload' })))
-          .catch((error) => {
-            console.log('Cache addAll error:', error);
-            // Continue even if some resources fail
-            return Promise.resolve();
-          });
-      })
-  );
+// Install event
+self.addEventListener('install', () => {
   // Force the waiting service worker to become the active service worker
   self.skipWaiting();
 });
@@ -45,49 +24,59 @@ self.addEventListener('activate', (event) => {
   return self.clients.claim();
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event.
+// Navigations and the app shell (index.html) must always go to the network
+// first, so a new deploy is picked up immediately instead of being served
+// stale from the cache forever. Hashed static assets (/_expo/static/...)
+// are content-addressed, so they're safe to cache-first.
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
+  const { request } = event;
+  if (request.method !== 'GET') {
+    return;
+  }
 
-        // Clone the request
-        const fetchRequest = event.request.clone();
+  const url = new URL(request.url);
+  const isNavigation = request.mode === 'navigate' || url.pathname === '/' || url.pathname === '/index.html';
+  const isHashedAsset = url.pathname.startsWith('/_expo/static/');
 
-        return fetch(fetchRequest).then((response) => {
-          // Check if valid response
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-
-          // Clone the response
+  if (isNavigation) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
           const responseToCache = response.clone();
-
-          // Don't cache POST requests or non-GET methods
-          if (event.request.method === 'GET') {
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-          }
-
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, responseToCache));
           return response;
-        }).catch((error) => {
-          console.log('Fetch failed:', error);
-          // You can return a custom offline page here
-          return new Response('Offline - content not available', {
-            status: 503,
-            statusText: 'Service Unavailable',
-            headers: new Headers({
-              'Content-Type': 'text/plain'
-            })
-          });
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  if (isHashedAsset) {
+    event.respondWith(
+      caches.match(request).then((cached) => {
+        if (cached) {
+          return cached;
+        }
+        return fetch(request).then((response) => {
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, responseToCache));
+          return response;
         });
       })
+    );
+    return;
+  }
+
+  // Everything else: network first, cache as fallback.
+  event.respondWith(
+    fetch(request)
+      .then((response) => {
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(request, responseToCache));
+        return response;
+      })
+      .catch(() => caches.match(request))
   );
 });
 

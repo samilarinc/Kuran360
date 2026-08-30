@@ -1,15 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { createCommonStyles } from '../theme/common.styles';
+import { createCommonStyles } from '@/theme/common.styles';
+import { Theme } from '@/theme';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-        ...common,
-        // HutbeScreen is very simple, mostly uses common container
-        content: {
-            flex: 1,
-        },
         mobileContainer: {
             ...common.container,
             justifyContent: 'center',

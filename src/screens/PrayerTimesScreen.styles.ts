@@ -1,55 +1,21 @@
-import { StyleSheet, Platform } from 'react-native';
-import { createCommonStyles } from '../theme/common.styles';
+import { StyleSheet } from 'react-native';
+import { createCommonStyles } from '@/theme/common.styles';
+import { Theme } from '@/theme';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-        ...common,
-        container: {
-            ...common.container,
-            backgroundColor: theme.background, // Explicitly ensure background
-        },
-        loadingContainer: {
-            ...common.container,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        header: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingHorizontal: 16,
-            paddingTop: 48,
-            paddingBottom: 16,
-            backgroundColor: theme.cardBackground,
-            borderBottomWidth: 1,
-            borderBottomColor: theme.border,
-        },
-        backButton: {
-            padding: 4,
-        },
-        title: {
-            ...common.title,
-            fontSize: 20,
-            marginBottom: 0,
-        },
-        locationButton: {
-            padding: 4,
-        },
         content: {
             padding: 16,
         },
         currentLocationCard: {
+            ...common.card,
             backgroundColor: theme.primary,
-            borderRadius: 16,
             padding: 24,
             alignItems: 'center',
-            marginBottom: 16,
             elevation: 4,
-            shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
             shadowRadius: 4,
         },
         locationName: {
@@ -64,11 +30,6 @@ export const createStyles = (theme: any) => {
             justifyContent: 'space-between',
             width: '100%',
             marginBottom: 8,
-        },
-        gpsButton: {
-            padding: 8,
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            borderRadius: 20,
         },
         dateText: {
             fontSize: 16,
@@ -134,9 +95,6 @@ export const createStyles = (theme: any) => {
             fontWeight: 'bold',
             color: theme.primary,
         },
-        modalOverlay: {
-            ...common.modalOverlay,
-        },
         modalContent: {
             ...common.modalContent,
             backgroundColor: theme.cardBackground,
@@ -155,28 +113,11 @@ export const createStyles = (theme: any) => {
             marginBottom: 0,
         },
         searchContainer: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: theme.background, // Alternating bg
             borderRadius: 8,
             paddingHorizontal: 12,
             marginBottom: 16,
-            borderWidth: 1,
             borderColor: theme.border,
             width: '100%',
-            overflow: 'hidden',
-        },
-        searchIcon: {
-            marginRight: 8,
-        },
-        searchInput: {
-            flex: 1,
-            height: 40,
-            fontSize: 16,
-            color: theme.text,
-        },
-        locationList: {
-            flex: 1,
         },
         locationItem: {
             paddingVertical: 12,

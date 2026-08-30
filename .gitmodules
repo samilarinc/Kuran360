@@ -1,0 +1,3 @@
+[submodule "msarinc-common"]
+	path = msarinc-common
+	url = https://github.com/samilarinc/msarinc-common.git

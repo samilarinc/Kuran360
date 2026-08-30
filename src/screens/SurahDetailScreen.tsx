@@ -1,29 +1,33 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   View,
-  Text,
   FlatList,
   ScrollView,
-  StyleSheet,
   SafeAreaView,
-  TouchableOpacity,
-  ActivityIndicator,
   Platform,
 } from 'react-native';
-import { Verse } from '../components/Verse';
-import { PaginatedVerseView } from '../components/PaginatedVerseView';
-import { HeaderWithDarkModeToggle } from '../components/HeaderWithDarkModeToggle';
-import { AutoplayToggle } from '../components/AutoplayToggle';
-import { AudioTrackingToggle } from '../components/AudioTrackingToggle';
-import { useGlobalAudio } from '../contexts/AudioContext';
-import { useDebouncedSettings } from '../hooks/useDebouncedSettings';
-import { useTheme, Theme } from '../contexts/ThemeContext';
-import { useAuth } from '../contexts/AuthContext';
-import { useUserData } from '../contexts/UserDataContext';
-import { Surah, Verse as VerseType, LastRead } from '../types';
-import { loadSurah } from '../data/quranData';
-import { FONT_SIZES, SPACING } from '../constants';
-import logger from '../utils/logger';
+import { FontSizeToggle } from '@msarinc/ui';
+import { Verse } from '@/components/Verse';
+import { PaginatedVerseView } from '@/components/PaginatedVerseView';
+import { AppHeader } from '@/components/AppHeader';
+import { AutoplayToggle } from '@/components/AutoplayToggle';
+import { LoadingView } from '@/components/LoadingView';
+import { useGlobalAudio } from '@/contexts/AudioContext';
+import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUserData } from '@/contexts/UserDataContext';
+import { useTranslation } from 'react-i18next';
+import { Surah, Verse as VerseType, LastRead } from '@/types';
+import { loadSurah } from '@/data/quranData';
+import logger from '@/utils/logger';
+import { getSurahName } from '@/utils/surahName';
+import { createStyles } from './SurahDetailScreen.styles';
+import { createCommonStyles } from '@/theme/common.styles';
+
+const MIN_FONT_SIZE = 18;
+const MAX_FONT_SIZE = 44;
+const FONT_SIZE_STEP = 2;
 
 interface SurahDetailScreenProps {
   route: {
@@ -49,9 +53,10 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const [currentPaginatedIndex, setCurrentPaginatedIndex] = useState<number>(route.params.verseIndex ?? 0);
   const { settings, updateSettings } = useDebouncedSettings(200); // 200ms debounce for better UX
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { addToLastRead, lastRead } = useUserData();
-  const { audioState, playVerse, stop, pause, resume, togglePlayPause, setVersesForAutoplay, changePlaybackRate } = useGlobalAudio();
+  const { audioState, playVerse, stop, setVersesForAutoplay } = useGlobalAudio();
   const flatListRef = useRef<FlatList>(null);
   const initialScrollDone = useRef(false);
 
@@ -126,7 +131,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       }
     }, 100);
     return () => clearTimeout(timer);
-  }, [surah.verses.length]);
+  }, [surah.verses.length, route.params.verseIndex, settings.usePaginatedView]);
 
   // Auto-scroll effect: scroll to the currently playing verse in non-paginated mode
   useEffect(() => {
@@ -150,16 +155,6 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     return () => clearTimeout(timeoutId);
   }, [audioState.currentVerse, audioState.isPlaying, settings.audioTrackingEnabled, settings.usePaginatedView, surah.verses, isUserScrolling]);
 
-  // Track last read verses for logged in users with 10-second interval checking
-  const currentKey = useMemo(() => {
-    if (!surah || surah.verses.length === 0) return null;
-    if (settings.usePaginatedView) {
-      return `${surah.number}-${currentPaginatedIndex}`;
-    }
-    const cv = audioState.currentVerse;
-    return cv ? `${cv.surahNumber}-${cv.number}` : `${surah.number}-1`;
-  }, [settings.usePaginatedView, currentPaginatedIndex, audioState.currentVerse, surah?.number, surah?.verses?.length]);
-
   useEffect(() => {
     if (!user?.uid || !surah || surah.verses.length === 0) return;
 
@@ -171,7 +166,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
       if (!currentVerse) return;
 
-      const surahName = surah.number === 1 ? 'Al-Fatiha' : `Surah ${surah.number}`;
+      const surahName = getSurahName(t, surah);
       const verseText = currentVerse.allTranslations?.[settings.favoriteTranslation] || currentVerse.translation || '';
       if (!verseText.trim()) return;
 
@@ -192,7 +187,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     }, 10000); // Check every 10 seconds
 
     return () => clearInterval(intervalId);
-  }, [user?.uid, surah, currentPaginatedIndex, audioState.currentVerse, settings.usePaginatedView, settings.favoriteTranslation, lastRead, addToLastRead]);
+  }, [user?.uid, surah, currentPaginatedIndex, audioState.currentVerse, settings.usePaginatedView, settings.favoriteTranslation, lastRead, addToLastRead, t]);
 
   const handleVersePress = (verse: VerseType) => {
     // Temporarily disable auto-tracking when user manually selects a verse
@@ -227,7 +222,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       audioState.isPlaying;
   };
 
-  const handleVerseChange = (verseIndex: number) => {
+  const handleVerseChange = useCallback((verseIndex: number) => {
     // Update URL to reflect current verse
     if (updateVerseUrl) {
       updateVerseUrl(surah, verseIndex);
@@ -238,7 +233,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     logger.debug('Verse changed to:', verseIndex + 1, 'in surah:', surah.number);
     // Persist current index so PaginatedVerseView remounts won't reset to 0
     setCurrentPaginatedIndex(verseIndex);
-  };
+  }, [updateVerseUrl, surah]);
 
   // Handle viewable items change to update URL
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
@@ -281,20 +276,24 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
   // Memoize styles to prevent re-creation on every render
   const styles = useMemo(() => createStyles(theme), [theme]);
+  const common = useMemo(() => createCommonStyles(theme), [theme]);
+
+  const fontSize = settings.surahFontSize;
+  const decreaseFontSize = () => updateSettings({ surahFontSize: Math.max(MIN_FONT_SIZE, fontSize - FONT_SIZE_STEP) });
+  const increaseFontSize = () => updateSettings({ surahFontSize: Math.min(MAX_FONT_SIZE, fontSize + FONT_SIZE_STEP) });
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={common.container}>
       {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={theme.primary} />
-          <Text style={styles.loadingText}>Ayetler yükleniyor...</Text>
-          <Text style={styles.loadingNote}>(Bu işlem sadece bir kez yapılır)</Text>
-        </View>
+        <LoadingView
+          text={t('surahDetailScreen.loadingVerses')}
+          note={t('surahDetailScreen.loadingNote')}
+        />
       ) : (
         <>
-          <HeaderWithDarkModeToggle
+          <AppHeader
             title={surah.arabicName}
-            subtitle={`${surah.turkishName || surah.name} • ${surah.verseCount} ayet • ${surah.revelationPlace}`}
+            subtitle={`${getSurahName(t, surah)} • ${surah.verseCount} ayet • ${surah.revelationPlace}`}
             showBackButton={true}
             onBackPress={() => navigation.goBack()}
             showHomeButton={true}
@@ -303,6 +302,18 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               <AutoplayToggle
                 isEnabled={settings.autoplayEnabled}
                 onToggle={handleAutoplayToggle}
+              />
+            }
+            fontSizeToggle={
+              <FontSizeToggle
+                onDecrease={decreaseFontSize}
+                onIncrease={increaseFontSize}
+                disabledDecrease={fontSize <= MIN_FONT_SIZE}
+                disabledIncrease={fontSize >= MAX_FONT_SIZE}
+                labels={{
+                  decrease: t('surahDetailScreen.decreaseFontSize'),
+                  increase: t('surahDetailScreen.increaseFontSize'),
+                }}
               />
             }
           />
@@ -368,28 +379,3 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     </SafeAreaView>
   );
 };
-
-const createStyles = (theme: Theme) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.background,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: SPACING.md,
-    fontSize: FONT_SIZES.medium,
-    color: theme.textSecondary,
-  },
-  loadingNote: {
-    marginTop: SPACING.sm,
-    fontSize: FONT_SIZES.small,
-    color: theme.textSecondary,
-  },
-  listContainer: {
-    paddingBottom: SPACING.xl,
-  },
-});

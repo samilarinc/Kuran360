@@ -1,3 +1,12 @@
+import type { ThemeName } from '@msarinc/theme-core';
+import type { LucideIcon } from 'lucide-react-native';
+
+// A renderable icon: either a lucide icon component, or a real brand logo
+// rendered via @expo/vector-icons' FontAwesome6 brands style (e.g. 'whatsapp', 'x-twitter').
+export type IconSpec =
+  | { kind: 'lucide'; Icon: LucideIcon }
+  | { kind: 'brand'; name: string };
+
 export interface WordTranslation {
   arabic: string;
   translation: string;
@@ -18,9 +27,7 @@ export interface Verse {
 export interface Surah {
   number: number;
   name: string;
-  turkishName?: string;
   arabicName: string;
-  englishName: string;
   revelationPlace: string;
   verseCount: number;
   verses: Verse[];
@@ -48,7 +55,7 @@ export interface AppSettings {
   showWordTranslations: boolean;
   inlineWordTranslations: boolean;
   usePaginatedView: boolean;
-  darkMode: boolean;
+  theme: ThemeName;
   audioTrackingEnabled: boolean;
   selectedReciter: string;
   playbackRate: number;
@@ -57,6 +64,10 @@ export interface AppSettings {
   // Font settings
   arabicFont: string;      // font id for Quran reading
   imageArabicFont: string; // font id for image generation
+  quranPageFontSize: number; // Arabic text size (px) in the mushaf page view
+  surahFontSize: number; // Arabic text size (px) in the surah (verse list) view
+  quranPageTranslation: string; // translation shown below verses in the page view; '' = none, see WORD_BY_WORD_TRANSLATION_ID
+  verseNumberStyle: 'latin' | 'arabic'; // digit style used for ayet numbers throughout the app
   // Prayer times
   prayerLocation?: {
     id: string;
@@ -187,7 +198,7 @@ export interface ImageSize {
   height: number;
   aspectRatio: string;
   description: string;
-  icon: string;
+  icon: IconSpec;
 }
 
 export interface ImageGenerationOptions {
