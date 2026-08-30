@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING } from '@/theme';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 import { createCommonStyles } from '@/theme/common.styles';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-        ...common,
         content: {
             flex: 1,
             padding: SPACING.md,
@@ -56,42 +55,6 @@ export const createStyles = (theme: any) => {
             ...common.emptyStateText,
             marginVertical: SPACING.lg,
         },
-        duaItem: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: SPACING.md,
-            borderRadius: 12,
-            marginBottom: SPACING.sm,
-            borderWidth: 1,
-            backgroundColor: theme.cardBackground,
-            borderColor: theme.border,
-        },
-        duaContent: {
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-        },
-        checkbox: {
-            width: 24,
-            height: 24,
-            borderRadius: 4,
-            borderWidth: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginRight: SPACING.md,
-            borderColor: theme.border,
-        },
-        checkboxChecked: {
-            backgroundColor: theme.primary,
-        },
-        checkmark: {
-            color: '#FFFFFF',
-            fontSize: 16,
-            fontWeight: 'bold',
-        },
-        duaTextContainer: {
-            flex: 1,
-        },
         duaPerson: {
             fontSize: FONT_SIZES.large,
             fontWeight: 'bold',
@@ -101,10 +64,6 @@ export const createStyles = (theme: any) => {
         duaText: {
             fontSize: FONT_SIZES.medium,
             color: theme.text,
-        },
-        checkedText: {
-            textDecorationLine: 'line-through',
-            opacity: 0.6,
         },
         deleteButton: {
             padding: SPACING.sm,
@@ -153,9 +112,6 @@ export const createStyles = (theme: any) => {
         requestActions: {
             flexDirection: 'row',
             gap: SPACING.sm,
-        },
-        actionButton: {
-            flex: 1,
         },
     });
 };

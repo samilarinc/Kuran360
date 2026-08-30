@@ -11,6 +11,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { useTheme } from '@/contexts/ThemeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './UmrahProgressScreen.styles';
 
 interface UmrahProgressScreenProps {
@@ -104,9 +105,10 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
     };
 
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={common.container}>
             <AppHeader
                 title={t('screenTitles.umrahProgress')}
                 showBackButton={true}

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, TextInput, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserData } from '@/contexts/UserDataContext';
@@ -10,6 +10,7 @@ import { auth } from '@/services/firebase';
 import { GoogleAuthProvider, signInWithPopup, signInWithCredential } from 'firebase/auth';
 import Constants from 'expo-constants';
 import { SPACING } from '@/theme';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './ProfileScreen.styles';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
@@ -18,6 +19,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
     const { theme } = useTheme();
     const { t, i18n } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
     const [isEditingName, setIsEditingName] = useState(false);
     const [newDisplayName, setNewDisplayName] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
@@ -114,8 +116,8 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
     );
 
     return (
-        <SafeAreaView style={styles.container}>
-            <HeaderWithDarkModeToggle
+        <SafeAreaView style={common.container}>
+            <AppHeader
                 title={t('screenTitles.profile')}
                 showBackButton
                 onBackPress={() => navigation.goBack()}
@@ -126,7 +128,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
             <ScrollView style={styles.content}>
                 {user ? (
                     <>
-                        <View style={styles.card}>
+                        <View style={common.sectionCard}>
                             <View style={styles.avatarRow}>
                                 {user.photoURL ? (
                                     <Image source={{ uri: user.photoURL }} style={styles.avatar} />
@@ -137,9 +139,9 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                         </Text>
                                     </View>
                                 )}
-                                <View style={styles.nameFlex}>
+                                <View style={common.flex1}>
                                     {isEditingName ? (
-                                        <View style={styles.editNameContainer}>
+                                        <View style={common.flex1}>
                                             <TextInput
                                                 style={styles.nameInput}
                                                 value={newDisplayName}
@@ -223,7 +225,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                         </View>
                     </>
                 ) : (
-                    <View style={styles.card}>
+                    <View style={common.sectionCard}>
                         <Text style={[styles.email, styles.notSignedInText]}>{t('profileScreen.notSignedIn')}</Text>
                         <AppButton
                             title={t('profileScreen.signInWithGoogle')}

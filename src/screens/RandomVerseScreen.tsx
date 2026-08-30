@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { BookOpen, MapPin, ListOrdered, Sparkles } from 'lucide-react-native';
 import { Verse } from '@/components/Verse';
-import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppHeader } from '@/components/AppHeader';
 import { DownloadRequired } from '@/components/DownloadRequired';
 import { AppButton } from '@/components/AppButton';
 import { Badge } from '@/components/Badge';
@@ -27,6 +27,7 @@ import { useDownloadData } from '@/hooks/useDownloadData';
 import { getRandomVerse } from '@/data/quranData';
 import { Surah, Verse as VerseType } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './RandomVerseScreen.styles';
 
 interface RandomVerseScreenProps {
@@ -51,6 +52,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
     const { theme } = useTheme();
     const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
     const { settings } = useDebouncedSettings(200);
     const { audioState, playVerse } = useGlobalAudio();
     const { user } = useAuth();
@@ -202,8 +204,8 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
 
     if (!isDataAvailable) {
         return (
-            <SafeAreaView style={styles.container}>
-                <HeaderWithDarkModeToggle
+            <SafeAreaView style={common.container}>
+                <AppHeader
                     title={t('screenTitles.randomVerse')}
                     showBackButton={true}
                     onBackPress={navigation.goBack}
@@ -226,7 +228,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
 
     if (isLoading) {
         return (
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView style={common.container}>
                 <LoadingView text={t('randomVerseScreen.loading')} />
             </SafeAreaView>
         );
@@ -234,7 +236,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
 
     if (!currentVerse) {
         return (
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView style={common.container}>
                 <ErrorView
                     text={t('randomVerseScreen.loadError')}
                     retryText={t('randomVerseScreen.retry')}
@@ -245,9 +247,9 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={common.container}>
             {/* Header */}
-            <HeaderWithDarkModeToggle
+            <AppHeader
                 title={t('screenTitles.randomVerse')}
                 showBackButton={true}
                 onBackPress={navigation.goBack}
@@ -266,7 +268,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                     ]}
                 >
                     <ScrollView
-                        style={styles.scrollView}
+                        style={common.flex1}
                         contentContainerStyle={styles.scrollContentContainer}
                         showsVerticalScrollIndicator={false}
                         scrollEnabled={!isAnimating}

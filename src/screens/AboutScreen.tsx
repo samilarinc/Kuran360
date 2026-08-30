@@ -8,7 +8,7 @@ import {
     type AboutUpdate,
 } from '@msarinc/ui';
 import { useTheme } from '@/contexts/ThemeContext';
-import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppHeader } from '@/components/AppHeader';
 import { createCommonStyles as createStyles } from '@/theme/common.styles';
 
 interface AboutScreenProps {
@@ -54,7 +54,7 @@ export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
     const styles = useMemo(() => createStyles(theme), [theme]);
     return (
         <SafeAreaView style={styles.container}>
-            <HeaderWithDarkModeToggle
+            <AppHeader
                 title={t('screenTitles.about')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}

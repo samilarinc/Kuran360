@@ -1,32 +1,19 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import {
-    View,
-    Text,
-    FlatList,
-    TouchableOpacity,
-    ActivityIndicator,
-    SafeAreaView,
-    ScrollView,
-    Alert,
-    useWindowDimensions,
-    Modal,
-    TextInput,
-    Platform,
-    Switch
-} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, Text, SafeAreaView, ScrollView, Alert, useWindowDimensions, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { HatimService } from '@/services/HatimService';
 import { Hatim, HatimPart } from '@/types';
-import { SPACING, FONT_SIZES } from '@/theme';
+import { SPACING } from '@/theme';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
-import { ProgressBar } from '@/components/ProgressBar';
-import { Badge } from '@/components/Badge';
 import { LoadingView } from '@/components/LoadingView';
-import { createStyles } from './HatimDetailScreen.styles';
+import { HatimStatsCard } from '@/components/HatimStatsCard';
+import { HatimPartsGrid } from '@/components/HatimPartsGrid';
+import { PartActionModal } from '@/components/PartActionModal';
+import { HatimEditModal } from '@/components/HatimEditModal';
+import { createCommonStyles } from '@/theme/common.styles';
 
 interface HatimDetailScreenProps {
     navigation: any;
@@ -53,9 +40,11 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const [hasDeadline, setHasDeadline] = useState(false);
+    const [editIsPrivate, setEditIsPrivate] = useState(false);
+    const [editIsLocked, setEditIsLocked] = useState(false);
     const [timeLeft, setTimeLeft] = useState<string>('');
     const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useMemo(() => createCommonStyles(theme), [theme]);
 
     // Responsive grid calculations
     const containerPadding = SPACING.lg * 2;
@@ -116,6 +105,13 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         return () => clearInterval(timer);
     }, [calculateTimeLeft]);
 
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+        };
+    }, []);
+
     const handlePartPress = (part: HatimPart) => {
         if (hatim?.isLocked) {
             if (Platform.OS === 'web') {
@@ -130,20 +126,13 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         setPartModalVisible(true);
     };
 
-    // Cleanup timeout on unmount
-    useEffect(() => {
-        return () => {
-            if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
-        };
-    }, []);
-
     const handleClaim = async () => {
         if (!user || !hatim || !selectedPart) return;
         try {
             setActionLoading(selectedPart.partNumber);
             await HatimService.claimPart(hatimId, selectedPart.partNumber, user.uid, user.displayName || t('profileScreen.defaultUserName'));
             setPartModalVisible(false);
-            await fetchHatim(); // Wait for fetch
+            await fetchHatim();
         } catch (error: any) {
             Alert.alert(t('hatimDetailScreen.loadErrorTitle'), error.message);
         } finally {
@@ -157,7 +146,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             setActionLoading(selectedPart.partNumber);
             await HatimService.unclaimPart(hatimId, selectedPart.partNumber, user.uid);
             setPartModalVisible(false);
-            await fetchHatim(); // Wait for fetch
+            await fetchHatim();
         } catch (error: any) {
             Alert.alert(t('hatimDetailScreen.loadErrorTitle'), error.message);
         } finally {
@@ -172,8 +161,6 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             const newCompleted = !selectedPart.isCompleted;
             const totalPages = selectedPart.totalPages || 20;
 
-            // If marking as completed, also set pages to max
-            // If marking as incomplete, keep pages as is (or reset if user wants, but usually keep)
             await HatimService.togglePartCompletion(hatimId, selectedPart.partNumber, user.uid, newCompleted);
 
             if (newCompleted) {
@@ -194,16 +181,13 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         const total = selectedPart.totalPages || 20;
         const validatedPages = Math.max(0, Math.min(total, pages));
 
-        // Immediate UI feedback
         setLocalPages(validatedPages);
 
-        // Debounce Firebase write
         if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
         saveTimeoutRef.current = setTimeout(async () => {
             try {
                 await HatimService.updatePartProgress(hatimId, selectedPart.partNumber, user.uid, validatedPages);
 
-                // Silent state refresh
                 const updatedHatim = await HatimService.getHatimById(hatimId);
                 if (updatedHatim) {
                     setHatim(updatedHatim);
@@ -213,9 +197,6 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             }
         }, 2000);
     };
-
-    const [editIsPrivate, setEditIsPrivate] = useState(false);
-    const [editIsLocked, setEditIsLocked] = useState(false);
 
     const openEditModal = () => {
         if (!hatim) return;
@@ -248,8 +229,6 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         }
     };
 
-
-
     const onDateChange = (event: any, selectedDate?: Date) => {
         setShowDatePicker(Platform.OS === 'ios');
         if (selectedDate) {
@@ -270,44 +249,6 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             currentDeadline.setMinutes(selectedTime.getMinutes());
             setEditDeadline(new Date(currentDeadline));
         }
-    };
-
-    if (loading) {
-        return (
-            <SafeAreaView style={styles.container}>
-                <LoadingView />
-            </SafeAreaView>
-        );
-    }
-
-    if (!hatim) {
-        return (
-            <SafeAreaView style={styles.container}>
-                <View style={styles.center}>
-                    <Text style={styles.notFoundText}>{t('hatimDetailScreen.notFound')}</Text>
-                    <AppButton
-                        title={t('hatimDetailScreen.goBack')}
-                        onPress={() => navigation.goBack()}
-                        variant="ghost"
-                    />
-                </View>
-            </SafeAreaView>
-        );
-    }
-
-    const completedCount = hatim.parts.filter(p => p.isCompleted).length;
-    const claimedCount = hatim.parts.filter(p => p.claimedById).length;
-
-    const formatDate = (timestamp: number) => {
-        const date = new Date(timestamp);
-        return date.toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'tr-TR', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        });
     };
 
     const handleDeleteHatim = async () => {
@@ -351,6 +292,44 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         );
     };
 
+    if (loading) {
+        return (
+            <SafeAreaView style={styles.container}>
+                <LoadingView />
+            </SafeAreaView>
+        );
+    }
+
+    if (!hatim) {
+        return (
+            <SafeAreaView style={styles.container}>
+                <View style={styles.centerFill}>
+                    <Text style={{ color: theme.text }}>{t('hatimDetailScreen.notFound')}</Text>
+                    <AppButton
+                        title={t('hatimDetailScreen.goBack')}
+                        onPress={() => navigation.goBack()}
+                        variant="ghost"
+                    />
+                </View>
+            </SafeAreaView>
+        );
+    }
+
+    const completedCount = hatim.parts.filter(p => p.isCompleted).length;
+    const claimedCount = hatim.parts.filter(p => p.claimedById).length;
+
+    const formatDate = (timestamp: number) => {
+        const date = new Date(timestamp);
+        return date.toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'tr-TR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <AppHeader
@@ -372,431 +351,68 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                 )}
             </AppHeader>
 
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-                {/* ... existing stats ... */}
-                <View style={styles.infoCard}>
-                    <Text style={styles.description}>
-                        {hatim.description || t('hatimDetailScreen.noDescription')}
-                    </Text>
-                    {hatim.deadline && (
-                        <View style={styles.deadlineInfo}>
-                            <Text style={styles.deadlineText}>
-                                {t('hatimDetailScreen.deadline', { date: formatDate(hatim.deadline) })}
-                            </Text>
-                            <Badge
-                                label={t('hatimDetailScreen.timeRemaining', { time: timeLeft })}
-                                variant="tint"
-                                shape="pill"
-                                style={styles.countdownBadge}
-                                textStyle={{ fontWeight: '700' }}
-                            />
-                        </View>
-                    )}
+            <ScrollView contentContainerStyle={{ padding: SPACING.lg }}>
+                <HatimStatsCard
+                    hatim={hatim}
+                    completedCount={completedCount}
+                    claimedCount={claimedCount}
+                    timeLeft={timeLeft}
+                    formattedDeadline={hatim.deadline ? formatDate(hatim.deadline) : null}
+                />
 
-                    <View style={styles.statsRow}>
-                        <View style={styles.statColumn}>
-                            <Text style={[styles.statValue, styles.statValueCompleted]}>{completedCount} / 30</Text>
-                            <Text style={styles.statLabel}>{t('hatimDetailScreen.completedStat')}</Text>
-                            <ProgressBar
-                                progress={(completedCount / 30) * 100}
-                                height={6}
-                                fillColor="#4CAF50"
-                                style={styles.miniProgressBarBackground}
-                            />
-                        </View>
-                        <View style={styles.statColumn}>
-                            <Text style={[styles.statValue, styles.statValueClaimed]}>
-                                {claimedCount} / 30
-                            </Text>
-                            <Text style={styles.statLabel}>{t('hatimDetailScreen.claimedStat')}</Text>
-                            <ProgressBar
-                                progress={(claimedCount / 30) * 100}
-                                height={6}
-                                fillColor={theme.primary}
-                                style={styles.miniProgressBarBackground}
-                            />
-                        </View>
-                    </View>
-                </View>
-
-                {/* Grid */}
-                <View style={[styles.gridContainer, { width: availableWidth + SPACING.md }]}>
-                    <View style={styles.grid}>
-                        {hatim.parts.map((part) => (
-                            <TouchableOpacity
-                                key={part.partNumber}
-                                style={[
-                                    styles.partItem,
-                                    {
-                                        backgroundColor: part.isCompleted
-                                            ? '#2E7D32'
-                                            : part.claimedById
-                                                ? (part.claimedById === user?.uid ? '#1976D2' : '#78909C')
-                                                : theme.cardBackground,
-                                        width: partItemWidth,
-                                    }
-                                ]}
-                                onPress={() => handlePartPress(part)}
-                                disabled={actionLoading === part.partNumber}
-                            >
-                                {actionLoading === part.partNumber ? (
-                                    <ActivityIndicator size="small" color="#fff" />
-                                ) : (
-                                    <>
-                                        <Text style={[styles.partNumber, { color: part.claimedById ? '#fff' : theme.text, fontSize: numberFontSize }]}>
-                                            {part.partNumber}
-                                        </Text>
-                                        <Text style={[styles.partClaimant, { color: part.claimedById ? 'rgba(255,255,255,0.8)' : theme.textSecondary, fontSize: claimantFontSize }]} numberOfLines={1}>
-                                            {part.claimedById === user?.uid ? (user?.displayName || t('hatimDetailScreen.me')) : (part.claimedByName || t('hatimDetailScreen.available'))}
-                                        </Text>
-                                        {part.claimedById && !part.isCompleted && (
-                                            <ProgressBar
-                                                progress={((part.pagesRead || 0) / (part.totalPages || 20)) * 100}
-                                                height={4}
-                                                trackColor="rgba(255,255,255,0.2)"
-                                                fillColor="#4CAF50"
-                                                style={styles.progressBarBackground}
-                                            />
-                                        )}
-                                    </>
-                                )}
-                            </TouchableOpacity>
-                        ))}
-                    </View>
-                </View>
+                <HatimPartsGrid
+                    parts={hatim.parts}
+                    availableWidth={availableWidth}
+                    numColumns={numColumns}
+                    partItemWidth={partItemWidth}
+                    numberFontSize={numberFontSize}
+                    claimantFontSize={claimantFontSize}
+                    currentUserId={user?.uid}
+                    currentUserDisplayName={user?.displayName}
+                    actionLoading={actionLoading}
+                    onPartPress={handlePartPress}
+                />
             </ScrollView>
 
-            {/* Part Interaction Modal - kept same */}
-            <Modal
-                transparent
+            <PartActionModal
                 visible={partModalVisible}
-                animationType="fade"
-                onRequestClose={() => setPartModalVisible(false)}
-            >
-                <View style={styles.modalOverlay}>
-                    <View style={styles.modalContent}>
-                        {selectedPart && (
-                            <>
-                                <Text style={styles.modalTitle}>
-                                    {t('hatimDetailScreen.partActions', { number: selectedPart.partNumber })}
-                                </Text>
+                hatim={hatim}
+                part={selectedPart}
+                currentUserId={user?.uid}
+                currentUserDisplayName={user?.displayName}
+                actionLoading={actionLoading}
+                localPages={localPages}
+                onClose={() => setPartModalVisible(false)}
+                onUpdatePages={handleUpdatePages}
+                onToggleCompletion={handleToggleCompletion}
+                onClaim={handleClaim}
+                onUnclaim={handleUnclaim}
+            />
 
-                                {selectedPart.claimedById ? (
-                                    <View style={styles.claimInfo}>
-                                        <Text style={styles.claimText}>
-                                            {t('hatimDetailScreen.claimedBy')}<Text style={styles.claimedByName}>{selectedPart.claimedById === user?.uid ? (user?.displayName || t('hatimDetailScreen.me')) : selectedPart.claimedByName}</Text>
-                                        </Text>
-                                        <Text style={[styles.claimStatus, selectedPart.isCompleted ? styles.claimStatusCompleted : styles.claimStatusReading]}>
-                                            {t('hatimDetailScreen.status', { status: selectedPart.isCompleted ? t('hatimDetailScreen.statusCompleted') : t('hatimDetailScreen.statusReading') })}
-                                        </Text>
-
-                                        {/* Page Progress Control */}
-                                        {(selectedPart.claimedById === user?.uid || hatim.creatorId === user?.uid) && (
-                                            <View style={styles.progressContainer}>
-                                                <Text style={styles.progressLabel}>
-                                                    {t('hatimDetailScreen.pagesRead', { read: localPages, total: selectedPart.totalPages || 20 })}
-                                                </Text>
-                                                <View style={styles.progressRow}>
-                                                    <AppButton
-                                                        title="-"
-                                                        onPress={() => handleUpdatePages(localPages - 1)}
-                                                        variant="secondary"
-                                                        shape="circle"
-                                                        size="small"
-                                                        style={{ backgroundColor: theme.border }}
-                                                        textStyle={{ color: theme.text }}
-                                                    />
-
-                                                    <TextInput
-                                                        style={styles.progressInput}
-                                                        value={String(localPages)}
-                                                        keyboardType="number-pad"
-                                                        onChangeText={(val) => {
-                                                            const n = parseInt(val);
-                                                            if (!isNaN(n)) handleUpdatePages(n);
-                                                            else if (val === '') setLocalPages(0);
-                                                        }}
-                                                    />
-
-                                                    <AppButton
-                                                        title="+"
-                                                        onPress={() => handleUpdatePages(localPages + 1)}
-                                                        variant="secondary"
-                                                        shape="circle"
-                                                        size="small"
-                                                        style={{ backgroundColor: theme.border }}
-                                                        textStyle={{ color: theme.text }}
-                                                    />
-                                                </View>
-                                            </View>
-                                        )}
-                                    </View>
-                                ) : (
-                                    <Text style={styles.modalDescription}>
-                                        {t('hatimDetailScreen.notClaimedYet')}
-                                    </Text>
-                                )}
-
-                                <View style={styles.modalButtonsColumn}>
-                                    {selectedPart && (selectedPart.claimedById === user?.uid || (hatim && hatim.creatorId === user?.uid && selectedPart.claimedById)) ? (
-                                        <>
-                                            <AppButton
-                                                title={selectedPart.isCompleted ? t('hatimDetailScreen.markIncomplete') : t('hatimDetailScreen.markComplete')}
-                                                onPress={handleToggleCompletion}
-                                                variant={selectedPart.isCompleted ? 'secondary' : 'primary'}
-                                                style={[{ width: '100%' }, selectedPart.isCompleted ? { backgroundColor: theme.accent } : undefined]}
-                                                loading={actionLoading === selectedPart.partNumber}
-                                                disabled={actionLoading !== null}
-                                            />
-
-                                            <AppButton
-                                                title={selectedPart.claimedById === user?.uid ? t('hatimDetailScreen.releasePart') : t('hatimDetailScreen.unclaimPart')}
-                                                onPress={handleUnclaim}
-                                                variant="danger"
-                                                style={{ width: '100%', marginTop: SPACING.md }}
-                                                disabled={actionLoading !== null}
-                                            />
-                                        </>
-                                    ) : selectedPart && !selectedPart.claimedById ? (
-                                        <AppButton
-                                            title={t('hatimDetailScreen.claimPart')}
-                                            onPress={handleClaim}
-                                            variant="primary"
-                                            style={{ width: '100%' }}
-                                            loading={actionLoading === selectedPart.partNumber}
-                                            disabled={actionLoading !== null}
-                                        />
-                                    ) : null}
-
-                                    <AppButton
-                                        title={t('hatimDetailScreen.close')}
-                                        onPress={() => setPartModalVisible(false)}
-                                        variant="outline"
-                                        style={{ width: '100%', marginTop: SPACING.md }}
-                                    />
-                                </View>
-                            </>
-                        )}
-                    </View>
-                </View>
-            </Modal>
-
-            {/* Hatim Edit Modal */}
-            <Modal
-                transparent
+            <HatimEditModal
                 visible={editModalVisible}
-                animationType="fade"
-                onRequestClose={() => setEditModalVisible(false)}
-            >
-                <View style={styles.modalOverlay}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>{t('hatimDetailScreen.editTitle')}</Text>
-
-                        <TextInput
-                            style={styles.input}
-                            placeholder={t('hatimDetailScreen.titlePlaceholder')}
-                            placeholderTextColor={theme.textSecondary}
-                            value={editTitle}
-                            onChangeText={setEditTitle}
-                        />
-
-                        <TextInput
-                            style={[styles.input, styles.textArea]}
-                            placeholder={t('hatimDetailScreen.descriptionPlaceholder')}
-                            placeholderTextColor={theme.textSecondary}
-                            value={editDesc}
-                            onChangeText={setEditDesc}
-                            multiline
-                            numberOfLines={3}
-                        />
-
-                        <View style={styles.toggleRow}>
-                            <Text style={[styles.inputLabel, styles.inputLabelNoMarginTop]}>{t('hatimDetailScreen.setDeadline')}</Text>
-                            <Switch
-                                value={hasDeadline}
-                                onValueChange={setHasDeadline}
-                                trackColor={{ false: theme.border, true: theme.primary + '80' }}
-                                thumbColor={hasDeadline ? theme.primary : '#f4f3f4'}
-                            />
-                        </View>
-
-                        <View style={styles.toggleRow}>
-                            <Text style={[styles.inputLabel, styles.inputLabelNoMarginTop]}>{t('hatimDetailScreen.privateHatim')}</Text>
-                            <Switch
-                                value={editIsPrivate}
-                                onValueChange={setEditIsPrivate}
-                                trackColor={{ false: theme.border, true: theme.primary + '80' }}
-                                thumbColor={editIsPrivate ? theme.primary : '#f4f3f4'}
-                            />
-                        </View>
-
-                        <View style={styles.toggleRow}>
-                            <Text style={[styles.inputLabel, styles.inputLabelNoMarginTop]}>{t('hatimDetailScreen.lockHatim')}</Text>
-                            <Switch
-                                value={editIsLocked}
-                                onValueChange={setEditIsLocked}
-                                trackColor={{ false: theme.border, true: '#607D8B' }}
-                                thumbColor={editIsLocked ? '#455A64' : '#f4f3f4'}
-                            />
-                        </View>
-
-                        {hasDeadline && (
-                            <>
-                                <Text style={styles.inputLabel}>{t('hatimDetailScreen.deadlineLabel')}</Text>
-
-                                {Platform.OS === 'web' ? (
-                                    <View style={styles.dateTimeWebContainer}>
-                                        <input
-                                            type="date"
-                                            style={{
-                                                width: '100%',
-                                                padding: 12,
-                                                borderRadius: 12,
-                                                border: `1px solid ${theme.border}`,
-                                                backgroundColor: 'transparent',
-                                                color: theme.text,
-                                                marginBottom: 8,
-                                                outline: 'none',
-                                                fontFamily: 'inherit',
-                                                fontSize: '16px'
-                                            }}
-                                            onChange={(e: any) => {
-                                                const val = e.target.value;
-                                                if (!val) return;
-                                                const [y, m, d] = val.split('-').map(Number);
-                                                const current = editDeadline || new Date();
-                                                current.setFullYear(y);
-                                                current.setMonth(m - 1);
-                                                current.setDate(d);
-                                                setEditDeadline(new Date(current));
-                                            }}
-                                            value={editDeadline ? editDeadline.toISOString().split('T')[0] : ''}
-                                        />
-                                        <View style={styles.timeSelectorsRow}>
-                                            <select
-                                                style={{
-                                                    flex: 1,
-                                                    padding: 12,
-                                                    borderRadius: 12,
-                                                    border: `1px solid ${theme.border}`,
-                                                    backgroundColor: 'transparent',
-                                                    color: theme.text,
-                                                    outline: 'none',
-                                                    fontFamily: 'inherit',
-                                                    fontSize: '16px',
-                                                    appearance: 'auto'
-                                                }}
-                                                onChange={(e: any) => {
-                                                    const h = parseInt(e.target.value);
-                                                    const current = editDeadline || new Date();
-                                                    current.setHours(h);
-                                                    setEditDeadline(new Date(current));
-                                                }}
-                                                value={editDeadline ? editDeadline.getHours() : 0}
-                                            >
-                                                {Array.from({ length: 24 }, (_, i) => (
-                                                    <option key={i} value={i}>{i.toString().padStart(2, '0')}</option>
-                                                ))}
-                                            </select>
-                                            <Text style={styles.timeSeparator}>:</Text>
-                                            <select
-                                                style={{
-                                                    flex: 1,
-                                                    padding: 12,
-                                                    borderRadius: 12,
-                                                    border: `1px solid ${theme.border}`,
-                                                    backgroundColor: 'transparent',
-                                                    color: theme.text,
-                                                    outline: 'none',
-                                                    fontFamily: 'inherit',
-                                                    fontSize: '16px',
-                                                    appearance: 'auto'
-                                                }}
-                                                onChange={(e: any) => {
-                                                    const m = parseInt(e.target.value);
-                                                    const current = editDeadline || new Date();
-                                                    current.setMinutes(m);
-                                                    setEditDeadline(new Date(current));
-                                                }}
-                                                value={editDeadline ? editDeadline.getMinutes() : 0}
-                                            >
-                                                {Array.from({ length: 60 }, (_, i) => (
-                                                    <option key={i} value={i}>{i.toString().padStart(2, '0')}</option>
-                                                ))}
-                                            </select>
-                                        </View>
-                                    </View>
-                                ) : (
-                                    <>
-                                        <TouchableOpacity
-                                            style={styles.editInputStyle}
-                                            onPress={() => setShowDatePicker(true)}
-                                        >
-                                            <Text style={editDeadline ? styles.dateTimeTextFilled : styles.dateTimeTextEmpty}>
-                                                {editDeadline
-                                                    ? editDeadline.toLocaleString(i18n.language === 'en' ? 'en-US' : 'tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })
-                                                    : t('hatimDetailScreen.selectDateTime')}
-                                            </Text>
-                                        </TouchableOpacity>
-
-                                        {showDatePicker && (
-                                            <DateTimePicker
-                                                value={editDeadline || new Date()}
-                                                mode="date"
-                                                display={Platform.OS === 'android' ? 'spinner' : 'default'}
-                                                onChange={onDateChange}
-                                                minimumDate={new Date()}
-                                                is24Hour={true}
-                                                locale={i18n.language === 'en' ? 'en-US' : 'tr-TR'}
-                                            />
-                                        )}
-
-                                        {showTimePicker && (
-                                            <DateTimePicker
-                                                value={editDeadline || new Date()}
-                                                mode="time"
-                                                display={Platform.OS === 'android' ? 'spinner' : 'default'}
-                                                onChange={onTimeChange}
-                                                is24Hour={true}
-                                                locale={i18n.language === 'en' ? 'en-US' : 'tr-TR'}
-                                            />
-                                        )}
-                                    </>
-                                )}
-                            </>
-                        )}
-
-                        <View style={styles.modalButtons}>
-                            <AppButton
-                                title={t('hatimDetailScreen.delete')}
-                                onPress={handleDeleteHatim}
-                                disabled={isUpdating}
-                                variant="outline"
-                                style={[styles.modalButton, { borderColor: '#FFCDD2', backgroundColor: '#FFEBEE' }]}
-                                textStyle={{ color: '#D32F2F' }}
-                            />
-
-                            <View style={styles.modalButtonsRight}>
-                                <AppButton
-                                    title={t('hatimDetailScreen.cancel')}
-                                    onPress={() => setEditModalVisible(false)}
-                                    variant="secondary"
-                                    style={[styles.modalButton, { marginRight: SPACING.sm, backgroundColor: theme.border }]}
-                                    textStyle={{ color: theme.text }}
-                                />
-                                <AppButton
-                                    title={t('hatimDetailScreen.update')}
-                                    onPress={handleUpdateHatim}
-                                    loading={isUpdating}
-                                    disabled={isUpdating}
-                                    variant="primary"
-                                    style={styles.modalButton}
-                                />
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
+                title={editTitle}
+                description={editDesc}
+                hasDeadline={hasDeadline}
+                deadline={editDeadline}
+                isPrivate={editIsPrivate}
+                isLocked={editIsLocked}
+                isUpdating={isUpdating}
+                showDatePicker={showDatePicker}
+                showTimePicker={showTimePicker}
+                onChangeTitle={setEditTitle}
+                onChangeDescription={setEditDesc}
+                onToggleHasDeadline={setHasDeadline}
+                onChangeDeadline={setEditDeadline}
+                onTogglePrivate={setEditIsPrivate}
+                onToggleLocked={setEditIsLocked}
+                onRequestDatePicker={() => setShowDatePicker(true)}
+                onDateChange={onDateChange}
+                onTimeChange={onTimeChange}
+                onClose={() => setEditModalVisible(false)}
+                onUpdate={handleUpdateHatim}
+                onDelete={handleDeleteHatim}
+            />
         </SafeAreaView>
     );
 };

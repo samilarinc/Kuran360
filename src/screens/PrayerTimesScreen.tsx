@@ -19,6 +19,7 @@ import { SearchInput } from '@/components/SearchInput';
 import { SPACING, FONT_SIZES } from '@/theme';
 import { PrayerTime } from '@/types';
 import locations from '@/data/locations.json';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './PrayerTimesScreen.styles';
 
 interface Location {
@@ -32,6 +33,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     const { theme } = useTheme();
     const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
     const { settings, updateSettings } = useSettings();
     const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
     const [loading, setLoading] = useState(true);
@@ -299,7 +301,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.background }]}>
+        <View style={[common.container, { backgroundColor: theme.background }]}>
             <AppHeader
                 title={t('screenTitles.prayerTimes')}
                 showBackButton={true}
@@ -360,7 +362,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
             </ScrollView>
 
             {showLocationPicker && (
-                <View style={styles.modalOverlay}>
+                <View style={common.modalOverlay}>
                     <View style={[styles.modalContent, { backgroundColor: theme.cardBackground }]}>
                         <View style={styles.modalHeader}>
                             <Text style={[styles.modalTitle, { color: theme.text }]}>{t('prayerTimesScreen.selectLocation')}</Text>
@@ -375,7 +377,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                             onChangeText={setSearchQuery}
                             placeholder={t('prayerTimesScreen.searchPlaceholder')}
                         />
-                        <ScrollView style={styles.locationList}>
+                        <ScrollView style={common.flex1}>
                             {filteredLocations.map((loc) => (
                                 <TouchableOpacity
                                     key={loc.id}

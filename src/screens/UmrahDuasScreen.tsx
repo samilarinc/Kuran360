@@ -9,6 +9,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
 import { useTheme } from '@/contexts/ThemeContext';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './UmrahDuasScreen.styles';
 
 interface UmrahDuasScreenProps {
@@ -255,9 +256,10 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
     };
 
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={common.container}>
             <AppHeader
                 title={t('screenTitles.umrahDuas')}
                 showBackButton={true}
@@ -276,11 +278,11 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
                                 <Text style={styles.categoryTitle}>
                                     {category.title}
                                 </Text>
-                                <Text style={styles.categoryCount}>
+                                <Text style={common.smallText}>
                                     ({category.duas.length})
                                 </Text>
                             </View>
-                            <Text style={styles.expandIcon}>
+                            <Text style={common.subtitle}>
                                 {expandedCategory === category.id ? '▼' : '▶'}
                             </Text>
                         </TouchableOpacity>
@@ -296,7 +298,7 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
                                             <Text style={styles.duaTitle}>
                                                 {dua.title}
                                             </Text>
-                                            <Text style={styles.expandIcon}>
+                                            <Text style={common.subtitle}>
                                                 {expandedDua === dua.id ? '▲' : '▼'}
                                             </Text>
                                         </TouchableOpacity>

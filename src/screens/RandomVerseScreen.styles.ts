@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING } from '@/theme';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 import { createCommonStyles } from '@/theme/common.styles';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-        ...common,
         verseContainer: {
             flex: 1,
             position: 'relative',
@@ -14,9 +13,6 @@ export const createStyles = (theme: any) => {
         verseContent: {
             flex: 1,
             width: '100%',
-        },
-        scrollView: {
-            flex: 1,
         },
         scrollContentContainer: {
             flexGrow: 1,
@@ -80,22 +76,12 @@ export const createStyles = (theme: any) => {
             gap: SPACING.sm,
             marginTop: SPACING.sm,
         },
-        surahDetails: {
-            fontSize: FONT_SIZES.small,
-            fontStyle: 'italic',
-        },
         bottomActions: {
             padding: SPACING.md,
             paddingBottom: SPACING.xl, // Extra bottom padding for better accessibility
             borderTopWidth: 1,
             borderTopColor: '#E0E0E0',
             backgroundColor: theme.surface,
-        },
-        swipeHint: {
-            fontSize: FONT_SIZES.small,
-            textAlign: 'center',
-            marginBottom: SPACING.md,
-            fontStyle: 'italic',
         },
     });
 };

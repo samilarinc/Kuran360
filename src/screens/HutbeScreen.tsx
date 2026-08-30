@@ -15,12 +15,14 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { AppButton } from '@/components/AppButton';
 import { LoadingView } from '@/components/LoadingView';
 import { SPACING, FONT_SIZES } from '@/theme';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './HutbeScreen.styles';
 
 export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { theme } = useTheme();
     const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
     const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
     // Add cache busting to ensure the latest PDF is always fetched
     const pdfUrl = useMemo(() => `${baseUrl}/hutbe/hutbe.pdf?t=${Date.now()}`, [baseUrl]);
@@ -45,7 +47,7 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     if (exists === false) {
         return (
-            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <SafeAreaView style={[common.container, { backgroundColor: theme.background }]}>
                 <AppHeader
                     title={t('hutbeScreen.errorTitle')}
                     showBackButton={true}
@@ -68,7 +70,7 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={[common.container, { backgroundColor: theme.background }]}>
             <AppHeader
                 title={t('screenTitles.hutbe')}
                 showBackButton={true}
@@ -77,7 +79,7 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 onHomePress={() => navigation.navigate('Main')}
             />
 
-            <View style={styles.content}>
+            <View style={common.flex1}>
                 {exists === null ? (
                     <LoadingView />
                 ) : Platform.OS === 'web' ? (

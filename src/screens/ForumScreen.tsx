@@ -1,13 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { useThreads, useCreateThread } from '@/contexts/ForumContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { VerseMention } from '@/types';
-import { createStyles } from './ForumScreen.styles';
+import { createCommonStyles } from '@/theme/common.styles';
 
 export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { data: threads = [] } = useThreads();
@@ -30,23 +30,23 @@ export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
   };
 
-  const styles = useMemo(() => createStyles(theme), [theme]);
+  const styles = useMemo(() => createCommonStyles(theme), [theme]);
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderWithDarkModeToggle
+      <AppHeader
         title={t('screenTitles.forum')}
         showHomeButton={true}
         onHomePress={() => navigation.navigate('Main')}
       />
       {user ? (
-        <View style={styles.card}>
-          <Text style={styles.label}>{t('forumScreen.titleLabel')}</Text>
-          <TextInput style={styles.input} value={title} onChangeText={setTitle} placeholder={t('forumScreen.titlePlaceholder')} />
-          <Text style={styles.label}>{t('forumScreen.bodyLabel')}</Text>
-          <TextInput style={[styles.input, styles.multiline]} value={body} onChangeText={setBody} placeholder={t('forumScreen.bodyPlaceholder')} multiline />
+        <View style={styles.sectionCardCompact}>
+          <Text style={{ color: theme.textSecondary }}>{t('forumScreen.titleLabel')}</Text>
+          <TextInput style={styles.compactInput} value={title} onChangeText={setTitle} placeholder={t('forumScreen.titlePlaceholder')} />
+          <Text style={{ color: theme.textSecondary }}>{t('forumScreen.bodyLabel')}</Text>
+          <TextInput style={[styles.compactInput, styles.textArea]} value={body} onChangeText={setBody} placeholder={t('forumScreen.bodyPlaceholder')} multiline />
           {/* Minimal mentions input: allow single mention for now via simple pattern S:V */}
-          <Text style={styles.label}>{t('forumScreen.mentionLabel')}</Text>
-          <TextInput style={styles.input} placeholder={t('forumScreen.mentionPlaceholder')} onSubmitEditing={(e) => {
+          <Text style={{ color: theme.textSecondary }}>{t('forumScreen.mentionLabel')}</Text>
+          <TextInput style={styles.compactInput} placeholder={t('forumScreen.mentionPlaceholder')} onSubmitEditing={(e) => {
             const v = e.nativeEvent.text.trim();
             const match = v.match(/^(\d+):(\d+)$/);
             if (match) {
@@ -63,9 +63,9 @@ export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         data={threads}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.thread} onPress={() => navigation.navigate('ForumThread', { threadId: item.id })}>
-            <Text style={styles.threadTitle}>{item.title}</Text>
-            <Text style={styles.threadMeta}>{t('forumScreen.replies', { count: item.replyCount })}</Text>
+          <TouchableOpacity style={styles.sectionCardCompact} onPress={() => navigation.navigate('ForumThread', { threadId: item.id })}>
+            <Text style={[styles.text, { fontWeight: '600' }]}>{item.title}</Text>
+            <Text style={styles.smallText}>{t('forumScreen.replies', { count: item.replyCount })}</Text>
           </TouchableOpacity>
         )}
         ListEmptyComponent={<Text style={styles.note}>{t('forumScreen.noThreads')}</Text>}

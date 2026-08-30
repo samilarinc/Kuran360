@@ -30,6 +30,7 @@ import { MenuListRow } from '@/components/MenuListRow';
 import { useTheme } from '@/contexts/ThemeContext';
 import { FONT_SIZES, SPACING } from '@/theme';
 import { Alert, Platform } from 'react-native';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './MainScreen.styles';
 
 interface MainScreenProps {
@@ -40,6 +41,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
     const { theme, isDarkMode, toggleDarkMode } = useTheme();
     const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
     const { width, height } = useWindowDimensions();
 
     const isUltraNarrow = width < 360;
@@ -94,7 +96,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
     ];
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={[common.container, { backgroundColor: theme.background }]}>
 
             <AppHeader
                 title={t('mainScreen.appTitle')}
@@ -123,7 +125,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                     <View style={styles.heroIconWrap}>
                         <BookOpen size={24} color="#fff" />
                     </View>
-                    <View style={styles.heroTextWrap}>
+                    <View style={common.flex1}>
                         <Text style={styles.heroTitle}>{t('mainScreen.menu.surahs')}</Text>
                         <Text style={styles.heroSubtitle}>{t('mainScreen.heroSubtitle')}</Text>
                     </View>

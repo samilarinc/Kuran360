@@ -597,6 +597,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "August 30, 2026",
+        "bullets": [
+          "General code maintenance and cleanup across the app (no visual change)."
+        ]
+      },
+      {
         "date": "August 29, 2026",
         "bullets": [
           "Fixed an issue on the web version where the page could get stuck showing an old (cached) version after a new update was released."

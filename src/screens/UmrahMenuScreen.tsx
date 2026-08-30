@@ -11,6 +11,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { MenuListRow } from '@/components/MenuListRow';
 import { useTheme } from '@/contexts/ThemeContext';
 import { createStyles } from './UmrahMenuScreen.styles';
+import { createCommonStyles } from '@/theme/common.styles';
 
 interface UmrahMenuScreenProps {
     navigation: any;
@@ -56,9 +57,10 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
     ];
 
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={common.container}>
             <AppHeader
                 title={t('screenTitles.umrahMenu')}
                 showBackButton={true}

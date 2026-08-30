@@ -1,26 +1,21 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import {
-    View,
-    Text,
-    SafeAreaView,
-    ScrollView,
-    TouchableOpacity,
-    Alert,
-} from 'react-native';
+import { SafeAreaView, ScrollView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Globe, Star, BookOpen, Library, Type, PenLine, ChevronUp, ChevronDown, Target, Search as SearchIcon, Filter } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
-import { getSurahName } from '@/utils/surahName';
 import { useTheme } from '@/contexts/ThemeContext';
-import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppHeader } from '@/components/AppHeader';
 import { DownloadRequired } from '@/components/DownloadRequired';
 import { SearchInput } from '@/components/SearchInput';
+import { SearchFiltersPanel } from '@/components/SearchFiltersPanel';
+import { SearchScope } from '@/components/SearchScopeSelector';
+import { SearchHistoryBar } from '@/components/SearchHistoryBar';
+import { SearchResultsList } from '@/components/SearchResultsList';
+import { SearchResult } from '@/components/SearchResultItem';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
-import { Verse, Surah } from '@/types';
 import { quranData, loadSurah } from '@/data/quranData';
 import { useDownloadData } from '@/hooks/useDownloadData';
-import { formatVerseNumber } from '@/utils/numerals';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './SearchScreen.styles';
 
 interface SearchScreenProps {
@@ -28,16 +23,6 @@ interface SearchScreenProps {
     isDataAvailable: boolean;
 }
 
-interface SearchResult {
-    verse: Verse;
-    surah: Surah;
-    matchedText: string;
-    matchedField: 'arabic' | 'translation' | 'transliteration';
-    matchedRange?: { start: number; end: number };
-    translationName?: string;
-}
-
-type SearchScope = 'everywhere' | 'favorite' | 'selected' | 'all-translations' | 'arabic' | 'transliteration';
 type SurahFilter = 'all' | number;
 
 export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAvailable }) => {
@@ -45,6 +30,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
     const { theme } = useTheme();
     const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
     const navHelpers = useNavigationHelpers();
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -86,7 +72,6 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
         };
         loadSearchHistory();
     }, []);
-
 
     // Save search to history
     const saveSearchToHistory = useCallback(async (query: string) => {
@@ -207,7 +192,6 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
         return { start: indexMap[start], end: indexMap[end - 1] + 1 };
     }, [calculateSimilarity, normalizeForSearch, normalizeQuery, useFuzzySearch]);
 
-    // Search function
     // Debounced search
     useEffect(() => {
         if (!isDataAvailable) {
@@ -331,8 +315,8 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
 
     if (!isDataAvailable) {
         return (
-            <SafeAreaView style={styles.container}>
-                <HeaderWithDarkModeToggle
+            <SafeAreaView style={common.container}>
+                <AppHeader
                     title={t('searchScreen.title')}
                     showBackButton={true}
                     onBackPress={() => navigation.goBack()}
@@ -353,289 +337,15 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
         );
     }
 
-    const renderSearchScopeSelector = () => (
-        <View style={styles.selectorContainer}>
-            <Text style={styles.selectorTitle}>{t('searchScreen.scope.title')}</Text>
-            <View style={styles.selectorGrid}>
-                {[
-                    { key: 'everywhere', label: t('searchScreen.scope.everywhere'), Icon: Globe },
-                    { key: 'favorite', label: t('searchScreen.scope.favorite'), Icon: Star },
-                    { key: 'selected', label: t('searchScreen.scope.selected'), Icon: BookOpen },
-                    { key: 'all-translations', label: t('searchScreen.scope.allTranslations'), Icon: Library },
-                    { key: 'arabic', label: t('searchScreen.scope.arabic'), Icon: Type },
-                    { key: 'transliteration', label: t('searchScreen.scope.transliteration'), Icon: PenLine },
-                ].map((option) => (
-                    <TouchableOpacity
-                        key={option.key}
-                        style={[
-                            styles.selectorOption,
-                            searchScope === option.key && styles.selectorOptionSelected
-                        ]}
-                        onPress={() => setSearchScope(option.key as SearchScope)}
-                    >
-                        <option.Icon
-                            size={14}
-                            color={searchScope === option.key ? '#FFFFFF' : theme.text}
-                            style={styles.selectorIcon}
-                        />
-                        <Text style={[
-                            styles.selectorOptionText,
-                            searchScope === option.key && styles.selectorOptionTextSelected
-                        ]}>
-                            {option.label}
-                        </Text>
-                    </TouchableOpacity>
-                ))}
-            </View>
-        </View>
-    );
-
-    const renderTranslationSelector = () => {
-        if (searchScope !== 'selected') return null;
-
-        return (
-            <View style={styles.selectorContainer}>
-                <Text style={styles.selectorTitle}>{t('searchScreen.translationSelector.title')}</Text>
-                <View style={styles.selectorGrid}>
-                    <TouchableOpacity
-                        style={[
-                            styles.selectorOption,
-                            styles.selectorOptionSelected,
-                        ]}
-                        onPress={() => setShowTranslationDropdown(!showTranslationDropdown)}
-                    >
-                        <Text style={[
-                            styles.selectorOptionText,
-                            styles.selectorOptionTextSelected,
-                        ]}>
-                            {t('searchScreen.translationSelector.selected', {
-                                translation: selectedTranslation ? `(${selectedTranslation.length > 20 ? selectedTranslation.substring(0, 20) + '...' : selectedTranslation})` : '',
-                            })}
-                        </Text>
-                        <Text style={styles.toggleIcon}>
-                            {showTranslationDropdown ? '▲' : '▼'}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-
-                {showTranslationDropdown && (
-                    <View style={styles.surahDropdown}>
-                        <ScrollView
-                            style={styles.dropdownScroll}
-                            showsVerticalScrollIndicator={true}
-                            nestedScrollEnabled
-                            keyboardShouldPersistTaps="handled"
-                        >
-                            <View style={styles.selectorGrid}>
-                                {availableTranslations.map((translation) => (
-                                    <TouchableOpacity
-                                        key={translation}
-                                        style={[
-                                            styles.selectorOption,
-                                            selectedTranslation === translation && styles.selectorOptionSelected
-                                        ]}
-                                        onPress={() => {
-                                            setSelectedTranslation(translation);
-                                            setShowTranslationDropdown(false);
-                                        }}
-                                    >
-                                        <Text style={[
-                                            styles.selectorOptionText,
-                                            selectedTranslation === translation && styles.selectorOptionTextSelected
-                                        ]}>
-                                            {translation.length > 15 ? translation.substring(0, 15) + '...' : translation}
-                                        </Text>
-                                    </TouchableOpacity>
-                                ))}
-                            </View>
-                        </ScrollView>
-                    </View>
-                )}
-            </View>
-        );
-    };
-
-    const renderSurahFilter = () => (
-        <View style={styles.selectorContainer}>
-            <Text style={styles.selectorTitle}>{t('searchScreen.surahFilter.title')}</Text>
-            <View style={styles.selectorGrid}>
-                <TouchableOpacity
-                    style={[
-                        styles.selectorOption,
-                        surahFilter === 'all' && styles.selectorOptionSelected
-                    ]}
-                    onPress={() => {
-                        setSurahFilter('all');
-                        setShowSpecificSurah(false);
-                        setSelectedSurah(null);
-                    }}
-                >
-                    <Text style={[
-                        styles.selectorOptionText,
-                        surahFilter === 'all' && styles.selectorOptionTextSelected
-                    ]}>
-                        {t('searchScreen.surahFilter.all')}
-                    </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={[
-                        styles.selectorOption,
-                        surahFilter !== 'all' && styles.selectorOptionSelected
-                    ]}
-                    onPress={() => {
-                        setSurahFilter(selectedSurah || 1);
-                        setShowSpecificSurah(!showSpecificSurah);
-                    }}
-                >
-                    <Text style={[
-                        styles.selectorOptionText,
-                        surahFilter !== 'all' && styles.selectorOptionTextSelected
-                    ]}>
-                        {t('searchScreen.surahFilter.selectedSurah')} {selectedSurah ? (() => {
-                            const s = quranData.surahs.find(s => s.number === selectedSurah);
-                            return s ? `(${selectedSurah}. ${getSurahName(t, s)})` : '';
-                        })() : ''}
-                    </Text>
-                    <Text style={styles.toggleIcon}>
-                        {showSpecificSurah ? '▲' : '▼'}
-                    </Text>
-                </TouchableOpacity>
-            </View>
-
-            {showSpecificSurah && (
-                <View style={styles.surahDropdown}>
-                    <ScrollView
-                        style={styles.dropdownScroll}
-                        showsVerticalScrollIndicator={true}
-                        nestedScrollEnabled
-                        keyboardShouldPersistTaps="handled"
-                    >
-                        <View style={styles.selectorGrid}>
-                            {quranData.surahs.map((surah) => (
-                                <TouchableOpacity
-                                    key={surah.number}
-                                    style={[
-                                        styles.selectorOption,
-                                        selectedSurah === surah.number && styles.selectorOptionSelected
-                                    ]}
-                                    onPress={() => {
-                                        setSelectedSurah(surah.number);
-                                        setSurahFilter(surah.number);
-                                        setShowSpecificSurah(false);
-                                    }}
-                                >
-                                    <Text style={[
-                                        styles.selectorOptionText,
-                                        selectedSurah === surah.number && styles.selectorOptionTextSelected
-                                    ]}>
-                                        {surah.number}. {getSurahName(t, surah)}
-                                    </Text>
-                                </TouchableOpacity>
-                            ))}
-                        </View>
-                    </ScrollView>
-                </View>
-            )}
-        </View>
-    );
-
-    const highlightMatch = (text: string, range?: { start: number; end: number }) => {
-        if (!range || range.start >= range.end) {
-            return <Text style={styles.resultText}>{text}</Text>;
-        }
-
-        const before = text.slice(0, range.start);
-        const match = text.slice(range.start, range.end);
-        const after = text.slice(range.end);
-
-        return (
-            <Text style={styles.resultText}>
-                {before}
-                <Text style={styles.highlightedText}>{match}</Text>
-                {after}
-            </Text>
-        );
-    };
-
-    const renderSearchResult = (result: SearchResult, index: number) => {
-        const handleResultPress = () => {
-            // Verse number'ı 0-based index'e çevir (verse.number 1-based)
-            const verseIndex = result.verse.number - 1;
-            navHelpers.goToSurahVerse(result.surah.number, verseIndex);
-        };
-
-        return (
-            <TouchableOpacity
-                key={`${result.surah.number}-${result.verse.number}-${index}`}
-                style={styles.resultItem}
-                onPress={handleResultPress}
-            >
-                <View style={styles.resultHeader}>
-                    <Text style={styles.resultSurahInfo}>
-                        {t('searchScreen.resultVerse', { surahName: getSurahName(t, result.surah), verseNumber: formatVerseNumber(result.verse.number, settings.verseNumberStyle) })}
-                    </Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                        {result.matchedField === 'arabic' ? (
-                            <Type size={12} color={theme.secondary} />
-                        ) : result.matchedField === 'transliteration' ? (
-                            <PenLine size={12} color={theme.secondary} />
-                        ) : (
-                            <BookOpen size={12} color={theme.secondary} />
-                        )}
-                        <Text style={styles.resultMatchType}>
-                            {result.matchedField === 'arabic' ? t('searchScreen.matchField.arabic') :
-                                result.matchedField === 'transliteration' ? t('searchScreen.matchField.transliteration') :
-                                    t('searchScreen.matchField.translation', { translation: result.translationName || t('searchScreen.defaultTranslationLabel') })}
-                        </Text>
-                    </View>
-                </View>
-
-                {result.matchedField === 'arabic' && (
-                    <Text style={styles.resultArabic}>
-                        {result.verse.arabicText}
-                    </Text>
-                )}
-
-                {highlightMatch(result.matchedText, result.matchedRange)}
-            </TouchableOpacity>
-        );
-    };
-
-    const renderSearchHistory = () => {
-        if (!showHistory || searchHistory.length === 0) return null;
-
-        return (
-            <View style={styles.historyContainer}>
-                <View style={styles.historyHeader}>
-                    <Text style={styles.historyTitle}>{t('searchScreen.history.title')}</Text>
-                    <TouchableOpacity onPress={clearSearchHistory}>
-                        <Text style={styles.clearHistoryText}>{t('searchScreen.history.clear')}</Text>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {searchHistory.map((historyItem, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            style={styles.historyItem}
-                            onPress={() => {
-                                setSearchQuery(historyItem);
-                                setShowHistory(false);
-                            }}
-                        >
-                            <Text style={styles.historyItemText}>
-                                {historyItem}
-                            </Text>
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
-            </View>
-        );
+    const handleResultPress = (result: SearchResult) => {
+        // Verse number'ı 0-based index'e çevir (verse.number 1-based)
+        const verseIndex = result.verse.number - 1;
+        navHelpers.goToSurahVerse(result.surah.number, verseIndex);
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <HeaderWithDarkModeToggle
+        <SafeAreaView style={common.container}>
+            <AppHeader
                 title={t('searchScreen.title')}
                 showBackButton={true}
                 onBackPress={() => navigation.goBack()}
@@ -650,7 +360,6 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                 nestedScrollEnabled
                 showsVerticalScrollIndicator={false}
             >
-                {/* Search Input */}
                 <SearchInput
                     style={styles.searchContainer}
                     inputStyle={styles.searchInput}
@@ -665,85 +374,58 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
                     onBlur={() => setTimeout(() => setShowHistory(false), 200)}
                 />
 
-                {/* Search History */}
-                {renderSearchHistory()}
+                <SearchHistoryBar
+                    visible={showHistory}
+                    history={searchHistory}
+                    onSelect={(query) => {
+                        setSearchQuery(query);
+                        setShowHistory(false);
+                    }}
+                    onClear={clearSearchHistory}
+                />
 
-                {/* Filters */}
-                <TouchableOpacity
-                    style={styles.filtersToggle}
-                    onPress={() => setExpandedFilters(!expandedFilters)}
-                >
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                        <Filter size={14} color={theme.text} />
-                        <Text style={styles.filtersToggleText}>
-                            {t('searchScreen.filtersToggle')}
-                        </Text>
-                    </View>
-                    {expandedFilters ? (
-                        <ChevronUp size={16} color={theme.textSecondary} />
-                    ) : (
-                        <ChevronDown size={16} color={theme.textSecondary} />
-                    )}
-                </TouchableOpacity>
+                <SearchFiltersPanel
+                    expanded={expandedFilters}
+                    onToggleExpanded={() => setExpandedFilters(!expandedFilters)}
+                    searchScope={searchScope}
+                    onChangeScope={setSearchScope}
+                    selectedTranslation={selectedTranslation}
+                    availableTranslations={availableTranslations}
+                    showTranslationDropdown={showTranslationDropdown}
+                    onToggleTranslationDropdown={() => setShowTranslationDropdown(!showTranslationDropdown)}
+                    onSelectTranslation={(translation) => {
+                        setSelectedTranslation(translation);
+                        setShowTranslationDropdown(false);
+                    }}
+                    surahs={quranData.surahs}
+                    surahFilter={surahFilter}
+                    selectedSurah={selectedSurah}
+                    showSpecificSurah={showSpecificSurah}
+                    onSelectAllSurahs={() => {
+                        setSurahFilter('all');
+                        setShowSpecificSurah(false);
+                        setSelectedSurah(null);
+                    }}
+                    onToggleSpecificSurah={() => {
+                        setSurahFilter(selectedSurah || 1);
+                        setShowSpecificSurah(!showSpecificSurah);
+                    }}
+                    onSelectSurah={(surahNumber) => {
+                        setSelectedSurah(surahNumber);
+                        setSurahFilter(surahNumber);
+                        setShowSpecificSurah(false);
+                    }}
+                    useFuzzySearch={useFuzzySearch}
+                    onChangeFuzzySearch={setUseFuzzySearch}
+                />
 
-                {expandedFilters && (
-                    <View style={styles.filtersContainer}>
-                        {renderSearchScopeSelector()}
-                        {renderTranslationSelector()}
-                        {renderSurahFilter()}
-
-                        {/* Fuzzy Search Toggle */}
-                        <View style={styles.selectorContainer}>
-                            <Text style={styles.selectorTitle}>{t('searchScreen.matchType.type')}</Text>
-                            <View style={styles.selectorGrid}>
-                                <TouchableOpacity
-                                    style={[
-                                        styles.selectorOption,
-                                        !useFuzzySearch && styles.selectorOptionSelected
-                                    ]}
-                                    onPress={() => setUseFuzzySearch(false)}
-                                >
-                                    <Target size={14} color={!useFuzzySearch ? '#FFFFFF' : theme.text} style={styles.selectorIcon} />
-                                    <Text style={[
-                                        styles.selectorOptionText,
-                                        !useFuzzySearch && styles.selectorOptionTextSelected
-                                    ]}>
-                                        {t('searchScreen.matchType.exact')}
-                                    </Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity
-                                    style={[
-                                        styles.selectorOption,
-                                        useFuzzySearch && styles.selectorOptionSelected
-                                    ]}
-                                    onPress={() => setUseFuzzySearch(true)}
-                                >
-                                    <SearchIcon size={14} color={useFuzzySearch ? '#FFFFFF' : theme.text} style={styles.selectorIcon} />
-                                    <Text style={[
-                                        styles.selectorOptionText,
-                                        useFuzzySearch && styles.selectorOptionTextSelected
-                                    ]}>
-                                        {t('searchScreen.matchType.fuzzy')}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-                )}
-
-                {/* Results */}
-                <View style={styles.resultsContainer}>
-                    <Text style={styles.resultsHeader}>
-                        {searchQuery.length >= 2 ? t('searchScreen.resultsCount', { count: searchResults.length }) : t('searchScreen.resultsMinChars')}
-                    </Text>
-
-                    <View>
-                        {searchResults.map(renderSearchResult)}
-                    </View>
-                </View>
+                <SearchResultsList
+                    query={searchQuery}
+                    results={searchResults}
+                    verseNumberStyle={settings.verseNumberStyle}
+                    onResultPress={handleResultPress}
+                />
             </ScrollView>
         </SafeAreaView>
     );
 };
-

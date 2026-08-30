@@ -1,15 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING } from '@/theme';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 import { createCommonStyles } from '@/theme/common.styles';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-        ...common,
-        centerContainer: {
-            ...common.emptyState,
-        },
         content: {
             flex: 1,
             padding: SPACING.md,
@@ -63,8 +59,7 @@ export const createStyles = (theme: any) => {
             fontWeight: 'bold',
         },
         footerText: {
-            ...common.emptyStateText,
-            fontSize: FONT_SIZES.small,
+            ...common.footerText,
             marginTop: SPACING.xl,
         },
         successIcon: {

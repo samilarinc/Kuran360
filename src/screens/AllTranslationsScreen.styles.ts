@@ -1,15 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING, FAVORITE_COLOR, FAVORITE_COLOR_DARK } from '@/theme';
+import { FONT_SIZES, SPACING, FAVORITE_COLOR, FAVORITE_COLOR_DARK, Theme } from '@/theme';
 import { createCommonStyles } from '@/theme/common.styles';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-    ...common,
-    content: {
-        flex: 1,
-    },
     verseHeader: {
         backgroundColor: theme.cardBackground,
         padding: SPACING.lg,
@@ -17,12 +13,7 @@ export const createStyles = (theme: any) => {
         borderBottomColor: theme.border,
     },
     arabicText: {
-        fontSize: FONT_SIZES.arabic,
-        lineHeight: FONT_SIZES.arabic * 1.5,
-        textAlign: 'right',
-        color: theme.text,
-        fontWeight: '600',
-        writingDirection: 'rtl',
+        ...common.arabicText,
         marginBottom: SPACING.sm,
     },
     verseInfo: {
@@ -35,9 +26,6 @@ export const createStyles = (theme: any) => {
         fontSize: FONT_SIZES.medium,
         color: theme.textSecondary,
         fontWeight: '600',
-    },
-    translationsContainer: {
-        flex: 1,
     },
     translationItem: {
         ...common.card,

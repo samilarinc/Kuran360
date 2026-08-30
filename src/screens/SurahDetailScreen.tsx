@@ -11,7 +11,7 @@ import {
 import { FontSizeToggle } from '@msarinc/ui';
 import { Verse } from '@/components/Verse';
 import { PaginatedVerseView } from '@/components/PaginatedVerseView';
-import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppHeader } from '@/components/AppHeader';
 import { AutoplayToggle } from '@/components/AutoplayToggle';
 import { AudioTrackingToggle } from '@/components/AudioTrackingToggle';
 import { LoadingView } from '@/components/LoadingView';
@@ -26,6 +26,7 @@ import { loadSurah } from '@/data/quranData';
 import logger from '@/utils/logger';
 import { getSurahName } from '@/utils/surahName';
 import { createStyles } from './SurahDetailScreen.styles';
+import { createCommonStyles } from '@/theme/common.styles';
 
 const MIN_FONT_SIZE = 18;
 const MAX_FONT_SIZE = 44;
@@ -288,13 +289,14 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
   // Memoize styles to prevent re-creation on every render
   const styles = useMemo(() => createStyles(theme), [theme]);
+  const common = useMemo(() => createCommonStyles(theme), [theme]);
 
   const fontSize = settings.surahFontSize;
   const decreaseFontSize = () => updateSettings({ surahFontSize: Math.max(MIN_FONT_SIZE, fontSize - FONT_SIZE_STEP) });
   const increaseFontSize = () => updateSettings({ surahFontSize: Math.min(MAX_FONT_SIZE, fontSize + FONT_SIZE_STEP) });
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={common.container}>
       {loading ? (
         <LoadingView
           text={t('surahDetailScreen.loadingVerses')}
@@ -302,7 +304,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
         />
       ) : (
         <>
-          <HeaderWithDarkModeToggle
+          <AppHeader
             title={surah.arabicName}
             subtitle={`${getSurahName(t, surah)} • ${surah.verseCount} ayet • ${surah.revelationPlace}`}
             showBackButton={true}

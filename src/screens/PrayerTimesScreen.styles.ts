@@ -1,33 +1,11 @@
 import { StyleSheet, Platform } from 'react-native';
 import { createCommonStyles } from '@/theme/common.styles';
+import { Theme } from '@/theme';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-        ...common,
-        header: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingHorizontal: 16,
-            paddingTop: 48,
-            paddingBottom: 16,
-            backgroundColor: theme.cardBackground,
-            borderBottomWidth: 1,
-            borderBottomColor: theme.border,
-        },
-        backButton: {
-            padding: 4,
-        },
-        title: {
-            ...common.title,
-            fontSize: 20,
-            marginBottom: 0,
-        },
-        locationButton: {
-            padding: 4,
-        },
         content: {
             padding: 16,
         },
@@ -140,9 +118,6 @@ export const createStyles = (theme: any) => {
             marginBottom: 16,
             borderColor: theme.border,
             width: '100%',
-        },
-        locationList: {
-            flex: 1,
         },
         locationItem: {
             paddingVertical: 12,

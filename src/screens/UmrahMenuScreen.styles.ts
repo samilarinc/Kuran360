@@ -1,12 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING } from '@/theme';
-import { createCommonStyles } from '@/theme/common.styles';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
-export const createStyles = (theme: any) => {
-    const common = createCommonStyles(theme);
-
+export const createStyles = (theme: Theme) => {
     return StyleSheet.create({
-    container: common.container,
     content: {
         flex: 1,
         padding: SPACING.lg,
@@ -20,23 +16,6 @@ export const createStyles = (theme: any) => {
         fontWeight: 'bold',
         marginBottom: SPACING.xs,
         color: theme.text,
-    },
-    headerSubtitle: {
-        fontSize: FONT_SIZES.medium,
-    },
-    footer: {
-        marginTop: SPACING.xl,
-        padding: SPACING.lg,
-        borderRadius: 12,
-        alignItems: 'center',
-        borderWidth: 1,
-        backgroundColor: theme.surface,
-        borderColor: theme.border,
-    },
-    footerText: {
-        fontSize: FONT_SIZES.medium,
-        fontStyle: 'italic',
-        color: theme.textSecondary,
     },
     });
 };

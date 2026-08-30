@@ -7,9 +7,7 @@ export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme as any);
 
     return StyleSheet.create({
-        ...common,
         content: { padding: SPACING.lg },
-        card: common.sectionCard,
         avatarRow: { flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.md },
         avatar: { width: 64, height: 64, borderRadius: 32, marginRight: SPACING.md },
         avatarFallback: { backgroundColor: theme.primary + '20', alignItems: 'center', justifyContent: 'center' },
@@ -27,9 +25,6 @@ export const createStyles = (theme: Theme) => {
         },
         editNameButtonText: {
             fontSize: 14,
-        },
-        editNameContainer: {
-            flex: 1,
         },
         nameInput: {
             fontSize: FONT_SIZES.large,
@@ -118,9 +113,6 @@ export const createStyles = (theme: Theme) => {
         emptyText: {
             ...common.emptyStateText,
             paddingVertical: SPACING.lg,
-        },
-        nameFlex: {
-            flex: 1,
         },
         notSignedInText: {
             marginBottom: SPACING.md,

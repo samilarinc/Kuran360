@@ -6,7 +6,7 @@ import {
     ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppHeader } from '@/components/AppHeader';
 import { ShareModal } from '@/components/ShareModal';
 import { AppButton } from '@/components/AppButton';
 import { ArabicText } from '@/components/ArabicText';
@@ -18,6 +18,7 @@ import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
 import { Verse as VerseType, VerseShareData } from '@/types';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './AllTranslationsScreen.styles';
 
 interface AllTranslationsScreenProps {
@@ -72,18 +73,19 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
     };
 
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     if (availableTranslations.length === 0) {
         return (
-            <SafeAreaView style={styles.container}>
-                <HeaderWithDarkModeToggle
+            <SafeAreaView style={common.container}>
+                <AppHeader
                     title={t('screenTitles.allTranslations')}
                     showBackButton={true}
                     onBackPress={() => navigation.goBack()}
                     showHomeButton={true}
                     onHomePress={() => navigation.navigate('Main')}
                 />
-                <View style={styles.emptyState}>
+                <View style={common.emptyState}>
                     <Text style={styles.emptyStateText}>
                         {t('allTranslationsScreen.noTranslationsFound')}
                     </Text>
@@ -93,8 +95,8 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <HeaderWithDarkModeToggle
+        <SafeAreaView style={common.container}>
+            <AppHeader
                 title={t('screenTitles.allTranslations')}
                 subtitle={t('allTranslationsScreen.verseSubtitle', { surahName, verseNumber: formatVerseNumber(verse.number, settings.verseNumberStyle) })}
                 showBackButton={true}
@@ -103,7 +105,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                 onHomePress={() => navigation.navigate('Main')}
             />
 
-            <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+            <ScrollView style={common.flex1} showsVerticalScrollIndicator={false}>
                 {/* Ayet Header */}
                 <View style={styles.verseHeader}>
                     <ArabicText style={styles.arabicText}>
@@ -118,7 +120,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                 </View>
 
                 {/* Meal Listesi */}
-                <View style={styles.translationsContainer}>
+                <View style={common.flex1}>
                     {availableTranslations.map(([translationName, translationText]) => {
                         const isFavorite = translationName === debouncedSettings.favoriteTranslation;
 

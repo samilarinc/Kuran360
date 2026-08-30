@@ -596,6 +596,12 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "30 Ağustos 2026",
+        "bullets": [
+          "Uygulama genelinde kod bakımı ve sadeleştirme yapıldı (görsel değişiklik yok)."
+        ]
+      },
+      {
         "date": "29 Ağustos 2026",
         "bullets": [
           "Web sürümünde, yeni bir güncelleme yayınlandığında sayfanın eski (önbelleğe alınmış) haliyle takılı kalması sorunu giderildi."

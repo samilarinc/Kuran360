@@ -14,10 +14,12 @@ import { useTranslation } from 'react-i18next';
 import { Link2, Inbox, HandHeart } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
+import { ChecklistItem } from '@/components/ChecklistItem';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useUserData } from '@/contexts/UserDataContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { DuaRequest } from '@/types';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './DuaListScreen.styles';
 
 declare const navigator: any;
@@ -136,9 +138,10 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
     const othersDuas = duaList.filter(d => !d.isPersonal);
 
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={common.container}>
             <AppHeader
                 title={t('screenTitles.duaList')}
                 showBackButton={true}
@@ -189,7 +192,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                         onPress={() => handleAcceptRequest(request)}
                                         variant="primary"
                                         size="small"
-                                        style={styles.actionButton}
+                                        style={common.flex1}
                                     />
                                     <AppButton
                                         title={t('duaListScreen.giveUp')}
@@ -248,34 +251,26 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                         </Text>
                     ) : (
                         personalDuas.map(dua => (
-                            <View
+                            <ChecklistItem
                                 key={dua.id}
-                                style={styles.duaItem}
+                                checked={dua.isChecked}
+                                onToggle={() => toggleCheck(dua.id, dua.isChecked)}
+                                trailing={
+                                    <TouchableOpacity
+                                        onPress={() => handleDeleteDua(dua.id)}
+                                        style={styles.deleteButton}
+                                    >
+                                        <Text style={styles.deleteIcon}>×</Text>
+                                    </TouchableOpacity>
+                                }
                             >
-                                <TouchableOpacity
-                                    style={styles.duaContent}
-                                    onPress={() => toggleCheck(dua.id, dua.isChecked)}
-                                >
-                                    <View style={[
-                                        styles.checkbox,
-                                        dua.isChecked && styles.checkboxChecked
-                                    ]}>
-                                        {dua.isChecked && <Text style={styles.checkmark}>✓</Text>}
-                                    </View>
-                                    <Text style={[
-                                        styles.duaText,
-                                        dua.isChecked && styles.checkedText
-                                    ]}>
-                                        {dua.topic}
-                                    </Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() => handleDeleteDua(dua.id)}
-                                    style={styles.deleteButton}
-                                >
-                                    <Text style={styles.deleteIcon}>×</Text>
-                                </TouchableOpacity>
-                            </View>
+                                <Text style={[
+                                    styles.duaText,
+                                    dua.isChecked && common.checkedText
+                                ]}>
+                                    {dua.topic}
+                                </Text>
+                            </ChecklistItem>
                         ))
                     )}
                 </View>
@@ -327,39 +322,31 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                         </Text>
                     ) : (
                         othersDuas.map(dua => (
-                            <View
+                            <ChecklistItem
                                 key={dua.id}
-                                style={styles.duaItem}
+                                checked={dua.isChecked}
+                                onToggle={() => toggleCheck(dua.id, dua.isChecked)}
+                                trailing={
+                                    <TouchableOpacity
+                                        onPress={() => handleDeleteDua(dua.id)}
+                                        style={styles.deleteButton}
+                                    >
+                                        <Text style={styles.deleteIcon}>×</Text>
+                                    </TouchableOpacity>
+                                }
                             >
-                                <TouchableOpacity
-                                    style={styles.duaContent}
-                                    onPress={() => toggleCheck(dua.id, dua.isChecked)}
-                                >
-                                    <View style={[
-                                        styles.checkbox,
-                                        dua.isChecked && styles.checkboxChecked
+                                <View style={common.flex1}>
+                                    <Text style={styles.duaPerson}>
+                                        {dua.person}
+                                    </Text>
+                                    <Text style={[
+                                        styles.duaText,
+                                        dua.isChecked && common.checkedText
                                     ]}>
-                                        {dua.isChecked && <Text style={styles.checkmark}>✓</Text>}
-                                    </View>
-                                    <View style={styles.duaTextContainer}>
-                                        <Text style={styles.duaPerson}>
-                                            {dua.person}
-                                        </Text>
-                                        <Text style={[
-                                            styles.duaText,
-                                            dua.isChecked && styles.checkedText
-                                        ]}>
-                                            {dua.topic}
-                                        </Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() => handleDeleteDua(dua.id)}
-                                    style={styles.deleteButton}
-                                >
-                                    <Text style={styles.deleteIcon}>×</Text>
-                                </TouchableOpacity>
-                            </View>
+                                        {dua.topic}
+                                    </Text>
+                                </View>
+                            </ChecklistItem>
                         ))
                     )}
                 </View>

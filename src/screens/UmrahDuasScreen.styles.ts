@@ -1,19 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, SPACING } from '@/theme';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 import { createCommonStyles } from '@/theme/common.styles';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-    container: common.container,
     content: {
         flex: 1,
         padding: SPACING.md,
-    },
-    description: {
-        ...common.emptyStateText,
-        marginBottom: SPACING.lg,
     },
     categoryContainer: {
         marginBottom: SPACING.md,
@@ -37,12 +32,6 @@ export const createStyles = (theme: any) => {
         fontWeight: 'bold',
         marginRight: SPACING.xs,
         color: theme.text,
-    },
-    categoryCount: {
-        ...common.smallText,
-    },
-    expandIcon: {
-        ...common.subtitle,
     },
     duasContainer: {
         marginTop: SPACING.sm,

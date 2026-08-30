@@ -1,13 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { SPACING, FONT_SIZES } from '@/theme';
+import { SPACING, FONT_SIZES, Theme } from '@/theme';
 import { TRANSLATION_FONT_FAMILY } from '@/constants/fonts';
 import { createCommonStyles } from '@/theme/common.styles';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
   const common = createCommonStyles(theme);
 
   return StyleSheet.create({
-    container: common.container,
     content: {
       paddingVertical: SPACING.lg,
       paddingHorizontal: SPACING.md,

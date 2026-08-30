@@ -12,3 +12,4 @@ After every non-trivial code change, add an entry to the changelog: `about.updat
 - If today's date matches that block's date, add a bullet to it (in both locale files).
 - If today's date is different, create a new date block above it with today's date — Turkish format in `tr.json` (e.g. "29 Haziran 2026"), matching English format in `en.json` (e.g. "June 29, 2026").
 - Keep each bullet short (one line), user-facing language — what the user sees or gains, not implementation details.
+- Use common styles as much as possible. Inform user if you need to create a new style type. If this style may be used by other components in the future, suggest adding it as a common style.

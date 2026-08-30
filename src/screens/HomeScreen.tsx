@@ -3,7 +3,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { SurahList } from '@/components/SurahList';
-import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppHeader } from '@/components/AppHeader';
 import { DownloadRequired } from '@/components/DownloadRequired';
 import { LoadingView } from '@/components/LoadingView';
 import { SearchInput } from '@/components/SearchInput';
@@ -14,6 +14,7 @@ import { useDownloadData } from '@/hooks/useDownloadData';
 import { useTranslation } from 'react-i18next';
 import { getSurahName } from '@/utils/surahName';
 import { createStyles } from './HomeScreen.styles';
+import { createCommonStyles } from '@/theme/common.styles';
 
 interface HomeScreenProps {
   navigation: any;
@@ -31,6 +32,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   const { theme } = useTheme();
   const { t } = useTranslation();
   const styles = useMemo(() => createStyles(theme), [theme]);
+  const common = useMemo(() => createCommonStyles(theme), [theme]);
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [loading, setLoading] = useState(true);
   const {
@@ -82,8 +84,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <HeaderWithDarkModeToggle
+      <SafeAreaView style={common.container}>
+        <AppHeader
           title={t('homeScreen.arabicTitle')}
           subtitle={t('homeScreen.subtitle')}
           showBackButton={true}
@@ -99,8 +101,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   // Show download screen if data is not available
   if (!isDataAvailable) {
     return (
-      <SafeAreaView style={styles.container}>
-        <HeaderWithDarkModeToggle
+      <SafeAreaView style={common.container}>
+        <AppHeader
           title={t('homeScreen.arabicTitle')}
           subtitle={t('homeScreen.subtitle')}
           showBackButton={true}
@@ -123,8 +125,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <HeaderWithDarkModeToggle
+    <SafeAreaView style={common.container}>
+      <AppHeader
         title={t('homeScreen.arabicTitle')}
         subtitle={t('homeScreen.subtitle')}
         showBackButton={true}

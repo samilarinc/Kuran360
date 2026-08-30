@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { HeaderWithDarkModeToggle } from '@/components/HeaderWithDarkModeToggle';
+import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { usePosts, useCreatePost } from '@/contexts/ForumContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './ForumThreadScreen.styles';
+import { createCommonStyles } from '@/theme/common.styles';
 
 export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
   const threadId: string | undefined = route.params?.threadId;
@@ -25,10 +25,10 @@ export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ n
     }
   };
 
-  const styles = useMemo(() => createStyles(theme), [theme]);
+  const styles = useMemo(() => createCommonStyles(theme), [theme]);
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderWithDarkModeToggle
+      <AppHeader
         title={t('screenTitles.forumThread')}
         showBackButton={true}
         onBackPress={() => navigation.goBack()}
@@ -39,16 +39,16 @@ export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ n
         data={posts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.post}>
-            <Text style={styles.postBody}>{item.body}</Text>
+          <View style={styles.sectionCardCompact}>
+            <Text style={styles.text}>{item.body}</Text>
           </View>
         )}
         ListEmptyComponent={<Text style={styles.note}>{t('forumThreadScreen.noReplies')}</Text>}
       />
 
       {user ? (
-        <View style={styles.replyBox}>
-          <TextInput style={[styles.input, styles.multiline]} value={body} onChangeText={setBody} placeholder={t('forumThreadScreen.replyPlaceholder')} multiline />
+        <View style={styles.sectionCardCompact}>
+          <TextInput style={[styles.compactInput, styles.textArea]} value={body} onChangeText={setBody} placeholder={t('forumThreadScreen.replyPlaceholder')} multiline />
           <AppButton title={t('forumThreadScreen.send')} onPress={onReply} variant="primary" />
         </View>
       ) : (

@@ -1,19 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { useWindowDimensions } from 'react-native';
+import { SafeAreaView, ScrollView, Alert, Platform } from 'react-native';
 import {
-    View,
-    Text,
-    SafeAreaView,
-    ScrollView,
-    TouchableOpacity,
-    Switch,
-    Alert,
-    Platform,
-    Animated,
-} from 'react-native';
-import { ThemeToggle } from '@msarinc/ui';
-import {
-    Palette,
     Volume2,
     Repeat,
     Eye,
@@ -23,37 +10,30 @@ import {
     FileText,
     Hash,
     PenTool,
-    BookOpen,
-    Image as ImageIcon,
     Languages,
     Settings2,
-    ChevronUp,
-    ChevronDown,
-    Star,
-    Check,
-    CircleCheckBig,
-    Download,
-    type LucideIcon,
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
-import { ARABIC_FONT_OPTIONS, getArabicFontFamily } from '@/constants/fonts';
 import { useTheme } from '@/contexts/ThemeContext';
 import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion } from '@/data/quranData';
-import { AppHeader } from '@/components/AppHeader'; // Use AppHeader
-import { AppButton } from '@/components/AppButton'; // Use AppButton if needed
+import { AppHeader } from '@/components/AppHeader';
 import { ReciterSelector } from '@/components/ReciterSelector';
-import { DataUpdateProgress } from '@/components/DataUpdateProgress';
-import { FONT_SIZES, SPACING } from '@/theme'; // Import from theme
+import { QuickThemeSetting } from '@/components/QuickThemeSetting';
+import { CollapsibleSettingsSection } from '@/components/CollapsibleSettingsSection';
+import { SettingItem } from '@/components/SettingItem';
+import { ArabicFontPicker } from '@/components/ArabicFontPicker';
+import { TranslationsSection } from '@/components/TranslationsSection';
+import { DataUpdateSection } from '@/components/DataUpdateSection';
+import { SPACING } from '@/theme';
+import { createCommonStyles } from '@/theme/common.styles';
 
 interface SettingsScreenProps {
     navigation: any;
 }
 
 const COLORS = {
-    theme: '#F59E0B',
     audio: '#F59E0B',
-    autoplay: '#F59E0B',
     display: '#3B82F6',
     transliteration: '#8B5CF6',
     wordTranslations: '#10B981',
@@ -65,158 +45,17 @@ const COLORS = {
     system: '#64748B',
 };
 
-interface ModernSwitchProps {
-    value: boolean;
-    onValueChange: (value: boolean) => void;
-    disabled?: boolean;
-    theme: any; // Using any for now to avoid circular deps or just simplify if Theme is globally available via context return type
-}
-
-const ModernSwitch: React.FC<ModernSwitchProps> = ({
-    value,
-    onValueChange,
-    disabled = false,
-    theme
-}) => {
-    const [animatedValue] = useState(new Animated.Value(value ? 1 : 0));
-
-    React.useEffect(() => {
-        Animated.timing(animatedValue, {
-            toValue: value ? 1 : 0,
-            duration: 200,
-            useNativeDriver: false,
-        }).start();
-    }, [value, animatedValue]);
-
-    const handlePress = () => {
-        if (!disabled) {
-            onValueChange(!value);
-        }
-    };
-
-    const trackColor = animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [
-            disabled ? 'rgba(128, 128, 128, 0.25)' : 'rgba(128, 128, 128, 0.5)',
-            disabled ? 'rgba(86, 163, 90, 0.38)' : theme.primary
-        ],
-    });
-
-    const thumbTranslate = animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [2, 22],
-    });
-
-    const thumbScale = animatedValue.interpolate({
-        inputRange: [0, 0.5, 1],
-        outputRange: [1, 1.2, 1],
-    });
-
-    if (Platform.OS === 'web') {
-        // Use native Switch on web for better compatibility
-        return (
-            <Switch
-                value={value}
-                onValueChange={onValueChange}
-                trackColor={{
-                    false: disabled ? theme.border + '40' : theme.border + '60',
-                    true: disabled ? theme.primary + '60' : theme.primary
-                }}
-                thumbColor={value ? '#FFFFFF' : theme.text}
-                disabled={disabled}
-                style={createStyles(theme).webSwitch}
-            />
-        );
-    }
-
-    return (
-        <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={handlePress}
-            disabled={disabled}
-            style={createStyles(theme).modernSwitchContainer}
-        >
-            <Animated.View
-                style={[
-                    createStyles(theme).modernSwitchTrack,
-                    { backgroundColor: trackColor },
-                    disabled && createStyles(theme).modernSwitchDisabled
-                ]}
-            >
-                <Animated.View
-                    style={[
-                        createStyles(theme).modernSwitchThumb,
-                        {
-                            transform: [
-                                { translateX: thumbTranslate },
-                                { scale: thumbScale }
-                            ]
-                        },
-                        value && createStyles(theme).modernSwitchThumbActive
-                    ]}
-                />
-            </Animated.View>
-        </TouchableOpacity>
-    );
-};
-
-interface SettingItemProps {
-    title: string;
-    description: string;
-    value: boolean;
-    onValueChange: (value: boolean) => void;
-    icon?: React.ReactNode;
-    iconColor?: string;
-    theme: any;
-    disabled?: boolean;
-}
-
-const SettingItem: React.FC<SettingItemProps> = ({
-    title,
-    description,
-    value,
-    onValueChange,
-    icon,
-    iconColor,
-    theme,
-    disabled = false
-}) => (
-    <View style={[createStyles(theme).settingItem, disabled && createStyles(theme).settingItemDisabled]}>
-        <View style={createStyles(theme).settingContent}>
-            {icon && (
-                <View style={[createStyles(theme).settingIconWrap, iconColor && { backgroundColor: iconColor + '1A' }, disabled && { opacity: 0.5 }]}>
-                    {icon}
-                </View>
-            )}
-            <View style={createStyles(theme).settingInfo}>
-                <Text style={[createStyles(theme).settingLabel, disabled && createStyles(theme).settingLabelDisabled]}>
-                    {title}
-                </Text>
-                <Text style={[createStyles(theme).settingDescription, disabled && createStyles(theme).settingDescriptionDisabled]}>
-                    {description}
-                </Text>
-            </View>
-        </View>
-        <ModernSwitch
-            value={value}
-            onValueChange={onValueChange}
-            disabled={disabled}
-            theme={theme}
-        />
-    </View>
-);
-
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
-    const { settings, updateSettings, availableTranslations, availableReciters } = useDebouncedSettings(150);
+    const { settings, updateSettings, availableTranslations } = useDebouncedSettings(150);
     const { theme } = useTheme();
     const { t } = useTranslation();
+    const styles = useMemo(() => createCommonStyles(theme), [theme]);
     const THEME_TOGGLE_LABELS = {
         light: t('settingsScreen.theme.light'),
         dark: t('settingsScreen.theme.dark'),
         lightsOut: t('settingsScreen.theme.lightsOut'),
         accessibilityLabel: (current: string, next: string) => t('settingsScreen.theme.accessibilityLabel', { current, next }),
     };
-    const { width: screenWidth } = useWindowDimensions();
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
         audio: false,
         display: false,
@@ -244,10 +83,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
             return availableTranslations;
         }
         // Filter out Kurdish translations if version < 3.1
-        return availableTranslations.filter(t =>
-            t !== 'Diyanet İşleri Kürtçe Meali (Latin)' &&
-            t !== 'Diyanet İşleri Kürtçe Meali (Arapça)' &&
-            t !== 'Ömer Çelik Meali'
+        return availableTranslations.filter(name =>
+            name !== 'Diyanet İşleri Kürtçe Meali (Latin)' &&
+            name !== 'Diyanet İşleri Kürtçe Meali (Arapça)' &&
+            name !== 'Ömer Çelik Meali'
         );
     }, [availableTranslations, dataVersion]);
 
@@ -272,7 +111,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 );
                 return;
             }
-            newTranslations = currentTranslations.filter((t: string) => t !== translationName);
+            newTranslations = currentTranslations.filter((name: string) => name !== translationName);
 
             // Eğer kaldırılan meal favori ise, yeni favori belirle
             if (settings.favoriteTranslation === translationName) {
@@ -286,6 +125,15 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
             selectedTranslations: newTranslations,
             favoriteTranslation: newFavorite
         });
+    };
+
+    const toggleFavoriteTranslation = (translationName: string) => {
+        if (settings.favoriteTranslation === translationName) {
+            const newFavorite = settings.selectedTranslations[0];
+            updateSettings({ favoriteTranslation: newFavorite });
+        } else {
+            updateSettings({ favoriteTranslation: translationName });
+        }
     };
 
     const selectAllTranslations = () => {
@@ -355,102 +203,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         }
     };
 
-    const renderSectionHeader = (title: string, subtitle: string, sectionKey: string, Icon: LucideIcon, color: string) => {
-        const isExpanded = expandedSections[sectionKey];
-        return (
-            <TouchableOpacity
-                style={createStyles(theme).sectionHeader}
-                onPress={() => toggleSection(sectionKey)}
-                activeOpacity={0.8}
-            >
-                <View style={createStyles(theme).sectionHeaderContent}>
-                    <View style={[createStyles(theme).sectionIconWrap, { backgroundColor: color + '1A' }]}>
-                        <Icon size={20} color={color} />
-                    </View>
-                    <View style={createStyles(theme).sectionHeaderText}>
-                        <Text style={createStyles(theme).sectionTitle}>{title}</Text>
-                        <Text style={createStyles(theme).sectionSubtitle}>{subtitle}</Text>
-                    </View>
-                </View>
-                <View style={[
-                    createStyles(theme).expandButton,
-                    isExpanded && createStyles(theme).expandButtonActive
-                ]}>
-                    {isExpanded ? (
-                        <ChevronUp size={16} color={theme.primary} />
-                    ) : (
-                        <ChevronDown size={16} color={theme.secondary} />
-                    )}
-                </View>
-            </TouchableOpacity>
-        );
-    };
-
-    const renderTranslationItem = (translationName: string, index: number) => {
-        const isSelected = settings.selectedTranslations.includes(translationName);
-        const isFavorite = settings.favoriteTranslation === translationName;
-
-        const toggleFavorite = () => {
-            if (isFavorite) {
-                // Favoriyi kaldır - ilk seçili meal'i favori yap
-                const newFavorite = settings.selectedTranslations[0];
-                updateSettings({ favoriteTranslation: newFavorite });
-            } else {
-                updateSettings({ favoriteTranslation: translationName });
-            }
-        };
-
-        return (
-            <View
-                key={translationName}
-                style={[
-                    createStyles(theme).translationItem,
-                    isSelected && createStyles(theme).selectedTranslationItem,
-                    isFavorite && createStyles(theme).favoriteTranslationItem,
-                    index === 0 && createStyles(theme).firstTranslationItem,
-                    index === filteredTranslations.length - 1 && createStyles(theme).lastTranslationItem
-                ]}
-            >
-                <TouchableOpacity
-                    style={createStyles(theme).translationMainContent}
-                    onPress={() => toggleTranslation(translationName)}
-                    activeOpacity={0.7}
-                >
-                    <Text style={[
-                        createStyles(theme).translationText,
-                        isSelected && createStyles(theme).selectedTranslationText,
-                        isFavorite && createStyles(theme).favoriteTranslationText
-                    ]}>
-                        {translationName}
-                    </Text>
-                    <View style={[
-                        createStyles(theme).modernCheckbox,
-                        isSelected && createStyles(theme).modernCheckboxSelected
-                    ]}>
-                        {isSelected && <Check size={14} color="#FFFFFF" strokeWidth={3} />}
-                    </View>
-                </TouchableOpacity>
-
-                {/* Favori Yıldızı */}
-                {isSelected && (
-                    <TouchableOpacity
-                        style={createStyles(theme).favoriteButton}
-                        onPress={toggleFavorite}
-                        activeOpacity={0.7}
-                    >
-                        <Star
-                            size={18}
-                            color={isFavorite ? '#FFD700' : theme.border}
-                            fill={isFavorite ? '#FFD700' : 'transparent'}
-                        />
-                    </TouchableOpacity>
-                )}
-            </View>
-        );
-    };
-
     return (
-        <SafeAreaView style={createStyles(theme).container}>
+        <SafeAreaView style={styles.container}>
             <AppHeader
                 title={t('settingsScreen.title')}
                 showBackButton={true}
@@ -460,296 +214,157 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
             />
 
             <ScrollView
-                style={createStyles(theme).content}
+                style={{ flex: 1 }}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={createStyles(theme).scrollContent}
+                contentContainerStyle={{ paddingHorizontal: SPACING.lg, paddingBottom: SPACING.xl }}
             >
-                {/* Quick Settings - Always visible */}
-                <View style={createStyles(theme).quickSettingsSection}>
-                    <Text style={createStyles(theme).quickSettingsTitle}>{t('settingsScreen.quickSettings')}</Text>
-                    <View style={createStyles(theme).settingItem}>
-                        <View style={createStyles(theme).settingContent}>
-                            <View style={[createStyles(theme).settingIconWrap, { backgroundColor: COLORS.theme + '1A' }]}>
-                                <Palette size={18} color={COLORS.theme} />
-                            </View>
-                            <View style={createStyles(theme).settingInfo}>
-                                <Text style={createStyles(theme).settingLabel}>{t('settingsScreen.themeLabel')}</Text>
-                                <Text style={createStyles(theme).settingDescription}>{t('settingsScreen.themeDescription')}</Text>
-                            </View>
-                        </View>
-                        <ThemeToggle labels={THEME_TOGGLE_LABELS} compact={false} />
-                    </View>
-                </View>
+                <QuickThemeSetting labels={THEME_TOGGLE_LABELS} />
 
-                {/* Audio Settings */}
-                <View style={createStyles(theme).section}>
-                    {renderSectionHeader(
-                        t('settingsScreen.sections.audioTitle'),
-                        t('settingsScreen.sections.audioSubtitle'),
-                        "audio",
-                        Volume2,
-                        COLORS.audio
-                    )}
+                <CollapsibleSettingsSection
+                    title={t('settingsScreen.sections.audioTitle')}
+                    subtitle={t('settingsScreen.sections.audioSubtitle')}
+                    icon={Volume2}
+                    color={COLORS.audio}
+                    expanded={expandedSections.audio}
+                    onToggle={() => toggleSection('audio')}
+                >
+                    <SettingItem
+                        title={t('settingsScreen.items.autoplayTitle')}
+                        description={t('settingsScreen.items.autoplayDescription')}
+                        value={settings.autoplayEnabled}
+                        onValueChange={(value) => updateSettings({ autoplayEnabled: value })}
+                        icon={<Repeat size={17} color={COLORS.audio} />}
+                        iconColor={COLORS.audio}
+                        theme={theme}
+                    />
+                    <ReciterSelector />
+                </CollapsibleSettingsSection>
 
-                    {expandedSections.audio && (
-                        <View style={createStyles(theme).sectionContent}>
-                            <SettingItem
-                                title={t('settingsScreen.items.autoplayTitle')}
-                                description={t('settingsScreen.items.autoplayDescription')}
-                                value={settings.autoplayEnabled}
-                                onValueChange={(value) => updateSettings({ autoplayEnabled: value })}
-                                icon={<Repeat size={17} color={COLORS.autoplay} />}
-                                iconColor={COLORS.autoplay}
-                                theme={theme}
-                            />
+                <CollapsibleSettingsSection
+                    title={t('settingsScreen.sections.displayTitle')}
+                    subtitle={t('settingsScreen.sections.displaySubtitle')}
+                    icon={Eye}
+                    color={COLORS.display}
+                    expanded={expandedSections.display}
+                    onToggle={() => toggleSection('display')}
+                >
+                    <SettingItem
+                        title={t('settingsScreen.items.transliterationTitle')}
+                        description={t('settingsScreen.items.transliterationDescription')}
+                        value={settings.showTransliteration}
+                        onValueChange={(value) => updateSettings({ showTransliteration: value })}
+                        icon={<PenLine size={16} color={COLORS.transliteration} />}
+                        iconColor={COLORS.transliteration}
+                        theme={theme}
+                    />
 
-                            <View style={createStyles(theme).reciterContainer}>
-                                <ReciterSelector />
-                            </View>
-                        </View>
-                    )}
-                </View>
+                    <SettingItem
+                        title={t('settingsScreen.items.wordTranslationsTitle')}
+                        description={t('settingsScreen.items.wordTranslationsDescription')}
+                        value={settings.showWordTranslations}
+                        onValueChange={(value) => {
+                            if (value && settings.inlineWordTranslations) {
+                                updateSettings({ showWordTranslations: value, inlineWordTranslations: false });
+                            } else {
+                                updateSettings({ showWordTranslations: value });
+                            }
+                        }}
+                        icon={<Type size={16} color={COLORS.wordTranslations} />}
+                        iconColor={COLORS.wordTranslations}
+                        theme={theme}
+                        disabled={settings.inlineWordTranslations}
+                    />
 
-                {/* Display Settings */}
-                <View style={createStyles(theme).section}>
-                    {renderSectionHeader(
-                        t('settingsScreen.sections.displayTitle'),
-                        t('settingsScreen.sections.displaySubtitle'),
-                        "display",
-                        Eye,
-                        COLORS.display
-                    )}
+                    <SettingItem
+                        title={t('settingsScreen.items.inlineWordTranslationsTitle')}
+                        description={t('settingsScreen.items.inlineWordTranslationsDescription')}
+                        value={settings.inlineWordTranslations}
+                        onValueChange={(value) => {
+                            if (value && settings.showWordTranslations) {
+                                updateSettings({ inlineWordTranslations: value, showWordTranslations: false });
+                            } else {
+                                updateSettings({ inlineWordTranslations: value });
+                            }
+                        }}
+                        icon={<MousePointerClick size={16} color={COLORS.inlineWordTranslations} />}
+                        iconColor={COLORS.inlineWordTranslations}
+                        theme={theme}
+                        disabled={settings.showWordTranslations}
+                    />
 
-                    {expandedSections.display && (
-                        <View style={createStyles(theme).sectionContent}>
-                            <SettingItem
-                                title={t('settingsScreen.items.transliterationTitle')}
-                                description={t('settingsScreen.items.transliterationDescription')}
-                                value={settings.showTransliteration}
-                                onValueChange={(value) => updateSettings({ showTransliteration: value })}
-                                icon={<PenLine size={16} color={COLORS.transliteration} />}
-                                iconColor={COLORS.transliteration}
-                                theme={theme}
-                            />
+                    <SettingItem
+                        title={t('settingsScreen.items.paginatedViewTitle')}
+                        description={t('settingsScreen.items.paginatedViewDescription')}
+                        value={settings.usePaginatedView}
+                        onValueChange={(value) => updateSettings({ usePaginatedView: value })}
+                        icon={<FileText size={16} color={COLORS.paginatedView} />}
+                        iconColor={COLORS.paginatedView}
+                        theme={theme}
+                    />
 
-                            <SettingItem
-                                title={t('settingsScreen.items.wordTranslationsTitle')}
-                                description={t('settingsScreen.items.wordTranslationsDescription')}
-                                value={settings.showWordTranslations}
-                                onValueChange={(value) => {
-                                    if (value && settings.inlineWordTranslations) {
-                                        updateSettings({ showWordTranslations: value, inlineWordTranslations: false });
-                                    } else {
-                                        updateSettings({ showWordTranslations: value });
-                                    }
-                                }}
-                                icon={<Type size={16} color={COLORS.wordTranslations} />}
-                                iconColor={COLORS.wordTranslations}
-                                theme={theme}
-                                disabled={settings.inlineWordTranslations}
-                            />
+                    <SettingItem
+                        title={t('settingsScreen.items.arabicVerseNumbersTitle')}
+                        description={t('settingsScreen.items.arabicVerseNumbersDescription')}
+                        value={settings.verseNumberStyle === 'arabic'}
+                        onValueChange={(value) => updateSettings({ verseNumberStyle: value ? 'arabic' : 'latin' })}
+                        icon={<Hash size={16} color={COLORS.verseNumbers} />}
+                        iconColor={COLORS.verseNumbers}
+                        theme={theme}
+                    />
+                </CollapsibleSettingsSection>
 
-                            <SettingItem
-                                title={t('settingsScreen.items.inlineWordTranslationsTitle')}
-                                description={t('settingsScreen.items.inlineWordTranslationsDescription')}
-                                value={settings.inlineWordTranslations}
-                                onValueChange={(value) => {
-                                    if (value && settings.showWordTranslations) {
-                                        updateSettings({ inlineWordTranslations: value, showWordTranslations: false });
-                                    } else {
-                                        updateSettings({ inlineWordTranslations: value });
-                                    }
-                                }}
-                                icon={<MousePointerClick size={16} color={COLORS.inlineWordTranslations} />}
-                                iconColor={COLORS.inlineWordTranslations}
-                                theme={theme}
-                                disabled={settings.showWordTranslations}
-                            />
+                <CollapsibleSettingsSection
+                    title={t('settingsScreen.sections.fontsTitle')}
+                    subtitle={t('settingsScreen.sections.fontsSubtitle')}
+                    icon={PenTool}
+                    color={COLORS.fonts}
+                    expanded={expandedSections.fonts}
+                    onToggle={() => toggleSection('fonts')}
+                >
+                    <ArabicFontPicker settings={settings} updateSettings={updateSettings} />
+                </CollapsibleSettingsSection>
 
-                            <SettingItem
-                                title={t('settingsScreen.items.paginatedViewTitle')}
-                                description={t('settingsScreen.items.paginatedViewDescription')}
-                                value={settings.usePaginatedView}
-                                onValueChange={(value) => updateSettings({ usePaginatedView: value })}
-                                icon={<FileText size={16} color={COLORS.paginatedView} />}
-                                iconColor={COLORS.paginatedView}
-                                theme={theme}
-                            />
+                <CollapsibleSettingsSection
+                    title={t('settingsScreen.sections.translationsTitle')}
+                    subtitle={t('settingsScreen.sections.translationsSubtitle', {
+                        count: settings.selectedTranslations.length,
+                        favorite: `${settings.favoriteTranslation.substring(0, 20)}${settings.favoriteTranslation.length > 20 ? '...' : ''}`,
+                    })}
+                    icon={Languages}
+                    color={COLORS.translations}
+                    expanded={expandedSections.translations}
+                    onToggle={() => toggleSection('translations')}
+                >
+                    <TranslationsSection
+                        translations={filteredTranslations}
+                        selectedTranslations={settings.selectedTranslations}
+                        favoriteTranslation={settings.favoriteTranslation}
+                        onToggleTranslation={toggleTranslation}
+                        onToggleFavorite={toggleFavoriteTranslation}
+                        onSelectAll={selectAllTranslations}
+                        onSelectDefault={selectDefaultTranslations}
+                    />
+                </CollapsibleSettingsSection>
 
-                            <SettingItem
-                                title={t('settingsScreen.items.arabicVerseNumbersTitle')}
-                                description={t('settingsScreen.items.arabicVerseNumbersDescription')}
-                                value={settings.verseNumberStyle === 'arabic'}
-                                onValueChange={(value) => updateSettings({ verseNumberStyle: value ? 'arabic' : 'latin' })}
-                                icon={<Hash size={16} color={COLORS.verseNumbers} />}
-                                iconColor={COLORS.verseNumbers}
-                                theme={theme}
-                            />
-                        </View>
-                    )}
-                </View>
-
-                {/* Font Selection */}
-                <View style={createStyles(theme).section}>
-                    {renderSectionHeader(
-                        t('settingsScreen.sections.fontsTitle'),
-                        t('settingsScreen.sections.fontsSubtitle'),
-                        "fonts",
-                        PenTool,
-                        COLORS.fonts
-                    )}
-                    {expandedSections.fonts && (() => {
-                        // Section padding ~32px each side + sectionContent padding ~16px = ~96px total
-                        const available = screenWidth - 96;
-                        const gap = SPACING.sm; // 8px
-                        const minChipW = 90;
-                        // How many chips fit per row?
-                        const rawPerRow = Math.floor((available + gap) / (minChipW + gap));
-                        const perRow = Math.max(2, rawPerRow);
-                        // How many rows?
-                        const total = ARABIC_FONT_OPTIONS.length;
-                        const numRows = Math.ceil(total / perRow);
-                        // Redistribute evenly: make all rows same size if possible
-                        const evenPerRow = Math.ceil(total / numRows);
-                        // Split into rows
-                        const rows: typeof ARABIC_FONT_OPTIONS[] = [];
-                        for (let i = 0; i < total; i += evenPerRow) {
-                            rows.push(ARABIC_FONT_OPTIONS.slice(i, i + evenPerRow));
-                        }
-                        const chipWidth = (available - (evenPerRow - 1) * gap) / evenPerRow;
-
-                        return (
-                            <View style={createStyles(theme).sectionContent}>
-                                {[
-                                    { key: 'arabicFont' as const, Icon: BookOpen, label: t('settingsScreen.fonts.readingFont') },
-                                    { key: 'imageArabicFont' as const, Icon: ImageIcon, label: t('settingsScreen.fonts.imageFont') },
-                                ].map(({ key, Icon, label }, groupIdx) => (
-                                    <View key={key} style={{ marginBottom: groupIdx === 0 ? SPACING.lg : 0 }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.sm, gap: SPACING.xs }}>
-                                            <Icon size={14} color={theme.textSecondary} />
-                                            <Text style={{ fontSize: 13, fontWeight: '600', color: theme.textSecondary, letterSpacing: 0.3 }}>
-                                                {label}
-                                            </Text>
-                                        </View>
-                                        {rows.map((row, rowIdx) => (
-                                            <View key={rowIdx} style={{ flexDirection: 'row', gap, marginBottom: rowIdx < rows.length - 1 ? gap : 0 }}>
-                                                {row.map(font => {
-                                                    const isSelected = settings[key] === font.id;
-                                                    return (
-                                                        <TouchableOpacity
-                                                            key={font.id}
-                                                            onPress={() => updateSettings({ [key]: font.id })}
-                                                            style={[
-                                                                createStyles(theme).fontChip,
-                                                                { width: chipWidth },
-                                                                isSelected && { backgroundColor: theme.primary, borderColor: theme.primary },
-                                                            ]}
-                                                        >
-                                                            <Text style={[createStyles(theme).fontChipArabic, { fontFamily: getArabicFontFamily(font), color: isSelected ? '#fff' : theme.text }]}>
-                                                                {font.labelAr}
-                                                            </Text>
-                                                            <Text style={[createStyles(theme).fontChipLabel, { color: isSelected ? 'rgba(255,255,255,0.8)' : theme.textSecondary }]}>
-                                                                {font.label}
-                                                            </Text>
-                                                        </TouchableOpacity>
-                                                    );
-                                                })}
-                                            </View>
-                                        ))}
-                                    </View>
-                                ))}
-                            </View>
-                        );
-                    })()}
-                </View>
-
-                {/* Translation Selection */}
-                <View style={createStyles(theme).section}>
-                    {renderSectionHeader(
-                        t('settingsScreen.sections.translationsTitle'),
-                        t('settingsScreen.sections.translationsSubtitle', {
-                            count: settings.selectedTranslations.length,
-                            favorite: `${settings.favoriteTranslation.substring(0, 20)}${settings.favoriteTranslation.length > 20 ? '...' : ''}`,
-                        }),
-                        "translations",
-                        Languages,
-                        COLORS.translations
-                    )}
-
-                    {expandedSections.translations && (
-                        <View style={createStyles(theme).sectionContent}>
-                            <View style={createStyles(theme).translationActions}>
-                                <AppButton
-                                    variant="primary"
-                                    size="small"
-                                    title={t('settingsScreen.translations.selectAll')}
-                                    onPress={selectAllTranslations}
-                                    style={createStyles(theme).actionButton}
-                                />
-                                <AppButton
-                                    variant="outline"
-                                    size="small"
-                                    title={t('settingsScreen.translations.selectDefault')}
-                                    onPress={selectDefaultTranslations}
-                                    style={{ ...createStyles(theme).actionButton, ...createStyles(theme).secondaryActionButton }}
-                                />
-                            </View>
-
-                            <View style={createStyles(theme).translationsContainer}>
-                                {filteredTranslations.map((translation, index) =>
-                                    renderTranslationItem(translation, index)
-                                )}
-                            </View>
-                        </View>
-                    )}
-                </View>
-
-                {/* System Settings */}
-                <View style={createStyles(theme).section}>
-                    {renderSectionHeader(
-                        t('settingsScreen.sections.systemTitle'),
-                        t('settingsScreen.sections.systemSubtitle'),
-                        "system",
-                        Settings2,
-                        COLORS.system
-                    )}
-
-                    {expandedSections.system && (
-                        <View style={createStyles(theme).sectionContent}>
-                            {isUpdating ? (
-                                <View style={{ padding: SPACING.lg }}>
-                                    <DataUpdateProgress
-                                        progress={downloadProgress}
-                                        status={downloadStatus}
-                                        downloadedBytes={downloadedBytes}
-                                        totalBytes={totalBytes}
-                                        theme={theme}
-                                    />
-                                </View>
-                            ) : dataVersion === '3.1' ? (
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: SPACING.xs, padding: SPACING.md }}>
-                                    <CircleCheckBig size={16} color={COLORS.system} />
-                                    <Text style={createStyles(theme).footerText}>
-                                        {t('settingsScreen.dataUpToDate')}
-                                    </Text>
-                                </View>
-                            ) : (
-                                <AppButton
-                                    variant="outline"
-                                    size="medium"
-                                    title={t('settingsScreen.updateButton')}
-                                    icon={<Download size={16} color={theme.primary} />}
-                                    onPress={handleUpdateData}
-                                    style={createStyles(theme).updateButton}
-                                />
-                            )}
-                        </View>
-                    )}
-                </View>
+                <CollapsibleSettingsSection
+                    title={t('settingsScreen.sections.systemTitle')}
+                    subtitle={t('settingsScreen.sections.systemSubtitle')}
+                    icon={Settings2}
+                    color={COLORS.system}
+                    expanded={expandedSections.system}
+                    onToggle={() => toggleSection('system')}
+                >
+                    <DataUpdateSection
+                        isUpdating={isUpdating}
+                        isUpToDate={dataVersion === '3.1'}
+                        downloadProgress={downloadProgress}
+                        downloadStatus={downloadStatus}
+                        downloadedBytes={downloadedBytes}
+                        totalBytes={totalBytes}
+                        onUpdate={handleUpdateData}
+                    />
+                </CollapsibleSettingsSection>
             </ScrollView>
         </SafeAreaView>
     );
 };
-
-import { createStyles } from './SettingsScreen.styles';
-

@@ -16,6 +16,7 @@ import { LoadingView } from '@/components/LoadingView';
 import { useTheme } from '@/contexts/ThemeContext';
 import { doc, getDoc, collection, addDoc } from 'firebase/firestore';
 import { db } from '@/services/firebase';
+import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './DuaRequestScreen.styles';
 
 interface DuaRequestScreenProps {
@@ -80,10 +81,11 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
     };
 
     const styles = useMemo(() => createStyles(theme), [theme]);
+    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     if (loading) {
         return (
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView style={common.container}>
                 <LoadingView />
             </SafeAreaView>
         );
@@ -91,8 +93,8 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
 
     if (isSuccess) {
         return (
-            <SafeAreaView style={styles.container}>
-                <View style={styles.centerContainer}>
+            <SafeAreaView style={common.container}>
+                <View style={common.emptyState}>
                     <Text style={styles.successIcon}>✅</Text>
                     <Text style={styles.successTitle}>{t('duaRequestScreen.successTitle')}</Text>
                     <Text style={styles.successText}>
@@ -111,7 +113,7 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={common.container}>
             <AppHeader
                 title={t('screenTitles.duaRequest')}
                 showBackButton={true}

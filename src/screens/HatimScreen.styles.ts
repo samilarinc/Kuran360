@@ -1,24 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { SPACING } from '@/theme';
+import { SPACING, Theme } from '@/theme';
 import { createCommonStyles } from '@/theme/common.styles';
 
-export const createStyles = (theme: any) => {
+export const createStyles = (theme: Theme) => {
     const common = createCommonStyles(theme);
 
     return StyleSheet.create({
-        ...common,
-        // Screen specific overrides or additions
-        addButton: {
-            position: 'absolute',
-            right: SPACING.md,
-            top: SPACING.lg,
-            padding: SPACING.xs,
-        },
-        addIcon: {
-            fontSize: 32,
-            fontWeight: '300',
-            color: theme.text,
-        },
         fab: {
             position: 'absolute',
             right: SPACING.lg,
