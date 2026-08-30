@@ -45,6 +45,12 @@ export const createStyles = (theme: Theme) => {
     lineHeight: FONT_SIZES.medium * 1.3,
     color: theme.textSecondary,
   },
+  verseInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: SPACING.xs,
+  },
   verseInfo: {
     fontSize: FONT_SIZES.small,
     fontWeight: '600',
@@ -54,10 +60,15 @@ export const createStyles = (theme: Theme) => {
   sizeSection: {
     marginBottom: SPACING.md,
   },
+  sectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
+    marginBottom: SPACING.sm,
+  },
   sectionTitle: {
     fontSize: FONT_SIZES.medium,
     fontWeight: '600',
-    marginBottom: SPACING.sm,
     color: theme.text,
   },
   sizeScrollView: {
@@ -80,7 +91,6 @@ export const createStyles = (theme: Theme) => {
     backgroundColor: theme.primary,
   },
   sizeIcon: {
-    fontSize: 20,
     marginBottom: SPACING.xs,
   },
   sizeTitle: {
@@ -109,7 +119,6 @@ export const createStyles = (theme: Theme) => {
     backgroundColor: theme.cardBackground,
   },
   platformIcon: {
-    fontSize: 24,
     marginRight: SPACING.md,
   },
   platformName: {

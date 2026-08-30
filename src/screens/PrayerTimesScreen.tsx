@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
     View,
     Text,
@@ -42,21 +42,65 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     const [showLocationPicker, setShowLocationPicker] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Load prayer times when location changes
-    useEffect(() => {
-        loadPrayerTimes();
-    }, [settings.prayerLocation?.id]);
+    const updatePrayerStatus = useCallback((times: PrayerTime | null = todayTimes) => {
+        if (!times) return;
 
-    // Update prayer status periodically
-    useEffect(() => {
-        updatePrayerStatus();
-        const timer = setInterval(() => {
-            updatePrayerStatus();
-        }, 60000);
-        return () => clearInterval(timer);
-    }, [todayTimes]);
+        const now = new Date();
+        const currentTime = now.getHours() * 60 + now.getMinutes();
 
-    const loadPrayerTimes = async () => {
+        const parseTime = (timeStr: string) => {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            return hours * 60 + minutes;
+        };
+
+        const prayerSchedule = [
+            { key: 'imsak', time: times.imsak },
+            { key: 'gunes', time: times.gunes },
+            { key: 'ogle', time: times.ogle },
+            { key: 'ikindi', time: times.ikindi },
+            { key: 'aksam', time: times.aksam },
+            { key: 'yatsi', time: times.yatsi },
+        ];
+
+        let current = 'yatsi';
+        let nextIndex = 0;
+
+        for (let i = 0; i < prayerSchedule.length; i++) {
+            const time = parseTime(prayerSchedule[i].time);
+            if (currentTime < time) {
+                nextIndex = i;
+                current = i === 0 ? 'yatsi' : prayerSchedule[i - 1].key;
+                break;
+            }
+            if (i === prayerSchedule.length - 1) {
+                nextIndex = 0; // Next is tomorrow's Imsak
+                current = 'yatsi';
+            }
+        }
+
+        setCurrentPrayerLabel(current);
+
+        const next = prayerSchedule[nextIndex];
+        let nextTimeMinutes = parseTime(next.time);
+
+        if (nextIndex === 0 && currentTime >= parseTime(prayerSchedule[prayerSchedule.length - 1].time)) {
+            nextTimeMinutes += 24 * 60; // Tomorrow's Imsak
+        }
+
+        const diffMinutes = nextTimeMinutes - currentTime;
+        const hours = Math.floor(diffMinutes / 60);
+        const mins = diffMinutes % 60;
+
+        setNextPrayer({
+            label: next.key,
+            time: next.time,
+            remaining: hours > 0
+                ? t('prayerTimesScreen.remainingHoursMinutes', { hours, minutes: mins })
+                : t('prayerTimesScreen.remainingMinutes', { minutes: mins })
+        });
+    }, [todayTimes, t]);
+
+    const loadPrayerTimes = useCallback(async () => {
         const locationId = settings.prayerLocation?.id || '9541'; // Default to Istanbul
         const selectedLocation = (locations as Location[]).find(l => l.id === locationId);
 
@@ -77,7 +121,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
             const oneDay = 1000 * 60 * 60 * 24;
             const dayOfYear = Math.floor(diff / oneDay);
 
-            const today = data.find((t: PrayerTime) => t.date_index === dayOfYear);
+            const today = data.find((pt: PrayerTime) => pt.date_index === dayOfYear);
             setTodayTimes(today || data[0]);
             updatePrayerStatus(today || data[0]);
         } catch (error) {
@@ -85,7 +129,21 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
         } finally {
             setLoading(false);
         }
-    };
+    }, [settings.prayerLocation?.id, updatePrayerStatus]);
+
+    // Load prayer times when location changes
+    useEffect(() => {
+        loadPrayerTimes();
+    }, [loadPrayerTimes]);
+
+    // Update prayer status periodically
+    useEffect(() => {
+        updatePrayerStatus();
+        const timer = setInterval(() => {
+            updatePrayerStatus();
+        }, 60000);
+        return () => clearInterval(timer);
+    }, [updatePrayerStatus]);
 
     const handleUseGPS = async () => {
         setLoading(true);
@@ -190,64 +248,6 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
         } finally {
             setLoading(false);
         }
-    };
-
-    const updatePrayerStatus = (times: PrayerTime | null = todayTimes) => {
-        if (!times) return;
-
-        const now = new Date();
-        const currentTime = now.getHours() * 60 + now.getMinutes();
-
-        const parseTime = (timeStr: string) => {
-            const [hours, minutes] = timeStr.split(':').map(Number);
-            return hours * 60 + minutes;
-        };
-
-        const prayerSchedule = [
-            { key: 'imsak', time: times.imsak },
-            { key: 'gunes', time: times.gunes },
-            { key: 'ogle', time: times.ogle },
-            { key: 'ikindi', time: times.ikindi },
-            { key: 'aksam', time: times.aksam },
-            { key: 'yatsi', time: times.yatsi },
-        ];
-
-        let current = 'yatsi';
-        let nextIndex = 0;
-
-        for (let i = 0; i < prayerSchedule.length; i++) {
-            const time = parseTime(prayerSchedule[i].time);
-            if (currentTime < time) {
-                nextIndex = i;
-                current = i === 0 ? 'yatsi' : prayerSchedule[i - 1].key;
-                break;
-            }
-            if (i === prayerSchedule.length - 1) {
-                nextIndex = 0; // Next is tomorrow's Imsak
-                current = 'yatsi';
-            }
-        }
-
-        setCurrentPrayerLabel(current);
-
-        const next = prayerSchedule[nextIndex];
-        let nextTimeMinutes = parseTime(next.time);
-
-        if (nextIndex === 0 && currentTime >= parseTime(prayerSchedule[prayerSchedule.length - 1].time)) {
-            nextTimeMinutes += 24 * 60; // Tomorrow's Imsak
-        }
-
-        const diffMinutes = nextTimeMinutes - currentTime;
-        const hours = Math.floor(diffMinutes / 60);
-        const mins = diffMinutes % 60;
-
-        setNextPrayer({
-            label: next.key,
-            time: next.time,
-            remaining: hours > 0
-                ? t('prayerTimesScreen.remainingHoursMinutes', { hours, minutes: mins })
-                : t('prayerTimesScreen.remainingMinutes', { minutes: mins })
-        });
     };
 
     const handleSelectLocation = (location: Location) => {

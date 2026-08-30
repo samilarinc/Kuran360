@@ -68,7 +68,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         } finally {
             setLoading(false);
         }
-    }, [hatimId]);
+    }, [hatimId, t]);
 
     useEffect(() => {
         fetchHatim().then(() => {
@@ -76,7 +76,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                 HatimService.syncUserName(hatimId, user.uid, user.displayName || t('profileScreen.defaultUserName'));
             }
         });
-    }, [fetchHatim, user?.uid, user?.displayName]);
+    }, [fetchHatim, hatimId, user, t]);
 
     const calculateTimeLeft = useCallback(() => {
         if (!hatim?.deadline) return;
@@ -97,7 +97,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         if (hours > 0) res += t('hatimDetailScreen.hours', { count: hours });
         res += t('hatimDetailScreen.minutes', { count: minutes });
         setTimeLeft(res);
-    }, [hatim?.deadline]);
+    }, [hatim?.deadline, t]);
 
     useEffect(() => {
         calculateTimeLeft();

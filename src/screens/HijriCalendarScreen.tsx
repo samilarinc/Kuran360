@@ -96,7 +96,7 @@ export const HijriCalendarScreen: React.FC<{ navigation: any }> = ({ navigation 
         );
         loops.forEach(l => l.start());
         return () => loops.forEach(l => l.stop());
-    }, []);
+    }, [starAnims]);
 
     // ── Sizing (vmin-proportional) ─────────────────────────────────────────────
     const vmin = Math.min(width, height) / 100;

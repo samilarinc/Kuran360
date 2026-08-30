@@ -97,7 +97,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
     }, []);
 
     const normalizeForSearch = useCallback((input: string) => {
-        const punctuationRegex = /[.,;:!?"'(){}\[\]<>/\\|@#$%^&*_+=~`-]/;
+        const punctuationRegex = /[.,;:!?"'(){}[\]<>/\\|@#$%^&*_+=~`-]/;
         const map: Record<string, string> = {
             'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u',
             'Ç': 'c', 'Ğ': 'g', 'I': 'i', 'İ': 'i', 'Ö': 'o', 'Ş': 's', 'Ü': 'u'
@@ -311,7 +311,10 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
         }, 1000);
 
         return () => clearTimeout(timeoutId);
-    }, [searchQuery, searchScope, selectedTranslation, surahFilter, selectedSurah, useFuzzySearch, isDataAvailable]);
+        // saveSearchToHistory is intentionally excluded: its identity changes with searchHistory,
+        // and including it would re-trigger this search effect right after it saves a history entry.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchQuery, searchScope, selectedTranslation, surahFilter, selectedSurah, useFuzzySearch, isDataAvailable, getMatchRange, settings.favoriteTranslation, settings.selectedTranslations, t]);
 
     if (!isDataAvailable) {
         return (

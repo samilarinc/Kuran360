@@ -8,7 +8,8 @@ try {
 } catch (e: any) {
     // Web veya modül yoksa sorun değil
 }
-import { VerseShareData, ShareOptions, ImageGenerationOptions } from '@/types';
+import { Sun, Moon, Share2 } from 'lucide-react-native';
+import { VerseShareData, ShareOptions, ImageGenerationOptions, IconSpec } from '@/types';
 import { VerseImageGenerator } from './verseImageGenerator';
 import { getDefaultImageSize } from './imageSizes';
 
@@ -755,15 +756,15 @@ export class ShareService {
     /**
      * Kullanılabilir platformların listesi
      */
-    static getAvailablePlatforms(): Array<{ id: string; name: string; icon: string }> {
+    static getAvailablePlatforms(): Array<{ id: string; name: string; icon: IconSpec }> {
         return [
-            { id: 'image_light', name: 'Resim (Light)', icon: '🖼️' },
-            { id: 'image_dark', name: 'Resim (Dark)', icon: '🌙' },
-            { id: 'twitter', name: 'Twitter/X', icon: '🐦' },
-            { id: 'whatsapp', name: 'WhatsApp', icon: '💬' },
-            { id: 'telegram', name: 'Telegram', icon: '✈️' },
-            { id: 'facebook', name: 'Facebook', icon: '📘' },
-            { id: 'generic', name: 'Metin (Genel)', icon: '📤' },
+            { id: 'image_light', name: 'Resim (Light)', icon: { kind: 'lucide', Icon: Sun } },
+            { id: 'image_dark', name: 'Resim (Dark)', icon: { kind: 'lucide', Icon: Moon } },
+            { id: 'twitter', name: 'Twitter/X', icon: { kind: 'brand', name: 'x-twitter' } },
+            { id: 'whatsapp', name: 'WhatsApp', icon: { kind: 'brand', name: 'whatsapp' } },
+            { id: 'telegram', name: 'Telegram', icon: { kind: 'brand', name: 'telegram' } },
+            { id: 'facebook', name: 'Facebook', icon: { kind: 'brand', name: 'facebook' } },
+            { id: 'generic', name: 'Metin (Genel)', icon: { kind: 'lucide', Icon: Share2 } },
         ];
     }
 }

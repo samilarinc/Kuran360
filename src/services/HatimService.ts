@@ -75,9 +75,9 @@ export const HatimService = {
         }
 
         const querySnapshot = await getDocs(q);
-        const allHatims = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data()
+        const allHatims = querySnapshot.docs.map((docSnapshot) => ({
+            id: docSnapshot.id,
+            ...docSnapshot.data()
         } as Hatim));
 
         // We sort in memory to avoid requiring composite indexes for (isPrivate, createdAt) or (creatorId, createdAt)

@@ -599,7 +599,8 @@
       {
         "date": "August 30, 2026",
         "bullets": [
-          "General code maintenance and cleanup across the app (no visual change)."
+          "General code maintenance and cleanup across the app (no visual change).",
+          "Replaced the outdated emoji icons on the verse share screen with modern icons."
         ]
       },
       {

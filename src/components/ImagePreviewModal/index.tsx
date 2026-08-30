@@ -11,14 +11,16 @@ import {
     Alert,
 } from 'react-native';
 import ViewShot, { captureRef } from 'react-native-view-shot';
+import { Sun, Moon, RefreshCw, Download, Copy, ExternalLink, BookOpen, Share2 } from 'lucide-react-native';
 import { NativeVerseImageDesign } from '../NativeVerseImageDesign';
+import { PlatformIcon } from '../PlatformIcon';
 
 // Web globals
 declare const window: any;
 declare const navigator: any;
 declare const ClipboardItem: any;
 import { useTheme } from '@/contexts/ThemeContext';
-import { VerseShareData, ImageSize } from '@/types';
+import { VerseShareData, ImageSize, IconSpec } from '@/types';
 import { ShareService } from '@/utils/shareUtils';
 import { IMAGE_SIZES } from '@/utils/imageSizes';
 import { useSettings } from '@/contexts/SettingsContext';
@@ -157,12 +159,12 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
         }
     };
 
-    const platforms = [
-        { id: 'whatsapp', name: 'WhatsApp', icon: '💬' },
-        { id: 'twitter', name: 'Twitter/X', icon: '🐦' },
-        { id: 'telegram', name: 'Telegram', icon: '✈️' },
-        { id: 'facebook', name: 'Facebook', icon: '📘' },
-        { id: 'generic', name: 'Diğer Uygulamalar', icon: '📤' },
+    const platforms: Array<{ id: string; name: string; icon: IconSpec }> = [
+        { id: 'whatsapp', name: 'WhatsApp', icon: { kind: 'brand', name: 'whatsapp' } },
+        { id: 'twitter', name: 'Twitter/X', icon: { kind: 'brand', name: 'x-twitter' } },
+        { id: 'telegram', name: 'Telegram', icon: { kind: 'brand', name: 'telegram' } },
+        { id: 'facebook', name: 'Facebook', icon: { kind: 'brand', name: 'facebook' } },
+        { id: 'generic', name: 'Diğer Uygulamalar', icon: { kind: 'lucide', Icon: Share2 } },
     ];
 
     return (
@@ -291,7 +293,9 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                         onPress={() => regenerateImage('light', selectedSize)}
                                         disabled={isGenerating}
                                     >
-                                        <Text style={styles.actionIcon}>🔆</Text>
+                                        <View style={styles.actionIcon}>
+                                            <Sun size={16} color={mode === 'light' ? '#fff' : theme.text} />
+                                        </View>
                                         <Text style={[
                                             styles.actionText,
                                             mode === 'light' && styles.textOnPrimary
@@ -308,7 +312,9 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                         onPress={() => regenerateImage('dark', selectedSize)}
                                         disabled={isGenerating}
                                     >
-                                        <Text style={styles.actionIcon}>🌙</Text>
+                                        <View style={styles.actionIcon}>
+                                            <Moon size={16} color={mode === 'dark' ? '#fff' : theme.text} />
+                                        </View>
                                         <Text style={[
                                             styles.actionText,
                                             mode === 'dark' && styles.textOnPrimary
@@ -336,7 +342,13 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                                 onPress={() => regenerateImage(mode, size)}
                                                 disabled={isGenerating}
                                             >
-                                                <Text style={styles.sizeIcon}>{size.icon}</Text>
+                                                <View style={styles.sizeIcon}>
+                                                    <PlatformIcon
+                                                        spec={size.icon}
+                                                        size={22}
+                                                        color={selectedSize.id === size.id ? '#fff' : theme.text}
+                                                    />
+                                                </View>
                                                 <Text style={[
                                                     styles.sizeTitle,
                                                     selectedSize.id === size.id && styles.textOnPrimary
@@ -362,9 +374,10 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                             </View>
 
                             {isGenerating && (
-                                <View style={styles.loadingContainer}>
-                                    <Text style={styles.loadingText}>
-                                        🔄 Resim oluşturuluyor...
+                                <View style={[styles.loadingContainer, common.row, common.center]}>
+                                    <RefreshCw size={14} color={theme.textSecondary} />
+                                    <Text style={[styles.loadingText, styles.loadingTextSpacing]}>
+                                        Resim oluşturuluyor...
                                     </Text>
                                 </View>
                             )}
@@ -380,7 +393,9 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                         style={styles.actionButton}
                                         onPress={handleDownload}
                                     >
-                                        <Text style={styles.actionIcon}>📥</Text>
+                                        <View style={styles.actionIcon}>
+                                            <Download size={16} color={theme.text} />
+                                        </View>
                                         <Text style={styles.actionText}>İndir</Text>
                                     </TouchableOpacity>
 
@@ -390,7 +405,9 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                                 style={styles.actionButton}
                                                 onPress={handleCopy}
                                             >
-                                                <Text style={styles.actionIcon}>📋</Text>
+                                                <View style={styles.actionIcon}>
+                                                    <Copy size={16} color={theme.text} />
+                                                </View>
                                                 <Text style={styles.actionText}>Kopyala</Text>
                                             </TouchableOpacity>
 
@@ -398,7 +415,9 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                                 style={styles.actionButton}
                                                 onPress={handleOpenInNewTab}
                                             >
-                                                <Text style={styles.actionIcon}>🔗</Text>
+                                                <View style={styles.actionIcon}>
+                                                    <ExternalLink size={16} color={theme.text} />
+                                                </View>
                                                 <Text style={styles.actionText}>Yeni Sekmede Aç</Text>
                                             </TouchableOpacity>
                                         </>
@@ -420,7 +439,9 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                             onPress={() => handlePlatformShare(platform.id)}
                                             activeOpacity={0.7}
                                         >
-                                            <Text style={styles.platformIcon}>{platform.icon}</Text>
+                                            <View style={styles.platformIcon}>
+                                                <PlatformIcon spec={platform.icon} size={20} color={theme.text} />
+                                            </View>
                                             <Text style={styles.platformName}>
                                                 {platform.name}
                                             </Text>
@@ -430,9 +451,10 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                             </View>
 
                             {/* Verse Info */}
-                            <View style={styles.verseInfo}>
-                                <Text style={styles.verseInfoText}>
-                                    📖 {verseData.surahName} Suresi, {formatVerseNumber(verseData.verseNumber, settings.verseNumberStyle)}. Ayet
+                            <View style={[styles.verseInfo, common.row, common.center]}>
+                                <BookOpen size={14} color={theme.textSecondary} />
+                                <Text style={[styles.verseInfoText, styles.verseInfoTextSpacing]}>
+                                    {verseData.surahName} Suresi, {formatVerseNumber(verseData.verseNumber, settings.verseNumberStyle)}. Ayet
                                 </Text>
                             </View>
 

@@ -19,10 +19,11 @@ config.resolver = {
     'react-native': path.resolve(__dirname, 'node_modules/react-native'),
   },
   blockList: exclusionList([
-    /msarinc-common\/packages\/.*\/node_modules\/react\/.*/,
-    /msarinc-common\/packages\/.*\/node_modules\/react-native\/.*/,
-    /msarinc-common\/packages\/.*\/node_modules\/react-is\/.*/,
-    /msarinc-common\/packages\/.*\/node_modules\/react-devtools-core\/.*/,
+    /msarinc-common\/.*node_modules\/react\/.*/,
+    /msarinc-common\/.*node_modules\/react-native\/.*/,
+    /msarinc-common\/.*node_modules\/react-is\/.*/,
+    /msarinc-common\/.*node_modules\/react-devtools-core\/.*/,
+    /msarinc-common\/.*node_modules\/react-dom\/.*/,
   ]),
 };
 

@@ -70,16 +70,17 @@ export const useAudioPlayer = () => {
 
   // Clean up preloaded audio cache
   useEffect(() => {
+    const cache = nextVerseAudioCache.current;
     return () => {
       // Clean up all preloaded sounds on unmount
-      nextVerseAudioCache.current.forEach(async (cachedSound) => {
+      cache.forEach(async (cachedSound) => {
         try {
           await cachedSound.unloadAsync();
         } catch (error) {
           console.log('Error unloading cached sound:', error);
         }
       });
-      nextVerseAudioCache.current.clear();
+      cache.clear();
     };
   }, []);
 

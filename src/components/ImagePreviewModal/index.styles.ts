@@ -77,7 +77,6 @@ export const createStyles = (theme: Theme) => {
         backgroundColor: theme.primary,
     },
     sizeIcon: {
-        fontSize: 24,
         marginBottom: SPACING.xs,
     },
     sizeTitle: {
@@ -111,6 +110,9 @@ export const createStyles = (theme: Theme) => {
         fontWeight: '500',
         color: theme.textSecondary,
     },
+    loadingTextSpacing: {
+        marginLeft: SPACING.xs,
+    },
     actionsContainer: {
         paddingHorizontal: SPACING.lg,
         marginBottom: SPACING.lg,
@@ -136,7 +138,6 @@ export const createStyles = (theme: Theme) => {
         backgroundColor: theme.cardBackground,
     },
     actionIcon: {
-        fontSize: 18,
         marginRight: SPACING.xs,
     },
     actionText: {
@@ -163,7 +164,6 @@ export const createStyles = (theme: Theme) => {
         backgroundColor: theme.cardBackground,
     },
     platformIcon: {
-        fontSize: 20,
         marginRight: SPACING.md,
     },
     platformName: {
@@ -182,6 +182,9 @@ export const createStyles = (theme: Theme) => {
         fontSize: FONT_SIZES.small,
         fontWeight: '600',
         color: theme.textSecondary,
+    },
+    verseInfoTextSpacing: {
+        marginLeft: SPACING.xs,
     },
     hiddenCapture: {
         position: 'absolute',

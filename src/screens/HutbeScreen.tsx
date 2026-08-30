@@ -37,7 +37,7 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             }
         };
         checkPdf();
-    }, []);
+    }, [pdfUrl]);
 
     const handleOpenInBrowser = async () => {
         await WebBrowser.openBrowserAsync(pdfUrl);

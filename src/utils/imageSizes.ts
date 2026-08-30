@@ -1,3 +1,4 @@
+import { Square, Monitor, Image as ImageIcon } from 'lucide-react-native';
 import { ImageSize } from '@/types';
 
 export const IMAGE_SIZES: ImageSize[] = [
@@ -9,7 +10,7 @@ export const IMAGE_SIZES: ImageSize[] = [
         height: 1080,
         aspectRatio: '1:1',
         description: 'Instagram Post, Facebook Post',
-        icon: '⬜'
+        icon: { kind: 'lucide', Icon: Square }
     },
     {
         id: 'instagram_story',
@@ -19,7 +20,7 @@ export const IMAGE_SIZES: ImageSize[] = [
         height: 1920,
         aspectRatio: '9:16',
         description: 'Instagram Story, WhatsApp Status',
-        icon: '📱'
+        icon: { kind: 'brand', name: 'instagram' }
     },
     {
         id: 'twitter_post',
@@ -29,7 +30,7 @@ export const IMAGE_SIZES: ImageSize[] = [
         height: 675,
         aspectRatio: '16:9',
         description: 'Twitter/X Post, LinkedIn',
-        icon: '🐦'
+        icon: { kind: 'brand', name: 'x-twitter' }
     },
     {
         id: 'twitter_banner',
@@ -39,7 +40,7 @@ export const IMAGE_SIZES: ImageSize[] = [
         height: 500,
         aspectRatio: '3:1',
         description: 'Twitter/X Kapak, Geniş Banner',
-        icon: '🔄'
+        icon: { kind: 'brand', name: 'x-twitter' }
     },
     {
         id: 'facebook_cover',
@@ -49,7 +50,7 @@ export const IMAGE_SIZES: ImageSize[] = [
         height: 630,
         aspectRatio: '1.91:1',
         description: 'Facebook Cover, Paylaşım',
-        icon: '📘'
+        icon: { kind: 'brand', name: 'facebook' }
     },
     {
         id: 'wide_hd',
@@ -59,7 +60,7 @@ export const IMAGE_SIZES: ImageSize[] = [
         height: 1080,
         aspectRatio: '16:9',
         description: 'Masaüstü Duvar Kağıdı, Sunum',
-        icon: '🖥️'
+        icon: { kind: 'lucide', Icon: Monitor }
     },
     {
         id: 'standard_hd',
@@ -69,7 +70,7 @@ export const IMAGE_SIZES: ImageSize[] = [
         height: 720,
         aspectRatio: '16:9',
         description: 'YouTube Thumbnail, Genel Kullanım',
-        icon: '📺'
+        icon: { kind: 'brand', name: 'youtube' }
     },
     {
         id: 'classic',
@@ -79,7 +80,7 @@ export const IMAGE_SIZES: ImageSize[] = [
         height: 600,
         aspectRatio: '4:3',
         description: 'Geleneksel Format, E-posta',
-        icon: '🖼️'
+        icon: { kind: 'lucide', Icon: ImageIcon }
     },
     {
         id: 'pinterest',
@@ -89,7 +90,7 @@ export const IMAGE_SIZES: ImageSize[] = [
         height: 1102,
         aspectRatio: '2:3',
         description: 'Pinterest Pin, Dikey Paylaşım',
-        icon: '📌'
+        icon: { kind: 'brand', name: 'pinterest' }
     }
 ];
 

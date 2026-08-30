@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
     View,
     Text,
@@ -46,7 +46,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
     const [creating, setCreating] = useState(false);
     const [hasDeadline, setHasDeadline] = useState(false);
 
-    const fetchHatims = async () => {
+    const fetchHatims = useCallback(async () => {
         try {
             setLoading(true);
             const data = await HatimService.getHatims(user?.uid);
@@ -56,11 +56,11 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [user?.uid]);
 
     useEffect(() => {
         fetchHatims();
-    }, [user?.uid]);
+    }, [fetchHatims]);
 
     const handleCreate = async () => {
         if (!newTitle.trim() || !user) return;
@@ -238,7 +238,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                                             <select
                                                 style={styles.webSelect}
                                                 onChange={(e: any) => {
-                                                    const h = parseInt(e.target.value);
+                                                    const h = parseInt(e.target.value, 10);
                                                     const current = newDeadline || new Date();
                                                     current.setHours(h);
                                                     setNewDeadline(new Date(current));
@@ -253,7 +253,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                                             <select
                                                 style={styles.webSelect}
                                                 onChange={(e: any) => {
-                                                    const m = parseInt(e.target.value);
+                                                    const m = parseInt(e.target.value, 10);
                                                     const current = newDeadline || new Date();
                                                     current.setMinutes(m);
                                                     setNewDeadline(new Date(current));

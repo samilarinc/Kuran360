@@ -131,7 +131,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       }
     }, 100);
     return () => clearTimeout(timer);
-  }, [surah.verses.length]);
+  }, [surah.verses.length, route.params.verseIndex, settings.usePaginatedView]);
 
   // Auto-scroll effect: scroll to the currently playing verse in non-paginated mode
   useEffect(() => {
@@ -187,7 +187,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     }, 10000); // Check every 10 seconds
 
     return () => clearInterval(intervalId);
-  }, [user?.uid, surah, currentPaginatedIndex, audioState.currentVerse, settings.usePaginatedView, settings.favoriteTranslation, lastRead, addToLastRead]);
+  }, [user?.uid, surah, currentPaginatedIndex, audioState.currentVerse, settings.usePaginatedView, settings.favoriteTranslation, lastRead, addToLastRead, t]);
 
   const handleVersePress = (verse: VerseType) => {
     // Temporarily disable auto-tracking when user manually selects a verse
@@ -222,7 +222,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       audioState.isPlaying;
   };
 
-  const handleVerseChange = (verseIndex: number) => {
+  const handleVerseChange = useCallback((verseIndex: number) => {
     // Update URL to reflect current verse
     if (updateVerseUrl) {
       updateVerseUrl(surah, verseIndex);
@@ -233,7 +233,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     logger.debug('Verse changed to:', verseIndex + 1, 'in surah:', surah.number);
     // Persist current index so PaginatedVerseView remounts won't reset to 0
     setCurrentPaginatedIndex(verseIndex);
-  };
+  }, [updateVerseUrl, surah]);
 
   // Handle viewable items change to update URL
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {

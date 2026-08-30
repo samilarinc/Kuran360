@@ -54,7 +54,7 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
 
 
         fetchTargetUser();
-    }, [userId]);
+    }, [userId, t]);
 
     const handleSubmit = async () => {
         if (!requesterName.trim() || !topic.trim()) {

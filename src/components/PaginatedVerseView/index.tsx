@@ -87,7 +87,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
             lastInitializedSurah.current = currentSurahNumber;
             setIsInitialized(true);
         }
-    }, [currentSurahNumber, verses.length, initialVerseIndex]);
+    }, [currentSurahNumber, verses.length, initialVerseIndex, currentVerseIndex]);
 
     useEffect(() => {
         // Only call onVerseChange when the verse actually changes after initialization
@@ -95,7 +95,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
             logger.debug('PaginatedVerseView: Calling onVerseChange with index', currentVerseIndex);
             onVerseChange(currentVerseIndex);
         }
-    }, [currentVerseIndex]); // Only depend on currentVerseIndex
+    }, [currentVerseIndex, isInitialized, onVerseChange]);
 
     // Auto-follow effect: Navigate to verse when audio is playing and tracking is enabled
     useEffect(() => {
@@ -482,7 +482,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                         result.push(
                             <TouchableOpacity
                                 key={0}
-                                style={[styles.dot, 0 === currentVerseIndex && styles.activeDot]}
+                                style={[styles.dot, currentVerseIndex === 0 && styles.activeDot]}
                                 onPress={() => goToVerse(0, true, true)}
                                 disabled={isAnimating}
                             />

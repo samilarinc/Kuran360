@@ -12,6 +12,14 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { AudioTrackingToggle } from '../AudioTrackingToggle';
 import { createStyles } from './index.styles';
 
+// Cycle audio play modes: nextSurah -> loopSurah -> stopAtEnd -> loopVerse
+const PLAY_MODES: Array<{ key: 'nextSurah' | 'loopSurah' | 'stopAtEnd' | 'loopVerse'; icon: string; label: string }> = [
+    { key: 'nextSurah', icon: '⏭️📖', label: 'Sonraki Sure' },
+    { key: 'loopSurah', icon: '🔁📖', label: 'Sure Döngü' },
+    { key: 'stopAtEnd', icon: '⏹️📖', label: 'Surenin Sonunda Dur' },
+    { key: 'loopVerse', icon: '🔁🔢', label: 'Ayet Döngü' },
+];
+
 export const GlobalAudioBar: React.FC = () => {
     const { audioState, togglePlayPause, stop, changePlaybackRate } = useGlobalAudio();
     const { settings, updateSettings } = useDebouncedSettings(200);
@@ -53,20 +61,12 @@ export const GlobalAudioBar: React.FC = () => {
         return audioState.currentVerse ? `${audioState.currentVerse.number}. Ayet` : '';
     }, [audioState.currentVerse]);
 
-    // Cycle audio play modes: nextSurah -> loopSurah -> stopAtEnd -> loopVerse
-    const playModes: Array<{ key: 'nextSurah' | 'loopSurah' | 'stopAtEnd' | 'loopVerse'; icon: string; label: string }> = [
-        { key: 'nextSurah', icon: '⏭️📖', label: 'Sonraki Sure' },
-        { key: 'loopSurah', icon: '🔁📖', label: 'Sure Döngü' },
-        { key: 'stopAtEnd', icon: '⏹️📖', label: 'Surenin Sonunda Dur' },
-        { key: 'loopVerse', icon: '🔁🔢', label: 'Ayet Döngü' },
-    ];
-
-    const currentModeIndex = Math.max(0, playModes.findIndex(m => m.key === (settings as any).audioPlayMode));
-    const currentMode = currentModeIndex >= 0 ? playModes[currentModeIndex] : playModes[0];
+    const currentModeIndex = Math.max(0, PLAY_MODES.findIndex(m => m.key === (settings as any).audioPlayMode));
+    const currentMode = currentModeIndex >= 0 ? PLAY_MODES[currentModeIndex] : PLAY_MODES[0];
 
     const handleCyclePlayMode = useCallback(() => {
-        const nextIndex = (currentModeIndex + 1) % playModes.length;
-        updateSettings({ audioPlayMode: playModes[nextIndex].key } as any);
+        const nextIndex = (currentModeIndex + 1) % PLAY_MODES.length;
+        updateSettings({ audioPlayMode: PLAY_MODES[nextIndex].key } as any);
     }, [currentModeIndex, updateSettings]);
 
     const styles = useMemo(() => createStyles(theme, isCompact, isMedium), [theme, isCompact, isMedium]);

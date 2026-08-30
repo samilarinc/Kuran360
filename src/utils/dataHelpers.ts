@@ -39,8 +39,8 @@ export const createSurah = (
 // Future: You can use this to bulk import verses from a CSV or JSON file
 export const importVersesFromData = (csvData: string[][]): Verse[] => {
   return csvData.map(row => createVerse(
-    parseInt(row[0]), // surah number
-    parseInt(row[1]), // verse number
+    parseInt(row[0], 10), // surah number
+    parseInt(row[1], 10), // verse number
     row[2], // arabic text
     row[3], // translation
     row[4] || ''  // transliteration

@@ -163,7 +163,7 @@ export const HatimEditModal: React.FC<HatimEditModalProps> = ({
                                                 appearance: 'auto'
                                             }}
                                             onChange={(e: any) => {
-                                                const h = parseInt(e.target.value);
+                                                const h = parseInt(e.target.value, 10);
                                                 const current = deadline || new Date();
                                                 current.setHours(h);
                                                 onChangeDeadline(new Date(current));
@@ -189,7 +189,7 @@ export const HatimEditModal: React.FC<HatimEditModalProps> = ({
                                                 appearance: 'auto'
                                             }}
                                             onChange={(e: any) => {
-                                                const m = parseInt(e.target.value);
+                                                const m = parseInt(e.target.value, 10);
                                                 const current = deadline || new Date();
                                                 current.setMinutes(m);
                                                 onChangeDeadline(new Date(current));

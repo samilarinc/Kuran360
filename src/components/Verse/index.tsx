@@ -28,6 +28,77 @@ const ALL_TRANSLATIONS_COLOR = '#6366F1';
 const SHARE_COLOR = '#F97316';
 const PLAY_COLOR = '#10B981';
 
+// Inline hover translations in the main Arabic line (web only)
+const InlineArabicWithHover: React.FC<{
+  verse: VerseType;
+  inlineWordTranslations: boolean;
+  surahFontSize: number;
+  arabicFontFamily: string;
+  common: ReturnType<typeof createCommonStyles>;
+  styles: ReturnType<typeof createStyles>;
+}> = ({ verse, inlineWordTranslations, surahFontSize, arabicFontFamily, common, styles }) => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  if (Platform.OS !== 'web' || !inlineWordTranslations || verse.wordTranslations.length === 0) {
+    return (
+      <ArabicText style={[common.arabicText, { fontSize: surahFontSize, lineHeight: surahFontSize * 1.5 }]}>
+        {verse.arabicText}
+      </ArabicText>
+    );
+  }
+
+  // Build lookup map
+  const map = new Map<string, string>();
+  verse.wordTranslations.forEach(w => {
+    if (w.arabic) map.set(w.arabic, w.translation);
+  });
+
+  // Try to reconstruct spaced text from word translations, fallback to original
+  let displayText = verse.arabicText;
+  const words = verse.wordTranslations.map(w => w.arabic).filter(Boolean);
+
+  // If we have word translations, try to create a spaced version
+  if (words.length > 0) {
+    displayText = words.join(' ');
+  }
+
+  const tokens = displayText.split(/\s+/).filter(Boolean);
+
+  return (
+    <View style={styles.inlineArabicRow}>
+      {tokens.map((tok, idx) => {
+        const tr = map.get(tok);
+        const isHover = hoveredIndex === idx && !!tr;
+        return (
+          <View key={idx} style={styles.inlineArabicWordWrap}>
+            <Text
+              style={[
+                common.arabicText,
+                { fontFamily: arabicFontFamily, fontSize: surahFontSize, lineHeight: surahFontSize * 1.5 },
+                styles.inlineArabicWord,
+                isHover && styles.inlineArabicWordHover,
+              ]}
+              // @ts-ignore web-only hover handlers
+              onMouseEnter={() => setHoveredIndex(idx)}
+              // @ts-ignore
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              {tok}
+            </Text>
+            {isHover && (
+              <View style={styles.hoverCard}>
+                <Text style={styles.hoverCardText}>{tr}</Text>
+              </View>
+            )}
+            {/* Space between words, preserved visually on web */}
+            {idx < tokens.length - 1 && <Text style={styles.inlineSpace}> </Text>}
+          </View>
+        );
+      })}
+    </View>
+  );
+};
+
 interface VerseProps {
   verse: VerseType;
   isPlaying: boolean;
@@ -139,71 +210,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         // Sessiz geç
       }
     }
-  }, [verse.surahNumber, verse.number, verse.arabicText, settings.favoriteTranslation]);
-
-  // Inline hover translations in the main Arabic line (web only)
-  const InlineArabicWithHover: React.FC = () => {
-    if (Platform.OS !== 'web' || !settings.inlineWordTranslations || verse.wordTranslations.length === 0) {
-      return (
-        <ArabicText style={[common.arabicText, { fontSize: settings.surahFontSize, lineHeight: settings.surahFontSize * 1.5 }]}>
-          {verse.arabicText}
-        </ArabicText>
-      );
-    }
-
-    // Build lookup map
-    const map = new Map<string, string>();
-    verse.wordTranslations.forEach(w => {
-      if (w.arabic) map.set(w.arabic, w.translation);
-    });
-
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-    // Try to reconstruct spaced text from word translations, fallback to original
-    let displayText = verse.arabicText;
-    let words = verse.wordTranslations.map(w => w.arabic).filter(Boolean);
-
-    // If we have word translations, try to create a spaced version
-    if (words.length > 0) {
-      displayText = words.join(' ');
-    }
-
-    const tokens = displayText.split(/\s+/).filter(Boolean);
-
-    return (
-      <View style={styles.inlineArabicRow}>
-        {tokens.map((tok, idx) => {
-          const tr = map.get(tok);
-          const isHover = hoveredIndex === idx && !!tr;
-          return (
-            <View key={idx} style={styles.inlineArabicWordWrap}>
-              <Text
-                style={[
-                  common.arabicText,
-                  { fontFamily: arabicFontFamily, fontSize: settings.surahFontSize, lineHeight: settings.surahFontSize * 1.5 },
-                  styles.inlineArabicWord,
-                  isHover && styles.inlineArabicWordHover,
-                ]}
-                // @ts-ignore web-only hover handlers
-                onMouseEnter={() => setHoveredIndex(idx)}
-                // @ts-ignore
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                {tok}
-              </Text>
-              {isHover && (
-                <View style={styles.hoverCard}>
-                  <Text style={styles.hoverCardText}>{tr}</Text>
-                </View>
-              )}
-              {/* Space between words, preserved visually on web */}
-              {idx < tokens.length - 1 && <Text style={styles.inlineSpace}> </Text>}
-            </View>
-          );
-        })}
-      </View>
-    );
-  };
+  }, [verse.surahNumber, verse.number, verse.arabicText, verse.allTranslations, verse.translation, settings.favoriteTranslation]);
 
   const handleBookmarkToggle = async () => {
     if (!user || !showBookmarkButton) return;
@@ -240,7 +247,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
       verseNumber: verse.number,
       surahNumber: verse.surahNumber,
     };
-  }, [verse, settings.favoriteTranslation]);
+  }, [verse, settings.favoriteTranslation, t]);
 
   return (
     <View style={styles.container}>
@@ -293,7 +300,14 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
       </View>
 
       <View style={styles.content}>
-        <InlineArabicWithHover />
+        <InlineArabicWithHover
+          verse={verse}
+          inlineWordTranslations={settings.inlineWordTranslations}
+          surahFontSize={settings.surahFontSize}
+          arabicFontFamily={arabicFontFamily}
+          common={common}
+          styles={styles}
+        />
 
         {settings.showTransliteration && verse.transliteration && (
           <Text style={styles.transliterationText}>{verse.transliteration}</Text>

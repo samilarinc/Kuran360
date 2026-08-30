@@ -1,4 +1,11 @@
 import type { ThemeName } from '@msarinc/theme-core';
+import type { LucideIcon } from 'lucide-react-native';
+
+// A renderable icon: either a lucide icon component, or a real brand logo
+// rendered via @expo/vector-icons' FontAwesome6 brands style (e.g. 'whatsapp', 'x-twitter').
+export type IconSpec =
+  | { kind: 'lucide'; Icon: LucideIcon }
+  | { kind: 'brand'; name: string };
 
 export interface WordTranslation {
   arabic: string;
@@ -191,7 +198,7 @@ export interface ImageSize {
   height: number;
   aspectRatio: string;
   description: string;
-  icon: string;
+  icon: IconSpec;
 }
 
 export interface ImageGenerationOptions {

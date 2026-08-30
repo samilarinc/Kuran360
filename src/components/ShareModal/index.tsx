@@ -9,12 +9,14 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import { BookOpen, Ruler } from 'lucide-react-native';
 import { useTheme } from '@/contexts/ThemeContext';
 import ViewShot, { captureRef } from 'react-native-view-shot';
 import { NativeVerseImageDesign } from '../NativeVerseImageDesign';
 import { VerseShareData, ImageSize } from '@/types';
 import { ShareService } from '@/utils/shareUtils';
 import { ImagePreviewModal } from '../ImagePreviewModal';
+import { PlatformIcon } from '../PlatformIcon';
 import { IMAGE_SIZES, getDefaultImageSize } from '@/utils/imageSizes';
 import { useSettings } from '@/contexts/SettingsContext';
 import { formatVerseNumber } from '@/utils/numerals';
@@ -158,16 +160,22 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                 <Text style={styles.translationText}>
                   "{verseData.translation}"
                 </Text>
-                <Text style={styles.verseInfo}>
-                  📖 {verseData.surahName} Suresi, {formatVerseNumber(verseData.verseNumber, settings.verseNumberStyle)}. Ayet
-                </Text>
+                <View style={styles.verseInfoRow}>
+                  <BookOpen size={14} color={theme.primary} />
+                  <Text style={styles.verseInfo}>
+                    {verseData.surahName} Suresi, {formatVerseNumber(verseData.verseNumber, settings.verseNumberStyle)}. Ayet
+                  </Text>
+                </View>
               </View>
 
               {/* Size Selection */}
               <View style={styles.sizeSection}>
-                <Text style={styles.sectionTitle}>
-                  📐 Resim Boyutu Seçin
-                </Text>
+                <View style={styles.sectionTitleRow}>
+                  <Ruler size={16} color={theme.text} />
+                  <Text style={styles.sectionTitle}>
+                    Resim Boyutu Seçin
+                  </Text>
+                </View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView} nestedScrollEnabled={true}>
                   <View style={styles.sizeRow}>
                     {IMAGE_SIZES.map((size) => (
@@ -179,7 +187,13 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                         ]}
                         onPress={() => setSelectedSize(size)}
                       >
-                        <Text style={styles.sizeIcon}>{size.icon}</Text>
+                        <View style={styles.sizeIcon}>
+                          <PlatformIcon
+                            spec={size.icon}
+                            size={20}
+                            color={selectedSize.id === size.id ? '#fff' : theme.text}
+                          />
+                        </View>
                         <Text style={[
                           styles.sizeTitle,
                           selectedSize.id === size.id && styles.textOnPrimary
@@ -206,7 +220,9 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                   onPress={() => handlePlatformShare(platform.id)}
                   activeOpacity={0.7}
                 >
-                  <Text style={styles.platformIcon}>{platform.icon}</Text>
+                  <View style={styles.platformIcon}>
+                    <PlatformIcon spec={platform.icon} size={22} color={theme.text} />
+                  </View>
                   <Text style={styles.platformName}>
                     {platform.name}
                   </Text>

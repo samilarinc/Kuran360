@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { Platform, BackHandler } from 'react-native';
 import { HomeScreen } from '@/screens/HomeScreen';
@@ -359,7 +359,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         };
       }
     }
-  }, []); // Remove dependencies to prevent infinite loop
+  }, [parseUrl]);
 
   // Handle pending redirection after login
   useEffect(() => {
@@ -370,7 +370,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     }
   }, [user, pendingRedirect, navigateToRoute]);
 
-  const navigation = {
+  const navigation = useMemo(() => ({
     navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
@@ -404,7 +404,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         setCurrentIndex(0);
       }
     }
-  };
+  }), [user, navigateToRoute, currentIndex]);
 
   // Handle Android hardware back button
   useEffect(() => {

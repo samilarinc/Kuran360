@@ -88,7 +88,7 @@ export const PartActionModal: React.FC<PartActionModalProps> = ({
                                             value={String(localPages)}
                                             keyboardType="number-pad"
                                             onChangeText={(val) => {
-                                                const n = parseInt(val);
+                                                const n = parseInt(val, 10);
                                                 if (!isNaN(n)) onUpdatePages(n);
                                                 else if (val === '') onUpdatePages(0);
                                             }}
