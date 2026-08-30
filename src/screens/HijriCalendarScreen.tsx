@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@/contexts/ThemeContext';
-import { SPACING } from '@/theme';
 import { AppHeader } from '@/components/AppHeader';
 import { HijriStarsBackground } from '@/components/HijriStarsBackground';
 import { HijriBackgroundGlow } from '@/components/HijriBackgroundGlow';
@@ -16,8 +15,8 @@ import { HijriInfoPanel } from '@/components/HijriInfoPanel';
 import { HijriTodayButton } from '@/components/HijriTodayButton';
 import { HijriNotesModal } from '@/components/HijriNotesModal';
 import {
-    EMERALD, LAPIS, MONTHS, WD, GM, EVT, NOTES_KEY, P_IN, STARS,
-    g2jd, jd2g, h2jd, jd2h, hMonthLen, addHM, toAr, moonPhase, phaseLabel, getTodayH, noteKey,
+    EMERALD, LAPIS, MONTHS, WD, GM, EVT, NOTES_KEY, STARS,
+    jd2g, h2jd, hMonthLen, addHM, toAr, moonPhase, phaseLabel, getTodayH, noteKey,
     HijriNoteEntry,
 } from '@/utils/hijriCalendar';
 

@@ -125,7 +125,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }),
     };
 
-    const [request, response, promptAsync] = Google.useAuthRequest(config);
+    const [_request, response, promptAsync] = Google.useAuthRequest(config);
 
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, (u) => {

@@ -108,7 +108,7 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
 
                     {/* Verse List */}
                     <ScrollView style={styles.verseList} showsVerticalScrollIndicator={false}>
-                        {filteredVerses.map((verse, index) => {
+                        {filteredVerses.map((verse) => {
                             const actualIndex = verses.indexOf(verse);
                             const isCurrentVerse = actualIndex === currentVerseIndex;
                             const translationPreview = getTranslationPreview(getPreferredTranslation(verse));

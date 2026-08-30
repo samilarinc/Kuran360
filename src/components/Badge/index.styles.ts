@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { SPACING, Theme } from '@/theme';
 
-export const createStyles = (theme: Theme) => StyleSheet.create({
+export const createStyles = (_theme: Theme) => StyleSheet.create({
     badge: {
         alignSelf: 'flex-start',
     },

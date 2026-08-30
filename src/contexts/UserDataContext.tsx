@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useEffect, ReactNode, useRef } from 'react';
+import React, { createContext, useContext, useEffect, ReactNode } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { doc, setDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { db } from '@/services/firebase';
 import { useAuth } from './AuthContext';
 import { Bookmark, LastRead, UserData, DuaItem, DuaRequest } from '@/types';
-import { collection, onSnapshot, query, where, orderBy, deleteDoc, addDoc } from 'firebase/firestore';
+import { collection, onSnapshot, query, where, orderBy, deleteDoc } from 'firebase/firestore';
 
 type UserDataContextType = {
     bookmarks: Bookmark[];
@@ -148,9 +148,6 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
     const isBookmarked = (surahNumber: number, verseNumber: number): boolean => {
         return bookmarks.some(b => b.surahNumber === surahNumber && b.verseNumber === verseNumber);
     };
-
-    // Throttle duplicate lastRead writes for the same verse within 10 seconds
-    const lastReadCacheRef = useRef<string | null>(null);
 
     const updateLastReadMutation = useMutation({
         mutationFn: async (updatedLastRead: LastRead[]) => {

@@ -11,7 +11,6 @@ import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserData } from '@/contexts/UserDataContext';
-import logger from '@/utils/logger';
 import { getFontOption, getArabicFontFamily } from '@/constants/fonts';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { ShareModal } from '../ShareModal';
@@ -79,7 +78,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
       return 0;
     });
 
-    return orderedTranslations.map((translationName, index) => {
+    return orderedTranslations.map((translationName) => {
       const translationText = verse.allTranslations![translationName];
       if (!translationText) return null;
 

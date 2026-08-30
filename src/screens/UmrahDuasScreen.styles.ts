@@ -1,10 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
-import { createCommonStyles } from '@/theme/common.styles';
 
 export const createStyles = (theme: Theme) => {
-    const common = createCommonStyles(theme);
-
     return StyleSheet.create({
     content: {
         flex: 1,

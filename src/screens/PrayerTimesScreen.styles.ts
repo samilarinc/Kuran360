@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createCommonStyles } from '@/theme/common.styles';
 import { Theme } from '@/theme';
 

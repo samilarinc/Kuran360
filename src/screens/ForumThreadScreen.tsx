@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
+import { View, Text, FlatList, TextInput, SafeAreaView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';

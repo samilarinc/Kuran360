@@ -16,7 +16,6 @@ import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { LoadingView } from '@/components/LoadingView';
 import { SearchInput } from '@/components/SearchInput';
-import { SPACING, FONT_SIZES } from '@/theme';
 import { PrayerTime } from '@/types';
 import locations from '@/data/locations.json';
 import { createCommonStyles } from '@/theme/common.styles';
@@ -35,7 +34,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     const styles = useMemo(() => createStyles(theme), [theme]);
     const common = useMemo(() => createCommonStyles(theme), [theme]);
     const { settings, updateSettings } = useSettings();
-    const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
+    const [, setPrayerTimes] = useState<PrayerTime[]>([]);
     const [loading, setLoading] = useState(true);
     const [todayTimes, setTodayTimes] = useState<PrayerTime | null>(null);
     const [nextPrayer, setNextPrayer] = useState<{ label: string, time: string, remaining: string } | null>(null);

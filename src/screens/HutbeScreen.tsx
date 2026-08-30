@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
     SafeAreaView,
     Platform,
     Dimensions,
@@ -14,7 +13,6 @@ import { AppHeader } from '@/components/AppHeader';
 import { useTheme } from '@/contexts/ThemeContext';
 import { AppButton } from '@/components/AppButton';
 import { LoadingView } from '@/components/LoadingView';
-import { SPACING, FONT_SIZES } from '@/theme';
 import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './HutbeScreen.styles';
 

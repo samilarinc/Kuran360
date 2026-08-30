@@ -93,7 +93,7 @@ export class ShareService {
      */
     static generateShareText(verseData: VerseShareData): string {
         ShareService.lastVerseData = verseData;
-        const { arabicText, translation, surahName, verseNumber, surahNumber } = verseData;
+        const { arabicText, translation, verseNumber, surahNumber } = verseData;
         // RTL gömme işaretleri ile Arapça satırın sağa dayalı görünmesini destekle
         const RLE = '\u202B'; // Right-to-Left Embedding
         const PDF = '\u202C'; // Pop directional formatting

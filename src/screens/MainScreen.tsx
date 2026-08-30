@@ -2,10 +2,8 @@ import React, { useMemo } from 'react';
 import {
     View,
     Text,
-
     TouchableOpacity,
     SafeAreaView,
-    Image,
     ScrollView,
     useWindowDimensions,
 } from 'react-native';
@@ -28,7 +26,7 @@ import {
 import { AppHeader } from '@/components/AppHeader';
 import { MenuListRow } from '@/components/MenuListRow';
 import { useTheme } from '@/contexts/ThemeContext';
-import { FONT_SIZES, SPACING } from '@/theme';
+import { FONT_SIZES } from '@/theme';
 import { Alert, Platform } from 'react-native';
 import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './MainScreen.styles';
@@ -38,11 +36,11 @@ interface MainScreenProps {
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
-    const { theme, isDarkMode, toggleDarkMode } = useTheme();
+    const { theme } = useTheme();
     const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
     const common = useMemo(() => createCommonStyles(theme), [theme]);
-    const { width, height } = useWindowDimensions();
+    const { width } = useWindowDimensions();
 
     const isUltraNarrow = width < 360;
 

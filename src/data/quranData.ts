@@ -331,75 +331,6 @@ class IndexedDBHelper {
 // Create singleton instance
 const idbHelper = new IndexedDBHelper();
 
-// Cross-platform storage utility - now primarily uses IndexedDB for web
-const Storage = {
-  async getItem(key: string): Promise<string | null> {
-    if (Platform.OS === 'web') {
-      // For web, we now use the new IndexedDB structure
-      // This is kept for backward compatibility with other data
-      try {
-        const db = await idbHelper.openDB();
-        const transaction = db.transaction(['cache'], 'readonly');
-        const store = transaction.objectStore('cache');
-
-        return new Promise((resolve, reject) => {
-          const request = store.get(key);
-          request.onerror = () => reject(request.error);
-          request.onsuccess = () => {
-            const result = request.result;
-            resolve(result ? result.value : null);
-          };
-        });
-      } catch (error) {
-        console.warn('IndexedDB cache read failed:', error);
-        return null;
-      }
-    } else {
-      return await AsyncStorage.getItem(key);
-    }
-  },
-
-  async setItem(key: string, value: string): Promise<void> {
-    if (Platform.OS === 'web') {
-      try {
-        const db = await idbHelper.openDB();
-        const transaction = db.transaction(['cache'], 'readwrite');
-        const store = transaction.objectStore('cache');
-
-        return new Promise((resolve, reject) => {
-          const request = store.put({ key, value });
-          request.onerror = () => reject(request.error);
-          request.onsuccess = () => resolve();
-        });
-      } catch (error) {
-        console.warn('IndexedDB cache write failed:', error);
-      }
-    } else {
-      await AsyncStorage.setItem(key, value);
-    }
-  },
-
-  async removeItem(key: string): Promise<void> {
-    if (Platform.OS === 'web') {
-      try {
-        const db = await idbHelper.openDB();
-        const transaction = db.transaction(['cache'], 'readwrite');
-        const store = transaction.objectStore('cache');
-
-        await new Promise<void>((resolve, reject) => {
-          const request = store.delete(key);
-          request.onerror = () => reject(request.error);
-          request.onsuccess = () => resolve();
-        });
-      } catch (error) {
-        console.warn('IndexedDB cache delete failed:', error);
-      }
-    } else {
-      await AsyncStorage.removeItem(key);
-    }
-  }
-};
-
 // Progress callback type
 export type ProgressCallback = (progress: number, status: string, downloadedBytes?: number, totalBytes?: number) => void;
 
@@ -653,17 +584,6 @@ function convertToAppFormat(verseData: VerseData): Verse {
     })),
     allTranslations: verseData.translations || {}
   };
-}
-
-// Function to load a single verse - now uses IndexedDB for web and SQLite for mobile
-async function requireVerse(surahNumber: number, verseNumber: number): Promise<VerseData | null> {
-  if (Platform.OS === 'web') {
-    // Use IndexedDB for web
-    return await idbHelper.getVerse(surahNumber, verseNumber);
-  } else {
-    // Use SQLite for mobile
-    return await sqliteHelper.getVerse(surahNumber, verseNumber);
-  }
 }
 
 // Complete Surah metadata (all 114 surahs) with Turkish names

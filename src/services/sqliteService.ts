@@ -15,7 +15,6 @@ interface VerseData {
 }
 
 const DB_NAME = 'quran.db';
-const DB_VERSION = 1;
 
 class SQLiteHelper {
     private db: SQLite.SQLiteDatabase | null = null;

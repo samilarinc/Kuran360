@@ -35,7 +35,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
     const { theme } = useTheme();
     const { t } = useTranslation();
     const { settings } = useSettings();
-    const { settings: debouncedSettings, updateSettings } = useDebouncedSettings(200);
+    const { settings: debouncedSettings } = useDebouncedSettings(200);
     const [shareModalVisible, setShareModalVisible] = useState(false);
     const [selectedTranslation, setSelectedTranslation] = useState<string>(debouncedSettings.favoriteTranslation);
 

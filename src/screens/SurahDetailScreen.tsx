@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   View,
-  Text,
   FlatList,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity,
   Platform,
 } from 'react-native';
 import { FontSizeToggle } from '@msarinc/ui';
@@ -13,7 +11,6 @@ import { Verse } from '@/components/Verse';
 import { PaginatedVerseView } from '@/components/PaginatedVerseView';
 import { AppHeader } from '@/components/AppHeader';
 import { AutoplayToggle } from '@/components/AutoplayToggle';
-import { AudioTrackingToggle } from '@/components/AudioTrackingToggle';
 import { LoadingView } from '@/components/LoadingView';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
@@ -59,7 +56,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const { t } = useTranslation();
   const { user } = useAuth();
   const { addToLastRead, lastRead } = useUserData();
-  const { audioState, playVerse, stop, pause, resume, togglePlayPause, setVersesForAutoplay, changePlaybackRate } = useGlobalAudio();
+  const { audioState, playVerse, stop, setVersesForAutoplay } = useGlobalAudio();
   const flatListRef = useRef<FlatList>(null);
   const initialScrollDone = useRef(false);
 
@@ -157,16 +154,6 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
     return () => clearTimeout(timeoutId);
   }, [audioState.currentVerse, audioState.isPlaying, settings.audioTrackingEnabled, settings.usePaginatedView, surah.verses, isUserScrolling]);
-
-  // Track last read verses for logged in users with 10-second interval checking
-  const currentKey = useMemo(() => {
-    if (!surah || surah.verses.length === 0) return null;
-    if (settings.usePaginatedView) {
-      return `${surah.number}-${currentPaginatedIndex}`;
-    }
-    const cv = audioState.currentVerse;
-    return cv ? `${cv.surahNumber}-${cv.number}` : `${surah.number}-1`;
-  }, [settings.usePaginatedView, currentPaginatedIndex, audioState.currentVerse, surah?.number, surah?.verses?.length]);
 
   useEffect(() => {
     if (!user?.uid || !surah || surah.verses.length === 0) return;

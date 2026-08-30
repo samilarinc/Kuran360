@@ -53,9 +53,9 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
     const { t } = useTranslation();
     const styles = useMemo(() => createStyles(theme), [theme]);
     const common = useMemo(() => createCommonStyles(theme), [theme]);
-    const { settings } = useDebouncedSettings(200);
+    useDebouncedSettings(200);
     const { audioState, playVerse } = useGlobalAudio();
-    const { user } = useAuth();
+    useAuth();
 
     const [currentVerse, setCurrentVerse] = useState<{
         surah: Surah;

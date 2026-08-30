@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@/theme';
 
-export const createStyles = (theme: Theme) => StyleSheet.create({
+export const createStyles = (_theme: Theme) => StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',

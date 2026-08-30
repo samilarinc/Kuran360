@@ -17,7 +17,6 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { HatimService } from '@/services/HatimService';
 import { Hatim } from '@/types';
-import { SPACING, FONT_SIZES } from '@/theme';
 import { AppHeader } from '@/components/AppHeader';
 import { ProgressBar } from '@/components/ProgressBar';
 import { Badge } from '@/components/Badge';

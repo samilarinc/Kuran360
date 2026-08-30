@@ -64,7 +64,7 @@ interface UmrahChecklistScreenProps {
     navigation: any;
 }
 
-export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNavigate, navigation }) => {
+export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNavigate }) => {
 
     const { theme } = useTheme();
     const { t } = useTranslation();

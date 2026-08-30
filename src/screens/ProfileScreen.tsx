@@ -1,14 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, Image, Platform, ScrollView, TextInput, Alert } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, Image, ScrollView, TextInput, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserData } from '@/contexts/UserDataContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { auth } from '@/services/firebase';
-import { GoogleAuthProvider, signInWithPopup, signInWithCredential } from 'firebase/auth';
-import Constants from 'expo-constants';
 import { SPACING } from '@/theme';
 import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './ProfileScreen.styles';

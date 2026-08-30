@@ -9,7 +9,6 @@ import { Platform } from 'react-native';
 export const useAudioPlayer = () => {
   const { settings, availableReciters } = useSettings();
   const settingsRef = useRef(settings);
-  const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [audioState, setAudioState] = useState<AudioState>({
     isPlaying: false,
     currentVerse: null,
@@ -18,7 +17,7 @@ export const useAudioPlayer = () => {
     isLoading: false,
   });
   const [sound, setSound] = useState<Audio.Sound | null>(null);
-  const [allVerses, setAllVerses] = useState<VerseType[]>([]);
+  const [_allVerses, setAllVerses] = useState<VerseType[]>([]);
   // Keep a ref in sync with allVerses to avoid stale closures inside audio callbacks
   const allVersesRef = useRef<VerseType[]>([]);
   // Protect cross-surah transitions from being overwritten by UI updates
@@ -40,17 +39,6 @@ export const useAudioPlayer = () => {
   // Mode switch: 'range' = old mode (repeat whole range), 'individual' = new mode (repeat each verse)
   const memModeRef = useRef<'range' | 'individual'>('range');
   const memCurrentVerseRepeatsRef = useRef<number>(0); // how many times current verse has been repeated
-
-  // Debounced state update to prevent flickering
-  const debouncedSetAudioState = (newState: Partial<AudioState>) => {
-    if (updateTimeoutRef.current) {
-      clearTimeout(updateTimeoutRef.current);
-    }
-
-    updateTimeoutRef.current = setTimeout(() => {
-      setAudioState(prev => ({ ...prev, ...newState }));
-    }, 50); // Small debounce to batch state updates
-  };
 
   // Keep settings ref updated
   useEffect(() => {

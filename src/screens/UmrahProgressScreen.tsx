@@ -95,15 +95,6 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
         saveProgress({ ...progress, isIhram: !progress.isIhram });
     };
 
-    const resetProgress = () => {
-        saveProgress({
-            tawafCount: 0,
-            sayCount: 0,
-            sayDirection: 'Safa',
-            isIhram: false,
-        });
-    };
-
     const styles = useMemo(() => createStyles(theme), [theme]);
     const common = useMemo(() => createCommonStyles(theme), [theme]);
 

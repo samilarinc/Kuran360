@@ -30,7 +30,7 @@ import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
 import { useAuth } from '@/contexts/AuthContext';
 import { Surah } from '@/types';
-import { quranData, loadSurah } from '@/data/quranData';
+import { loadSurah } from '@/data/quranData';
 import { NavigationProvider } from '@/contexts/NavigationContext';
 import { LoadingView } from '@/components/LoadingView';
 
@@ -93,7 +93,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   const currentIndexRef = useRef(0);
   const [isLoadingRoute, setIsLoadingRoute] = useState(false);
   const [pendingRedirect, setPendingRedirect] = useState<NavigationHistoryItem | null>(null);
-  const { user, loading: authLoading } = useAuth();
+  const { user } = useAuth();
   const { audioState } = useGlobalAudio();
   const { settings, updateSettings } = useDebouncedSettings(200);
 

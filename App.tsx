@@ -13,7 +13,7 @@ import { AudioProvider } from './src/contexts/AudioContext';
 import { StatusBarManager } from './src/components/StatusBarManager';
 import { ThemeSyncBridge } from './src/components/ThemeSyncBridge';
 import { LIGHT_COLORS as COLORS } from './src/theme';
-import { isDataCached, hasAnyData } from './src/data/quranData';
+import { hasAnyData } from './src/data/quranData';
 import { BUNDLED_FONTS } from './src/constants/fonts';
 import { Platform } from 'react-native';
 

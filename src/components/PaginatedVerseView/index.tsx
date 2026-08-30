@@ -23,7 +23,6 @@ import { createStyles } from './index.styles';
 
 const getScreenDimensions = () => Dimensions.get('window');
 const initialDimensions = getScreenDimensions();
-const isSmallScreen = initialDimensions.height < 700; // Phones with height less than 700dp
 
 interface PaginatedVerseViewProps {
     verses: VerseType[];
@@ -55,7 +54,6 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
     // Dynamic screen dimensions state
     const [screenDimensions, setScreenDimensions] = useState(initialDimensions);
     const screenWidth = screenDimensions.width;
-    const screenHeight = screenDimensions.height;
     const isMobileScreen = screenWidth < 768; // Mobile vs tablet threshold
 
     // Animation values

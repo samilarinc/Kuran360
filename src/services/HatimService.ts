@@ -6,9 +6,6 @@ import {
     getDoc,
     updateDoc,
     query,
-    orderBy,
-    Timestamp,
-    setDoc,
     deleteDoc,
     where,
     or
