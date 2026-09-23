@@ -1,20 +1,14 @@
-import React, { useMemo } from 'react';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSettings } from '@/contexts/SettingsContext';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { useGlobalAudio } from '@/contexts/AudioContext';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './index.styles';
+import { SPACING, Theme } from '@/theme';
 
 export const ReciterSelector: React.FC = () => {
     const { settings, updateSettings, availableReciters } = useSettings();
-    const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const { common } = useTheme();
+    const styles = useThemedStyles(createStyles);
     const { playPreviewWithReciter } = useGlobalAudio();
 
     const playPreview = async (reciterId: string) => {
@@ -44,10 +38,10 @@ export const ReciterSelector: React.FC = () => {
     return (
         <View style={styles.container}>
             <Text style={common.title}>Okuyucu Seçimi</Text>
-            <Text style={styles.sectionDescription}>
+            <Text style={[common.smallText, common.mbMd]}>
                 Ses dosyalarını okuyacak okuyucuyu seçin
             </Text>
-            <View style={styles.reciterContainer}>
+            <View style={common.gapSm}>
                 {availableReciters.map((reciter) => (
                     <TouchableOpacity
                         key={reciter.id}
@@ -58,11 +52,12 @@ export const ReciterSelector: React.FC = () => {
                         onPress={() => handleReciterChange(reciter.id)}
                         activeOpacity={0.7}
                     >
-                        <View style={styles.reciterInfo}>
+                        <View style={common.rowFill}>
                             <Text
                                 style={[
-                                    styles.reciterText,
-                                    settings.selectedReciter === reciter.id && styles.selectedReciterText,
+                                    common.text,
+                                    common.flex1,
+                                    settings.selectedReciter === reciter.id && common.textAccent,
                                 ]}
                             >
                                 {reciter.name}
@@ -75,7 +70,7 @@ export const ReciterSelector: React.FC = () => {
                                 }}
                                 activeOpacity={0.6}
                             >
-                                <Text style={styles.previewButtonText}>🔊</Text>
+                                <Text style={common.text}>🔊</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={[
@@ -91,4 +86,65 @@ export const ReciterSelector: React.FC = () => {
             </View>
         </View>
     );
+};
+
+const createStyles = (theme: Theme, common: CommonStyles) => {
+    return StyleSheet.create({
+    container: {
+        marginVertical: SPACING.md,
+    },
+    reciterItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        ...common.card,
+        borderRadius: 12,
+        marginBottom: 0,
+        borderWidth: 1,
+        borderColor: theme.border,
+        // 3D effect
+        shadowRadius: 2,
+    },
+    selectedReciterItem: {
+        backgroundColor: theme.primary + '15',
+        borderColor: theme.primary,
+        borderWidth: 2,
+        // Enhanced 3D effect for selected state
+        elevation: 4,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+    },
+    previewButton: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: theme.primary + '20',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: SPACING.sm,
+    },
+    radioButton: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: theme.border,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme.background,
+    },
+    selectedRadioButton: {
+        borderColor: theme.primary,
+    },
+    radioButtonInner: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: theme.primary,
+    },
+    });
 };

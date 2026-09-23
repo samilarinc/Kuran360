@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import {
   ScheherazadeNew_400Regular,
   ScheherazadeNew_700Bold,
@@ -19,6 +20,8 @@ export interface ArabicFontOption {
   labelAr: string;
   regularFamily: string;
   boldFamily: string;
+  /** false when the font has no Quranic annotation glyphs (waqf/stop marks, sajdah sign, ﴿﴾). */
+  hasQuranMarks?: boolean;
 }
 
 export const ARABIC_FONT_OPTIONS: ArabicFontOption[] = [
@@ -42,6 +45,7 @@ export const ARABIC_FONT_OPTIONS: ArabicFontOption[] = [
     labelAr: 'عارف رقعة',
     regularFamily: 'ArefRuqaa_400Regular',
     boldFamily: 'ArefRuqaa_700Bold',
+    hasQuranMarks: false,
   },
   {
     id: 'noto-naskh',
@@ -63,6 +67,7 @@ export const ARABIC_FONT_OPTIONS: ArabicFontOption[] = [
     labelAr: 'مركزي',
     regularFamily: 'MarkaziText_400Regular',
     boldFamily: 'MarkaziText_700Bold',
+    hasQuranMarks: false,
   },
   {
     id: 'reem-kufi',
@@ -70,6 +75,7 @@ export const ARABIC_FONT_OPTIONS: ArabicFontOption[] = [
     labelAr: 'ريم كوفي',
     regularFamily: 'ReemKufi_400Regular',
     boldFamily: 'ReemKufi_700Bold',
+    hasQuranMarks: false,
   },
   {
     id: 'el-messiri',
@@ -77,6 +83,7 @@ export const ARABIC_FONT_OPTIONS: ArabicFontOption[] = [
     labelAr: 'المسيري',
     regularFamily: 'ElMessiri_400Regular',
     boldFamily: 'ElMessiri_700Bold',
+    hasQuranMarks: false,
   },
   {
     id: 'harmattan',
@@ -131,7 +138,16 @@ export function getFontOption(id: string): ArabicFontOption {
   return ARABIC_FONT_OPTIONS.find(f => f.id === id) ?? ARABIC_FONT_OPTIONS[0];
 }
 
-/** Resolves the bundled font-family name for a given Arabic font option and weight. */
+// Supplies the Quranic marks for fonts that lack them (web only - native has no font stacks).
+const QURAN_MARKS_FALLBACK_FONT_ID = 'amiri';
+
+/**
+ * Resolves the bundled font-family for a given Arabic font option and weight.
+ * On web, fonts without Quranic marks get a fallback family so stop marks still render.
+ */
 export function getArabicFontFamily(fontOption: ArabicFontOption, bold: boolean = false): string {
-  return bold ? fontOption.boldFamily : fontOption.regularFamily;
+  const family = bold ? fontOption.boldFamily : fontOption.regularFamily;
+  if (Platform.OS !== 'web' || fontOption.hasQuranMarks !== false) return family;
+  const fallback = getFontOption(QURAN_MARKS_FALLBACK_FONT_ID);
+  return `"${family}", "${bold ? fallback.boldFamily : fallback.regularFamily}"`;
 }

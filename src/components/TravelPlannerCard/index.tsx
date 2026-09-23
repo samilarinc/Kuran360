@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Plane, Hotel, Lightbulb } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { AppButton } from '@/components/AppButton';
 import { DateField } from '@/components/DateField';
 import { CityPickerModal, CityOption } from '@/components/CityPickerModal';
@@ -65,24 +65,24 @@ export const TravelPlannerCard: React.FC<TravelPlannerCardProps> = (props) => {
         onOpenSkyscanner, onOpenFirstCityHotel, onOpenSecondCityHotel,
     } = props;
 
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const chrome = useMemo(() => createChromeStyles(theme), [theme]);
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const chrome = useThemedStyles(createChromeStyles);
+    const styles = useThemedStyles(createStyles);
 
     return (
         <View style={chrome.plannerCard}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+            <View style={[common.rowGap, common.mbMd]}>
                 <Plane size={16} color={theme.text} />
-                <Text style={[chrome.plannerTitle, { marginBottom: 0 }]}>
+                <Text style={[chrome.plannerTitle, common.mb0]}>
                     {t('umrahChecklistScreen.travelPlan')}
                 </Text>
             </View>
 
             {/* Outbound Row */}
             <View style={styles.compactTripRow}>
-                <View style={styles.compactTripMain}>
-                    <View style={styles.compactCitySelect}>
+                <View style={common.gapSm}>
+                    <View style={common.rowGap}>
                         <TouchableOpacity style={styles.cityChip} onPress={onOutboundCityPress}>
                             <Text style={[styles.cityChipText, outboundFromName ? styles.cityChipTextFilled : styles.cityChipTextPlaceholder]}>
                                 {outboundFromName || t('umrahChecklistScreen.from')}
@@ -94,16 +94,16 @@ export const TravelPlannerCard: React.FC<TravelPlannerCardProps> = (props) => {
 
                         <View style={styles.destinationChips}>
                             <TouchableOpacity
-                                style={[styles.destinationChip, outboundTo === 'Mekke' && styles.destinationChipActive]}
+                                style={[styles.destinationChip, outboundTo === 'Mekke' && common.selected]}
                                 onPress={() => onOutboundToChange('Mekke')}
                             >
-                                <Text style={[styles.destinationChipText, outboundTo === 'Mekke' && styles.destinationChipTextActive]}>{cityLabel('Mekke')}</Text>
+                                <Text style={[styles.destinationChipText, outboundTo === 'Mekke' && common.buttonTextPrimary]}>{cityLabel('Mekke')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={[styles.destinationChip, outboundTo === 'Medine' && styles.destinationChipActive]}
+                                style={[styles.destinationChip, outboundTo === 'Medine' && common.selected]}
                                 onPress={() => onOutboundToChange('Medine')}
                             >
-                                <Text style={[styles.destinationChipText, outboundTo === 'Medine' && styles.destinationChipTextActive]}>{cityLabel('Medine')}</Text>
+                                <Text style={[styles.destinationChipText, outboundTo === 'Medine' && common.buttonTextPrimary]}>{cityLabel('Medine')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -124,20 +124,20 @@ export const TravelPlannerCard: React.FC<TravelPlannerCardProps> = (props) => {
 
             {/* Inbound Row */}
             <View style={styles.compactTripRow}>
-                <View style={styles.compactTripMain}>
-                    <View style={styles.compactCitySelect}>
+                <View style={common.gapSm}>
+                    <View style={common.rowGap}>
                         <View style={styles.destinationChips}>
                             <TouchableOpacity
-                                style={[styles.destinationChip, inboundFrom === 'Mekke' && styles.destinationChipActive]}
+                                style={[styles.destinationChip, inboundFrom === 'Mekke' && common.selected]}
                                 onPress={() => onInboundFromChange('Mekke')}
                             >
-                                <Text style={[styles.destinationChipText, inboundFrom === 'Mekke' && styles.destinationChipTextActive]}>{cityLabel('Mekke')}</Text>
+                                <Text style={[styles.destinationChipText, inboundFrom === 'Mekke' && common.buttonTextPrimary]}>{cityLabel('Mekke')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={[styles.destinationChip, inboundFrom === 'Medine' && styles.destinationChipActive]}
+                                style={[styles.destinationChip, inboundFrom === 'Medine' && common.selected]}
                                 onPress={() => onInboundFromChange('Medine')}
                             >
-                                <Text style={[styles.destinationChipText, inboundFrom === 'Medine' && styles.destinationChipTextActive]}>{cityLabel('Medine')}</Text>
+                                <Text style={[styles.destinationChipText, inboundFrom === 'Medine' && common.buttonTextPrimary]}>{cityLabel('Medine')}</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -164,7 +164,7 @@ export const TravelPlannerCard: React.FC<TravelPlannerCardProps> = (props) => {
 
                 {/* Travel Action Buttons - Show only if dates are selected */}
                 {outboundDate && inboundDate && (
-                    <View style={chrome.plannerActions}>
+                    <View style={[common.rowGap, common.mtMd]}>
                         <AppButton
                             variant="outline"
                             style={chrome.plannerActionBtn}
@@ -219,9 +219,9 @@ export const TravelPlannerCard: React.FC<TravelPlannerCardProps> = (props) => {
             )}
 
             {showIhramReminder && (
-                <View style={[styles.compactReminder, { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' }]}>
+                <View style={[styles.compactReminder, common.rowGap, common.center]}>
                     <Lightbulb size={14} color={theme.primary} />
-                    <Text style={[styles.compactReminderText, styles.reminderTextPrimary]}>
+                    <Text style={styles.compactReminderText}>
                         {t('umrahChecklistScreen.ihramReminder')}
                     </Text>
                 </View>

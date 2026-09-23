@@ -1,12 +1,11 @@
-import React, { useMemo } from 'react';
-import { View, Text } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { Hatim } from '@/types';
 import { Badge } from '@/components/Badge';
 import { ProgressBar } from '@/components/ProgressBar';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './index.styles';
+import { SPACING, FONT_SIZES, Theme } from '@/theme';
 
 interface HatimStatsCardProps {
     hatim: Hatim;
@@ -23,10 +22,9 @@ export const HatimStatsCard: React.FC<HatimStatsCardProps> = ({
     timeLeft,
     formattedDeadline,
 }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     return (
         <View style={styles.infoCard}>
@@ -35,7 +33,7 @@ export const HatimStatsCard: React.FC<HatimStatsCardProps> = ({
             </Text>
 
             {formattedDeadline && (
-                <View style={styles.deadlineInfo}>
+                <View style={[common.center, common.mbMd]}>
                     <Text style={styles.deadlineText}>
                         {t('hatimDetailScreen.deadline', { date: formattedDeadline })}
                     </Text>
@@ -44,7 +42,7 @@ export const HatimStatsCard: React.FC<HatimStatsCardProps> = ({
                         variant="tint"
                         shape="pill"
                         style={styles.countdownBadge}
-                        textStyle={{ fontWeight: '700' }}
+                        textStyle={common.textStrong}
                     />
                 </View>
             )}
@@ -57,7 +55,7 @@ export const HatimStatsCard: React.FC<HatimStatsCardProps> = ({
                         progress={(completedCount / 30) * 100}
                         height={6}
                         fillColor="#4CAF50"
-                        style={styles.miniProgressBarBackground}
+                        style={common.mtSm}
                     />
                 </View>
                 <View style={styles.statColumn}>
@@ -69,10 +67,60 @@ export const HatimStatsCard: React.FC<HatimStatsCardProps> = ({
                         progress={(claimedCount / 30) * 100}
                         height={6}
                         fillColor={theme.primary}
-                        style={styles.miniProgressBarBackground}
+                        style={common.mtSm}
                     />
                 </View>
             </View>
         </View>
     );
+};
+
+const createStyles = (theme: Theme, common: CommonStyles) => {
+
+    return StyleSheet.create({
+        infoCard: {
+            ...common.infoCard,
+            marginBottom: SPACING.xl,
+        },
+        description: {
+            ...common.subtitle,
+            lineHeight: 22,
+            marginBottom: SPACING.lg,
+        },
+        deadlineText: {
+            fontSize: 14,
+            fontWeight: '700',
+            marginTop: SPACING.xs,
+            textAlign: 'center',
+            marginBottom: SPACING.md,
+            color: theme.primary,
+        },
+        countdownBadge: {
+            paddingHorizontal: 12,
+            marginTop: 4,
+            alignSelf: 'center',
+        },
+        statsRow: {
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            borderTopWidth: 1,
+            borderTopColor: theme.border,
+            paddingTop: SPACING.lg,
+        },
+        statColumn: {
+            flex: 1,
+            alignItems: 'center',
+            paddingHorizontal: SPACING.md,
+        },
+        statValue: {
+            fontSize: FONT_SIZES.large,
+            fontWeight: '700',
+        },
+        statValueCompleted: {
+            color: theme.success,
+        },
+        statValueClaimed: {
+            color: theme.primary,
+        },
+    });
 };

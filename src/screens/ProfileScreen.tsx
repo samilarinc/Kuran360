@@ -1,22 +1,20 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, Image, ScrollView, TextInput, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserData } from '@/contexts/UserDataContext';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { SPACING } from '@/theme';
-import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './ProfileScreen.styles';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { user, userProfile, signOutUser, updateDisplayName, signInWithGoogle } = useAuth();
     const { bookmarks, lastRead, removeBookmark } = useUserData();
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t, i18n } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     const [isEditingName, setIsEditingName] = useState(false);
     const [newDisplayName, setNewDisplayName] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
@@ -73,11 +71,11 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
 
     const renderBookmark = ({ item }: { item: any }) => (
         <TouchableOpacity
-            style={styles.listItem}
+            style={[common.listItem, common.gapSm]}
             onPress={() => handleBookmarkPress(item)}
         >
-            <View style={styles.listItemContent}>
-                <Text style={styles.listItemTitle}>
+            <View style={common.flex1}>
+                <Text style={[common.textStrong, common.mbXs]}>
                     {t('profileScreen.verseLabel', { surahName: item.surahName, verseNumber: item.verseNumber })}
                 </Text>
                 <Text style={styles.listItemSubtitle} numberOfLines={2}>
@@ -88,18 +86,18 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                 style={styles.removeButton}
                 onPress={() => removeBookmark(item.id)}
             >
-                <Text style={styles.removeButtonText}>✕</Text>
+                <Text style={common.text}>✕</Text>
             </TouchableOpacity>
         </TouchableOpacity>
     );
 
     const renderLastRead = ({ item }: { item: any }) => (
         <TouchableOpacity
-            style={styles.listItem}
+            style={[common.listItem, common.gapSm]}
             onPress={() => handleLastReadPress(item)}
         >
-            <View style={styles.listItemContent}>
-                <Text style={styles.listItemTitle}>
+            <View style={common.flex1}>
+                <Text style={[common.textStrong, common.mbXs]}>
                     {t('profileScreen.verseLabel', { surahName: item.surahName, verseNumber: item.verseNumber })}
                 </Text>
                 <Text style={styles.listItemSubtitle} numberOfLines={2}>
@@ -122,11 +120,11 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                 onHomePress={() => navigation.navigate('Main')}
             />
 
-            <ScrollView style={styles.content}>
+            <ScrollView style={common.listContent}>
                 {user ? (
                     <>
                         <View style={common.sectionCard}>
-                            <View style={styles.avatarRow}>
+                            <View style={[common.row, common.mbMd]}>
                                 {user.photoURL ? (
                                     <Image source={{ uri: user.photoURL }} style={styles.avatar} />
                                 ) : (
@@ -148,27 +146,27 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                                 maxLength={50}
                                                 autoFocus
                                             />
-                                            <View style={styles.editButtonRow}>
+                                            <View style={common.rowGap}>
                                                 <TouchableOpacity
                                                     style={[styles.editButton, styles.cancelButton]}
                                                     onPress={handleCancelEdit}
                                                     disabled={isUpdating}
                                                 >
-                                                    <Text style={styles.cancelButtonText}>{t('profileScreen.cancel')}</Text>
+                                                    <Text style={common.sectionLabel}>{t('profileScreen.cancel')}</Text>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity
-                                                    style={[styles.editButton, styles.saveButton]}
+                                                    style={[styles.editButton, common.buttonPrimary]}
                                                     onPress={handleSaveName}
                                                     disabled={isUpdating}
                                                 >
-                                                    <Text style={styles.saveButtonText}>
+                                                    <Text style={[common.badgeText, common.buttonTextPrimary]}>
                                                         {isUpdating ? t('profileScreen.saving') : t('profileScreen.save')}
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
                                         </View>
                                     ) : (
-                                        <View style={styles.nameContainer}>
+                                        <View style={[common.row, common.mbXs]}>
                                             <Text style={styles.name}>
                                                 {userProfile?.displayName || user.displayName || t('profileScreen.defaultUserName')}
                                             </Text>
@@ -176,7 +174,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                                 style={styles.editNameButton}
                                                 onPress={handleEditName}
                                             >
-                                                <Text style={styles.editNameButtonText}>✏️</Text>
+                                                <Text>✏️</Text>
                                             </TouchableOpacity>
                                         </View>
                                     )}
@@ -195,7 +193,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
 
                         {/* Bookmarks Section */}
                         <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>{t('profileScreen.bookmarksTitle', { count: bookmarks.length })}</Text>
+                            <Text style={[common.title, common.mbMd]}>{t('profileScreen.bookmarksTitle', { count: bookmarks.length })}</Text>
                             {bookmarks.length > 0 ? (
                                 bookmarks.map((item) => (
                                     <View key={`${item.surahNumber}-${item.verseNumber}`}>
@@ -209,7 +207,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
 
                         {/* Last Read Section */}
                         <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>{t('profileScreen.lastReadTitle', { count: lastRead.length })}</Text>
+                            <Text style={[common.title, common.mbMd]}>{t('profileScreen.lastReadTitle', { count: lastRead.length })}</Text>
                             {lastRead.length > 0 ? (
                                 lastRead.map((item) => (
                                     <View key={`${item.surahNumber}-${item.verseNumber}-${item.timestamp}`}>
@@ -223,7 +221,7 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                     </>
                 ) : (
                     <View style={common.sectionCard}>
-                        <Text style={[styles.email, styles.notSignedInText]}>{t('profileScreen.notSignedIn')}</Text>
+                        <Text style={[styles.email, common.mbMd]}>{t('profileScreen.notSignedIn')}</Text>
                         <AppButton
                             title={t('profileScreen.signInWithGoogle')}
                             onPress={signInWithGoogle}

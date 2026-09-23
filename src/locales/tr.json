@@ -584,6 +584,24 @@
     "footerQuote": "\"Yaratan Rabbinin adıyla oku.\"",
     "footerReference": "(Alak Suresi, 1. Ayet)"
   },
+  "share": {
+    "verseLabel": "{{surah}} Suresi, {{verse}}. Ayet",
+    "verseRangeLabel": "{{surah}} Suresi, {{start}}-{{end}}. Ayetler",
+    "verseRange": "Ayet Aralığı",
+    "verseRangeHint": "Aynı resimde en fazla {{max}} ardışık ayet paylaşabilirsiniz.",
+    "loadingVerses": "Ayetler yükleniyor...",
+    "fontNoQuranMarks": "Bu yazı tipinde durak işaretleri bulunmuyor; resimde görünmeyecekler.",
+    "video": {
+      "title": "Sesli Video",
+      "create": "Video Oluştur",
+      "preparing": "Video hazırlanıyor... %{{percent}}",
+      "download": "Videoyu İndir",
+      "share": "Videoyu Paylaş",
+      "hint": "Resim, {{reciter}} okumasıyla videoya dönüştürülür. Video tarayıcınızda hazırlanır.",
+      "error": "Video oluşturulamadı. Ses dosyalarına ulaşılamamış ya da tarayıcınız video üretmeyi desteklemiyor olabilir.",
+      "recreate": "Yeniden Oluştur"
+    }
+  },
   "about": {
     "role": "Tasarımcı",
     "projectSectionTitle": "Proje Hakkında",
@@ -595,6 +613,23 @@
     ],
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
+      {
+        "date": "23 Eylül 2026",
+        "bullets": [
+          "Uygulama genelinde tek bir ortak tema kullanılmaya başlandı; kartlar, butonlar ve listeler artık her ekranda aynı görünüyor.",
+          "Koyu modda bazı kenarlıkların ve silme butonunun yanlış renkte görünmesi düzeltildi.",
+          "Birden fazla ardışık ayeti tek bir resimde paylaşabilirsiniz; paylaş ekranındaki \"Ayet Aralığı\" ile son ayeti seçin.",
+          "Ayet resimlerinde ve web'deki okumada, durak işareti olmayan yazı tiplerinde (Aref Ruqaa, El Messiri, Markazi, Reem Kufi) durak işaretleri artık görünüyor.",
+          "Ayet resimlerinde ve sayfa görünümünde kelimeler artık birbirine yapışmıyor, eksik kelimeler de görünüyor.",
+          "Resim önizlemesinde tema, yazı tipi veya boyut değiştirdikten sonra indirilen/paylaşılan resim artık güncel olanı.",
+          "Resim önizlemesi, paylaş ekranında seçtiğiniz tema ve boyutla açılıyor.",
+          "Telefonda ayet resmi artık seçtiğiniz yazı tipini ve yazı boyutunu kullanıyor.",
+          "Web'de ayeti, seçili kârinin okumasıyla sesli videoya (MP4) dönüştürebilir, önizleyip indirebilir veya paylaşabilirsiniz; ayetler videoda kesintisiz okunuyor. \"Sesli Video\" hem paylaş ekranında hem resim önizlemesinde.",
+          "Ayetler art arda dinlenirken (otomatik oynatma, ezber, ayet tekrarı, sonraki sure) ayet geçişleri artık kesintisiz; sıradaki ayet önceden yükleniyor ve tam zamanında başlıyor.",
+          "İndirilen ayet resmi ve videosunun dosya adında Türkçe harfler artık kaybolmuyor (ör. \"Insirah_Verse_5-6.mp4\").",
+          "Sesli videolar artık her tarayıcıda X, WhatsApp ve Instagram'ın kabul ettiği ses formatında (AAC) üretiliyor; \"uyumsuz ses codec'i\" hatası giderildi."
+        ]
+      },
       {
         "date": "30 Ağustos 2026",
         "bullets": [

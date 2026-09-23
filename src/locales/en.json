@@ -584,6 +584,24 @@
     "footerQuote": "\"Read in the name of your Lord who created.\"",
     "footerReference": "(Surah Al-Alaq, Verse 1)"
   },
+  "share": {
+    "verseLabel": "Surah {{surah}}, Verse {{verse}}",
+    "verseRangeLabel": "Surah {{surah}}, Verses {{start}}-{{end}}",
+    "verseRange": "Verse Range",
+    "verseRangeHint": "You can share up to {{max}} consecutive verses in one image.",
+    "loadingVerses": "Loading verses...",
+    "fontNoQuranMarks": "This font has no stop (waqf) marks; they won't appear in the image.",
+    "video": {
+      "title": "Video with Recitation",
+      "create": "Create Video",
+      "preparing": "Preparing video... {{percent}}%",
+      "download": "Download Video",
+      "share": "Share Video",
+      "hint": "The image is turned into a video with {{reciter}}'s recitation. The video is made in your browser.",
+      "error": "The video could not be created. The audio files may be unreachable or your browser may not support video encoding.",
+      "recreate": "Recreate"
+    }
+  },
   "about": {
     "role": "Designer",
     "projectSectionTitle": "About the Project",
@@ -596,6 +614,23 @@
     ],
     "updatesSectionTitle": "Release Notes",
     "updates": [
+      {
+        "date": "September 23, 2026",
+        "bullets": [
+          "The whole app now uses one shared theme; cards, buttons and lists look the same on every screen.",
+          "Fixed some borders and the delete button showing the wrong colors in dark mode.",
+          "You can now share several consecutive verses in a single image; pick the last verse with \"Verse Range\" on the share screen.",
+          "Stop (waqf) marks now appear in verse images and on web reading with fonts that lack them (Aref Ruqaa, El Messiri, Markazi, Reem Kufi).",
+          "Words no longer run together in verse images and page view, and missing words now show up.",
+          "After changing theme, font or size in the image preview, downloading or sharing now uses the updated image.",
+          "The image preview now opens with the theme and size you chose on the share screen.",
+          "On phones, verse images now use your selected font and text size.",
+          "On web, you can turn a verse into a video (MP4) with your selected reciter's recitation, preview it, then download or share it; verses flow without gaps in the video. \"Video with Recitation\" is on both the share screen and the image preview.",
+          "Verse transitions are now seamless during continuous listening (autoplay, memorization, verse repeat, next surah); the next verse is loaded ahead and starts right on time.",
+          "Downloaded verse image and video file names no longer lose Turkish letters (e.g. \"Insirah_Verse_5-6.mp4\").",
+          "Videos with recitation are now always made with the audio format X, WhatsApp and Instagram accept (AAC), in every browser; fixes the \"incompatible audio codec\" error."
+        ]
+      },
       {
         "date": "August 30, 2026",
         "bullets": [

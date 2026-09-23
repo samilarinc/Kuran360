@@ -1,17 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import {
-    View,
-    Text,
-    Modal,
-    TouchableOpacity,
-    ScrollView,
-    SafeAreaView,
-    TextInput,
-} from 'react-native';
+import { View, Text, Modal, TouchableOpacity, ScrollView, SafeAreaView, TextInput } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/contexts/ThemeContext';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './index.styles';
 
 export interface TranslationPickerOption {
     id: string;
@@ -35,10 +25,8 @@ export const TranslationPickerModal: React.FC<TranslationPickerModalProps> = ({
     onSelect,
     onClose,
 }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
     const [searchText, setSearchText] = useState('');
 
     const filteredOptions = useMemo(() => {
@@ -54,7 +42,7 @@ export const TranslationPickerModal: React.FC<TranslationPickerModalProps> = ({
 
     return (
         <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
-            <View style={styles.overlay}>
+            <View style={common.pickerOverlay}>
                 <SafeAreaView style={common.modalContainerCentered}>
                     <View style={common.pickerHeader}>
                         <Text style={common.pickerHeaderTitle}>{title}</Text>
@@ -76,25 +64,25 @@ export const TranslationPickerModal: React.FC<TranslationPickerModalProps> = ({
                             />
                             {searchText ? (
                                 <TouchableOpacity onPress={() => setSearchText('')} style={common.pickerClearButton}>
-                                    <Text style={common.pickerClearButtonText}>✕</Text>
+                                    <Text style={common.smallText}>✕</Text>
                                 </TouchableOpacity>
                             ) : null}
                         </View>
                     </View>
 
-                    <ScrollView style={styles.optionList} showsVerticalScrollIndicator={false}>
+                    <ScrollView style={common.pickerList} showsVerticalScrollIndicator={false}>
                         {filteredOptions.map(option => {
                             const isSelected = option.id === selectedId;
                             return (
                                 <TouchableOpacity
                                     key={option.id}
-                                    style={[styles.optionItem, isSelected && styles.optionItemSelected]}
+                                    style={[common.pickerOption, common.rowBetween, common.gapSm, isSelected && common.pickerOptionSelected]}
                                     onPress={() => handleSelect(option.id)}
                                 >
-                                    <Text style={[styles.optionLabel, isSelected && styles.optionLabelSelected]}>
+                                    <Text style={[common.text, common.flex1, isSelected && common.textAccent]}>
                                         {option.label}
                                     </Text>
-                                    {isSelected && <Text style={styles.checkmark}>✓</Text>}
+                                    {isSelected && <Text style={common.textAccent}>✓</Text>}
                                 </TouchableOpacity>
                             );
                         })}

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -14,19 +14,21 @@ import ViewShot, { captureRef } from 'react-native-view-shot';
 import { Sun, Moon, RefreshCw, Download, Copy, ExternalLink, BookOpen, Share2 } from 'lucide-react-native';
 import { NativeVerseImageDesign } from '../NativeVerseImageDesign';
 import { PlatformIcon } from '../PlatformIcon';
+import { ImageSizePicker } from '../ImageSizePicker';
+import { VerseVideoActions } from '../VerseVideoActions';
 
 // Web globals
 declare const window: any;
 declare const navigator: any;
 declare const ClipboardItem: any;
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { VerseShareData, ImageSize, IconSpec } from '@/types';
 import { ShareService } from '@/utils/shareUtils';
-import { IMAGE_SIZES } from '@/utils/imageSizes';
+import { getDefaultImageSize } from '@/utils/imageSizes';
 import { useSettings } from '@/contexts/SettingsContext';
-import { formatVerseNumber } from '@/utils/numerals';
+import { getVerseLabel } from '@/utils/verseRange';
 import { ARABIC_FONT_OPTIONS, DEFAULT_IMAGE_FONT_ID, getFontOption, getArabicFontFamily } from '@/constants/fonts';
-import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './index.styles';
 
 interface ImagePreviewModalProps {
@@ -34,6 +36,9 @@ interface ImagePreviewModalProps {
     onClose: () => void;
     imageUrl: string;
     verseData: VerseShareData;
+    /** Theme and size the incoming image was generated with, so the controls start in sync. */
+    initialThemeMode?: 'light' | 'dark';
+    initialSize?: ImageSize;
 }
 
 export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
@@ -41,21 +46,30 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     onClose,
     imageUrl,
     verseData,
+    initialThemeMode = 'light',
+    initialSize,
 }) => {
+    const { t } = useTranslation();
     const { settings } = useSettings();
     const [selectedFontId, setSelectedFontId] = React.useState(settings.imageArabicFont ?? DEFAULT_IMAGE_FONT_ID);
     const [fontScale, setFontScale] = React.useState(1.0);
-    const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const { theme, common } = useTheme();
+    const styles = useThemedStyles(createStyles);
     const [currentImage, setCurrentImage] = React.useState(imageUrl);
-    const [mode, setMode] = React.useState<'light' | 'dark'>('light');
-    const [selectedSize, setSelectedSize] = React.useState<ImageSize>(IMAGE_SIZES[6]); // Default to classic
+    const [mode, setMode] = React.useState<'light' | 'dark'>(initialThemeMode);
+    const [selectedSize, setSelectedSize] = React.useState<ImageSize>(initialSize ?? getDefaultImageSize());
     const [isGenerating, setIsGenerating] = React.useState(false);
     const viewShotRef = React.useRef<any>(null);
-
+    const selectedFont = getFontOption(selectedFontId);
+    // A new image from ShareModal: reset controls to the options it was generated with
     React.useEffect(() => {
         setCurrentImage(imageUrl);
+        if (!imageUrl) return;
+        setMode(initialThemeMode);
+        if (initialSize) setSelectedSize(initialSize);
+        setSelectedFontId(settings.imageArabicFont ?? DEFAULT_IMAGE_FONT_ID);
+        setFontScale(1.0);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [imageUrl]);
 
     const regenerateImage = async (themeMode: 'light' | 'dark', size: ImageSize, fontId?: string, scale?: number) => {
@@ -113,7 +127,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
     const handleDownload = () => {
         if (Platform.OS === 'web') {
-            ShareService.downloadImageAsBlob(imageUrl, verseData);
+            ShareService.downloadImageAsBlob(currentImage, verseData);
         } else {
             Alert.alert('Bilgi', 'Resmi kaydetmek için paylaş seçeneklerini kullanabilirsiniz.');
         }
@@ -122,7 +136,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     const handleCopy = async () => {
         try {
             if (Platform.OS === 'web' && navigator.clipboard && navigator.clipboard.write) {
-                const response = await fetch(imageUrl);
+                const response = await fetch(currentImage);
                 const blob = await response.blob();
                 await navigator.clipboard.write([
                     new ClipboardItem({
@@ -141,7 +155,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
     const handleOpenInNewTab = () => {
         if (Platform.OS === 'web' && typeof window !== 'undefined') {
-            window.open(imageUrl, '_blank');
+            window.open(currentImage, '_blank');
         }
     };
 
@@ -152,7 +166,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
             if (platformId === 'generic') {
                 await ShareService.shareVerse(verseData);
             } else {
-                ShareService.shareToSocialPlatform(platformId, imageUrl, url);
+                ShareService.shareToSocialPlatform(platformId, currentImage, url);
             }
         } catch (error) {
             console.error('Paylaşım hatası:', error);
@@ -203,7 +217,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
                             {/* Font Selection */}
                             <View style={styles.controlSection}>
-                                <Text style={styles.sectionTitle}>Yazı Tipi</Text>
+                                <Text style={[common.textStrong, common.mbSm]}>Yazı Tipi</Text>
                                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView}>
                                     <View style={styles.sizeRow}>
                                         {ARABIC_FONT_OPTIONS.map(font => {
@@ -214,7 +228,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                                     disabled={isGenerating}
                                                     style={[
                                                         styles.sizeButton,
-                                                        isSelected && styles.sizeButtonSelected,
+                                                        isSelected && common.buttonPrimary,
                                                     ]}
                                                     onPress={() => {
                                                         setSelectedFontId(font.id);
@@ -222,12 +236,12 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                                     }}
                                                 >
                                                     <Text style={[
-                                                        isSelected ? styles.fontLabelArSelected : styles.fontLabelArDefault,
+                                                        styles.fontLabelAr, isSelected && common.buttonTextPrimary,
                                                         { fontFamily: getArabicFontFamily(font) },
                                                     ]}>
                                                         {font.labelAr}
                                                     </Text>
-                                                    <Text style={isSelected ? styles.fontLabelTrSelected : styles.fontLabelTrDefault}>
+                                                    <Text style={[styles.fontLabelTr, isSelected && common.buttonTextPrimary]}>
                                                         {font.label}
                                                     </Text>
                                                 </TouchableOpacity>
@@ -235,16 +249,19 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                         })}
                                     </View>
                                 </ScrollView>
+                                {Platform.OS !== 'web' && selectedFont.hasQuranMarks === false && (
+                                    <Text style={[common.smallText, common.mtSm]}>{t('share.fontNoQuranMarks')}</Text>
+                                )}
                             </View>
 
                             {/* Font Scale */}
                             <View style={styles.controlSection}>
-                                <Text style={styles.sectionTitle}>
+                                <Text style={[common.textStrong, common.mbSm]}>
                                     Yazı Boyutu ({Math.round(fontScale * 100)}%)
                                 </Text>
-                                <View style={styles.controlRow}>
+                                <View style={[common.rowGap, common.center]}>
                                     <TouchableOpacity
-                                        style={[styles.controlButton, styles.controlButtonBg, common.flex1]}
+                                        style={[styles.controlButton, common.flex1]}
                                         disabled={isGenerating || fontScale <= 0.5}
                                         onPress={() => {
                                             const s = Math.max(0.5, Math.round((fontScale - 0.1) * 10) / 10);
@@ -255,17 +272,17 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                         <Text style={styles.scaleButtonTextSmall}>A−</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        style={[styles.controlButton, styles.controlButtonBg, common.flex1]}
+                                        style={[styles.controlButton, common.flex1]}
                                         disabled={isGenerating}
                                         onPress={() => {
                                             setFontScale(1.0);
                                             regenerateImage(mode, selectedSize, selectedFontId, 1.0);
                                         }}
                                     >
-                                        <Text style={[styles.actionText, styles.actionTextSmall]}>Sıfırla</Text>
+                                        <Text style={common.actionButtonText}>Sıfırla</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        style={[styles.controlButton, styles.controlButtonBg, common.flex1]}
+                                        style={[styles.controlButton, common.flex1]}
                                         disabled={isGenerating || fontScale >= 2.0}
                                         onPress={() => {
                                             const s = Math.min(2.0, Math.round((fontScale + 0.1) * 10) / 10);
@@ -280,25 +297,24 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
                             {/* Theme Selection */}
                             <View style={styles.controlSection}>
-                                <Text style={styles.sectionTitle}>
+                                <Text style={[common.textStrong, common.mbSm]}>
                                     Tema Seçimi
                                 </Text>
-                                <View style={styles.controlRow}>
+                                <View style={[common.rowGap, common.center]}>
                                     <TouchableOpacity
                                         style={[
                                             styles.controlButton,
-                                            styles.controlButtonBg,
-                                            mode === 'light' && styles.controlButtonActive
+                                            mode === 'light' && common.buttonPrimary
                                         ]}
                                         onPress={() => regenerateImage('light', selectedSize)}
                                         disabled={isGenerating}
                                     >
-                                        <View style={styles.actionIcon}>
+                                        <View>
                                             <Sun size={16} color={mode === 'light' ? '#fff' : theme.text} />
                                         </View>
                                         <Text style={[
-                                            styles.actionText,
-                                            mode === 'light' && styles.textOnPrimary
+                                            common.actionButtonText,
+                                            mode === 'light' && common.buttonTextPrimary
                                         ]}>
                                             Light
                                         </Text>
@@ -306,18 +322,17 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                     <TouchableOpacity
                                         style={[
                                             styles.controlButton,
-                                            styles.controlButtonBg,
-                                            mode === 'dark' && styles.controlButtonActive
+                                            mode === 'dark' && common.buttonPrimary
                                         ]}
                                         onPress={() => regenerateImage('dark', selectedSize)}
                                         disabled={isGenerating}
                                     >
-                                        <View style={styles.actionIcon}>
+                                        <View>
                                             <Moon size={16} color={mode === 'dark' ? '#fff' : theme.text} />
                                         </View>
                                         <Text style={[
-                                            styles.actionText,
-                                            mode === 'dark' && styles.textOnPrimary
+                                            common.actionButtonText,
+                                            mode === 'dark' && common.buttonTextPrimary
                                         ]}>
                                             Dark
                                         </Text>
@@ -327,111 +342,82 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
                             {/* Size Selection */}
                             <View style={styles.controlSection}>
-                                <Text style={styles.sectionTitle}>
+                                <Text style={[common.textStrong, common.mbSm]}>
                                     Boyut Seçimi
                                 </Text>
-                                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView}>
-                                    <View style={styles.sizeRow}>
-                                        {IMAGE_SIZES.map((size) => (
-                                            <TouchableOpacity
-                                                key={size.id}
-                                                style={[
-                                                    styles.sizeButton,
-                                                    selectedSize.id === size.id && styles.sizeButtonSelected
-                                                ]}
-                                                onPress={() => regenerateImage(mode, size)}
-                                                disabled={isGenerating}
-                                            >
-                                                <View style={styles.sizeIcon}>
-                                                    <PlatformIcon
-                                                        spec={size.icon}
-                                                        size={22}
-                                                        color={selectedSize.id === size.id ? '#fff' : theme.text}
-                                                    />
-                                                </View>
-                                                <Text style={[
-                                                    styles.sizeTitle,
-                                                    selectedSize.id === size.id && styles.textOnPrimary
-                                                ]}>
-                                                    {size.displayName}
-                                                </Text>
-                                                <Text style={[
-                                                    styles.sizeDescription,
-                                                    selectedSize.id === size.id && styles.textOnPrimary
-                                                ]}>
-                                                    {size.description}
-                                                </Text>
-                                                <Text style={[
-                                                    styles.sizeDimensions,
-                                                    selectedSize.id === size.id && styles.textOnPrimary
-                                                ]}>
-                                                    {size.width}×{size.height}
-                                                </Text>
-                                            </TouchableOpacity>
-                                        ))}
-                                    </View>
-                                </ScrollView>
+                                <ImageSizePicker selected={selectedSize} onSelect={(size) => regenerateImage(mode, size)} disabled={isGenerating} showDimensions />
                             </View>
 
                             {isGenerating && (
                                 <View style={[styles.loadingContainer, common.row, common.center]}>
                                     <RefreshCw size={14} color={theme.textSecondary} />
-                                    <Text style={[styles.loadingText, styles.loadingTextSpacing]}>
+                                    <Text style={styles.loadingText}>
                                         Resim oluşturuluyor...
                                     </Text>
                                 </View>
                             )}
 
                             {/* Image Actions */}
-                            <View style={styles.actionsContainer}>
-                                <Text style={styles.sectionTitle}>
+                            <View style={styles.controlSection}>
+                                <Text style={[common.textStrong, common.mbSm]}>
                                     Resim İşlemleri
                                 </Text>
 
-                                <View style={styles.actionButtons}>
+                                <View style={common.actionButtonRow}>
                                     <TouchableOpacity
-                                        style={styles.actionButton}
+                                        style={common.actionButton}
                                         onPress={handleDownload}
                                     >
-                                        <View style={styles.actionIcon}>
+                                        <View>
                                             <Download size={16} color={theme.text} />
                                         </View>
-                                        <Text style={styles.actionText}>İndir</Text>
+                                        <Text style={common.actionButtonText}>İndir</Text>
                                     </TouchableOpacity>
 
                                     {Platform.OS === 'web' && (
                                         <>
                                             <TouchableOpacity
-                                                style={styles.actionButton}
+                                                style={common.actionButton}
                                                 onPress={handleCopy}
                                             >
-                                                <View style={styles.actionIcon}>
+                                                <View>
                                                     <Copy size={16} color={theme.text} />
                                                 </View>
-                                                <Text style={styles.actionText}>Kopyala</Text>
+                                                <Text style={common.actionButtonText}>Kopyala</Text>
                                             </TouchableOpacity>
 
                                             <TouchableOpacity
-                                                style={styles.actionButton}
+                                                style={common.actionButton}
                                                 onPress={handleOpenInNewTab}
                                             >
-                                                <View style={styles.actionIcon}>
+                                                <View>
                                                     <ExternalLink size={16} color={theme.text} />
                                                 </View>
-                                                <Text style={styles.actionText}>Yeni Sekmede Aç</Text>
+                                                <Text style={common.actionButtonText}>Yeni Sekmede Aç</Text>
                                             </TouchableOpacity>
                                         </>
                                     )}
                                 </View>
                             </View>
 
+                            {/* Video with recitation (web only) - remounted per image so it never shares a stale video */}
+                            <View style={styles.controlSection}>
+                                <VerseVideoActions
+                                    key={currentImage}
+                                    verseData={verseData}
+                                    size={selectedSize}
+                                    getImageUrl={async () => currentImage}
+                                    disabled={isGenerating}
+                                />
+                            </View>
+
                             {/* Share Platforms */}
-                            <View style={styles.shareContainer}>
-                                <Text style={styles.sectionTitle}>
+                            <View style={styles.controlSection}>
+                                <Text style={[common.textStrong, common.mbSm]}>
                                     Paylaş
                                 </Text>
 
-                                <View style={styles.platformList}>
+                                <View style={common.gapSm}>
                                     {platforms.map((platform) => (
                                         <TouchableOpacity
                                             key={platform.id}
@@ -439,10 +425,10 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                             onPress={() => handlePlatformShare(platform.id)}
                                             activeOpacity={0.7}
                                         >
-                                            <View style={styles.platformIcon}>
+                                            <View style={common.iconBox}>
                                                 <PlatformIcon spec={platform.icon} size={20} color={theme.text} />
                                             </View>
-                                            <Text style={styles.platformName}>
+                                            <Text style={common.text}>
                                                 {platform.name}
                                             </Text>
                                         </TouchableOpacity>
@@ -453,8 +439,8 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                             {/* Verse Info */}
                             <View style={[styles.verseInfo, common.row, common.center]}>
                                 <BookOpen size={14} color={theme.textSecondary} />
-                                <Text style={[styles.verseInfoText, styles.verseInfoTextSpacing]}>
-                                    {verseData.surahName} Suresi, {formatVerseNumber(verseData.verseNumber, settings.verseNumberStyle)}. Ayet
+                                <Text style={styles.verseInfoText}>
+                                    {getVerseLabel(verseData, settings.verseNumberStyle)}
                                 </Text>
                             </View>
 
@@ -465,12 +451,14 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
             {/* Hidden view for capturing on Native */}
             {Platform.OS !== 'web' && (
-                <View style={styles.hiddenCapture}>
+                <View style={common.offscreen}>
                     <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
                         <NativeVerseImageDesign
                             verseData={verseData}
                             themeMode={mode}
                             size={selectedSize}
+                            arabicFontFamily={getArabicFontFamily(selectedFont)}
+                            fontScale={fontScale}
                         />
                     </ViewShot>
                 </View>

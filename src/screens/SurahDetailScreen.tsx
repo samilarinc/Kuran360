@@ -1,11 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import {
-  View,
-  FlatList,
-  ScrollView,
-  SafeAreaView,
-  Platform,
-} from 'react-native';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { View, FlatList, ScrollView, SafeAreaView, Platform } from 'react-native';
 import { FontSizeToggle } from '@msarinc/ui';
 import { Verse } from '@/components/Verse';
 import { PaginatedVerseView } from '@/components/PaginatedVerseView';
@@ -22,8 +16,6 @@ import { Surah, Verse as VerseType, LastRead } from '@/types';
 import { loadSurah } from '@/data/quranData';
 import logger from '@/utils/logger';
 import { getSurahName } from '@/utils/surahName';
-import { createStyles } from './SurahDetailScreen.styles';
-import { createCommonStyles } from '@/theme/common.styles';
 
 const MIN_FONT_SIZE = 18;
 const MAX_FONT_SIZE = 44;
@@ -52,7 +44,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   // Persist current verse index for the active surah to survive remounts
   const [currentPaginatedIndex, setCurrentPaginatedIndex] = useState<number>(route.params.verseIndex ?? 0);
   const { settings, updateSettings } = useDebouncedSettings(200); // 200ms debounce for better UX
-  const { theme } = useTheme();
+  const { common } = useTheme();
   const { t } = useTranslation();
   const { user } = useAuth();
   const { addToLastRead, lastRead } = useUserData();
@@ -275,8 +267,6 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   }, [updateSettings]);
 
   // Memoize styles to prevent re-creation on every render
-  const styles = useMemo(() => createStyles(theme), [theme]);
-  const common = useMemo(() => createCommonStyles(theme), [theme]);
 
   const fontSize = settings.surahFontSize;
   const decreaseFontSize = () => updateSettings({ surahFontSize: Math.max(MIN_FONT_SIZE, fontSize - FONT_SIZE_STEP) });
@@ -330,7 +320,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             // Web: ScrollView renders all items immediately — no virtualization,
             // so scrollIntoView works reliably for bookmark navigation
             <ScrollView
-              contentContainerStyle={styles.listContainer}
+              contentContainerStyle={common.pbXl}
               showsVerticalScrollIndicator={false}
               onScrollBeginDrag={() => setIsUserScrolling(true)}
               onMomentumScrollEnd={() => setTimeout(() => setIsUserScrolling(false), 1000)}
@@ -354,7 +344,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               data={surah.verses}
               renderItem={renderVerse}
               keyExtractor={(item) => `${item.surahNumber}-${item.number}`}
-              contentContainerStyle={styles.listContainer}
+              contentContainerStyle={common.pbXl}
               showsVerticalScrollIndicator={false}
               initialNumToRender={50}
               maxToRenderPerBatch={50}

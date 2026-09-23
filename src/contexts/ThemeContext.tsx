@@ -1,6 +1,7 @@
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, useMemo, ReactNode } from 'react';
 import { LIGHT_COLORS, DARK_COLORS, LIGHTS_OUT_COLORS, Theme } from '@/theme';
-export type { Theme };
+import { createCommonStyles, CommonStyles } from '@/theme/common.styles';
+export type { Theme, CommonStyles };
 import { useSettings } from './SettingsContext';
 
 const PALETTES: Record<string, Theme> = {
@@ -11,6 +12,8 @@ const PALETTES: Record<string, Theme> = {
 
 interface ThemeContextType {
   theme: Theme;
+  /** Shared style kit for the active theme */
+  common: CommonStyles;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
 }
@@ -26,6 +29,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   const theme: Theme = PALETTES[settings.theme] ?? LIGHT_COLORS;
   const isDarkMode = settings.theme !== 'light';
+  const common = useMemo(() => createCommonStyles(theme), [theme]);
 
   // Geriye dönük uyum için 2 durumlu toggle; 3'lü seçim topbar'daki ThemeToggle'da.
   const toggleDarkMode = () => {
@@ -34,6 +38,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   const contextValue: ThemeContextType = {
     theme,
+    common,
     isDarkMode,
     toggleDarkMode,
   };
@@ -51,4 +56,13 @@ export const useTheme = (): ThemeContextType => {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
   return context;
+};
+
+/**
+ * Memoized per-theme styles. Pass a module-level factory so the memo stays stable:
+ * `const styles = useThemedStyles(createStyles);`
+ */
+export const useThemedStyles = <T,>(factory: (theme: Theme, common: CommonStyles) => T): T => {
+  const { theme, common } = useTheme();
+  return useMemo(() => factory(theme, common), [factory, theme, common]);
 };

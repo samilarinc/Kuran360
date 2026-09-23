@@ -13,14 +13,14 @@ import { ArabicText } from '@/components/ArabicText';
 import { AppHeader } from '@/components/AppHeader';
 import { LoadingView } from '@/components/LoadingView';
 import { TranslationPickerModal, TranslationPickerOption } from '@/components/TranslationPickerModal';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useSettings } from '@/contexts/SettingsContext';
 import { Verse as VerseType } from '@/types';
 import { loadSurah } from '@/data/quranData';
 import { getVerseRangesForPage, TOTAL_MUSHAF_PAGES } from '@/data/pageMapping';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
-import { createCommonStyles } from '@/theme/common.styles';
+import { getSpacedArabicText } from '@/utils/arabicText';
 import { createStyles } from './QuranPageScreen.styles';
 
 const MIN_FONT_SIZE = 18;
@@ -29,11 +29,6 @@ const FONT_SIZE_STEP = 2;
 
 const NO_TRANSLATION_ID = '';
 const WORD_BY_WORD_TRANSLATION_ID = '__word_by_word__';
-
-const spacedArabicText = (verse: VerseType): string => {
-  const words = verse.wordTranslations.map(w => w.arabic).filter(Boolean);
-  return words.length > 0 ? words.join(' ') : verse.arabicText;
-};
 
 interface PageSegment {
   surahNumber: number;
@@ -64,11 +59,10 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
   const [loading, setLoading] = useState(true);
   const [pageInput, setPageInput] = useState(String(pageNumber));
   const [translationModalVisible, setTranslationModalVisible] = useState(false);
-  const { theme } = useTheme();
+  const { theme, common } = useTheme();
   const { t } = useTranslation();
   const { settings, updateSettings, availableTranslations } = useSettings();
-  const styles = useMemo(() => createStyles(theme), [theme]);
-  const common = useMemo(() => createCommonStyles(theme), [theme]);
+  const styles = useThemedStyles(createStyles);
 
   const translationOptions: TranslationPickerOption[] = useMemo(() => [
     { id: NO_TRANSLATION_ID, label: t('quranPageScreen.noTranslation') },
@@ -192,7 +186,7 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
                   >
                     {segment.verses.map(verse => (
                       <React.Fragment key={verse.number}>
-                        {spacedArabicText(verse)}
+                        {getSpacedArabicText(verse)}
                         {'\u00A0'}
                         <Text style={[styles.verseNumberMark, { fontSize: Math.max(14, fontSize * 0.6) }]}>
                           {`\ufd3f${formatVerseNumber(verse.number, settings.verseNumberStyle)}\ufd3e`}
@@ -214,7 +208,7 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
                             { fontSize, lineHeight: fontSize * 2.2 },
                           ]}
                         >
-                          {spacedArabicText(verse)}
+                          {getSpacedArabicText(verse)}
                           {'\u00A0'}
                           <Text style={[styles.verseNumberMark, { fontSize: Math.max(14, fontSize * 0.6) }]}>
                             {`\ufd3e${formatVerseNumber(verse.number, settings.verseNumberStyle)}\ufd3f`}
@@ -224,9 +218,9 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
                         {settings.quranPageTranslation === WORD_BY_WORD_TRANSLATION_ID ? (
                           <View style={styles.wordByWordGrid}>
                             {verse.wordTranslations.map((word, idx) => (
-                              <View key={idx} style={styles.wordByWordItem}>
-                                <ArabicText style={styles.wordByWordArabic}>{word.arabic}</ArabicText>
-                                <Text style={styles.wordByWordTranslation}>{word.translation}</Text>
+                              <View key={idx} style={common.wordItem}>
+                                <ArabicText style={common.wordArabic}>{word.arabic}</ArabicText>
+                                <Text style={[common.wordTranslation, styles.translationFont]}>{word.translation}</Text>
                               </View>
                             ))}
                           </View>
@@ -247,11 +241,11 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
 
       <View style={styles.pagerBar}>
         <TouchableOpacity
-          style={[styles.pagerButton, pageNumber <= 1 && styles.pagerButtonDisabled]}
+          style={[styles.pagerButton, pageNumber <= 1 && common.disabled]}
           disabled={pageNumber <= 1}
           onPress={() => goToPage(pageNumber - 1)}
         >
-          <Text style={styles.pagerButtonText}>{t('quranPageScreen.previousPage')}</Text>
+          <Text style={common.textStrong}>{t('quranPageScreen.previousPage')}</Text>
         </TouchableOpacity>
 
         <TextInput
@@ -266,11 +260,11 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
         />
 
         <TouchableOpacity
-          style={[styles.pagerButton, pageNumber >= TOTAL_MUSHAF_PAGES && styles.pagerButtonDisabled]}
+          style={[styles.pagerButton, pageNumber >= TOTAL_MUSHAF_PAGES && common.disabled]}
           disabled={pageNumber >= TOTAL_MUSHAF_PAGES}
           onPress={() => goToPage(pageNumber + 1)}
         >
-          <Text style={styles.pagerButtonText}>{t('quranPageScreen.nextPage')}</Text>
+          <Text style={common.textStrong}>{t('quranPageScreen.nextPage')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -279,7 +273,7 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
           style={styles.mealButton}
           onPress={() => setTranslationModalVisible(true)}
         >
-          <Text style={styles.mealButtonText} numberOfLines={1}>
+          <Text style={common.textStrong} numberOfLines={1}>
             {t('quranPageScreen.translationLabel', { translation: selectedTranslationLabel })}
           </Text>
         </TouchableOpacity>

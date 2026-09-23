@@ -5,14 +5,6 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
     compactTripRow: {
         paddingVertical: SPACING.xs,
     },
-    compactTripMain: {
-        gap: SPACING.sm,
-    },
-    compactCitySelect: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: SPACING.sm,
-    },
     cityChip: {
         flex: 1,
         height: 40,
@@ -58,17 +50,10 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         justifyContent: 'center',
         borderColor: theme.border,
     },
-    destinationChipActive: {
-        backgroundColor: theme.primary,
-        borderColor: theme.primary,
-    },
     destinationChipText: {
         fontSize: FONT_SIZES.small,
         fontWeight: '600',
         color: theme.text,
-    },
-    destinationChipTextActive: {
-        color: '#FFFFFF',
     },
     plannerDivider: {
         height: 1,
@@ -86,8 +71,6 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         fontSize: 13,
         fontWeight: '600',
         textAlign: 'center',
-    },
-    reminderTextPrimary: {
         color: theme.primary,
     },
 });

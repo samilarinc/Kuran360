@@ -1,26 +1,18 @@
 import React, { useMemo } from 'react';
-import {
-    View,
-    Text,
-    SafeAreaView,
-    Platform,
-    Dimensions,
-} from 'react-native';
+import { View, Text, SafeAreaView, Platform, Dimensions, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, CommonStyles, useThemedStyles } from '@/contexts/ThemeContext';
 import { AppButton } from '@/components/AppButton';
 import { LoadingView } from '@/components/LoadingView';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './HutbeScreen.styles';
+import { Theme } from '@/theme';
 
 export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
     // Add cache busting to ensure the latest PDF is always fetched
     const pdfUrl = useMemo(() => `${baseUrl}/hutbe/hutbe.pdf?t=${Date.now()}`, [baseUrl]);
@@ -45,7 +37,7 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     if (exists === false) {
         return (
-            <SafeAreaView style={[common.container, { backgroundColor: theme.background }]}>
+            <SafeAreaView style={common.container}>
                 <AppHeader
                     title={t('hutbeScreen.errorTitle')}
                     showBackButton={true}
@@ -53,7 +45,7 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                     showHomeButton={true}
                     onHomePress={() => navigation.navigate('Main')}
                 />
-                <View style={[styles.mobileContainer, { flex: 1 }]}>
+                <View style={styles.mobileContainer}>
                     <Ionicons name="warning-outline" size={80} color={theme.error} />
                     <Text style={[styles.mobileText, { color: theme.textSecondary }]}>{t('hutbeScreen.notFound')}</Text>
                     <AppButton
@@ -68,7 +60,7 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={[common.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={common.container}>
             <AppHeader
                 title={t('screenTitles.hutbe')}
                 showBackButton={true}
@@ -105,4 +97,20 @@ export const HutbeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     );
 };
 
+const createStyles = (theme: Theme, common: CommonStyles) => {
 
+    return StyleSheet.create({
+        mobileContainer: {
+            ...common.container,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 20,
+        },
+        mobileText: {
+            ...common.text,
+            textAlign: 'center',
+            marginVertical: 20,
+            fontSize: 18,
+        },
+    });
+};

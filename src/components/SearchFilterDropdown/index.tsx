@@ -1,15 +1,15 @@
-import React, { useMemo } from 'react';
-import { View, ScrollView } from 'react-native';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './index.styles';
+import React from 'react';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import { useThemedStyles, useTheme } from '@/contexts/ThemeContext';
+import { SPACING, Theme } from '@/theme';
 
 interface SearchFilterDropdownProps {
     children: React.ReactNode;
 }
 
 export const SearchFilterDropdown: React.FC<SearchFilterDropdownProps> = ({ children }) => {
-    const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const { common } = useTheme();
+    const styles = useThemedStyles(createStyles);
 
     return (
         <View style={styles.surahDropdown}>
@@ -19,8 +19,22 @@ export const SearchFilterDropdown: React.FC<SearchFilterDropdownProps> = ({ chil
                 nestedScrollEnabled
                 keyboardShouldPersistTaps="handled"
             >
-                <View style={styles.selectorGrid}>{children}</View>
+                <View style={common.rowWrap}>{children}</View>
             </ScrollView>
         </View>
     );
 };
+
+const createStyles = (theme: Theme) => StyleSheet.create({
+    surahDropdown: {
+        backgroundColor: theme.cardBackground,
+        borderRadius: 8,
+        marginTop: SPACING.xs,
+        borderWidth: 1,
+        borderColor: theme.border,
+        padding: SPACING.xs,
+    },
+    dropdownScroll: {
+        maxHeight: 200,
+    },
+});

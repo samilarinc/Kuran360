@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './index.styles';
+import { useThemedStyles, useTheme } from '@/contexts/ThemeContext';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
 interface SearchHistoryBarProps {
     visible: boolean;
@@ -12,16 +12,16 @@ interface SearchHistoryBarProps {
 }
 
 export const SearchHistoryBar: React.FC<SearchHistoryBarProps> = ({ visible, history, onSelect, onClear }) => {
-    const { theme } = useTheme();
+    const { common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     if (!visible || history.length === 0) return null;
 
     return (
-        <View style={styles.historyContainer}>
-            <View style={styles.historyHeader}>
-                <Text style={styles.historyTitle}>{t('searchScreen.history.title')}</Text>
+        <View style={[common.sectionCardCompact, common.mbLg]}>
+            <View style={[common.rowBetween, common.mbSm]}>
+                <Text style={common.textStrong}>{t('searchScreen.history.title')}</Text>
                 <TouchableOpacity onPress={onClear}>
                     <Text style={styles.clearHistoryText}>{t('searchScreen.history.clear')}</Text>
                 </TouchableOpacity>
@@ -41,4 +41,28 @@ export const SearchHistoryBar: React.FC<SearchHistoryBarProps> = ({ visible, his
             </ScrollView>
         </View>
     );
+};
+
+const createStyles = (theme: Theme) => {
+
+    return StyleSheet.create({
+        clearHistoryText: {
+            fontSize: FONT_SIZES.small,
+            color: theme.primary,
+            fontWeight: '500',
+        },
+        historyItem: {
+            backgroundColor: theme.background,
+            paddingHorizontal: SPACING.sm,
+            paddingVertical: SPACING.xs,
+            borderRadius: 20,
+            marginRight: SPACING.xs,
+            borderWidth: 1,
+            borderColor: theme.border,
+        },
+        historyItemText: {
+            fontSize: FONT_SIZES.small,
+            color: theme.text,
+        },
+    });
 };

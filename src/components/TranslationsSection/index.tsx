@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
-import { View } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useThemedStyles } from '@/contexts/ThemeContext';
 import { AppButton } from '@/components/AppButton';
 import { TranslationListItem } from '@/components/TranslationListItem';
-import { createStyles } from './index.styles';
+import { SPACING, Theme } from '@/theme';
 
 interface TranslationsSectionProps {
     translations: string[];
@@ -25,9 +25,8 @@ export const TranslationsSection: React.FC<TranslationsSectionProps> = ({
     onSelectAll,
     onSelectDefault,
 }) => {
-    const { theme } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     return (
         <>
@@ -44,7 +43,7 @@ export const TranslationsSection: React.FC<TranslationsSectionProps> = ({
                     size="small"
                     title={t('settingsScreen.translations.selectDefault')}
                     onPress={onSelectDefault}
-                    style={{ ...styles.actionButton, ...styles.secondaryActionButton }}
+                    style={styles.actionButton}
                 />
             </View>
 
@@ -65,3 +64,23 @@ export const TranslationsSection: React.FC<TranslationsSectionProps> = ({
         </>
     );
 };
+
+const createStyles = (_theme: Theme) => StyleSheet.create({
+    translationActions: {
+        flexDirection: 'row',
+        paddingHorizontal: SPACING.lg,
+        paddingTop: SPACING.md,
+        paddingBottom: SPACING.sm,
+        gap: SPACING.sm,
+    },
+    actionButton: {
+        flex: 1,
+        paddingVertical: SPACING.sm,
+        paddingHorizontal: SPACING.md,
+        borderRadius: 12,
+    },
+    translationsContainer: {
+        paddingHorizontal: SPACING.lg,
+        paddingBottom: SPACING.md,
+    },
+});

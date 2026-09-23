@@ -75,26 +75,8 @@ export const createStyles = (theme: Theme) => {
       gap: SPACING.xs,
       marginTop: SPACING.xs,
     },
-    wordByWordItem: {
-      backgroundColor: theme.surface,
-      paddingVertical: 4,
-      paddingHorizontal: SPACING.xs,
-      borderRadius: 6,
-      minWidth: 60,
-      alignItems: 'center',
-    },
-    wordByWordArabic: {
-      fontSize: FONT_SIZES.small,
-      color: theme.text,
-      fontWeight: '600',
-      textAlign: 'center',
-      writingDirection: 'rtl',
-    },
-    wordByWordTranslation: {
-      fontSize: FONT_SIZES.small - 2,
-      color: theme.textSecondary,
+    translationFont: {
       fontFamily: TRANSLATION_FONT_FAMILY,
-      textAlign: 'center',
     },
     mealBar: {
       paddingHorizontal: SPACING.lg,
@@ -108,11 +90,6 @@ export const createStyles = (theme: Theme) => {
       borderWidth: 1,
       borderColor: theme.border,
       alignItems: 'center',
-    },
-    mealButtonText: {
-      color: theme.text,
-      fontSize: FONT_SIZES.medium,
-      fontWeight: '600',
     },
     pagerBar: {
       flexDirection: 'row',
@@ -133,14 +110,6 @@ export const createStyles = (theme: Theme) => {
       borderColor: theme.border,
       minWidth: 90,
       alignItems: 'center',
-    },
-    pagerButtonDisabled: {
-      opacity: 0.4,
-    },
-    pagerButtonText: {
-      color: theme.text,
-      fontSize: FONT_SIZES.medium,
-      fontWeight: '600',
     },
     pageInput: {
       borderWidth: 1,

@@ -16,11 +16,6 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         marginBottom: SPACING.md,
         color: theme.text,
     },
-    plannerActions: {
-        flexDirection: 'row',
-        gap: SPACING.sm,
-        marginTop: SPACING.md,
-    },
     plannerActionBtn: {
         flex: 1,
         height: 44,
@@ -30,9 +25,6 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: theme.primary + '10',
         borderColor: theme.primary,
-    },
-    plannerActionBtnTall: {
-        minHeight: 44,
     },
     plannerActionBtnText: {
         fontSize: 14,

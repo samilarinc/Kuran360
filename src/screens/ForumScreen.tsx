@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
@@ -7,7 +7,6 @@ import { useThreads, useCreateThread } from '@/contexts/ForumContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { VerseMention } from '@/types';
-import { createCommonStyles } from '@/theme/common.styles';
 
 export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { data: threads = [] } = useThreads();
@@ -30,7 +29,7 @@ export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
   };
 
-  const styles = useMemo(() => createCommonStyles(theme), [theme]);
+  const styles = useTheme().common;
   return (
     <SafeAreaView style={styles.container}>
       <AppHeader
@@ -64,7 +63,7 @@ export const ForumScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.sectionCardCompact} onPress={() => navigation.navigate('ForumThread', { threadId: item.id })}>
-            <Text style={[styles.text, { fontWeight: '600' }]}>{item.title}</Text>
+            <Text style={styles.textStrong}>{item.title}</Text>
             <Text style={styles.smallText}>{t('forumScreen.replies', { count: item.replyCount })}</Text>
           </TouchableOpacity>
         )}

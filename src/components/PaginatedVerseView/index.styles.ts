@@ -2,10 +2,6 @@ import { StyleSheet } from 'react-native';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
 export const createStyles = (theme: Theme) => StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: theme.background,
-    },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -34,10 +30,6 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
     },
     navButtonTextDisabled: {
         color: theme.textSecondary,
-    },
-    verseInfo: {
-        alignItems: 'center',
-        flex: 1,
     },
     verseNumberButton: {
         alignItems: 'center',
@@ -100,23 +92,6 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: SPACING.lg,
-    },
-    emptyVerseText: {
-        fontSize: FONT_SIZES.medium,
-        color: theme.textSecondary,
-        textAlign: 'center',
-        fontStyle: 'italic',
-    },
-    errorContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: SPACING.lg,
-    },
-    errorText: {
-        fontSize: FONT_SIZES.medium,
-        color: theme.textSecondary,
-        textAlign: 'center',
     },
     pageIndicator: {
         flexDirection: 'row',

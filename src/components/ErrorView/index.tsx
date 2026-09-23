@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, StyleProp, ViewStyle } from 'react-native';
 import { useTheme } from '@/contexts/ThemeContext';
 import { AppButton } from '../AppButton';
-import { createStyles } from './index.styles';
 
 type ErrorViewProps = {
     text: string;
@@ -13,12 +12,11 @@ type ErrorViewProps = {
 );
 
 export const ErrorView: React.FC<ErrorViewProps> = ({ text, retryText, onRetry, style }) => {
-    const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const { common } = useTheme();
 
     return (
-        <View style={[styles.container, style]}>
-            <Text style={styles.text}>{text}</Text>
+        <View style={[common.centerFill, common.gapLg, common.pLg, style]}>
+            <Text style={[common.textLarge, common.textCenter]}>{text}</Text>
             {onRetry && (
                 <AppButton title={retryText} onPress={onRetry} variant="primary" />
             )}

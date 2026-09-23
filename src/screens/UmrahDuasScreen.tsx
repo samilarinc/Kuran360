@@ -1,16 +1,9 @@
-import React, { useState, useMemo } from 'react';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    SafeAreaView,
-    ScrollView,
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './UmrahDuasScreen.styles';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
 interface UmrahDuasScreenProps {
     onNavigate: () => void;
@@ -242,7 +235,7 @@ const UMRAH_DUAS: DuaCategory[] = [
 ];
 
 export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) => {
-    const { theme } = useTheme();
+    const { common } = useTheme();
     const { t } = useTranslation();
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
     const [expandedDua, setExpandedDua] = useState<string | null>(null);
@@ -255,8 +248,7 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
         setExpandedDua(expandedDua === duaId ? null : duaId);
     };
 
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     return (
         <SafeAreaView style={common.container}>
@@ -267,14 +259,14 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
                 showHomeButton={true}
                 onHomePress={onNavigate}
             />
-            <ScrollView style={styles.content}>
+            <ScrollView style={common.content}>
                 {UMRAH_DUAS.map(category => (
-                    <View key={category.id} style={styles.categoryContainer}>
+                    <View key={category.id} style={common.mbMd}>
                         <TouchableOpacity
-                            style={styles.categoryHeader}
+                            style={[common.sectionCardCompact, common.rowBetween]}
                             onPress={() => toggleCategory(category.id)}
                         >
-                            <View style={styles.categoryTitleContainer}>
+                            <View style={common.row}>
                                 <Text style={styles.categoryTitle}>
                                     {category.title}
                                 </Text>
@@ -292,10 +284,10 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
                                 {category.duas.map(dua => (
                                     <View key={dua.id} style={styles.duaItem}>
                                         <TouchableOpacity
-                                            style={styles.duaHeader}
+                                            style={[common.rowBetween, common.pMd]}
                                             onPress={() => toggleDua(dua.id)}
                                         >
-                                            <Text style={styles.duaTitle}>
+                                            <Text style={[common.textAccent, common.flex1]}>
                                                 {dua.title}
                                             </Text>
                                             <Text style={common.subtitle}>
@@ -305,8 +297,8 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
 
                                         {expandedDua === dua.id && (
                                             <View style={styles.duaContent}>
-                                                <View style={styles.textBlock}>
-                                                    <Text style={styles.label}>
+                                                <View style={common.mbMd}>
+                                                    <Text style={[common.sectionLabel, common.mbXs]}>
                                                         {t('umrahDuasScreen.arabicLabel')}
                                                     </Text>
                                                     <Text style={styles.arabicText}>
@@ -314,8 +306,8 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
                                                     </Text>
                                                 </View>
 
-                                                <View style={styles.textBlock}>
-                                                    <Text style={styles.label}>
+                                                <View style={common.mbMd}>
+                                                    <Text style={[common.sectionLabel, common.mbXs]}>
                                                         {t('umrahDuasScreen.transliterationLabel')}
                                                     </Text>
                                                     <Text style={styles.transliterationText}>
@@ -323,8 +315,8 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
                                                     </Text>
                                                 </View>
 
-                                                <View style={styles.textBlock}>
-                                                    <Text style={styles.label}>
+                                                <View style={common.mbMd}>
+                                                    <Text style={[common.sectionLabel, common.mbXs]}>
                                                         {t('umrahDuasScreen.meaningLabel')}
                                                     </Text>
                                                     <Text style={styles.turkishText}>
@@ -342,4 +334,46 @@ export const UmrahDuasScreen: React.FC<UmrahDuasScreenProps> = ({ onNavigate }) 
             </ScrollView>
         </SafeAreaView>
     );
+};
+
+const createStyles = (theme: Theme) => {
+    return StyleSheet.create({
+    categoryTitle: {
+        fontSize: FONT_SIZES.large,
+        fontWeight: 'bold',
+        marginRight: SPACING.xs,
+        color: theme.text,
+    },
+    duasContainer: {
+        marginTop: SPACING.sm,
+        borderRadius: 12,
+        overflow: 'hidden',
+        backgroundColor: theme.surface,
+    },
+    duaItem: {
+        borderBottomWidth: 1,
+        borderBottomColor: theme.border,
+    },
+    duaContent: {
+        padding: SPACING.md,
+        paddingTop: 0,
+    },
+    arabicText: {
+        fontSize: FONT_SIZES.xlarge,
+        textAlign: 'right',
+        lineHeight: 36,
+        color: theme.text,
+    },
+    transliterationText: {
+        fontSize: FONT_SIZES.medium,
+        fontStyle: 'italic',
+        lineHeight: 24,
+        color: theme.text,
+    },
+    turkishText: {
+        fontSize: FONT_SIZES.medium,
+        lineHeight: 24,
+        color: theme.text,
+    },
+    });
 };

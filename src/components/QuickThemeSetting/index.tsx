@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react';
-import { View, Text } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { ThemeToggle } from '@msarinc/ui';
 import { Palette } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles as createSettingItemStyles } from '../SettingItem/index.styles';
-import { createStyles } from './index.styles';
+import { CommonStyles, useThemedStyles, useTheme } from '@/contexts/ThemeContext';
+import { createStyles as createSettingItemStyles } from '../SettingItem';
+import { SPACING, Theme } from '@/theme';
 
 const COLOR = '#F59E0B';
 
@@ -21,16 +21,16 @@ interface QuickThemeSettingProps {
 }
 
 export const QuickThemeSetting: React.FC<QuickThemeSettingProps> = ({ labels }) => {
-    const { theme } = useTheme();
+    const { common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const settingItemStyles = useMemo(() => createSettingItemStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
+    const settingItemStyles = useThemedStyles(createSettingItemStyles);
 
     return (
         <View style={styles.quickSettingsSection}>
             <Text style={styles.quickSettingsTitle}>{t('settingsScreen.quickSettings')}</Text>
             <View style={settingItemStyles.settingItem}>
-                <View style={settingItemStyles.settingContent}>
+                <View style={common.rowFill}>
                     <View style={[settingItemStyles.settingIconWrap, { backgroundColor: COLOR + '1A' }]}>
                         <Palette size={18} color={COLOR} />
                     </View>
@@ -43,4 +43,25 @@ export const QuickThemeSetting: React.FC<QuickThemeSettingProps> = ({ labels }) 
             </View>
         </View>
     );
+};
+
+const createStyles = (theme: Theme, common: CommonStyles) => {
+
+    return StyleSheet.create({
+        quickSettingsSection: {
+            ...common.card,
+            padding: 0,
+            marginTop: SPACING.md,
+            marginBottom: SPACING.lg,
+            overflow: 'hidden',
+        },
+        quickSettingsTitle: {
+            ...common.sectionLabel,
+            color: theme.secondary,
+            textTransform: 'uppercase',
+            paddingHorizontal: SPACING.lg,
+            paddingTop: SPACING.md,
+            paddingBottom: SPACING.xs,
+        },
+    });
 };

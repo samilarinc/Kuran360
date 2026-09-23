@@ -1,7 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './index.styles';
 
 interface ChecklistItemProps {
     checked: boolean;
@@ -13,14 +12,13 @@ interface ChecklistItemProps {
 
 /** A card row with a checkbox on the left, arbitrary label content, and an optional trailing accessory (e.g. delete button). */
 export const ChecklistItem: React.FC<ChecklistItemProps> = ({ checked, onToggle, children, trailing, style }) => {
-    const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const { common } = useTheme();
 
     return (
-        <View style={[styles.item, style]}>
-            <TouchableOpacity style={styles.content} onPress={onToggle}>
-                <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
-                    {checked && <Text style={styles.checkmark}>✓</Text>}
+        <View style={[common.listItem, style]}>
+            <TouchableOpacity style={[common.rowFill, common.gapMd]} onPress={onToggle}>
+                <View style={[common.checkbox, checked && common.selected]}>
+                    {checked && <Text style={common.checkmark}>✓</Text>}
                 </View>
                 {children}
             </TouchableOpacity>

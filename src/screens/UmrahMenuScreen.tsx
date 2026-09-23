@@ -1,24 +1,18 @@
-import React, { useMemo } from 'react';
-import {
-    View,
-    Text,
-    SafeAreaView,
-    ScrollView,
-} from 'react-native';
+import React from 'react';
+import { View, Text, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ListChecks, Navigation, HandHeart, BookHeart } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { MenuListRow } from '@/components/MenuListRow';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './UmrahMenuScreen.styles';
-import { createCommonStyles } from '@/theme/common.styles';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
 interface UmrahMenuScreenProps {
     navigation: any;
 }
 
 export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) => {
-    const { theme } = useTheme();
+    const { common } = useTheme();
     const { t } = useTranslation();
 
     const menuItems = [
@@ -56,8 +50,7 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
         },
     ];
 
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     return (
         <SafeAreaView style={common.container}>
@@ -90,4 +83,23 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
             </ScrollView>
         </SafeAreaView>
     );
+};
+
+const createStyles = (theme: Theme) => {
+    return StyleSheet.create({
+    content: {
+        flex: 1,
+        padding: SPACING.lg,
+    },
+    header: {
+        marginBottom: SPACING.xl,
+        alignItems: 'center',
+    },
+    headerTitle: {
+        fontSize: FONT_SIZES.xlarge,
+        fontWeight: 'bold',
+        marginBottom: SPACING.xs,
+        color: theme.text,
+    },
+    });
 };

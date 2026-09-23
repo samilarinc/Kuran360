@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
+import { SHADOW } from '@msarinc/ui';
 import { SPACING, Theme } from '@/theme';
-import { createCommonStyles } from '@/theme/common.styles';
+import type { CommonStyles } from '@/contexts/ThemeContext';
 
-export const createStyles = (theme: Theme) => {
-    const common = createCommonStyles(theme);
+export const createStyles = (theme: Theme, common: CommonStyles) => {
 
     return StyleSheet.create({
         verseContainer: {
@@ -28,15 +28,6 @@ export const createStyles = (theme: Theme) => {
             shadowRadius: 8,
             backgroundColor: theme.surface,
         },
-        surahInfoContent: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: SPACING.xs,
-        },
-        surahNameSection: {
-            alignItems: 'center',
-        },
         surahName: {
             ...common.title,
             marginBottom: 2,
@@ -53,11 +44,7 @@ export const createStyles = (theme: Theme) => {
             borderRadius: 16,
             minWidth: 60,
             alignItems: 'center',
-            elevation: 2,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.2,
-            shadowRadius: 2,
+            ...SHADOW.sm,
             backgroundColor: theme.primary,
         },
         verseNumberLabel: {
@@ -71,16 +58,11 @@ export const createStyles = (theme: Theme) => {
             marginBottom: 0,
             color: '#FFFFFF',
         },
-        surahMetaInfo: {
-            flexDirection: 'row',
-            gap: SPACING.sm,
-            marginTop: SPACING.sm,
-        },
         bottomActions: {
             padding: SPACING.md,
             paddingBottom: SPACING.xl, // Extra bottom padding for better accessibility
             borderTopWidth: 1,
-            borderTopColor: '#E0E0E0',
+            borderTopColor: theme.border,
             backgroundColor: theme.surface,
         },
     });

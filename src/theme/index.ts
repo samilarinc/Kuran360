@@ -1,4 +1,4 @@
-
+import { FONT_SIZES as BASE_FONT_SIZES } from '@msarinc/theme-core';
 // Audio file naming format: SSSAAA.mp3 where SSS = surah number, AAA = verse number
 export const AUDIO_FILE_FORMAT = (surahNumber: number, verseNumber: number): string => {
     const surah = surahNumber.toString().padStart(3, '0');
@@ -77,24 +77,12 @@ export const DARK_COLORS: Theme = {
     border: '#404040',
 };
 
-// Font sizes
+export { SPACING, RADIUS } from '@msarinc/theme-core';
+
 export const FONT_SIZES = {
-    small: 12,
-    medium: 16,
-    large: 20,
-    xlarge: 24,
-    xxlarge: 32,
+    ...BASE_FONT_SIZES,
     arabic: 24,
     translation: 16,
-} as const;
-
-// Spacing
-export const SPACING = {
-    xs: 4,
-    sm: 8,
-    md: 16,
-    lg: 24,
-    xl: 32,
 } as const;
 
 // Favorite-translation highlight (gold accent), shared by Verse and AllTranslationsScreen

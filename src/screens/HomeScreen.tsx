@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import {
-  SafeAreaView,
-} from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { SurahList } from '@/components/SurahList';
 import { AppHeader } from '@/components/AppHeader';
 import { DownloadRequired } from '@/components/DownloadRequired';
@@ -13,8 +11,6 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useDownloadData } from '@/hooks/useDownloadData';
 import { useTranslation } from 'react-i18next';
 import { getSurahName } from '@/utils/surahName';
-import { createStyles } from './HomeScreen.styles';
-import { createCommonStyles } from '@/theme/common.styles';
 
 interface HomeScreenProps {
   navigation: any;
@@ -29,10 +25,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   lastSelectedSurah,
   isDataAvailable
 }) => {
-  const { theme } = useTheme();
+  const { common } = useTheme();
   const { t } = useTranslation();
-  const styles = useMemo(() => createStyles(theme), [theme]);
-  const common = useMemo(() => createCommonStyles(theme), [theme]);
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [loading, setLoading] = useState(true);
   const {
@@ -135,7 +129,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         onHomePress={() => navigation.navigate('Main')}
       />
       <SearchInput
-        style={styles.searchContainer}
+        style={[common.mhMd, common.mtMd]}
         value={searchQuery}
         onChangeText={setSearchQuery}
         placeholder={t('homeScreen.searchPlaceholder')}

@@ -1,12 +1,10 @@
-import React, { useMemo } from 'react';
-import { View, Text, Modal, TextInput } from 'react-native';
+import React from 'react';
+import { View, Text, Modal, TextInput, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
-import { SPACING } from '@/theme';
+import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { Hatim, HatimPart } from '@/types';
 import { AppButton } from '@/components/AppButton';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './index.styles';
+import { SPACING, FONT_SIZES, Theme } from '@/theme';
 
 interface PartActionModalProps {
     visible: boolean;
@@ -37,10 +35,9 @@ export const PartActionModal: React.FC<PartActionModalProps> = ({
     onClaim,
     onUnclaim,
 }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     if (!part) return null;
 
@@ -56,7 +53,7 @@ export const PartActionModal: React.FC<PartActionModalProps> = ({
                     </Text>
 
                     {part.claimedById ? (
-                        <View style={styles.claimInfo}>
+                        <View style={[common.center, common.mbXl]}>
                             <Text style={styles.claimText}>
                                 {t('hatimDetailScreen.claimedBy')}
                                 <Text style={styles.claimedByName}>
@@ -69,10 +66,10 @@ export const PartActionModal: React.FC<PartActionModalProps> = ({
 
                             {(isOwnPart || isCreator) && (
                                 <View style={styles.progressContainer}>
-                                    <Text style={styles.progressLabel}>
+                                    <Text style={[common.smallText, common.mbSm]}>
                                         {t('hatimDetailScreen.pagesRead', { read: localPages, total: part.totalPages || 20 })}
                                     </Text>
-                                    <View style={styles.progressRow}>
+                                    <View style={[common.row, common.center]}>
                                         <AppButton
                                             title="-"
                                             onPress={() => onUpdatePages(localPages - 1)}
@@ -113,14 +110,14 @@ export const PartActionModal: React.FC<PartActionModalProps> = ({
                         </Text>
                     )}
 
-                    <View style={styles.modalButtonsColumn}>
+                    <View style={styles.fullWidth}>
                         {part.claimedById && (isOwnPart || isCreator) ? (
                             <>
                                 <AppButton
                                     title={part.isCompleted ? t('hatimDetailScreen.markIncomplete') : t('hatimDetailScreen.markComplete')}
                                     onPress={onToggleCompletion}
                                     variant={part.isCompleted ? 'secondary' : 'primary'}
-                                    style={[{ width: '100%' }, part.isCompleted ? { backgroundColor: theme.accent } : undefined]}
+                                    style={[styles.fullWidth, part.isCompleted && { backgroundColor: theme.accent }]}
                                     loading={actionLoading === part.partNumber}
                                     disabled={actionLoading !== null}
                                 />
@@ -129,7 +126,7 @@ export const PartActionModal: React.FC<PartActionModalProps> = ({
                                     title={isOwnPart ? t('hatimDetailScreen.releasePart') : t('hatimDetailScreen.unclaimPart')}
                                     onPress={onUnclaim}
                                     variant="danger"
-                                    style={{ width: '100%', marginTop: SPACING.md }}
+                                    style={[styles.fullWidth, common.mtMd]}
                                     disabled={actionLoading !== null}
                                 />
                             </>
@@ -138,7 +135,7 @@ export const PartActionModal: React.FC<PartActionModalProps> = ({
                                 title={t('hatimDetailScreen.claimPart')}
                                 onPress={onClaim}
                                 variant="primary"
-                                style={{ width: '100%' }}
+                                style={styles.fullWidth}
                                 loading={actionLoading === part.partNumber}
                                 disabled={actionLoading !== null}
                             />
@@ -148,11 +145,65 @@ export const PartActionModal: React.FC<PartActionModalProps> = ({
                             title={t('hatimDetailScreen.close')}
                             onPress={onClose}
                             variant="outline"
-                            style={{ width: '100%', marginTop: SPACING.md }}
+                            style={[styles.fullWidth, common.mtMd]}
                         />
                     </View>
                 </View>
             </View>
         </Modal>
     );
+};
+
+const createStyles = (theme: Theme, common: CommonStyles) => {
+
+    return StyleSheet.create({
+        modalContent: {
+            ...common.modalContent,
+            maxWidth: 400,
+        },
+        modalDescription: {
+            ...common.subtitle,
+            textAlign: 'center',
+            marginBottom: SPACING.xl,
+        },
+        claimText: {
+            ...common.subtitle,
+            marginBottom: SPACING.xs,
+        },
+        claimedByName: {
+            color: theme.text,
+            fontWeight: '700',
+        },
+        claimStatus: {
+            fontSize: FONT_SIZES.small,
+            fontWeight: '700',
+            textTransform: 'uppercase',
+        },
+        claimStatusCompleted: {
+            color: theme.success,
+        },
+        claimStatusReading: {
+            color: theme.warning,
+        },
+        fullWidth: {
+            width: '100%',
+        },
+        progressContainer: {
+            marginTop: SPACING.lg,
+            alignItems: 'center',
+            width: '100%',
+        },
+        progressInput: {
+            width: 60,
+            height: 40,
+            borderWidth: 1,
+            borderRadius: 8,
+            marginHorizontal: SPACING.md,
+            textAlign: 'center',
+            fontSize: FONT_SIZES.medium,
+            fontWeight: '700',
+            color: theme.text,
+            borderColor: theme.border,
+        },
+    });
 };

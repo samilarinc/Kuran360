@@ -1,11 +1,12 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import {
-    View, Text, SafeAreaView, TouchableOpacity, PanResponder, Animated, Easing,
+    View, SafeAreaView, PanResponder, Animated, Easing,
     Platform, useWindowDimensions,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@/contexts/ThemeContext';
 import { AppHeader } from '@/components/AppHeader';
+import { AppButton } from '@/components/AppButton';
 import { HijriStarsBackground } from '@/components/HijriStarsBackground';
 import { HijriBackgroundGlow } from '@/components/HijriBackgroundGlow';
 import { HijriCarousel } from '@/components/HijriCarousel';
@@ -243,10 +244,13 @@ export const HijriCalendarScreen: React.FC<{ navigation: any }> = ({ navigation 
                 showHomeButton
                 onHomePress={() => navigation.navigate('Main')}
                 autoplayToggle={
-                    <TouchableOpacity onPress={() => setLang(l => l === 'tr' ? 'ar' : 'tr')}
-                        style={{ backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 16, paddingHorizontal: 10, paddingVertical: 6, minWidth: 32, alignItems: 'center' }}>
-                        <Text style={{ fontSize: 14, color: '#fff' }}>{lang === 'tr' ? 'عربي' : 'TR'}</Text>
-                    </TouchableOpacity>
+                    <AppButton
+                        title={lang === 'tr' ? 'عربي' : 'TR'}
+                        onPress={() => setLang(l => l === 'tr' ? 'ar' : 'tr')}
+                        variant="translucent"
+                        shape="pill"
+                        size="small"
+                    />
                 }
             />
 

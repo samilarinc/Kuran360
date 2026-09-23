@@ -50,7 +50,9 @@ export const createStyles = (_theme: Theme) => StyleSheet.create({
         textAlign: 'center',
         fontWeight: '600',
         writingDirection: 'rtl',
-        // Note: For native, we rely on default system font for Arabic unless linked
+    },
+    arabicTextCustomFont: {
+        fontWeight: 'normal',
     },
     translationText: {
         textAlign: 'center',

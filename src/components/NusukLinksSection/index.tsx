@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { FileText, Landmark } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './index.styles';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
+import { createStyles as createChromeStyles } from '../TravelCardChrome.styles';
+import { SPACING, Theme } from '@/theme';
 
 interface NusukLinksSectionProps {
     onOpenEVisa: () => void;
@@ -17,43 +18,44 @@ export const NusukLinksSection: React.FC<NusukLinksSectionProps> = ({
     onOpenGooglePlay,
     onOpenAppStore,
 }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
+    const chrome = useThemedStyles(createChromeStyles);
 
     return (
-        <View style={styles.section}>
+        <View style={common.mbXl}>
             <TouchableOpacity
-                style={[styles.linkButton, { flexDirection: 'row', alignItems: 'center', gap: 6 }]}
+                style={[styles.linkButton, common.rowGap]}
                 onPress={onOpenEVisa}
             >
                 <FileText size={16} color={theme.text} />
-                <Text style={styles.linkButtonText}>
+                <Text style={common.textStrong}>
                     {t('umrahChecklistScreen.eVisa')}
                 </Text>
             </TouchableOpacity>
 
-            <View style={styles.nusukCard}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+            <View style={[chrome.plannerCard, common.mtSm]}>
+                <View style={[common.rowGap, common.mbXs]}>
                     <Landmark size={16} color={theme.text} />
-                    <Text style={[styles.nusukTitle, { marginBottom: 0 }]}>
+                    <Text style={[chrome.plannerTitle, common.mb0]}>
                         {t('umrahChecklistScreen.nusukTitle')}
                     </Text>
                 </View>
-                <Text style={styles.nusukDesc}>
+                <Text style={[common.smallText, common.mbMd]}>
                     {t('umrahChecklistScreen.nusukDescription')}
                 </Text>
-                <View style={styles.appButtonsRow}>
-                    <TouchableOpacity style={styles.appButton} onPress={onOpenGooglePlay}>
-                        <View style={styles.appButtonContent}>
+                <View style={common.rowGap}>
+                    <TouchableOpacity style={chrome.plannerActionBtn} onPress={onOpenGooglePlay}>
+                        <View style={common.rowGap}>
                             <Ionicons name="logo-google-playstore" size={18} color={theme.primary} />
-                            <Text style={styles.appButtonText}>{t('umrahChecklistScreen.googlePlay')}</Text>
+                            <Text style={chrome.plannerActionBtnText}>{t('umrahChecklistScreen.googlePlay')}</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.appButton} onPress={onOpenAppStore}>
-                        <View style={styles.appButtonContent}>
+                    <TouchableOpacity style={chrome.plannerActionBtn} onPress={onOpenAppStore}>
+                        <View style={common.rowGap}>
                             <Ionicons name="logo-apple-appstore" size={18} color={theme.primary} />
-                            <Text style={styles.appButtonText}>{t('umrahChecklistScreen.appStore')}</Text>
+                            <Text style={chrome.plannerActionBtnText}>{t('umrahChecklistScreen.appStore')}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -61,3 +63,15 @@ export const NusukLinksSection: React.FC<NusukLinksSectionProps> = ({
         </View>
     );
 };
+
+const createStyles = (theme: Theme) => StyleSheet.create({
+    linkButton: {
+        borderWidth: 1,
+        borderRadius: 12,
+        padding: SPACING.md,
+        marginBottom: SPACING.sm,
+        alignItems: 'center',
+        backgroundColor: theme.surface,
+        borderColor: theme.border,
+    },
+});

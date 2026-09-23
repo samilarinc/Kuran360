@@ -1,26 +1,16 @@
-import React, { useState, useMemo } from 'react';
-import {
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    SafeAreaView,
-    ScrollView,
-    Alert,
-    Platform,
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert, Platform, StyleSheet } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
 import { Link2, Inbox, HandHeart } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { ChecklistItem } from '@/components/ChecklistItem';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { useUserData } from '@/contexts/UserDataContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { DuaRequest } from '@/types';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './DuaListScreen.styles';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
 declare const navigator: any;
 
@@ -30,7 +20,7 @@ interface DuaListScreenProps {
 }
 
 export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
     const { user } = useAuth();
     const {
@@ -137,8 +127,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
     const personalDuas = duaList.filter(d => d.isPersonal);
     const othersDuas = duaList.filter(d => !d.isPersonal);
 
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     return (
         <SafeAreaView style={common.container}>
@@ -149,12 +138,12 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 showHomeButton={true}
                 onHomePress={onNavigate}
             />
-            <ScrollView style={styles.content}>
+            <ScrollView style={common.content}>
                 {/* Compact Request Link Section */}
-                <View style={styles.compactShareBox}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flex: 1 }}>
+                <View style={[common.sectionCardCompact, common.rowBetween, common.mbLg]}>
+                    <View style={[common.rowFill, common.gapSm]}>
                         <Link2 size={16} color={theme.text} />
-                        <Text style={styles.compactShareText}>{t('duaListScreen.shareBoxText')}</Text>
+                        <Text style={common.textStrong}>{t('duaListScreen.shareBoxText')}</Text>
                     </View>
                     <AppButton
                         title={t('duaListScreen.copy')}
@@ -166,27 +155,27 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
 
                 {/* Pending Requests Section */}
                 {duaRequests.length > 0 && (
-                    <View style={styles.section}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                    <View style={common.mbXl}>
+                        <View style={[common.rowGap, common.mbSm]}>
                             <Inbox size={18} color={theme.text} />
-                            <Text style={[styles.sectionTitle, { marginBottom: 0 }]}>
+                            <Text style={[common.title, common.mb0]}>
                                 {t('duaListScreen.newRequests', { count: duaRequests.length })}
                             </Text>
                         </View>
                         {duaRequests.map(request => (
                             <View
                                 key={request.id}
-                                style={styles.requestItem}
+                                style={[common.sectionCardCompact, common.mbSm]}
                             >
-                                <View style={styles.requestContent}>
-                                    <Text style={styles.requestName}>
+                                <View style={common.mbMd}>
+                                    <Text style={common.textAccent}>
                                         {request.requesterName}
                                     </Text>
-                                    <Text style={styles.requestTopic}>
+                                    <Text style={common.text}>
                                         {request.topic}
                                     </Text>
                                 </View>
-                                <View style={styles.requestActions}>
+                                <View style={common.rowGap}>
                                     <AppButton
                                         title={t('duaListScreen.accept')}
                                         onPress={() => handleAcceptRequest(request)}
@@ -199,7 +188,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                         onPress={() => handleRejectRequest(request)}
                                         variant="outline"
                                         size="small"
-                                        style={{ flex: 1, borderColor: theme.textSecondary }}
+                                        style={[common.flex1, { borderColor: theme.textSecondary }]}
                                         textStyle={{ color: theme.textSecondary }}
                                     />
                                 </View>
@@ -209,11 +198,11 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 )}
 
                 {/* Personal Duas Section */}
-                <View style={styles.section}>
-                    <View style={styles.sectionHeader}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                <View style={common.mbXl}>
+                    <View style={[common.rowBetween, common.mbMd]}>
+                        <View style={common.rowGap}>
                             <HandHeart size={18} color={theme.text} />
-                            <Text style={[styles.sectionTitle, { marginBottom: 0 }]}>
+                            <Text style={[common.title, common.mb0]}>
                                 {t('duaListScreen.personalTitle')}
                             </Text>
                         </View>
@@ -228,7 +217,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                     </View>
 
                     {showPersonalForm && (
-                        <View style={styles.form}>
+                        <View style={[common.sectionCardCompact, common.mbMd]}>
                             <TextInput
                                 style={styles.input}
                                 placeholder={t('duaListScreen.personalTopicPlaceholder')}
@@ -260,12 +249,12 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                         onPress={() => handleDeleteDua(dua.id)}
                                         style={styles.deleteButton}
                                     >
-                                        <Text style={styles.deleteIcon}>×</Text>
+                                        <Text style={common.subtitle}>×</Text>
                                     </TouchableOpacity>
                                 }
                             >
                                 <Text style={[
-                                    styles.duaText,
+                                    common.text,
                                     dua.isChecked && common.checkedText
                                 ]}>
                                     {dua.topic}
@@ -276,9 +265,9 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                 </View>
 
                 {/* Others Duas Section */}
-                <View style={styles.section}>
-                    <View style={styles.sectionHeader}>
-                        <Text style={styles.sectionTitle}>
+                <View style={common.mbXl}>
+                    <View style={[common.rowBetween, common.mbMd]}>
+                        <Text style={[common.title, common.mbSm]}>
                             {t('duaListScreen.othersTitle')}
                         </Text>
                         <TouchableOpacity
@@ -292,7 +281,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                     </View>
 
                     {showOthersForm && (
-                        <View style={styles.form}>
+                        <View style={[common.sectionCardCompact, common.mbMd]}>
                             <TextInput
                                 style={styles.input}
                                 placeholder={t('duaListScreen.personPlaceholder')}
@@ -331,7 +320,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                         onPress={() => handleDeleteDua(dua.id)}
                                         style={styles.deleteButton}
                                     >
-                                        <Text style={styles.deleteIcon}>×</Text>
+                                        <Text style={common.subtitle}>×</Text>
                                     </TouchableOpacity>
                                 }
                             >
@@ -340,7 +329,7 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
                                         {dua.person}
                                     </Text>
                                     <Text style={[
-                                        styles.duaText,
+                                        common.text,
                                         dua.isChecked && common.checkedText
                                     ]}>
                                         {dua.topic}
@@ -355,3 +344,41 @@ export const DuaListScreen: React.FC<DuaListScreenProps> = ({ onNavigate }) => {
     );
 };
 
+const createStyles = (theme: Theme, common: CommonStyles) => {
+
+    return StyleSheet.create({
+        addButton: {
+            width: 36,
+            height: 36,
+            borderRadius: 18,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: theme.primary,
+        },
+        addButtonText: {
+            color: '#FFFFFF',
+            fontSize: 24,
+            fontWeight: 'bold',
+        },
+        input: {
+            ...common.input,
+            borderRadius: 8,
+            marginBottom: SPACING.sm,
+            backgroundColor: theme.background,
+            fontSize: FONT_SIZES.medium,
+        },
+        emptyText: {
+            ...common.emptyStateText,
+            marginVertical: SPACING.lg,
+        },
+        duaPerson: {
+            fontSize: FONT_SIZES.large,
+            fontWeight: 'bold',
+            marginBottom: 2,
+            color: theme.primary,
+        },
+        deleteButton: {
+            padding: SPACING.sm,
+        },
+    });
+};

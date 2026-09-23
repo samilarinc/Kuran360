@@ -1,16 +1,14 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode } from 'react';
 import { View } from 'react-native';
 import { GlobalAudioBar } from '../GlobalAudioBar';
 import { useTheme } from '@/contexts/ThemeContext';
-import { createCommonStyles } from '@/theme/common.styles';
 
 interface ScreenWrapperProps {
     children: ReactNode;
 }
 
 export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({ children }) => {
-    const { theme } = useTheme();
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const { common } = useTheme();
 
     return (
         <View style={common.flex1}>

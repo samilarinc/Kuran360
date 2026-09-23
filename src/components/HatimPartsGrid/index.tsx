@@ -1,11 +1,10 @@
-import React, { useMemo } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
-import { SPACING } from '@/theme';
+import { useTheme, CommonStyles, useThemedStyles } from '@/contexts/ThemeContext';
+import { SPACING, FONT_SIZES, Theme } from '@/theme';
 import { HatimPart } from '@/types';
 import { ProgressBar } from '@/components/ProgressBar';
-import { createStyles } from './index.styles';
 
 interface HatimPartsGridProps {
     parts: HatimPart[];
@@ -33,7 +32,7 @@ export const HatimPartsGrid: React.FC<HatimPartsGridProps> = ({
 }) => {
     const { theme } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     return (
         <View style={[styles.gridContainer, { width: availableWidth + SPACING.md }]}>
@@ -81,4 +80,46 @@ export const HatimPartsGrid: React.FC<HatimPartsGridProps> = ({
             </View>
         </View>
     );
+};
+
+const createStyles = (theme: Theme, common: CommonStyles) => {
+
+    return StyleSheet.create({
+        gridContainer: {
+            width: '100%',
+            alignSelf: 'center',
+        },
+        grid: {
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+        },
+        partItem: {
+            ...common.card,
+            aspectRatio: 1,
+            borderRadius: 12,
+            borderWidth: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: SPACING.xs,
+            shadowRadius: 2,
+            borderColor: theme.border,
+            marginRight: SPACING.md / 2,
+            marginLeft: SPACING.md / 2,
+        },
+        partNumber: {
+            fontSize: FONT_SIZES.xlarge,
+            fontWeight: '700',
+        },
+        partClaimant: {
+            fontSize: 10,
+            marginTop: 4,
+        },
+        progressBarBackground: {
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+        },
+    });
 };

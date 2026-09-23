@@ -2,6 +2,7 @@ import { Platform } from 'react-native';
 import { VerseShareData, ImageSize, ImageGenerationOptions } from '@/types';
 import { getDefaultImageSize } from './imageSizes';
 import { DEFAULT_IMAGE_FONT_ID, getArabicFontFamily, getFontOption } from '@/constants/fonts';
+import { getVerseLabel } from './verseRange';
 
 const DEFAULT_ARABIC_FONT_CSS = getArabicFontFamily(getFontOption(DEFAULT_IMAGE_FONT_ID));
 
@@ -146,15 +147,24 @@ export class VerseImageGenerator {
    * Canvas'a ayet resmini çizer
    */
   private static async drawVerseImage(ctx: CanvasRenderingContext2D, verseData: VerseShareData, palette: VerseImagePalette, imageSize: ImageSize, arabicFontCss: string = DEFAULT_ARABIC_FONT_CSS, fontScale: number = 1.0): Promise<void> {
-    const { arabicText, translation, surahName, verseNumber } = verseData;
+    const { arabicText, translation } = verseData;
 
     this.drawBackground(ctx, palette, imageSize);
 
     const padding = this.calculatePadding(imageSize);
-    const fontSizes = this.calculateFontSizes(ctx, arabicText, translation, imageSize, fontScale);
-    const layout = this.calculateLayout(ctx, arabicText, translation, fontSizes, imageSize, padding);
+    let fontSizes = this.calculateFontSizes(ctx, arabicText, translation, imageSize, fontScale);
+    let layout = this.calculateLayout(ctx, arabicText, translation, fontSizes, imageSize, padding, arabicFontCss);
 
-    this.drawTitle(ctx, surahName, verseNumber, layout.titleY, palette, imageSize, fontScale);
+    // Long texts (e.g. multi-verse ranges): shrink both fonts until the block fits
+    while (!layout.fits && fontSizes.arabic > 12) {
+      fontSizes = {
+        arabic: Math.max(12, Math.floor(fontSizes.arabic * 0.9)),
+        translation: Math.max(8, Math.floor(fontSizes.translation * 0.9)),
+      };
+      layout = this.calculateLayout(ctx, arabicText, translation, fontSizes, imageSize, padding, arabicFontCss);
+    }
+
+    this.drawTitle(ctx, getVerseLabel(verseData), layout.titleY, palette, imageSize, fontScale);
 
     await this.drawArabicText(ctx, arabicText, fontSizes.arabic, layout.arabicY, layout.arabicLines, layout.arabicLineHeight, palette, imageSize, padding, arabicFontCss);
 
@@ -248,7 +258,7 @@ export class VerseImageGenerator {
   /**
    * Layout pozisyonlarını hesaplar - doğru font ile hesaplama
    */
-  private static calculateLayout(ctx: CanvasRenderingContext2D, arabicText: string, translation: string, fontSizes: { arabic: number; translation: number }, imageSize: ImageSize, padding: number): {
+  private static calculateLayout(ctx: CanvasRenderingContext2D, arabicText: string, translation: string, fontSizes: { arabic: number; translation: number }, imageSize: ImageSize, padding: number, arabicFontCss: string = DEFAULT_ARABIC_FONT_CSS): {
     titleY: number;
     arabicY: number;
     translationY: number;
@@ -256,6 +266,7 @@ export class VerseImageGenerator {
     translationLines: string[];
     arabicLineHeight: number;
     translationLineHeight: number;
+    fits: boolean;
   } {
     const footerHeight = Math.round(70 * (imageSize.height / 600)); // footer + alt boşluk
     const minGapBetweenTexts = Math.round(30 * (imageSize.height / 600)); // Arapça-çeviri arası
@@ -263,7 +274,8 @@ export class VerseImageGenerator {
     const gapTitleArabic = Math.round(35 * (imageSize.height / 600)); // başlık-ayet arası (biraz daha nefes)
 
     // Arapça metin için doğru font ayarla ve hesapla
-    ctx.font = `${fontSizes.arabic}px "Arabic Typesetting", "Traditional Arabic", "Times New Roman", serif`;
+    // Measure with the same font used for drawing so wrapping matches the output
+    ctx.font = `${fontSizes.arabic}px ${arabicFontCss}`;
     ctx.textAlign = 'center';
     ctx.direction = 'rtl';
 
@@ -308,21 +320,21 @@ export class VerseImageGenerator {
       arabicLines,
       translationLines,
       arabicLineHeight,
-      translationLineHeight
+      translationLineHeight,
+      fits: blockHeight <= availableAfterTitle,
     };
   }
 
   /**
    * Başlık kısmını çizer
    */
-  private static drawTitle(ctx: CanvasRenderingContext2D, surahName: string, verseNumber: number, y: number, palette: VerseImagePalette, imageSize: ImageSize, fontScale: number = 1.0): void {
+  private static drawTitle(ctx: CanvasRenderingContext2D, titleText: string, y: number, palette: VerseImagePalette, imageSize: ImageSize, fontScale: number = 1.0): void {
     ctx.fillStyle = palette.accent;
     const uiScale = 1 + (fontScale - 1) * 0.4;
     const fontSize = Math.round(22 * Math.sqrt(imageSize.width * imageSize.height / (800 * 600)) * uiScale);
     ctx.font = `bold ${fontSize}px Arial, sans-serif`;
     ctx.textAlign = 'center';
 
-    const titleText = `${surahName} Suresi - ${verseNumber}. Ayet`;
     ctx.fillText(titleText, imageSize.width / 2, y);
 
     // Başlık altına elegant çizgi

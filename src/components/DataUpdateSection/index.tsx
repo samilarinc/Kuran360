@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { CircleCheckBig, Download } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
@@ -6,8 +6,6 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { SPACING } from '@/theme';
 import { AppButton } from '@/components/AppButton';
 import { DataUpdateProgress } from '@/components/DataUpdateProgress';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './index.styles';
 
 const COLOR = '#64748B';
 
@@ -30,14 +28,12 @@ export const DataUpdateSection: React.FC<DataUpdateSectionProps> = ({
     totalBytes,
     onUpdate,
 }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     if (isUpdating) {
         return (
-            <View style={{ padding: SPACING.lg }}>
+            <View style={common.pLg}>
                 <DataUpdateProgress
                     progress={downloadProgress}
                     status={downloadStatus}
@@ -51,7 +47,7 @@ export const DataUpdateSection: React.FC<DataUpdateSectionProps> = ({
 
     if (isUpToDate) {
         return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: SPACING.xs, padding: SPACING.md }}>
+            <View style={[common.row, common.center, common.gapXs, common.pMd]}>
                 <CircleCheckBig size={16} color={COLOR} />
                 <Text style={common.footerText}>
                     {t('settingsScreen.dataUpToDate')}
@@ -67,7 +63,7 @@ export const DataUpdateSection: React.FC<DataUpdateSectionProps> = ({
             title={t('settingsScreen.updateButton')}
             icon={<Download size={16} color={theme.primary} />}
             onPress={onUpdate}
-            style={styles.updateButton}
+            style={[common.buttonOutline, { backgroundColor: theme.primary + '10', margin: SPACING.lg }]}
         />
     );
 };

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { SafeAreaView, ScrollView, Alert } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { SafeAreaView, ScrollView, Alert, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, Theme, useThemedStyles } from '@/contexts/ThemeContext';
 import { AppHeader } from '@/components/AppHeader';
 import { DownloadRequired } from '@/components/DownloadRequired';
 import { SearchInput } from '@/components/SearchInput';
@@ -15,8 +15,7 @@ import { SearchResult } from '@/components/SearchResultItem';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
 import { quranData, loadSurah } from '@/data/quranData';
 import { useDownloadData } from '@/hooks/useDownloadData';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './SearchScreen.styles';
+import { SPACING } from '@/theme';
 
 interface SearchScreenProps {
     navigation: any;
@@ -27,10 +26,9 @@ type SurahFilter = 'all' | number;
 
 export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAvailable }) => {
     const { settings, availableTranslations } = useDebouncedSettings(300);
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     const navHelpers = useNavigationHelpers();
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -357,8 +355,8 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
             />
 
             <ScrollView
-                style={styles.content}
-                contentContainerStyle={styles.scrollContentPadding}
+                style={common.contentLarge}
+                contentContainerStyle={common.listContent}
                 keyboardShouldPersistTaps="handled"
                 nestedScrollEnabled
                 showsVerticalScrollIndicator={false}
@@ -431,4 +429,23 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
             </ScrollView>
         </SafeAreaView>
     );
+};
+
+const createStyles = (theme: Theme) => {
+    return StyleSheet.create({
+    searchContainer: {
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+        paddingHorizontal: 0,
+        marginBottom: SPACING.lg,
+    },
+    searchInput: {
+        height: 50,
+        backgroundColor: theme.cardBackground,
+        borderRadius: 25,
+        paddingHorizontal: SPACING.lg,
+        borderWidth: 2,
+        borderColor: theme.border,
+    },
+    });
 };

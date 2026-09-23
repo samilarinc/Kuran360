@@ -1,10 +1,8 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/contexts/ThemeContext';
 import { ChecklistItem } from '@/components/ChecklistItem';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './index.styles';
 
 interface ChecklistSectionProps {
     itemKeys: string[];
@@ -17,14 +15,12 @@ export const ChecklistSection: React.FC<ChecklistSectionProps> = ({
     checklist,
     onToggleItem,
 }) => {
-    const { theme } = useTheme();
+    const { common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     return (
-        <View style={styles.section}>
-            <Text style={styles.sectionTitle}>
+        <View style={common.mbXl}>
+            <Text style={[common.titleLarge, common.mbMd]}>
                 {t('umrahChecklistScreen.checklistTitle')}
             </Text>
 
@@ -34,7 +30,7 @@ export const ChecklistSection: React.FC<ChecklistSectionProps> = ({
                     checked={checklist[key]}
                     onToggle={() => onToggleItem(key)}
                 >
-                    <Text style={[styles.checklistText, checklist[key] && common.checkedText]}>
+                    <Text style={[common.text, common.flex1, checklist[key] && common.checkedText]}>
                         {t(`umrahChecklistScreen.items.${key}`)}
                     </Text>
                 </ChecklistItem>

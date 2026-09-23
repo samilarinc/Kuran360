@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Linking, Platform, SafeAreaView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,6 @@ import { TransferDateCard } from '@/components/TransferDateCard';
 import { NusukLinksSection } from '@/components/NusukLinksSection';
 import { ChecklistSection } from '@/components/ChecklistSection';
 import { CityOption } from '@/components/CityPickerModal';
-import { createCommonStyles } from '@/theme/common.styles';
 import { SPACING } from '@/theme';
 
 interface ChecklistData {
@@ -66,9 +65,10 @@ interface UmrahChecklistScreenProps {
 
 export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNavigate }) => {
 
-    const { theme } = useTheme();
+    const { common } = useTheme();
+
     const { t } = useTranslation();
-    const styles = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useTheme().common;
     const [data, setData] = useState<ChecklistData>({
         outboundFrom: '',
         outboundFromName: '',
@@ -348,7 +348,7 @@ export const UmrahChecklistScreen: React.FC<UmrahChecklistScreenProps> = ({ onNa
                 `}} />
             )}
 
-            <ScrollView style={{ flex: 1, padding: SPACING.md }} showsVerticalScrollIndicator={false}>
+            <ScrollView style={common.content} showsVerticalScrollIndicator={false}>
                 <TravelPlannerCard
                     outboundFromName={data.outboundFromName}
                     outboundTo={data.outboundTo}

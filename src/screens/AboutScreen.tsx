@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { Mail, GitBranch, Link } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,6 @@ import {
 } from '@msarinc/ui';
 import { useTheme } from '@/contexts/ThemeContext';
 import { AppHeader } from '@/components/AppHeader';
-import { createCommonStyles as createStyles } from '@/theme/common.styles';
 
 interface AboutScreenProps {
     navigation: any;
@@ -49,9 +48,8 @@ const AboutScreenContent: React.FC = () => {
 };
 
 export const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
-    const { theme } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const { common: styles } = useTheme();
     return (
         <SafeAreaView style={styles.container}>
             <AppHeader

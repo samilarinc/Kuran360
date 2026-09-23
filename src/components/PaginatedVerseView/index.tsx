@@ -14,11 +14,10 @@ import { GoToVerseModal } from '../GoToVerseModal';
 import { Verse as VerseType } from '@/types';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useGlobalAudio } from '@/contexts/AudioContext';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import logger from '@/utils/logger';
 import { formatVerseNumber } from '@/utils/numerals';
-import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './index.styles';
 
 const getScreenDimensions = () => Dimensions.get('window');
@@ -38,7 +37,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
     navigation,
 }) => {
     const { settings, updateSettings } = useSettings();
-    const { theme } = useTheme();
+    const { common } = useTheme();
     const { audioState, playVerse } = useGlobalAudio();
     const { user } = useAuth();
     const [currentVerseIndex, setCurrentVerseIndex] = useState(initialVerseIndex);
@@ -302,21 +301,20 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
 
     const currentVerse = verses[currentVerseIndex];
 
-    const styles = React.useMemo(() => createStyles(theme), [theme]);
-    const common = React.useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     if (!currentVerse) {
         return (
-            <SafeAreaView style={styles.container}>
-                <View style={styles.errorContainer}>
-                    <Text style={styles.errorText}>Ayet bulunamadı</Text>
+            <SafeAreaView style={common.container}>
+                <View style={styles.emptyVerseContainer}>
+                    <Text style={[common.subtitle, common.textCenter]}>Ayet bulunamadı</Text>
                 </View>
             </SafeAreaView>
         );
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={common.container}>
             {/* Header with verse info and navigation */}
             <View style={styles.header}>
                 <TouchableOpacity
@@ -329,7 +327,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                     </Text>
                 </TouchableOpacity>
 
-                <View style={styles.verseInfo}>
+                <View style={[common.flex1, common.center]}>
                     <TouchableOpacity
                         style={styles.verseNumberButton}
                         onPress={() => setIsGoToVerseModalVisible(true)}
@@ -387,7 +385,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                             </ScrollView>
                         ) : (
                             <View style={styles.emptyVerseContainer}>
-                                <Text style={styles.emptyVerseText}>İlk ayet</Text>
+                                <Text style={common.emptyStateText}>İlk ayet</Text>
                             </View>
                         )}
                     </View>
@@ -431,7 +429,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                             </ScrollView>
                         ) : (
                             <View style={styles.emptyVerseContainer}>
-                                <Text style={styles.emptyVerseText}>Son ayet</Text>
+                                <Text style={common.emptyStateText}>Son ayet</Text>
                             </View>
                         )}
                     </View>

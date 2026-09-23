@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './index.styles';
+import React from 'react';
+import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
+import { SPACING, Theme } from '@/theme';
 
 export interface CityOption {
     name: string;
@@ -23,17 +23,17 @@ export const CityPickerModal: React.FC<CityPickerModalProps> = ({
     onSelect,
     onClose,
 }) => {
-    const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const { common } = useTheme();
+    const styles = useThemedStyles(createStyles);
 
     return (
         <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
-            <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={onClose}>
+            <TouchableOpacity style={common.modalOverlay} activeOpacity={1} onPress={onClose}>
                 <View style={styles.modalContent}>
-                    <Text style={styles.modalTitle}>{title}</Text>
+                    <Text style={[common.modalTitle, common.mbMd]}>{title}</Text>
                     {cities.map((city) => (
                         <TouchableOpacity key={city.code} style={styles.modalOption} onPress={() => onSelect(city)}>
-                            <Text style={styles.modalOptionText}>{city.name}</Text>
+                            <Text style={[common.text, common.textCenter]}>{city.name}</Text>
                         </TouchableOpacity>
                     ))}
                 </View>
@@ -41,3 +41,19 @@ export const CityPickerModal: React.FC<CityPickerModalProps> = ({
         </Modal>
     );
 };
+
+const createStyles = (theme: Theme) => StyleSheet.create({
+    modalContent: {
+        width: '100%',
+        maxWidth: 400,
+        borderRadius: 12,
+        padding: SPACING.lg,
+        maxHeight: '80%',
+        backgroundColor: theme.surface,
+    },
+    modalOption: {
+        padding: SPACING.md,
+        borderBottomWidth: 1,
+        borderBottomColor: theme.border,
+    },
+});
