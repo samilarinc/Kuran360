@@ -1,12 +1,10 @@
-import React, { useMemo } from 'react';
-import { View, Text, Modal, TextInput, Switch, TouchableOpacity, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, Modal, TextInput, Switch, TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
-import { SPACING } from '@/theme';
+import { useTheme, CommonStyles, useThemedStyles } from '@/contexts/ThemeContext';
+import { SPACING, Theme } from '@/theme';
 import { AppButton } from '@/components/AppButton';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './index.styles';
 
 interface HatimEditModalProps {
     visible: boolean;
@@ -57,10 +55,9 @@ export const HatimEditModal: React.FC<HatimEditModalProps> = ({
     onUpdate,
     onDelete,
 }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t, i18n } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     return (
         <Modal transparent visible={visible} animationType="fade" onRequestClose={onClose}>
@@ -121,7 +118,7 @@ export const HatimEditModal: React.FC<HatimEditModalProps> = ({
                             <Text style={styles.inputLabel}>{t('hatimDetailScreen.deadlineLabel')}</Text>
 
                             {Platform.OS === 'web' ? (
-                                <View style={styles.dateTimeWebContainer}>
+                                <View style={common.mbMd}>
                                     <input
                                         type="date"
                                         style={{
@@ -148,7 +145,7 @@ export const HatimEditModal: React.FC<HatimEditModalProps> = ({
                                         }}
                                         value={deadline ? deadline.toISOString().split('T')[0] : ''}
                                     />
-                                    <View style={styles.timeSelectorsRow}>
+                                    <View style={common.row}>
                                         <select
                                             style={{
                                                 flex: 1,
@@ -208,7 +205,7 @@ export const HatimEditModal: React.FC<HatimEditModalProps> = ({
                                         style={styles.editInputStyle}
                                         onPress={onRequestDatePicker}
                                     >
-                                        <Text style={deadline ? styles.dateTimeTextFilled : styles.dateTimeTextEmpty}>
+                                        <Text style={deadline ? common.text : common.subtitle}>
                                             {deadline
                                                 ? deadline.toLocaleString(i18n.language === 'en' ? 'en-US' : 'tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })
                                                 : t('hatimDetailScreen.selectDateTime')}
@@ -248,16 +245,16 @@ export const HatimEditModal: React.FC<HatimEditModalProps> = ({
                             onPress={onDelete}
                             disabled={isUpdating}
                             variant="outline"
-                            style={[common.modalButton, { borderColor: '#FFCDD2', backgroundColor: '#FFEBEE' }]}
-                            textStyle={{ color: '#D32F2F' }}
+                            style={[common.button, { borderColor: theme.error, backgroundColor: theme.error + '15' }]}
+                            textStyle={{ color: theme.error }}
                         />
 
-                        <View style={styles.modalButtonsRight}>
+                        <View style={common.row}>
                             <AppButton
                                 title={t('hatimDetailScreen.cancel')}
                                 onPress={onClose}
                                 variant="secondary"
-                                style={[common.modalButton, { marginRight: SPACING.sm, backgroundColor: theme.border }]}
+                                style={[common.button, { marginRight: SPACING.md, backgroundColor: theme.border }]}
                                 textStyle={{ color: theme.text }}
                             />
                             <AppButton
@@ -266,7 +263,7 @@ export const HatimEditModal: React.FC<HatimEditModalProps> = ({
                                 loading={isUpdating}
                                 disabled={isUpdating}
                                 variant="primary"
-                                style={common.modalButton}
+                                style={common.button}
                             />
                         </View>
                     </View>
@@ -274,4 +271,27 @@ export const HatimEditModal: React.FC<HatimEditModalProps> = ({
             </View>
         </Modal>
     );
+};
+
+const createStyles = (theme: Theme, common: CommonStyles) => {
+
+    return StyleSheet.create({
+        inputLabel: {
+            ...common.inputLabel,
+            color: theme.textSecondary,
+        },
+        inputLabelNoMarginTop: {
+            marginTop: 0,
+        },
+        editInputStyle: {
+            ...common.input,
+            minHeight: 50,
+            justifyContent: 'center',
+        },
+        modalButtons: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: SPACING.lg,
+        },
+    });
 };

@@ -1,18 +1,8 @@
-import React, { useMemo } from 'react';
-import {
-    View,
-    TextInput,
-    Text,
-    TouchableOpacity,
-    ActivityIndicator,
-    StyleProp,
-    ViewStyle,
-    TextStyle,
-    TextInputProps,
-} from 'react-native';
+import React from 'react';
+import { View, TextInput, Text, TouchableOpacity, ActivityIndicator, StyleProp, ViewStyle, TextStyle, TextInputProps, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './index.styles';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
 interface SearchInputProps {
     value: string;
@@ -49,12 +39,12 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     style,
     inputStyle,
 }) => {
-    const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const { theme, common } = useTheme();
+    const styles = useThemedStyles(createStyles);
 
     return (
         <View style={[styles.container, style]}>
-            {icon && <Ionicons name="search" size={20} color={theme.textSecondary} style={styles.icon} />}
+            {icon && <Ionicons name="search" size={20} color={theme.textSecondary} />}
             <TextInput
                 style={[styles.input, inputStyle]}
                 placeholder={placeholder}
@@ -69,14 +59,36 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                 onBlur={onBlur}
             />
             {loading ? (
-                <ActivityIndicator style={styles.trailing} color={theme.primary} />
+                <ActivityIndicator color={theme.primary} />
             ) : (
                 onClear && value.length > 0 && (
                     <TouchableOpacity style={styles.clearButton} onPress={onClear}>
-                        <Text style={styles.clearButtonText}>✕</Text>
+                        <Text style={common.subtitle}>✕</Text>
                     </TouchableOpacity>
                 )
             )}
         </View>
     );
 };
+
+const createStyles = (theme: Theme) => StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: theme.cardBackground,
+        borderRadius: 10,
+        paddingHorizontal: SPACING.md,
+        gap: SPACING.sm,
+        borderWidth: 1,
+        borderColor: theme.border,
+    },
+    input: {
+        flex: 1,
+        height: 44,
+        fontSize: FONT_SIZES.medium,
+        color: theme.text,
+    },
+    clearButton: {
+        padding: SPACING.xs,
+    },
+});

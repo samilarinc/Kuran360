@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
+import { SHADOW } from '@msarinc/ui';
 import { SPACING, Theme } from '@/theme';
-import { createCommonStyles } from '@/theme/common.styles';
+import type { CommonStyles } from '@/contexts/ThemeContext';
 
-export const createStyles = (theme: Theme) => {
-    const common = createCommonStyles(theme);
+export const createStyles = (theme: Theme, common: CommonStyles) => {
 
     return StyleSheet.create({
         fab: {
@@ -15,11 +15,7 @@ export const createStyles = (theme: Theme) => {
             borderRadius: 16,
             justifyContent: 'center',
             alignItems: 'center',
-            elevation: 6,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 3 },
-            shadowOpacity: 0.27,
-            shadowRadius: 4.65,
+            ...SHADOW.md,
             zIndex: 100,
             backgroundColor: theme.primary,
         },
@@ -34,12 +30,6 @@ export const createStyles = (theme: Theme) => {
             borderWidth: 1,
             borderColor: theme.border,
         },
-        hatimHeader: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: SPACING.xs,
-        },
         hatimTitle: {
             ...common.title,
             fontWeight: '600',
@@ -48,24 +38,9 @@ export const createStyles = (theme: Theme) => {
             ...common.smallText,
             marginBottom: SPACING.md,
         },
-        progressContainer: {
-            marginTop: SPACING.sm,
-        },
-        progressBar: {
-            marginBottom: SPACING.xs,
-        },
         progressText: {
             ...common.smallText,
             textAlign: 'right',
-        },
-        emptyContainer: {
-            padding: SPACING.xl,
-            alignItems: 'center',
-        },
-        emptyText: {
-            ...common.text,
-            textAlign: 'center',
-            opacity: 0.7,
         },
         privateLabel: {
             fontSize: 12,
@@ -77,18 +52,9 @@ export const createStyles = (theme: Theme) => {
             width: '100%',
             alignSelf: 'center',
         },
-        emptyTextSecondary: {
-            color: theme.textSecondary,
-        },
         inputLabelNoMargin: {
             color: theme.textSecondary,
             marginTop: 0,
-        },
-        inputLabelSecondary: {
-            color: theme.textSecondary,
-        },
-        webDateWrapper: {
-            marginBottom: 16,
         },
         webDateInput: {
             width: '100%',
@@ -116,9 +82,6 @@ export const createStyles = (theme: Theme) => {
         } as any,
         dateTimeButton: {
             justifyContent: 'center',
-        },
-        cancelButtonText: {
-            color: theme.text,
         },
     });
 };

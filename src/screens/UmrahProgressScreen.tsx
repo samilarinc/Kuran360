@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -9,9 +9,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './UmrahProgressScreen.styles';
 
 interface UmrahProgressScreenProps {
@@ -29,7 +28,7 @@ interface UmrahState {
 const STORAGE_KEY = '@umrah_progress';
 
 export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavigate, navigation }) => {
-    const { theme } = useTheme();
+    const { common } = useTheme();
     const { t } = useTranslation();
     const [progress, setProgress] = useState<UmrahState>({
         tawafCount: 0,
@@ -95,8 +94,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
         saveProgress({ ...progress, isIhram: !progress.isIhram });
     };
 
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     return (
         <SafeAreaView style={common.container}>
@@ -107,17 +105,17 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                 showHomeButton={true}
                 onHomePress={onNavigate}
             />
-            <ScrollView style={styles.content}>
+            <ScrollView style={common.contentLarge}>
                 {/* Tawaf Progress */}
                 <View style={styles.progressCard}>
-                    <View style={styles.progressHeader}>
-                        <Text style={[styles.icon, styles.largeIcon]}>🕋</Text>
-                        <Text style={styles.progressTitle}>{t('umrahProgressScreen.tawaf')}</Text>
+                    <View style={[common.row, common.mbMd]}>
+                        <Text style={styles.icon}>🕋</Text>
+                        <Text style={[common.titleLarge, common.mb0]}>{t('umrahProgressScreen.tawaf')}</Text>
                     </View>
                     <Text style={styles.progressCount}>
                         {progress.tawafCount} / 7
                     </Text>
-                    <View style={styles.buttonRow}>
+                    <View style={[common.row, common.gapMd]}>
                         <AppButton
                             title="−"
                             onPress={decrementTawaf}
@@ -143,16 +141,16 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                             onPress={() => navigation.navigate('UmrahDuas')}
                             variant="ghost"
                             style={styles.duaLink}
-                            textStyle={styles.duaLinkText}
+                            textStyle={common.textAccent}
                         />
                     )}
                 </View>
 
                 {/* Sa'y Progress */}
                 <View style={styles.progressCard}>
-                    <View style={styles.progressHeader}>
-                        <Text style={[styles.icon, styles.largeIcon]}>🏃‍♂️</Text>
-                        <Text style={styles.progressTitle}>{t('umrahProgressScreen.say')}</Text>
+                    <View style={[common.row, common.mbMd]}>
+                        <Text style={styles.icon}>🏃‍♂️</Text>
+                        <Text style={[common.titleLarge, common.mb0]}>{t('umrahProgressScreen.say')}</Text>
                     </View>
                     <Text style={styles.directionText}>
                         {progress.sayDirection === 'Safa' ? t('umrahProgressScreen.safaToMerve') : t('umrahProgressScreen.merveToSafa')}
@@ -160,7 +158,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                     <Text style={styles.progressCount}>
                         {progress.sayCount} / 7
                     </Text>
-                    <View style={styles.buttonRow}>
+                    <View style={[common.row, common.gapMd]}>
                         <AppButton
                             title="−"
                             onPress={decrementSay}
@@ -186,7 +184,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                             onPress={() => navigation.navigate('UmrahDuas')}
                             variant="ghost"
                             style={styles.duaLink}
-                            textStyle={styles.duaLinkText}
+                            textStyle={common.textAccent}
                         />
                     )}
                 </View>
@@ -199,7 +197,7 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                     ]}
                     onPress={toggleIhram}
                 >
-                    <Text style={[styles.icon, styles.largeIcon]}>🌙</Text>
+                    <Text style={styles.icon}>🌙</Text>
                     <Text style={[
                         styles.ihramText,
                         progress.isIhram ? styles.ihramTextActive : styles.ihramTextInactive,
@@ -212,8 +210,8 @@ export const UmrahProgressScreen: React.FC<UmrahProgressScreenProps> = ({ onNavi
                         title={t('umrahProgressScreen.ihramDuas')}
                         onPress={() => navigation.navigate('UmrahDuas')}
                         variant="ghost"
-                        style={styles.duaLinkCenter}
-                        textStyle={styles.duaLinkText}
+                        style={styles.duaLink}
+                        textStyle={common.textAccent}
                     />
                 )}
             </ScrollView>

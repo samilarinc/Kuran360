@@ -1,11 +1,10 @@
-import React, { useMemo } from 'react';
-import { View, Text, TouchableOpacity, useWindowDimensions } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, useWindowDimensions, StyleSheet } from 'react-native';
 import { BookOpen, Image as ImageIcon } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
-import { SPACING } from '@/theme';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
+import { SPACING, FONT_SIZES, Theme } from '@/theme';
 import { ARABIC_FONT_OPTIONS, getArabicFontFamily } from '@/constants/fonts';
-import { createStyles } from './index.styles';
 
 interface ArabicFontPickerProps {
     settings: any;
@@ -13,10 +12,10 @@ interface ArabicFontPickerProps {
 }
 
 export const ArabicFontPicker: React.FC<ArabicFontPickerProps> = ({ settings, updateSettings }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
     const { width: screenWidth } = useWindowDimensions();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     // Section padding ~32px each side + sectionContent padding ~16px = ~96px total
     const available = screenWidth - 96;
@@ -41,10 +40,10 @@ export const ArabicFontPicker: React.FC<ArabicFontPickerProps> = ({ settings, up
     return (
         <View>
             {groups.map(({ key, Icon, label }, groupIdx) => (
-                <View key={key} style={{ marginBottom: groupIdx === 0 ? SPACING.lg : 0 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.sm, gap: SPACING.xs }}>
+                <View key={key} style={groupIdx === 0 && common.mbLg}>
+                    <View style={[common.row, common.gapXs, common.mbSm]}>
                         <Icon size={14} color={theme.textSecondary} />
-                        <Text style={{ fontSize: 13, fontWeight: '600', color: theme.textSecondary, letterSpacing: 0.3 }}>
+                        <Text style={common.sectionLabel}>
                             {label}
                         </Text>
                     </View>
@@ -78,3 +77,28 @@ export const ArabicFontPicker: React.FC<ArabicFontPickerProps> = ({ settings, up
         </View>
     );
 };
+
+const createStyles = (theme: Theme) => StyleSheet.create({
+    fontChip: {
+        borderWidth: 1,
+        borderColor: theme.border,
+        borderRadius: 10,
+        paddingVertical: SPACING.sm,
+        paddingHorizontal: SPACING.md,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme.surface,
+        minWidth: 110,
+        height: 72,
+    },
+    fontChipLabel: {
+        fontSize: 10,
+        color: theme.textSecondary,
+        fontWeight: '500',
+        marginTop: 2,
+    },
+    fontChipArabic: {
+        fontSize: FONT_SIZES.large + 2,
+        color: theme.text,
+    },
+});

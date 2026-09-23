@@ -596,6 +596,13 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "23 Eylül 2026",
+        "bullets": [
+          "Uygulama genelinde tek bir ortak tema kullanılmaya başlandı; kartlar, butonlar ve listeler artık her ekranda aynı görünüyor.",
+          "Koyu modda bazı kenarlıkların ve silme butonunun yanlış renkte görünmesi düzeltildi."
+        ]
+      },
+      {
         "date": "30 Ağustos 2026",
         "bullets": [
           "Uygulama genelinde kod bakımı ve sadeleştirme yapıldı (görsel değişiklik yok).",

@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
     View,
     Text,
 } from 'react-native';
 import { VerseShareData, ImageSize } from '@/types';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useThemedStyles } from '@/contexts/ThemeContext';
 import { useSettings } from '@/contexts/SettingsContext';
 import { formatVerseNumber } from '@/utils/numerals';
 import { createStyles } from './index.styles';
@@ -20,9 +20,8 @@ export const NativeVerseImageDesign: React.FC<NativeVerseImageDesignProps> = ({
     themeMode,
     size,
 }) => {
-    const { theme } = useTheme();
     const { settings } = useSettings();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     const isDark = themeMode === 'dark';
     const { arabicText, translation, surahName, verseNumber } = verseData;
 

@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
-import { View, Text } from 'react-native';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './index.styles';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { CommonStyles, useThemedStyles, useTheme } from '@/contexts/ThemeContext';
+import { SPACING, Theme } from '@/theme';
 
 interface SearchFilterGroupProps {
     title: string;
@@ -10,14 +10,26 @@ interface SearchFilterGroupProps {
 }
 
 export const SearchFilterGroup: React.FC<SearchFilterGroupProps> = ({ title, children, footer }) => {
-    const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const { common } = useTheme();
+    const styles = useThemedStyles(createStyles);
 
     return (
-        <View style={styles.selectorContainer}>
+        <View style={common.mbMd}>
             <Text style={styles.selectorTitle}>{title}</Text>
-            <View style={styles.selectorGrid}>{children}</View>
+            <View style={common.rowWrap}>{children}</View>
             {footer}
         </View>
     );
+};
+
+const createStyles = (theme: Theme, common: CommonStyles) => {
+
+    return StyleSheet.create({
+        selectorTitle: {
+            ...common.sectionLabel,
+            color: theme.secondary,
+            marginBottom: SPACING.xs,
+            textTransform: 'uppercase',
+        },
+    });
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     View,
     Text,
@@ -18,7 +18,7 @@ import { AppButton } from '@/components/AppButton';
 import { Badge } from '@/components/Badge';
 import { LoadingView } from '@/components/LoadingView';
 import { ErrorView } from '@/components/ErrorView';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { getSurahName } from '@/utils/surahName';
 import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
 import { useGlobalAudio } from '@/contexts/AudioContext';
@@ -27,7 +27,6 @@ import { useDownloadData } from '@/hooks/useDownloadData';
 import { getRandomVerse } from '@/data/quranData';
 import { Surah, Verse as VerseType } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './RandomVerseScreen.styles';
 
 interface RandomVerseScreenProps {
@@ -49,10 +48,9 @@ const CACHE_KEY = 'randomVerse';
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation, isDataAvailable }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     useDebouncedSettings(200);
     const { audioState, playVerse } = useGlobalAudio();
     useAuth();
@@ -291,8 +289,8 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                 onPress={handleGoToSurah}
                 activeOpacity={0.7}
             >
-                <View style={styles.surahInfoContent}>
-                    <View style={styles.surahNameSection}>
+                <View style={[common.rowBetween, common.mbXs]}>
+                    <View style={common.center}>
                         <Text style={styles.surahName}>
                             {getSurahName(t, currentVerse.surah)}
                         </Text>
@@ -309,7 +307,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                         </Text>
                     </View>
                 </View>
-                <View style={styles.surahMetaInfo}>
+                <View style={[common.rowGap, common.mtSm]}>
                     <Badge variant="tint" icon={<BookOpen size={12} color={theme.primary} />} label={t('randomVerseScreen.surahLabel', { number: currentVerse.surah.number })} />
                     <Badge variant="tint" icon={<MapPin size={12} color={theme.primary} />} label={t('randomVerseScreen.placeLabel', { place: currentVerse.surah.revelationPlace })} />
                     <Badge variant="tint" icon={<ListOrdered size={12} color={theme.primary} />} label={t('randomVerseScreen.verseCountLabel', { count: currentVerse.surah.verseCount })} />

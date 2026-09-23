@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
-import { View, StyleProp, ViewStyle } from 'react-native';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './index.styles';
+import React from 'react';
+import { View, StyleProp, ViewStyle, StyleSheet } from 'react-native';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
+import { Theme } from '@/theme';
 
 interface ProgressBarProps {
     progress: number;
@@ -21,7 +21,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
     fillStyle,
 }) => {
     const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     const clamped = Math.max(0, Math.min(100, progress));
     const radius = height / 2;
 
@@ -43,3 +43,13 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
         </View>
     );
 };
+
+const createStyles = (_theme: Theme) => StyleSheet.create({
+    track: {
+        width: '100%',
+        overflow: 'hidden',
+    },
+    fill: {
+        height: '100%',
+    },
+});

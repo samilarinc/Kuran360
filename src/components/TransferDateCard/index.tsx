@@ -1,13 +1,12 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TrainFront } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { AppButton } from '@/components/AppButton';
 import { DateField } from '@/components/DateField';
 import { createStyles as createChromeStyles } from '../TravelCardChrome.styles';
-import { createStyles } from './index.styles';
 
 interface TransferDateCardProps {
     fromCityLabel: string;
@@ -38,20 +37,19 @@ export const TransferDateCard: React.FC<TransferDateCardProps> = ({
     onDateChange,
     onOpenTrainTicket,
 }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const chrome = useMemo(() => createChromeStyles(theme), [theme]);
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const chrome = useThemedStyles(createChromeStyles);
 
     return (
         <View style={chrome.plannerCard}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+            <View style={[common.rowGap, common.mbMd]}>
                 <TrainFront size={16} color={theme.text} />
-                <Text style={[chrome.plannerTitle, { marginBottom: 0 }]}>
+                <Text style={[chrome.plannerTitle, common.mb0]}>
                     {t('umrahChecklistScreen.cityTransfer')}
                 </Text>
             </View>
-            <Text style={styles.transferDescriptionText}>
+            <Text style={[common.subtitle, common.mbSm]}>
                 {t('umrahChecklistScreen.transferDateDescription', { from: fromCityLabel, to: toCityLabel })}
             </Text>
 
@@ -69,7 +67,7 @@ export const TransferDateCard: React.FC<TransferDateCardProps> = ({
             {transferDate && (
                 <AppButton
                     variant="outline"
-                    style={[chrome.plannerActionBtn, chrome.plannerActionBtnTall]}
+                    style={chrome.plannerActionBtn}
                     textStyle={chrome.plannerActionBtnText}
                     icon={<TrainFront size={14} color={theme.primary} />}
                     title={t('umrahChecklistScreen.trainTicket')}

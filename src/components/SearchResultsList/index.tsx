@@ -1,11 +1,9 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/contexts/ThemeContext';
 import { VerseNumberStyle } from '@/utils/numerals';
 import { SearchResultItem, SearchResult } from '@/components/SearchResultItem';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './index.styles';
 
 interface SearchResultsListProps {
     query: string;
@@ -20,14 +18,12 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
     verseNumberStyle,
     onResultPress,
 }) => {
-    const { theme } = useTheme();
+    const { common, theme } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
 
     return (
         <View style={common.flex1}>
-            <Text style={styles.resultsHeader}>
+            <Text style={[common.footerText, common.mbMd, { color: theme.secondary }]}>
                 {query.length >= 2 ? t('searchScreen.resultsCount', { count: results.length }) : t('searchScreen.resultsMinChars')}
             </Text>
 

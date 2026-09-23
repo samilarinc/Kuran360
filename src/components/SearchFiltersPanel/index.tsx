@@ -1,14 +1,14 @@
-import React, { useMemo } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ChevronUp, ChevronDown, Filter } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, CommonStyles, useThemedStyles } from '@/contexts/ThemeContext';
 import { Surah } from '@/types';
 import { SearchScopeSelector, SearchScope } from '@/components/SearchScopeSelector';
 import { TranslationScopeSelector } from '@/components/TranslationScopeSelector';
 import { SurahFilterSelector } from '@/components/SurahFilterSelector';
 import { MatchTypeSelector } from '@/components/MatchTypeSelector';
-import { createStyles } from './index.styles';
+import { SPACING, Theme } from '@/theme';
 
 type SurahFilter = 'all' | number;
 
@@ -57,14 +57,14 @@ export const SearchFiltersPanel: React.FC<SearchFiltersPanelProps> = ({
     useFuzzySearch,
     onChangeFuzzySearch,
 }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     return (
         <>
             <TouchableOpacity style={styles.filtersToggle} onPress={onToggleExpanded}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                <View style={common.rowGap}>
                     <Filter size={14} color={theme.text} />
                     <Text style={styles.filtersToggleText}>
                         {t('searchScreen.filtersToggle')}
@@ -105,4 +105,29 @@ export const SearchFiltersPanel: React.FC<SearchFiltersPanelProps> = ({
             )}
         </>
     );
+};
+
+const createStyles = (theme: Theme, common: CommonStyles) => {
+
+    return StyleSheet.create({
+        filtersToggle: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            backgroundColor: theme.cardBackground,
+            padding: SPACING.md,
+            borderRadius: 12,
+            marginBottom: SPACING.md,
+        },
+        filtersToggleText: {
+            ...common.text,
+            fontWeight: '600',
+        },
+        filtersContainer: {
+            backgroundColor: theme.cardBackground,
+            borderRadius: 12,
+            padding: SPACING.md,
+            marginBottom: SPACING.lg,
+        },
+    });
 };

@@ -1,15 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
-import { createCommonStyles } from '@/theme/common.styles';
+import type { CommonStyles } from '@/contexts/ThemeContext';
 
-export const createStyles = (theme: Theme) => {
-    const common = createCommonStyles(theme);
+export const createStyles = (theme: Theme, common: CommonStyles) => {
 
     return StyleSheet.create({
-    content: {
-        flex: 1,
-        padding: SPACING.lg,
-    },
     progressCard: {
         ...common.card,
         padding: SPACING.xl,
@@ -19,21 +14,9 @@ export const createStyles = (theme: Theme) => {
         shadowRadius: 4,
         elevation: 3,
     },
-    progressHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: SPACING.md,
-    },
     icon: {
-        fontSize: FONT_SIZES.xlarge,
-        marginRight: SPACING.sm,
-    },
-    largeIcon: {
         fontSize: 48,
-    },
-    progressTitle: {
-        ...common.titleLarge,
-        marginBottom: 0,
+        marginRight: SPACING.sm,
     },
     progressCount: {
         fontSize: 64,
@@ -45,10 +28,6 @@ export const createStyles = (theme: Theme) => {
         fontSize: FONT_SIZES.large,
         marginBottom: SPACING.sm,
         color: theme.textSecondary,
-    },
-    buttonRow: {
-        flexDirection: 'row',
-        gap: SPACING.md,
     },
     adjustButton: {
         borderWidth: 2,
@@ -93,16 +72,6 @@ export const createStyles = (theme: Theme) => {
     duaLink: {
         marginTop: SPACING.md,
         paddingVertical: SPACING.xs,
-    },
-    duaLinkCenter: {
-        marginTop: SPACING.md,
-        paddingVertical: SPACING.xs,
-        alignItems: 'center',
-    },
-    duaLinkText: {
-        fontSize: FONT_SIZES.medium,
-        fontWeight: '600',
-        color: theme.primary,
     },
     });
 };

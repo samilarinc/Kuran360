@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { SHADOW } from '@msarinc/ui';
 import { FONT_SIZES, SPACING, FAVORITE_COLOR, FAVORITE_COLOR_DARK, Theme } from '@/theme';
 
 const headerIconButton = {
@@ -18,20 +19,7 @@ export const createStyles = (theme: Theme) => {
     marginHorizontal: SPACING.md,
     borderRadius: 12,
     padding: SPACING.md,
-    elevation: 2,
-    shadowColor: theme.text,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2.22,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: SPACING.md,
+    ...SHADOW.sm,
   },
   verseNumber: {
     backgroundColor: theme.primary,
@@ -56,9 +44,6 @@ export const createStyles = (theme: Theme) => {
   },
   playButtonActive: {
     backgroundColor: theme.accent,
-  },
-  content: {
-    gap: SPACING.md,
   },
   inlineArabicRow: {
     flexDirection: 'row-reverse',
@@ -107,9 +92,6 @@ export const createStyles = (theme: Theme) => {
     textAlign: 'center',
     lineHeight: FONT_SIZES.medium * 1.2,
   },
-  inlineSpace: {
-    // Visual spacing between tokens; width is controlled by content (space char)
-  },
   translationText: {
     fontSize: FONT_SIZES.translation,
     lineHeight: FONT_SIZES.translation * 1.4,
@@ -122,9 +104,6 @@ export const createStyles = (theme: Theme) => {
     color: theme.textSecondary,
     textAlign: 'left',
     fontStyle: 'italic',
-  },
-  translationsContainer: {
-    gap: SPACING.sm,
   },
   translationContainer: {
     paddingVertical: SPACING.xs,
@@ -171,31 +150,6 @@ export const createStyles = (theme: Theme) => {
     gap: SPACING.xs,
     justifyContent: 'flex-end',
   },
-  wordTranslationItem: {
-    backgroundColor: theme.surface,
-    paddingVertical: 4,
-    paddingHorizontal: SPACING.xs,
-    borderRadius: 6,
-    marginLeft: SPACING.xs,
-    marginBottom: SPACING.xs,
-    minWidth: 60,
-    alignItems: 'center',
-  },
-  wordArabic: {
-    fontSize: FONT_SIZES.small,
-    color: theme.text,
-    fontWeight: '600',
-    textAlign: 'center',
-    writingDirection: 'rtl',
-  },
-  wordTranslation: {
-    fontSize: FONT_SIZES.small - 2,
-    color: theme.textSecondary,
-    textAlign: 'center',
-  },
-  memContainer: {
-    marginTop: SPACING.sm,
-  },
   memToggle: {
     alignSelf: 'flex-end',
     flexDirection: 'row',
@@ -216,20 +170,6 @@ export const createStyles = (theme: Theme) => {
     padding: SPACING.sm,
     gap: SPACING.sm,
   },
-  memRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  memLabel: {
-    color: theme.text,
-    fontWeight: '600',
-  },
-  memStepper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.sm,
-  },
   stepBtn: {
     width: 34,
     height: 34,
@@ -248,36 +188,12 @@ export const createStyles = (theme: Theme) => {
     color: theme.text,
     fontWeight: '600',
   },
-  memActions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: SPACING.sm,
-  },
-  memHint: {
-    color: theme.textSecondary,
-    fontSize: FONT_SIZES.small,
-    textAlign: 'right',
-  },
-  memStartBtn: {
-    backgroundColor: theme.primary,
+  memButton: {
     paddingHorizontal: SPACING.md,
     paddingVertical: 8,
     borderRadius: 8,
   },
-  memStartBtnDisabled: {
-    opacity: 0.5,
-  },
-  memStartText: {
-    color: '#fff',
-    fontWeight: '700',
-  },
-  memCancelBtn: {
-    backgroundColor: theme.accent,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  memCancelText: {
+  memButtonText: {
     color: theme.headerText,
     fontWeight: '700',
   },
@@ -306,26 +222,12 @@ export const createStyles = (theme: Theme) => {
     borderLeftWidth: 0.5,
     borderLeftColor: theme.border,
   },
-  memModeBtnActive: {
-    backgroundColor: theme.primary,
-  },
   memModeText: {
     fontSize: FONT_SIZES.small,
     color: theme.text,
     fontWeight: '600',
     textAlign: 'center',
   },
-  memModeTextActive: {
-    color: '#fff',
-    fontWeight: '700',
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.sm,
-  },
-  bookmarkButton: headerIconButton,
-  shareButton: headerIconButton,
-  allTranslationsButton: headerIconButton,
+  iconButton: headerIconButton,
   });
 };

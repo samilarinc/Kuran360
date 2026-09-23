@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, Alert, Platform } from 'react-native';
 import {
     Volume2,
@@ -26,7 +26,6 @@ import { ArabicFontPicker } from '@/components/ArabicFontPicker';
 import { TranslationsSection } from '@/components/TranslationsSection';
 import { DataUpdateSection } from '@/components/DataUpdateSection';
 import { SPACING } from '@/theme';
-import { createCommonStyles } from '@/theme/common.styles';
 
 interface SettingsScreenProps {
     navigation: any;
@@ -47,9 +46,9 @@ const COLORS = {
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     const { settings, updateSettings, availableTranslations } = useDebouncedSettings(150);
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useTheme().common;
     const THEME_TOGGLE_LABELS = {
         light: t('settingsScreen.theme.light'),
         dark: t('settingsScreen.theme.dark'),
@@ -214,7 +213,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
             />
 
             <ScrollView
-                style={{ flex: 1 }}
+                style={common.flex1}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingHorizontal: SPACING.lg, paddingBottom: SPACING.xl }}
             >

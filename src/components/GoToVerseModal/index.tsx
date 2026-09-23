@@ -1,18 +1,9 @@
-import React, { useState, useMemo } from 'react';
-import {
-    View,
-    Text,
-    Modal,
-    TouchableOpacity,
-    ScrollView,
-    SafeAreaView,
-    TextInput,
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Modal, TouchableOpacity, ScrollView, SafeAreaView, TextInput, StyleSheet } from 'react-native';
 import { Verse as VerseType } from '@/types';
 import { useSettings } from '@/contexts/SettingsContext';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './index.styles';
+import { useTheme, useThemedStyles, Theme, CommonStyles } from '@/contexts/ThemeContext';
+import { FONT_SIZES, SPACING } from '@/theme';
 
 interface GoToVerseModalProps {
     visible: boolean;
@@ -30,9 +21,8 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
     onClose,
 }) => {
     const { settings } = useSettings();
-    const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const { theme, common } = useTheme();
+    const styles = useThemedStyles(createStyles);
     const [searchText, setSearchText] = useState('');
 
     // Get the user's preferred translation
@@ -72,7 +62,7 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
             transparent={true}
             onRequestClose={onClose}
         >
-            <View style={styles.overlay}>
+            <View style={common.pickerOverlay}>
                 <SafeAreaView style={common.modalContainerCentered}>
                     {/* Header */}
                     <View style={common.pickerHeader}>
@@ -84,7 +74,7 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
 
                     {/* Search Input */}
                     <View style={common.pickerSearchContainer}>
-                        <Text style={styles.searchLabel}>Ayet numarası veya metin ara:</Text>
+                        <Text style={[common.smallText, common.mbXs]}>Ayet numarası veya metin ara:</Text>
                         <View style={common.pickerSearchInputContainer}>
                             <TextInput
                                 style={common.pickerSearchInput}
@@ -100,14 +90,14 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
                                     onPress={() => setSearchText('')}
                                     style={common.pickerClearButton}
                                 >
-                                    <Text style={common.pickerClearButtonText}>✕</Text>
+                                    <Text style={common.smallText}>✕</Text>
                                 </TouchableOpacity>
                             ) : null}
                         </View>
                     </View>
 
                     {/* Verse List */}
-                    <ScrollView style={styles.verseList} showsVerticalScrollIndicator={false}>
+                    <ScrollView style={common.pickerList} showsVerticalScrollIndicator={false}>
                         {filteredVerses.map((verse) => {
                             const actualIndex = verses.indexOf(verse);
                             const isCurrentVerse = actualIndex === currentVerseIndex;
@@ -117,15 +107,14 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
                                 <TouchableOpacity
                                     key={verse.id}
                                     style={[
-                                        styles.verseItem,
-                                        isCurrentVerse && styles.currentVerseItem
+                                        common.pickerOption,
+                                        isCurrentVerse && common.pickerOptionSelected
                                     ]}
                                     onPress={() => handleVerseSelect(actualIndex)}
                                 >
-                                    <View style={styles.verseHeader}>
+                                    <View style={[common.rowBetween, common.mbXs]}>
                                         <Text style={[
-                                            styles.verseNumber,
-                                            isCurrentVerse && styles.currentVerseNumber
+                                            common.textAccent,
                                         ]}>
                                             Ayet {verse.number}
                                         </Text>
@@ -169,4 +158,46 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
             </View>
         </Modal>
     );
+};
+
+const createStyles = (theme: Theme, common: CommonStyles) => {
+    return StyleSheet.create({
+    currentLabel: {
+        ...common.badge,
+        ...common.badgeText,
+        color: theme.primary,
+        fontWeight: '500',
+        backgroundColor: theme.primary + '20',
+        paddingHorizontal: SPACING.xs,
+        paddingVertical: 2,
+        borderRadius: 4,
+    },
+    versePreview: {
+        ...common.smallText,
+        lineHeight: 18,
+    },
+    currentVersePreview: {
+        color: theme.text,
+    },
+    quickNavContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: SPACING.md,
+        borderTopWidth: 1,
+        borderTopColor: theme.background,
+    },
+    quickNavButton: {
+        paddingVertical: SPACING.sm,
+        paddingHorizontal: SPACING.md,
+        backgroundColor: theme.primary + '20',
+        borderRadius: 6,
+        minWidth: 70,
+        alignItems: 'center',
+    },
+    quickNavText: {
+        fontSize: FONT_SIZES.small,
+        color: theme.primary,
+        fontWeight: '500',
+    },
+    });
 };

@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
-import { View, Text, StyleProp, ViewStyle, TextStyle } from 'react-native';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './index.styles';
+import React from 'react';
+import { View, Text, StyleProp, ViewStyle, TextStyle, StyleSheet } from 'react-native';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
+import { SPACING, Theme } from '@/theme';
 
 export type BadgeVariant = 'solid' | 'tint';
 export type BadgeShape = 'rounded' | 'pill';
@@ -29,7 +29,7 @@ export const Badge: React.FC<BadgeProps> = ({
     textStyle,
 }) => {
     const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     const baseColor = color ?? theme.primary;
 
     return (
@@ -57,3 +57,32 @@ export const Badge: React.FC<BadgeProps> = ({
         </View>
     );
 };
+
+const createStyles = (_theme: Theme) => StyleSheet.create({
+    badge: {
+        alignSelf: 'flex-start',
+    },
+    withIcon: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+    },
+    sizeSmall: {
+        paddingHorizontal: SPACING.sm,
+        paddingVertical: 2,
+    },
+    sizeMedium: {
+        paddingHorizontal: SPACING.sm,
+        paddingVertical: 4,
+    },
+    text: {
+        fontWeight: '600',
+    },
+    textSmall: {
+        fontSize: 10,
+        fontWeight: '700',
+    },
+    textMedium: {
+        fontSize: 12,
+    },
+});

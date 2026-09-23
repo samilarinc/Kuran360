@@ -11,14 +11,13 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { LoadingView } from '@/components/LoadingView';
 import { SearchInput } from '@/components/SearchInput';
 import { PrayerTime } from '@/types';
 import locations from '@/data/locations.json';
-import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './PrayerTimesScreen.styles';
 
 interface Location {
@@ -29,10 +28,9 @@ interface Location {
 }
 
 export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     const { settings, updateSettings } = useSettings();
     const [, setPrayerTimes] = useState<PrayerTime[]>([]);
     const [loading, setLoading] = useState(true);
@@ -275,21 +273,18 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
         return (
             <View style={[
                 styles.timeRow,
-                { borderBottomColor: theme.border },
-                isCurrent && [styles.currentTimeRow, { backgroundColor: theme.primary + '15', borderLeftColor: theme.primary }]
+                isCurrent && styles.currentTimeRow
             ]}>
-                <View style={styles.timeLabelContainer}>
+                <View style={common.row}>
                     <Ionicons name={icon as any} size={24} color={isCurrent ? theme.primary : theme.textSecondary} />
                     <Text style={[
                         styles.timeLabel,
-                        { color: theme.textSecondary },
-                        isCurrent && [styles.currentTimeLabel, { color: theme.primary }]
+                        isCurrent && styles.currentText
                     ]}>{t(`prayerTimesScreen.prayers.${key}`)}</Text>
                 </View>
                 <Text style={[
                     styles.timeValue,
-                    { color: theme.text },
-                    isCurrent && [styles.currentTimeValue, { color: theme.primary }]
+                    isCurrent && styles.currentText
                 ]}>{time}</Text>
             </View>
         );
@@ -300,7 +295,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
     }
 
     return (
-        <View style={[common.container, { backgroundColor: theme.background }]}>
+        <View style={common.container}>
             <AppHeader
                 title={t('screenTitles.prayerTimes')}
                 showBackButton={true}
@@ -309,21 +304,20 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                 onHomePress={() => navigation.navigate('Main')}
             />
 
-            <ScrollView contentContainerStyle={styles.content}>
-                <View style={[styles.currentLocationCard, { backgroundColor: theme.primary }]}>
+            <ScrollView contentContainerStyle={common.pMd}>
+                <View style={styles.currentLocationCard}>
                     <View style={styles.locationHeaderRow}>
-                        <Text style={[styles.locationName, { color: theme.headerText }]}>
+                        <Text style={styles.locationName}>
                             {settings.prayerLocation?.cityName}
                             {settings.prayerLocation?.districtName ? `, ${settings.prayerLocation.districtName}` : ''}
                         </Text>
-                        <View style={{ flexDirection: 'row' }}>
+                        <View style={common.rowGap}>
                             <AppButton
                                 onPress={() => setShowLocationPicker(true)}
                                 variant="translucent"
                                 shape="circle"
                                 size="small"
                                 icon={<Ionicons name="search" size={24} color="#FFF" />}
-                                style={{ marginRight: 8 }}
                             />
                             <AppButton
                                 onPress={handleUseGPS}
@@ -334,15 +328,15 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                             />
                         </View>
                     </View>
-                    <Text style={[styles.dateText, { color: 'rgba(255,255,255,0.9)' }]}>{todayTimes?.miladi}</Text>
-                    <Text style={[styles.hicriText, { color: 'rgba(255,255,255,0.7)' }]}>{todayTimes?.hicri}</Text>
+                    <Text style={styles.dateText}>{todayTimes?.miladi}</Text>
+                    <Text style={styles.hicriText}>{todayTimes?.hicri}</Text>
                 </View>
 
-                <View style={[styles.timesCard, { backgroundColor: theme.cardBackground }]}>
+                <View style={common.card}>
                     {nextPrayer && (
-                        <View style={[styles.nextPrayerInfo, { borderBottomColor: theme.border }]}>
-                            <Text style={[styles.nextPrayerLabel, { color: theme.textSecondary }]}>{t('prayerTimesScreen.timeRemaining', { label: t(`prayerTimesScreen.prayers.${nextPrayer.label}`) })}</Text>
-                            <Text style={[styles.remainingTime, { color: theme.primary }]}>{nextPrayer.remaining}</Text>
+                        <View style={styles.nextPrayerInfo}>
+                            <Text style={[common.subtitle, common.mbXs]}>{t('prayerTimesScreen.timeRemaining', { label: t(`prayerTimesScreen.prayers.${nextPrayer.label}`) })}</Text>
+                            <Text style={styles.remainingTime}>{nextPrayer.remaining}</Text>
                         </View>
                     )}
                     {todayTimes && (
@@ -362,9 +356,9 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
 
             {showLocationPicker && (
                 <View style={common.modalOverlay}>
-                    <View style={[styles.modalContent, { backgroundColor: theme.cardBackground }]}>
-                        <View style={styles.modalHeader}>
-                            <Text style={[styles.modalTitle, { color: theme.text }]}>{t('prayerTimesScreen.selectLocation')}</Text>
+                    <View style={styles.modalContent}>
+                        <View style={[common.rowBetween, common.mbMd]}>
+                            <Text style={[common.modalTitle, common.mb0]}>{t('prayerTimesScreen.selectLocation')}</Text>
                             <TouchableOpacity onPress={() => setShowLocationPicker(false)}>
                                 <Ionicons name="close" size={24} color={theme.text} />
                             </TouchableOpacity>
@@ -380,10 +374,10 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                             {filteredLocations.map((loc) => (
                                 <TouchableOpacity
                                     key={loc.id}
-                                    style={[styles.locationItem, { borderBottomColor: theme.border }]}
+                                    style={styles.locationItem}
                                     onPress={() => handleSelectLocation(loc)}
                                 >
-                                    <Text style={[styles.locationItemText, { color: theme.text }]}>
+                                    <Text style={common.text}>
                                         {loc.cityName}{loc.districtName ? ` - ${loc.districtName}` : ''}
                                     </Text>
                                 </TouchableOpacity>

@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
-import { Theme } from '@/theme';
+import React from 'react';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { Theme, FONT_SIZES, SPACING } from '@/theme';
 import { ProgressBar } from '../ProgressBar';
-import { createStyles } from './index.styles';
+import { useThemedStyles } from '@/contexts/ThemeContext';
 
 interface DataUpdateProgressProps {
     progress: number;
@@ -19,7 +19,7 @@ export const DataUpdateProgress: React.FC<DataUpdateProgressProps> = ({
     totalBytes,
     theme
 }) => {
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     return (
         <View style={styles.downloadProgress}>
@@ -39,3 +39,24 @@ export const DataUpdateProgress: React.FC<DataUpdateProgressProps> = ({
         </View>
     );
 };
+
+const createStyles = (theme: Theme) => StyleSheet.create({
+    downloadProgress: {
+        alignItems: 'center',
+        width: '100%',
+        paddingVertical: SPACING.md,
+    },
+    progressBarContainer: {
+        marginBottom: SPACING.md,
+    },
+    progressText: {
+        fontSize: FONT_SIZES.medium,
+        textAlign: 'center',
+        marginBottom: SPACING.sm,
+        lineHeight: 20,
+        color: theme.textSecondary,
+    },
+    activityIndicator: {
+        marginTop: 10,
+    },
+});

@@ -1,12 +1,10 @@
-import React, { useRef, useEffect, useMemo } from 'react';
-import {
-    TouchableOpacity,
-    Animated,
-} from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { TouchableOpacity, Animated, StyleSheet } from 'react-native';
+import { SHADOW } from '@msarinc/ui';
 import { Play, Pause } from 'lucide-react-native';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useDebouncedToggle } from '@/hooks/useDebouncedState';
-import { createStyles } from './index.styles';
+import { Theme } from '@/theme';
 
 interface AutoplayToggleProps {
     isEnabled: boolean;
@@ -18,7 +16,7 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
     onToggle,
 }) => {
     const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     const slideAnimation = useRef(new Animated.Value(isEnabled ? 1 : 0)).current;
     const { isEnabled: displayState, toggle } = useDebouncedToggle(
         isEnabled,
@@ -53,7 +51,6 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
                 <Animated.View
                     style={[
                         styles.knob,
-                        styles.knobWhite,
                         {
                             transform: [{ translateX }],
                         }
@@ -69,3 +66,25 @@ export const AutoplayToggle: React.FC<AutoplayToggleProps> = ({
         </TouchableOpacity>
     );
 };
+
+const createStyles = (_theme: Theme) => StyleSheet.create({
+    container: {
+        width: 60,
+        height: 28,
+        borderRadius: 14,
+        justifyContent: 'center',
+        position: 'relative',
+        borderWidth: 2,
+        borderColor: 'rgba(255, 255, 255, 0.4)',
+    },
+    knob: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
+        ...SHADOW.sm,
+    },
+});

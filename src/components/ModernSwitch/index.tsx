@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
-import { Animated, Switch, TouchableOpacity, Platform } from 'react-native';
-import { createStyles } from './index.styles';
-import { Theme } from '@/theme';
+import React, { useState } from 'react';
+import { Animated, Switch, TouchableOpacity, Platform, StyleSheet } from 'react-native';
+import { Theme, SPACING } from '@/theme';
+import { useThemedStyles } from '@/contexts/ThemeContext';
 
 interface ModernSwitchProps {
     value: boolean;
@@ -16,7 +16,7 @@ export const ModernSwitch: React.FC<ModernSwitchProps> = ({
     disabled = false,
     theme
 }) => {
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     const [animatedValue] = useState(new Animated.Value(value ? 1 : 0));
 
     React.useEffect(() => {
@@ -97,3 +97,42 @@ export const ModernSwitch: React.FC<ModernSwitchProps> = ({
         </TouchableOpacity>
     );
 };
+
+const createStyles = (_theme: Theme) => StyleSheet.create({
+    webSwitch: {
+        transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
+        marginLeft: SPACING.sm,
+    },
+    modernSwitchContainer: {
+        padding: SPACING.xs,
+    },
+    modernSwitchTrack: {
+        width: 48,
+        height: 28,
+        borderRadius: 14,
+        justifyContent: 'center',
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+    },
+    modernSwitchDisabled: {
+        opacity: 0.6,
+    },
+    modernSwitchThumb: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: '#FFFFFF',
+        position: 'absolute',
+        elevation: 4,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+    },
+    modernSwitchThumbActive: {
+        backgroundColor: '#FFFFFF',
+    },
+});

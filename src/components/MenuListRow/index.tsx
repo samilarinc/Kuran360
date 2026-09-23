@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react';
-import { View, Text, TouchableOpacity, StyleProp, ViewStyle, TextStyle } from 'react-native';
-import { useTheme } from '@/contexts/ThemeContext';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './index.styles';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleProp, ViewStyle, TextStyle, StyleSheet } from 'react-native';
+import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
 interface MenuListRowProps {
     icon?: string | React.ReactNode; // emoji/number string, or a custom icon element (e.g. a lucide icon)
@@ -41,9 +40,8 @@ export const MenuListRow: React.FC<MenuListRowProps> = ({
     titleStyle,
     chevronStyle,
 }) => {
-    const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const { common } = useTheme();
+    const styles = useThemedStyles(createStyles);
 
     const isCard = variant === 'card';
 
@@ -57,7 +55,7 @@ export const MenuListRow: React.FC<MenuListRowProps> = ({
             {icon !== undefined && (
                 <View
                     style={[
-                        isCard ? styles.cardIconContainer : styles.listIconContainer,
+                        isCard ? styles.cardIconContainer : common.iconBox,
                         iconColor ? { backgroundColor: iconColor } : null,
                         iconStyle,
                     ]}
@@ -73,16 +71,16 @@ export const MenuListRow: React.FC<MenuListRowProps> = ({
             )}
 
             <View style={common.flex1}>
-                <Text style={[isCard ? styles.cardTitle : styles.listTitle, titleStyle]}>
+                <Text style={[isCard ? common.title : common.textStrong, titleStyle]}>
                     {title}
                 </Text>
                 {subtitle !== undefined && (
-                    <Text style={isCard ? styles.cardSubtitle : styles.listSubtitle}>
+                    <Text style={isCard ? common.smallText : styles.listSubtitle}>
                         {subtitle}
                     </Text>
                 )}
                 {caption !== undefined && (
-                    <Text style={isCard ? styles.cardSubtitle : styles.listCaption}>
+                    <Text style={common.smallText}>
                         {caption}
                     </Text>
                 )}
@@ -99,4 +97,73 @@ export const MenuListRow: React.FC<MenuListRowProps> = ({
             )}
         </TouchableOpacity>
     );
+};
+
+const createStyles = (theme: Theme, common: CommonStyles) => {
+
+    return StyleSheet.create({
+        // Outer row container — card variant (UmrahMenuScreen style)
+        cardRow: {
+            ...common.card,
+            flexDirection: 'row',
+            alignItems: 'center',
+            padding: SPACING.lg,
+            borderWidth: 1,
+            borderColor: theme.border,
+            backgroundColor: theme.cardBackground,
+        },
+        // Outer row container — list variant (MainScreen style)
+        listRow: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: SPACING.sm + 4,
+            paddingHorizontal: SPACING.md,
+        },
+
+        // Icon container — card variant
+        cardIconContainer: {
+            width: 56,
+            height: 56,
+            borderRadius: 28,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginRight: SPACING.md,
+        },
+        cardIcon: {
+            fontSize: 32,
+        },
+        // Icon container — list variant
+        listIcon: {
+            fontSize: 18,
+        },
+
+        // Text block — card variant
+
+        // Text block — list variant
+        listSubtitle: {
+            fontSize: FONT_SIZES.large,
+            color: theme.primary,
+            textAlign: 'right',
+            marginBottom: SPACING.xs,
+        },
+
+        // Chevron — card variant
+        cardArrowContainer: {
+            width: 24,
+            height: 24,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        cardArrow: {
+            fontSize: 32,
+            color: theme.textSecondary,
+        },
+        // Chevron — list variant
+        listChevron: {
+            fontSize: FONT_SIZES.large,
+            fontWeight: '300',
+            marginLeft: SPACING.sm,
+            color: theme.textSecondary,
+        },
+    });
 };

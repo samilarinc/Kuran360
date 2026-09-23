@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
-import { View, Text } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { ModernSwitch } from '../ModernSwitch';
-import { createStyles } from './index.styles';
-import { Theme } from '@/theme';
+import { Theme, SPACING } from '@/theme';
+import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 
 interface SettingItemProps {
     title: string;
@@ -25,13 +25,14 @@ export const SettingItem: React.FC<SettingItemProps> = ({
     theme,
     disabled = false
 }) => {
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const { common } = useTheme();
+    const styles = useThemedStyles(createStyles);
 
     return (
-        <View style={[styles.settingItem, disabled && styles.settingItemDisabled]}>
-            <View style={styles.settingContent}>
+        <View style={[styles.settingItem, disabled && common.disabled]}>
+            <View style={common.rowFill}>
                 {icon && (
-                    <View style={[styles.settingIconWrap, iconColor && { backgroundColor: iconColor + '1A' }, disabled && { opacity: 0.5 }]}>
+                    <View style={[styles.settingIconWrap, iconColor && { backgroundColor: iconColor + '1A' }, disabled && common.disabled]}>
                         {icon}
                     </View>
                 )}
@@ -52,4 +53,47 @@ export const SettingItem: React.FC<SettingItemProps> = ({
             />
         </View>
     );
+};
+
+export const createStyles = (theme: Theme, common: CommonStyles) => {
+
+    return StyleSheet.create({
+        settingItem: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: SPACING.lg,
+            paddingVertical: SPACING.md,
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderBottomColor: theme.border + '30',
+        },
+        settingIconWrap: {
+            width: 36,
+            height: 36,
+            borderRadius: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginRight: SPACING.md,
+        },
+        settingInfo: {
+            flex: 1,
+            marginRight: SPACING.md,
+        },
+        settingLabel: {
+            ...common.text,
+            fontWeight: '500',
+            marginBottom: 2,
+        },
+        settingLabelDisabled: {
+            color: theme.secondary,
+        },
+        settingDescription: {
+            ...common.smallText,
+            color: theme.secondary,
+            lineHeight: 18,
+        },
+        settingDescriptionDisabled: {
+            color: theme.border,
+        },
+    });
 };

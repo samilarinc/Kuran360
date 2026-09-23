@@ -8,7 +8,7 @@ import {
 import { Bookmark, Library, Share2, Play, Square, BrainCircuit } from 'lucide-react-native';
 import { Verse as VerseType, VerseShareData } from '@/types';
 import { useSettings } from '@/contexts/SettingsContext';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserData } from '@/contexts/UserDataContext';
 import { getFontOption, getArabicFontFamily } from '@/constants/fonts';
@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
 import { createStyles } from './index.styles';
-import { createCommonStyles } from '@/theme/common.styles';
+import type { CommonStyles } from '@/theme/common.styles';
 
 const BOOKMARK_COLOR = '#F43F5E';
 const ALL_TRANSLATIONS_COLOR = '#6366F1';
@@ -34,7 +34,7 @@ const InlineArabicWithHover: React.FC<{
   inlineWordTranslations: boolean;
   surahFontSize: number;
   arabicFontFamily: string;
-  common: ReturnType<typeof createCommonStyles>;
+  common: CommonStyles;
   styles: ReturnType<typeof createStyles>;
 }> = ({ verse, inlineWordTranslations, surahFontSize, arabicFontFamily, common, styles }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -91,7 +91,7 @@ const InlineArabicWithHover: React.FC<{
               </View>
             )}
             {/* Space between words, preserved visually on web */}
-            {idx < tokens.length - 1 && <Text style={styles.inlineSpace}> </Text>}
+            {idx < tokens.length - 1 && <Text> </Text>}
           </View>
         );
       })}
@@ -111,11 +111,10 @@ interface VerseProps {
 
 export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount, showBookmarkButton = false, showMemorization = true, navigation }) => {
   const { settings } = useSettings();
-  const { theme } = useTheme();
+  const { theme, common } = useTheme();
   const { t } = useTranslation();
   const arabicFontOption = getFontOption(settings.arabicFont);
-  const styles = useMemo(() => createStyles(theme), [theme]);
-  const common = useMemo(() => createCommonStyles(theme), [theme]);
+  const styles = useThemedStyles(createStyles);
   // Matches common.arabicText's fontWeight: '600' below
   const arabicFontFamily = getArabicFontFamily(arabicFontOption, true);
   const { user } = useAuth();
@@ -185,9 +184,9 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         <Text style={styles.sectionTitle}>Kelime Çevirileri:</Text>
         <View style={styles.wordTranslationsGrid}>
           {verse.wordTranslations.map((word, index) => (
-            <View key={index} style={styles.wordTranslationItem}>
-              <ArabicText style={styles.wordArabic}>{word.arabic}</ArabicText>
-              <Text style={styles.wordTranslation}>{word.translation}</Text>
+            <View key={index} style={common.wordItem}>
+              <ArabicText style={common.wordArabic}>{word.arabic}</ArabicText>
+              <Text style={common.wordTranslation}>{word.translation}</Text>
             </View>
           ))}
         </View>
@@ -251,14 +250,14 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={[common.rowBetween, common.mbMd]}>
         <View style={styles.verseNumber}>
           <Text style={styles.verseNumberText}>{formatVerseNumber(verse.number, settings.verseNumberStyle)}</Text>
         </View>
-        <View style={styles.headerActions}>
+        <View style={common.rowGap}>
           {showBookmarkButton && user && (
             <TouchableOpacity
-              style={[styles.bookmarkButton, { backgroundColor: BOOKMARK_COLOR + '1A', borderColor: BOOKMARK_COLOR }]}
+              style={[styles.iconButton, { backgroundColor: BOOKMARK_COLOR + '1A', borderColor: BOOKMARK_COLOR }]}
               onPress={handleBookmarkToggle}
             >
               <Bookmark
@@ -270,14 +269,14 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
           )}
           {navigation && (
             <TouchableOpacity
-              style={[styles.allTranslationsButton, { backgroundColor: ALL_TRANSLATIONS_COLOR + '1A', borderColor: ALL_TRANSLATIONS_COLOR }]}
+              style={[styles.iconButton, { backgroundColor: ALL_TRANSLATIONS_COLOR + '1A', borderColor: ALL_TRANSLATIONS_COLOR }]}
               onPress={() => navigation.navigate('AllTranslations', { verse })}
             >
               <Library size={18} color={ALL_TRANSLATIONS_COLOR} />
             </TouchableOpacity>
           )}
           <TouchableOpacity
-            style={[styles.shareButton, { backgroundColor: SHARE_COLOR + '1A', borderColor: SHARE_COLOR }]}
+            style={[styles.iconButton, { backgroundColor: SHARE_COLOR + '1A', borderColor: SHARE_COLOR }]}
             onPress={() => setShareModalVisible(true)}
           >
             <Share2 size={16} color={SHARE_COLOR} />
@@ -299,7 +298,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         </View>
       </View>
 
-      <View style={styles.content}>
+      <View style={common.gapMd}>
         <InlineArabicWithHover
           verse={verse}
           inlineWordTranslations={settings.inlineWordTranslations}
@@ -313,7 +312,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
           <Text style={styles.transliterationText}>{verse.transliteration}</Text>
         )}
 
-        <View style={styles.translationsContainer}>
+        <View style={common.gapSm}>
           {renderTranslations()}
         </View>
 
@@ -321,7 +320,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
 
         {/* Memorization inline control */}
         {showMemorization && (
-          <View style={styles.memContainer}>
+          <View style={common.mtSm}>
             {!memOpen ? (
               <TouchableOpacity style={styles.memToggle} onPress={() => setMemOpen(true)}>
                 <BrainCircuit size={18} color={theme.headerText} />
@@ -329,9 +328,9 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
               </TouchableOpacity>
             ) : (
               <View style={styles.memPanel}>
-                <View style={styles.memRow}>
-                  <Text style={styles.memLabel}>Şuraya Kadar</Text>
-                  <View style={styles.memStepper}>
+                <View style={common.rowBetween}>
+                  <Text style={common.textStrong}>Şuraya Kadar</Text>
+                  <View style={common.rowGap}>
                     <TouchableOpacity
                       style={styles.stepBtn}
                       onPress={() => setEndVerse(v => clamp(v - 1, verse.number, maxEnd))}
@@ -347,11 +346,11 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={styles.memRow}>
-                  <Text style={styles.memLabel}>
+                <View style={common.rowBetween}>
+                  <Text style={common.textStrong}>
                     {memMode === 'individual' ? 'Her Ayet İçin' : 'Tekrar Sayısı'}
                   </Text>
-                  <View style={styles.memStepper}>
+                  <View style={common.rowGap}>
                     <TouchableOpacity
                       style={styles.stepBtn}
                       onPress={() => setRepeats(r => clamp(r - 1, 1, 99))}
@@ -367,47 +366,47 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={styles.memRow}>
-                  <Text style={styles.memLabel}>Ezber Modu</Text>
+                <View style={common.rowBetween}>
+                  <Text style={common.textStrong}>Ezber Modu</Text>
                   <View style={styles.memToggleContainer}>
                     <TouchableOpacity
                       style={[
                         styles.memModeBtn,
                         styles.memModeBtnLeft,
-                        memMode === 'range' && styles.memModeBtnActive
+                        memMode === 'range' && common.buttonPrimary
                       ]}
                       onPress={() => setMemMode('range')}
                     >
                       <Text style={[
                         styles.memModeText,
-                        memMode === 'range' && styles.memModeTextActive
+                        memMode === 'range' && common.buttonTextPrimary
                       ]}>Aralık</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={[
                         styles.memModeBtn,
                         styles.memModeBtnRight,
-                        memMode === 'individual' && styles.memModeBtnActive
+                        memMode === 'individual' && common.buttonPrimary
                       ]}
                       onPress={() => setMemMode('individual')}
                     >
                       <Text style={[
                         styles.memModeText,
-                        memMode === 'individual' && styles.memModeTextActive
+                        memMode === 'individual' && common.buttonTextPrimary
                       ]}>Ayet Ayet</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={styles.memActions}>
+                <View style={common.modalButtonsRow}>
                   <TouchableOpacity
-                    style={[styles.memStartBtn, !canStartMem && styles.memStartBtnDisabled]}
+                    style={[styles.memButton, { backgroundColor: theme.primary }, !canStartMem && common.disabled]}
                     disabled={!canStartMem}
                     onPress={() => startMemorization(verse.surahNumber, verse.number, endVerse, repeats, memMode)}
                   >
-                    <Text style={styles.memStartText}>Start</Text>
+                    <Text style={styles.memButtonText}>Start</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.memCancelBtn} onPress={() => { cancelMemorization(); setMemOpen(false); }}>
-                    <Text style={styles.memCancelText}>Close</Text>
+                  <TouchableOpacity style={[styles.memButton, { backgroundColor: theme.accent }]} onPress={() => { cancelMemorization(); setMemOpen(false); }}>
+                    <Text style={styles.memButtonText}>Close</Text>
                   </TouchableOpacity>
                 </View>
               </View>

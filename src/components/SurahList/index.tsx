@@ -1,13 +1,12 @@
-import React, { useRef, useEffect, useMemo } from 'react';
-import {
-  FlatList,
-} from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import { SHADOW } from '@msarinc/ui';
 import { useTranslation } from 'react-i18next';
 import { Surah } from '@/types';
-import { useTheme, Theme } from '@/contexts/ThemeContext';
+import { useTheme, Theme, useThemedStyles } from '@/contexts/ThemeContext';
 import { getSurahName } from '@/utils/surahName';
-import { createStyles } from './index.styles';
 import { MenuListRow } from '../MenuListRow';
+import { FONT_SIZES, SPACING } from '@/theme';
 
 interface SurahListProps {
   surahs: Surah[];
@@ -23,7 +22,8 @@ interface SurahItemProps {
 
 const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress, theme }) => {
   const { t } = useTranslation();
-  const styles = useMemo(() => createStyles(theme), [theme]);
+  const { common } = useTheme();
+  const styles = useThemedStyles(createStyles);
   return (
     <MenuListRow
       variant="list"
@@ -33,7 +33,7 @@ const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress, theme }) => {
       iconStyle={styles.surahNumber}
       iconTextStyle={styles.surahNumberText}
       title={getSurahName(t, surah)}
-      titleStyle={styles.surahName}
+      titleStyle={common.title}
       subtitle={surah.arabicName}
       caption={`${surah.verseCount} ayet • ${surah.revelationPlace}`}
       chevronStyle={styles.arrowText}
@@ -44,8 +44,7 @@ const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress, theme }) => {
 
 export const SurahList: React.FC<SurahListProps> = ({ surahs, onSurahSelect, scrollToSurah }) => {
   const flatListRef = useRef<FlatList>(null);
-  const { theme } = useTheme();
-  const styles = useMemo(() => createStyles(theme), [theme]);
+  const { theme, common } = useTheme();
 
   useEffect(() => {
     if (scrollToSurah && flatListRef.current) {
@@ -72,7 +71,7 @@ export const SurahList: React.FC<SurahListProps> = ({ surahs, onSurahSelect, scr
         <SurahItem surah={item} onPress={onSurahSelect} theme={theme} />
       )}
       keyExtractor={(item) => item.number.toString()}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={common.pMd}
       showsVerticalScrollIndicator={false}
       // Disable virtualization since we only have 114 surahs - this ensures
       // all items are always rendered and scrollToIndex works reliably
@@ -92,3 +91,33 @@ export const SurahList: React.FC<SurahListProps> = ({ surahs, onSurahSelect, scr
     />
   );
 };
+
+const createStyles = (theme: Theme) => StyleSheet.create({
+  surahItem: {
+    backgroundColor: theme.cardBackground,
+    marginVertical: SPACING.xs,
+    borderRadius: 12,
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    ...SHADOW.sm,
+  },
+  surahNumber: {
+    backgroundColor: theme.primary,
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: SPACING.md,
+  },
+  surahNumberText: {
+    color: theme.headerText,
+    fontSize: FONT_SIZES.medium,
+    fontWeight: 'bold',
+  },
+  arrowText: {
+    fontSize: FONT_SIZES.xlarge,
+    fontWeight: 'normal',
+    color: theme.textSecondary,
+  },
+});

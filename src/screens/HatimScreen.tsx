@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     View,
     Text,
@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { HatimService } from '@/services/HatimService';
 import { Hatim } from '@/types';
@@ -21,7 +21,6 @@ import { AppHeader } from '@/components/AppHeader';
 import { ProgressBar } from '@/components/ProgressBar';
 import { Badge } from '@/components/Badge';
 import { LoadingView } from '@/components/LoadingView';
-import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './HatimScreen.styles';
 
 interface HatimScreenProps {
@@ -29,10 +28,9 @@ interface HatimScreenProps {
 }
 
 export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t, i18n } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     const { user } = useAuth();
     const [hatims, setHatims] = useState<Hatim[]>([]);
     const [loading, setLoading] = useState(true);
@@ -113,7 +111,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                 style={styles.hatimCard}
                 onPress={() => navigation.navigate('HatimDetail', { hatimId: item.id })}
             >
-                <View style={styles.hatimHeader}>
+                <View style={[common.rowBetween, common.mbXs]}>
                     <Text style={styles.hatimTitle} numberOfLines={1}>
                         {item.title}
                         {item.isPrivate && <Text style={styles.privateLabel}>{t('hatimScreen.private')}</Text>}
@@ -127,8 +125,8 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                 <Text style={styles.hatimCreator}>
                     {t('hatimScreen.creator', { name: item.creatorName })}
                 </Text>
-                <View style={styles.progressContainer}>
-                    <ProgressBar progress={progress} style={styles.progressBar} />
+                <View style={common.mtSm}>
+                    <ProgressBar progress={progress} style={common.mbXs} />
                     <Text style={styles.progressText}>
                         {t('hatimScreen.juzProgress', { count: completedParts })}
                     </Text>
@@ -157,8 +155,8 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                         keyExtractor={item => item.id}
                         contentContainerStyle={common.listContent}
                         ListEmptyComponent={
-                            <View style={styles.emptyContainer}>
-                                <Text style={[styles.emptyText, styles.emptyTextSecondary]}>
+                            <View style={common.emptyState}>
+                                <Text style={common.emptyStateText}>
                                     {t('hatimScreen.empty')}
                                 </Text>
                             </View>
@@ -215,10 +213,10 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
 
                         {hasDeadline && (
                             <>
-                                <Text style={[common.inputLabel, styles.inputLabelSecondary]}>{t('hatimScreen.deadlineLabel')}</Text>
+                                <Text style={[common.inputLabel, styles.inputLabelNoMargin, common.mtSm]}>{t('hatimScreen.deadlineLabel')}</Text>
 
                                 {Platform.OS === 'web' ? (
-                                    <View style={styles.webDateWrapper}>
+                                    <View style={common.mbMd}>
                                         <input
                                             type="date"
                                             style={styles.webDateInput}
@@ -307,20 +305,20 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                         )}
                         <View style={common.modalButtonsRow}>
                             <TouchableOpacity
-                                style={[common.modalButton, common.modalButtonCancel]}
+                                style={[common.button, common.buttonMuted]}
                                 onPress={() => setModalVisible(false)}
                             >
-                                <Text style={styles.cancelButtonText}>{t('hatimScreen.cancel')}</Text>
+                                <Text style={common.text}>{t('hatimScreen.cancel')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={[common.modalButton, common.modalButtonPrimary]}
+                                style={[common.button, common.buttonPrimary]}
                                 onPress={handleCreate}
                                 disabled={creating}
                             >
                                 {creating ? (
                                     <ActivityIndicator size="small" color="#fff" />
                                 ) : (
-                                    <Text style={common.modalButtonTextWhite}>{t('hatimScreen.create')}</Text>
+                                    <Text style={common.buttonTextPrimary}>{t('hatimScreen.create')}</Text>
                                 )}
                             </TouchableOpacity>
                         </View>

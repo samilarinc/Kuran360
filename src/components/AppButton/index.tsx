@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
-import { ActivityIndicator, TouchableOpacity, Text, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, TouchableOpacity, Text, StyleProp, ViewStyle, TextStyle, StyleSheet } from 'react-native';
 import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './index.styles';
+import { SPACING, FONT_SIZES } from '@/theme';
 
 export type AppButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'translucent';
 export type AppButtonSize = 'small' | 'medium' | 'large';
@@ -35,72 +35,27 @@ export const AppButton: React.FC<AppButtonProps> = ({
     textStyle,
 }) => {
     const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-
-    const getBackgroundStyle = () => {
-        if (disabled) return styles.bgDisabled;
-        switch (variant) {
-            case 'primary': return styles.bgPrimary;
-            case 'secondary': return styles.bgSecondary;
-            case 'danger': return styles.bgDanger;
-            case 'translucent': return styles.bgTranslucent;
-            case 'outline': return styles.bgTransparent;
-            case 'ghost': return styles.bgTransparent;
-            default: return styles.bgPrimary;
-        }
-    };
-
-    const getTextColorStyle = () => {
-        if (disabled) return styles.textDisabled;
-        switch (variant) {
-            case 'primary': return styles.textWhite;
-            case 'secondary': return styles.textWhite;
-            case 'danger': return styles.textWhite;
-            case 'translucent': return styles.textWhite;
-            case 'outline': return styles.textPrimary;
-            case 'ghost': return styles.textPrimary;
-            default: return styles.textWhite;
-        }
-    };
-
-    const getBorder = () => {
-        if (variant === 'outline') {
-            return disabled ? styles.borderOutlineDisabled : styles.borderOutline;
-        }
-        return {};
-    };
-
-    const getShape = () => {
-        switch (shape) {
-            case 'pill': return styles.shapePill;
-            case 'circle': return styles[`shapeCircle${size === 'small' ? 'Small' : size === 'large' ? 'Large' : 'Medium'}` as const];
-            default: return {};
-        }
-    };
-
-    const getPadding = () => {
-        if (shape === 'circle') return {};
-        switch (size) {
-            case 'small': return styles.paddingSmall;
-            case 'large': return styles.paddingLarge;
-            default: return styles.paddingMedium;
-        }
-    };
-
-    const getFontSizeStyle = () => {
-        switch (size) {
-            case 'small': return styles.fontSmall;
-            case 'large': return styles.fontLarge;
-            default: return styles.fontMedium;
-        }
-    };
+    const [background, foreground] = disabled
+        ? [theme.border, theme.textSecondary]
+        : ({
+            primary: [theme.primary, '#FFFFFF'],
+            secondary: [theme.secondary, '#FFFFFF'],
+            danger: [theme.error, '#FFFFFF'],
+            translucent: ['rgba(255, 255, 255, 0.2)', '#FFFFFF'],
+            outline: ['transparent', theme.primary],
+            ghost: ['transparent', theme.primary],
+        } as const)[variant];
+    const sizing = SIZES[size];
+    const textColor = { color: foreground };
 
     const buttonStyles = [
         styles.button,
-        getBackgroundStyle(),
-        getBorder(),
-        getShape(),
-        getPadding(),
+        { backgroundColor: background },
+        variant === 'outline' && { borderWidth: 1, borderColor: disabled ? theme.border : theme.primary },
+        shape === 'pill' && styles.pill,
+        shape === 'circle'
+            ? { width: sizing.circle, height: sizing.circle, borderRadius: sizing.circle / 2 }
+            : { paddingVertical: sizing.paddingVertical, paddingHorizontal: sizing.paddingHorizontal },
         style,
         disabled && styles.disabled,
     ];
@@ -108,11 +63,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
     const renderIcon = () => {
         if (!icon) return null;
         if (typeof icon === 'string') {
-            return (
-                <Text style={[styles.icon, getTextColorStyle(), title && (iconPosition === 'left' ? styles.iconMarginRight : styles.iconMarginLeft)]}>
-                    {icon}
-                </Text>
-            );
+            return <Text style={[styles.icon, textColor]}>{icon}</Text>;
         }
         return icon;
     };
@@ -130,7 +81,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
                 <>
                     {iconPosition === 'left' && renderIcon()}
                     {title && (
-                        <Text style={[styles.text, getTextColorStyle(), getFontSizeStyle(), textStyle]}>
+                        <Text style={[styles.text, textColor, { fontSize: sizing.fontSize }, textStyle]}>
                             {title}
                         </Text>
                     )}
@@ -140,3 +91,31 @@ export const AppButton: React.FC<AppButtonProps> = ({
         </TouchableOpacity>
     );
 };
+
+const SIZES = {
+    small: { paddingVertical: SPACING.xs, paddingHorizontal: SPACING.sm, fontSize: FONT_SIZES.small, circle: 36 },
+    medium: { paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md, fontSize: FONT_SIZES.medium, circle: 48 },
+    large: { paddingVertical: SPACING.md, paddingHorizontal: SPACING.xl, fontSize: FONT_SIZES.large, circle: 60 },
+};
+
+const styles = StyleSheet.create({
+    button: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: SPACING.xs,
+        borderRadius: 8,
+    },
+    pill: {
+        borderRadius: 999,
+    },
+    text: {
+        fontWeight: '600',
+    },
+    icon: {
+        fontSize: 18,
+    },
+    disabled: {
+        opacity: 0.6,
+    },
+});

@@ -1,7 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
 import { useTheme } from '@/contexts/ThemeContext';
-import { createStyles } from './index.styles';
 
 interface LoadingViewProps {
     text?: string;
@@ -11,14 +10,13 @@ interface LoadingViewProps {
 }
 
 export const LoadingView: React.FC<LoadingViewProps> = ({ text, note, color, style }) => {
-    const { theme } = useTheme();
-    const styles = useMemo(() => createStyles(theme), [theme]);
+    const { theme, common } = useTheme();
 
     return (
-        <View style={[styles.container, style]}>
+        <View style={[common.centerFill, common.gapMd, style]}>
             <ActivityIndicator size="large" color={color ?? theme.primary} />
-            {text && <Text style={styles.text}>{text}</Text>}
-            {note && <Text style={styles.note}>{note}</Text>}
+            {text && <Text style={common.subtitle}>{text}</Text>}
+            {note && <Text style={common.smallText}>{note}</Text>}
         </View>
     );
 };

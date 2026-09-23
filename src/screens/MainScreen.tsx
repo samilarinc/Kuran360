@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -25,10 +25,9 @@ import {
 } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { MenuListRow } from '@/components/MenuListRow';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { FONT_SIZES } from '@/theme';
 import { Alert, Platform } from 'react-native';
-import { createCommonStyles } from '@/theme/common.styles';
 import { createStyles } from './MainScreen.styles';
 
 interface MainScreenProps {
@@ -36,10 +35,9 @@ interface MainScreenProps {
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
-    const { theme } = useTheme();
+    const { common } = useTheme();
     const { t } = useTranslation();
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
     const { width } = useWindowDimensions();
 
     const isUltraNarrow = width < 360;
@@ -94,7 +92,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
     ];
 
     return (
-        <SafeAreaView style={[common.container, { backgroundColor: theme.background }]}>
+        <SafeAreaView style={common.container}>
 
             <AppHeader
                 title={t('mainScreen.appTitle')}
@@ -107,16 +105,16 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                 contentContainerStyle={styles.contentContainer}
                 showsVerticalScrollIndicator={false}
             >
-                <Text style={[styles.welcomeText, { color: theme.text, fontSize: welcomeFontSize }]}>
+                <Text style={[styles.welcomeText, { fontSize: welcomeFontSize }]}>
                     {t('mainScreen.welcome')}
                 </Text>
-                <Text style={[styles.descriptionText, { color: theme.textSecondary, fontSize: descriptionFontSize, lineHeight: descriptionFontSize * 1.4 }]}>
+                <Text style={[styles.descriptionText, { fontSize: descriptionFontSize, lineHeight: descriptionFontSize * 1.4 }]}>
                     {t('mainScreen.description')}
                 </Text>
 
                 {/* Featured action */}
                 <TouchableOpacity
-                    style={[styles.heroCard, { backgroundColor: theme.primary }]}
+                    style={styles.heroCard}
                     onPress={() => onNavigate('Home')}
                     activeOpacity={0.85}
                 >
@@ -134,15 +132,15 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
 
                 {/* Menu Sections */}
                 {sections.map((section) => (
-                    <View key={section.title} style={styles.sectionBlock}>
+                    <View key={section.title} style={common.mbLg}>
                         <Text style={styles.sectionHeader}>
                             {section.title}
                         </Text>
-                        <View style={[styles.sectionCard, { backgroundColor: theme.cardBackground, borderColor: theme.border }]}>
+                        <View style={styles.sectionCard}>
                             {section.items.map((item, index) => (
                                 <View
                                     key={item.id}
-                                    style={index < section.items.length - 1 && [styles.menuRowDivider, { borderBottomColor: theme.border }]}
+                                    style={index < section.items.length - 1 && styles.menuRowDivider}
                                 >
                                     <MenuListRow
                                         variant="list"
@@ -159,10 +157,10 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
 
                 {/* Footer */}
                 <View style={styles.footer}>
-                    <Text style={[styles.footerText, { color: theme.textSecondary }]}>
+                    <Text style={[common.footerText, common.mbXs]}>
                         {t('mainScreen.footerQuote')}
                     </Text>
-                    <Text style={[styles.footerReference, { color: theme.textSecondary }]}>
+                    <Text style={[common.smallText, common.textCenter]}>
                         {t('mainScreen.footerReference')}
                     </Text>
                 </View>

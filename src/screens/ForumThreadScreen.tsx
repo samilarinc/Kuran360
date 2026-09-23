@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { View, Text, FlatList, TextInput, SafeAreaView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
@@ -6,14 +6,12 @@ import { AppButton } from '@/components/AppButton';
 import { usePosts, useCreatePost } from '@/contexts/ForumContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { createCommonStyles } from '@/theme/common.styles';
 
 export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ navigation, route }) => {
   const threadId: string | undefined = route.params?.threadId;
   const { data: posts = [] } = usePosts(threadId);
   const createPost = useCreatePost();
   const { user } = useAuth();
-  const { theme } = useTheme();
   const { t } = useTranslation();
   const [body, setBody] = useState('');
 
@@ -25,7 +23,7 @@ export const ForumThreadScreen: React.FC<{ navigation: any; route: any }> = ({ n
     }
   };
 
-  const styles = useMemo(() => createCommonStyles(theme), [theme]);
+  const styles = useTheme().common;
   return (
     <SafeAreaView style={styles.container}>
       <AppHeader

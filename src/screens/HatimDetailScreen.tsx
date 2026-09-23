@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, SafeAreaView, ScrollView, Alert, useWindowDimensions, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -13,7 +13,6 @@ import { HatimStatsCard } from '@/components/HatimStatsCard';
 import { HatimPartsGrid } from '@/components/HatimPartsGrid';
 import { PartActionModal } from '@/components/PartActionModal';
 import { HatimEditModal } from '@/components/HatimEditModal';
-import { createCommonStyles } from '@/theme/common.styles';
 
 interface HatimDetailScreenProps {
     navigation: any;
@@ -44,7 +43,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     const [editIsLocked, setEditIsLocked] = useState(false);
     const [timeLeft, setTimeLeft] = useState<string>('');
     const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const styles = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useTheme().common;
 
     // Responsive grid calculations
     const containerPadding = SPACING.lg * 2;

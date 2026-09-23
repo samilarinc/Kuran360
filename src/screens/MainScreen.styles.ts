@@ -1,22 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { SHADOW } from '@msarinc/ui';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
-import { createCommonStyles } from '@/theme/common.styles';
+import type { CommonStyles } from '@/contexts/ThemeContext';
 
-export const createStyles = (theme: Theme) => {
-    const common = createCommonStyles(theme);
+export const createStyles = (theme: Theme, common: CommonStyles) => {
 
     return StyleSheet.create({
-        appTitle: {
-            ...common.title,
-            fontSize: FONT_SIZES.xlarge,
-            fontWeight: '700',
-            marginBottom: SPACING.xs,
-        },
-        appSubtitle: {
-            ...common.subtitle,
-            fontWeight: '400',
-            opacity: 0.9,
-        },
         contentContainer: {
             paddingHorizontal: SPACING.lg,
             paddingTop: SPACING.xl,
@@ -31,6 +20,7 @@ export const createStyles = (theme: Theme) => {
         },
         descriptionText: {
             ...common.text,
+            color: theme.textSecondary,
             textAlign: 'center',
             lineHeight: FONT_SIZES.medium * 1.4,
             marginBottom: SPACING.xl,
@@ -42,11 +32,8 @@ export const createStyles = (theme: Theme) => {
             borderRadius: 18,
             padding: SPACING.lg,
             marginBottom: SPACING.lg,
-            elevation: 3,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.15,
-            shadowRadius: 6,
+            backgroundColor: theme.primary,
+            ...SHADOW.md,
         },
         heroIconWrap: {
             width: 48,
@@ -76,9 +63,6 @@ export const createStyles = (theme: Theme) => {
             alignItems: 'center',
             marginLeft: SPACING.sm,
         },
-        sectionBlock: {
-            marginBottom: SPACING.lg,
-        },
         sectionHeader: {
             ...common.sectionLabel,
             marginBottom: SPACING.sm,
@@ -88,27 +72,18 @@ export const createStyles = (theme: Theme) => {
             borderRadius: 16,
             borderWidth: 1,
             overflow: 'hidden',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.06,
-            shadowRadius: 6,
-            elevation: 2,
+            backgroundColor: theme.cardBackground,
+            borderColor: theme.border,
+            ...SHADOW.sm,
         },
         menuRowDivider: {
             borderBottomWidth: 1,
+            borderBottomColor: theme.border,
         },
         footer: {
             alignItems: 'center',
             paddingVertical: SPACING.xl,
             paddingHorizontal: SPACING.lg,
-        },
-        footerText: {
-            ...common.footerText,
-            marginBottom: SPACING.xs,
-        },
-        footerReference: {
-            ...common.smallText,
-            textAlign: 'center',
         },
     });
 };

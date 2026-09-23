@@ -597,6 +597,13 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "September 23, 2026",
+        "bullets": [
+          "The whole app now uses one shared theme; cards, buttons and lists look the same on every screen.",
+          "Fixed some borders and the delete button showing the wrong colors in dark mode."
+        ]
+      },
+      {
         "date": "August 30, 2026",
         "bullets": [
           "General code maintenance and cleanup across the app (no visual change).",

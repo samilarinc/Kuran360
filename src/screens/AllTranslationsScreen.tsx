@@ -1,25 +1,18 @@
 import React, { useState, useMemo } from 'react';
-import {
-    View,
-    Text,
-    SafeAreaView,
-    ScrollView,
-} from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
 import { ShareModal } from '@/components/ShareModal';
 import { AppButton } from '@/components/AppButton';
 import { ArabicText } from '@/components/ArabicText';
 import { Badge } from '@/components/Badge';
-import { SPACING } from '@/theme';
-import { useTheme } from '@/contexts/ThemeContext';
+import { SPACING, FONT_SIZES, FAVORITE_COLOR, FAVORITE_COLOR_DARK, Theme } from '@/theme';
+import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
 import { Verse as VerseType, VerseShareData } from '@/types';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './AllTranslationsScreen.styles';
 
 interface AllTranslationsScreenProps {
     navigation: any;
@@ -32,7 +25,7 @@ interface AllTranslationsScreenProps {
 
 export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ navigation, route }) => {
     const { verse } = route.params;
-    const { theme } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
     const { settings } = useSettings();
     const { settings: debouncedSettings } = useDebouncedSettings(200);
@@ -72,8 +65,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
         setShareModalVisible(true);
     };
 
-    const styles = useMemo(() => createStyles(theme), [theme]);
-    const common = useMemo(() => createCommonStyles(theme), [theme]);
+    const styles = useThemedStyles(createStyles);
 
     if (availableTranslations.length === 0) {
         return (
@@ -111,7 +103,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                     <ArabicText style={styles.arabicText}>
                         {verse.arabicText}
                     </ArabicText>
-                    <View style={styles.verseInfo}>
+                    <View style={[common.rowBetween, common.mtSm]}>
                         <Text style={styles.surahInfo}>
                             {surahName}
                         </Text>
@@ -132,9 +124,10 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                                     isFavorite && styles.favoriteTranslationItem
                                 ]}
                             >
-                                <View style={styles.translationHeader}>
+                                <View style={[common.rowBetween, common.mbSm]}>
                                     <Text style={[
-                                        styles.translationName,
+                                        common.textAccent,
+                                        common.flex1,
                                         isFavorite && styles.favoriteTranslationName
                                     ]}>
                                         {isFavorite && '⭐ '}{translationName}
@@ -168,4 +161,57 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
             />
         </SafeAreaView>
     );
+};
+
+const createStyles = (theme: Theme, common: CommonStyles) => {
+
+    return StyleSheet.create({
+    verseHeader: {
+        backgroundColor: theme.cardBackground,
+        padding: SPACING.lg,
+        borderBottomWidth: 1,
+        borderBottomColor: theme.border,
+    },
+    arabicText: {
+        ...common.arabicText,
+        marginBottom: SPACING.sm,
+    },
+    surahInfo: {
+        fontSize: FONT_SIZES.medium,
+        color: theme.textSecondary,
+        fontWeight: '600',
+    },
+    translationItem: {
+        ...common.card,
+        marginHorizontal: SPACING.md,
+        marginTop: SPACING.xs,
+        marginBottom: SPACING.xs,
+        padding: SPACING.md,
+        borderRadius: 12,
+        borderLeftWidth: 4,
+        borderLeftColor: theme.primary,
+        shadowRadius: 2,
+    },
+    favoriteTranslationItem: {
+        backgroundColor: FAVORITE_COLOR + '10',
+        borderLeftColor: FAVORITE_COLOR,
+    },
+    favoriteTranslationName: {
+        color: FAVORITE_COLOR_DARK,
+        fontWeight: '700',
+    },
+    translationText: {
+        fontSize: FONT_SIZES.medium,
+        lineHeight: FONT_SIZES.medium * 1.4,
+        color: theme.text,
+        textAlign: 'left',
+    },
+    favoriteTranslationText: {
+        fontWeight: '500',
+    },
+    emptyStateText: {
+        ...common.emptyStateText,
+        fontStyle: 'normal',
+    },
+    });
 };

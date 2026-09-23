@@ -1,29 +1,20 @@
-import React, { useState, useMemo } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Modal,
-  ScrollView,
-  SafeAreaView,
-  Platform,
-  Alert,
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Modal, ScrollView, SafeAreaView, Platform, Alert, StyleSheet } from 'react-native';
 import { BookOpen, Ruler } from 'lucide-react-native';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import ViewShot, { captureRef } from 'react-native-view-shot';
 import { NativeVerseImageDesign } from '../NativeVerseImageDesign';
 import { VerseShareData, ImageSize } from '@/types';
 import { ShareService } from '@/utils/shareUtils';
 import { ImagePreviewModal } from '../ImagePreviewModal';
 import { PlatformIcon } from '../PlatformIcon';
-import { IMAGE_SIZES, getDefaultImageSize } from '@/utils/imageSizes';
+import { ImageSizePicker } from '../ImageSizePicker';
+import { getDefaultImageSize } from '@/utils/imageSizes';
 import { useSettings } from '@/contexts/SettingsContext';
 import { formatVerseNumber } from '@/utils/numerals';
 import { getFontOption, getArabicFontFamily } from '@/constants/fonts';
 import { ArabicText } from '../ArabicText';
-import { createCommonStyles } from '@/theme/common.styles';
-import { createStyles } from './index.styles';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
 interface ShareModalProps {
   isVisible: boolean;
@@ -36,9 +27,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   onClose,
   verseData,
 }) => {
-  const { theme } = useTheme();
-  const styles = useMemo(() => createStyles(theme), [theme]);
-  const common = useMemo(() => createCommonStyles(theme), [theme]);
+  const { theme, common } = useTheme();
+  const styles = useThemedStyles(createStyles);
   const { settings } = useSettings();
   const imageFontCss = getArabicFontFamily(getFontOption(settings.imageArabicFont));
   const [imagePreviewVisible, setImagePreviewVisible] = useState(false);
@@ -160,7 +150,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                 <Text style={styles.translationText}>
                   "{verseData.translation}"
                 </Text>
-                <View style={styles.verseInfoRow}>
+                <View style={[common.row, common.center, common.gapXs]}>
                   <BookOpen size={14} color={theme.primary} />
                   <Text style={styles.verseInfo}>
                     {verseData.surahName} Suresi, {formatVerseNumber(verseData.verseNumber, settings.verseNumberStyle)}. Ayet
@@ -169,47 +159,14 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               </View>
 
               {/* Size Selection */}
-              <View style={styles.sizeSection}>
-                <View style={styles.sectionTitleRow}>
+              <View style={common.mbMd}>
+                <View style={[common.row, common.gapXs, common.mbSm]}>
                   <Ruler size={16} color={theme.text} />
-                  <Text style={styles.sectionTitle}>
+                  <Text style={common.textStrong}>
                     Resim Boyutu Seçin
                   </Text>
                 </View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView} nestedScrollEnabled={true}>
-                  <View style={styles.sizeRow}>
-                    {IMAGE_SIZES.map((size) => (
-                      <TouchableOpacity
-                        key={size.id}
-                        style={[
-                          styles.sizeButton,
-                          selectedSize.id === size.id && styles.sizeButtonSelected
-                        ]}
-                        onPress={() => setSelectedSize(size)}
-                      >
-                        <View style={styles.sizeIcon}>
-                          <PlatformIcon
-                            spec={size.icon}
-                            size={20}
-                            color={selectedSize.id === size.id ? '#fff' : theme.text}
-                          />
-                        </View>
-                        <Text style={[
-                          styles.sizeTitle,
-                          selectedSize.id === size.id && styles.textOnPrimary
-                        ]}>
-                          {size.displayName}
-                        </Text>
-                        <Text style={[
-                          styles.sizeDescription,
-                          selectedSize.id === size.id && styles.textOnPrimary
-                        ]}>
-                          {size.description}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                </ScrollView>
+                <ImageSizePicker selected={selectedSize} onSelect={setSelectedSize} />
               </View>
 
               {/* Platform Options */}
@@ -220,7 +177,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                   onPress={() => handlePlatformShare(platform.id)}
                   activeOpacity={0.7}
                 >
-                  <View style={styles.platformIcon}>
+                  <View style={common.iconBox}>
                     <PlatformIcon spec={platform.icon} size={22} color={theme.text} />
                   </View>
                   <Text style={styles.platformName}>
@@ -248,7 +205,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 
       {/* Hidden view for capturing on Native */}
       {Platform.OS !== 'web' && (
-        <View style={styles.hiddenCapture}>
+        <View style={common.offscreen}>
           <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
             <NativeVerseImageDesign
               verseData={verseData}
@@ -262,3 +219,75 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   );
 };
 
+const createStyles = (theme: Theme) => {
+  return StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  modal: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '85%',
+    minHeight: '50%',
+    backgroundColor: theme.background,
+    flex: 1,
+  },
+  scrollContent: {
+    paddingHorizontal: SPACING.lg,
+    paddingBottom: SPACING.lg,
+  },
+  versePreview: {
+    marginVertical: SPACING.md,
+    padding: SPACING.md,
+    borderRadius: 12,
+    backgroundColor: theme.surface,
+  },
+  arabicText: {
+    fontSize: FONT_SIZES.large,
+    textAlign: 'right',
+    lineHeight: FONT_SIZES.large * 1.25,
+    marginBottom: SPACING.sm,
+    // Aynı font ailesi Verse bileşeni ile hizalı olsun
+    fontFamily: Platform.select({
+      web: '"Scheherazade New", "Noto Naskh Arabic", Amiri, "Traditional Arabic", "Arabic Typesetting", serif',
+      ios: 'Al Nile',
+      default: 'serif'
+    }) as any,
+    color: theme.text,
+  },
+  translationText: {
+    fontSize: FONT_SIZES.medium,
+    fontStyle: 'italic',
+    marginBottom: SPACING.sm,
+    lineHeight: FONT_SIZES.medium * 1.3,
+    color: theme.textSecondary,
+  },
+  verseInfo: {
+    fontSize: FONT_SIZES.small,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: theme.primary,
+  },
+  platformItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.md,
+    marginBottom: SPACING.sm,
+    borderRadius: 12,
+    backgroundColor: theme.cardBackground,
+  },
+  platformName: {
+    flex: 1,
+    fontSize: FONT_SIZES.medium,
+    fontWeight: '500',
+    color: theme.text,
+  },
+  arrow: {
+    fontSize: 20,
+    fontWeight: '300',
+    color: theme.textSecondary,
+  },
+  });
+};
