@@ -4,7 +4,7 @@ import { Verse as VerseType, AudioState } from '@/types';
 import { loadSurah } from '@/data/quranData';
 import { useSettings } from '@/contexts/SettingsContext';
 import logger from '@/utils/logger';
-import { Platform } from 'react-native';
+import { getVerseAudioUrl } from '@/utils/audioUrls';
 
 export const useAudioPlayer = () => {
   const { settings, availableReciters } = useSettings();
@@ -86,25 +86,8 @@ export const useAudioPlayer = () => {
 
   // Helper function to get audio URI for a verse
   const getAudioUri = (verse: VerseType) => {
-    const audioFileName = `${verse.surahNumber.toString().padStart(3, '0')}${verse.number.toString().padStart(3, '0')}.mp3`;
-
-    const getBaseUrl = () => {
-      if (Platform.OS !== 'web') {
-        return 'https://kuran360.com';
-      }
-      if (typeof globalThis !== 'undefined' && (globalThis as any).window) {
-        const win = (globalThis as any).window;
-        return `${win.location.protocol}//${win.location.host}`;
-      }
-      return 'http://localhost:8081';
-    };
-
-    const getReciterFolder = () => {
-      const selectedReciter = availableReciters.find(r => r.id === settings.selectedReciter);
-      return selectedReciter ? selectedReciter.folder : 'sudais_all_verse';
-    };
-
-    return `${getBaseUrl()}/${getReciterFolder()}/${audioFileName}`;
+    const selectedReciter = availableReciters.find(r => r.id === settings.selectedReciter);
+    return getVerseAudioUrl(verse.surahNumber, verse.number, selectedReciter?.folder);
   };
 
   // Preload next verse audio when autoplay is enabled
@@ -704,18 +687,7 @@ export const useAudioPlayer = () => {
         return;
       }
 
-      // Create audio URI with specified reciter
-      const audioFileName = `${verse.surahNumber.toString().padStart(3, '0')}${verse.number.toString().padStart(3, '0')}.mp3`;
-
-      const getBaseUrl = () => {
-        if (typeof globalThis !== 'undefined' && (globalThis as any).window) {
-          const win = (globalThis as any).window;
-          return `${win.location.protocol}//${win.location.host}`;
-        }
-        return 'http://localhost:8081';
-      };
-
-      const audioUri = `${getBaseUrl()}/${reciter.folder}/${audioFileName}`;
+      const audioUri = getVerseAudioUrl(verse.surahNumber, verse.number, reciter.folder);
 
       // Check if audio file exists
       try {

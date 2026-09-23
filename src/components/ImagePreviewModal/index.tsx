@@ -15,6 +15,7 @@ import { Sun, Moon, RefreshCw, Download, Copy, ExternalLink, BookOpen, Share2 } 
 import { NativeVerseImageDesign } from '../NativeVerseImageDesign';
 import { PlatformIcon } from '../PlatformIcon';
 import { ImageSizePicker } from '../ImageSizePicker';
+import { VerseVideoActions } from '../VerseVideoActions';
 
 // Web globals
 declare const window: any;
@@ -60,7 +61,6 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     const [isGenerating, setIsGenerating] = React.useState(false);
     const viewShotRef = React.useRef<any>(null);
     const selectedFont = getFontOption(selectedFontId);
-
     // A new image from ShareModal: reset controls to the options it was generated with
     React.useEffect(() => {
         setCurrentImage(imageUrl);
@@ -279,7 +279,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                             regenerateImage(mode, selectedSize, selectedFontId, 1.0);
                                         }}
                                     >
-                                        <Text style={styles.actionText}>Sıfırla</Text>
+                                        <Text style={common.actionButtonText}>Sıfırla</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[styles.controlButton, common.flex1]}
@@ -313,7 +313,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                             <Sun size={16} color={mode === 'light' ? '#fff' : theme.text} />
                                         </View>
                                         <Text style={[
-                                            styles.actionText,
+                                            common.actionButtonText,
                                             mode === 'light' && common.buttonTextPrimary
                                         ]}>
                                             Light
@@ -331,7 +331,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                             <Moon size={16} color={mode === 'dark' ? '#fff' : theme.text} />
                                         </View>
                                         <Text style={[
-                                            styles.actionText,
+                                            common.actionButtonText,
                                             mode === 'dark' && common.buttonTextPrimary
                                         ]}>
                                             Dark
@@ -363,41 +363,52 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                     Resim İşlemleri
                                 </Text>
 
-                                <View style={styles.actionButtons}>
+                                <View style={common.actionButtonRow}>
                                     <TouchableOpacity
-                                        style={styles.actionButton}
+                                        style={common.actionButton}
                                         onPress={handleDownload}
                                     >
                                         <View>
                                             <Download size={16} color={theme.text} />
                                         </View>
-                                        <Text style={styles.actionText}>İndir</Text>
+                                        <Text style={common.actionButtonText}>İndir</Text>
                                     </TouchableOpacity>
 
                                     {Platform.OS === 'web' && (
                                         <>
                                             <TouchableOpacity
-                                                style={styles.actionButton}
+                                                style={common.actionButton}
                                                 onPress={handleCopy}
                                             >
                                                 <View>
                                                     <Copy size={16} color={theme.text} />
                                                 </View>
-                                                <Text style={styles.actionText}>Kopyala</Text>
+                                                <Text style={common.actionButtonText}>Kopyala</Text>
                                             </TouchableOpacity>
 
                                             <TouchableOpacity
-                                                style={styles.actionButton}
+                                                style={common.actionButton}
                                                 onPress={handleOpenInNewTab}
                                             >
                                                 <View>
                                                     <ExternalLink size={16} color={theme.text} />
                                                 </View>
-                                                <Text style={styles.actionText}>Yeni Sekmede Aç</Text>
+                                                <Text style={common.actionButtonText}>Yeni Sekmede Aç</Text>
                                             </TouchableOpacity>
                                         </>
                                     )}
                                 </View>
+                            </View>
+
+                            {/* Video with recitation (web only) - remounted per image so it never shares a stale video */}
+                            <View style={styles.controlSection}>
+                                <VerseVideoActions
+                                    key={currentImage}
+                                    verseData={verseData}
+                                    size={selectedSize}
+                                    getImageUrl={async () => currentImage}
+                                    disabled={isGenerating}
+                                />
                             </View>
 
                             {/* Share Platforms */}

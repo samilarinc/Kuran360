@@ -590,7 +590,17 @@
     "verseRange": "Ayet Aralığı",
     "verseRangeHint": "Aynı resimde en fazla {{max}} ardışık ayet paylaşabilirsiniz.",
     "loadingVerses": "Ayetler yükleniyor...",
-    "fontNoQuranMarks": "Bu yazı tipinde durak işaretleri bulunmuyor; resimde görünmeyecekler."
+    "fontNoQuranMarks": "Bu yazı tipinde durak işaretleri bulunmuyor; resimde görünmeyecekler.",
+    "video": {
+      "title": "Sesli Video",
+      "create": "Video Oluştur",
+      "preparing": "Video hazırlanıyor... %{{percent}}",
+      "download": "Videoyu İndir",
+      "share": "Videoyu Paylaş",
+      "hint": "Resim, {{reciter}} okumasıyla videoya dönüştürülür. Video tarayıcınızda hazırlanır.",
+      "error": "Video oluşturulamadı. Ses dosyalarına ulaşılamamış ya da tarayıcınız video üretmeyi desteklemiyor olabilir.",
+      "recreate": "Yeniden Oluştur"
+    }
   },
   "about": {
     "role": "Tasarımcı",
@@ -613,7 +623,8 @@
           "Ayet resimlerinde ve sayfa görünümünde kelimeler artık birbirine yapışmıyor, eksik kelimeler de görünüyor.",
           "Resim önizlemesinde tema, yazı tipi veya boyut değiştirdikten sonra indirilen/paylaşılan resim artık güncel olanı.",
           "Resim önizlemesi, paylaş ekranında seçtiğiniz tema ve boyutla açılıyor.",
-          "Telefonda ayet resmi artık seçtiğiniz yazı tipini ve yazı boyutunu kullanıyor."
+          "Telefonda ayet resmi artık seçtiğiniz yazı tipini ve yazı boyutunu kullanıyor.",
+          "Web'de ayeti, seçili kârinin okumasıyla sesli videoya (MP4) dönüştürebilir, önizleyip indirebilir veya paylaşabilirsiniz; \"Sesli Video\" hem paylaş ekranında hem resim önizlemesinde."
         ]
       },
       {

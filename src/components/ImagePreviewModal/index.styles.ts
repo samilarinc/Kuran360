@@ -73,26 +73,6 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
         fontWeight: '500',
         color: theme.textSecondary,
     },
-    actionButtons: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: SPACING.sm,
-    },
-    actionButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: SPACING.md,
-        paddingVertical: SPACING.sm,
-        borderRadius: 8,
-        minWidth: 100,
-        gap: SPACING.xs,
-        backgroundColor: theme.cardBackground,
-    },
-    actionText: {
-        fontSize: FONT_SIZES.small,
-        fontWeight: '500',
-        color: theme.text,
-    },
     platformButton: {
         flexDirection: 'row',
         alignItems: 'center',

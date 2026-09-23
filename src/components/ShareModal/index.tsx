@@ -10,6 +10,7 @@ import { ShareService } from '@/utils/shareUtils';
 import { ImagePreviewModal } from '../ImagePreviewModal';
 import { PlatformIcon } from '../PlatformIcon';
 import { ImageSizePicker } from '../ImageSizePicker';
+import { VerseVideoActions } from '../VerseVideoActions';
 import { getDefaultImageSize } from '@/utils/imageSizes';
 import { useSettings } from '@/contexts/SettingsContext';
 import { formatVerseNumber } from '@/utils/numerals';
@@ -33,7 +34,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   translationKey,
 }) => {
   const { t } = useTranslation();
-  const { theme, common } = useTheme();
+  const { theme, common, isDarkMode } = useTheme();
   const styles = useThemedStyles(createStyles);
   const { settings } = useSettings();
   const imageFontCss = getArabicFontFamily(getFontOption(settings.imageArabicFont));
@@ -233,6 +234,21 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                   </Text>
                 </View>
                 <ImageSizePicker selected={selectedSize} onSelect={setSelectedSize} />
+              </View>
+
+              {/* Video with recitation (web only), rendered in the app's current theme */}
+              <View style={common.mbMd}>
+                <VerseVideoActions
+                  key={`${verseData.verseNumber}-${verseData.verseNumberEnd ?? ''}-${selectedSize.id}`}
+                  verseData={verseData}
+                  size={selectedSize}
+                  disabled={isLoadingRange}
+                  getImageUrl={() => ShareService.generateVerseImageForSharing(verseData, {
+                    themeMode: isDarkMode ? 'dark' : 'light',
+                    size: selectedSize,
+                    arabicFontCss: imageFontCss,
+                  })}
+                />
               </View>
 
               {/* Platform Options */}

@@ -70,6 +70,27 @@ export const createCommonStyles = (theme: Theme) => {
             color: theme.textSecondary,
             textAlign: 'center',
         },
+        // Small icon + label buttons in a wrapping row (ImagePreviewModal, VerseVideoActions)
+        actionButtonRow: {
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: SPACING.sm,
+        },
+        actionButton: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: SPACING.md,
+            paddingVertical: SPACING.sm,
+            borderRadius: 8,
+            minWidth: 100,
+            gap: SPACING.xs,
+            backgroundColor: theme.cardBackground,
+        },
+        actionButtonText: {
+            fontSize: FONT_SIZES.small,
+            fontWeight: '500',
+            color: theme.text,
+        },
         timeSeparator: {
             marginHorizontal: SPACING.sm,
             color: theme.text,
