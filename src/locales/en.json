@@ -584,6 +584,13 @@
     "footerQuote": "\"Read in the name of your Lord who created.\"",
     "footerReference": "(Surah Al-Alaq, Verse 1)"
   },
+  "share": {
+    "verseLabel": "Surah {{surah}}, Verse {{verse}}",
+    "verseRangeLabel": "Surah {{surah}}, Verses {{start}}-{{end}}",
+    "verseRange": "Verse Range",
+    "verseRangeHint": "You can share up to {{max}} consecutive verses in one image.",
+    "loadingVerses": "Loading verses..."
+  },
   "about": {
     "role": "Designer",
     "projectSectionTitle": "About the Project",
@@ -600,7 +607,8 @@
         "date": "September 23, 2026",
         "bullets": [
           "The whole app now uses one shared theme; cards, buttons and lists look the same on every screen.",
-          "Fixed some borders and the delete button showing the wrong colors in dark mode."
+          "Fixed some borders and the delete button showing the wrong colors in dark mode.",
+          "You can now share several consecutive verses in a single image; pick the last verse with \"Verse Range\" on the share screen."
         ]
       },
       {

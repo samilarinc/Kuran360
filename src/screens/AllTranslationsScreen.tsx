@@ -158,6 +158,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                 isVisible={shareModalVisible}
                 onClose={() => setShareModalVisible(false)}
                 verseData={shareData}
+                translationKey={selectedTranslation}
             />
         </SafeAreaView>
     );

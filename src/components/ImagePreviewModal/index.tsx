@@ -25,7 +25,7 @@ import { VerseShareData, ImageSize, IconSpec } from '@/types';
 import { ShareService } from '@/utils/shareUtils';
 import { IMAGE_SIZES } from '@/utils/imageSizes';
 import { useSettings } from '@/contexts/SettingsContext';
-import { formatVerseNumber } from '@/utils/numerals';
+import { getVerseLabel } from '@/utils/verseRange';
 import { ARABIC_FONT_OPTIONS, DEFAULT_IMAGE_FONT_ID, getFontOption, getArabicFontFamily } from '@/constants/fonts';
 import { createStyles } from './index.styles';
 
@@ -411,7 +411,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                             <View style={[styles.verseInfo, common.row, common.center]}>
                                 <BookOpen size={14} color={theme.textSecondary} />
                                 <Text style={styles.verseInfoText}>
-                                    {verseData.surahName} Suresi, {formatVerseNumber(verseData.verseNumber, settings.verseNumberStyle)}. Ayet
+                                    {getVerseLabel(verseData, settings.verseNumberStyle)}
                                 </Text>
                             </View>
 

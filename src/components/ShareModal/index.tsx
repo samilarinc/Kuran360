@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, ScrollView, SafeAreaView, Platform, Alert, StyleSheet } from 'react-native';
-import { BookOpen, Ruler } from 'lucide-react-native';
+import { BookOpen, Ruler, ListOrdered, Minus, Plus } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import ViewShot, { captureRef } from 'react-native-view-shot';
 import { NativeVerseImageDesign } from '../NativeVerseImageDesign';
@@ -12,6 +13,7 @@ import { ImageSizePicker } from '../ImageSizePicker';
 import { getDefaultImageSize } from '@/utils/imageSizes';
 import { useSettings } from '@/contexts/SettingsContext';
 import { formatVerseNumber } from '@/utils/numerals';
+import { MAX_SHARE_VERSES, buildVerseRangeShareData, getMaxRangeEnd, getVerseLabel } from '@/utils/verseRange';
 import { getFontOption, getArabicFontFamily } from '@/constants/fonts';
 import { ArabicText } from '../ArabicText';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
@@ -20,13 +22,17 @@ interface ShareModalProps {
   isVisible: boolean;
   onClose: () => void;
   verseData: VerseShareData;
+  /** Translation used for the extra verses of a range; defaults to the favorite translation. */
+  translationKey?: string;
 }
 
 export const ShareModal: React.FC<ShareModalProps> = ({
   isVisible,
   onClose,
-  verseData,
+  verseData: baseVerseData,
+  translationKey,
 }) => {
+  const { t } = useTranslation();
   const { theme, common } = useTheme();
   const styles = useThemedStyles(createStyles);
   const { settings } = useSettings();
@@ -37,7 +43,33 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   const viewShotRef = React.useRef<any>(null);
   const [captureOptions, setCaptureOptions] = useState({ themeMode: 'light' as 'light' | 'dark', size: selectedSize });
 
+  // Verse range: the tapped verse is the start, the user picks the last verse
+  const startVerse = baseVerseData.verseNumber;
+  const maxEnd = getMaxRangeEnd(baseVerseData.surahNumber, startVerse);
+  const [endVerse, setEndVerse] = useState(startVerse);
+  const [verseData, setVerseData] = useState<VerseShareData>(baseVerseData);
+  const [isLoadingRange, setIsLoadingRange] = useState(false);
+
+  useEffect(() => {
+    if (isVisible) setEndVerse(startVerse);
+  }, [isVisible, startVerse]);
+
+  useEffect(() => {
+    if (endVerse <= startVerse) {
+      setVerseData(baseVerseData);
+      return;
+    }
+    let cancelled = false;
+    setIsLoadingRange(true);
+    buildVerseRangeShareData(baseVerseData, endVerse, translationKey ?? settings.favoriteTranslation)
+      .then(data => { if (!cancelled) setVerseData(data); })
+      .catch(err => console.error('Verse range error:', err))
+      .finally(() => { if (!cancelled) setIsLoadingRange(false); });
+    return () => { cancelled = true; };
+  }, [baseVerseData, endVerse, startVerse, translationKey, settings.favoriteTranslation]);
+
   const handlePlatformShare = async (platformId: string) => {
+    if (isLoadingRange) return;
     try {
       console.log('Platform seçildi:', platformId);
 
@@ -153,10 +185,43 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                 <View style={[common.row, common.center, common.gapXs]}>
                   <BookOpen size={14} color={theme.primary} />
                   <Text style={styles.verseInfo}>
-                    {verseData.surahName} Suresi, {formatVerseNumber(verseData.verseNumber, settings.verseNumberStyle)}. Ayet
+                    {isLoadingRange ? t('share.loadingVerses') : getVerseLabel(verseData, settings.verseNumberStyle)}
                   </Text>
                 </View>
               </View>
+
+              {/* Verse Range Selection */}
+              {maxEnd > startVerse && (
+                <View style={common.mbMd}>
+                  <View style={[common.row, common.gapXs, common.mbSm]}>
+                    <ListOrdered size={16} color={theme.text} />
+                    <Text style={common.textStrong}>{t('share.verseRange')}</Text>
+                  </View>
+                  <View style={[common.rowGap, common.center]}>
+                    <TouchableOpacity
+                      style={[common.button, common.buttonOutline, endVerse <= startVerse && common.disabled]}
+                      disabled={endVerse <= startVerse}
+                      onPress={() => setEndVerse(v => Math.max(startVerse, v - 1))}
+                    >
+                      <Minus size={16} color={theme.primary} />
+                    </TouchableOpacity>
+                    <Text style={[common.textStrong, common.textCenter, common.flex1]}>
+                      {formatVerseNumber(startVerse, settings.verseNumberStyle)}
+                      {endVerse > startVerse ? ` - ${formatVerseNumber(endVerse, settings.verseNumberStyle)}` : ''}
+                    </Text>
+                    <TouchableOpacity
+                      style={[common.button, common.buttonOutline, endVerse >= maxEnd && common.disabled]}
+                      disabled={endVerse >= maxEnd}
+                      onPress={() => setEndVerse(v => Math.min(maxEnd, v + 1))}
+                    >
+                      <Plus size={16} color={theme.primary} />
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={[common.smallText, common.textCenter, common.mtSm]}>
+                    {t('share.verseRangeHint', { max: MAX_SHARE_VERSES })}
+                  </Text>
+                </View>
+              )}
 
               {/* Size Selection */}
               <View style={common.mbMd}>

@@ -6,7 +6,7 @@ import {
 import { VerseShareData, ImageSize } from '@/types';
 import { useThemedStyles } from '@/contexts/ThemeContext';
 import { useSettings } from '@/contexts/SettingsContext';
-import { formatVerseNumber } from '@/utils/numerals';
+import { getVerseLabel } from '@/utils/verseRange';
 import { createStyles } from './index.styles';
 
 interface NativeVerseImageDesignProps {
@@ -23,7 +23,7 @@ export const NativeVerseImageDesign: React.FC<NativeVerseImageDesignProps> = ({
     const { settings } = useSettings();
     const styles = useThemedStyles(createStyles);
     const isDark = themeMode === 'dark';
-    const { arabicText, translation, surahName, verseNumber } = verseData;
+    const { arabicText, translation } = verseData;
 
     // Palette (matching VerseImageGenerator.ts)
     const palette = {
@@ -38,9 +38,11 @@ export const NativeVerseImageDesign: React.FC<NativeVerseImageDesignProps> = ({
     // Calculate scaling based on target size vs base size (800x600)
     const scale = Math.sqrt((size.width * size.height) / (800 * 600));
 
-    // Dynamic Font Sizes (simplified but matching ratios)
-    const arabicFontSize = Math.max(20, Math.min(60, 36 * scale * (arabicText.length > 150 ? 0.7 : 1)));
-    const translationFontSize = Math.max(14, Math.min(28, 18 * scale * (translation.length > 200 ? 0.8 : 1)));
+    // Dynamic Font Sizes: shrink with text length so multi-verse ranges still fit
+    const lengthFactor = (length: number, threshold: number) =>
+        length > threshold ? Math.max(0.3, Math.sqrt(threshold / length)) : 1;
+    const arabicFontSize = Math.max(12, Math.min(60, 36 * scale * lengthFactor(arabicText.length, 150)));
+    const translationFontSize = Math.max(10, Math.min(28, 18 * scale * lengthFactor(translation.length, 200)));
     const titleFontSize = 22 * scale;
     const footerFontSize = 14 * scale;
 
@@ -65,7 +67,7 @@ export const NativeVerseImageDesign: React.FC<NativeVerseImageDesignProps> = ({
                 {/* Title */}
                 <View style={styles.titleContainer}>
                     <Text style={[styles.title, { color: palette.accent, fontSize: titleFontSize }]}>
-                        {surahName} Suresi - {formatVerseNumber(verseNumber, settings.verseNumberStyle)}. Ayet
+                        {getVerseLabel(verseData, settings.verseNumberStyle)}
                     </Text>
                     <View style={[styles.titleLine, { backgroundColor: palette.accent, width: Math.min(300, size.width * 0.4) }]} />
                 </View>

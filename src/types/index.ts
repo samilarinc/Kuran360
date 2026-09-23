@@ -187,6 +187,8 @@ export interface VerseShareData {
   translation: string;
   surahName: string;
   verseNumber: number;
+  /** Last verse when sharing a consecutive range (verseNumber..verseNumberEnd). */
+  verseNumberEnd?: number;
   surahNumber: number;
 }
 
