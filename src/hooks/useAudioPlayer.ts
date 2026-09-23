@@ -6,6 +6,12 @@ import { useSettings } from '@/contexts/SettingsContext';
 import logger from '@/utils/logger';
 import { getVerseAudioUrl } from '@/utils/audioUrls';
 
+// Next verse starts this long before the current one ends. Every file opens with ~35 ms of
+// silence, so the overlap only covers the player's own start-up latency.
+const OVERLAP_LEAD_MS = 60;
+// How long the previous sound may keep playing its tail before it is unloaded
+const OVERLAP_UNLOAD_DELAY_MS = 1000;
+
 export const useAudioPlayer = () => {
   const { settings, availableReciters } = useSettings();
   const settingsRef = useRef(settings);
@@ -25,8 +31,13 @@ export const useAudioPlayer = () => {
   // Cancel token for current playback session; increment to invalidate pending timers/callbacks
   const playTokenRef = useRef(0);
 
-  // Preloading cache for next verse
-  const nextVerseAudioCache = useRef<Map<string, Audio.Sound>>(new Map());
+  // Current sound as a ref, so audio callbacks never see a stale `sound` state
+  const soundRef = useRef<Audio.Sound | null>(null);
+  // Set while the next verse is started just before the current one ends (see OVERLAP_LEAD_MS)
+  const overlapNextRef = useRef(false);
+  // Upcoming verse audio, keyed by URI (so a reciter change never hits a stale entry).
+  // Promises, so a transition can wait for an in-flight preload instead of downloading again.
+  const preloadCache = useRef<Map<string, Promise<Audio.Sound | null>>>(new Map());
 
   // Memorization mode state (range within a single surah, repeating the whole range N times)
   const memActiveRef = useRef(false);
@@ -61,25 +72,18 @@ export const useAudioPlayer = () => {
   }, [settings.playbackRate, sound]);
 
   useEffect(() => {
-    return sound
-      ? () => {
-        sound.unloadAsync();
-      }
-      : undefined;
+    soundRef.current = sound;
   }, [sound]);
+
+  // Sounds are unloaded explicitly in playVerse/stop (an overlapping tail must be allowed to finish)
+  useEffect(() => () => { soundRef.current?.unloadAsync().catch(() => { }); }, []);
 
   // Clean up preloaded audio cache
   useEffect(() => {
-    const cache = nextVerseAudioCache.current;
+    const cache = preloadCache.current;
     return () => {
       // Clean up all preloaded sounds on unmount
-      cache.forEach(async (cachedSound) => {
-        try {
-          await cachedSound.unloadAsync();
-        } catch (error) {
-          console.log('Error unloading cached sound:', error);
-        }
-      });
+      cache.forEach(pending => pending.then(s => s?.unloadAsync()).catch(() => { }));
       cache.clear();
     };
   }, []);
@@ -90,60 +94,94 @@ export const useAudioPlayer = () => {
     return getVerseAudioUrl(verse.surahNumber, verse.number, selectedReciter?.folder);
   };
 
-  // Preload next verse audio when autoplay is enabled
-  const preloadNextVerse = async (currentVerse: VerseType) => {
-    if (!settingsRef.current.autoplayEnabled) return;
+  // Start downloading a verse's audio in the background (no-op if already cached / in flight)
+  const preloadVerse = (verse: VerseType) => {
+    const uri = getAudioUri(verse);
+    if (preloadCache.current.has(uri)) return;
 
+    const pending = Audio.Sound.createAsync({ uri }, { shouldPlay: false })
+      .then(({ sound: preloaded }) => preloaded)
+      .catch(error => {
+        logger.debug(`Failed to preload verse audio: ${uri} ${error}`);
+        preloadCache.current.delete(uri);
+        return null;
+      });
+    preloadCache.current.set(uri, pending);
+    logger.debug(`Preloading verse: ${uri}`);
+
+    // Keep only a few recent entries
+    if (preloadCache.current.size > 3) {
+      const oldestKey = preloadCache.current.keys().next().value as string;
+      preloadCache.current.get(oldestKey)?.then(s => s?.unloadAsync()).catch(() => { });
+      preloadCache.current.delete(oldestKey);
+    }
+  };
+
+  // Takes a preloaded (or still loading) sound out of the cache; null on a miss
+  const takePreloaded = async (verse: VerseType): Promise<Audio.Sound | null> => {
+    const uri = getAudioUri(verse);
+    const pending = preloadCache.current.get(uri);
+    if (!pending) return null;
+    preloadCache.current.delete(uri);
+    return pending;
+  };
+
+  /**
+   * The verse that will play after `verse` finishes, mirroring the finish handler below
+   * (memorization > loopVerse > autoplay > end-of-surah mode). Used to preload its audio.
+   * Returns null when nothing follows or it isn't loaded yet (next surah is handled separately).
+   */
+  const getUpcomingVerse = (verse: VerseType): VerseType | null => {
     const versesArr = allVersesRef.current;
-    if (!versesArr.length) return;
+    const findInSurah = (num: number) => versesArr.find(v => v.surahNumber === verse.surahNumber && v.number === num) ?? null;
 
-    const currentIndex = versesArr.findIndex(v => v.id === currentVerse.id);
-    if (currentIndex === -1 || currentIndex >= versesArr.length - 1) return;
+    if (memActiveRef.current) {
+      if (memModeRef.current === 'individual' && memCurrentVerseRepeatsRef.current + 1 < memCyclesTotalRef.current) {
+        return verse;
+      }
+      if (verse.number < memEndRef.current) return findInSurah(verse.number + 1);
+      if (memModeRef.current === 'range' && memCyclesDoneRef.current + 1 < Math.max(1, memCyclesTotalRef.current)) {
+        return findInSurah(memStartRef.current);
+      }
+      return null;
+    }
 
-    const nextVerse = versesArr[currentIndex + 1];
-    const audioUri = getAudioUri(nextVerse);
-    const cacheKey = `${nextVerse.surahNumber}-${nextVerse.number}`;
+    const mode = settingsRef.current.audioPlayMode;
+    if (mode === 'loopVerse') return verse;
 
-    // Skip if already cached
-    if (nextVerseAudioCache.current.has(cacheKey)) return;
+    const idx = versesArr.findIndex(v => v.id === verse.id);
+    if (idx === -1) return null;
+    if (idx < versesArr.length - 1) return settingsRef.current.autoplayEnabled ? versesArr[idx + 1] : null;
+    if (mode === 'loopSurah') return versesArr[0] ?? null;
+    return null;
+  };
 
+  // Preload whatever plays next, including verse 1 of the next surah in 'nextSurah' mode
+  const preloadUpcoming = (verse: VerseType) => {
+    const upcoming = getUpcomingVerse(verse);
+    if (upcoming) {
+      // Repeating the same verse replays the current sound; nothing to download
+      if (upcoming.id !== verse.id) preloadVerse(upcoming);
+      return;
+    }
+    const versesArr = allVersesRef.current;
+    const isLastVerse = versesArr.length > 0 && versesArr[versesArr.length - 1].id === verse.id;
+    if (!memActiveRef.current && isLastVerse && settingsRef.current.audioPlayMode === 'nextSurah' && verse.surahNumber < 114) {
+      loadSurah(verse.surahNumber + 1)
+        .then(next => { if (next?.verses[0]) preloadVerse(next.verses[0]); })
+        .catch(() => { });
+    }
+  };
+
+  // Restart the current sound from the beginning (loopVerse / memorization repeats) without reloading
+  const replayVerse = async (verse: VerseType) => {
+    const current = soundRef.current;
+    if (!current) return playVerse(verse);
     try {
-      // Check if audio file exists
-      const response = await fetch(audioUri, { method: 'HEAD' });
-      if (!response.ok) {
-        logger.debug(`Next verse audio not available: ${audioUri}`);
-        return;
-      }
-
-      // Preload the audio
-      const { sound: preloadedSound } = await Audio.Sound.createAsync(
-        { uri: audioUri },
-        { shouldPlay: false } // Don't play, just load
-      );
-
-      // Set playback rate for consistency
-      await preloadedSound.setRateAsync(settings.playbackRate, true);
-
-      // Cache it
-      nextVerseAudioCache.current.set(cacheKey, preloadedSound);
-      logger.debug(`Preloaded next verse: ${cacheKey}`);
-
-      // Clean up old cached sounds (keep only 2-3 recent ones)
-      if (nextVerseAudioCache.current.size > 3) {
-        const keys = Array.from(nextVerseAudioCache.current.keys());
-        const oldestKey = keys[0];
-        const oldSound = nextVerseAudioCache.current.get(oldestKey);
-        if (oldSound) {
-          try {
-            await oldSound.unloadAsync();
-          } catch (error) {
-            console.log('Error unloading old cached sound:', error);
-          }
-        }
-        nextVerseAudioCache.current.delete(oldestKey);
-      }
-    } catch (error) {
-      logger.debug(`Failed to preload next verse: ${error}`);
+      await current.replayAsync();
+      preloadUpcoming(verse);
+    } catch {
+      await playVerse(verse);
     }
   };
 
@@ -276,33 +314,40 @@ export const useAudioPlayer = () => {
       const myToken = ++playTokenRef.current;
       setAudioState(prev => ({ ...prev, isLoading: true }));
 
-      // Stop any existing sound
-      if (sound) {
-        await sound.unloadAsync();
+      // Stop the previous sound without waiting for it; the next one starts loading right away.
+      // When started early (overlap), the previous verse plays its last few ms to the end first.
+      const overlap = overlapNextRef.current;
+      overlapNextRef.current = false;
+      const previous = soundRef.current;
+      if (previous) {
+        previous.setOnPlaybackStatusUpdate(null);
+        if (overlap) {
+          setTimeout(() => { previous.unloadAsync().catch(() => { }); }, OVERLAP_UNLOAD_DELAY_MS);
+        } else {
+          previous.unloadAsync().catch(() => { });
+        }
+        soundRef.current = null;
       }
 
       const audioUri = getAudioUri(verse);
-      const cacheKey = `${verse.surahNumber}-${verse.number}`;
+      const playbackStatus = { shouldPlay: true, rate: settingsRef.current.playbackRate, shouldCorrectPitch: true };
 
-      // Check if we have this verse preloaded
-      let newSound = nextVerseAudioCache.current.get(cacheKey);
+      // Preloaded (or still preloading) sound for this verse, if any
+      let newSound = await takePreloaded(verse);
+      if (myToken !== playTokenRef.current) {
+        newSound?.unloadAsync().catch(() => { });
+        return;
+      }
 
       if (newSound) {
-        logger.debug(`Using preloaded audio for verse: ${cacheKey}`);
-        // Remove from cache since we're using it
-        nextVerseAudioCache.current.delete(cacheKey);
-
-        // Start playing the preloaded sound
-        await newSound.playAsync();
+        logger.debug(`Using preloaded audio for verse: ${audioUri}`);
+        await newSound.setStatusAsync(playbackStatus);
       } else {
         logger.debug(`Loading audio from: ${audioUri}`);
-
-        // Check if audio file exists before attempting to load
         try {
-          const response = await fetch(audioUri, { method: 'HEAD' });
-          if (!response.ok) {
-            throw new Error(`Audio file not found: ${audioUri}`);
-          }
+          // A missing file rejects here, so no separate HEAD request is needed
+          const { sound: loadedSound } = await Audio.Sound.createAsync({ uri: audioUri }, playbackStatus);
+          newSound = loadedSound;
         } catch (error) {
           logger.debug(`Audio file not available: ${audioUri}. Using simulation mode.`);
           // Fall back to simulation if audio loading fails
@@ -341,180 +386,201 @@ export const useAudioPlayer = () => {
 
           return;
         }
-
-        // Load and play the audio file
-        const { sound: loadedSound } = await Audio.Sound.createAsync(
-          { uri: audioUri },
-          { shouldPlay: true }
-        );
-        newSound = loadedSound;
-
-        // Set playback rate
-        await newSound.setRateAsync(settings.playbackRate, true);
+        // A newer play/stop happened while this was loading
+        if (myToken !== playTokenRef.current) {
+          newSound.unloadAsync().catch(() => { });
+          return;
+        }
       }
 
+      soundRef.current = newSound;
       setSound(newSound);
+
+      // Starts the next verse OVERLAP_LEAD_MS before this one ends, so there is no audible gap.
+      // A timer (re-synced on every status update) avoids needing very frequent status updates.
+      let startedEarly = false;
+      let earlyTimer: ReturnType<typeof setTimeout> | null = null;
+      const clearEarlyTimer = () => {
+        if (earlyTimer) clearTimeout(earlyTimer);
+        earlyTimer = null;
+      };
+      const startNextEarly = () => {
+        earlyTimer = null;
+        if (startedEarly || myToken !== playTokenRef.current) return;
+        // Only for a different verse; repeats replay this same sound after it finishes
+        const upcoming = getUpcomingVerse(verse);
+        if (!upcoming || upcoming.id === verse.id) return;
+        startedEarly = true;
+        overlapNextRef.current = true;
+        handleFinished().finally(() => { overlapNextRef.current = false; });
+      };
+
+      // Everything below reads refs, so it can run the moment playback ends (or just before)
+      const handleFinished = async () => {
+        // Abort if a new play/stop happened
+        if (myToken !== playTokenRef.current) return;
+        // Memorization mode overrides normal autoplay/play mode
+        if (memActiveRef.current) {
+          const versesArr = allVersesRef.current;
+          const targetSurah = memSurahRef.current;
+          const startNum = memStartRef.current;
+          const endNum = memEndRef.current;
+          const mode = memModeRef.current;
+
+          // If we somehow left the target surah, cancel memorization
+          if (!targetSurah || verse.surahNumber !== targetSurah) {
+            memActiveRef.current = false;
+            memCyclesDoneRef.current = 0;
+            memCurrentVerseRepeatsRef.current = 0;
+            setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+            return;
+          }
+
+          if (mode === 'individual') {
+            // New mode: repeat each verse individually
+            const currentRepeats = memCurrentVerseRepeatsRef.current + 1;
+
+            if (currentRepeats < memCyclesTotalRef.current) {
+              // Repeat the same verse
+              memCurrentVerseRepeatsRef.current = currentRepeats;
+              await replayVerse(verse);
+              return;
+            } else {
+              // Move to next verse
+              memCurrentVerseRepeatsRef.current = 0;
+
+              if (verse.number < endNum) {
+                const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
+                if (next) {
+                  await playVerse(next);
+                  return;
+                }
+              }
+
+              // Finished all verses in range
+              memActiveRef.current = false;
+              memCyclesDoneRef.current = 0;
+              memCurrentVerseRepeatsRef.current = 0;
+              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+              return;
+            }
+          } else {
+            // Original mode: repeat whole range
+            // Move to next verse within range
+            if (verse.number < endNum) {
+              const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
+              if (next) {
+                await playVerse(next);
+                return;
+              }
+              // If next not found, cancel memorization gracefully
+              memActiveRef.current = false;
+              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+              return;
+            }
+
+            // Finished the end of the range; either loop the whole range or stop
+            const cyclesDone = memCyclesDoneRef.current + 1;
+            if (cyclesDone < Math.max(1, memCyclesTotalRef.current)) {
+              memCyclesDoneRef.current = cyclesDone;
+              const startVerse = versesArr.find(v => v.surahNumber === targetSurah && v.number === startNum);
+              if (startVerse) {
+                await playVerse(startVerse);
+                return;
+              }
+              // Start not found; cancel
+              memActiveRef.current = false;
+              memCyclesDoneRef.current = 0;
+              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+              return;
+            } else {
+              // All cycles completed
+              memActiveRef.current = false;
+              memCyclesDoneRef.current = 0;
+              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+              return;
+            }
+          }
+        }
+
+        const mode = settingsRef.current.audioPlayMode;
+
+        // Loop current verse immediately
+        if (mode === 'loopVerse') {
+          await replayVerse(verse);
+          return;
+        }
+
+        // Determine if this was the last verse of current surah buffer
+        const versesArr = allVersesRef.current;
+        const idx = versesArr.findIndex(v => v.id === verse.id);
+        const isLastVerse = idx !== -1 && idx === versesArr.length - 1;
+
+        if (!isLastVerse) {
+          // Not last verse: follow autoplay toggle for next-verse behavior
+          if (settingsRef.current.autoplayEnabled) {
+            playNextVerse(verse);
+          } else {
+            setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+          }
+          return;
+        }
+
+        // End-of-surah behavior: ignore autoplay flag and follow play mode
+        if (mode === 'loopSurah') {
+          const first = versesArr[0];
+          if (first) await playVerse(first);
+          else setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+          return;
+        }
+
+        if (mode === 'nextSurah') {
+          try {
+            const nextSurah = verse.surahNumber + 1;
+            if (nextSurah <= 114) {
+              const loaded = await loadSurah(nextSurah);
+              if (loaded && loaded.verses.length > 0) {
+                // CRITICAL: Update allVerses BEFORE playing to avoid index -1 lookup
+                setAllVerses(loaded.verses);
+                allVersesRef.current = loaded.verses;
+                logger.debug('Updated allVerses to next surah in finish handler, length:', loaded.verses.length);
+                await playVerse(loaded.verses[0]);
+              } else {
+                setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+              }
+            } else {
+              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+            }
+          } catch (e) {
+            console.error('Error loading next surah on finish:', e);
+            setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+          }
+          return;
+        }
+
+        // stopAtEnd or unknown mode
+        setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+      };
 
       // Set up status update listener
       newSound.setOnPlaybackStatusUpdate((status) => {
-        if (status.isLoaded) {
-          setAudioState(prev => ({
-            ...prev,
-            isPlaying: status.isPlaying || false,
-            duration: status.durationMillis || 0,
-            position: status.positionMillis || 0,
-            isLoading: false,
-          }));
+        if (!status.isLoaded) return;
+        setAudioState(prev => ({
+          ...prev,
+          isPlaying: status.isPlaying || false,
+          duration: status.durationMillis || 0,
+          position: status.positionMillis || 0,
+          isLoading: false,
+        }));
 
-          // Check if the verse has finished playing for autoplay
-          if (status.didJustFinish) {
-            // Small delay before checking settings to ensure latest values
-            setTimeout(async () => {
-              // Abort if a new play/stop happened
-              if (myToken !== playTokenRef.current) return;
-              // Memorization mode overrides normal autoplay/play mode
-              if (memActiveRef.current) {
-                const versesArr = allVersesRef.current;
-                const targetSurah = memSurahRef.current;
-                const startNum = memStartRef.current;
-                const endNum = memEndRef.current;
-                const mode = memModeRef.current;
-
-                // If we somehow left the target surah, cancel memorization
-                if (!targetSurah || verse.surahNumber !== targetSurah) {
-                  memActiveRef.current = false;
-                  memCyclesDoneRef.current = 0;
-                  memCurrentVerseRepeatsRef.current = 0;
-                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                  return;
-                }
-
-                if (mode === 'individual') {
-                  // New mode: repeat each verse individually
-                  const currentRepeats = memCurrentVerseRepeatsRef.current + 1;
-
-                  if (currentRepeats < memCyclesTotalRef.current) {
-                    // Repeat the same verse
-                    memCurrentVerseRepeatsRef.current = currentRepeats;
-                    await playVerse(verse);
-                    return;
-                  } else {
-                    // Move to next verse
-                    memCurrentVerseRepeatsRef.current = 0;
-
-                    if (verse.number < endNum) {
-                      const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
-                      if (next) {
-                        await playVerse(next);
-                        return;
-                      }
-                    }
-
-                    // Finished all verses in range
-                    memActiveRef.current = false;
-                    memCyclesDoneRef.current = 0;
-                    memCurrentVerseRepeatsRef.current = 0;
-                    setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                    return;
-                  }
-                } else {
-                  // Original mode: repeat whole range
-                  // Move to next verse within range
-                  if (verse.number < endNum) {
-                    const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
-                    if (next) {
-                      await playVerse(next);
-                      return;
-                    }
-                    // If next not found, cancel memorization gracefully
-                    memActiveRef.current = false;
-                    setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                    return;
-                  }
-
-                  // Finished the end of the range; either loop the whole range or stop
-                  const cyclesDone = memCyclesDoneRef.current + 1;
-                  if (cyclesDone < Math.max(1, memCyclesTotalRef.current)) {
-                    memCyclesDoneRef.current = cyclesDone;
-                    const startVerse = versesArr.find(v => v.surahNumber === targetSurah && v.number === startNum);
-                    if (startVerse) {
-                      await playVerse(startVerse);
-                      return;
-                    }
-                    // Start not found; cancel
-                    memActiveRef.current = false;
-                    memCyclesDoneRef.current = 0;
-                    setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                    return;
-                  } else {
-                    // All cycles completed
-                    memActiveRef.current = false;
-                    memCyclesDoneRef.current = 0;
-                    setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                    return;
-                  }
-                }
-              }
-
-              const mode = settingsRef.current.audioPlayMode;
-
-              // Loop current verse immediately
-              if (mode === 'loopVerse') {
-                await playVerse(verse);
-                return;
-              }
-
-              // Determine if this was the last verse of current surah buffer
-              const versesArr = allVersesRef.current;
-              const idx = versesArr.findIndex(v => v.id === verse.id);
-              const isLastVerse = idx !== -1 && idx === versesArr.length - 1;
-
-              if (!isLastVerse) {
-                // Not last verse: follow autoplay toggle for next-verse behavior
-                if (settingsRef.current.autoplayEnabled) {
-                  playNextVerse(verse);
-                } else {
-                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                }
-                return;
-              }
-
-              // End-of-surah behavior: ignore autoplay flag and follow play mode
-              if (mode === 'loopSurah') {
-                const first = versesArr[0];
-                if (first) await playVerse(first);
-                else setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                return;
-              }
-
-              if (mode === 'nextSurah') {
-                try {
-                  const nextSurah = verse.surahNumber + 1;
-                  if (nextSurah <= 114) {
-                    const loaded = await loadSurah(nextSurah);
-                    if (loaded && loaded.verses.length > 0) {
-                      // CRITICAL: Update allVerses BEFORE playing to avoid index -1 lookup
-                      setAllVerses(loaded.verses);
-                      allVersesRef.current = loaded.verses;
-                      logger.debug('Updated allVerses to next surah in finish handler, length:', loaded.verses.length);
-                      await playVerse(loaded.verses[0]);
-                    } else {
-                      setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                    }
-                  } else {
-                    setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                  }
-                } catch (e) {
-                  console.error('Error loading next surah on finish:', e);
-                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-                }
-                return;
-              }
-
-              // stopAtEnd or unknown mode
-              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-            }, 10);
-          }
+        clearEarlyTimer();
+        if (status.didJustFinish) {
+          if (!startedEarly) handleFinished();
+          return;
+        }
+        if (status.isPlaying && status.durationMillis) {
+          const remainingMs = (status.durationMillis - status.positionMillis) / (status.rate || 1);
+          earlyTimer = setTimeout(startNextEarly, Math.max(0, remainingMs - OVERLAP_LEAD_MS));
         }
       });
 
@@ -527,10 +593,8 @@ export const useAudioPlayer = () => {
 
       logger.debug(`Successfully loaded and playing verse: ${verse.id}`);
 
-      // Preload next verse if autoplay is enabled
-      if (settingsRef.current.autoplayEnabled) {
-        preloadNextVerse(verse);
-      }
+      // Start downloading whatever plays next while this verse plays
+      preloadUpcoming(verse);
 
     } catch (error) {
       console.error('Error playing audio:', error);
@@ -548,9 +612,7 @@ export const useAudioPlayer = () => {
 
   const pause = async () => {
     try {
-      if (sound) {
-        await sound.pauseAsync();
-      }
+      await soundRef.current?.pauseAsync();
       setAudioState(prev => ({ ...prev, isPlaying: false }));
     } catch (error) {
       console.error('Error pausing audio:', error);
@@ -559,9 +621,7 @@ export const useAudioPlayer = () => {
 
   const resume = async () => {
     try {
-      if (sound) {
-        await sound.playAsync();
-      }
+      await soundRef.current?.playAsync();
       setAudioState(prev => ({ ...prev, isPlaying: true }));
     } catch (error) {
       console.error('Error resuming audio:', error);
@@ -572,11 +632,13 @@ export const useAudioPlayer = () => {
     try {
       // Invalidate current session to cancel pending timers/callbacks
       playTokenRef.current++;
-      if (sound) {
-        try { await sound.stopAsync(); } catch { }
-        try { await sound.unloadAsync(); } catch { }
-        // Detach any status updates to avoid stray updates
-        try { sound.setOnPlaybackStatusUpdate(null as any); } catch { }
+      const current = soundRef.current;
+      if (current) {
+        soundRef.current = null;
+        // Detach status updates first to avoid stray updates
+        try { current.setOnPlaybackStatusUpdate(null); } catch { }
+        try { await current.stopAsync(); } catch { }
+        try { await current.unloadAsync(); } catch { }
         setSound(null);
       }
       pendingSurahRef.current = null;
@@ -601,9 +663,9 @@ export const useAudioPlayer = () => {
   };
 
   const changePlaybackRate = async (rate: number) => {
-    if (sound) {
+    if (soundRef.current) {
       try {
-        await sound.setRateAsync(rate, true);
+        await soundRef.current.setRateAsync(rate, true);
         logger.debug(`Playback rate changed to: ${rate}x`);
       } catch (error) {
         console.error('Error changing playback rate:', error);
@@ -724,6 +786,7 @@ export const useAudioPlayer = () => {
         { shouldPlay: true, rate: settings.playbackRate }
       );
 
+      soundRef.current = previewSound;
       setSound(previewSound);
       setAudioState(prev => ({
         ...prev,

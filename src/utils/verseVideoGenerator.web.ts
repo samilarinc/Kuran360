@@ -20,8 +20,6 @@ declare const AudioBuffer: any;
 
 export type { VerseVideoOptions } from './verseVideoGenerator';
 
-/** Silence between consecutive verses, in seconds. */
-const VERSE_GAP_SECONDS = 0.4;
 /** A still image only needs a frame every second. */
 const FRAME_SECONDS = 1;
 const SAMPLE_RATE = 48000;
@@ -37,7 +35,7 @@ const loadImage = (url: string): Promise<any> => new Promise((resolve, reject) =
     img.src = url;
 });
 
-/** Downloads each verse's recitation and joins them into one buffer with short gaps. */
+/** Downloads each verse's recitation and joins them back to back, with no gap. */
 const loadRecitation = async (verseData: VerseShareData, reciterFolder: string | undefined, onProgress: (p: number) => void) => {
     const start = verseData.verseNumber;
     const end = verseData.verseNumberEnd ?? start;
@@ -51,8 +49,7 @@ const loadRecitation = async (verseData: VerseShareData, reciterFolder: string |
         onProgress((verse - start + 1) / (end - start + 1));
     }
 
-    const gap = Math.round(VERSE_GAP_SECONDS * SAMPLE_RATE);
-    const length = buffers.reduce((sum, b) => sum + b.length, 0) + gap * (buffers.length - 1);
+    const length = buffers.reduce((sum, b) => sum + b.length, 0);
     const joined = new AudioBuffer({ length, numberOfChannels: 2, sampleRate: SAMPLE_RATE });
     let offset = 0;
     for (const buffer of buffers) {
@@ -60,7 +57,7 @@ const loadRecitation = async (verseData: VerseShareData, reciterFolder: string |
             // Mono recitations are copied to both channels
             joined.copyToChannel(buffer.getChannelData(Math.min(ch, buffer.numberOfChannels - 1)), ch, offset);
         }
-        offset += buffer.length + gap;
+        offset += buffer.length;
     }
     return joined;
 };

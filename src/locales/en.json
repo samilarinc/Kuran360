@@ -625,7 +625,8 @@
           "After changing theme, font or size in the image preview, downloading or sharing now uses the updated image.",
           "The image preview now opens with the theme and size you chose on the share screen.",
           "On phones, verse images now use your selected font and text size.",
-          "On web, you can turn a verse into a video (MP4) with your selected reciter's recitation, preview it, then download or share it; \"Video with Recitation\" is on both the share screen and the image preview."
+          "On web, you can turn a verse into a video (MP4) with your selected reciter's recitation, preview it, then download or share it; verses flow without gaps in the video. \"Video with Recitation\" is on both the share screen and the image preview.",
+          "Verse transitions are now seamless during continuous listening (autoplay, memorization, verse repeat, next surah); the next verse is loaded ahead and starts right on time."
         ]
       },
       {
