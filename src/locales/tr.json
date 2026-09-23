@@ -589,7 +589,8 @@
     "verseRangeLabel": "{{surah}} Suresi, {{start}}-{{end}}. Ayetler",
     "verseRange": "Ayet Aralığı",
     "verseRangeHint": "Aynı resimde en fazla {{max}} ardışık ayet paylaşabilirsiniz.",
-    "loadingVerses": "Ayetler yükleniyor..."
+    "loadingVerses": "Ayetler yükleniyor...",
+    "fontNoQuranMarks": "Bu yazı tipinde durak işaretleri bulunmuyor; resimde görünmeyecekler."
   },
   "about": {
     "role": "Tasarımcı",
@@ -607,7 +608,12 @@
         "bullets": [
           "Uygulama genelinde tek bir ortak tema kullanılmaya başlandı; kartlar, butonlar ve listeler artık her ekranda aynı görünüyor.",
           "Koyu modda bazı kenarlıkların ve silme butonunun yanlış renkte görünmesi düzeltildi.",
-          "Birden fazla ardışık ayeti tek bir resimde paylaşabilirsiniz; paylaş ekranındaki \"Ayet Aralığı\" ile son ayeti seçin."
+          "Birden fazla ardışık ayeti tek bir resimde paylaşabilirsiniz; paylaş ekranındaki \"Ayet Aralığı\" ile son ayeti seçin.",
+          "Ayet resimlerinde ve web'deki okumada, durak işareti olmayan yazı tiplerinde (Aref Ruqaa, El Messiri, Markazi, Reem Kufi) durak işaretleri artık görünüyor.",
+          "Ayet resimlerinde ve sayfa görünümünde kelimeler artık birbirine yapışmıyor, eksik kelimeler de görünüyor.",
+          "Resim önizlemesinde tema, yazı tipi veya boyut değiştirdikten sonra indirilen/paylaşılan resim artık güncel olanı.",
+          "Resim önizlemesi, paylaş ekranında seçtiğiniz tema ve boyutla açılıyor.",
+          "Telefonda ayet resmi artık seçtiğiniz yazı tipini ve yazı boyutunu kullanıyor."
         ]
       },
       {

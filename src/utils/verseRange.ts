@@ -2,6 +2,7 @@ import i18n from '@/i18n';
 import { VerseShareData } from '@/types';
 import { loadSurah, getSurahsList } from '@/data/quranData';
 import { formatVerseNumber, VerseNumberStyle } from './numerals';
+import { getSpacedArabicText } from './arabicText';
 
 /** Upper bound for a shared verse range, so the text still fits on one image. */
 export const MAX_SHARE_VERSES = 10;
@@ -47,7 +48,7 @@ export const buildVerseRangeShareData = async (
     }
 
     const arabicText = verses
-        .map(v => `${v.arabicText} ﴿${formatVerseNumber(v.number, 'arabic')}﴾`)
+        .map(v => `${getSpacedArabicText(v)} ﴿${formatVerseNumber(v.number, 'arabic')}﴾`)
         .join(' ');
     const translation = verses
         .map(v => {

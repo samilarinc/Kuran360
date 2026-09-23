@@ -20,6 +20,7 @@ import { loadSurah } from '@/data/quranData';
 import { getVerseRangesForPage, TOTAL_MUSHAF_PAGES } from '@/data/pageMapping';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
+import { getSpacedArabicText } from '@/utils/arabicText';
 import { createStyles } from './QuranPageScreen.styles';
 
 const MIN_FONT_SIZE = 18;
@@ -28,11 +29,6 @@ const FONT_SIZE_STEP = 2;
 
 const NO_TRANSLATION_ID = '';
 const WORD_BY_WORD_TRANSLATION_ID = '__word_by_word__';
-
-const spacedArabicText = (verse: VerseType): string => {
-  const words = verse.wordTranslations.map(w => w.arabic).filter(Boolean);
-  return words.length > 0 ? words.join(' ') : verse.arabicText;
-};
 
 interface PageSegment {
   surahNumber: number;
@@ -190,7 +186,7 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
                   >
                     {segment.verses.map(verse => (
                       <React.Fragment key={verse.number}>
-                        {spacedArabicText(verse)}
+                        {getSpacedArabicText(verse)}
                         {'\u00A0'}
                         <Text style={[styles.verseNumberMark, { fontSize: Math.max(14, fontSize * 0.6) }]}>
                           {`\ufd3f${formatVerseNumber(verse.number, settings.verseNumberStyle)}\ufd3e`}
@@ -212,7 +208,7 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
                             { fontSize, lineHeight: fontSize * 2.2 },
                           ]}
                         >
-                          {spacedArabicText(verse)}
+                          {getSpacedArabicText(verse)}
                           {'\u00A0'}
                           <Text style={[styles.verseNumberMark, { fontSize: Math.max(14, fontSize * 0.6) }]}>
                             {`\ufd3e${formatVerseNumber(verse.number, settings.verseNumberStyle)}\ufd3f`}

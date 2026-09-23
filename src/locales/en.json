@@ -589,7 +589,8 @@
     "verseRangeLabel": "Surah {{surah}}, Verses {{start}}-{{end}}",
     "verseRange": "Verse Range",
     "verseRangeHint": "You can share up to {{max}} consecutive verses in one image.",
-    "loadingVerses": "Loading verses..."
+    "loadingVerses": "Loading verses...",
+    "fontNoQuranMarks": "This font has no stop (waqf) marks; they won't appear in the image."
   },
   "about": {
     "role": "Designer",
@@ -608,7 +609,12 @@
         "bullets": [
           "The whole app now uses one shared theme; cards, buttons and lists look the same on every screen.",
           "Fixed some borders and the delete button showing the wrong colors in dark mode.",
-          "You can now share several consecutive verses in a single image; pick the last verse with \"Verse Range\" on the share screen."
+          "You can now share several consecutive verses in a single image; pick the last verse with \"Verse Range\" on the share screen.",
+          "Stop (waqf) marks now appear in verse images and on web reading with fonts that lack them (Aref Ruqaa, El Messiri, Markazi, Reem Kufi).",
+          "Words no longer run together in verse images and page view, and missing words now show up.",
+          "After changing theme, font or size in the image preview, downloading or sharing now uses the updated image.",
+          "The image preview now opens with the theme and size you chose on the share screen.",
+          "On phones, verse images now use your selected font and text size."
         ]
       },
       {

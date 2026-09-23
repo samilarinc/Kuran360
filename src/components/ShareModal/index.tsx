@@ -76,6 +76,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       if (platformId === 'image_light' || platformId === 'image_dark') {
         const themeMode = platformId === 'image_dark' ? 'dark' : 'light';
         // Resim oluştur ve önizleme modalı aç
+        setCaptureOptions({ themeMode, size: selectedSize });
         if (Platform.OS === 'web') {
           const imageUrl = await ShareService.generateVerseImageForSharing(verseData, {
             themeMode,
@@ -266,6 +267,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         }}
         imageUrl={generatedImageUrl}
         verseData={verseData}
+        initialThemeMode={captureOptions.themeMode}
+        initialSize={captureOptions.size}
       />
 
       {/* Hidden view for capturing on Native */}
@@ -276,6 +279,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               verseData={verseData}
               themeMode={captureOptions.themeMode}
               size={captureOptions.size}
+              arabicFontFamily={imageFontCss}
             />
           </ViewShot>
         </View>

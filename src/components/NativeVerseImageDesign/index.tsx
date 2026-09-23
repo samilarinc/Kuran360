@@ -13,12 +13,18 @@ interface NativeVerseImageDesignProps {
     verseData: VerseShareData;
     themeMode: 'light' | 'dark';
     size: ImageSize;
+    /** Bundled font-family for the Arabic text; system font when omitted. */
+    arabicFontFamily?: string;
+    /** A+/A- multiplier from the preview screen. */
+    fontScale?: number;
 }
 
 export const NativeVerseImageDesign: React.FC<NativeVerseImageDesignProps> = ({
     verseData,
     themeMode,
     size,
+    arabicFontFamily,
+    fontScale = 1,
 }) => {
     const { settings } = useSettings();
     const styles = useThemedStyles(createStyles);
@@ -41,10 +47,11 @@ export const NativeVerseImageDesign: React.FC<NativeVerseImageDesignProps> = ({
     // Dynamic Font Sizes: shrink with text length so multi-verse ranges still fit
     const lengthFactor = (length: number, threshold: number) =>
         length > threshold ? Math.max(0.3, Math.sqrt(threshold / length)) : 1;
-    const arabicFontSize = Math.max(12, Math.min(60, 36 * scale * lengthFactor(arabicText.length, 150)));
-    const translationFontSize = Math.max(10, Math.min(28, 18 * scale * lengthFactor(translation.length, 200)));
-    const titleFontSize = 22 * scale;
-    const footerFontSize = 14 * scale;
+    const arabicFontSize = Math.max(12, Math.min(96, 36 * scale * lengthFactor(arabicText.length, 150) * fontScale));
+    const translationFontSize = Math.max(10, Math.min(48, 18 * scale * lengthFactor(translation.length, 200) * fontScale));
+    const uiScale = 1 + (fontScale - 1) * 0.4;
+    const titleFontSize = 22 * scale * uiScale;
+    const footerFontSize = 14 * scale * uiScale;
 
     return (
         <View style={[
@@ -80,7 +87,9 @@ export const NativeVerseImageDesign: React.FC<NativeVerseImageDesignProps> = ({
                             color: palette.text,
                             fontSize: arabicFontSize,
                             lineHeight: arabicFontSize * 1.6
-                        }
+                        },
+                        // Custom families carry their own weight; fontWeight would make Android fall back to the system font
+                        arabicFontFamily ? [styles.arabicTextCustomFont, { fontFamily: arabicFontFamily }] : null,
                     ]}>
                         {arabicText}
                     </Text>

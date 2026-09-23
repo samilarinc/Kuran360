@@ -20,6 +20,7 @@ import { getSurahsList } from '@/data/quranData';
 import { useTranslation } from 'react-i18next';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
+import { getSpacedArabicText } from '@/utils/arabicText';
 import { createStyles } from './index.styles';
 import type { CommonStyles } from '@/theme/common.styles';
 
@@ -53,16 +54,8 @@ const InlineArabicWithHover: React.FC<{
     if (w.arabic) map.set(w.arabic, w.translation);
   });
 
-  // Try to reconstruct spaced text from word translations, fallback to original
-  let displayText = verse.arabicText;
-  const words = verse.wordTranslations.map(w => w.arabic).filter(Boolean);
-
-  // If we have word translations, try to create a spaced version
-  if (words.length > 0) {
-    displayText = words.join(' ');
-  }
-
-  const tokens = displayText.split(/\s+/).filter(Boolean);
+  // Source text has no spaces; words missing from the word list stay in (without a hover card)
+  const tokens = getSpacedArabicText(verse).split(/\s+/).filter(Boolean);
 
   return (
     <View style={styles.inlineArabicRow}>
@@ -240,7 +233,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
     const translation = verse.allTranslations?.[settings.favoriteTranslation] || verse.translation || '';
 
     return {
-      arabicText: verse.arabicText,
+      arabicText: getSpacedArabicText(verse),
       translation: translation,
       surahName: surahName,
       verseNumber: verse.number,

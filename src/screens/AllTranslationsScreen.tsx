@@ -11,6 +11,7 @@ import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext
 import { useSettings } from '@/contexts/SettingsContext';
 import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
 import { Verse as VerseType, VerseShareData } from '@/types';
+import { getSpacedArabicText } from '@/utils/arabicText';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
 
@@ -52,7 +53,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
         const translation = verse.allTranslations?.[selectedTranslation] || verse.translation || '';
 
         return {
-            arabicText: verse.arabicText,
+            arabicText: getSpacedArabicText(verse),
             translation: translation,
             surahName: surahName,
             verseNumber: verse.number,

@@ -20,10 +20,11 @@ import { ImageSizePicker } from '../ImageSizePicker';
 declare const window: any;
 declare const navigator: any;
 declare const ClipboardItem: any;
+import { useTranslation } from 'react-i18next';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { VerseShareData, ImageSize, IconSpec } from '@/types';
 import { ShareService } from '@/utils/shareUtils';
-import { IMAGE_SIZES } from '@/utils/imageSizes';
+import { getDefaultImageSize } from '@/utils/imageSizes';
 import { useSettings } from '@/contexts/SettingsContext';
 import { getVerseLabel } from '@/utils/verseRange';
 import { ARABIC_FONT_OPTIONS, DEFAULT_IMAGE_FONT_ID, getFontOption, getArabicFontFamily } from '@/constants/fonts';
@@ -34,6 +35,9 @@ interface ImagePreviewModalProps {
     onClose: () => void;
     imageUrl: string;
     verseData: VerseShareData;
+    /** Theme and size the incoming image was generated with, so the controls start in sync. */
+    initialThemeMode?: 'light' | 'dark';
+    initialSize?: ImageSize;
 }
 
 export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
@@ -41,20 +45,31 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     onClose,
     imageUrl,
     verseData,
+    initialThemeMode = 'light',
+    initialSize,
 }) => {
+    const { t } = useTranslation();
     const { settings } = useSettings();
     const [selectedFontId, setSelectedFontId] = React.useState(settings.imageArabicFont ?? DEFAULT_IMAGE_FONT_ID);
     const [fontScale, setFontScale] = React.useState(1.0);
     const { theme, common } = useTheme();
     const styles = useThemedStyles(createStyles);
     const [currentImage, setCurrentImage] = React.useState(imageUrl);
-    const [mode, setMode] = React.useState<'light' | 'dark'>('light');
-    const [selectedSize, setSelectedSize] = React.useState<ImageSize>(IMAGE_SIZES[6]); // Default to classic
+    const [mode, setMode] = React.useState<'light' | 'dark'>(initialThemeMode);
+    const [selectedSize, setSelectedSize] = React.useState<ImageSize>(initialSize ?? getDefaultImageSize());
     const [isGenerating, setIsGenerating] = React.useState(false);
     const viewShotRef = React.useRef<any>(null);
+    const selectedFont = getFontOption(selectedFontId);
 
+    // A new image from ShareModal: reset controls to the options it was generated with
     React.useEffect(() => {
         setCurrentImage(imageUrl);
+        if (!imageUrl) return;
+        setMode(initialThemeMode);
+        if (initialSize) setSelectedSize(initialSize);
+        setSelectedFontId(settings.imageArabicFont ?? DEFAULT_IMAGE_FONT_ID);
+        setFontScale(1.0);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [imageUrl]);
 
     const regenerateImage = async (themeMode: 'light' | 'dark', size: ImageSize, fontId?: string, scale?: number) => {
@@ -112,7 +127,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
     const handleDownload = () => {
         if (Platform.OS === 'web') {
-            ShareService.downloadImageAsBlob(imageUrl, verseData);
+            ShareService.downloadImageAsBlob(currentImage, verseData);
         } else {
             Alert.alert('Bilgi', 'Resmi kaydetmek için paylaş seçeneklerini kullanabilirsiniz.');
         }
@@ -121,7 +136,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     const handleCopy = async () => {
         try {
             if (Platform.OS === 'web' && navigator.clipboard && navigator.clipboard.write) {
-                const response = await fetch(imageUrl);
+                const response = await fetch(currentImage);
                 const blob = await response.blob();
                 await navigator.clipboard.write([
                     new ClipboardItem({
@@ -140,7 +155,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
     const handleOpenInNewTab = () => {
         if (Platform.OS === 'web' && typeof window !== 'undefined') {
-            window.open(imageUrl, '_blank');
+            window.open(currentImage, '_blank');
         }
     };
 
@@ -151,7 +166,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
             if (platformId === 'generic') {
                 await ShareService.shareVerse(verseData);
             } else {
-                ShareService.shareToSocialPlatform(platformId, imageUrl, url);
+                ShareService.shareToSocialPlatform(platformId, currentImage, url);
             }
         } catch (error) {
             console.error('Paylaşım hatası:', error);
@@ -234,6 +249,9 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                         })}
                                     </View>
                                 </ScrollView>
+                                {Platform.OS !== 'web' && selectedFont.hasQuranMarks === false && (
+                                    <Text style={[common.smallText, common.mtSm]}>{t('share.fontNoQuranMarks')}</Text>
+                                )}
                             </View>
 
                             {/* Font Scale */}
@@ -428,6 +446,8 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                             verseData={verseData}
                             themeMode={mode}
                             size={selectedSize}
+                            arabicFontFamily={getArabicFontFamily(selectedFont)}
+                            fontScale={fontScale}
                         />
                     </ViewShot>
                 </View>
