@@ -24,6 +24,7 @@
     "@expo-google-fonts/reem-kufi": "^0.4.2",
     "@expo-google-fonts/scheherazade-new": "^0.4.3",
     "@expo/metro-runtime": "~6.1.2",
+    "@mediabunny/aac-encoder": "^1.59.0",
     "@msarinc/i18n-common": "file:msarinc-common/packages/i18n",
     "@msarinc/theme-core": "file:msarinc-common/packages/core",
     "@msarinc/ui": "file:msarinc-common/packages/ui",

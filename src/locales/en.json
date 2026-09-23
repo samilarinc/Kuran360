@@ -627,7 +627,8 @@
           "On phones, verse images now use your selected font and text size.",
           "On web, you can turn a verse into a video (MP4) with your selected reciter's recitation, preview it, then download or share it; verses flow without gaps in the video. \"Video with Recitation\" is on both the share screen and the image preview.",
           "Verse transitions are now seamless during continuous listening (autoplay, memorization, verse repeat, next surah); the next verse is loaded ahead and starts right on time.",
-          "Downloaded verse image and video file names no longer lose Turkish letters (e.g. \"Insirah_Verse_5-6.mp4\")."
+          "Downloaded verse image and video file names no longer lose Turkish letters (e.g. \"Insirah_Verse_5-6.mp4\").",
+          "Videos with recitation are now always made with the audio format X, WhatsApp and Instagram accept (AAC), in every browser; fixes the \"incompatible audio codec\" error."
         ]
       },
       {

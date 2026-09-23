@@ -5,7 +5,7 @@ import {
     Mp4OutputFormat,
     Output,
     QUALITY_HIGH,
-    getFirstEncodableAudioCodec,
+    canEncodeAudio,
     getFirstEncodableVideoCodec,
 } from 'mediabunny';
 import { ImageSize, VerseShareData } from '@/types';
@@ -27,6 +27,23 @@ const SAMPLE_RATE = 48000;
 /** Video encoding runs in the browser (WebCodecs), so check support up front. */
 export const isVideoGenerationSupported = (): boolean =>
     typeof (globalThis as any).VideoEncoder !== 'undefined' && typeof (globalThis as any).AudioEncoder !== 'undefined';
+
+const AUDIO_OPTIONS = { numberOfChannels: 2, sampleRate: SAMPLE_RATE };
+let aacEncoderRegistered = false;
+
+/**
+ * Social apps (X, WhatsApp, Instagram) only accept AAC audio. Browsers without a native
+ * AAC encoder (Chrome on Linux, Firefox) get a WASM one, loaded only when it's needed.
+ */
+const ensureAacEncoder = async (): Promise<boolean> => {
+    if (await canEncodeAudio('aac', AUDIO_OPTIONS)) return true;
+    if (!aacEncoderRegistered) {
+        const { registerAacEncoder } = await import('@mediabunny/aac-encoder');
+        registerAacEncoder();
+        aacEncoderRegistered = true;
+    }
+    return canEncodeAudio('aac', AUDIO_OPTIONS);
+};
 
 const loadImage = (url: string): Promise<any> => new Promise((resolve, reject) => {
     const img = new Image();
@@ -87,18 +104,19 @@ export const generateVerseVideo = async (
     canvas.height = size.height;
     canvas.getContext('2d').drawImage(image, 0, 0, size.width, size.height);
 
-    const [videoCodec, audioCodec] = await Promise.all([
+    // H.264 + AAC is what social apps accept; other codecs only as a last resort for video
+    const [videoCodec, hasAac] = await Promise.all([
         getFirstEncodableVideoCodec(['avc', 'vp9', 'av1'], { width: size.width, height: size.height }),
-        getFirstEncodableAudioCodec(['aac', 'opus'], { numberOfChannels: 2, sampleRate: SAMPLE_RATE }),
+        ensureAacEncoder(),
     ]);
-    if (!videoCodec || !audioCodec) throw new Error('Video encoding is not supported in this browser');
+    if (!videoCodec || !hasAac) throw new Error('Video encoding is not supported in this browser');
 
     const output = new Output({
         format: new Mp4OutputFormat({ fastStart: 'in-memory' }),
         target: new BufferTarget(),
     });
     const videoSource = new CanvasSource(canvas, { codec: videoCodec, bitrate: QUALITY_HIGH });
-    const audioSource = new AudioBufferSource({ codec: audioCodec, bitrate: QUALITY_HIGH });
+    const audioSource = new AudioBufferSource({ codec: 'aac', bitrate: QUALITY_HIGH });
     output.addVideoTrack(videoSource, { frameRate: 1 / FRAME_SECONDS });
     output.addAudioTrack(audioSource);
 
