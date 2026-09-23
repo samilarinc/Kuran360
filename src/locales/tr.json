@@ -625,7 +625,8 @@
           "Resim önizlemesi, paylaş ekranında seçtiğiniz tema ve boyutla açılıyor.",
           "Telefonda ayet resmi artık seçtiğiniz yazı tipini ve yazı boyutunu kullanıyor.",
           "Web'de ayeti, seçili kârinin okumasıyla sesli videoya (MP4) dönüştürebilir, önizleyip indirebilir veya paylaşabilirsiniz; ayetler videoda kesintisiz okunuyor. \"Sesli Video\" hem paylaş ekranında hem resim önizlemesinde.",
-          "Ayetler art arda dinlenirken (otomatik oynatma, ezber, ayet tekrarı, sonraki sure) ayet geçişleri artık kesintisiz; sıradaki ayet önceden yükleniyor ve tam zamanında başlıyor."
+          "Ayetler art arda dinlenirken (otomatik oynatma, ezber, ayet tekrarı, sonraki sure) ayet geçişleri artık kesintisiz; sıradaki ayet önceden yükleniyor ve tam zamanında başlıyor.",
+          "İndirilen ayet resmi ve videosunun dosya adında Türkçe harfler artık kaybolmuyor (ör. \"Insirah_Verse_5-6.mp4\")."
         ]
       },
       {

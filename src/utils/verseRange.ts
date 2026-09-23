@@ -27,6 +27,21 @@ export const getVerseLabel = (data: VerseShareData, style: VerseNumberStyle = 'l
 };
 
 /**
+ * File name for a downloaded share image/video, e.g. "Insirah_Verse_5-6.mp4".
+ * Turkish letters are transliterated (İ→I, ş→s, ı→i …) instead of being dropped.
+ */
+export const getVerseFileName = (data: VerseShareData, extension: string): string => {
+    const surah = data.surahName
+        .replace(/ı/g, 'i')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // strips accents/dots: ş→s, ü→u, İ→I, â→a
+        .replace(/[^a-zA-Z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '');
+    const range = data.verseNumberEnd ? `${data.verseNumber}-${data.verseNumberEnd}` : `${data.verseNumber}`;
+    return `${surah || 'Surah'}_Verse_${range}.${extension}`;
+};
+
+/**
  * Merges verses `base.verseNumber..endVerse` of the same surah into one share payload.
  * Each verse is followed by its number (﴿n﴾ in Arabic, (n) before the translation).
  */

@@ -12,7 +12,7 @@ import { Sun, Moon, Share2 } from 'lucide-react-native';
 import { VerseShareData, ShareOptions, ImageGenerationOptions, IconSpec } from '@/types';
 import { VerseImageGenerator } from './verseImageGenerator';
 import { getDefaultImageSize } from './imageSizes';
-import { getVerseLabel } from './verseRange';
+import { getVerseFileName, getVerseLabel } from './verseRange';
 
 // Web globals
 declare const window: any;
@@ -470,7 +470,7 @@ export class ShareService {
         try {
             const link = document.createElement('a');
             const filename = verseData
-                ? `${verseData.surahName.replace(/[^a-zA-Z0-9]/g, '_')}_Verse_${verseData.verseNumber}${verseData.verseNumberEnd ? `-${verseData.verseNumberEnd}` : ''}.png`
+                ? getVerseFileName(verseData, 'png')
                 : `verse_${Date.now()}.png`;
 
             link.href = imageUrl;

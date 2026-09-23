@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useSettings } from '@/contexts/SettingsContext';
 import { VerseShareData, ImageSize } from '@/types';
-import { getVerseLabel } from '@/utils/verseRange';
+import { getVerseFileName, getVerseLabel } from '@/utils/verseRange';
 import { generateVerseVideo, isVideoGenerationSupported } from '@/utils/verseVideoGenerator';
 import { createStyles } from './index.styles';
 
@@ -42,7 +42,7 @@ export const VerseVideoActions: React.FC<VerseVideoActionsProps> = ({ verseData,
     if (Platform.OS !== 'web' || !isVideoGenerationSupported()) return null;
 
     const isBusy = progress !== null;
-    const fileName = `${verseData.surahName.replace(/[^a-zA-Z0-9]/g, '_')}_Verse_${verseData.verseNumber}${verseData.verseNumberEnd ? `-${verseData.verseNumberEnd}` : ''}.mp4`;
+    const fileName = getVerseFileName(verseData, 'mp4');
 
     const handleCreate = async () => {
         setHasError(false);
