@@ -6,7 +6,9 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "start": "expo start",
+    "dev": "expo start",
     "start:metro": "react-native start",
     "test": "jest",
     "web": "expo start --web"

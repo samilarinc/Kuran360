@@ -22,5 +22,5 @@
       "dom"
     ]
   },
-  "exclude": ["msarinc-common"]
+  "exclude": ["node_modules", "dist", "android", "msarinc-common"]
 }
