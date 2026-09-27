@@ -201,10 +201,14 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
     const queryClient = useQueryClient();
     const queryKey = ['settings', user?.uid ?? 'anon'];
 
-    const { data: settings = DEFAULT_SETTINGS } = useQuery({
+    const { data, isPending } = useQuery({
         queryKey,
         queryFn: () => fetchSettings(user?.uid),
+        // When auth resolves the key switches from 'anon' to the uid; keep showing the settings
+        // already loaded instead of falling back to defaults (light theme flash) until Firestore answers.
+        placeholderData: previous => previous,
     });
+    const settings = data ?? DEFAULT_SETTINGS;
 
     const mutation = useMutation({
         mutationFn: (updated: AppSettings) => persistSettings(updated, user?.uid),
@@ -223,6 +227,11 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
         availableTranslations: AVAILABLE_TRANSLATIONS,
         availableReciters: AVAILABLE_RECITERS,
     };
+
+    // Don't render the app with default settings (light theme) before the saved ones are read
+    if (isPending) {
+        return null;
+    }
 
     return (
         <SettingsContext.Provider value={contextValue}>

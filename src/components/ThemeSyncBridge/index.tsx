@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useTheme as useMsarincTheme } from '@msarinc/ui';
 import { useSettings } from '@/contexts/SettingsContext';
 
@@ -16,7 +16,8 @@ export const ThemeSyncBridge: React.FC = () => {
     const { theme: msarincTheme, setTheme: setMsarincTheme } = useMsarincTheme();
     const applyingRef = useRef<'toMsarinc' | 'toSettings' | null>(null);
 
-    useEffect(() => {
+    // Layout effect: push the saved theme into the library before the first paint (no light flash)
+    useLayoutEffect(() => {
         if (applyingRef.current === 'toSettings') {
             applyingRef.current = null;
             return;
