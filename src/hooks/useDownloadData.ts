@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import { isDataCached, loadAllVerses, ProgressCallback } from '@/data/quranData';
 
@@ -8,6 +9,7 @@ interface UseDownloadDataOptions {
 }
 
 export const useDownloadData = ({ isDataAvailable, navigation }: UseDownloadDataOptions) => {
+    const { t } = useTranslation();
     const [downloading, setDownloading] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState(0);
     const [downloadStatus, setDownloadStatus] = useState('');
@@ -40,7 +42,7 @@ export const useDownloadData = ({ isDataAvailable, navigation }: UseDownloadData
     const handleDownloadData = async () => {
         setDownloading(true);
         setDownloadProgress(0);
-        setDownloadStatus('İndirme başlatılıyor...');
+        setDownloadStatus(t('download.starting'));
 
         const progressCallback: ProgressCallback = (progress, status, downloaded, total) => {
             setDownloadProgress(progress);
@@ -53,7 +55,7 @@ export const useDownloadData = ({ isDataAvailable, navigation }: UseDownloadData
             await loadAllVerses(progressCallback);
             const isCached = await isDataCached();
             if (isCached) {
-                setDownloadStatus('Tamamlandı! Sayfa yenileniyor...');
+                setDownloadStatus(t('download.doneReloading'));
                 if (Platform.OS === 'web') {
                     setTimeout(() => {
                         const globalObj = globalThis as any;
@@ -69,7 +71,7 @@ export const useDownloadData = ({ isDataAvailable, navigation }: UseDownloadData
             }
         } catch (error) {
             console.error('Download failed:', error);
-            setDownloadStatus('İndirme başarısız. Tekrar deneyin.');
+            setDownloadStatus(t('download.failed'));
         } finally {
             setDownloading(false);
         }

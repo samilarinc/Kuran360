@@ -102,7 +102,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               setImagePreviewVisible(true);
             } catch (err) {
               console.error('Capture error:', err);
-              Alert.alert('Hata', 'Resim oluşturulamadı.');
+              Alert.alert(t('common.error'), t('share.imageCreateFailed'));
             }
           }, 150);
           return;
@@ -164,7 +164,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
             {/* Header */}
             <View style={common.modalHeader}>
               <Text style={common.modalHeaderTitle}>
-                Ayeti Paylaş
+                {t('share.title')}
               </Text>
               <TouchableOpacity onPress={onClose} style={common.modalCloseButton}>
                 <Text style={common.modalCloseButtonText}>
@@ -230,7 +230,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                 <View style={[common.row, common.gapXs, common.mbSm]}>
                   <Ruler size={16} color={theme.text} />
                   <Text style={common.textStrong}>
-                    Resim Boyutu Seçin
+                    {t('share.chooseImageSize')}
                   </Text>
                 </View>
                 <ImageSizePicker selected={selectedSize} onSelect={setSelectedSize} />

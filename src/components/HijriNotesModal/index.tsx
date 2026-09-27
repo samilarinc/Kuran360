@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, TextInput, Modal, ScrollView, StyleSheet } from 'react-native';
 import { FONT_SIZES, SPACING } from '@/theme';
 import { HijriPalette, HijriNoteEntry, FONT } from '@/utils/hijriCalendar';
@@ -32,6 +33,7 @@ export const HijriNotesModal: React.FC<HijriNotesModalProps> = ({
     notes, draft, draftFocused,
     onChangeDraft, onFocusDraft, onBlurDraft, onAddNote, onDeleteNote, onClose,
 }) => {
+    const { t } = useTranslation();
     const s = useMemo(() => createStyles(P), [P]);
 
     return (
@@ -61,7 +63,7 @@ export const HijriNotesModal: React.FC<HijriNotesModalProps> = ({
                     <View style={[s.newNoteBox, draftFocused && s.newNoteBoxFocused]}>
                         <TextInput
                             style={[s.textarea, { minHeight: draftFocused ? 120 : 44 }]}
-                            placeholder={lang === 'tr' ? 'Yeni not ekle…' : 'أضف ملاحظة جديدة…'}
+                            placeholder={lang === 'tr' ? t('hijriCalendar.addNotePlaceholder') : 'أضف ملاحظة جديدة…'}
                             placeholderTextColor={P.muted}
                             value={draft}
                             onChangeText={onChangeDraft}
@@ -72,9 +74,9 @@ export const HijriNotesModal: React.FC<HijriNotesModalProps> = ({
                         />
                         {(draftFocused || draft.length > 0) && (
                             <View style={s.newNoteFooter}>
-                                <Text style={s.savedHint}>{lang === 'tr' ? 'Cihaza kaydedilir' : 'يحفظ على الجهاز'}</Text>
+                                <Text style={s.savedHint}>{lang === 'tr' ? t('hijriCalendar.savedOnDevice') : 'يحفظ على الجهاز'}</Text>
                                 <TouchableOpacity style={s.addBtn} onPress={onAddNote}>
-                                    <Text style={s.addBtnTxt}>{lang === 'tr' ? '+ EKLE' : '+ أضف'}</Text>
+                                    <Text style={s.addBtnTxt}>{lang === 'tr' ? `+ ${t('hijriCalendar.add')}` : '+ أضف'}</Text>
                                 </TouchableOpacity>
                             </View>
                         )}
@@ -83,7 +85,7 @@ export const HijriNotesModal: React.FC<HijriNotesModalProps> = ({
                     {notes.length === 0 ? (
                         <View style={s.emptyNotes}>
                             <Text style={s.emptyNotesTxt}>
-                                {lang === 'tr' ? 'Henüz not yok' : 'لا توجد ملاحظات بعد'}
+                                {lang === 'tr' ? t('hijriCalendar.noNotes') : 'لا توجد ملاحظات بعد'}
                             </Text>
                         </View>
                     ) : (

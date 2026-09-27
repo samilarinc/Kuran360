@@ -1,97 +1,87 @@
 import { Square, Monitor, Image as ImageIcon } from 'lucide-react-native';
 import { ImageSize } from '@/types';
+import i18n from '@/i18n';
+
+/** Name and description are read through i18n each time, so they follow the current language. */
+const withLabels = (size: Omit<ImageSize, 'displayName' | 'description'>): ImageSize => ({
+    ...size,
+    get displayName() { return i18n.t(`imageSizes.${size.id}.name`); },
+    get description() { return i18n.t(`imageSizes.${size.id}.description`); },
+});
 
 export const IMAGE_SIZES: ImageSize[] = [
-    {
+    withLabels({
         id: 'square_1080',
         name: 'square_1080',
-        displayName: 'Kare (1080x1080)',
         width: 1080,
         height: 1080,
         aspectRatio: '1:1',
-        description: 'Instagram Post, Facebook Post',
         icon: { kind: 'lucide', Icon: Square }
-    },
-    {
+    }),
+    withLabels({
         id: 'instagram_story',
         name: 'instagram_story',
-        displayName: 'Story (1080x1920)',
         width: 1080,
         height: 1920,
         aspectRatio: '9:16',
-        description: 'Instagram Story, WhatsApp Status',
         icon: { kind: 'brand', name: 'instagram' }
-    },
-    {
+    }),
+    withLabels({
         id: 'twitter_post',
         name: 'twitter_post',
-        displayName: 'Twitter (1200x675)',
         width: 1200,
         height: 675,
         aspectRatio: '16:9',
-        description: 'Twitter/X Post, LinkedIn',
         icon: { kind: 'brand', name: 'x-twitter' }
-    },
-    {
+    }),
+    withLabels({
         id: 'twitter_banner',
         name: 'twitter_banner',
-        displayName: 'Twitter Banner (1500x500)',
         width: 1500,
         height: 500,
         aspectRatio: '3:1',
-        description: 'Twitter/X Kapak, Geniş Banner',
         icon: { kind: 'brand', name: 'x-twitter' }
-    },
-    {
+    }),
+    withLabels({
         id: 'facebook_cover',
         name: 'facebook_cover',
-        displayName: 'Facebook Kapak (1200x630)',
         width: 1200,
         height: 630,
         aspectRatio: '1.91:1',
-        description: 'Facebook Cover, Paylaşım',
         icon: { kind: 'brand', name: 'facebook' }
-    },
-    {
+    }),
+    withLabels({
         id: 'wide_hd',
         name: 'wide_hd',
-        displayName: 'Geniş HD (1920x1080)',
         width: 1920,
         height: 1080,
         aspectRatio: '16:9',
-        description: 'Masaüstü Duvar Kağıdı, Sunum',
         icon: { kind: 'lucide', Icon: Monitor }
-    },
-    {
+    }),
+    withLabels({
         id: 'standard_hd',
         name: 'standard_hd',
-        displayName: 'Standart HD (1280x720)',
         width: 1280,
         height: 720,
         aspectRatio: '16:9',
-        description: 'YouTube Thumbnail, Genel Kullanım',
         icon: { kind: 'brand', name: 'youtube' }
-    },
-    {
+    }),
+    withLabels({
         id: 'classic',
         name: 'classic',
-        displayName: 'Klasik (800x600)',
         width: 800,
         height: 600,
         aspectRatio: '4:3',
-        description: 'Geleneksel Format, E-posta',
         icon: { kind: 'lucide', Icon: ImageIcon }
-    },
-    {
+    }),
+    withLabels({
         id: 'pinterest',
         name: 'pinterest',
-        displayName: 'Pinterest (735x1102)',
         width: 735,
         height: 1102,
         aspectRatio: '2:3',
-        description: 'Pinterest Pin, Dikey Paylaşım',
         icon: { kind: 'brand', name: 'pinterest' }
-    }
+    })
 ];
 
 export const getImageSizeById = (id: string): ImageSize => {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
@@ -10,6 +11,7 @@ export const ReciterSelector: React.FC = () => {
     const { common } = useTheme();
     const styles = useThemedStyles(createStyles);
     const { playPreviewWithReciter } = useGlobalAudio();
+    const { t } = useTranslation();
 
     const playPreview = async (reciterId: string) => {
         try {
@@ -37,9 +39,9 @@ export const ReciterSelector: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={common.title}>Okuyucu Seçimi</Text>
+            <Text style={common.title}>{t('reciterSelector.title')}</Text>
             <Text style={[common.smallText, common.mbMd]}>
-                Ses dosyalarını okuyacak okuyucuyu seçin
+                {t('reciterSelector.description')}
             </Text>
             <View style={common.gapSm}>
                 {availableReciters.map((reciter) => (

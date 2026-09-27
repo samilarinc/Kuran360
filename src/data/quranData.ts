@@ -1,4 +1,5 @@
 import { QuranData, Surah, Verse } from '@/types';
+import i18n from '@/i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import logger from '@/utils/logger';
@@ -369,7 +370,7 @@ export const hasAnyData = async (): Promise<boolean> => {
 // Load all verses - now migrates to per-verse storage
 export const loadAllVerses = async (progressCallback?: ProgressCallback): Promise<void> => {
   try {
-    progressCallback?.(5, 'Veri formatı kontrol ediliyor...');
+    progressCallback?.(5, i18n.t('download.checkingFormat'));
 
     if (Platform.OS === 'web') {
       // Check if already migrated to new format
@@ -379,33 +380,33 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
       const currentStoredVersion = await idbHelper.getMeta(META_VERSION_KEY);
       if (hasNewFormat && currentStoredVersion === CURRENT_VERSION) {
         logger.debug('✅ Data already in new per-verse format');
-        progressCallback?.(100, 'Veri zaten yüklü');
+        progressCallback?.(100, i18n.t('download.alreadyLoaded'));
         return;
       }
 
       // Check for legacy data to migrate
-      progressCallback?.(10, 'Eski veri kontrol ediliyor...');
+      progressCallback?.(10, i18n.t('download.checkingLegacy'));
       const legacyData = await idbHelper.getLegacyData();
 
       if (legacyData && legacyData.length > 0) {
         logger.debug('🔄 Migrating legacy data to new format...');
-        progressCallback?.(15, 'Veri yeni formata taşınıyor...');
+        progressCallback?.(15, i18n.t('download.migrating'));
 
         await idbHelper.setVersesBatch(legacyData, (progress) => {
-          progressCallback?.(15 + progress * 0.7, `Ayetler kaydediliyor... %${Math.round(progress)}`);
+          progressCallback?.(15 + progress * 0.7, i18n.t('download.savingVerses', { percent: Math.round(progress) }));
         });
 
         await idbHelper.setMeta(META_VERSION_KEY, CURRENT_VERSION);
         await idbHelper.clearLegacyData();
 
         logger.debug('✅ Migration complete');
-        progressCallback?.(100, 'Veri taşıma tamamlandı!');
+        progressCallback?.(100, i18n.t('download.migrationDone'));
         return;
       }
 
       // No data - need to download
       // First, clear any existing databases
-      progressCallback?.(0, 'Eski veriler temizleniyor...');
+      progressCallback?.(0, i18n.t('download.clearingOld'));
       logger.debug('🧹 Clearing any existing databases...');
 
       try {
@@ -442,7 +443,7 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
         logger.warn('⚠️ Error clearing old databases:', clearError);
       }
 
-      progressCallback?.(5, 'Sunucudan indiriliyor...');
+      progressCallback?.(5, i18n.t('download.fromServer'));
       logger.debug('📡 Loading from server...');
 
       // Add a timestamp to bypass cache
@@ -470,16 +471,16 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
 
           if (totalBytes > 0) {
             const downloadProgress = (downloadedBytes / totalBytes) * 80; // 0-80% for download
-            progressCallback?.(downloadProgress, 'İndiriliyor...', downloadedBytes, totalBytes);
+            progressCallback?.(downloadProgress, i18n.t('download.downloading'), downloadedBytes, totalBytes);
           } else {
             // Fallback progress if size unknown
-            progressCallback?.(40, 'İndiriliyor...', downloadedBytes);
+            progressCallback?.(40, i18n.t('download.downloading'), downloadedBytes);
           }
         }
       }
 
       // Combine chunks and parse
-      progressCallback?.(85, 'Veri işleniyor...');
+      progressCallback?.(85, i18n.t('download.processing'));
 
       // Combine all chunks into a single Uint8Array
       const totalLength = chunks.reduce((acc, chunk) => acc + chunk.length, 0);
@@ -498,16 +499,16 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
 
       logger.debug(`📥 Downloaded ${versesArray.length} verses`);
 
-      progressCallback?.(90, 'Veritabanına kaydediliyor...');
+      progressCallback?.(90, i18n.t('download.savingToDb'));
 
       await idbHelper.setVersesBatch(versesArray, (progress) => {
-        progressCallback?.(90 + progress * 0.09, 'Kaydediliyor...', downloadedBytes, totalBytes);
+        progressCallback?.(90 + progress * 0.09, i18n.t('download.saving'), downloadedBytes, totalBytes);
       });
 
       await idbHelper.setMeta(META_VERSION_KEY, CURRENT_VERSION);
 
       logger.debug('✅ Data saved in new per-verse format');
-      progressCallback?.(100, 'Başarıyla tamamlandı!');
+      progressCallback?.(100, i18n.t('download.success'));
 
     } else {
       // Mobile platform - use SQLite
@@ -517,13 +518,13 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
       const hasData = await sqliteHelper.hasData();
 
       if (version === CURRENT_VERSION && hasData) {
-        progressCallback?.(100, 'Veri zaten yüklü');
+        progressCallback?.(100, i18n.t('download.alreadyLoaded'));
         logger.debug('✅ Data already in SQLite database');
         return;
       }
 
       logger.debug('📡 Downloading data from server...');
-      progressCallback?.(10, 'Sunucudan indiriliyor...');
+      progressCallback?.(10, i18n.t('download.fromServer'));
 
       // Download data from server
       const response = await fetch('https://kuran360.com/allVerses.json');
@@ -531,16 +532,16 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      progressCallback?.(50, 'Veri işleniyor...');
+      progressCallback?.(50, i18n.t('download.processing'));
       const data = await response.json();
       const versesArray: VerseData[] = Array.isArray(data) ? data : Object.values(data);
 
       logger.debug(`📥 Downloaded ${versesArray.length} verses, storing in SQLite...`);
-      progressCallback?.(60, 'SQLite veritabanına kaydediliyor...');
+      progressCallback?.(60, i18n.t('download.savingToDb'));
 
       // Store in SQLite database
       await sqliteHelper.setVersesBatch(versesArray, (progress) => {
-        progressCallback?.(60 + progress * 0.35, `Kaydediliyor... %${Math.round(progress)}`);
+        progressCallback?.(60 + progress * 0.35, i18n.t('download.savingPercent', { percent: Math.round(progress) }));
       });
 
       // Mark as complete
@@ -555,11 +556,11 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
       }
 
       logger.debug('✅ Data stored in SQLite successfully');
-      progressCallback?.(100, 'Tamamlandı!');
+      progressCallback?.(100, i18n.t('download.done'));
     }
   } catch (error) {
     console.error('❌ Error loading verses:', error);
-    progressCallback?.(0, 'Hata oluştu: ' + (error as Error).message);
+    progressCallback?.(0, i18n.t('download.error', { message: (error as Error).message }));
     throw error;
   }
 };

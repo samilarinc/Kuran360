@@ -35,7 +35,7 @@ const SurahItem: React.FC<SurahItemProps> = ({ surah, onPress, theme }) => {
       title={getSurahName(t, surah)}
       titleStyle={common.title}
       subtitle={surah.arabicName}
-      caption={`${surah.verseCount} ayet • ${surah.revelationPlace}`}
+      caption={`${t('surahInfo.verseCount', { count: surah.verseCount })} • ${t(`surahInfo.${surah.revelationPlace}`)}`}
       chevronStyle={styles.arrowText}
       onPress={() => onPress(surah)}
     />

@@ -10,6 +10,7 @@ try {
 }
 import { Sun, Moon, Share2 } from 'lucide-react-native';
 import { VerseShareData, ShareOptions, ImageGenerationOptions, IconSpec } from '@/types';
+import i18n from '@/i18n';
 import { VerseImageGenerator } from './verseImageGenerator';
 import { getDefaultImageSize } from './imageSizes';
 import { getVerseFileName, getVerseLabel } from './verseRange';
@@ -185,7 +186,7 @@ export class ShareService {
             const imageUrl = await VerseImageGenerator.generateVerseImage(verseData, imageOptions);
 
             if (!imageUrl) {
-                Alert.alert('Hata', 'Resim oluşturulamadı. Lütfen tekrar deneyin.');
+                Alert.alert(i18n.t('common.error'), i18n.t('share.imageCreateFailedRetry'));
                 return;
             }
 
@@ -211,12 +212,12 @@ export class ShareService {
                 };
                 await Share.open(shareOptions);
             } else {
-                Alert.alert('Hata', 'Paylaşım desteklenmiyor.');
+                Alert.alert(i18n.t('common.error'), i18n.t('share.notSupported'));
             }
         } catch (error: any) {
             if (error?.message !== 'User did not share') {
                 console.error('Resimli paylaşım hatası:', error);
-                Alert.alert('Hata', 'Paylaşım sırasında bir hata oluştu.');
+                Alert.alert(i18n.t('common.error'), i18n.t('share.failed'));
             }
         }
     }
@@ -278,8 +279,8 @@ export class ShareService {
      */
     static showPlatformOptions(imageUrl: string, url: string, verseData?: VerseShareData): void {
         Alert.alert(
-            'Paylaşım Platformu Seçin',
-            'Resmi hangi platformda paylaşmak istiyorsunuz?',
+            i18n.t('share.choosePlatform'),
+            i18n.t('share.choosePlatformMessage'),
             [
                 {
                     text: 'Twitter',
@@ -298,11 +299,11 @@ export class ShareService {
                     onPress: () => this.shareToSocialPlatform('instagram', imageUrl, url)
                 },
                 {
-                    text: 'İndir',
+                    text: i18n.t('common.download'),
                     onPress: () => this.downloadImageAsBlob(imageUrl, verseData)
                 },
                 {
-                    text: 'İptal',
+                    text: i18n.t('common.cancel'),
                     style: 'cancel'
                 }
             ]
@@ -330,10 +331,10 @@ export class ShareService {
                     // Instagram web'de direct link paylaşımı desteklemiyor
                     Alert.alert(
                         'Instagram',
-                        'Instagram için resmi indirip manuel olarak paylaşmanız gerekiyor.',
+                        i18n.t('share.instagramHint'),
                         [
-                            { text: 'İndir', onPress: () => this.downloadImageAsBlob(imageUrl) },
-                            { text: 'İptal', style: 'cancel' }
+                            { text: i18n.t('common.download'), onPress: () => this.downloadImageAsBlob(imageUrl) },
+                            { text: i18n.t('common.cancel'), style: 'cancel' }
                         ]
                     );
                     return;
@@ -343,7 +344,7 @@ export class ShareService {
             }
         } catch (error) {
             console.error(`${platform} paylaşım hatası:`, error);
-            Alert.alert('Hata', 'Paylaşım sırasında bir hata oluştu.');
+            Alert.alert(i18n.t('common.error'), i18n.t('share.failed'));
         }
     }
 
@@ -392,7 +393,7 @@ export class ShareService {
             }
         } catch (error) {
             console.error('Twitter paylaşım hatası:', error);
-            Alert.alert('Hata', 'Twitter paylaşımı başarısız oldu.');
+            Alert.alert(i18n.t('common.error'), i18n.t('share.platformFailed', { platform: 'Twitter' }));
         }
     }
 
@@ -426,7 +427,7 @@ export class ShareService {
             }
         } catch (error) {
             console.error('Facebook paylaşım hatası:', error);
-            Alert.alert('Hata', 'Facebook paylaşımı başarısız oldu.');
+            Alert.alert(i18n.t('common.error'), i18n.t('share.platformFailed', { platform: 'Facebook' }));
         }
     }
 
@@ -459,7 +460,7 @@ export class ShareService {
             }
         } catch (error) {
             console.error('WhatsApp paylaşım hatası:', error);
-            Alert.alert('Hata', 'WhatsApp paylaşımı başarısız oldu.');
+            Alert.alert(i18n.t('common.error'), i18n.t('share.platformFailed', { platform: 'WhatsApp' }));
         }
     }
 
@@ -485,11 +486,11 @@ export class ShareService {
                 URL.revokeObjectURL(imageUrl);
             }, 1000);
 
-            Alert.alert('Başarılı', `Resim "${filename}" olarak indirildi.`);
+            Alert.alert(i18n.t('common.success'), i18n.t('share.downloadedAs', { filename }));
 
         } catch (error) {
             console.error('Resim indirme hatası:', error);
-            Alert.alert('Hata', 'Resim indirilemedi.');
+            Alert.alert(i18n.t('common.error'), 'Resim indirilemedi.');
         }
     }
 
@@ -524,7 +525,7 @@ export class ShareService {
         } catch (error: any) {
             if (error?.message !== 'User did not share') {
                 console.error('Paylaşım hatası:', error);
-                Alert.alert('Hata', 'Paylaşım sırasında bir hata oluştu.');
+                Alert.alert(i18n.t('common.error'), i18n.t('share.failed'));
             }
         }
     }
@@ -547,15 +548,15 @@ export class ShareService {
             // Clipboard fallback
             if (typeof navigator !== 'undefined' && navigator.clipboard) {
                 await navigator.clipboard.writeText(`${message}\n\n${url}`);
-                Alert.alert('Kopyalandı', 'Ayet metni panoya kopyalandı.');
+                Alert.alert(i18n.t('common.copied'), i18n.t('share.verseTextCopied'));
                 return;
             }
 
             // En son fallback
-            Alert.alert('Paylaşım Metni', `${message}\n\n${url}`);
+            Alert.alert(i18n.t('share.shareText'), `${message}\n\n${url}`);
         } catch (error) {
             console.log('Web paylaşım hatası:', error);
-            Alert.alert('Paylaşım Metni', `${message}\n\n${url}`);
+            Alert.alert(i18n.t('share.shareText'), `${message}\n\n${url}`);
         }
     }
 
@@ -594,7 +595,7 @@ export class ShareService {
 
             default:
                 // Genel paylaşım için fallback
-                Alert.alert('Paylaşım Metni', `${message}\n\n${url}`);
+                Alert.alert(i18n.t('share.shareText'), `${message}\n\n${url}`);
                 break;
         }
     }
@@ -610,17 +611,17 @@ export class ShareService {
                 // React Native Web'de window.open çalışmazsa
                 console.log('URL açılacak:', url);
                 Alert.alert(
-                    'Paylaşım Linki',
-                    'Paylaşmak için aşağıdaki linki açın',
+                    i18n.t('share.shareLink'),
+                    i18n.t('share.openLinkToShare'),
                     [
-                        { text: 'İptal', style: 'cancel' },
+                        { text: i18n.t('common.cancel'), style: 'cancel' },
                         {
-                            text: 'Kopyala',
+                            text: i18n.t('common.copy'),
                             onPress: async () => {
                                 try {
                                     if (typeof navigator !== 'undefined' && navigator.clipboard) {
                                         await navigator.clipboard.writeText(url);
-                                        Alert.alert('Başarılı', 'Link kopyalandı!');
+                                        Alert.alert(i18n.t('common.success'), i18n.t('share.linkCopied'));
                                     }
                                 } catch (e) {
                                     console.log('Clipboard hatası:', e);
@@ -632,7 +633,7 @@ export class ShareService {
             }
         } catch (error) {
             console.error('URL açma hatası:', error);
-            Alert.alert('Paylaşım Linki', url);
+            Alert.alert(i18n.t('share.shareLink'), url);
         }
     }
 
@@ -641,14 +642,14 @@ export class ShareService {
      */
     static fallbackWebShare(message: string, url: string): void {
         const textToCopy = `${message}\n\n${url}`;
-        Alert.alert('Paylaşım Metni', textToCopy);
+        Alert.alert(i18n.t('share.shareText'), textToCopy);
     }
 
     /**
      * Manuel kopyalama fallback'i
      */
     static manualCopyFallback(text: string): void {
-        Alert.alert('Paylaşım Metni', text);
+        Alert.alert(i18n.t('share.shareText'), text);
     }
 
     /**
@@ -709,18 +710,18 @@ export class ShareService {
                 // Uygulama yüklü değilse genel paylaşıma yönlendir
                 if (error?.message?.includes('not installed') || error?.message?.includes('not available')) {
                     Alert.alert(
-                        'Uygulama Bulunamadı',
-                        `${this.getPlatformName(platform)} uygulaması bulunamadı. Genel paylaşım seçeneklerini kullanmak ister misiniz?`,
+                        i18n.t('share.appNotFound'),
+                        i18n.t('share.appNotFoundMessage', { platform: this.getPlatformName(platform) }),
                         [
-                            { text: 'Hayır', style: 'cancel' },
+                            { text: i18n.t('common.no'), style: 'cancel' },
                             {
-                                text: 'Evet',
+                                text: i18n.t('common.yes'),
                                 onPress: () => this.shareVerse(verseData)
                             }
                         ]
                     );
                 } else {
-                    Alert.alert('Hata', 'Paylaşım sırasında bir hata oluştu.');
+                    Alert.alert(i18n.t('common.error'), i18n.t('share.failed'));
                 }
             }
         }

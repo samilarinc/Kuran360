@@ -112,7 +112,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                         setCurrentImage(uri);
                     } catch (error) {
                         console.error('Native capture error:', error);
-                        Alert.alert('Hata', 'Görüntü oluşturulamadı.');
+                        Alert.alert(t('common.error'), t('share.imageCreateFailed'));
                     }
                     setIsGenerating(false);
                 }, 150);
@@ -120,7 +120,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
             }
         } catch (error) {
             console.error('Resim yeniden oluşturma hatası:', error);
-            Alert.alert('Hata', 'Resim oluşturulamadı. Lütfen tekrar deneyin.');
+            Alert.alert(t('common.error'), t('share.imageCreateFailedRetry'));
         }
         setIsGenerating(false);
     };
@@ -129,7 +129,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
         if (Platform.OS === 'web') {
             ShareService.downloadImageAsBlob(currentImage, verseData);
         } else {
-            Alert.alert('Bilgi', 'Resmi kaydetmek için paylaş seçeneklerini kullanabilirsiniz.');
+            Alert.alert(t('common.info'), t('share.saveHint'));
         }
     };
 
@@ -143,13 +143,13 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                         [blob.type]: blob
                     })
                 ]);
-                Alert.alert('Başarılı', 'Resim panoya kopyalandı!');
+                Alert.alert(t('common.success'), t('share.imageCopied'));
             } else {
-                Alert.alert('Bilgi', 'Bu özellik sadece modern tarayıcılarda çalışır.');
+                Alert.alert(t('common.info'), t('share.modernBrowsersOnly'));
             }
         } catch (error) {
             console.error('Kopyalama hatası:', error);
-            Alert.alert('Hata', 'Resim kopyalanamadı.');
+            Alert.alert(t('common.error'), t('share.imageCopyFailed'));
         }
     };
 
@@ -178,7 +178,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
         { id: 'twitter', name: 'Twitter/X', icon: { kind: 'brand', name: 'x-twitter' } },
         { id: 'telegram', name: 'Telegram', icon: { kind: 'brand', name: 'telegram' } },
         { id: 'facebook', name: 'Facebook', icon: { kind: 'brand', name: 'facebook' } },
-        { id: 'generic', name: 'Diğer Uygulamalar', icon: { kind: 'lucide', Icon: Share2 } },
+        { id: 'generic', name: t('share.otherApps'), icon: { kind: 'lucide', Icon: Share2 } },
     ];
 
     return (
@@ -195,7 +195,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                         {/* Header */}
                         <View style={common.modalHeader}>
                             <Text style={common.modalHeaderTitle}>
-                                Ayet Resmi
+                                {t('share.previewTitle')}
                             </Text>
                             <TouchableOpacity onPress={onClose} style={common.modalCloseButton}>
                                 <Text style={common.modalCloseButtonText}>
@@ -217,7 +217,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
                             {/* Font Selection */}
                             <View style={styles.controlSection}>
-                                <Text style={[common.textStrong, common.mbSm]}>Yazı Tipi</Text>
+                                <Text style={[common.textStrong, common.mbSm]}>{t('share.font')}</Text>
                                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sizeScrollView}>
                                     <View style={styles.sizeRow}>
                                         {ARABIC_FONT_OPTIONS.map(font => {
@@ -279,7 +279,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                             regenerateImage(mode, selectedSize, selectedFontId, 1.0);
                                         }}
                                     >
-                                        <Text style={common.actionButtonText}>Sıfırla</Text>
+                                        <Text style={common.actionButtonText}>{t('share.reset')}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         style={[styles.controlButton, common.flex1]}
@@ -298,7 +298,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                             {/* Theme Selection */}
                             <View style={styles.controlSection}>
                                 <Text style={[common.textStrong, common.mbSm]}>
-                                    Tema Seçimi
+                                    {t('share.themeSelection')}
                                 </Text>
                                 <View style={[common.rowGap, common.center]}>
                                     <TouchableOpacity
@@ -343,7 +343,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                             {/* Size Selection */}
                             <View style={styles.controlSection}>
                                 <Text style={[common.textStrong, common.mbSm]}>
-                                    Boyut Seçimi
+                                    {t('share.sizeSelection')}
                                 </Text>
                                 <ImageSizePicker selected={selectedSize} onSelect={(size) => regenerateImage(mode, size)} disabled={isGenerating} showDimensions />
                             </View>
@@ -352,7 +352,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                 <View style={[styles.loadingContainer, common.row, common.center]}>
                                     <RefreshCw size={14} color={theme.textSecondary} />
                                     <Text style={styles.loadingText}>
-                                        Resim oluşturuluyor...
+                                        {t('share.generating')}
                                     </Text>
                                 </View>
                             )}
@@ -360,7 +360,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                             {/* Image Actions */}
                             <View style={styles.controlSection}>
                                 <Text style={[common.textStrong, common.mbSm]}>
-                                    Resim İşlemleri
+                                    {t('share.imageActions')}
                                 </Text>
 
                                 <View style={common.actionButtonRow}>
@@ -371,7 +371,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                         <View>
                                             <Download size={16} color={theme.text} />
                                         </View>
-                                        <Text style={common.actionButtonText}>İndir</Text>
+                                        <Text style={common.actionButtonText}>{t('common.download')}</Text>
                                     </TouchableOpacity>
 
                                     {Platform.OS === 'web' && (
@@ -383,7 +383,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                                 <View>
                                                     <Copy size={16} color={theme.text} />
                                                 </View>
-                                                <Text style={common.actionButtonText}>Kopyala</Text>
+                                                <Text style={common.actionButtonText}>{t('common.copy')}</Text>
                                             </TouchableOpacity>
 
                                             <TouchableOpacity
@@ -393,7 +393,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                                                 <View>
                                                     <ExternalLink size={16} color={theme.text} />
                                                 </View>
-                                                <Text style={common.actionButtonText}>Yeni Sekmede Aç</Text>
+                                                <Text style={common.actionButtonText}>{t('share.openInNewTab')}</Text>
                                             </TouchableOpacity>
                                         </>
                                     )}
@@ -414,7 +414,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                             {/* Share Platforms */}
                             <View style={styles.controlSection}>
                                 <Text style={[common.textStrong, common.mbSm]}>
-                                    Paylaş
+                                    {t('common.share')}
                                 </Text>
 
                                 <View style={common.gapSm}>

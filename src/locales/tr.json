@@ -25,6 +25,12 @@
     "trackingOn": "Okunan ayet takip ediliyor",
     "trackingOff": "Ayet takibi kapalı"
   },
+  "hatimErrors": {
+    "notFound": "Hatim bulunamadı.",
+    "locked": "Bu hatim kilitlenmiştir, işlem yapılamaz.",
+    "alreadyClaimed": "Bu cüz zaten başka biri tarafından alınmış.",
+    "notYourPart": "Sadece kendi aldığınız cüzü veya oluşturduğunuz hatimdeki cüzleri değiştirebilirsiniz."
+  },
   "screenTitles": {
     "about": "Hakkında",
     "hatim": "Hatimler",
@@ -622,7 +628,38 @@
       "hint": "Resim, {{reciter}} okumasıyla videoya dönüştürülür. Video tarayıcınızda hazırlanır.",
       "error": "Video oluşturulamadı. Ses dosyalarına ulaşılamamış ya da tarayıcınız video üretmeyi desteklemiyor olabilir.",
       "recreate": "Yeniden Oluştur"
-    }
+    },
+    "title": "Ayeti Paylaş",
+    "chooseImageSize": "Resim Boyutu Seçin",
+    "imageCreateFailed": "Resim oluşturulamadı.",
+    "imageCreateFailedRetry": "Resim oluşturulamadı. Lütfen tekrar deneyin.",
+    "saveHint": "Resmi kaydetmek için paylaş seçeneklerini kullanabilirsiniz.",
+    "imageCopied": "Resim panoya kopyalandı!",
+    "modernBrowsersOnly": "Bu özellik sadece modern tarayıcılarda çalışır.",
+    "imageCopyFailed": "Resim kopyalanamadı.",
+    "otherApps": "Diğer Uygulamalar",
+    "previewTitle": "Ayet Resmi",
+    "font": "Yazı Tipi",
+    "reset": "Sıfırla",
+    "themeSelection": "Tema Seçimi",
+    "sizeSelection": "Boyut Seçimi",
+    "generating": "Resim oluşturuluyor...",
+    "imageActions": "Resim İşlemleri",
+    "openInNewTab": "Yeni Sekmede Aç",
+    "choosePlatform": "Paylaşım Platformu Seçin",
+    "choosePlatformMessage": "Resmi hangi platformda paylaşmak istiyorsunuz?",
+    "instagramHint": "Instagram için resmi indirip manuel olarak paylaşmanız gerekiyor.",
+    "notSupported": "Paylaşım desteklenmiyor.",
+    "failed": "Paylaşım sırasında bir hata oluştu.",
+    "platformFailed": "{{platform}} paylaşımı başarısız oldu.",
+    "downloadedAs": "Resim \"{{filename}}\" olarak indirildi.",
+    "verseTextCopied": "Ayet metni panoya kopyalandı.",
+    "shareText": "Paylaşım Metni",
+    "shareLink": "Paylaşım Linki",
+    "openLinkToShare": "Paylaşmak için aşağıdaki linki açın",
+    "linkCopied": "Link kopyalandı!",
+    "appNotFound": "Uygulama Bulunamadı",
+    "appNotFoundMessage": "{{platform}} uygulaması bulunamadı. Genel paylaşım seçeneklerini kullanmak ister misiniz?"
   },
   "about": {
     "role": "Tasarımcı",
@@ -638,6 +675,9 @@
       {
         "date": "28 Eylül 2026",
         "bullets": [
+          "Hatimde aynı anda farklı cüzler alındığında birinin alımının kaybolması giderildi.",
+          "Ayarlarda art arda yapılan değişikliklerin bazen geri alınması sorunu giderildi.",
+          "İngilizce kullanımda paylaşım, ayete git, ezber, indirme ve Hicri takvim ekranlarındaki Türkçe kalan yazılar çevrildi.",
           "Kelime çevirilerinde eksik görünen kelimeler (ör. İnşirah 1'deki \"اَلَمْ\") artık anlamını taşıyan kelimeyle birlikte gösteriliyor: \"اَلَمْ نَشْرَحْ → açmadık mı?\".",
           "Otomatik oynatma, sure sayfasının üstünden alttaki oynatıcının mod tuşuna taşındı; \"Tek ayet\" seçilince her ayetin sonunda duruyor.",
           "Sayfalı görünümde ve Rastgele Ayet ekranında, çalan ayetin durdur tuşu artık ayeti baştan okumak yerine durduruyor.",
@@ -857,5 +897,128 @@
         ]
       }
     ]
+  },
+  "common": {
+    "error": "Hata",
+    "info": "Bilgi",
+    "success": "Başarılı",
+    "copied": "Kopyalandı",
+    "cancel": "İptal",
+    "download": "İndir",
+    "copy": "Kopyala",
+    "yes": "Evet",
+    "no": "Hayır",
+    "share": "Paylaş"
+  },
+  "themeToggle": {
+    "light": "Aydınlık",
+    "dark": "Karanlık",
+    "lightsOut": "Işıklar Kapalı",
+    "accessibilityLabel": "Tema: {{current}}. Değiştirmek için dokun, sıradaki: {{next}}"
+  },
+  "verse": {
+    "wordTranslations": "Kelime Çevirileri:",
+    "surahFallback": "Sure",
+    "memorize": "Ezberle",
+    "until": "Şuraya Kadar",
+    "perVerse": "Her Ayet İçin",
+    "repeatCount": "Tekrar Sayısı",
+    "memorizationMode": "Ezber Modu",
+    "range": "Aralık",
+    "verseByVerse": "Ayet Ayet",
+    "start": "Başlat",
+    "close": "Kapat"
+  },
+  "goToVerse": {
+    "title": "Ayete Git",
+    "searchLabel": "Ayet numarası veya metin ara:",
+    "placeholder": "Ayet numarası veya metin girin...",
+    "current": "Şu anki",
+    "first": "İlk Ayet",
+    "middle": "Orta",
+    "last": "Son Ayet"
+  },
+  "pagedView": {
+    "notFound": "Ayet bulunamadı",
+    "first": "İlk ayet",
+    "last": "Son ayet"
+  },
+  "reciterSelector": {
+    "title": "Okuyucu Seçimi",
+    "description": "Ses dosyalarını okuyacak okuyucuyu seçin"
+  },
+  "download": {
+    "button": "📥 Meal Verilerini İndir",
+    "sizeHint": "Bu işlem {{size}}MB veri indirecektir.",
+    "starting": "İndirme başlatılıyor...",
+    "doneReloading": "Tamamlandı! Sayfa yenileniyor...",
+    "failed": "İndirme başarısız. Tekrar deneyin.",
+    "checkingFormat": "Veri formatı kontrol ediliyor...",
+    "alreadyLoaded": "Veri zaten yüklü",
+    "checkingLegacy": "Eski veri kontrol ediliyor...",
+    "migrating": "Veri yeni formata taşınıyor...",
+    "savingVerses": "Ayetler kaydediliyor... %{{percent}}",
+    "migrationDone": "Veri taşıma tamamlandı!",
+    "clearingOld": "Eski veriler temizleniyor...",
+    "fromServer": "Sunucudan indiriliyor...",
+    "downloading": "İndiriliyor...",
+    "processing": "Veri işleniyor...",
+    "savingToDb": "Veritabanına kaydediliyor...",
+    "saving": "Kaydediliyor...",
+    "savingPercent": "Kaydediliyor... %{{percent}}",
+    "success": "Başarıyla tamamlandı!",
+    "done": "Tamamlandı!",
+    "error": "Hata oluştu: {{message}}"
+  },
+  "hijriCalendar": {
+    "title": "HİCRÎ AY TAKVİMİ",
+    "today": "Bugün",
+    "addNotePlaceholder": "Yeni not ekle…",
+    "savedOnDevice": "Cihaza kaydedilir",
+    "add": "EKLE",
+    "noNotes": "Henüz not yok"
+  },
+  "imageSizes": {
+    "square_1080": {
+      "name": "Kare (1080x1080)",
+      "description": "Instagram Post, Facebook Post"
+    },
+    "instagram_story": {
+      "name": "Story (1080x1920)",
+      "description": "Instagram Story, WhatsApp Durum"
+    },
+    "twitter_post": {
+      "name": "Twitter (1200x675)",
+      "description": "Twitter/X Post, LinkedIn"
+    },
+    "twitter_banner": {
+      "name": "Twitter Banner (1500x500)",
+      "description": "Twitter/X Kapak, Geniş Banner"
+    },
+    "facebook_cover": {
+      "name": "Facebook Kapak (1200x630)",
+      "description": "Facebook Kapak, Paylaşım"
+    },
+    "wide_hd": {
+      "name": "Geniş HD (1920x1080)",
+      "description": "Masaüstü Duvar Kağıdı, Sunum"
+    },
+    "standard_hd": {
+      "name": "Standart HD (1280x720)",
+      "description": "YouTube Küçük Resim, Genel Kullanım"
+    },
+    "classic": {
+      "name": "Klasik (800x600)",
+      "description": "Geleneksel Format, E-posta"
+    },
+    "pinterest": {
+      "name": "Pinterest (735x1102)",
+      "description": "Pinterest Pin, Dikey Paylaşım"
+    }
+  },
+  "surahInfo": {
+    "verseCount": "{{count}} ayet",
+    "Mekkî": "Mekkî",
+    "Medenî": "Medenî"
   }
 }

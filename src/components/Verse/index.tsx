@@ -168,7 +168,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
 
     return (
       <View style={styles.wordTranslationsContainer}>
-        <Text style={styles.sectionTitle}>Kelime Çevirileri:</Text>
+        <Text style={styles.sectionTitle}>{t('verse.wordTranslations')}</Text>
         <View style={styles.wordTranslationsGrid}>
           {getWordSegments(verse).map((word, index) => (
             <View key={index} style={common.wordItem}>
@@ -188,7 +188,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         ShareService.updateWebMetaForVerse({
           arabicText: verse.arabicText,
           translation: verse.allTranslations?.[settings.favoriteTranslation] || verse.translation || '',
-          surahName: getSurahsList()[verse.surahNumber - 1]?.name || 'Sure',
+          surahName: getSurahsList()[verse.surahNumber - 1]?.name || t('verse.surahFallback'),
           surahNumber: verse.surahNumber,
           verseNumber: verse.number,
         } as any);
@@ -196,7 +196,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         // Sessiz geç
       }
     }
-  }, [verse.surahNumber, verse.number, verse.arabicText, verse.allTranslations, verse.translation, settings.favoriteTranslation]);
+  }, [verse.surahNumber, verse.number, verse.arabicText, verse.allTranslations, verse.translation, settings.favoriteTranslation, t]);
 
   const handleBookmarkToggle = async () => {
     if (!user || !showBookmarkButton) return;
@@ -311,12 +311,12 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
             {!memOpen ? (
               <TouchableOpacity style={styles.memToggle} onPress={() => setMemOpen(true)}>
                 <BrainCircuit size={18} color={theme.headerText} />
-                <Text style={styles.memToggleText}>Ezberle</Text>
+                <Text style={styles.memToggleText}>{t('verse.memorize')}</Text>
               </TouchableOpacity>
             ) : (
               <View style={styles.memPanel}>
                 <View style={common.rowBetween}>
-                  <Text style={common.textStrong}>Şuraya Kadar</Text>
+                  <Text style={common.textStrong}>{t('verse.until')}</Text>
                   <View style={common.rowGap}>
                     <TouchableOpacity
                       style={styles.stepBtn}
@@ -335,7 +335,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
                 </View>
                 <View style={common.rowBetween}>
                   <Text style={common.textStrong}>
-                    {memMode === 'individual' ? 'Her Ayet İçin' : 'Tekrar Sayısı'}
+                    {memMode === 'individual' ? t('verse.perVerse') : t('verse.repeatCount')}
                   </Text>
                   <View style={common.rowGap}>
                     <TouchableOpacity
@@ -354,7 +354,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
                   </View>
                 </View>
                 <View style={common.rowBetween}>
-                  <Text style={common.textStrong}>Ezber Modu</Text>
+                  <Text style={common.textStrong}>{t('verse.memorizationMode')}</Text>
                   <View style={styles.memToggleContainer}>
                     <TouchableOpacity
                       style={[
@@ -367,7 +367,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
                       <Text style={[
                         styles.memModeText,
                         memMode === 'range' && common.buttonTextPrimary
-                      ]}>Aralık</Text>
+                      ]}>{t('verse.range')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={[
@@ -380,7 +380,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
                       <Text style={[
                         styles.memModeText,
                         memMode === 'individual' && common.buttonTextPrimary
-                      ]}>Ayet Ayet</Text>
+                      ]}>{t('verse.verseByVerse')}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -390,10 +390,10 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
                     disabled={!canStartMem}
                     onPress={() => startMemorization(verse.surahNumber, verse.number, endVerse, repeats, memMode)}
                   >
-                    <Text style={styles.memButtonText}>Start</Text>
+                    <Text style={styles.memButtonText}>{t('verse.start')}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.memButton, { backgroundColor: theme.accent }]} onPress={() => { cancelMemorization(); setMemOpen(false); }}>
-                    <Text style={styles.memButtonText}>Close</Text>
+                    <Text style={styles.memButtonText}>{t('verse.close')}</Text>
                   </TouchableOpacity>
                 </View>
               </View>

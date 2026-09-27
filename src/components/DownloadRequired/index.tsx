@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme, Theme, CommonStyles, useThemedStyles } from '@/contexts/ThemeContext';
 import { DataUpdateProgress } from '../DataUpdateProgress';
@@ -26,12 +27,13 @@ export const DownloadRequired: React.FC<DownloadRequiredProps> = ({
     downloadStatus,
     downloadedBytes,
     onDownloadPress,
-    downloadButtonLabel = '📥 Meal Verilerini İndir',
+    downloadButtonLabel,
 }) => {
+    const { t } = useTranslation();
     const { theme } = useTheme();
     const styles = useThemedStyles(createStyles);
     const sizeHint = totalBytes > 0
-        ? `\nBu işlem ${(totalBytes / (1024 * 1024)).toFixed(1)}MB veri indirecektir.`
+        ? `\n${t('download.sizeHint', { size: (totalBytes / (1024 * 1024)).toFixed(1) })}`
         : '';
 
     return (
@@ -50,7 +52,7 @@ export const DownloadRequired: React.FC<DownloadRequiredProps> = ({
                     />
                 ) : (
                     <AppButton
-                        title={downloadButtonLabel}
+                        title={downloadButtonLabel ?? t('download.button')}
                         onPress={onDownloadPress}
                         variant="primary"
                         size="large"

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, Modal, TouchableOpacity, ScrollView, SafeAreaView, TextInput, StyleSheet } from 'react-native';
 import { Verse as VerseType } from '@/types';
 import { useSettings } from '@/contexts/SettingsContext';
@@ -20,6 +21,7 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
     onVerseSelect,
     onClose,
 }) => {
+    const { t } = useTranslation();
     const { settings } = useSettings();
     const { theme, common } = useTheme();
     const styles = useThemedStyles(createStyles);
@@ -66,7 +68,7 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
                 <SafeAreaView style={common.modalContainerCentered}>
                     {/* Header */}
                     <View style={common.pickerHeader}>
-                        <Text style={common.pickerHeaderTitle}>Ayete Git</Text>
+                        <Text style={common.pickerHeaderTitle}>{t('goToVerse.title')}</Text>
                         <TouchableOpacity onPress={onClose} style={common.pickerCloseButton}>
                             <Text style={common.pickerCloseButtonText}>✕</Text>
                         </TouchableOpacity>
@@ -74,13 +76,13 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
 
                     {/* Search Input */}
                     <View style={common.pickerSearchContainer}>
-                        <Text style={[common.smallText, common.mbXs]}>Ayet numarası veya metin ara:</Text>
+                        <Text style={[common.smallText, common.mbXs]}>{t('goToVerse.searchLabel')}</Text>
                         <View style={common.pickerSearchInputContainer}>
                             <TextInput
                                 style={common.pickerSearchInput}
                                 value={searchText}
                                 onChangeText={setSearchText}
-                                placeholder="Ayet numarası veya metin girin..."
+                                placeholder={t('goToVerse.placeholder')}
                                 placeholderTextColor={theme.textSecondary}
                                 autoCapitalize="none"
                                 autoCorrect={false}
@@ -119,7 +121,7 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
                                             Ayet {verse.number}
                                         </Text>
                                         {isCurrentVerse && (
-                                            <Text style={styles.currentLabel}>Şu anki</Text>
+                                            <Text style={styles.currentLabel}>{t('goToVerse.current')}</Text>
                                         )}
                                     </View>
                                     <Text style={[
@@ -139,19 +141,19 @@ export const GoToVerseModal: React.FC<GoToVerseModalProps> = ({
                             style={styles.quickNavButton}
                             onPress={() => handleVerseSelect(0)}
                         >
-                            <Text style={styles.quickNavText}>İlk Ayet</Text>
+                            <Text style={styles.quickNavText}>{t('goToVerse.first')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.quickNavButton}
                             onPress={() => handleVerseSelect(Math.floor(verses.length / 2))}
                         >
-                            <Text style={styles.quickNavText}>Orta</Text>
+                            <Text style={styles.quickNavText}>{t('goToVerse.middle')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.quickNavButton}
                             onPress={() => handleVerseSelect(verses.length - 1)}
                         >
-                            <Text style={styles.quickNavText}>Son Ayet</Text>
+                            <Text style={styles.quickNavText}>{t('goToVerse.last')}</Text>
                         </TouchableOpacity>
                     </View>
                 </SafeAreaView>

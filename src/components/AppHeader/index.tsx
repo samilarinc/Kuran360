@@ -5,13 +5,6 @@ import { ThemeToggle, LanguageSelector, HeaderNavButtons, FontSizeToggle, Header
 import { useTheme } from '@/contexts/ThemeContext';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
-const THEME_TOGGLE_LABELS = {
-    light: 'Aydınlık',
-    dark: 'Karanlık',
-    lightsOut: 'Işıklar Kapalı',
-    accessibilityLabel: (current: string, next: string) => `Tema: ${current}. Değiştirmek için dokun, sıradaki: ${next}`,
-};
-
 const LANGUAGES = [
     { code: 'tr', label: 'Türkçe' },
     { code: 'en', label: 'English' },
@@ -50,6 +43,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     const { theme } = useTheme();
     const { t, i18n } = useTranslation();
     const styles = useMemo(() => createStyles(theme, large, !!subtitle), [theme, large, subtitle]);
+    const themeToggleLabels = {
+        light: t('themeToggle.light'),
+        dark: t('themeToggle.dark'),
+        lightsOut: t('themeToggle.lightsOut'),
+        accessibilityLabel: (current: string, next: string) => t('themeToggle.accessibilityLabel', { current, next }),
+    };
     const { width } = useWindowDimensions();
     const useMenu = width < MENU_BREAKPOINT;
 
@@ -64,7 +63,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 languages={LANGUAGES}
                 onChange={(code: string) => i18n.changeLanguage(code)}
             />
-            <ThemeToggle compact labels={THEME_TOGGLE_LABELS} />
+            <ThemeToggle compact labels={themeToggleLabels} />
         </>
     );
 

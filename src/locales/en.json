@@ -25,6 +25,12 @@
     "trackingOn": "Following the playing verse",
     "trackingOff": "Verse following off"
   },
+  "hatimErrors": {
+    "notFound": "Hatim not found.",
+    "locked": "This hatim is locked; it can't be changed.",
+    "alreadyClaimed": "This part has already been taken by someone else.",
+    "notYourPart": "You can only change parts you took, or parts in a hatim you created."
+  },
   "screenTitles": {
     "about": "About",
     "hatim": "Hatims",
@@ -622,7 +628,38 @@
       "hint": "The image is turned into a video with {{reciter}}'s recitation. The video is made in your browser.",
       "error": "The video could not be created. The audio files may be unreachable or your browser may not support video encoding.",
       "recreate": "Recreate"
-    }
+    },
+    "title": "Share Verse",
+    "chooseImageSize": "Choose Image Size",
+    "imageCreateFailed": "Could not create the image.",
+    "imageCreateFailedRetry": "Could not create the image. Please try again.",
+    "saveHint": "Use the share options to save the image.",
+    "imageCopied": "Image copied to clipboard!",
+    "modernBrowsersOnly": "This feature only works in modern browsers.",
+    "imageCopyFailed": "Could not copy the image.",
+    "otherApps": "Other Apps",
+    "previewTitle": "Verse Image",
+    "font": "Font",
+    "reset": "Reset",
+    "themeSelection": "Theme",
+    "sizeSelection": "Size",
+    "generating": "Creating image...",
+    "imageActions": "Image Actions",
+    "openInNewTab": "Open in New Tab",
+    "choosePlatform": "Choose a Platform",
+    "choosePlatformMessage": "Where would you like to share the image?",
+    "instagramHint": "For Instagram, download the image and share it manually.",
+    "notSupported": "Sharing is not supported.",
+    "failed": "Something went wrong while sharing.",
+    "platformFailed": "Sharing to {{platform}} failed.",
+    "downloadedAs": "Image downloaded as \"{{filename}}\".",
+    "verseTextCopied": "Verse text copied to clipboard.",
+    "shareText": "Share Text",
+    "shareLink": "Share Link",
+    "openLinkToShare": "Open the link below to share",
+    "linkCopied": "Link copied!",
+    "appNotFound": "App Not Found",
+    "appNotFoundMessage": "The {{platform}} app was not found. Would you like to use the general share options?"
   },
   "about": {
     "role": "Designer",
@@ -639,6 +676,9 @@
       {
         "date": "September 28, 2026",
         "bullets": [
+          "Fixed a part claim getting lost when several people took different parts of a hatim at the same time.",
+          "Fixed quick successive settings changes sometimes being undone.",
+          "Translated the texts that stayed in Turkish in English mode on the share, go-to-verse, memorization, download and Hijri calendar screens.",
           "Words that were missing from word-by-word translations (e.g. \"اَلَمْ\" in Al-Inshirah 1) now appear together with the word whose translation carries their meaning: \"اَلَمْ نَشْرَحْ → açmadık mı?\".",
           "Autoplay moved from the top of the surah page into the player's mode button; choose \"Single verse\" to stop after each verse.",
           "In paged view and on the Random Verse screen, the stop button on a playing verse now stops it instead of restarting it.",
@@ -857,5 +897,128 @@
         ]
       }
     ]
+  },
+  "common": {
+    "error": "Error",
+    "info": "Info",
+    "success": "Done",
+    "copied": "Copied",
+    "cancel": "Cancel",
+    "download": "Download",
+    "copy": "Copy",
+    "yes": "Yes",
+    "no": "No",
+    "share": "Share"
+  },
+  "themeToggle": {
+    "light": "Light",
+    "dark": "Dark",
+    "lightsOut": "Lights Out",
+    "accessibilityLabel": "Theme: {{current}}. Tap to switch, next: {{next}}"
+  },
+  "verse": {
+    "wordTranslations": "Word translations:",
+    "surahFallback": "Surah",
+    "memorize": "Memorize",
+    "until": "Up to",
+    "perVerse": "Per verse",
+    "repeatCount": "Repeat count",
+    "memorizationMode": "Memorization mode",
+    "range": "Range",
+    "verseByVerse": "Verse by verse",
+    "start": "Start",
+    "close": "Close"
+  },
+  "goToVerse": {
+    "title": "Go to Verse",
+    "searchLabel": "Search by verse number or text:",
+    "placeholder": "Enter a verse number or text...",
+    "current": "Current",
+    "first": "First Verse",
+    "middle": "Middle",
+    "last": "Last Verse"
+  },
+  "pagedView": {
+    "notFound": "Verse not found",
+    "first": "First verse",
+    "last": "Last verse"
+  },
+  "reciterSelector": {
+    "title": "Reciter",
+    "description": "Choose the reciter for the audio"
+  },
+  "download": {
+    "button": "📥 Download Translation Data",
+    "sizeHint": "This will download {{size}} MB of data.",
+    "starting": "Starting download...",
+    "doneReloading": "Done! Reloading the page...",
+    "failed": "Download failed. Please try again.",
+    "checkingFormat": "Checking data format...",
+    "alreadyLoaded": "Data is already loaded",
+    "checkingLegacy": "Checking old data...",
+    "migrating": "Moving data to the new format...",
+    "savingVerses": "Saving verses... {{percent}}%",
+    "migrationDone": "Data migration complete!",
+    "clearingOld": "Clearing old data...",
+    "fromServer": "Downloading from the server...",
+    "downloading": "Downloading...",
+    "processing": "Processing data...",
+    "savingToDb": "Saving to the database...",
+    "saving": "Saving...",
+    "savingPercent": "Saving... {{percent}}%",
+    "success": "Completed successfully!",
+    "done": "Done!",
+    "error": "An error occurred: {{message}}"
+  },
+  "hijriCalendar": {
+    "title": "HIJRI MONTH CALENDAR",
+    "today": "Today",
+    "addNotePlaceholder": "Add a new note…",
+    "savedOnDevice": "Saved on this device",
+    "add": "ADD",
+    "noNotes": "No notes yet"
+  },
+  "imageSizes": {
+    "square_1080": {
+      "name": "Square (1080x1080)",
+      "description": "Instagram Post, Facebook Post"
+    },
+    "instagram_story": {
+      "name": "Story (1080x1920)",
+      "description": "Instagram Story, WhatsApp Status"
+    },
+    "twitter_post": {
+      "name": "Twitter (1200x675)",
+      "description": "Twitter/X Post, LinkedIn"
+    },
+    "twitter_banner": {
+      "name": "Twitter Banner (1500x500)",
+      "description": "Twitter/X Header, Wide Banner"
+    },
+    "facebook_cover": {
+      "name": "Facebook Cover (1200x630)",
+      "description": "Facebook Cover, Sharing"
+    },
+    "wide_hd": {
+      "name": "Wide HD (1920x1080)",
+      "description": "Desktop Wallpaper, Presentation"
+    },
+    "standard_hd": {
+      "name": "Standard HD (1280x720)",
+      "description": "YouTube Thumbnail, General Use"
+    },
+    "classic": {
+      "name": "Classic (800x600)",
+      "description": "Traditional Format, Email"
+    },
+    "pinterest": {
+      "name": "Pinterest (735x1102)",
+      "description": "Pinterest Pin, Vertical Sharing"
+    }
+  },
+  "surahInfo": {
+    "verseCount": "{{count}} verses",
+    "Mekkî": "Meccan",
+    "Medenî": "Medinan"
   }
 }

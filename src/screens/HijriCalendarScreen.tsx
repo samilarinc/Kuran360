@@ -1,4 +1,5 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     View, SafeAreaView, PanResponder, Animated, Easing,
     Platform, useWindowDimensions,
@@ -37,6 +38,7 @@ export const HijriCalendarScreen: React.FC<{ navigation: any }> = ({ navigation 
     const [draftFocused, setDraftFocused] = useState(false);
     // Arabic view is hidden for now (its toggle was removed); the translations stay for later
     const [lang] = useState<'tr' | 'ar'>('tr');
+    const { t } = useTranslation();
 
     const dragP = useRef(new Animated.Value(0)).current;
     const daysAnim = useRef(new Animated.Value(1)).current;
@@ -238,7 +240,7 @@ export const HijriCalendarScreen: React.FC<{ navigation: any }> = ({ navigation 
         <SafeAreaView style={{ flex: 1, backgroundColor: P.bg }} nativeID="hijri-cal-root">
 
             <AppHeader
-                title={lang === 'tr' ? 'HİCRÎ AY TAKVİMİ' : 'التقويم الهجري'}
+                title={lang === 'tr' ? t('hijriCalendar.title') : 'التقويم الهجري'}
                 showBackButton
                 onBackPress={() => navigation.goBack()}
                 showHomeButton
@@ -300,7 +302,7 @@ export const HijriCalendarScreen: React.FC<{ navigation: any }> = ({ navigation 
                 />
 
                 {!isToday && (
-                    <HijriTodayButton P={P} label={lang === 'tr' ? '● Bugün' : '● اليوم'} onPress={goToday} />
+                    <HijriTodayButton P={P} label={lang === 'tr' ? `● ${t('hijriCalendar.today')}` : '● اليوم'} onPress={goToday} />
                 )}
 
             </View>

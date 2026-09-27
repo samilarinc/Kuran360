@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     View,
     Text,
@@ -39,6 +40,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
     const { settings, updateSettings } = useSettings();
     const { common } = useTheme();
     const { audioState, toggleVerse } = useGlobalAudio();
+    const { t } = useTranslation();
     const { user } = useAuth();
     const [currentVerseIndex, setCurrentVerseIndex] = useState(initialVerseIndex);
     const [isInitialized, setIsInitialized] = useState(false);
@@ -307,7 +309,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
         return (
             <SafeAreaView style={common.container}>
                 <View style={styles.emptyVerseContainer}>
-                    <Text style={[common.subtitle, common.textCenter]}>Ayet bulunamadı</Text>
+                    <Text style={[common.subtitle, common.textCenter]}>{t('pagedView.notFound')}</Text>
                 </View>
             </SafeAreaView>
         );
@@ -385,7 +387,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                             </ScrollView>
                         ) : (
                             <View style={styles.emptyVerseContainer}>
-                                <Text style={common.emptyStateText}>İlk ayet</Text>
+                                <Text style={common.emptyStateText}>{t('pagedView.first')}</Text>
                             </View>
                         )}
                     </View>
@@ -429,7 +431,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                             </ScrollView>
                         ) : (
                             <View style={styles.emptyVerseContainer}>
-                                <Text style={common.emptyStateText}>Son ayet</Text>
+                                <Text style={common.emptyStateText}>{t('pagedView.last')}</Text>
                             </View>
                         )}
                     </View>
