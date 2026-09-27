@@ -1,3 +1,4 @@
+import type { Palette, ThemeName } from '@msarinc/ui';
 import { FONT_SIZES as BASE_FONT_SIZES } from '@msarinc/theme-core';
 // Audio file naming format: SSSAAA.mp3 where SSS = surah number, AAA = verse number
 export const AUDIO_FILE_FORMAT = (surahNumber: number, verseNumber: number): string => {
@@ -88,3 +89,23 @@ export const FONT_SIZES = {
 // Favorite-translation highlight (gold accent), shared by Verse and AllTranslationsScreen
 export const FAVORITE_COLOR = '#FFD700';
 export const FAVORITE_COLOR_DARK = '#B8860B';
+
+/** The app's colors in @msarinc/ui's palette shape, so library components (header toggles, menus) match the app. */
+const toLibraryPalette = (theme: Theme): Palette => ({
+    background: theme.background,
+    text: theme.text,
+    textMuted: theme.textSecondary,
+    primary: theme.primary,
+    primaryHover: theme.secondary,
+    surface: theme.cardBackground,
+    border: theme.border,
+    header: theme.primary,
+    danger: theme.error,
+    white: '#FFFFFF',
+});
+
+export const LIBRARY_PALETTES: Record<ThemeName, Palette> = {
+    light: toLibraryPalette(LIGHT_COLORS),
+    dark: toLibraryPalette(DARK_COLORS),
+    'lights-out': toLibraryPalette(LIGHTS_OUT_COLORS),
+};
