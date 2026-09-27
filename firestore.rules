@@ -6,10 +6,6 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function isAdmin() {
-      return isSignedIn() && request.auth.uid == 'REMOVED_ADMIN_UID';
-    }
-
     function isShortString(value, maxLength) {
       return value is string && value.size() > 0 && value.size() <= maxLength;
     }
@@ -87,23 +83,20 @@ service cloud.firestore {
           && partChangeAllowed(28) && partChangeAllowed(29);
       }
 
-      allow read: if resource.data.get('isPrivate', false) == false || (isSignedIn() && (
-        resource.data.creatorId == request.auth.uid || isAdmin()
-      ));
+      allow read: if resource.data.get('isPrivate', false) == false
+        || (isSignedIn() && resource.data.creatorId == request.auth.uid);
       allow create: if isSignedIn()
         && request.resource.data.creatorId == request.auth.uid
         && request.resource.data.parts.size() == 30;
-      // Creator/admin: anything except ownership. Others: only their own parts, and only while unlocked.
+      // Creator: anything except ownership. Others: only their own parts, and only while unlocked.
       allow update: if isSignedIn() && request.resource.data.creatorId == resource.data.creatorId && (
-        resource.data.creatorId == request.auth.uid || isAdmin() || (
+        resource.data.creatorId == request.auth.uid || (
           !resource.data.get('isLocked', false)
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['parts', 'isCompleted'])
           && onlyOwnPartsChanged()
         )
       );
-      allow delete: if isSignedIn() && (
-          resource.data.creatorId == request.auth.uid || isAdmin()
-      );
+      allow delete: if isSignedIn() && resource.data.creatorId == request.auth.uid;
     }
   }
 }

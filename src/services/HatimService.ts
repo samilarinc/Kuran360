@@ -84,13 +84,9 @@ export const HatimService = {
     },
 
     async getHatims(userId?: string): Promise<Hatim[]> {
-        const ADMIN_ID = 'REMOVED_ADMIN_UID';
         let q;
 
-        if (userId === ADMIN_ID) {
-            // Admin can see everything
-            q = query(collection(db, HATIMS_COLLECTION));
-        } else if (userId) {
+        if (userId) {
             // Logged in users can see public hatims and their own hatims
             // We use an 'or' query to satisfy security rules while getting both types
             q = query(
