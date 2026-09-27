@@ -1,172 +1,157 @@
-import React, { useCallback, useMemo } from 'react';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    useWindowDimensions,
-} from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { CircleDot, SkipForward, Repeat, Repeat1, ListEnd, Play, Pause, Square, LocateFixed, LocateOff, type LucideIcon } from 'lucide-react-native';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
 import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
-import { useTheme } from '@/contexts/ThemeContext';
-import { AudioTrackingToggle } from '../AudioTrackingToggle';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
+import { getSurahNameByNumber } from '@/utils/surahName';
+import { AppSettings } from '@/types';
 import { createStyles } from './index.styles';
 
-// Cycle audio play modes: nextSurah -> loopSurah -> stopAtEnd -> loopVerse
-const PLAY_MODES: Array<{ key: 'nextSurah' | 'loopSurah' | 'stopAtEnd' | 'loopVerse'; icon: string; label: string }> = [
-    { key: 'nextSurah', icon: '⏭️📖', label: 'Sonraki Sure' },
-    { key: 'loopSurah', icon: '🔁📖', label: 'Sure Döngü' },
-    { key: 'stopAtEnd', icon: '⏹️📖', label: 'Surenin Sonunda Dur' },
-    { key: 'loopVerse', icon: '🔁🔢', label: 'Ayet Döngü' },
+type PlayMode = 'singleVerse' | AppSettings['audioPlayMode'];
+
+// Tapping the mode button cycles through these in order. 'singleVerse' is autoplay off;
+// it also sets stopAtEnd because the player applies the end-of-surah mode even without autoplay.
+const PLAY_MODES: { key: PlayMode; Icon: LucideIcon; settings: Partial<AppSettings> }[] = [
+    { key: 'singleVerse', Icon: CircleDot, settings: { autoplayEnabled: false, audioPlayMode: 'stopAtEnd' } },
+    { key: 'nextSurah', Icon: SkipForward, settings: { autoplayEnabled: true, audioPlayMode: 'nextSurah' } },
+    { key: 'loopSurah', Icon: Repeat, settings: { autoplayEnabled: true, audioPlayMode: 'loopSurah' } },
+    { key: 'stopAtEnd', Icon: ListEnd, settings: { autoplayEnabled: true, audioPlayMode: 'stopAtEnd' } },
+    { key: 'loopVerse', Icon: Repeat1, settings: { autoplayEnabled: true, audioPlayMode: 'loopVerse' } },
 ];
+
+// loopVerse repeats regardless of autoplay, so autoplay off only means 'singleVerse' for the other modes
+const getPlayMode = ({ autoplayEnabled, audioPlayMode }: AppSettings): PlayMode =>
+    !autoplayEnabled && audioPlayMode !== 'loopVerse' ? 'singleVerse' : audioPlayMode;
+
+const PLAYBACK_RATES = [1.0, 1.25, 1.5, 1.75, 2.0];
+const HINT_DURATION_MS = 2000;
+const ICON_SIZE = 18;
 
 export const GlobalAudioBar: React.FC = () => {
     const { audioState, togglePlayPause, stop, changePlaybackRate } = useGlobalAudio();
     const { settings, updateSettings } = useDebouncedSettings(200);
     const { theme } = useTheme();
+    const styles = useThemedStyles(createStyles);
+    const { t } = useTranslation();
     const { goToSurahVerse } = useNavigationHelpers();
-    const { width } = useWindowDimensions();
-    const isCompact = width < 380; // compact layout for small phones
-    const isMedium = width >= 380 && width < 580; // medium phones - expanded range
-    const hideLabels = isCompact || isMedium;
 
-    // Memoize toggle handlers to prevent unnecessary re-renders
-    const handleAudioTrackingToggle = useCallback(async (enabled: boolean) => {
+    // Short explanation shown in place of the verse info after tapping an icon-only button
+    const [hint, setHint] = useState<string | null>(null);
+    const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const showHint = useCallback((text: string) => {
+        if (hintTimer.current) clearTimeout(hintTimer.current);
+        setHint(text);
+        hintTimer.current = setTimeout(() => setHint(null), HINT_DURATION_MS);
+    }, []);
+    useEffect(() => () => {
+        if (hintTimer.current) clearTimeout(hintTimer.current);
+    }, []);
+
+    const currentModeIndex = Math.max(0, PLAY_MODES.findIndex(m => m.key === getPlayMode(settings)));
+    const currentMode = PLAY_MODES[currentModeIndex];
+
+    const handleCyclePlayMode = useCallback(() => {
+        const next = PLAY_MODES[(currentModeIndex + 1) % PLAY_MODES.length];
+        updateSettings(next.settings);
+        showHint(t(`audioBar.modes.${next.key}`));
+    }, [currentModeIndex, updateSettings, showHint, t]);
+
+    const handlePlaybackRateChange = useCallback(async () => {
+        const nextRate = PLAYBACK_RATES[(PLAYBACK_RATES.indexOf(settings.playbackRate) + 1) % PLAYBACK_RATES.length];
+        updateSettings({ playbackRate: nextRate });
+        await changePlaybackRate(nextRate);
+    }, [settings.playbackRate, updateSettings, changePlaybackRate]);
+
+    const handleTrackingToggle = useCallback(async () => {
+        const enabled = !settings.audioTrackingEnabled;
         updateSettings({ audioTrackingEnabled: enabled });
+        showHint(t(enabled ? 'audioBar.trackingOn' : 'audioBar.trackingOff'));
         // When enabling tracking, jump to the currently playing verse regardless of screen
         if (enabled && audioState.currentVerse) {
             await goToSurahVerse(audioState.currentVerse.surahNumber, audioState.currentVerse.number - 1);
         }
-    }, [updateSettings, audioState.currentVerse, goToSurahVerse]);
+    }, [settings.audioTrackingEnabled, updateSettings, showHint, t, audioState.currentVerse, goToSurahVerse]);
 
-    const handlePlaybackRateChange = useCallback(async () => {
-        // Toggle between 1x, 1.25x, 1.5x, 1.75x, 2x speeds
-        const rates = [1.0, 1.25, 1.5, 1.75, 2.0];
-        const currentIndex = rates.indexOf(settings.playbackRate);
-        const nextIndex = (currentIndex + 1) % rates.length;
-        const newRate = rates[nextIndex];
+    const verse = audioState.currentVerse;
+    const title = useMemo(
+        () => (verse ? `${getSurahNameByNumber(t, verse.surahNumber)} · ${t('audioBar.verse', { number: verse.number })}` : ''),
+        [verse, t],
+    );
 
-        updateSettings({ playbackRate: newRate });
-        await changePlaybackRate(newRate);
-    }, [settings.playbackRate, updateSettings, changePlaybackRate]);
-
-    const playbackRateText = React.useMemo(() => `${settings.playbackRate}x`, [settings.playbackRate]);
-
-    const statusLabel = React.useMemo(() => {
-        if (audioState.isLoading) return 'Yükleniyor...';
-        return audioState.isPlaying ? 'Çalıyor' : 'Duraklatıldı';
-    }, [audioState.isLoading, audioState.isPlaying]);
-
-    const verseLabel = React.useMemo(() => {
-        return audioState.currentVerse ? `${audioState.currentVerse.number}. Ayet` : '';
-    }, [audioState.currentVerse]);
-
-    const currentModeIndex = Math.max(0, PLAY_MODES.findIndex(m => m.key === (settings as any).audioPlayMode));
-    const currentMode = currentModeIndex >= 0 ? PLAY_MODES[currentModeIndex] : PLAY_MODES[0];
-
-    const handleCyclePlayMode = useCallback(() => {
-        const nextIndex = (currentModeIndex + 1) % PLAY_MODES.length;
-        updateSettings({ audioPlayMode: PLAY_MODES[nextIndex].key } as any);
-    }, [currentModeIndex, updateSettings]);
-
-    const styles = useMemo(() => createStyles(theme, isCompact, isMedium), [theme, isCompact, isMedium]);
-
-    // Don't render if no audio is playing or paused
-    if (!audioState.currentVerse) {
+    if (!verse) {
         return null;
     }
 
+    const status = audioState.isLoading
+        ? t('audioBar.loading')
+        : t(audioState.isPlaying ? 'audioBar.playing' : 'audioBar.paused');
+    const ModeIcon = currentMode.Icon;
+    const TrackingIcon = settings.audioTrackingEnabled ? LocateFixed : LocateOff;
+
     return (
         <View style={styles.audioBar}>
-            <View style={styles.audioBarContent}>
-                {isCompact ? (
-                    <View style={styles.audioTextContainer}>
-                        <Text
-                            style={styles.audioText}
-                            numberOfLines={1}
-                            adjustsFontSizeToFit
-                            minimumFontScale={0.65}
-                        >
-                            {statusLabel}
-                        </Text>
-                        {!!verseLabel && (
-                            <Text
-                                style={styles.verseText}
-                                numberOfLines={1}
-                                adjustsFontSizeToFit
-                                minimumFontScale={0.85}
-                            >
-                                {verseLabel}
-                            </Text>
-                        )}
-                    </View>
+            <View style={styles.info}>
+                {hint ? (
+                    <Text style={styles.hint} numberOfLines={2}>{hint}</Text>
                 ) : (
-                    <Text
-                        style={styles.audioText}
-                        numberOfLines={1}
-                        adjustsFontSizeToFit
-                        minimumFontScale={0.65}
-                    >
-                        {audioState.isLoading ? statusLabel : `${statusLabel}: ${verseLabel}`}
-                    </Text>
+                    <>
+                        <Text style={styles.title} numberOfLines={1}>{title}</Text>
+                        <Text style={styles.status} numberOfLines={1}>{status}</Text>
+                    </>
                 )}
-                <View style={styles.audioControls}>
-                    {/* Play Mode Button with label */}
-                    <View style={styles.playModeContainer}>
-                        <TouchableOpacity
-                            style={styles.playModeButton}
-                            onPress={handleCyclePlayMode}
-                            activeOpacity={0.7}
-                        >
-                            <Text style={styles.playModeIcon}>{currentMode.icon}</Text>
-                        </TouchableOpacity>
-                        {!hideLabels && (
-                            <Text style={styles.playModeLabel}>{currentMode.label}</Text>
-                        )}
-                    </View>
+            </View>
 
-                    {/* Play/Pause Button */}
-                    <TouchableOpacity
-                        style={styles.playPauseButton}
-                        onPress={togglePlayPause}
-                        activeOpacity={0.7}
-                    >
-                        <Text style={styles.playPauseIcon}>
-                            {audioState.isPlaying ? '⏸️' : '▶️'}
-                        </Text>
-                    </TouchableOpacity>
+            <View style={styles.controls}>
+                <TouchableOpacity
+                    style={styles.iconButton}
+                    onPress={handleCyclePlayMode}
+                    accessibilityLabel={`${t('audioBar.modeLabel')}: ${t(`audioBar.modes.${currentMode.key}`)}`}
+                >
+                    <ModeIcon size={ICON_SIZE} color={theme.headerText} />
+                </TouchableOpacity>
 
-                    {/* Stop Button */}
-                    <TouchableOpacity
-                        style={styles.stopButton}
-                        onPress={stop}
-                        activeOpacity={0.7}
-                    >
-                        <Text style={styles.stopIcon}>⏹️</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.iconButton}
+                    onPress={handleTrackingToggle}
+                    accessibilityRole="switch"
+                    accessibilityState={{ checked: settings.audioTrackingEnabled }}
+                    accessibilityLabel={t('audioBar.tracking')}
+                >
+                    <TrackingIcon
+                        size={ICON_SIZE}
+                        color={theme.headerText}
+                        style={!settings.audioTrackingEnabled && styles.iconOff}
+                    />
+                </TouchableOpacity>
 
-                    <TouchableOpacity
-                        style={styles.playbackRateButton}
-                        onPress={handlePlaybackRateChange}
-                        activeOpacity={0.7}
-                    >
-                        <Text style={styles.playbackRateText}>
-                            {playbackRateText}
-                        </Text>
-                    </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.rateButton}
+                    onPress={handlePlaybackRateChange}
+                    accessibilityLabel={t('audioBar.speed', { rate: settings.playbackRate })}
+                >
+                    <Text style={styles.rateText}>{settings.playbackRate}x</Text>
+                </TouchableOpacity>
 
-                    <View style={styles.audioTrackingContainer}>
-                        <AudioTrackingToggle
-                            isEnabled={settings.audioTrackingEnabled}
-                            onToggle={handleAudioTrackingToggle}
-                        />
-                        {!hideLabels && (
-                            <Text style={styles.audioTrackingLabel}>
-                                Otomatik takip
-                            </Text>
-                        )}
-                    </View>
-                </View>
+                <TouchableOpacity style={styles.iconButton} onPress={stop} accessibilityLabel={t('audioBar.stop')}>
+                    <Square size={ICON_SIZE - 2} color={theme.headerText} fill={theme.headerText} />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.playButton}
+                    onPress={togglePlayPause}
+                    accessibilityLabel={t(audioState.isPlaying ? 'audioBar.pause' : 'audioBar.play')}
+                >
+                    {audioState.isLoading ? (
+                        <ActivityIndicator size="small" color={theme.primary} />
+                    ) : audioState.isPlaying ? (
+                        <Pause size={20} color={theme.primary} fill={theme.primary} />
+                    ) : (
+                        <Play size={20} color={theme.primary} fill={theme.primary} />
+                    )}
+                </TouchableOpacity>
             </View>
         </View>
     );

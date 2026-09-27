@@ -6,7 +6,6 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@/contexts/ThemeContext';
 import { AppHeader } from '@/components/AppHeader';
-import { AppButton } from '@/components/AppButton';
 import { HijriStarsBackground } from '@/components/HijriStarsBackground';
 import { HijriBackgroundGlow } from '@/components/HijriBackgroundGlow';
 import { HijriCarousel } from '@/components/HijriCarousel';
@@ -36,7 +35,8 @@ export const HijriCalendarScreen: React.FC<{ navigation: any }> = ({ navigation 
     const [modalDay, setModalDay] = useState<number | null>(null);
     const [draft, setDraft] = useState('');
     const [draftFocused, setDraftFocused] = useState(false);
-    const [lang, setLang] = useState<'tr' | 'ar'>('tr');
+    // Arabic view is hidden for now (its toggle was removed); the translations stay for later
+    const [lang] = useState<'tr' | 'ar'>('tr');
 
     const dragP = useRef(new Animated.Value(0)).current;
     const daysAnim = useRef(new Animated.Value(1)).current;
@@ -243,15 +243,6 @@ export const HijriCalendarScreen: React.FC<{ navigation: any }> = ({ navigation 
                 onBackPress={() => navigation.goBack()}
                 showHomeButton
                 onHomePress={() => navigation.navigate('Main')}
-                autoplayToggle={
-                    <AppButton
-                        title={lang === 'tr' ? 'عربي' : 'TR'}
-                        onPress={() => setLang(l => l === 'tr' ? 'ar' : 'tr')}
-                        variant="translucent"
-                        shape="pill"
-                        size="small"
-                    />
-                }
             />
 
             <View style={{ flex: 1, overflow: 'hidden', backgroundColor: P.bg }} {...pan.panHandlers}>

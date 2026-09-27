@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { ThemeToggle, LanguageSelector, HeaderNavButtons } from '@msarinc/ui';
+import { ThemeToggle, LanguageSelector, HeaderNavButtons, FontSizeToggle, HeaderMenu } from '@msarinc/ui';
 import { useTheme } from '@/contexts/ThemeContext';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
@@ -17,6 +17,13 @@ const LANGUAGES = [
     { code: 'en', label: 'English' },
 ];
 
+/** Below this width the right-side controls fold into a single slide-down button. */
+const MENU_BREAKPOINT = 640;
+
+/** Inside the slide-down menu the controls stack vertically, so switch known ones to their narrow forms. */
+const toMenuForm = (node: React.ReactNode, menuProps: Record<string, unknown>, type: React.ElementType) =>
+    React.isValidElement(node) && node.type === type ? React.cloneElement(node, menuProps) : node;
+
 interface AppHeaderProps {
     title?: string;
     subtitle?: string;
@@ -25,7 +32,6 @@ interface AppHeaderProps {
     onBackPress?: () => void;
     showHomeButton?: boolean;
     onHomePress?: () => void;
-    autoplayToggle?: React.ReactNode;
     fontSizeToggle?: React.ReactNode;
     children?: React.ReactNode;
 }
@@ -38,13 +44,29 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     onBackPress,
     showHomeButton = false,
     onHomePress,
-    autoplayToggle,
     fontSizeToggle,
     children,
 }) => {
     const { theme } = useTheme();
     const { t, i18n } = useTranslation();
     const styles = useMemo(() => createStyles(theme, large, !!subtitle), [theme, large, subtitle]);
+    const { width } = useWindowDimensions();
+    const useMenu = width < MENU_BREAKPOINT;
+
+    const fontSizeControl = useMenu ? toMenuForm(fontSizeToggle, { vertical: true }, FontSizeToggle) : fontSizeToggle;
+
+    const controls = (
+        <>
+            {fontSizeControl}
+            <LanguageSelector
+                compact
+                value={i18n.language}
+                languages={LANGUAGES}
+                onChange={(code: string) => i18n.changeLanguage(code)}
+            />
+            <ThemeToggle compact labels={THEME_TOGGLE_LABELS} />
+        </>
+    );
 
     return (
         <View style={styles.header}>
@@ -66,18 +88,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
             {/* Right Buttons */}
             <View style={styles.rightButtons}>
-                {autoplayToggle && (
-                    <View style={styles.autoplayToggleWrapper}>{autoplayToggle}</View>
-                )}
-                {fontSizeToggle}
-
-                <LanguageSelector
-                    compact
-                    value={i18n.language}
-                    languages={LANGUAGES}
-                    onChange={(code: string) => i18n.changeLanguage(code)}
-                />
-                <ThemeToggle compact labels={THEME_TOGGLE_LABELS} />
+                {useMenu ? (
+                    <HeaderMenu accessibilityLabel={t('header.menu')}>{controls}</HeaderMenu>
+                ) : controls}
             </View>
 
             <View style={styles.contentContainer}>
@@ -129,9 +142,6 @@ const createStyles = (theme: Theme, large: boolean, hasSubtitle: boolean) => Sty
         alignItems: 'center',
         gap: SPACING.xs,
         zIndex: 1,
-    },
-    autoplayToggleWrapper: {
-        marginRight: SPACING.xs,
     },
     contentContainer: {
         alignItems: 'center',

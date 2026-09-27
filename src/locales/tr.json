@@ -1,7 +1,29 @@
 {
   "header": {
     "backButton": "Geri",
-    "homeButton": "Ana Sayfa"
+    "homeButton": "Ana Sayfa",
+    "menu": "Görünüm ayarları"
+  },
+  "audioBar": {
+    "verse": "{{number}}. Ayet",
+    "loading": "Yükleniyor...",
+    "playing": "Çalıyor",
+    "paused": "Duraklatıldı",
+    "play": "Oynat",
+    "pause": "Duraklat",
+    "stop": "Durdur",
+    "speed": "Okuma hızı: {{rate}}x",
+    "modeLabel": "Sure bitince",
+    "modes": {
+      "singleVerse": "Tek ayet: ayet bitince dur",
+      "nextSurah": "Sure bitince: sonraki sureye geç",
+      "loopSurah": "Sure bitince: sureyi baştan oku",
+      "stopAtEnd": "Sure bitince: dur",
+      "loopVerse": "Aynı ayeti tekrarla"
+    },
+    "tracking": "Okunan ayeti takip et",
+    "trackingOn": "Okunan ayet takip ediliyor",
+    "trackingOff": "Ayet takibi kapalı"
   },
   "screenTitles": {
     "about": "Hakkında",
@@ -616,6 +638,11 @@
       {
         "date": "28 Eylül 2026",
         "bullets": [
+          "Otomatik oynatma, sure sayfasının üstünden alttaki oynatıcının mod tuşuna taşındı; \"Tek ayet\" seçilince her ayetin sonunda duruyor.",
+          "Sayfalı görünümde ve Rastgele Ayet ekranında, çalan ayetin durdur tuşu artık ayeti baştan okumak yerine durduruyor.",
+          "Koyu tema kullanırken uygulama açılışında ekranın bir anlığına beyaz yanıp sönmesi giderildi.",
+          "Ayet çalarken alttaki oynatma çubuğu yenilendi: emojiler yerine modern ikonlar, sure adı ve ayet numarası görünüyor, tek satıra sığıyor; mod ve takip tuşlarına basınca ne yaptıkları kısaca yazıyor.",
+          "Mobilde üst çubuktaki düğmeler (otomatik oynatma, yazı boyutu, dil, tema) sığmadığı için tek bir düğmede toplandı; dokununca aşağı doğru açılıyor.",
           "Yeni kâri eklendi: Yasser Ad-Dussary.",
           "Uygulama genelinde tek bir ortak tema kullanılmaya başlandı; kartlar, butonlar ve listeler artık her ekranda aynı görünüyor.",
           "Koyu modda bazı kenarlıkların ve silme butonunun yanlış renkte görünmesi düzeltildi.",
@@ -629,7 +656,7 @@
           "Ayetler art arda dinlenirken (otomatik oynatma, ezber, ayet tekrarı, sonraki sure) ayet geçişleri artık kesintisiz; sıradaki ayet önceden yükleniyor ve tam zamanında başlıyor.",
           "İndirilen ayet resmi ve videosunun dosya adında Türkçe harfler artık kaybolmuyor (ör. \"Insirah_Verse_5-6.mp4\").",
           "Sesli videolar artık her tarayıcıda X, WhatsApp ve Instagram'ın kabul ettiği ses formatında (AAC) üretiliyor; \"uyumsuz ses codec'i\" hatası giderildi.",
-          "Fatiha suresinde Özbekçe mealin bir ayet kaymış görünmesi düzeltildi; güncel veri uygulama açılınca otomatik iniyor.",
+          "Fatiha suresinde Özbekçe mealin bir ayet kaymış görünmesi düzeltildi; güncel veri uygulama açılınca otomatik iniyor (Teşekkürler 'kucukaslan').",
           "İnternet bağlantısı zayıfken uygulama açıldığında kayıtlı verilerinizin (son okunanlar, dua listesi) sıfırlanabilmesi sorunu giderildi."
         ]
       },

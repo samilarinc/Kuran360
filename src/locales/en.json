@@ -1,7 +1,29 @@
 {
   "header": {
     "backButton": "Back",
-    "homeButton": "Home"
+    "homeButton": "Home",
+    "menu": "View settings"
+  },
+  "audioBar": {
+    "verse": "Verse {{number}}",
+    "loading": "Loading...",
+    "playing": "Playing",
+    "paused": "Paused",
+    "play": "Play",
+    "pause": "Pause",
+    "stop": "Stop",
+    "speed": "Playback speed: {{rate}}x",
+    "modeLabel": "At surah end",
+    "modes": {
+      "singleVerse": "Single verse: stop after this verse",
+      "nextSurah": "At surah end: go to next surah",
+      "loopSurah": "At surah end: start over",
+      "stopAtEnd": "At surah end: stop",
+      "loopVerse": "Repeat the same verse"
+    },
+    "tracking": "Follow the playing verse",
+    "trackingOn": "Following the playing verse",
+    "trackingOff": "Verse following off"
   },
   "screenTitles": {
     "about": "About",
@@ -617,6 +639,11 @@
       {
         "date": "September 28, 2026",
         "bullets": [
+          "Autoplay moved from the top of the surah page into the player's mode button; choose \"Single verse\" to stop after each verse.",
+          "In paged view and on the Random Verse screen, the stop button on a playing verse now stops it instead of restarting it.",
+          "Fixed the screen briefly flashing white when opening the app with a dark theme.",
+          "The playback bar shown while a verse plays has been redesigned: modern icons instead of emojis, surah name and verse number shown, fits on one line; the mode and follow buttons briefly explain what they do when tapped.",
+          "On mobile, the top bar buttons (autoplay, font size, language, theme) no longer overflow: they're grouped under one button that slides down when tapped.",
           "New reciter added: Yasser Ad-Dussary.",
           "The whole app now uses one shared theme; cards, buttons and lists look the same on every screen.",
           "Fixed some borders and the delete button showing the wrong colors in dark mode.",
@@ -630,7 +657,7 @@
           "Verse transitions are now seamless during continuous listening (autoplay, memorization, verse repeat, next surah); the next verse is loaded ahead and starts right on time.",
           "Downloaded verse image and video file names no longer lose Turkish letters (e.g. \"Insirah_Verse_5-6.mp4\").",
           "Videos with recitation are now always made with the audio format X, WhatsApp and Instagram accept (AAC), in every browser; fixes the \"incompatible audio codec\" error.",
-          "Fixed the Uzbek translation of Al-Fatiha appearing shifted by one verse; the updated data downloads automatically when you open the app.",
+          "Fixed the Uzbek translation of Al-Fatiha appearing shifted by one verse; the updated data downloads automatically when you open the app (thanks 'kucukaslan').",
           "Fixed an issue where your saved data (last read, dua list) could be reset when the app was opened on a weak connection."
         ]
       },

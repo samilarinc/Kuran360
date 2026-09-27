@@ -4,7 +4,6 @@ import { FontSizeToggle } from '@msarinc/ui';
 import { Verse } from '@/components/Verse';
 import { PaginatedVerseView } from '@/components/PaginatedVerseView';
 import { AppHeader } from '@/components/AppHeader';
-import { AutoplayToggle } from '@/components/AutoplayToggle';
 import { LoadingView } from '@/components/LoadingView';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
@@ -261,11 +260,6 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     </View>
   );
 
-  // Memoize toggle handlers to prevent unnecessary re-renders
-  const handleAutoplayToggle = useCallback((enabled: boolean) => {
-    updateSettings({ autoplayEnabled: enabled });
-  }, [updateSettings]);
-
   // Memoize styles to prevent re-creation on every render
 
   const fontSize = settings.surahFontSize;
@@ -288,12 +282,6 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             onBackPress={() => navigation.goBack()}
             showHomeButton={true}
             onHomePress={() => navigation.navigate('Main')}
-            autoplayToggle={
-              <AutoplayToggle
-                isEnabled={settings.autoplayEnabled}
-                onToggle={handleAutoplayToggle}
-              />
-            }
             fontSizeToggle={
               <FontSizeToggle
                 onDecrease={decreaseFontSize}
