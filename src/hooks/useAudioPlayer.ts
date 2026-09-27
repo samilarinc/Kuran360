@@ -654,6 +654,18 @@ export const useAudioPlayer = () => {
     }
   };
 
+  // Verse play button: stops the verse if it's the one playing, otherwise plays it
+  const toggleVerse = async (verse: VerseType) => {
+    const isThisVersePlaying = audioState.isPlaying &&
+      audioState.currentVerse?.surahNumber === verse.surahNumber &&
+      audioState.currentVerse?.number === verse.number;
+    if (isThisVersePlaying) {
+      await stop();
+    } else {
+      await playVerse(verse);
+    }
+  };
+
   const togglePlayPause = async () => {
     if (audioState.isPlaying) {
       await pause();
@@ -836,6 +848,7 @@ export const useAudioPlayer = () => {
     resume,
     stop,
     togglePlayPause,
+    toggleVerse,
     changePlaybackRate,
     setVersesForAutoplay,
     startMemorization,

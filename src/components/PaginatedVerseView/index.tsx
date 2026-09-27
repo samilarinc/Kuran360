@@ -38,7 +38,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
 }) => {
     const { settings, updateSettings } = useSettings();
     const { common } = useTheme();
-    const { audioState, playVerse } = useGlobalAudio();
+    const { audioState, toggleVerse } = useGlobalAudio();
     const { user } = useAuth();
     const [currentVerseIndex, setCurrentVerseIndex] = useState(initialVerseIndex);
     const [isInitialized, setIsInitialized] = useState(false);
@@ -377,7 +377,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                                 <Verse
                                     verse={visibleVerses.previous}
                                     isPlaying={false} // Previous verse shouldn't show as playing
-                                    onPlayPress={playVerse}
+                                    onPlayPress={toggleVerse}
                                     surahVerseCount={verses.length}
                                     showBookmarkButton={!!user}
                                     navigation={navigation}
@@ -401,7 +401,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                             <Verse
                                 verse={visibleVerses.current}
                                 isPlaying={audioState?.currentVerse?.id === visibleVerses.current?.id && audioState?.isPlaying}
-                                onPlayPress={playVerse}
+                                onPlayPress={toggleVerse}
                                 surahVerseCount={verses.length}
                                 showBookmarkButton={!!user}
                                 navigation={navigation}
@@ -421,7 +421,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                                 <Verse
                                     verse={visibleVerses.next}
                                     isPlaying={false} // Next verse shouldn't show as playing
-                                    onPlayPress={playVerse}
+                                    onPlayPress={toggleVerse}
                                     surahVerseCount={verses.length}
                                     showBookmarkButton={!!user}
                                     navigation={navigation}

@@ -52,7 +52,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
     const { t } = useTranslation();
     const styles = useThemedStyles(createStyles);
     useDebouncedSettings(200);
-    const { audioState, playVerse } = useGlobalAudio();
+    const { audioState, toggleVerse } = useGlobalAudio();
     useAuth();
 
     const [currentVerse, setCurrentVerse] = useState<{
@@ -170,7 +170,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
 
     const handlePlayVerse = () => {
         if (currentVerse?.verse) {
-            playVerse(currentVerse.verse);
+            toggleVerse(currentVerse.verse);
         }
     };
 
