@@ -676,6 +676,7 @@
       {
         "date": "September 28, 2026",
         "bullets": [
+          "In paged view, the verse dots at the bottom are hidden while the player is open, leaving more room for reading.",
           "Fixed a part claim getting lost when several people took different parts of a hatim at the same time.",
           "Fixed quick successive settings changes sometimes being undone.",
           "Translated the texts that stayed in Turkish in English mode on the share, go-to-verse, memorization, download and Hijri calendar screens.",
