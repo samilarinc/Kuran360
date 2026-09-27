@@ -7,6 +7,10 @@ import { LoadingView } from '@/components/LoadingView';
 import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { doc, getDoc, collection, addDoc } from 'firebase/firestore';
 import { db } from '@/services/firebase';
+
+// Same limits as the duaRequests rule in firestore.rules
+const MAX_NAME_LENGTH = 100;
+const MAX_TOPIC_LENGTH = 1000;
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
 interface DuaRequestScreenProps {
@@ -123,6 +127,7 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
                             placeholder={t('duaRequestScreen.namePlaceholder')}
                             placeholderTextColor={theme.textSecondary}
                             value={requesterName}
+                            maxLength={MAX_NAME_LENGTH}
                             onChangeText={setRequesterName}
                         />
                     </View>
@@ -136,6 +141,7 @@ export const DuaRequestScreen: React.FC<DuaRequestScreenProps> = ({ navigation, 
                             multiline
                             numberOfLines={4}
                             value={topic}
+                            maxLength={MAX_TOPIC_LENGTH}
                             onChangeText={setTopic}
                         />
                     </View>

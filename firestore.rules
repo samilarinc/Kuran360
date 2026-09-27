@@ -6,18 +6,30 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function isAdmin() {
+      return isSignedIn() && request.auth.uid == 'REMOVED_ADMIN_UID';
+    }
+
+    function isShortString(value, maxLength) {
+      return value is string && value.size() > 0 && value.size() <= maxLength;
+    }
+
     // User data and profiles
     match /users/{userId} {
       allow read, write: if isSignedIn() && request.auth.uid == userId;
-      
+
       // Allow public to see basic profile info (only displayName)
       match /profile/public {
         allow read: if true;
       }
-      
-      // Allow anyone (even non-logged in) to create a dua request
+
+      // Allow anyone (even non-logged in) to create a dua request, with size limits
       match /duaRequests/{requestId} {
-        allow create: if true;
+        allow create: if request.resource.data.keys().hasOnly(['requesterName', 'topic', 'status', 'createdAt'])
+          && isShortString(request.resource.data.requesterName, 100)
+          && isShortString(request.resource.data.topic, 1000)
+          && request.resource.data.status == 'pending'
+          && request.resource.data.createdAt is int;
         allow read, write: if isSignedIn() && request.auth.uid == userId;
       }
 
@@ -32,31 +44,65 @@ service cloud.firestore {
     // Forum threads
     match /threads/{threadId} {
       allow read: if true;
-      allow create: if isSignedIn();
-      allow update: if isSignedIn(); // Allow updating replyCount and updatedAt
+      allow create: if isSignedIn()
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.replyCount == 0;
+      // The author may edit their thread (but not hand it to someone else);
+      // everyone else may only bump its activity time when replying
+      allow update: if isSignedIn() && (
+        (resource.data.authorId == request.auth.uid && request.resource.data.authorId == resource.data.authorId) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['updatedAt', 'replyCount'])
+      );
     }
 
     // Forum posts
     match /posts/{postId} {
       allow read: if true;
-      allow create: if isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.authorId == request.auth.uid;
     }
 
     // Hatims
     match /hatims/{hatimId} {
+      // A part may change only if it stays untouched, or if both its old and new owner are
+      // "nobody" or the caller: claim a free part, release/update your own, never someone else's
+      function partChangeAllowed(i) {
+        let before = resource.data.parts[i];
+        let after = request.resource.data.parts[i];
+        return after == before || (
+          (before.claimedById == null || before.claimedById == request.auth.uid) &&
+          (after.claimedById == null || after.claimedById == request.auth.uid) &&
+          after.partNumber == before.partNumber
+        );
+      }
+
+      function onlyOwnPartsChanged() {
+        return request.resource.data.parts.size() == 30
+          && partChangeAllowed(0) && partChangeAllowed(1) && partChangeAllowed(2) && partChangeAllowed(3)
+          && partChangeAllowed(4) && partChangeAllowed(5) && partChangeAllowed(6) && partChangeAllowed(7)
+          && partChangeAllowed(8) && partChangeAllowed(9) && partChangeAllowed(10) && partChangeAllowed(11)
+          && partChangeAllowed(12) && partChangeAllowed(13) && partChangeAllowed(14) && partChangeAllowed(15)
+          && partChangeAllowed(16) && partChangeAllowed(17) && partChangeAllowed(18) && partChangeAllowed(19)
+          && partChangeAllowed(20) && partChangeAllowed(21) && partChangeAllowed(22) && partChangeAllowed(23)
+          && partChangeAllowed(24) && partChangeAllowed(25) && partChangeAllowed(26) && partChangeAllowed(27)
+          && partChangeAllowed(28) && partChangeAllowed(29);
+      }
+
       allow read: if resource.data.get('isPrivate', false) == false || (isSignedIn() && (
-        resource.data.creatorId == request.auth.uid || 
-        request.auth.uid == 'REMOVED_ADMIN_UID' // Admin ID
+        resource.data.creatorId == request.auth.uid || isAdmin()
       ));
-      allow create: if isSignedIn();
-      allow update: if isSignedIn() && (
-        !resource.data.isLocked || 
-        resource.data.creatorId == request.auth.uid || 
-        request.auth.uid == 'REMOVED_ADMIN_UID'
-      ); 
+      allow create: if isSignedIn()
+        && request.resource.data.creatorId == request.auth.uid
+        && request.resource.data.parts.size() == 30;
+      // Creator/admin: anything except ownership. Others: only their own parts, and only while unlocked.
+      allow update: if isSignedIn() && request.resource.data.creatorId == resource.data.creatorId && (
+        resource.data.creatorId == request.auth.uid || isAdmin() || (
+          !resource.data.get('isLocked', false)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['parts', 'isCompleted'])
+          && onlyOwnPartsChanged()
+        )
+      );
       allow delete: if isSignedIn() && (
-          resource.data.creatorId == request.auth.uid || 
-          request.auth.uid == 'REMOVED_ADMIN_UID'
+          resource.data.creatorId == request.auth.uid || isAdmin()
       );
     }
   }
