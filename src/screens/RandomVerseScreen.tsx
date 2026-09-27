@@ -20,7 +20,6 @@ import { LoadingView } from '@/components/LoadingView';
 import { ErrorView } from '@/components/ErrorView';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { getSurahName } from '@/utils/surahName';
-import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDownloadData } from '@/hooks/useDownloadData';
@@ -51,7 +50,6 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
     const { theme, common } = useTheme();
     const { t } = useTranslation();
     const styles = useThemedStyles(createStyles);
-    useDebouncedSettings(200);
     const { audioState, toggleVerse } = useGlobalAudio();
     useAuth();
 
@@ -309,7 +307,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                 </View>
                 <View style={[common.rowGap, common.mtSm]}>
                     <Badge variant="tint" icon={<BookOpen size={12} color={theme.primary} />} label={t('randomVerseScreen.surahLabel', { number: currentVerse.surah.number })} />
-                    <Badge variant="tint" icon={<MapPin size={12} color={theme.primary} />} label={t('randomVerseScreen.placeLabel', { place: currentVerse.surah.revelationPlace })} />
+                    <Badge variant="tint" icon={<MapPin size={12} color={theme.primary} />} label={t('randomVerseScreen.placeLabel', { place: t(`surahInfo.${currentVerse.surah.revelationPlace}`) })} />
                     <Badge variant="tint" icon={<ListOrdered size={12} color={theme.primary} />} label={t('randomVerseScreen.verseCountLabel', { count: currentVerse.surah.verseCount })} />
                 </View>
             </TouchableOpacity>

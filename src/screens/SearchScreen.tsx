@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { SafeAreaView, ScrollView, Alert, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
-import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme, Theme, useThemedStyles } from '@/contexts/ThemeContext';
 import { AppHeader } from '@/components/AppHeader';
 import { DownloadRequired } from '@/components/DownloadRequired';
@@ -25,7 +25,7 @@ interface SearchScreenProps {
 type SurahFilter = 'all' | number;
 
 export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAvailable }) => {
-    const { settings, availableTranslations } = useDebouncedSettings(300);
+    const { settings, availableTranslations } = useSettings();
     const { theme, common } = useTheme();
     const { t } = useTranslation();
     const styles = useThemedStyles(createStyles);

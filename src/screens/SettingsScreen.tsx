@@ -14,7 +14,7 @@ import {
     Settings2,
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion, CURRENT_VERSION } from '@/data/quranData';
 import { AppHeader } from '@/components/AppHeader';
@@ -45,7 +45,7 @@ const COLORS = {
 };
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
-    const { settings, updateSettings, availableTranslations } = useDebouncedSettings(150);
+    const { settings, updateSettings, availableTranslations } = useSettings();
     const { theme, common } = useTheme();
     const { t } = useTranslation();
     const styles = useTheme().common;

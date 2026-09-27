@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { CircleDot, SkipForward, Repeat, Repeat1, ListEnd, Play, Pause, Square, LocateFixed, LocateOff, type LucideIcon } from 'lucide-react-native';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
-import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { AppSettings } from '@/types';
@@ -32,7 +32,7 @@ const ICON_SIZE = 18;
 
 export const GlobalAudioBar: React.FC = () => {
     const { audioState, togglePlayPause, stop, changePlaybackRate } = useGlobalAudio();
-    const { settings, updateSettings } = useDebouncedSettings(200);
+    const { settings, updateSettings } = useSettings();
     const { theme } = useTheme();
     const styles = useThemedStyles(createStyles);
     const { t } = useTranslation();

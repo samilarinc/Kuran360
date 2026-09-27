@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useRef, ReactNode } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
@@ -8,6 +8,8 @@ import { AppSettings, SettingsContextType } from '@/types';
 import { DEFAULT_ARABIC_FONT_ID, DEFAULT_IMAGE_FONT_ID } from '@/constants/fonts';
 
 const ASYNC_STORAGE_KEY = 'quran_app_settings';
+// Rapid changes (toggles, font size steps) are saved once, after they settle
+const PERSIST_DELAY_MS = 300;
 
 const DEFAULT_SETTINGS: AppSettings = {
     selectedTranslations: [
@@ -211,15 +213,33 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
     const settings = data ?? DEFAULT_SETTINGS;
 
     const mutation = useMutation({
-        mutationFn: (updated: AppSettings) => persistSettings(updated, user?.uid),
+        mutationFn: ({ updated, userId }: { updated: AppSettings; userId?: string }) => persistSettings(updated, userId),
     });
 
-    const updateSettings = (newSettings: Partial<AppSettings>) => {
-        const updated = { ...settings, ...newSettings };
-        queryClient.setQueryData(queryKey, updated);
-        mutation.mutate(updated);
+    // Saving is delayed, the in-memory settings are not: the screen updates at once and the
+    // latest merged settings are written when the changes settle
+    const persistTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const pendingSave = useRef<(() => void) | null>(null);
+    const flushSave = () => {
+        if (persistTimer.current) clearTimeout(persistTimer.current);
+        persistTimer.current = null;
+        pendingSave.current?.();
+        pendingSave.current = null;
     };
+    // Don't lose a pending save when the user changes (sign in/out) or the app unmounts
+    useEffect(() => flushSave, [user?.uid]);
 
+    const updateSettings = (newSettings: Partial<AppSettings>) => {
+        // Merge into the latest cached settings, not this render's copy, so updates made
+        // in between (e.g. from another screen) aren't overwritten
+        const updated = { ...(queryClient.getQueryData<AppSettings>(queryKey) ?? settings), ...newSettings };
+        queryClient.setQueryData(queryKey, updated);
+
+        const userId = user?.uid;
+        pendingSave.current = () => mutation.mutate({ updated: queryClient.getQueryData<AppSettings>(['settings', userId ?? 'anon']) ?? updated, userId });
+        if (persistTimer.current) clearTimeout(persistTimer.current);
+        persistTimer.current = setTimeout(flushSave, PERSIST_DELAY_MS);
+    };
 
     const contextValue: SettingsContextType = {
         settings,

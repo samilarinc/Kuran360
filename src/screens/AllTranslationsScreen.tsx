@@ -9,7 +9,6 @@ import { Badge } from '@/components/Badge';
 import { SPACING, FONT_SIZES, FAVORITE_COLOR, FAVORITE_COLOR_DARK, Theme } from '@/theme';
 import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { useSettings } from '@/contexts/SettingsContext';
-import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
 import { Verse as VerseType, VerseShareData } from '@/types';
 import { getSpacedArabicText } from '@/utils/arabicText';
 import { getSurahNameByNumber } from '@/utils/surahName';
@@ -29,9 +28,8 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
     const { theme, common } = useTheme();
     const { t } = useTranslation();
     const { settings } = useSettings();
-    const { settings: debouncedSettings } = useDebouncedSettings(200);
     const [shareModalVisible, setShareModalVisible] = useState(false);
-    const [selectedTranslation, setSelectedTranslation] = useState<string>(debouncedSettings.favoriteTranslation);
+    const [selectedTranslation, setSelectedTranslation] = useState<string>(settings.favoriteTranslation);
 
     const surahName = useMemo(() => getSurahNameByNumber(t, verse.surahNumber), [t, verse.surahNumber]);
 
@@ -42,11 +40,11 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
         // Önce favori meali, sonra alfabetik sıralama
         const translations = Object.entries(verse.allTranslations);
         return translations.sort(([nameA], [nameB]) => {
-            if (nameA === debouncedSettings.favoriteTranslation) return -1;
-            if (nameB === debouncedSettings.favoriteTranslation) return 1;
+            if (nameA === settings.favoriteTranslation) return -1;
+            if (nameB === settings.favoriteTranslation) return 1;
             return nameA.localeCompare(nameB, 'tr');
         });
-    }, [verse.allTranslations, debouncedSettings.favoriteTranslation]);
+    }, [verse.allTranslations, settings.favoriteTranslation]);
 
     // Seçilen meal ile share data oluştur
     const shareData: VerseShareData = useMemo(() => {
@@ -115,7 +113,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                 {/* Meal Listesi */}
                 <View style={common.flex1}>
                     {availableTranslations.map(([translationName, translationText]) => {
-                        const isFavorite = translationName === debouncedSettings.favoriteTranslation;
+                        const isFavorite = translationName === settings.favoriteTranslation;
 
                         return (
                             <View

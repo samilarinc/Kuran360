@@ -6,7 +6,7 @@ import { PaginatedVerseView } from '@/components/PaginatedVerseView';
 import { AppHeader } from '@/components/AppHeader';
 import { LoadingView } from '@/components/LoadingView';
 import { useGlobalAudio } from '@/contexts/AudioContext';
-import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserData } from '@/contexts/UserDataContext';
@@ -42,7 +42,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const [isUserScrolling, setIsUserScrolling] = useState(false);
   // Persist current verse index for the active surah to survive remounts
   const [currentPaginatedIndex, setCurrentPaginatedIndex] = useState<number>(route.params.verseIndex ?? 0);
-  const { settings, updateSettings } = useDebouncedSettings(200); // 200ms debounce for better UX
+  const { settings, updateSettings } = useSettings();
   const { common } = useTheme();
   const { t } = useTranslation();
   const { user } = useAuth();
@@ -277,7 +277,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
         <>
           <AppHeader
             title={surah.arabicName}
-            subtitle={`${getSurahName(t, surah)} • ${surah.verseCount} ayet • ${surah.revelationPlace}`}
+            subtitle={`${getSurahName(t, surah)} • ${t('surahInfo.verseCount', { count: surah.verseCount })} • ${t(`surahInfo.${surah.revelationPlace}`)}`}
             showBackButton={true}
             onBackPress={() => navigation.goBack()}
             showHomeButton={true}

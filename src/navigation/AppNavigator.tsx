@@ -27,7 +27,7 @@ import { QuranPageScreen } from '@/screens/QuranPageScreen';
 import { ForumProvider } from '@/contexts/ForumContext';
 import { ScreenWrapper } from '@/components/ScreenWrapper';
 import { useGlobalAudio } from '@/contexts/AudioContext';
-import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
+import { useSettings } from '@/contexts/SettingsContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Surah } from '@/types';
 import { loadSurah } from '@/data/quranData';
@@ -95,7 +95,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   const [pendingRedirect, setPendingRedirect] = useState<NavigationHistoryItem | null>(null);
   const { user } = useAuth();
   const { audioState } = useGlobalAudio();
-  const { settings, updateSettings } = useDebouncedSettings(200);
+  const { settings, updateSettings } = useSettings();
 
   useEffect(() => { currentIndexRef.current = currentIndex; }, [currentIndex]);
 
