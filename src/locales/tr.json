@@ -664,10 +664,9 @@
   "about": {
     "role": "Tasarımcı",
     "projectSectionTitle": "Proje Hakkında",
-    "projectSectionText": "Bu uygulama tamamen kişisel bir projedir ve herhangi bir ticari/kar amacı yoktur. Projenin ilerleyen aşamalarında açık kaynak olarak paylaşılması planlanmaktadır.",
+    "projectSectionText": "Bu uygulama tamamen kişisel bir projedir ve herhangi bir ticari/kar amacı yoktur. Kaynak kodu GitHub'da açık olarak paylaşılmaktadır.",
     "bugsSectionTitle": "Bilinen Hatalar ve Planlanan Güncellemeler",
     "bugsSectionBullets": [
-      "Kelime çevirisi açılınca kelime anlamı olmayanlar görünmüyor, örnek: İnşirah ilk ayet",
       "Sayfa sesleri eklenecek, ayrıca 30. cüzdeki sayfadan daha kısa sureler için sesler üretilmeli"
     ],
     "updatesSectionTitle": "Güncelleme Notları",
@@ -675,6 +674,7 @@
       {
         "date": "28 Eylül 2026",
         "bullets": [
+          "Hakkında sayfasına uygulamanın GitHub'daki kaynak koduna bağlantı eklendi.",
           "Sayfalı görünümde oynatıcı açıkken alttaki ayet noktaları gizleniyor; okuma alanı genişliyor.",
           "Hatimde aynı anda farklı cüzler alındığında birinin alımının kaybolması giderildi.",
           "Ayarlarda art arda yapılan değişikliklerin bazen geri alınması sorunu giderildi.",
@@ -897,7 +897,8 @@
           "UI geliştirmeleri ve hata düzeltmeleri"
         ]
       }
-    ]
+    ],
+    "sourceCode": "Kaynak Kod (GitHub)"
   },
   "common": {
     "error": "Hata",

@@ -664,11 +664,9 @@
   "about": {
     "role": "Designer",
     "projectSectionTitle": "About the Project",
-    "projectSectionText": "This app is a fully personal project with no commercial purpose. Making the project open source is planned for a later stage.",
+    "projectSectionText": "This app is a fully personal project with no commercial purpose. Its source code is openly available on GitHub.",
     "bugsSectionTitle": "Known Issues and Planned Updates",
     "bugsSectionBullets": [
-      "When word-by-word translation is enabled, verses without word meanings show nothing, e.g. the first verse of Inshirah",
-      "A Quran page view will be added",
       "Page audio will be added; audio also needs to be generated for the shorter surahs on the page in juz 30"
     ],
     "updatesSectionTitle": "Release Notes",
@@ -676,6 +674,7 @@
       {
         "date": "September 28, 2026",
         "bullets": [
+          "Added a link to the app's source code on GitHub to the About page.",
           "In paged view, the verse dots at the bottom are hidden while the player is open, leaving more room for reading.",
           "Fixed a part claim getting lost when several people took different parts of a hatim at the same time.",
           "Fixed quick successive settings changes sometimes being undone.",
@@ -897,7 +896,8 @@
           "UI improvements and bug fixes"
         ]
       }
-    ]
+    ],
+    "sourceCode": "Source Code (GitHub)"
   },
   "common": {
     "error": "Error",

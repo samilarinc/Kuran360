@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { Mail, GitBranch, Link } from 'lucide-react-native';
+import { Mail, GitBranch, Link, Code } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import {
     AboutScreen as MsarincAboutScreen,
@@ -38,6 +38,7 @@ const AboutScreenContent: React.FC = () => {
                 contacts: [
                     { icon: Mail, label: 'Email (msamilarinc@gmail.com)', url: 'mailto:msamilarinc@gmail.com' },
                     { icon: GitBranch, label: 'GitHub (samilarinc)', url: 'https://github.com/samilarinc' },
+                    { icon: Code, label: t('about.sourceCode'), url: 'https://github.com/samilarinc/Kuran360' },
                     { icon: Link, label: 'LinkedIn (samil-arinc)', url: 'https://www.linkedin.com/in/samil-arinc/' },
                     { icon: Link, label: 'Website (msarinc.com.tr)', url: 'https://www.msarinc.com.tr' },
                 ],
