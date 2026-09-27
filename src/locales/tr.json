@@ -614,6 +614,12 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "28 Eylül 2026",
+        "bullets": [
+          "Yeni kâri eklendi: Yasser Ad-Dussary."
+        ]
+      },
+      {
         "date": "23 Eylül 2026",
         "bullets": [
           "Uygulama genelinde tek bir ortak tema kullanılmaya başlandı; kartlar, butonlar ve listeler artık her ekranda aynı görünüyor.",

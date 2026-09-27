@@ -615,6 +615,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "September 28, 2026",
+        "bullets": [
+          "New reciter added: Yasser Ad-Dussary."
+        ]
+      },
+      {
         "date": "September 23, 2026",
         "bullets": [
           "The whole app now uses one shared theme; cards, buttons and lists look the same on every screen.",
