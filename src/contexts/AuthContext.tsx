@@ -98,20 +98,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             return envConfig;
         }
 
-        // Fallback for web builds
-        if (Platform.OS === 'web') {
-            try {
-                const { googleConfig } = require('@/config/firebase-config.js');
-                return {
-                    webClientId: googleConfig.webClientId,
-                    iosClientId: googleConfig.iosClientId,
-                    androidClientId: googleConfig.androidClientId,
-                };
-            } catch (error) {
-                console.warn('Failed to load Google config fallback:', error);
-            }
-        }
-
         return envConfig;
     };
 

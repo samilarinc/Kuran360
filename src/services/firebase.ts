@@ -23,17 +23,6 @@ const getFirebaseConfig = () => {
         return envConfig;
     }
 
-    // For web builds where env vars might not be available, use fallback
-    if (Platform.OS === 'web') {
-        // Import the fallback config dynamically
-        try {
-            const { firebaseConfig } = require('@/config/firebase-config.js');
-            return firebaseConfig;
-        } catch (error) {
-            console.warn('Failed to load fallback config:', error);
-        }
-    }
-
     // For native builds, try to use Constants
     try {
         const Constants = require('expo-constants').default;
