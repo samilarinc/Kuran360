@@ -16,7 +16,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useDebouncedSettings } from '@/hooks/useDebouncedSettings';
 import { useTheme } from '@/contexts/ThemeContext';
-import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion } from '@/data/quranData';
+import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion, CURRENT_VERSION } from '@/data/quranData';
 import { AppHeader } from '@/components/AppHeader';
 import { ReciterSelector } from '@/components/ReciterSelector';
 import { QuickThemeSetting } from '@/components/QuickThemeSetting';
@@ -78,7 +78,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     }, []);
 
     const filteredTranslations = React.useMemo(() => {
-        if (dataVersion === '3.1') {
+        if (dataVersion && parseFloat(dataVersion) >= 3.1) {
             return availableTranslations;
         }
         // Filter out Kurdish translations if version < 3.1
@@ -171,7 +171,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 setIsUpdating(false);
 
                 // Logically update dataVersion state after successful update
-                setDataVersion('3.1');
+                setDataVersion(CURRENT_VERSION);
 
                 if (Platform.OS === 'web') {
                     setTimeout(() => {
@@ -355,7 +355,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 >
                     <DataUpdateSection
                         isUpdating={isUpdating}
-                        isUpToDate={dataVersion === '3.1'}
+                        isUpToDate={dataVersion === CURRENT_VERSION}
                         downloadProgress={downloadProgress}
                         downloadStatus={downloadStatus}
                         downloadedBytes={downloadedBytes}

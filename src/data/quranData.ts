@@ -27,7 +27,8 @@ const META_STORE = 'meta';
 const LEGACY_CACHE_KEY = 'quran_verses_data';
 const LEGACY_VERSION_KEY = 'quran_verses_version';
 
-const CURRENT_VERSION = '3.1'; // New version for per-verse storage and Kurdish translations
+// Bump whenever public/allVerses.json changes so users re-download it
+export const CURRENT_VERSION = '3.2';
 const META_VERSION_KEY = 'data_version';
 
 // IndexedDB Helper Class

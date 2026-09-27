@@ -616,12 +616,7 @@
       {
         "date": "28 Eylül 2026",
         "bullets": [
-          "Yeni kâri eklendi: Yasser Ad-Dussary."
-        ]
-      },
-      {
-        "date": "23 Eylül 2026",
-        "bullets": [
+          "Yeni kâri eklendi: Yasser Ad-Dussary.",
           "Uygulama genelinde tek bir ortak tema kullanılmaya başlandı; kartlar, butonlar ve listeler artık her ekranda aynı görünüyor.",
           "Koyu modda bazı kenarlıkların ve silme butonunun yanlış renkte görünmesi düzeltildi.",
           "Birden fazla ardışık ayeti tek bir resimde paylaşabilirsiniz; paylaş ekranındaki \"Ayet Aralığı\" ile son ayeti seçin.",
@@ -633,7 +628,9 @@
           "Web'de ayeti, seçili kârinin okumasıyla sesli videoya (MP4) dönüştürebilir, önizleyip indirebilir veya paylaşabilirsiniz; ayetler videoda kesintisiz okunuyor. \"Sesli Video\" hem paylaş ekranında hem resim önizlemesinde.",
           "Ayetler art arda dinlenirken (otomatik oynatma, ezber, ayet tekrarı, sonraki sure) ayet geçişleri artık kesintisiz; sıradaki ayet önceden yükleniyor ve tam zamanında başlıyor.",
           "İndirilen ayet resmi ve videosunun dosya adında Türkçe harfler artık kaybolmuyor (ör. \"Insirah_Verse_5-6.mp4\").",
-          "Sesli videolar artık her tarayıcıda X, WhatsApp ve Instagram'ın kabul ettiği ses formatında (AAC) üretiliyor; \"uyumsuz ses codec'i\" hatası giderildi."
+          "Sesli videolar artık her tarayıcıda X, WhatsApp ve Instagram'ın kabul ettiği ses formatında (AAC) üretiliyor; \"uyumsuz ses codec'i\" hatası giderildi.",
+          "Fatiha suresinde Özbekçe mealin bir ayet kaymış görünmesi düzeltildi; güncel veri uygulama açılınca otomatik iniyor.",
+          "İnternet bağlantısı zayıfken uygulama açıldığında kayıtlı verilerinizin (son okunanlar, dua listesi) sıfırlanabilmesi sorunu giderildi."
         ]
       },
       {

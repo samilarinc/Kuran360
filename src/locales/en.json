@@ -617,12 +617,7 @@
       {
         "date": "September 28, 2026",
         "bullets": [
-          "New reciter added: Yasser Ad-Dussary."
-        ]
-      },
-      {
-        "date": "September 23, 2026",
-        "bullets": [
+          "New reciter added: Yasser Ad-Dussary.",
           "The whole app now uses one shared theme; cards, buttons and lists look the same on every screen.",
           "Fixed some borders and the delete button showing the wrong colors in dark mode.",
           "You can now share several consecutive verses in a single image; pick the last verse with \"Verse Range\" on the share screen.",
@@ -634,7 +629,9 @@
           "On web, you can turn a verse into a video (MP4) with your selected reciter's recitation, preview it, then download or share it; verses flow without gaps in the video. \"Video with Recitation\" is on both the share screen and the image preview.",
           "Verse transitions are now seamless during continuous listening (autoplay, memorization, verse repeat, next surah); the next verse is loaded ahead and starts right on time.",
           "Downloaded verse image and video file names no longer lose Turkish letters (e.g. \"Insirah_Verse_5-6.mp4\").",
-          "Videos with recitation are now always made with the audio format X, WhatsApp and Instagram accept (AAC), in every browser; fixes the \"incompatible audio codec\" error."
+          "Videos with recitation are now always made with the audio format X, WhatsApp and Instagram accept (AAC), in every browser; fixes the \"incompatible audio codec\" error.",
+          "Fixed the Uzbek translation of Al-Fatiha appearing shifted by one verse; the updated data downloads automatically when you open the app.",
+          "Fixed an issue where your saved data (last read, dua list) could be reset when the app was opened on a weak connection."
         ]
       },
       {
