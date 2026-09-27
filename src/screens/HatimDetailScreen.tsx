@@ -42,7 +42,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     const [editIsPrivate, setEditIsPrivate] = useState(false);
     const [editIsLocked, setEditIsLocked] = useState(false);
     const [timeLeft, setTimeLeft] = useState<string>('');
-    const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const styles = useTheme().common;
 
     // Responsive grid calculations
@@ -72,7 +72,8 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
     useEffect(() => {
         fetchHatim().then(() => {
             if (user && hatimId) {
-                HatimService.syncUserName(hatimId, user.uid, user.displayName || t('profileScreen.defaultUserName'));
+                HatimService.syncUserName(hatimId, user.uid, user.displayName || t('profileScreen.defaultUserName'))
+                    .catch(error => console.warn('Could not sync name on hatim:', error));
             }
         });
     }, [fetchHatim, hatimId, user, t]);
@@ -133,7 +134,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             setPartModalVisible(false);
             await fetchHatim();
         } catch (error: any) {
-            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), error.message);
+            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), t(error.message));
         } finally {
             setActionLoading(null);
         }
@@ -147,7 +148,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             setPartModalVisible(false);
             await fetchHatim();
         } catch (error: any) {
-            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), error.message);
+            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), t(error.message));
         } finally {
             setActionLoading(null);
         }
@@ -169,7 +170,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
             setPartModalVisible(false);
             await fetchHatim();
         } catch (error: any) {
-            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), error.message);
+            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), t(error.message));
         } finally {
             setActionLoading(null);
         }

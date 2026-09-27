@@ -8,12 +8,43 @@ import {
     query,
     deleteDoc,
     where,
-    or
+    or,
+    runTransaction
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { Hatim, HatimPart } from '@/types';
 
 const HATIMS_COLLECTION = 'hatims';
+
+/** Error whose message is an i18n key under `hatimErrors`, so screens can show it translated. */
+export class HatimError extends Error {
+    constructor(code: 'notFound' | 'locked' | 'alreadyClaimed' | 'notYourPart') {
+        super(`hatimErrors.${code}`);
+    }
+}
+
+/**
+ * Reads the hatim and writes its updated parts in one transaction, so two people changing
+ * different parts at the same time don't overwrite each other's claims.
+ */
+const updatePartsInTransaction = (
+    hatimId: string,
+    update: (hatim: Hatim) => { parts: HatimPart[]; extra?: Record<string, unknown> } | null,
+): Promise<void> =>
+    runTransaction(db, async transaction => {
+        const docRef = doc(db, HATIMS_COLLECTION, hatimId);
+        const snap = await transaction.get(docRef);
+        if (!snap.exists()) throw new HatimError('notFound');
+        const result = update({ id: snap.id, ...snap.data() } as Hatim);
+        if (result) transaction.update(docRef, { parts: result.parts, ...result.extra });
+    });
+
+const updatePart = (hatimId: string, partNumber: number, change: (part: HatimPart, hatim: Hatim) => HatimPart) =>
+    updatePartsInTransaction(hatimId, hatim => {
+        if (hatim.isLocked) throw new HatimError('locked');
+        const parts = hatim.parts.map(part => (part.partNumber === partNumber ? change(part, hatim) : part));
+        return { parts, extra: { isCompleted: parts.every(p => p.isCompleted) } };
+    });
 
 export const HatimService = {
     async createHatim(title: string, description: string, creatorId: string, creatorName: string, deadline?: number, isPrivate: boolean = false): Promise<string> {
@@ -93,151 +124,53 @@ export const HatimService = {
         return null;
     },
 
-    async claimPart(hatimId: string, partNumber: number, userId: string, userName: string): Promise<void> {
-        const hatim = await this.getHatimById(hatimId);
-        if (!hatim) throw new Error('Hatim bulunamadı');
-        if (hatim.isLocked) throw new Error('Bu hatim kilitlenmiştir, işlem yapılamaz.');
-
-        const updatedParts = hatim.parts.map(part => {
-            if (part.partNumber === partNumber) {
-                if (part.claimedById && part.claimedById !== userId) {
-                    throw new Error('Bu cüz zaten başka biri tarafından alınmış');
-                }
-                return {
-                    ...part,
-                    claimedById: userId,
-                    claimedByName: userName,
-                    claimedAt: Date.now()
-                };
-            }
-            return part;
-        });
-
-        const docRef = doc(db, HATIMS_COLLECTION, hatimId);
-        await updateDoc(docRef, { parts: updatedParts });
-    },
-
-    async unclaimPart(hatimId: string, partNumber: number, userId: string): Promise<void> {
-        const hatim = await this.getHatimById(hatimId);
-        if (!hatim) throw new Error('Hatim bulunamadı');
-        if (hatim.isLocked) throw new Error('Bu hatim kilitlenmiştir, işlem yapılamaz.');
-
-        const isCreator = hatim.creatorId === userId;
-
-        const updatedParts = hatim.parts.map(part => {
-            if (part.partNumber === partNumber) {
-                if (part.claimedById !== userId && !isCreator) {
-                    throw new Error('Sadece kendi aldığınız cüzü veya oluşturduğunuz hatimdeki cüzleri bırakabilirsiniz');
-                }
-                return {
-                    ...part,
-                    claimedById: null,
-                    claimedByName: null,
-                    claimedAt: 0,
-                    isCompleted: false,
-                    completedAt: 0
-                };
-            }
-            return part;
-        });
-
-        const docRef = doc(db, HATIMS_COLLECTION, hatimId);
-        await updateDoc(docRef, {
-            parts: updatedParts,
-            isCompleted: false // Reset hatim completion if a part is unclaimed
+    claimPart(hatimId: string, partNumber: number, userId: string, userName: string): Promise<void> {
+        return updatePart(hatimId, partNumber, part => {
+            if (part.claimedById && part.claimedById !== userId) throw new HatimError('alreadyClaimed');
+            return { ...part, claimedById: userId, claimedByName: userName, claimedAt: Date.now() };
         });
     },
 
-    async togglePartCompletion(hatimId: string, partNumber: number, userId: string, completed: boolean): Promise<void> {
-        const hatim = await this.getHatimById(hatimId);
-        if (!hatim) throw new Error('Hatim bulunamadı');
-        if (hatim.isLocked) throw new Error('Bu hatim kilitlenmiştir, işlem yapılamaz.');
-
-        const isCreator = hatim.creatorId === userId;
-
-        const updatedParts = hatim.parts.map(part => {
-            if (part.partNumber === partNumber) {
-                // Allow creator or the person who claimed it to toggle completion
-                if (part.claimedById !== userId && !isCreator) {
-                    throw new Error('Sadece kendi aldığınız cüzü tamamlandı yapabilirsiniz');
-                }
-                return {
-                    ...part,
-                    isCompleted: completed,
-                    completedAt: completed ? Date.now() : 0
-                };
-            }
-            return part;
-        });
-
-        const allCompleted = updatedParts.every(p => p.isCompleted);
-
-        const docRef = doc(db, HATIMS_COLLECTION, hatimId);
-        await updateDoc(docRef, {
-            parts: updatedParts,
-            isCompleted: allCompleted
+    unclaimPart(hatimId: string, partNumber: number, userId: string): Promise<void> {
+        return updatePart(hatimId, partNumber, (part, hatim) => {
+            if (part.claimedById !== userId && hatim.creatorId !== userId) throw new HatimError('notYourPart');
+            return { ...part, claimedById: null, claimedByName: null, claimedAt: 0, isCompleted: false, completedAt: 0 };
         });
     },
 
-    async updatePartProgress(hatimId: string, partNumber: number, userId: string, pagesRead: number): Promise<void> {
-        const hatim = await this.getHatimById(hatimId);
-        if (!hatim) throw new Error('Hatim bulunamadı');
-        if (hatim.isLocked) throw new Error('Bu hatim kilitlenmiştir, işlem yapılamaz.');
-
-        const isCreator = hatim.creatorId === userId;
-
-        const updatedParts = hatim.parts.map(part => {
-            if (part.partNumber === partNumber) {
-                if (part.claimedById !== userId && !isCreator) {
-                    throw new Error('Sadece kendi aldığınız cüzün ilerlemesini güncelleyebilirsiniz');
-                }
-
-                const total = part.totalPages || 20;
-                const completed = pagesRead >= total;
-
-                return {
-                    ...part,
-                    pagesRead,
-                    isCompleted: completed,
-                    completedAt: completed ? Date.now() : 0
-                };
-            }
-            return part;
+    togglePartCompletion(hatimId: string, partNumber: number, userId: string, completed: boolean): Promise<void> {
+        return updatePart(hatimId, partNumber, (part, hatim) => {
+            // Allow creator or the person who claimed it to toggle completion
+            if (part.claimedById !== userId && hatim.creatorId !== userId) throw new HatimError('notYourPart');
+            return { ...part, isCompleted: completed, completedAt: completed ? Date.now() : 0 };
         });
+    },
 
-        const allCompleted = updatedParts.every(p => p.isCompleted);
-
-        const docRef = doc(db, HATIMS_COLLECTION, hatimId);
-        await updateDoc(docRef, {
-            parts: updatedParts,
-            isCompleted: allCompleted
+    updatePartProgress(hatimId: string, partNumber: number, userId: string, pagesRead: number): Promise<void> {
+        return updatePart(hatimId, partNumber, (part, hatim) => {
+            if (part.claimedById !== userId && hatim.creatorId !== userId) throw new HatimError('notYourPart');
+            const completed = pagesRead >= (part.totalPages || 20);
+            return { ...part, pagesRead, isCompleted: completed, completedAt: completed ? Date.now() : 0 };
         });
     },
 
     async syncUserName(hatimId: string, userId: string, newName: string): Promise<void> {
-        const hatim = await this.getHatimById(hatimId);
-        if (!hatim) return;
-
-        let changed = false;
-        const updatedParts = hatim.parts.map(part => {
-            if (part.claimedById === userId && part.claimedByName !== newName) {
-                changed = true;
-                return { ...part, claimedByName: newName };
-            }
-            return part;
+        await updatePartsInTransaction(hatimId, hatim => {
+            let changed = false;
+            const parts = hatim.parts.map(part => {
+                if (part.claimedById === userId && part.claimedByName !== newName) {
+                    changed = true;
+                    return { ...part, claimedByName: newName };
+                }
+                return part;
+            });
+            const renameCreator = hatim.creatorId === userId && hatim.creatorName !== newName;
+            if (!changed && !renameCreator) return null;
+            return { parts, extra: renameCreator ? { creatorName: newName } : undefined };
+        }).catch(error => {
+            // Deleted meanwhile: nothing to sync
+            if (!(error instanceof HatimError)) throw error;
         });
-
-        // Use a record for updates
-        const updates: any = {};
-        if (changed) updates.parts = updatedParts;
-        if (hatim.creatorId === userId && hatim.creatorName !== newName) {
-            updates.creatorName = newName;
-        }
-
-        if (Object.keys(updates).length > 0) {
-            const docRef = doc(db, HATIMS_COLLECTION, hatimId);
-            await updateDoc(docRef, updates);
-        }
     },
 
     async updateHatim(hatimId: string, updates: { title?: string; description?: string; deadline?: number | null; isPrivate?: boolean; isLocked?: boolean }): Promise<void> {
