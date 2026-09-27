@@ -20,7 +20,7 @@ import { getSurahsList } from '@/data/quranData';
 import { useTranslation } from 'react-i18next';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
-import { getSpacedArabicText } from '@/utils/arabicText';
+import { getSpacedArabicText, getWordSegments } from '@/utils/arabicText';
 import { createStyles } from './index.styles';
 import type { CommonStyles } from '@/theme/common.styles';
 
@@ -48,19 +48,13 @@ const InlineArabicWithHover: React.FC<{
     );
   }
 
-  // Build lookup map
-  const map = new Map<string, string>();
-  verse.wordTranslations.forEach(w => {
-    if (w.arabic) map.set(w.arabic, w.translation);
-  });
-
-  // Source text has no spaces; words missing from the word list stay in (without a hover card)
-  const tokens = getSpacedArabicText(verse).split(/\s+/).filter(Boolean);
+  // Source text has no spaces; each segment is one listed word plus any particle folded into its translation
+  const segments = getWordSegments(verse);
 
   return (
     <View style={styles.inlineArabicRow}>
-      {tokens.map((tok, idx) => {
-        const tr = map.get(tok);
+      {segments.map((segment, idx) => {
+        const tr = segment.translation;
         const isHover = hoveredIndex === idx && !!tr;
         return (
           <View key={idx} style={styles.inlineArabicWordWrap}>
@@ -76,7 +70,7 @@ const InlineArabicWithHover: React.FC<{
               // @ts-ignore
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              {tok}
+              {segment.arabic}
             </Text>
             {isHover && (
               <View style={styles.hoverCard}>
@@ -84,7 +78,7 @@ const InlineArabicWithHover: React.FC<{
               </View>
             )}
             {/* Space between words, preserved visually on web */}
-            {idx < tokens.length - 1 && <Text> </Text>}
+            {idx < segments.length - 1 && <Text> </Text>}
           </View>
         );
       })}
@@ -176,7 +170,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
       <View style={styles.wordTranslationsContainer}>
         <Text style={styles.sectionTitle}>Kelime Çevirileri:</Text>
         <View style={styles.wordTranslationsGrid}>
-          {verse.wordTranslations.map((word, index) => (
+          {getWordSegments(verse).map((word, index) => (
             <View key={index} style={common.wordItem}>
               <ArabicText style={common.wordArabic}>{word.arabic}</ArabicText>
               <Text style={common.wordTranslation}>{word.translation}</Text>

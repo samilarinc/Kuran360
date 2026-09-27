@@ -20,7 +20,7 @@ import { loadSurah } from '@/data/quranData';
 import { getVerseRangesForPage, TOTAL_MUSHAF_PAGES } from '@/data/pageMapping';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
-import { getSpacedArabicText } from '@/utils/arabicText';
+import { getSpacedArabicText, getWordSegments } from '@/utils/arabicText';
 import { createStyles } from './QuranPageScreen.styles';
 
 const MIN_FONT_SIZE = 18;
@@ -217,7 +217,7 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
 
                         {settings.quranPageTranslation === WORD_BY_WORD_TRANSLATION_ID ? (
                           <View style={styles.wordByWordGrid}>
-                            {verse.wordTranslations.map((word, idx) => (
+                            {getWordSegments(verse).map((word, idx) => (
                               <View key={idx} style={common.wordItem}>
                                 <ArabicText style={common.wordArabic}>{word.arabic}</ArabicText>
                                 <Text style={[common.wordTranslation, styles.translationFont]}>{word.translation}</Text>

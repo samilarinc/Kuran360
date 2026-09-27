@@ -639,6 +639,7 @@
       {
         "date": "September 28, 2026",
         "bullets": [
+          "Words that were missing from word-by-word translations (e.g. \"اَلَمْ\" in Al-Inshirah 1) now appear together with the word whose translation carries their meaning: \"اَلَمْ نَشْرَحْ → açmadık mı?\".",
           "Autoplay moved from the top of the surah page into the player's mode button; choose \"Single verse\" to stop after each verse.",
           "In paged view and on the Random Verse screen, the stop button on a playing verse now stops it instead of restarting it.",
           "Fixed the screen briefly flashing white when opening the app with a dark theme.",

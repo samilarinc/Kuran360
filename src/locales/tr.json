@@ -638,6 +638,7 @@
       {
         "date": "28 Eylül 2026",
         "bullets": [
+          "Kelime çevirilerinde eksik görünen kelimeler (ör. İnşirah 1'deki \"اَلَمْ\") artık anlamını taşıyan kelimeyle birlikte gösteriliyor: \"اَلَمْ نَشْرَحْ → açmadık mı?\".",
           "Otomatik oynatma, sure sayfasının üstünden alttaki oynatıcının mod tuşuna taşındı; \"Tek ayet\" seçilince her ayetin sonunda duruyor.",
           "Sayfalı görünümde ve Rastgele Ayet ekranında, çalan ayetin durdur tuşu artık ayeti baştan okumak yerine durduruyor.",
           "Koyu tema kullanırken uygulama açılışında ekranın bir anlığına beyaz yanıp sönmesi giderildi.",
