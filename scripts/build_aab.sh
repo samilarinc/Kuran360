@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Run from the project root regardless of where the script is called from
+cd "$(dirname "$0")/.."
+
 echo "Building Android App Bundle (AAB) for Release..."
 
 # Google Play expects this app's original upload key, which lives in EAS's

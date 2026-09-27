@@ -1,6 +1,6 @@
 #!/bin/bash
 # Build the Android app, install it on the connected device and launch it.
-# Usage: ./run_android.sh {debug|release}
+# Usage: ./scripts/run_android.sh {debug|release}
 set -e
 
 BUILD_TYPE="$1"
@@ -10,7 +10,7 @@ if [ "$BUILD_TYPE" != "debug" ] && [ "$BUILD_TYPE" != "release" ]; then
 fi
 
 # Run from the project root regardless of where the script is called from
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 # android/ is gitignored and generated from app.config.js
 if [ ! -d android ]; then

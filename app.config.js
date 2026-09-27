@@ -43,14 +43,15 @@ function withReleaseSigningConfig(config) {
 export default ({ config }) => ({
     ...config,
     name: "Kuran360",
+    owner: "msarinc",
     slug: "kuran360",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/icon.png",
+    icon: "./public/favicon.png",
     userInterfaceStyle: "light",
     scheme: process.env.APP_SCHEME || "kuran360",
     splash: {
-        image: "./assets/splash.png",
+        image: "./public/favicon.png",
         resizeMode: "contain",
         backgroundColor: "#2E7D32"
     },
@@ -62,7 +63,7 @@ export default ({ config }) => ({
     },
     android: {
         adaptiveIcon: {
-            foregroundImage: "./assets/adaptive-icon.png",
+            foregroundImage: "./public/favicon.png",
             backgroundColor: "#2E7D32"
         },
         package: "com.kuran360",
@@ -100,6 +101,9 @@ export default ({ config }) => ({
     ],
     extra: {
         ...(config?.extra || {}),
+        eas: {
+            projectId: "8030feab-d680-42d0-b3be-b4b69a4af9c0"
+        },
         firebase: {
             apiKey: process.env.FIREBASE_API_KEY,
             authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,

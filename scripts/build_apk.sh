@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Run from the project root regardless of where the script is called from
+cd "$(dirname "$0")/.."
+
 echo "Building Android APK for Release..."
 
 # android/ is gitignored and regenerated from app.config.js (versionCode,

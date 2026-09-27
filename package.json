@@ -10,7 +10,11 @@
     "start": "expo start",
     "dev": "expo start",
     "start:metro": "react-native start",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "deploy:web": "scripts/sync.sh",
+    "build:apk": "scripts/build_apk.sh",
+    "build:aab": "scripts/build_aab.sh",
+    "android:run": "scripts/run_android.sh"
   },
   "dependencies": {
     "@expo-google-fonts/amiri": "^0.4.1",
@@ -74,5 +78,28 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": "@react-native",
+    "ignorePatterns": [
+      "msarinc-common",
+      "dist"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "public/service-worker.js"
+        ],
+        "env": {
+          "serviceworker": true
+        }
+      }
+    ]
+  },
+  "prettier": {
+    "arrowParens": "avoid",
+    "singleQuote": true,
+    "trailingComma": "all"
   }
 }
