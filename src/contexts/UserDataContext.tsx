@@ -66,7 +66,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
                     lastRead: data.lastRead || [],
                     duaList: data.duaList || [],
                 });
-            } else {
+            } else if (!snapshot.metadata.fromCache) {
                 setDoc(userDocRef, EMPTY_USER_DATA);
             }
         }, (error) => {
