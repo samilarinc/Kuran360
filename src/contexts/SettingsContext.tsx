@@ -145,6 +145,11 @@ const AVAILABLE_RECITERS = [
         id: 'yasser',
         name: 'Yasser Ad-Dussary',
         folder: 'yasser_all_verse'
+    },
+    {
+        id: 'maher',
+        name: 'Maher Al-Muaiqly',
+        folder: 'maher_all_verse'
     }
 ];
 
