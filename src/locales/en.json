@@ -589,6 +589,7 @@
       "surahs": "Surahs",
       "randomVerse": "Random Verse",
       "search": "Search",
+      "verseFinder": "Find Verse (by Voice)",
       "quranPage": "Page View",
       "settings": "Settings",
       "profile": "Profile",
@@ -671,6 +672,12 @@
     ],
     "updatesSectionTitle": "Release Notes",
     "updates": [
+      {
+        "date": "September 29, 2026",
+        "bullets": [
+          "New \"Find Verse\" screen (web): listens to a recitation through the microphone and finds the surah and verse; recognition runs on the device, with several speech models to download and choose from."
+        ]
+      },
       {
         "date": "September 28, 2026",
         "bullets": [
@@ -1022,5 +1029,89 @@
     "verseCount": "{{count}} verses",
     "Mekkî": "Meccan",
     "Medenî": "Medinan"
+  },
+  "verseFinder": {
+    "title": "Find Verse",
+    "subtitle": "Listens to a recitation and finds the verse",
+    "downloadTitle": "Quran data required",
+    "downloadDescription": "To find recited verses, download the Quran text first.",
+    "tapToStart": "Tap the microphone and start reciting. 5–10 seconds is enough.",
+    "listening": "Listening… {{seconds}} / {{max}} s — tap to finish",
+    "recognizing": "Searching for the verse…",
+    "loadingModel": "Preparing the speech model…",
+    "start": "Start listening",
+    "stop": "Stop listening",
+    "heard": "Heard",
+    "noMatch": "No verse found. Try reciting a little longer and more clearly.",
+    "verse": "verse {{verse}}",
+    "verseRange": "verses {{from}}–{{to}}",
+    "match": "{{percent}}% match",
+    "playRecording": "Play recording",
+    "playing": "Playing…",
+    "rerun": "Recognize this recording again",
+    "manageModels": "Manage models",
+    "noModel": "To get started, download a speech model from \"Manage models\".",
+    "insecureWarning": "This page was opened over an insecure connection (http). Browsers turn off the microphone and WebGPU there; open it over https.",
+    "status": {
+      "title": "Status",
+      "checking": "Checking…",
+      "yes": "Yes",
+      "no": "No",
+      "model": "Speech model",
+      "noModel": "None selected",
+      "modelStates": {
+        "idle": "Not loaded",
+        "loading": "Loading",
+        "ready": "Ready",
+        "error": "Failed to load"
+      },
+      "webgpu": "WebGPU",
+      "webgpuNoAdapter": "In the browser, but GPU access is off",
+      "webgpuUnsupported": "Not supported",
+      "microphone": "Microphone",
+      "recording": "Last recording",
+      "lastRun": "Last recognition time",
+      "seconds": "{{value}} s",
+      "recordingLevel": {
+        "good": "Your voice came through clearly",
+        "quiet": "A bit quiet, recite closer to the microphone",
+        "silent": "No sound heard, check your microphone"
+      }
+    },
+    "models": {
+      "title": "Speech models",
+      "size": "{{size}} MB",
+      "downloaded": "Downloaded",
+      "download": "Download",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "downloadError": "Download failed: {{message}}",
+      "note": "Models are downloaded once and kept in the browser; recognition runs entirely on your device and no audio is sent anywhere.",
+      "unsupported": {
+        "webgpu": "This device has no WebGPU",
+        "shader-f16": "This device's GPU doesn't support fp16"
+      },
+      "fastconformer": {
+        "name": "FastConformer",
+        "description": "Fast and light, runs on the CPU on any device. Recommended. (CC-BY-4.0, mohammed/fastconformer-quran-ar)"
+      },
+      "whisper-webgpu": {
+        "name": "Whisper · WebGPU",
+        "description": "Tarteel's Quran model, runs on the graphics card."
+      },
+      "whisper-webgpu-fp16": {
+        "name": "Whisper · WebGPU (fp16)",
+        "description": "Smaller and faster; on some devices it may always return the same result (experimental)."
+      },
+      "whisper-cpu": {
+        "name": "Whisper · CPU",
+        "description": "For devices without WebGPU; the largest and slowest option."
+      }
+    },
+    "errors": {
+      "microphone": "Could not access the microphone. Allow microphone access in your browser settings.",
+      "unsupported": "This browser does not support audio recording.",
+      "recognition": "Something went wrong during recognition: {{message}}"
+    }
   }
 }

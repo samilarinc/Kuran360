@@ -1,4 +1,5 @@
 const CACHE_NAME = 'kuran360-v2';
+const MODEL_HOSTS = ['huggingface.co', 'hf.co', 'cdn.jsdelivr.net'];
 
 // Install event
 self.addEventListener('install', () => {
@@ -12,7 +13,8 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
+          // Only our own old versions: other caches (e.g. Transformers.js's model cache) aren't ours to clear
+          if (cacheName.startsWith('kuran360-') && cacheName !== CACHE_NAME) {
             console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
@@ -36,6 +38,11 @@ self.addEventListener('fetch', (event) => {
   }
 
   const url = new URL(request.url);
+  // The verse finder's speech models (100+ MB each) are kept in their own 'transformers-cache';
+  // copying them into this cache too would double the storage and slow the download.
+  if (MODEL_HOSTS.some((host) => url.hostname === host || url.hostname.endsWith('.' + host))) {
+    return;
+  }
   const isNavigation = request.mode === 'navigate' || url.pathname === '/' || url.pathname === '/index.html';
   const isHashedAsset = url.pathname.startsWith('/_expo/static/');
 

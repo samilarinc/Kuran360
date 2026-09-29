@@ -94,6 +94,15 @@
         "env": {
           "serviceworker": true
         }
+      },
+      {
+        "files": [
+          "public/verse-finder/*.js"
+        ],
+        "env": {
+          "worker": true,
+          "es2020": true
+        }
       }
     ]
   },

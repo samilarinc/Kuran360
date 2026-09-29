@@ -589,6 +589,7 @@
       "surahs": "Sureler",
       "randomVerse": "Rastgele Ayet",
       "search": "Arama",
+      "verseFinder": "Ayet Bul (Sesle)",
       "quranPage": "Sayfa Görünümü",
       "settings": "Ayarlar",
       "profile": "Profil",
@@ -671,6 +672,12 @@
     ],
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
+      {
+        "date": "29 Eylül 2026",
+        "bullets": [
+          "Yeni \"Ayet Bul\" ekranı (web): okunan ayeti mikrofondan dinleyip hangi sure ve ayet olduğunu buluyor; tanıma cihazda yapılıyor, farklı ses modelleri indirilip seçilebiliyor."
+        ]
+      },
       {
         "date": "28 Eylül 2026",
         "bullets": [
@@ -1023,5 +1030,89 @@
     "verseCount": "{{count}} ayet",
     "Mekkî": "Mekkî",
     "Medenî": "Medenî"
+  },
+  "verseFinder": {
+    "title": "Ayet Bul",
+    "subtitle": "Okunan ayeti dinleyip bulur",
+    "downloadTitle": "Kur'an verisi gerekli",
+    "downloadDescription": "Okunan ayeti bulabilmek için önce Kur'an metnini indirmeniz gerekiyor.",
+    "tapToStart": "Mikrofona dokunun ve okumaya başlayın. 5–10 saniye yeterli.",
+    "listening": "Dinleniyor… {{seconds}} / {{max}} sn — bitirmek için dokunun",
+    "recognizing": "Ayet aranıyor…",
+    "loadingModel": "Ses modeli hazırlanıyor…",
+    "start": "Dinlemeye başla",
+    "stop": "Dinlemeyi bitir",
+    "heard": "Duyulan",
+    "noMatch": "Ayet bulunamadı. Biraz daha uzun ve net okumayı deneyin.",
+    "verse": "{{verse}}. ayet",
+    "verseRange": "{{from}}–{{to}}. ayetler",
+    "match": "%{{percent}} eşleşme",
+    "playRecording": "Kaydı dinle",
+    "playing": "Çalınıyor…",
+    "rerun": "Bu kayıtla tekrar tanı",
+    "manageModels": "Modelleri yönet",
+    "noModel": "Başlamak için \"Modelleri yönet\"ten bir ses modeli indirin.",
+    "insecureWarning": "Sayfa güvenli olmayan bir bağlantıyla (http) açıldı. Tarayıcı bu durumda mikrofonu ve WebGPU'yu kapatır; https üzerinden açın.",
+    "status": {
+      "title": "Durum",
+      "checking": "Kontrol ediliyor…",
+      "yes": "Var",
+      "no": "Yok",
+      "model": "Ses modeli",
+      "noModel": "Seçilmedi",
+      "modelStates": {
+        "idle": "Hazır değil",
+        "loading": "Yükleniyor",
+        "ready": "Hazır",
+        "error": "Yüklenemedi"
+      },
+      "webgpu": "WebGPU",
+      "webgpuNoAdapter": "Tarayıcıda var ama GPU erişimi kapalı",
+      "webgpuUnsupported": "Desteklenmiyor",
+      "microphone": "Mikrofon",
+      "recording": "Son kayıt",
+      "lastRun": "Son tanıma süresi",
+      "seconds": "{{value}} sn",
+      "recordingLevel": {
+        "good": "Sesiniz net duyuldu",
+        "quiet": "Ses biraz kısık, mikrofona yakın okuyun",
+        "silent": "Ses duyulmadı, mikrofonu kontrol edin"
+      }
+    },
+    "models": {
+      "title": "Ses modelleri",
+      "size": "{{size}} MB",
+      "downloaded": "İndirildi",
+      "download": "İndir",
+      "delete": "Sil",
+      "cancel": "İptal",
+      "downloadError": "İndirilemedi: {{message}}",
+      "note": "Modeller bir kez indirilir ve tarayıcıda saklanır; tanıma tamamen cihazınızda yapılır, ses hiçbir yere gönderilmez.",
+      "unsupported": {
+        "webgpu": "Bu cihazda WebGPU yok",
+        "shader-f16": "Bu cihazın GPU'su fp16 desteklemiyor"
+      },
+      "fastconformer": {
+        "name": "FastConformer",
+        "description": "Hızlı ve hafif, her cihazda işlemciyle çalışır. Önerilen. (CC-BY-4.0, mohammed/fastconformer-quran-ar)"
+      },
+      "whisper-webgpu": {
+        "name": "Whisper · WebGPU",
+        "description": "Tarteel'in Kur'an modeli, ekran kartıyla çalışır."
+      },
+      "whisper-webgpu-fp16": {
+        "name": "Whisper · WebGPU (fp16)",
+        "description": "Daha küçük ve hızlı; bazı cihazlarda hep aynı sonucu verebilir (deneysel)."
+      },
+      "whisper-cpu": {
+        "name": "Whisper · CPU",
+        "description": "WebGPU olmayan cihazlar için; en büyük ve en yavaş seçenek."
+      }
+    },
+    "errors": {
+      "microphone": "Mikrofona erişilemedi. Tarayıcı ayarlarından mikrofon iznini verin.",
+      "unsupported": "Bu tarayıcı ses kaydını desteklemiyor.",
+      "recognition": "Tanıma sırasında bir hata oluştu: {{message}}"
+    }
   }
 }
