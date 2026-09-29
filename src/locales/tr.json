@@ -670,12 +670,18 @@
     "bugsSectionBullets": [
       "Sayfa sesleri eklenecek, ayrıca 30. cüzdeki sayfadan daha kısa sureler için sesler üretilmeli"
     ],
+    "creditsSectionTitle": "Kullanılan Modeller",
+    "creditsSectionBullets": [
+      "Ayet Bul · FastConformer: \"fastconformer-quran-ar\", mohammed (huggingface.co/mohammed/fastconformer-quran-ar). NVIDIA NeMo FastConformer tabanlı, tarteel-ai/everyayah ile eğitilmiş. Lisans: CC BY 4.0 (creativecommons.org/licenses/by/4.0). Değiştirilmeden kullanılmıştır.",
+      "Ayet Bul · Whisper: \"whisper-base-ar-quran\", Tarteel AI (huggingface.co/tarteel-ai/whisper-base-ar-quran). Lisans: Apache 2.0."
+    ],
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
         "date": "29 Eylül 2026",
         "bullets": [
-          "Yeni \"Ayet Bul\" ekranı (web): okunan ayeti mikrofondan dinleyip hangi sure ve ayet olduğunu buluyor; tanıma cihazda yapılıyor, farklı ses modelleri indirilip seçilebiliyor."
+          "Yeni \"Ayet Bul\" ekranı (web): okunan ayeti mikrofondan dinleyip hangi sure ve ayet olduğunu buluyor; tanıma cihazda yapılıyor, farklı ses modelleri indirilip seçilebiliyor.",
+          "Hakkında sayfasına, Ayet Bul'da kullanılan ses modellerinin kaynak ve lisans bilgileri eklendi."
         ]
       },
       {
@@ -1094,7 +1100,7 @@
       },
       "fastconformer": {
         "name": "FastConformer",
-        "description": "Hızlı ve hafif, her cihazda işlemciyle çalışır. Önerilen. (CC-BY-4.0, mohammed/fastconformer-quran-ar)"
+        "description": "Hızlı ve hafif, her cihazda işlemciyle çalışır. Önerilen."
       },
       "whisper-webgpu": {
         "name": "Whisper · WebGPU",

@@ -670,12 +670,18 @@
     "bugsSectionBullets": [
       "Page audio will be added; audio also needs to be generated for the shorter surahs on the page in juz 30"
     ],
+    "creditsSectionTitle": "Models Used",
+    "creditsSectionBullets": [
+      "Find Verse · FastConformer: \"fastconformer-quran-ar\" by mohammed (huggingface.co/mohammed/fastconformer-quran-ar). Based on NVIDIA NeMo FastConformer, trained on tarteel-ai/everyayah. License: CC BY 4.0 (creativecommons.org/licenses/by/4.0). Used without modification.",
+      "Find Verse · Whisper: \"whisper-base-ar-quran\" by Tarteel AI (huggingface.co/tarteel-ai/whisper-base-ar-quran). License: Apache 2.0."
+    ],
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
         "date": "September 29, 2026",
         "bullets": [
-          "New \"Find Verse\" screen (web): listens to a recitation through the microphone and finds the surah and verse; recognition runs on the device, with several speech models to download and choose from."
+          "New \"Find Verse\" screen (web): listens to a recitation through the microphone and finds the surah and verse; recognition runs on the device, with several speech models to download and choose from.",
+          "Added the sources and licenses of the speech models used by Find Verse to the About page."
         ]
       },
       {
@@ -1093,7 +1099,7 @@
       },
       "fastconformer": {
         "name": "FastConformer",
-        "description": "Fast and light, runs on the CPU on any device. Recommended. (CC-BY-4.0, mohammed/fastconformer-quran-ar)"
+        "description": "Fast and light, runs on the CPU on any device. Recommended."
       },
       "whisper-webgpu": {
         "name": "Whisper · WebGPU",

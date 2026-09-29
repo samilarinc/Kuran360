@@ -24,6 +24,10 @@ const AboutScreenContent: React.FC = () => {
             text: (t('about.bugsSectionBullets', { returnObjects: true }) as string[]).map((b) => `• ${b}`).join('\n'),
         },
         {
+            title: t('about.creditsSectionTitle'),
+            text: (t('about.creditsSectionBullets', { returnObjects: true }) as string[]).map((b) => `• ${b}`).join('\n'),
+        },
+        {
             title: t('about.updatesSectionTitle'),
             updates: t('about.updates', { returnObjects: true }) as AboutUpdate[],
         },
