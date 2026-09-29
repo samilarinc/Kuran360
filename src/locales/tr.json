@@ -1098,7 +1098,8 @@
       "note": "Modeller bir kez indirilir ve tarayıcıda saklanır; tanıma tamamen cihazınızda yapılır, ses hiçbir yere gönderilmez.",
       "unsupported": {
         "webgpu": "Bu cihazda WebGPU yok",
-        "shader-f16": "Bu cihazın GPU'su fp16 desteklemiyor"
+        "shader-f16": "Bu cihazın GPU'su fp16 desteklemiyor",
+        "software": "Ekran kartı kullanılamıyor (WebGPU yazılımsal çalışıyor)"
       },
       "fastconformer": {
         "name": "FastConformer",

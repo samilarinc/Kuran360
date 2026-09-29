@@ -7,7 +7,7 @@ import { ProgressBar } from '@/components/ProgressBar';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { SPACING, Theme } from '@/theme';
 import { deleteModel, downloadModel, VERSE_MODELS, VerseModel, VerseModelId } from '@/services/verseModels';
-import { DeviceSupport, isModelSupported, speechModel } from '@/services/verseFinder';
+import { DeviceSupport, getUnsupportedReason, speechModel } from '@/services/verseFinder';
 
 interface VerseModelManagerProps {
     visible: boolean;
@@ -74,7 +74,8 @@ export const VerseModelManager: React.FC<VerseModelManagerProps> = ({
 
                     <ScrollView style={common.pickerList} showsVerticalScrollIndicator={false}>
                         {VERSE_MODELS.map(model => {
-                            const supported = !support || isModelSupported(model, support);
+                            const unsupportedReason = support ? getUnsupportedReason(model, support) : null;
+                            const supported = !unsupportedReason;
                             const isDownloaded = downloaded.has(model.id);
                             const isSelected = model.id === selectedId && isDownloaded;
                             const isDownloading = downloading?.id === model.id;
@@ -102,9 +103,7 @@ export const VerseModelManager: React.FC<VerseModelManagerProps> = ({
                                     </Text>
 
                                     <View style={[styles.indented, styles.actions]}>
-                                        {!supported ? (
-                                            <Text style={common.smallText}>{t(`verseFinder.models.unsupported.${model.requires}`)}</Text>
-                                        ) : isDownloading ? (
+                                        {isDownloading ? (
                                             <>
                                                 <ProgressBar progress={downloading.progress} style={common.flex1} />
                                                 <Text style={common.smallText}>%{downloading.progress}</Text>
@@ -117,8 +116,11 @@ export const VerseModelManager: React.FC<VerseModelManagerProps> = ({
                                                 />
                                             </>
                                         ) : isDownloaded ? (
+                                            // Deletable even when the device can no longer run it
                                             <>
-                                                <Text style={[common.smallText, common.flex1]}>{t('verseFinder.models.downloaded')}</Text>
+                                                <Text style={[common.smallText, common.flex1]}>
+                                                    {supported ? t('verseFinder.models.downloaded') : t(`verseFinder.models.unsupported.${unsupportedReason}`)}
+                                                </Text>
                                                 <AppButton
                                                     icon={<Trash2 size={14} color={theme.error} />}
                                                     title={t('verseFinder.models.delete')}
@@ -128,6 +130,8 @@ export const VerseModelManager: React.FC<VerseModelManagerProps> = ({
                                                     onPress={() => handleDelete(model)}
                                                 />
                                             </>
+                                        ) : !supported ? (
+                                            <Text style={common.smallText}>{t(`verseFinder.models.unsupported.${unsupportedReason}`)}</Text>
                                         ) : (
                                             <AppButton
                                                 icon={<Download size={14} color={downloading ? theme.textSecondary : theme.primary} />}

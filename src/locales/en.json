@@ -1097,7 +1097,8 @@
       "note": "Models are downloaded once and kept in the browser; recognition runs entirely on your device and no audio is sent anywhere.",
       "unsupported": {
         "webgpu": "This device has no WebGPU",
-        "shader-f16": "This device's GPU doesn't support fp16"
+        "shader-f16": "This device's GPU doesn't support fp16",
+        "software": "Graphics card unavailable (WebGPU is running in software)"
       },
       "fastconformer": {
         "name": "FastConformer",

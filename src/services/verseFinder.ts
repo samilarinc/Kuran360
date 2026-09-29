@@ -59,12 +59,18 @@ export const checkDeviceSupport = async (): Promise<DeviceSupport> => {
     return support;
 };
 
+/** Why a model can't run on this device, or null if it can. */
+export const getUnsupportedReason = (model: VerseModel, support: DeviceSupport): 'webgpu' | 'shader-f16' | 'software' | null => {
+    if (!model.requires) return null;
+    if (support.webgpu !== 'available') return 'webgpu';
+    // SwiftShader runs WebGPU on the CPU, slower than the WASM models
+    if (support.softwareGpu) return 'software';
+    if (model.requires === 'shader-f16' && !support.shaderF16) return 'shader-f16';
+    return null;
+};
+
 export const isModelSupported = (model: VerseModel, support: DeviceSupport): boolean =>
-    model.requires === 'shader-f16'
-        ? support.webgpu === 'available' && support.shaderF16
-        : model.requires === 'webgpu'
-            ? support.webgpu === 'available'
-            : true;
+    getUnsupportedReason(model, support) === null;
 
 type Pending = { resolve: (value: any) => void; reject: (error: Error) => void };
 
