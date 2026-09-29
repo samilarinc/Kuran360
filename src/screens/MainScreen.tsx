@@ -34,7 +34,7 @@ import { Alert, Platform } from 'react-native';
 import { createStyles } from './MainScreen.styles';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'SearchMenu' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -70,7 +70,8 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             title: t('mainScreen.sections.quran'),
             items: [
                 { id: 'random-verse', title: t('mainScreen.menu.randomVerse'), Icon: Sparkles, color: '#F59E0B', onPress: () => onNavigate('RandomVerse') },
-                { id: 'search', title: t('mainScreen.menu.search'), Icon: Search, color: '#3B82F6', onPress: () => onNavigate('Search') },
+                // Topic search is web-only, so elsewhere the search button opens the classic search directly
+                { id: 'search', title: t('mainScreen.menu.search'), Icon: Search, color: '#3B82F6', onPress: () => onNavigate(Platform.OS === 'web' ? 'SearchMenu' : 'Search') },
                 // Speech recognition runs in the browser (WebGPU/WASM), so the verse finder and memorization check are web-only for now
                 ...(Platform.OS === 'web'
                     ? [

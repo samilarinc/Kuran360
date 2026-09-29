@@ -1,0 +1,9 @@
+{
+ "model": "Xenova/multilingual-e5-small",
+ "dtype": "q8",
+ "dim": 384,
+ "count": 6236,
+ "scale": 0.0012442961217850213,
+ "queryPrefix": "query: ",
+ "meals": 50
+}

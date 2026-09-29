@@ -85,17 +85,26 @@ export const getDownloadedModels = async (): Promise<Set<VerseModelId>> => {
     return downloaded;
 };
 
-/** Downloads a model's missing files into the cache, reporting overall progress 0–1. */
-export const downloadModel = async (
-    model: VerseModel,
+/** Whether every file is in the model cache. */
+export const areFilesCached = async (files: string[]): Promise<boolean> => {
+    if (!g.caches) return false;
+    const cache = await openCache();
+    const hits = await Promise.all(files.map(url => cache.match(url)));
+    return hits.every(Boolean);
+};
+
+/** Downloads the files missing from the cache, reporting overall progress 0–1 against the expected size. */
+export const downloadFiles = async (
+    files: string[],
+    sizeMb: number,
     onProgress: (fraction: number) => void,
     signal?: AbortSignal,
 ): Promise<void> => {
     const cache = await openCache();
     const missing: string[] = [];
-    for (const url of model.files) if (!(await cache.match(url))) missing.push(url);
+    for (const url of files) if (!(await cache.match(url))) missing.push(url);
 
-    const expected = model.sizeMb * 1e6;
+    const expected = sizeMb * 1e6;
     let received = 0;
     for (const url of missing) {
         const response = await fetch(url, { signal });
@@ -114,6 +123,12 @@ export const downloadModel = async (
     }
     onProgress(1);
 };
+
+export const downloadModel = (
+    model: VerseModel,
+    onProgress: (fraction: number) => void,
+    signal?: AbortSignal,
+): Promise<void> => downloadFiles(model.files, model.sizeMb, onProgress, signal);
 
 /** Removes a model's files, keeping any that another downloaded model still uses. */
 export const deleteModel = async (model: VerseModel): Promise<void> => {

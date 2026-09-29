@@ -533,6 +533,27 @@
     },
     "defaultTranslationLabel": "Meal"
   },
+  "topicSearch": {
+    "title": "Konuya Göre Ara",
+    "downloadTitle": "Konu arama modeli",
+    "downloadDescription": "Konuya göre arama, kelime geçmese bile ilgili ayetleri bulur. Arama cihazınızda çalışır; bunun için küçük bir anlam modelini bir kez indirmeniz gerekir.",
+    "downloadButton": "📥 Modeli İndir",
+    "loadingModel": "Model hazırlanıyor…",
+    "modelError": "Model yüklenemedi: {{message}}",
+    "retry": "Tekrar dene",
+    "placeholder": "Bir konu veya kavram yazın…",
+    "hint": "Örneğin \"sabır\", \"yetim hakkı\" veya \"anne babaya iyi davranmak\". Kelime geçmese bile konuyla ilgili ayetleri bulur.",
+    "disclaimer": "Sonuçlar konuyla anlamca yakın ayetlerdir; kesin bir hüküm değildir.",
+    "noResults": "Bu konuyla ilgili ayet bulunamadı. Farklı kelimelerle veya klasik aramayla deneyin.",
+    "searchError": "Arama sırasında bir hata oluştu: {{message}}"
+  },
+  "searchMenu": {
+    "title": "Arama",
+    "classicTitle": "Klasik Arama",
+    "classicDescription": "Kelime veya cümleyle ara; Arapça metinde, okunuşta ve meallerde bulur",
+    "topicTitle": "Konuya Göre Ara",
+    "topicDescription": "Bir konu yaz, kelime geçmese bile ilgili ayetleri bul"
+  },
   "settingsScreen": {
     "title": "Ayarlar",
     "theme": {
@@ -706,6 +727,7 @@
       {
         "date": "29 Eylül 2026",
         "bullets": [
+          "Yeni \"Konuya Göre Ara\" ekranı (web): \"sabır\" veya \"yetim hakkı\" gibi bir konu yazınca, kelime geçmese bile ilgili ayetleri buluyor; arama cihazınızda çalışıyor ve küçük bir model bir kez indiriliyor. Ana menüdeki Arama artık \"Klasik Arama\" ve \"Konuya Göre Ara\" seçeneklerini sunan bir alt menü.",
           "Yeni \"Ezber Kontrolü\" ekranı (web): bir sure ve ayet seçip ezberden okuyorsunuz; okumanız kontrol edilip doğru kelimeler yeşille, yanlış okunan ve atlanan kelimeler kırmızıyla işaretleniyor.",
           "Yeni \"Kıble Pusulası\" ekranı: konumunuza göre Kâbe yönünü ve uzaklığını gösteriyor; ibadet menüsünden ve Umre Rehberi'nden açılıyor. Kâbe'ye çok yakınsanız pusulanın düzgün çalışmayabileceği konusunda uyarıyor.",
           "Ayet Shazam'da bulunan ayette, duyulan kelimeler vurgulanıyor; birden fazla ayete yayılan okumalarda her ayette okunan kısım ayrı ayrı gösteriliyor.",

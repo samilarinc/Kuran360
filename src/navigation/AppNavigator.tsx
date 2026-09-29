@@ -26,6 +26,8 @@ import { DuaRequestScreen } from '@/screens/DuaRequestScreen';
 import { HijriCalendarScreen } from '@/screens/HijriCalendarScreen';
 import { QuranPageScreen } from '@/screens/QuranPageScreen';
 import { VerseFinderScreen } from '@/screens/VerseFinderScreen';
+import { SearchMenuScreen } from '@/screens/SearchMenuScreen';
+import { TopicSearchScreen } from '@/screens/TopicSearchScreen';
 import { MemorizationScreen } from '@/screens/MemorizationScreen';
 import { ForumProvider } from '@/contexts/ForumContext';
 import { ScreenWrapper } from '@/components/ScreenWrapper';
@@ -54,6 +56,8 @@ export type RootStackParamList = {
   SurahDetail: { surah: Surah };
   Settings: undefined;
   Search: undefined;
+  SearchMenu: undefined;
+  TopicSearch: undefined;
   About: undefined;
   Profile: undefined;
   Forum: undefined;
@@ -78,7 +82,7 @@ export type RootStackParamList = {
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -122,6 +126,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return '/settings';
       case 'Search':
         return '/search';
+      case 'SearchMenu':
+        return '/search-menu';
+      case 'TopicSearch':
+        return '/topic-search';
       case 'SurahDetail':
         if (route.params?.surah) {
           const baseUrl = `/surah/${route.params.surah.number}`;
@@ -182,6 +190,14 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
     if (pathname === '/search') {
       return { screen: 'Search' };
+    }
+
+    if (pathname === '/search-menu') {
+      return { screen: 'SearchMenu' };
+    }
+
+    if (pathname === '/topic-search') {
+      return { screen: 'TopicSearch' };
     }
 
     if (pathname === '/surahs') {
@@ -395,7 +411,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = useMemo(() => ({
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -609,6 +625,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <DuaRequestScreen navigation={navigation} userId={currentRoute.params.userId} />
             ) : currentRoute.screen === 'HijriCalendar' ? (
               <HijriCalendarScreen navigation={navigation} />
+            ) : currentRoute.screen === 'SearchMenu' ? (
+              <SearchMenuScreen navigation={navigation} />
+            ) : currentRoute.screen === 'TopicSearch' ? (
+              <TopicSearchScreen navigation={navigation} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'VerseFinder' ? (
               <VerseFinderScreen navigation={navigation} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'Memorization' ? (
