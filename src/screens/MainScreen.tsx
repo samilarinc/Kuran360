@@ -12,6 +12,7 @@ import {
     Sparkles,
     Search,
     AudioLines,
+    Brain,
     BookOpen,
     BookCheck,
     Landmark,
@@ -33,7 +34,7 @@ import { Alert, Platform } from 'react-native';
 import { createStyles } from './MainScreen.styles';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -70,9 +71,12 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             items: [
                 { id: 'random-verse', title: t('mainScreen.menu.randomVerse'), Icon: Sparkles, color: '#F59E0B', onPress: () => onNavigate('RandomVerse') },
                 { id: 'search', title: t('mainScreen.menu.search'), Icon: Search, color: '#3B82F6', onPress: () => onNavigate('Search') },
-                // Speech recognition runs in the browser (WebGPU/WASM), so the verse finder is web-only for now
+                // Speech recognition runs in the browser (WebGPU/WASM), so the verse finder and memorization check are web-only for now
                 ...(Platform.OS === 'web'
-                    ? [{ id: 'verse-finder', title: t('mainScreen.menu.verseFinder'), Icon: AudioLines, color: '#EC4899', onPress: () => onNavigate('VerseFinder') }]
+                    ? [
+                        { id: 'verse-finder', title: t('mainScreen.menu.verseFinder'), Icon: AudioLines, color: '#EC4899', onPress: () => onNavigate('VerseFinder') },
+                        { id: 'memorization', title: t('mainScreen.menu.memorization'), Icon: Brain, color: '#A855F7', onPress: () => onNavigate('Memorization') },
+                    ]
                     : []),
                 { id: 'quran-page', title: t('mainScreen.menu.quranPage'), Icon: BookOpen, color: '#10B981', onPress: () => onNavigate('QuranPage') },
                 { id: 'hatim', title: t('mainScreen.menu.hatim'), Icon: BookCheck, color: '#8B5CF6', onPress: () => onNavigate('Hatim') },

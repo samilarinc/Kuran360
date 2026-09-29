@@ -614,6 +614,7 @@
       "randomVerse": "Random Verse",
       "search": "Search",
       "verseFinder": "Verse Shazam",
+      "memorization": "Memorization Check",
       "quranPage": "Page View",
       "settings": "Settings",
       "profile": "Profile",
@@ -705,6 +706,7 @@
       {
         "date": "September 29, 2026",
         "bullets": [
+          "New \"Memorization Check\" screen (web): pick a surah and verse and recite it from memory; your recitation is checked and the correct words are marked green, while misread and skipped words are marked red.",
           "New \"Qibla Compass\" screen: shows the direction and distance to the Kaaba from your location; opens from the Worship menu and the Umrah Guide. It warns you that the compass may not work properly when you are very close to the Kaaba.",
           "In Verse Shazam, the words that were heard are highlighted in the verse found; for recitations spanning several verses, the heard part of each verse is shown separately.",
           "Verse Shazam can now find a verse from an audio or video file (e.g. a recitation sent over WhatsApp).",
@@ -1064,6 +1066,35 @@
     "verseCount": "{{count}} verses",
     "Mekkî": "Meccan",
     "Medenî": "Medinan"
+  },
+  "memorization": {
+    "title": "Memorization Check",
+    "downloadTitle": "Quran data required",
+    "downloadDescription": "To check your memorization, you first need to download the Quran text.",
+    "verseOf": "Verse {{verse}} of {{count}}",
+    "change": "Change surah or verse",
+    "picker": {
+      "surahTitle": "Choose a surah",
+      "searchPlaceholder": "Surah name or number",
+      "verseCount": "{{count}} verses",
+      "back": "Back to the surah list"
+    },
+    "hiddenVerse": "The verse is hidden. Tap the microphone and recite it from memory.",
+    "showVerse": "Show verse",
+    "hideVerse": "Hide verse",
+    "tapToStart": "Tap the microphone and recite the verse from memory; tap again when you're done.",
+    "checking": "Checking your recitation…",
+    "accuracy": "{{percent}}% correct",
+    "allCorrect": "You recited the verse without mistakes.",
+    "summary": "{{wrong}} words misread, {{missed}} words skipped.",
+    "nothingHeard": "Couldn't make out any speech. Try reciting a bit louder and clearer.",
+    "retry": "Try again",
+    "nextVerse": "Next verse",
+    "legend": {
+      "ok": "Correct ({{count}})",
+      "wrong": "Misread ({{count}})",
+      "missed": "Skipped ({{count}})"
+    }
   },
   "verseFinder": {
     "title": "Verse Shazam",

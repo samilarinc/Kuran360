@@ -26,6 +26,7 @@ import { DuaRequestScreen } from '@/screens/DuaRequestScreen';
 import { HijriCalendarScreen } from '@/screens/HijriCalendarScreen';
 import { QuranPageScreen } from '@/screens/QuranPageScreen';
 import { VerseFinderScreen } from '@/screens/VerseFinderScreen';
+import { MemorizationScreen } from '@/screens/MemorizationScreen';
 import { ForumProvider } from '@/contexts/ForumContext';
 import { ScreenWrapper } from '@/components/ScreenWrapper';
 import { useGlobalAudio } from '@/contexts/AudioContext';
@@ -73,10 +74,11 @@ export type RootStackParamList = {
   HijriCalendar: undefined;
   QuranPage: { pageNumber?: number };
   VerseFinder: undefined;
+  Memorization: undefined;
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -166,6 +168,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return `/page/${route.params?.pageNumber ?? 1}`;
       case 'VerseFinder':
         return '/verse-finder';
+      case 'Memorization':
+        return '/memorization';
       default:
         return '/';
     }
@@ -258,6 +262,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
     if (pathname === '/verse-finder') {
       return { screen: 'VerseFinder' };
+    }
+
+    if (pathname === '/memorization') {
+      return { screen: 'Memorization' };
     }
 
     const pageMatch = pathname.match(/^\/page\/(\d+)$/);
@@ -387,7 +395,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = useMemo(() => ({
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -603,6 +611,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <HijriCalendarScreen navigation={navigation} />
             ) : currentRoute.screen === 'VerseFinder' ? (
               <VerseFinderScreen navigation={navigation} isDataAvailable={isDataAvailable} />
+            ) : currentRoute.screen === 'Memorization' ? (
+              <MemorizationScreen navigation={navigation} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'QuranPage' ? (
               <QuranPageScreen
                 navigation={navigation}

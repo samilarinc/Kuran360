@@ -614,6 +614,7 @@
       "randomVerse": "Rastgele Ayet",
       "search": "Arama",
       "verseFinder": "Ayet Shazam",
+      "memorization": "Ezber Kontrolü",
       "quranPage": "Sayfa Görünümü",
       "settings": "Ayarlar",
       "profile": "Profil",
@@ -705,6 +706,7 @@
       {
         "date": "29 Eylül 2026",
         "bullets": [
+          "Yeni \"Ezber Kontrolü\" ekranı (web): bir sure ve ayet seçip ezberden okuyorsunuz; okumanız kontrol edilip doğru kelimeler yeşille, yanlış okunan ve atlanan kelimeler kırmızıyla işaretleniyor.",
           "Yeni \"Kıble Pusulası\" ekranı: konumunuza göre Kâbe yönünü ve uzaklığını gösteriyor; ibadet menüsünden ve Umre Rehberi'nden açılıyor. Kâbe'ye çok yakınsanız pusulanın düzgün çalışmayabileceği konusunda uyarıyor.",
           "Ayet Shazam'da bulunan ayette, duyulan kelimeler vurgulanıyor; birden fazla ayete yayılan okumalarda her ayette okunan kısım ayrı ayrı gösteriliyor.",
           "Ayet Shazam'a ses veya video dosyasından ayet bulma eklendi (ör. WhatsApp'tan gelen bir tilavet kaydı).",
@@ -1065,6 +1067,35 @@
     "verseCount": "{{count}} ayet",
     "Mekkî": "Mekkî",
     "Medenî": "Medenî"
+  },
+  "memorization": {
+    "title": "Ezber Kontrolü",
+    "downloadTitle": "Kur'an verisi gerekli",
+    "downloadDescription": "Ezberinizi kontrol edebilmek için önce Kur'an metnini indirmeniz gerekiyor.",
+    "verseOf": "{{verse}}. ayet / {{count}}",
+    "change": "Sure veya ayet değiştir",
+    "picker": {
+      "surahTitle": "Sure seç",
+      "searchPlaceholder": "Sure adı veya numarası",
+      "verseCount": "{{count}} ayet",
+      "back": "Sure listesine dön"
+    },
+    "hiddenVerse": "Ayet gizli. Mikrofona dokunup ezberden okuyun.",
+    "showVerse": "Ayeti göster",
+    "hideVerse": "Ayeti gizle",
+    "tapToStart": "Mikrofona dokunun ve ayeti ezberden okuyun; bitince tekrar dokunun.",
+    "checking": "Okumanız kontrol ediliyor…",
+    "accuracy": "%{{percent}} doğru",
+    "allCorrect": "Ayeti hatasız okudunuz.",
+    "summary": "{{wrong}} kelime yanlış, {{missed}} kelime atlandı.",
+    "nothingHeard": "Ses anlaşılamadı. Biraz daha yüksek ve net okumayı deneyin.",
+    "retry": "Tekrar dene",
+    "nextVerse": "Sonraki ayet",
+    "legend": {
+      "ok": "Doğru ({{count}})",
+      "wrong": "Yanlış ({{count}})",
+      "missed": "Atlandı ({{count}})"
+    }
   },
   "verseFinder": {
     "title": "Ayet Shazam",
