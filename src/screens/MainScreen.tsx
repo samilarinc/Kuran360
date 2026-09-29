@@ -17,6 +17,7 @@ import {
     Landmark,
     Scroll,
     Compass,
+    Navigation2,
     Moon,
     User,
     Settings,
@@ -32,7 +33,7 @@ import { Alert, Platform } from 'react-native';
 import { createStyles } from './MainScreen.styles';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -81,6 +82,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             title: t('mainScreen.sections.worship'),
             items: [
                 { id: 'prayer-times', title: t('mainScreen.menu.prayerTimes'), Icon: Landmark, color: '#14B8A6', onPress: () => onNavigate('PrayerTimes') },
+                { id: 'qibla', title: t('mainScreen.menu.qibla'), Icon: Navigation2, color: '#0891B2', onPress: () => onNavigate('Qibla') },
                 { id: 'hutbe', title: t('mainScreen.menu.hutbe'), Icon: Scroll, color: '#F97316', onPress: handleHutbePress },
                 { id: 'umrah', title: t('mainScreen.menu.umrah'), Icon: Compass, color: '#F43F5E', onPress: () => onNavigate('UmrahMenu') },
                 { id: 'hijri-calendar', title: t('mainScreen.menu.hijriCalendar'), Icon: Moon, color: '#6366F1', onPress: () => onNavigate('HijriCalendar') },

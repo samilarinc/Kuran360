@@ -46,6 +46,7 @@
     "umrahProgress": "Şu an neredeyim?",
     "umrahDuas": "Umre Duaları",
     "prayerTimes": "Ezan Vakitleri",
+    "qibla": "Kıble Pusulası",
     "hutbe": "Cuma Hutbesi"
   },
   "allTranslationsScreen": {
@@ -97,6 +98,27 @@
     "remainingMinutes": "{{minutes}} dk",
     "selectLocation": "Konum Seç",
     "searchPlaceholder": "Şehir veya ilçe ara..."
+  },
+  "qiblaScreen": {
+    "north": "K",
+    "east": "D",
+    "south": "G",
+    "west": "B",
+    "locating": "Konumunuz alınıyor...",
+    "permissionDeniedMessage": "Kıble yönünü hesaplayabilmek için konum izni vermeniz gerekmektedir.",
+    "locationErrorMessage": "Konum bilgisi alınamadı.",
+    "retry": "Tekrar Dene",
+    "startHint": "Pusulayı kullanmak için cihazınızın yön sensörünü başlatın.",
+    "sensorDeniedMessage": "Yön sensörüne erişim izni verilmedi.",
+    "startCompass": "Pusulayı Başlat",
+    "noSensor": "Bu cihazda pusula sensörü bulunamadı. Kıble yönü, kuzeye göre yukarıdaki derece ile gösterilmektedir.",
+    "calibrating": "Pusula hazırlanıyor...",
+    "aligned": "Kıbleye dönüksünüz",
+    "turnHint": "Kâbe simgesi yukarıdaki okla hizalanana kadar dönün",
+    "calibrationHint": "Yön hatalıysa telefonunuzu havada 8 çizer gibi hareket ettirin ve metal eşyalardan uzak tutun.",
+    "bearing": "Kıble yönü: kuzeyden {{degrees}}°",
+    "distance": "Kâbe'ye uzaklık: {{km}} km",
+    "nearKaaba": "Kâbe'ye çok yakınsınız! 🕋 Bu mesafede konum ve pusula hassasiyeti yetmeyebilir, kıble yönü düzgün çalışmayabilir. Kâbe zaten karşınızda; Allah kabul etsin."
   },
   "randomVerseScreen": {
     "loading": "Rastgele ayet yükleniyor...",
@@ -183,6 +205,8 @@
     "duaListDescription": "Kişisel dua çizelgesi oluşturun",
     "duasTitle": "Umre Duaları",
     "duasDescription": "Umre ibadetinde okunacak dualar",
+    "qiblaTitle": "Kıble Pusulası",
+    "qiblaDescription": "Bulunduğunuz yerden Kâbe yönünü bulun",
     "header": "Umre İbadetiniz İçin Araçlar"
   },
   "umrahProgressScreen": {
@@ -595,6 +619,7 @@
       "profile": "Profil",
       "hatim": "Hatimler",
       "prayerTimes": "Namaz Vakitleri",
+      "qibla": "Kıble Pusulası",
       "hutbe": "Cuma Hutbesi",
       "umrah": "Umre",
       "hijriCalendar": "Hicri Takvim",
@@ -680,6 +705,7 @@
       {
         "date": "29 Eylül 2026",
         "bullets": [
+          "Yeni \"Kıble Pusulası\" ekranı: konumunuza göre Kâbe yönünü ve uzaklığını gösteriyor; ibadet menüsünden ve Umre Rehberi'nden açılıyor. Kâbe'ye çok yakınsanız pusulanın düzgün çalışmayabileceği konusunda uyarıyor.",
           "Yeni \"Ayet Shazam\" ekranı (web): okunan ayeti mikrofondan dinleyip hangi sure ve ayet olduğunu buluyor; tanıma cihazda yapılıyor, farklı ses modelleri indirilip seçilebiliyor.",
           "Hakkında sayfasına, Ayet Shazam'da kullanılan ses modellerinin kaynak ve lisans bilgileri eklendi.",
           "Ayet Shazam'da ekran kartı kullanılamıyorsa (GPU erişimi kapalı ya da yazılımsal çalışıyor), Chrome'da donanım hızlandırmanın nasıl açılacağını anlatan bir rehber gösteriliyor."

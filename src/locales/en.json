@@ -45,6 +45,7 @@
     "umrahMenu": "Umrah Guide",
     "umrahProgress": "Where am I now?",
     "umrahDuas": "Umrah Duas",
+    "qibla": "Qibla Compass",
     "prayerTimes": "Prayer Times",
     "hutbe": "Friday Sermon"
   },
@@ -97,6 +98,27 @@
     "remainingMinutes": "{{minutes}}m",
     "selectLocation": "Select Location",
     "searchPlaceholder": "Search city or district..."
+  },
+  "qiblaScreen": {
+    "north": "N",
+    "east": "E",
+    "south": "S",
+    "west": "W",
+    "locating": "Getting your location...",
+    "permissionDeniedMessage": "Location permission is required to work out the qibla direction.",
+    "locationErrorMessage": "Couldn't get your location.",
+    "retry": "Try Again",
+    "startHint": "Start your device's orientation sensor to use the compass.",
+    "sensorDeniedMessage": "Access to the orientation sensor was denied.",
+    "startCompass": "Start Compass",
+    "noSensor": "No compass sensor was found on this device. The qibla direction is shown as the bearing from north above.",
+    "calibrating": "Preparing the compass...",
+    "aligned": "You are facing the qibla",
+    "turnHint": "Turn until the Kaaba icon lines up with the arrow at the top",
+    "calibrationHint": "If the direction looks off, move your phone in a figure 8 and keep it away from metal objects.",
+    "bearing": "Qibla direction: {{degrees}}° from north",
+    "distance": "Distance to the Kaaba: {{km}} km",
+    "nearKaaba": "You are very close to the Kaaba! 🕋 At this distance the location and compass accuracy may not be enough, so the qibla direction may not work properly. The Kaaba is right in front of you anyway; may Allah accept it."
   },
   "randomVerseScreen": {
     "loading": "Loading random verse...",
@@ -183,6 +205,8 @@
     "duaListDescription": "Create a personal dua checklist",
     "duasTitle": "Umrah Duas",
     "duasDescription": "Duas to recite during umrah",
+    "qiblaTitle": "Qibla Compass",
+    "qiblaDescription": "Find the direction of the Kaaba from where you are",
     "header": "Tools for Your Umrah"
   },
   "umrahProgressScreen": {
@@ -594,6 +618,7 @@
       "settings": "Settings",
       "profile": "Profile",
       "hatim": "Hatims",
+      "qibla": "Qibla Compass",
       "prayerTimes": "Prayer Times",
       "hutbe": "Friday Sermon",
       "umrah": "Umrah",
@@ -680,6 +705,7 @@
       {
         "date": "September 29, 2026",
         "bullets": [
+          "New \"Qibla Compass\" screen: shows the direction and distance to the Kaaba from your location; opens from the Worship menu and the Umrah Guide. It warns you that the compass may not work properly when you are very close to the Kaaba.",
           "New \"Verse Shazam\" screen (web): listens to a recitation through the microphone and finds the surah and verse; recognition runs on the device, with several speech models to download and choose from.",
           "Added the sources and licenses of the speech models used by Verse Shazam to the About page.",
           "When the graphics card can't be used (GPU access is off or running in software), Verse Shazam shows a guide for turning on hardware acceleration in Chrome."

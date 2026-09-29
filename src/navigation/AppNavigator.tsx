@@ -15,6 +15,7 @@ import { AllTranslationsScreen } from '@/screens/AllTranslationsScreen';
 import { HatimScreen } from '@/screens/HatimScreen';
 import { HatimDetailScreen } from '@/screens/HatimDetailScreen';
 import { PrayerTimesScreen } from '@/screens/PrayerTimesScreen';
+import { QiblaScreen } from '@/screens/QiblaScreen';
 import { HutbeScreen } from '@/screens/HutbeScreen';
 import { UmrahProgressScreen } from '@/screens/UmrahProgressScreen';
 import { DuaListScreen } from '@/screens/DuaListScreen';
@@ -61,6 +62,7 @@ export type RootStackParamList = {
   Hatim: undefined;
   HatimDetail: { hatimId: string };
   PrayerTimes: undefined;
+  Qibla: undefined;
   Hutbe: undefined;
   UmrahMenu: undefined;
   UmrahProgress: undefined;
@@ -74,7 +76,7 @@ export type RootStackParamList = {
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -142,6 +144,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return route.params?.hatimId ? `/hatim/${route.params.hatimId}` : '/hatim';
       case 'PrayerTimes':
         return '/prayer-times';
+      case 'Qibla':
+        return '/qibla';
       case 'Hutbe':
         return '/hutbe';
       case 'UmrahMenu':
@@ -239,6 +243,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       return { screen: 'DuaRequest', params: { userId: duaRequestMatch[1] } };
     }
 
+
+    if (pathname === '/qibla') {
+      return { screen: 'Qibla' };
+    }
 
     if (pathname === '/hutbe') {
       return { screen: 'Hutbe' };
@@ -379,7 +387,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = useMemo(() => ({
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -575,6 +583,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <HatimDetailScreen navigation={navigation} route={{ params: { hatimId: currentRoute.params.hatimId } }} />
             ) : currentRoute.screen === 'PrayerTimes' ? (
               <PrayerTimesScreen navigation={navigation} />
+            ) : currentRoute.screen === 'Qibla' ? (
+              <QiblaScreen navigation={navigation} />
             ) : currentRoute.screen === 'Hutbe' ? (
               <HutbeScreen navigation={navigation} />
             ) : currentRoute.screen === 'UmrahMenu' ? (
