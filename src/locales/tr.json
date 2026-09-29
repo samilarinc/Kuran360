@@ -681,7 +681,8 @@
         "date": "29 Eylül 2026",
         "bullets": [
           "Yeni \"Ayet Shazam\" ekranı (web): okunan ayeti mikrofondan dinleyip hangi sure ve ayet olduğunu buluyor; tanıma cihazda yapılıyor, farklı ses modelleri indirilip seçilebiliyor.",
-          "Hakkında sayfasına, Ayet Shazam'da kullanılan ses modellerinin kaynak ve lisans bilgileri eklendi."
+          "Hakkında sayfasına, Ayet Shazam'da kullanılan ses modellerinin kaynak ve lisans bilgileri eklendi.",
+          "Ayet Shazam'da GPU erişimi kapalıysa, Chrome'da nasıl açılacağını anlatan bir rehber gösteriliyor."
         ]
       },
       {
@@ -1119,6 +1120,15 @@
       "microphone": "Mikrofona erişilemedi. Tarayıcı ayarlarından mikrofon iznini verin.",
       "unsupported": "Bu tarayıcı ses kaydını desteklemiyor.",
       "recognition": "Tanıma sırasında bir hata oluştu: {{message}}"
+    },
+    "gpuHelp": {
+      "show": "GPU erişimi nasıl açılır?",
+      "hide": "Rehberi gizle",
+      "intro": "Tarayıcınız WebGPU'yu destekliyor ama ekran kartına erişimi kapalı. Chrome'da açmak için:",
+      "step1": "1. Adres çubuğuna aşağıdakini yazın ve \"Unsafe WebGPU Support\" ayarını Enabled yapın:",
+      "step2": "2. Aşağıdakini yazın ve \"Override software rendering list\" ayarını Enabled yapın:",
+      "relaunch": "3. Alttaki \"Relaunch\" düğmesiyle Chrome'u yeniden başlatın ve bu sayfaya dönün.",
+      "note": "Bunlar Chrome'un deneysel ayarlarıdır. Açmasanız da Ayet Shazam işlemciyle (FastConformer) çalışır."
     }
   }
 }

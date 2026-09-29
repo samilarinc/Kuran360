@@ -681,7 +681,8 @@
         "date": "September 29, 2026",
         "bullets": [
           "New \"Verse Shazam\" screen (web): listens to a recitation through the microphone and finds the surah and verse; recognition runs on the device, with several speech models to download and choose from.",
-          "Added the sources and licenses of the speech models used by Verse Shazam to the About page."
+          "Added the sources and licenses of the speech models used by Verse Shazam to the About page.",
+          "When GPU access is off, Verse Shazam shows a guide for turning it on in Chrome."
         ]
       },
       {
@@ -1118,6 +1119,15 @@
       "microphone": "Could not access the microphone. Allow microphone access in your browser settings.",
       "unsupported": "This browser does not support audio recording.",
       "recognition": "Something went wrong during recognition: {{message}}"
+    },
+    "gpuHelp": {
+      "show": "How to turn on GPU access?",
+      "hide": "Hide guide",
+      "intro": "Your browser supports WebGPU, but its access to the graphics card is off. To turn it on in Chrome:",
+      "step1": "1. Type the following into the address bar and set \"Unsafe WebGPU Support\" to Enabled:",
+      "step2": "2. Type the following and set \"Override software rendering list\" to Enabled:",
+      "relaunch": "3. Restart Chrome with the \"Relaunch\" button at the bottom and come back to this page.",
+      "note": "These are experimental Chrome settings. Without them, Verse Shazam still works on the CPU (FastConformer)."
     }
   }
 }

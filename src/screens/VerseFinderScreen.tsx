@@ -51,6 +51,9 @@ type ModelState =
 
 type Phase = 'idle' | 'recording' | 'recognizing' | 'done';
 
+// Chrome flags that give pages GPU access where WebGPU is present but no adapter is handed out (e.g. Linux)
+const GPU_FLAGS = ['chrome://flags/#enable-unsafe-webgpu', 'chrome://flags/#ignore-gpu-blocklist'];
+
 interface ResultItem extends VerseMatch {
     arabicText: string;
 }
@@ -77,6 +80,7 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     const [results, setResults] = useState<ResultItem[]>([]);
     const [lastAudio, setLastAudio] = useState<Float32Array | null>(null);
     const [playing, setPlaying] = useState(false);
+    const [gpuHelpVisible, setGpuHelpVisible] = useState(false);
     const recordingRef = useRef<Recording | null>(null);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -324,6 +328,26 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
                             </View>
                         </View>
                     ))}
+                    {support?.webgpu === 'noAdapter' && (
+                        <>
+                            <TouchableOpacity onPress={() => setGpuHelpVisible(v => !v)} style={common.mtSm}>
+                                <Text style={common.textAccent}>{t(gpuHelpVisible ? 'verseFinder.gpuHelp.hide' : 'verseFinder.gpuHelp.show')}</Text>
+                            </TouchableOpacity>
+                            {gpuHelpVisible && (
+                                <View style={styles.helpBox}>
+                                    <Text style={common.text}>{t('verseFinder.gpuHelp.intro')}</Text>
+                                    {GPU_FLAGS.map((flag, i) => (
+                                        <View key={flag} style={common.mtSm}>
+                                            <Text style={common.text}>{t(`verseFinder.gpuHelp.step${i + 1}`)}</Text>
+                                            <Text style={styles.flagText} selectable>{flag}</Text>
+                                        </View>
+                                    ))}
+                                    <Text style={[common.text, common.mtSm]}>{t('verseFinder.gpuHelp.relaunch')}</Text>
+                                    <Text style={[common.smallText, common.mtSm]}>{t('verseFinder.gpuHelp.note')}</Text>
+                                </View>
+                            )}
+                        </>
+                    )}
                     {modelState.status === 'error' && <Text style={[common.smallText, common.mtSm]}>{modelState.message}</Text>}
                     <View style={[styles.buttonRow, common.mtMd]}>
                         <AppButton

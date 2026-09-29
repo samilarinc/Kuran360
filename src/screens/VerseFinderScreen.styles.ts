@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { SHADOW } from '@msarinc/ui';
-import { SPACING, FONT_SIZES, Theme } from '@/theme';
+import { SPACING, FONT_SIZES, RADIUS, Theme } from '@/theme';
 import type { CommonStyles } from '@/contexts/ThemeContext';
 
 const MIC_SIZE = 112;
@@ -38,6 +38,17 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             height: 8,
             borderRadius: 4,
             marginRight: SPACING.xs,
+        },
+        helpBox: {
+            marginTop: SPACING.sm,
+            padding: SPACING.md,
+            borderRadius: RADIUS.sm,
+            backgroundColor: theme.background,
+        },
+        flagText: {
+            ...common.textStrong,
+            fontFamily: 'monospace',
+            marginTop: 2,
         },
         buttonRow: {
             ...common.rowWrap,
