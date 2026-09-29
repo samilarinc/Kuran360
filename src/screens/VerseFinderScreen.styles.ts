@@ -18,27 +18,6 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             borderColor: theme.warning,
             backgroundColor: theme.warning + '14',
         },
-        statusRow: {
-            ...common.rowBetween,
-            paddingVertical: SPACING.xs,
-            gap: SPACING.md,
-        },
-        statusValueWrap: {
-            ...common.row,
-            flex: 1,
-            justifyContent: 'flex-end',
-        },
-        statusValue: {
-            ...common.text,
-            flexShrink: 1,
-            textAlign: 'right',
-        },
-        statusDot: {
-            width: 8,
-            height: 8,
-            borderRadius: 4,
-            marginRight: SPACING.xs,
-        },
         helpBox: {
             marginTop: SPACING.sm,
             padding: SPACING.md,

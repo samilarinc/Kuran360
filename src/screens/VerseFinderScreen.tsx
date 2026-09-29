@@ -8,6 +8,7 @@ import { ArabicText } from '@/components/ArabicText';
 import { DownloadRequired } from '@/components/DownloadRequired';
 import { ProgressBar } from '@/components/ProgressBar';
 import { VerseModelManager } from '@/components/VerseModelManager';
+import { SpeechStatusRows, getSpeechEngineRows } from '@/components/SpeechStatusRows';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
 import { useDownloadData } from '@/hooks/useDownloadData';
@@ -294,26 +295,8 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     const muted = theme.textSecondary;
     const peakPercent = lastAudio ? Math.round(getPeakLevel(lastAudio) * 100) : 0;
 
-    const modelRow = !activeModel
-        ? { color: bad, value: t('verseFinder.status.noModel') }
-        : {
-            color: modelState.status === 'ready' ? ok : modelState.status === 'error' ? bad : modelState.status === 'loading' ? warn : muted,
-            value: `${t(`verseFinder.models.${activeModel.id}.name`)} · ${t(`verseFinder.status.modelStates.${modelState.status}`)}`,
-        };
-
-    const webgpuRow = !support
-        ? { color: muted, value: t('verseFinder.status.checking') }
-        : support.webgpu === 'available'
-            ? support.softwareGpu
-                ? { color: warn, value: t('verseFinder.status.webgpuSoftware') }
-                : { color: ok, value: support.gpuName ? `${t('verseFinder.status.yes')} · ${support.gpuName}` : t('verseFinder.status.yes') }
-            : support.webgpu === 'noAdapter'
-                ? { color: warn, value: t('verseFinder.status.webgpuNoAdapter') }
-                : { color: warn, value: t('verseFinder.status.webgpuUnsupported') };
-
     const statusRows = [
-        { label: t('verseFinder.status.model'), ...modelRow },
-        { label: t('verseFinder.status.webgpu'), ...webgpuRow },
+        ...getSpeechEngineRows(t, theme, support, activeModel, modelState),
         {
             label: t('verseFinder.status.microphone'),
             color: !support ? muted : support.microphone ? ok : bad,
@@ -353,15 +336,7 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
 
                 <View style={common.sectionCard}>
                     <Text style={[common.sectionLabel, common.mbSm]}>{t('verseFinder.status.title')}</Text>
-                    {statusRows.map(row => (
-                        <View key={row.label} style={styles.statusRow}>
-                            <Text style={common.text}>{row.label}</Text>
-                            <View style={styles.statusValueWrap}>
-                                <View style={[styles.statusDot, { backgroundColor: row.color }]} />
-                                <Text style={styles.statusValue}>{row.value}</Text>
-                            </View>
-                        </View>
-                    ))}
+                    <SpeechStatusRows rows={statusRows} />
                     {(support?.webgpu === 'noAdapter' || support?.softwareGpu) && (
                         <>
                             <TouchableOpacity onPress={() => setGpuHelpVisible(v => !v)} style={common.mtSm}>

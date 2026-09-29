@@ -9,6 +9,7 @@ import { DownloadRequired } from '@/components/DownloadRequired';
 import { ProgressBar } from '@/components/ProgressBar';
 import { SurahVersePickerModal } from '@/components/SurahVersePickerModal';
 import { VerseModelManager } from '@/components/VerseModelManager';
+import { SpeechStatusRows, getSpeechEngineRows } from '@/components/SpeechStatusRows';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useDownloadData } from '@/hooks/useDownloadData';
 import { useSpeechRecognizer } from '@/hooks/useSpeechRecognizer';
@@ -125,6 +126,8 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
         { status: 'missed', color: theme.error + '55' },
     ];
 
+    const engineRows = getSpeechEngineRows(t, theme, support, activeModel, modelState);
+
     const micHint = !activeModel
         ? t('verseFinder.noModel')
         : phase === 'recording'
@@ -222,6 +225,10 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                 )}
                 {error && <Text style={[common.note, common.textCenter]}>{error}</Text>}
                 {modelState.status === 'error' && <Text style={[common.smallText, common.textCenter]}>{modelState.message}</Text>}
+
+                <View style={common.sectionCard}>
+                    <SpeechStatusRows rows={engineRows} />
+                </View>
 
                 <View style={micStyles.micArea}>
                     <TouchableOpacity

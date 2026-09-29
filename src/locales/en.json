@@ -732,6 +732,7 @@
       {
         "date": "September 29, 2026",
         "bullets": [
+          "The Memorization Check screen now shows the speech model and WebGPU status.",
           "Search by Topic results now tag each verse as \"Strong match\", \"Related\" or \"Word match\".",
           "New \"Search by Topic\" screen (web): type a topic such as \"patience\" or \"orphans' rights\" and it finds related verses even when the word does not appear in them; it runs on your device and downloads a small model once. Search in the main menu is now a submenu offering \"Classic Search\" and \"Search by Topic\".",
           "New \"Memorization Check\" screen (web): pick a surah and verse and recite it from memory; your recitation is checked and the correct words are marked green, while misread and skipped words are marked red.",
