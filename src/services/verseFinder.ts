@@ -10,6 +10,9 @@ import type { VerseModel, VerseModelId } from '@/services/verseModels';
 
 export const SAMPLE_RATE = 16000;
 export const MAX_RECORDING_SECONDS = 15;
+/** Whisper takes 30 s at most; a file is read from its start. */
+export const MAX_FILE_SECONDS = 30;
+export const MAX_FILE_MB = 50;
 
 const g = globalThis as any;
 
@@ -147,6 +150,49 @@ class SpeechModel {
 
 export const speechModel = new SpeechModel();
 
+/** Decodes an audio (or video) blob into 16 kHz mono samples. */
+const decodeAudio = async (blob: Blob): Promise<Float32Array> => {
+    // Decoding through a 16 kHz context resamples to what the models expect
+    const context = new g.AudioContext({ sampleRate: SAMPLE_RATE });
+    try {
+        const buffer = await context.decodeAudioData(await blob.arrayBuffer());
+        return new Float32Array(buffer.getChannelData(0));
+    } finally {
+        context.close();
+    }
+};
+
+export interface PickedAudio {
+    audio: Float32Array;
+    /** The file was longer than MAX_FILE_SECONDS, so only its beginning is kept. */
+    truncated: boolean;
+}
+
+/** Message of the error pickAudioFile rejects with for files too big to decode in the browser. */
+export const FILE_TOO_LARGE = 'file-too-large';
+
+/** Lets the user choose an audio or video file; resolves null if they cancel. */
+export const pickAudioFile = (): Promise<PickedAudio | null> =>
+    new Promise((resolve, reject) => {
+        const input = g.document.createElement('input');
+        input.type = 'file';
+        input.accept = 'audio/*,video/*,.opus,.m4a,.ogg,.mp3,.wav';
+        input.onchange = async () => {
+            const file = input.files?.[0];
+            if (!file) return resolve(null);
+            if (file.size > MAX_FILE_MB * 1e6) return reject(new Error(FILE_TOO_LARGE));
+            try {
+                const audio = await decodeAudio(file);
+                const limit = MAX_FILE_SECONDS * SAMPLE_RATE;
+                resolve({ audio: audio.length > limit ? audio.slice(0, limit) : audio, truncated: audio.length > limit });
+            } catch (error) {
+                reject(error);
+            }
+        };
+        input.oncancel = () => resolve(null);
+        input.click();
+    });
+
 export interface Recording {
     /** Stops recording and returns 16 kHz mono samples. */
     stop: () => Promise<Float32Array>;
@@ -173,15 +219,7 @@ export const startRecording = async (): Promise<Recording> => {
             if (recorder.state !== 'inactive') recorder.stop();
             await stopped;
             release();
-            const blob = new g.Blob(chunks, { type: recorder.mimeType });
-            // Decoding through a 16 kHz context resamples to what the model expects
-            const context = new g.AudioContext({ sampleRate: SAMPLE_RATE });
-            try {
-                const buffer = await context.decodeAudioData(await blob.arrayBuffer());
-                return new Float32Array(buffer.getChannelData(0));
-            } finally {
-                context.close();
-            }
+            return decodeAudio(new g.Blob(chunks, { type: recorder.mimeType }));
         },
         cancel: () => {
             if (recorder.state !== 'inactive') recorder.stop();

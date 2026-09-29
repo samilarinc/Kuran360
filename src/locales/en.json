@@ -706,6 +706,8 @@
         "date": "September 29, 2026",
         "bullets": [
           "New \"Qibla Compass\" screen: shows the direction and distance to the Kaaba from your location; opens from the Worship menu and the Umrah Guide. It warns you that the compass may not work properly when you are very close to the Kaaba.",
+          "In Verse Shazam, the words that were heard are highlighted in the verse found; for recitations spanning several verses, the heard part of each verse is shown separately.",
+          "Verse Shazam can now find a verse from an audio or video file (e.g. a recitation sent over WhatsApp).",
           "New \"Verse Shazam\" screen (web): listens to a recitation through the microphone and finds the surah and verse; recognition runs on the device, with several speech models to download and choose from.",
           "Added the sources and licenses of the speech models used by Verse Shazam to the About page.",
           "When the graphics card can't be used (GPU access is off or running in software), Verse Shazam shows a guide for turning on hardware acceleration in Chrome."
@@ -1079,9 +1081,9 @@
     "verse": "verse {{verse}}",
     "verseRange": "verses {{from}}–{{to}}",
     "match": "{{percent}}% match",
-    "playRecording": "Play recording",
+    "playRecording": "Play audio",
     "playing": "Playing…",
-    "rerun": "Recognize this recording again",
+    "rerun": "Recognize this audio again",
     "manageModels": "Manage models",
     "noModel": "To get started, download a speech model from \"Manage models\".",
     "insecureWarning": "This page was opened over an insecure connection (http). Browsers turn off the microphone and WebGPU there; open it over https.",
@@ -1103,7 +1105,7 @@
       "webgpuNoAdapter": "In the browser, but GPU access is off",
       "webgpuUnsupported": "Not supported",
       "microphone": "Microphone",
-      "recording": "Last recording",
+      "recording": "Last audio",
       "lastRun": "Last recognition time",
       "seconds": "{{value}} s",
       "recordingLevel": {
@@ -1146,7 +1148,9 @@
     "errors": {
       "microphone": "Could not access the microphone. Allow microphone access in your browser settings.",
       "unsupported": "This browser does not support audio recording.",
-      "recognition": "Something went wrong during recognition: {{message}}"
+      "recognition": "Something went wrong during recognition: {{message}}",
+      "fileTooLarge": "The file is too large (max {{size}} MB).",
+      "fileUnreadable": "Couldn't read the file. Your browser may not support this audio format."
     },
     "gpuHelp": {
       "show": "How to turn on GPU access?",
@@ -1157,6 +1161,8 @@
       "step3": "3. Type the following and set \"Vulkan\" to Enabled. On Linux, Chrome reaches the graphics card through Vulkan; while it's off, WebGPU stays in software:",
       "relaunch": "{{step}}. Restart Chrome with the \"Relaunch\" button at the bottom and come back to this page. If the WebGPU row in the status card shows your graphics card's name, the hardware is in use.",
       "note": "These are experimental Chrome settings. Without them, Verse Shazam still works on the CPU (FastConformer)."
-    }
+    },
+    "pickFile": "Or choose an audio file",
+    "fileTruncated": "Listened to the first {{seconds}} seconds of the file."
   }
 }

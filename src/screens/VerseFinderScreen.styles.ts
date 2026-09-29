@@ -84,6 +84,13 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             lineHeight: FONT_SIZES.large * 1.8,
             textAlign: 'center',
         },
+        matchedWord: {
+            backgroundColor: theme.primary + '30',
+            color: theme.text,
+        },
+        unmatchedWord: {
+            color: theme.textSecondary,
+        },
         resultArabic: {
             ...common.arabicText,
             fontSize: FONT_SIZES.large,

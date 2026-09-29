@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Mic, Square, Play, RotateCcw, Boxes, TriangleAlert } from 'lucide-react-native';
+import { Mic, Square, Play, RotateCcw, Boxes, TriangleAlert, FileUp } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { ArabicText } from '@/components/ArabicText';
@@ -13,15 +13,19 @@ import { useNavigationHelpers } from '@/contexts/NavigationContext';
 import { useDownloadData } from '@/hooks/useDownloadData';
 import { loadSurah } from '@/data/quranData';
 import { getSurahNameByNumber } from '@/utils/surahName';
-import { getSpacedArabicText } from '@/utils/arabicText';
-import { VerseMatch } from '@/utils/verseMatcher';
+import { getWordSegments } from '@/utils/arabicText';
+import { markMatchedWords, VerseMatch } from '@/utils/verseMatcher';
 import {
     checkDeviceSupport,
     DeviceSupport,
+    FILE_TOO_LARGE,
     getPeakLevel,
     isModelSupported,
     matchTranscript,
+    MAX_FILE_MB,
+    MAX_FILE_SECONDS,
     MAX_RECORDING_SECONDS,
+    pickAudioFile,
     prepareVerseIndex,
     playRecording,
     Recording,
@@ -60,7 +64,8 @@ const GPU_FLAGS = [
 ];
 
 interface ResultItem extends VerseMatch {
-    arabicText: string;
+    /** Each verse of the match with its words, flagged when they were heard. */
+    verses: { number: number; words: { text: string; matched: boolean }[] }[];
 }
 
 export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation, isDataAvailable }) => {
@@ -86,6 +91,7 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     const [lastAudio, setLastAudio] = useState<Float32Array | null>(null);
     const [playing, setPlaying] = useState(false);
     const [gpuHelpVisible, setGpuHelpVisible] = useState(false);
+    const [fileTruncated, setFileTruncated] = useState(false);
     const recordingRef = useRef<Recording | null>(null);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -154,8 +160,13 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
             const matches = await matchTranscript(text);
             const items = await Promise.all(matches.map(async match => {
                 const surah = await loadSurah(match.surahNumber);
-                const verse = surah?.verses[match.fromVerse - 1];
-                return { ...match, arabicText: verse ? getSpacedArabicText(verse) : '' };
+                const verses = match.ranges.map(range => {
+                    const verse = surah?.verses[range.verse - 1];
+                    const words = verse ? getWordSegments(verse).map(segment => segment.arabic) : [];
+                    const matched = markMatchedWords(words, range);
+                    return { number: range.verse, words: words.map((wordText, i) => ({ text: wordText, matched: matched[i] })) };
+                });
+                return { ...match, verses };
             }));
             setResults(items);
         } catch (e: any) {
@@ -196,6 +207,7 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
         setError(null);
         setTranscript('');
         setResults([]);
+        setFileTruncated(false);
         try {
             recordingRef.current = await startRecording();
         } catch {
@@ -212,6 +224,21 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
             setElapsed(seconds);
             if (seconds >= MAX_RECORDING_SECONDS) stopRecording();
         }, 250);
+    };
+
+    const handlePickFile = async () => {
+        setError(null);
+        let picked;
+        try {
+            picked = await pickAudioFile();
+        } catch (e: any) {
+            setError(t(e?.message === FILE_TOO_LARGE ? 'verseFinder.errors.fileTooLarge' : 'verseFinder.errors.fileUnreadable', { size: MAX_FILE_MB }));
+            return;
+        }
+        if (!picked) return;
+        setLastAudio(picked.audio);
+        setFileTruncated(picked.truncated);
+        await recognizeAudio(picked.audio);
     };
 
     const handleSelectModel = (id: VerseModelId) => {
@@ -404,6 +431,14 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
                     {phase === 'recording' && (
                         <ProgressBar progress={(elapsed / MAX_RECORDING_SECONDS) * 100} style={styles.recordingProgress} />
                     )}
+                    <AppButton
+                        title={t('verseFinder.pickFile')}
+                        icon={<FileUp size={16} color={theme.primary} />}
+                        variant="ghost"
+                        size="small"
+                        onPress={handlePickFile}
+                        disabled={busy || !activeModel}
+                    />
                 </View>
 
                 {error && <Text style={[common.note, common.textCenter]}>{error}</Text>}
@@ -415,6 +450,9 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
                                 <Text style={[common.sectionLabel, common.mbSm]}>{t('verseFinder.heard')}</Text>
                                 <ArabicText style={styles.transcript}>{transcript}</ArabicText>
                             </View>
+                        )}
+                        {fileTruncated && (
+                            <Text style={[common.smallText, common.textCenter]}>{t('verseFinder.fileTruncated', { seconds: MAX_FILE_SECONDS })}</Text>
                         )}
                         {results.length === 0 ? (
                             <Text style={[common.subtitle, common.textCenter]}>{t('verseFinder.noMatch')}</Text>
@@ -435,11 +473,20 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
                                         </Text>
                                         <Text style={common.smallText}>{t('verseFinder.match', { percent: Math.round(result.score * 100) })}</Text>
                                     </View>
-                                    {!!result.arabicText && (
-                                        <ArabicText style={styles.resultArabic} numberOfLines={i === 0 ? undefined : 2}>
-                                            {result.arabicText}
-                                        </ArabicText>
-                                    )}
+                                    {result.verses.map(verse => (
+                                        <View key={verse.number}>
+                                            {result.verses.length > 1 && (
+                                                <Text style={[common.smallText, common.mtSm]}>{t('verseFinder.verse', { verse: verse.number })}</Text>
+                                            )}
+                                            <ArabicText style={styles.resultArabic} numberOfLines={i === 0 ? undefined : 2}>
+                                                {verse.words.map((word, w) => (
+                                                    <Text key={w} style={word.matched ? styles.matchedWord : styles.unmatchedWord}>
+                                                        {word.text}{' '}
+                                                    </Text>
+                                                ))}
+                                            </ArabicText>
+                                        </View>
+                                    ))}
                                 </TouchableOpacity>
                             ))
                         )}

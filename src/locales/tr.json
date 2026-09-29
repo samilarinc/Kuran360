@@ -706,6 +706,8 @@
         "date": "29 Eylül 2026",
         "bullets": [
           "Yeni \"Kıble Pusulası\" ekranı: konumunuza göre Kâbe yönünü ve uzaklığını gösteriyor; ibadet menüsünden ve Umre Rehberi'nden açılıyor. Kâbe'ye çok yakınsanız pusulanın düzgün çalışmayabileceği konusunda uyarıyor.",
+          "Ayet Shazam'da bulunan ayette, duyulan kelimeler vurgulanıyor; birden fazla ayete yayılan okumalarda her ayette okunan kısım ayrı ayrı gösteriliyor.",
+          "Ayet Shazam'a ses veya video dosyasından ayet bulma eklendi (ör. WhatsApp'tan gelen bir tilavet kaydı).",
           "Yeni \"Ayet Shazam\" ekranı (web): okunan ayeti mikrofondan dinleyip hangi sure ve ayet olduğunu buluyor; tanıma cihazda yapılıyor, farklı ses modelleri indirilip seçilebiliyor.",
           "Hakkında sayfasına, Ayet Shazam'da kullanılan ses modellerinin kaynak ve lisans bilgileri eklendi.",
           "Ayet Shazam'da ekran kartı kullanılamıyorsa (GPU erişimi kapalı ya da yazılımsal çalışıyor), Chrome'da donanım hızlandırmanın nasıl açılacağını anlatan bir rehber gösteriliyor."
@@ -1080,9 +1082,9 @@
     "verse": "{{verse}}. ayet",
     "verseRange": "{{from}}–{{to}}. ayetler",
     "match": "%{{percent}} eşleşme",
-    "playRecording": "Kaydı dinle",
+    "playRecording": "Sesi dinle",
     "playing": "Çalınıyor…",
-    "rerun": "Bu kayıtla tekrar tanı",
+    "rerun": "Bu sesle tekrar tanı",
     "manageModels": "Modelleri yönet",
     "noModel": "Başlamak için \"Modelleri yönet\"ten bir ses modeli indirin.",
     "insecureWarning": "Sayfa güvenli olmayan bir bağlantıyla (http) açıldı. Tarayıcı bu durumda mikrofonu ve WebGPU'yu kapatır; https üzerinden açın.",
@@ -1104,7 +1106,7 @@
       "webgpuNoAdapter": "Tarayıcıda var ama GPU erişimi kapalı",
       "webgpuUnsupported": "Desteklenmiyor",
       "microphone": "Mikrofon",
-      "recording": "Son kayıt",
+      "recording": "Son ses",
       "lastRun": "Son tanıma süresi",
       "seconds": "{{value}} sn",
       "recordingLevel": {
@@ -1147,7 +1149,9 @@
     "errors": {
       "microphone": "Mikrofona erişilemedi. Tarayıcı ayarlarından mikrofon iznini verin.",
       "unsupported": "Bu tarayıcı ses kaydını desteklemiyor.",
-      "recognition": "Tanıma sırasında bir hata oluştu: {{message}}"
+      "recognition": "Tanıma sırasında bir hata oluştu: {{message}}",
+      "fileTooLarge": "Dosya çok büyük (en fazla {{size}} MB).",
+      "fileUnreadable": "Dosya okunamadı. Tarayıcınız bu ses biçimini desteklemiyor olabilir."
     },
     "gpuHelp": {
       "show": "GPU erişimi nasıl açılır?",
@@ -1158,6 +1162,8 @@
       "step3": "3. Aşağıdakini yazın ve \"Vulkan\" ayarını Enabled yapın. Linux'ta Chrome ekran kartına Vulkan üzerinden erişir; bu kapalıyken WebGPU yazılımsal kalır:",
       "relaunch": "{{step}}. Alttaki \"Relaunch\" düğmesiyle Chrome'u yeniden başlatın ve bu sayfaya dönün. Durum kartında WebGPU satırında ekran kartınızın adı görünüyorsa donanım kullanılıyor demektir.",
       "note": "Bunlar Chrome'un deneysel ayarlarıdır. Açmasanız da Ayet Shazam işlemciyle (FastConformer) çalışır."
-    }
+    },
+    "pickFile": "Veya bir ses dosyası seçin",
+    "fileTruncated": "Dosyanın ilk {{seconds}} saniyesi dinlendi."
   }
 }
