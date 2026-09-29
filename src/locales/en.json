@@ -589,7 +589,7 @@
       "surahs": "Surahs",
       "randomVerse": "Random Verse",
       "search": "Search",
-      "verseFinder": "Find Verse (by Voice)",
+      "verseFinder": "Verse Shazam",
       "quranPage": "Page View",
       "settings": "Settings",
       "profile": "Profile",
@@ -672,16 +672,16 @@
     ],
     "creditsSectionTitle": "Models Used",
     "creditsSectionBullets": [
-      "Find Verse · FastConformer: \"fastconformer-quran-ar\" by mohammed (huggingface.co/mohammed/fastconformer-quran-ar). Based on NVIDIA NeMo FastConformer, trained on tarteel-ai/everyayah. License: CC BY 4.0 (creativecommons.org/licenses/by/4.0). Used without modification.",
-      "Find Verse · Whisper: \"whisper-base-ar-quran\" by Tarteel AI (huggingface.co/tarteel-ai/whisper-base-ar-quran). License: Apache 2.0."
+      "Verse Shazam · FastConformer: \"fastconformer-quran-ar\" by mohammed (huggingface.co/mohammed/fastconformer-quran-ar). Based on NVIDIA NeMo FastConformer, trained on tarteel-ai/everyayah. License: CC BY 4.0 (creativecommons.org/licenses/by/4.0). Used without modification.",
+      "Verse Shazam · Whisper: \"whisper-base-ar-quran\" by Tarteel AI (huggingface.co/tarteel-ai/whisper-base-ar-quran). License: Apache 2.0."
     ],
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
         "date": "September 29, 2026",
         "bullets": [
-          "New \"Find Verse\" screen (web): listens to a recitation through the microphone and finds the surah and verse; recognition runs on the device, with several speech models to download and choose from.",
-          "Added the sources and licenses of the speech models used by Find Verse to the About page."
+          "New \"Verse Shazam\" screen (web): listens to a recitation through the microphone and finds the surah and verse; recognition runs on the device, with several speech models to download and choose from.",
+          "Added the sources and licenses of the speech models used by Verse Shazam to the About page."
         ]
       },
       {
@@ -1037,7 +1037,7 @@
     "Medenî": "Medinan"
   },
   "verseFinder": {
-    "title": "Find Verse",
+    "title": "Verse Shazam",
     "subtitle": "Listens to a recitation and finds the verse",
     "downloadTitle": "Quran data required",
     "downloadDescription": "To find recited verses, download the Quran text first.",
