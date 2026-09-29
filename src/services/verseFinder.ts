@@ -5,7 +5,7 @@ import type { VerseModel, VerseModelId } from '@/services/verseModels';
 
 /**
  * Web-only plumbing for the verse finder: device capability checks, microphone recording,
- * and the speech model, which runs in a worker under public/verse-finder/ so the UI stays responsive.
+ * and the speech model, which runs in a worker under public/workers/ so the UI stays responsive.
  */
 
 export const SAMPLE_RATE = 16000;
@@ -64,7 +64,7 @@ export const isModelSupported = (model: VerseModel, support: DeviceSupport): boo
 
 type Pending = { resolve: (value: any) => void; reject: (error: Error) => void };
 
-/** Keeps one speech model loaded in its worker (public/verse-finder/) across screen visits. */
+/** Keeps one speech model loaded in its worker (public/workers/) across screen visits. */
 class SpeechModel {
     private worker: any = null;
     private loadPromise: Promise<void> | null = null;
@@ -94,7 +94,9 @@ class SpeechModel {
         if (this.loadPromise) return this.loadPromise;
         this.modelId = model.id;
 
-        const worker = new g.Worker(`/verse-finder/${model.worker}-worker.js`, { type: 'module' });
+        // Not under /verse-finder/: a folder named like the page route makes the server answer
+        // the page URL with that folder (403) instead of the app
+        const worker = new g.Worker(`/workers/${model.worker}-worker.js`, { type: 'module' });
         this.worker = worker;
         this.loadPromise = new Promise<void>((resolve, reject) => {
             const fail = (error: Error) => {

@@ -97,7 +97,7 @@
       },
       {
         "files": [
-          "public/verse-finder/*.js"
+          "public/workers/*.js"
         ],
         "env": {
           "worker": true,
