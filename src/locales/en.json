@@ -543,9 +543,14 @@
     "retry": "Try again",
     "placeholder": "Type a topic or concept…",
     "hint": "For example \"patience\", \"orphans' rights\" or \"being good to parents\". It finds related verses even when the word does not appear in them.",
-    "disclaimer": "Results are verses close in meaning to the topic, not a ruling.",
+    "disclaimer": "Results are verses close in meaning to the topic, not a ruling. The tags show how reliable each match is.",
     "noResults": "No verses found for this topic. Try different words or the classic search.",
-    "searchError": "An error occurred while searching: {{message}}"
+    "searchError": "An error occurred while searching: {{message}}",
+    "level": {
+      "strong": "Strong match",
+      "related": "Related",
+      "keyword": "Word match"
+    }
   },
   "searchMenu": {
     "title": "Search",
@@ -727,6 +732,7 @@
       {
         "date": "September 29, 2026",
         "bullets": [
+          "Search by Topic results now tag each verse as \"Strong match\", \"Related\" or \"Word match\".",
           "New \"Search by Topic\" screen (web): type a topic such as \"patience\" or \"orphans' rights\" and it finds related verses even when the word does not appear in them; it runs on your device and downloads a small model once. Search in the main menu is now a submenu offering \"Classic Search\" and \"Search by Topic\".",
           "New \"Memorization Check\" screen (web): pick a surah and verse and recite it from memory; your recitation is checked and the correct words are marked green, while misread and skipped words are marked red.",
           "New \"Qibla Compass\" screen: shows the direction and distance to the Kaaba from your location; opens from the Worship menu and the Umrah Guide. It warns you that the compass may not work properly when you are very close to the Kaaba.",

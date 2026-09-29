@@ -21,6 +21,7 @@ import {
     searchTopics,
     TOPIC_MODEL_SIZE_MB,
 } from '@/services/topicSearch';
+import { MatchLevel } from '@/utils/topicSearch';
 import { SPACING } from '@/theme';
 
 interface TopicSearchScreenProps {
@@ -37,6 +38,7 @@ type ModelState =
     | { status: 'error'; message: string };
 
 const SEARCH_DELAY_MS = 400;
+const LEVEL_COLORS: Record<MatchLevel, string> = { strong: '#2E7D32', related: '#607D8B', keyword: '#3B82F6' };
 
 export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation, isDataAvailable }) => {
     const { settings } = useSettings();
@@ -116,6 +118,7 @@ export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation
                         matchedText: verse.allTranslations?.[settings.favoriteTranslation] ?? verse.translation,
                         matchedField: 'translation',
                         translationName: settings.favoriteTranslation,
+                        badge: { label: t(`topicSearch.level.${hit.level}`), color: LEVEL_COLORS[hit.level] },
                     });
                 }
                 if (searchId !== latestSearch.current) return;
@@ -129,7 +132,7 @@ export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation
             }
         }, SEARCH_DELAY_MS);
         return () => clearTimeout(timeout);
-    }, [query, modelState.status, settings.favoriteTranslation]);
+    }, [query, modelState.status, settings.favoriteTranslation, t]);
 
     const header = (
         <AppHeader

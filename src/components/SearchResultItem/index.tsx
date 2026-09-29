@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Type, PenLine, BookOpen } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
+import { Badge } from '@/components/Badge';
 import { getSurahName } from '@/utils/surahName';
 import { formatVerseNumber, VerseNumberStyle } from '@/utils/numerals';
 import { Verse, Surah } from '@/types';
@@ -15,6 +16,8 @@ export interface SearchResult {
     matchedField: 'arabic' | 'translation' | 'transliteration';
     matchedRange?: { start: number; end: number };
     translationName?: string;
+    /** Optional tag next to the verse reference, e.g. how strong a topic match is. */
+    badge?: { label: string; color: string };
 }
 
 interface SearchResultItemProps {
@@ -49,9 +52,12 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({ result, vers
     return (
         <TouchableOpacity style={styles.resultItem} onPress={onPress}>
             <View style={styles.resultHeader}>
-                <Text style={styles.resultSurahInfo}>
-                    {t('searchScreen.resultVerse', { surahName: getSurahName(t, result.surah), verseNumber: formatVerseNumber(result.verse.number, verseNumberStyle) })}
-                </Text>
+                <View style={[common.row, common.gapSm]}>
+                    <Text style={styles.resultSurahInfo}>
+                        {t('searchScreen.resultVerse', { surahName: getSurahName(t, result.surah), verseNumber: formatVerseNumber(result.verse.number, verseNumberStyle) })}
+                    </Text>
+                    {result.badge && <Badge label={result.badge.label} color={result.badge.color} variant="tint" size="small" />}
+                </View>
                 <View style={[common.row, common.gapXs]}>
                     {result.matchedField === 'arabic' ? (
                         <Type size={12} color={theme.secondary} />

@@ -6,6 +6,7 @@ import {
     KEYWORD_MEALS,
     keywordScores,
     KeywordIndex,
+    MatchLevel,
     rankTopics,
 } from '@/utils/topicSearch';
 import { areFilesCached, downloadFiles } from '@/services/verseModels';
@@ -29,6 +30,7 @@ const QUERY_PREFIX = 'query: ';
 export interface TopicHit {
     surahNumber: number;
     verseNumber: number;
+    level: MatchLevel;
 }
 
 export const isTopicModelDownloaded = (): Promise<boolean> => areFilesCached(TOPIC_MODEL_FILES);
@@ -125,7 +127,7 @@ const getDenseIndex = (): Promise<DenseIndex> => {
 interface VerseTable {
     keywords: KeywordIndex;
     /** Verse row (Qur'an order, as in the vectors) → surah and verse number. */
-    hits: TopicHit[];
+    verses: { surahNumber: number; verseNumber: number }[];
 }
 
 let tablePromise: Promise<VerseTable> | null = null;
@@ -134,16 +136,16 @@ let tablePromise: Promise<VerseTable> | null = null;
 const getVerseTable = (): Promise<VerseTable> => {
     tablePromise ??= (async () => {
         const docs: string[] = [];
-        const hits: TopicHit[] = [];
+        const verses: VerseTable['verses'] = [];
         for (const { number } of [...quranData.surahs].sort((a, b) => a.number - b.number)) {
             const surah = await loadSurah(number);
             surah?.verses.forEach(verse => {
                 const texts = KEYWORD_MEALS.map(meal => verse.allTranslations?.[meal]).filter(Boolean);
                 docs.push(texts.length ? texts.join(' ') : verse.translation);
-                hits.push({ surahNumber: number, verseNumber: verse.number });
+                verses.push({ surahNumber: number, verseNumber: verse.number });
             });
         }
-        return { keywords: buildKeywordIndex(docs), hits };
+        return { keywords: buildKeywordIndex(docs), verses };
     })().catch(error => {
         tablePromise = null;
         throw error;
@@ -162,7 +164,7 @@ export const searchTopics = async (query: string): Promise<TopicHit[]> => {
         getVerseTable(),
         embeddingModel.embed(QUERY_PREFIX + query),
     ]);
-    if (table.hits.length !== index.count) throw new Error('Verse data does not match the topic index');
+    if (table.verses.length !== index.count) throw new Error('Verse data does not match the topic index');
     const ranking = rankTopics(denseScores(index, vector), keywordScores(table.keywords, query));
-    return ranking.map(row => table.hits[row]);
+    return ranking.map(({ verse, level }) => ({ ...table.verses[verse], level }));
 };

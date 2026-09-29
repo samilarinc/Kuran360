@@ -15,6 +15,8 @@ export const KEYWORD_MEALS = [
 
 /** A dense hit must be at least this similar; with e5 unrelated queries top out around 0.81. */
 export const MIN_DENSE_SCORE = 0.83;
+/** Dense hits at least this similar count as a strong match on their own. */
+export const STRONG_DENSE_SCORE = 0.85;
 /** ...and within this of the best hit, so results stay a tight set instead of a long tail. */
 export const DENSE_WINDOW = 0.03;
 /** Query words found in more than this share of verses ("ve", "yapmak") say nothing about the topic. */
@@ -97,12 +99,25 @@ export const denseScores = (index: DenseIndex, query: Float32Array): Float32Arra
 const topBy = (entries: [number, number][], limit: number) =>
     entries.sort((a, b) => b[1] - a[1]).slice(0, limit).map(([verse]) => verse);
 
-/** Verse indexes best first: dense and keyword rankings merged by reciprocal rank fusion. */
+/**
+ * How much to trust a hit: found by both the embeddings and the keywords, or very close in meaning, is
+ * 'strong' (about 3x as often a right verse in our tests); close in meaning only is 'related'; a
+ * keyword match alone says the words occur but not that the verse is about the topic.
+ */
+export type MatchLevel = 'strong' | 'related' | 'keyword';
+
+export interface TopicMatch {
+    /** Verse row, in Qur'an order. */
+    verse: number;
+    level: MatchLevel;
+}
+
+/** Verses best first: dense and keyword rankings merged by reciprocal rank fusion. */
 export const rankTopics = (
     dense: Float32Array,
     keyword: Map<number, number>,
     { limit = 30, minScore = MIN_DENSE_SCORE, window = DENSE_WINDOW } = {},
-): number[] => {
+): TopicMatch[] => {
     let best = -Infinity;
     for (const score of dense) if (score > best) best = score;
     const floor = Math.max(minScore, best - window);
@@ -111,11 +126,23 @@ export const rankTopics = (
         if (score >= floor) denseHits.push([verse, score]);
     });
 
+    const denseRanking = topBy(denseHits, CANDIDATES);
+    const keywordRanking = topBy([...keyword], CANDIDATES);
+    const inDense = new Set(denseRanking);
+    const inKeyword = new Set(keywordRanking);
+
     const fused = new Map<number, number>();
-    for (const ranking of [topBy(denseHits, CANDIDATES), topBy([...keyword], CANDIDATES)]) {
+    for (const ranking of [denseRanking, keywordRanking]) {
         ranking.forEach((verse, position) => {
             fused.set(verse, (fused.get(verse) ?? 0) + 1 / (RRF_K + position));
         });
     }
-    return topBy([...fused], limit);
+    return topBy([...fused], limit).map(verse => ({
+        verse,
+        level: !inDense.has(verse)
+            ? 'keyword'
+            : inKeyword.has(verse) || dense[verse] >= STRONG_DENSE_SCORE
+                ? 'strong'
+                : 'related',
+    }));
 };
