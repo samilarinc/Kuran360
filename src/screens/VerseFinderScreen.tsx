@@ -51,8 +51,13 @@ type ModelState =
 
 type Phase = 'idle' | 'recording' | 'recognizing' | 'done';
 
-// Chrome flags that give pages GPU access where WebGPU is present but no adapter is handed out (e.g. Linux)
-const GPU_FLAGS = ['chrome://flags/#enable-unsafe-webgpu', 'chrome://flags/#ignore-gpu-blocklist'];
+// Chrome flags that make WebGPU use the graphics card where it's off or falls back to SwiftShader
+// (typically Linux: Dawn reaches the GPU driver only through Vulkan)
+const GPU_FLAGS = [
+    'chrome://flags/#enable-unsafe-webgpu',
+    'chrome://flags/#ignore-gpu-blocklist',
+    'chrome://flags/#enable-vulkan',
+];
 
 interface ResultItem extends VerseMatch {
     arabicText: string;
@@ -272,7 +277,9 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     const webgpuRow = !support
         ? { color: muted, value: t('verseFinder.status.checking') }
         : support.webgpu === 'available'
-            ? { color: ok, value: support.gpuName ? `${t('verseFinder.status.yes')} · ${support.gpuName}` : t('verseFinder.status.yes') }
+            ? support.softwareGpu
+                ? { color: warn, value: t('verseFinder.status.webgpuSoftware') }
+                : { color: ok, value: support.gpuName ? `${t('verseFinder.status.yes')} · ${support.gpuName}` : t('verseFinder.status.yes') }
             : support.webgpu === 'noAdapter'
                 ? { color: warn, value: t('verseFinder.status.webgpuNoAdapter') }
                 : { color: warn, value: t('verseFinder.status.webgpuUnsupported') };
@@ -328,7 +335,7 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
                             </View>
                         </View>
                     ))}
-                    {support?.webgpu === 'noAdapter' && (
+                    {(support?.webgpu === 'noAdapter' || support?.softwareGpu) && (
                         <>
                             <TouchableOpacity onPress={() => setGpuHelpVisible(v => !v)} style={common.mtSm}>
                                 <Text style={common.textAccent}>{t(gpuHelpVisible ? 'verseFinder.gpuHelp.hide' : 'verseFinder.gpuHelp.show')}</Text>
@@ -342,7 +349,7 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
                                             <Text style={styles.flagText} selectable>{flag}</Text>
                                         </View>
                                     ))}
-                                    <Text style={[common.text, common.mtSm]}>{t('verseFinder.gpuHelp.relaunch')}</Text>
+                                    <Text style={[common.text, common.mtSm]}>{t('verseFinder.gpuHelp.relaunch', { step: GPU_FLAGS.length + 1 })}</Text>
                                     <Text style={[common.smallText, common.mtSm]}>{t('verseFinder.gpuHelp.note')}</Text>
                                 </View>
                             )}

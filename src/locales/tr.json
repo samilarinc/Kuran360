@@ -682,7 +682,7 @@
         "bullets": [
           "Yeni \"Ayet Shazam\" ekranı (web): okunan ayeti mikrofondan dinleyip hangi sure ve ayet olduğunu buluyor; tanıma cihazda yapılıyor, farklı ses modelleri indirilip seçilebiliyor.",
           "Hakkında sayfasına, Ayet Shazam'da kullanılan ses modellerinin kaynak ve lisans bilgileri eklendi.",
-          "Ayet Shazam'da GPU erişimi kapalıysa, Chrome'da nasıl açılacağını anlatan bir rehber gösteriliyor."
+          "Ayet Shazam'da ekran kartı kullanılamıyorsa (GPU erişimi kapalı ya da yazılımsal çalışıyor), Chrome'da donanım hızlandırmanın nasıl açılacağını anlatan bir rehber gösteriliyor."
         ]
       },
       {
@@ -1074,6 +1074,7 @@
         "error": "Yüklenemedi"
       },
       "webgpu": "WebGPU",
+      "webgpuSoftware": "Yazılımsal (SwiftShader), ekran kartı kullanılmıyor",
       "webgpuNoAdapter": "Tarayıcıda var ama GPU erişimi kapalı",
       "webgpuUnsupported": "Desteklenmiyor",
       "microphone": "Mikrofon",
@@ -1124,10 +1125,11 @@
     "gpuHelp": {
       "show": "GPU erişimi nasıl açılır?",
       "hide": "Rehberi gizle",
-      "intro": "Tarayıcınız WebGPU'yu destekliyor ama ekran kartına erişimi kapalı. Chrome'da açmak için:",
+      "intro": "Tarayıcınız ekran kartınızı kullanmıyor: WebGPU ya kapalı ya da işlemcide yazılımsal olarak (SwiftShader) çalışıyor. Aşağıdaki ayarlar, Chrome'un çizimi yazılım yerine ekran kartıyla (donanım hızlandırmayla) yapmasını sağlar:",
       "step1": "1. Adres çubuğuna aşağıdakini yazın ve \"Unsafe WebGPU Support\" ayarını Enabled yapın:",
       "step2": "2. Aşağıdakini yazın ve \"Override software rendering list\" ayarını Enabled yapın:",
-      "relaunch": "3. Alttaki \"Relaunch\" düğmesiyle Chrome'u yeniden başlatın ve bu sayfaya dönün.",
+      "step3": "3. Aşağıdakini yazın ve \"Vulkan\" ayarını Enabled yapın. Linux'ta Chrome ekran kartına Vulkan üzerinden erişir; bu kapalıyken WebGPU yazılımsal kalır:",
+      "relaunch": "{{step}}. Alttaki \"Relaunch\" düğmesiyle Chrome'u yeniden başlatın ve bu sayfaya dönün. Durum kartında WebGPU satırında ekran kartınızın adı görünüyorsa donanım kullanılıyor demektir.",
       "note": "Bunlar Chrome'un deneysel ayarlarıdır. Açmasanız da Ayet Shazam işlemciyle (FastConformer) çalışır."
     }
   }

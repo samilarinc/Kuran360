@@ -682,7 +682,7 @@
         "bullets": [
           "New \"Verse Shazam\" screen (web): listens to a recitation through the microphone and finds the surah and verse; recognition runs on the device, with several speech models to download and choose from.",
           "Added the sources and licenses of the speech models used by Verse Shazam to the About page.",
-          "When GPU access is off, Verse Shazam shows a guide for turning it on in Chrome."
+          "When the graphics card can't be used (GPU access is off or running in software), Verse Shazam shows a guide for turning on hardware acceleration in Chrome."
         ]
       },
       {
@@ -1073,6 +1073,7 @@
         "error": "Failed to load"
       },
       "webgpu": "WebGPU",
+      "webgpuSoftware": "Software (SwiftShader), graphics card not used",
       "webgpuNoAdapter": "In the browser, but GPU access is off",
       "webgpuUnsupported": "Not supported",
       "microphone": "Microphone",
@@ -1123,10 +1124,11 @@
     "gpuHelp": {
       "show": "How to turn on GPU access?",
       "hide": "Hide guide",
-      "intro": "Your browser supports WebGPU, but its access to the graphics card is off. To turn it on in Chrome:",
+      "intro": "Your browser isn't using your graphics card: WebGPU is either off or running in software on the CPU (SwiftShader). The settings below make Chrome render with the graphics card (hardware acceleration) instead of software:",
       "step1": "1. Type the following into the address bar and set \"Unsafe WebGPU Support\" to Enabled:",
       "step2": "2. Type the following and set \"Override software rendering list\" to Enabled:",
-      "relaunch": "3. Restart Chrome with the \"Relaunch\" button at the bottom and come back to this page.",
+      "step3": "3. Type the following and set \"Vulkan\" to Enabled. On Linux, Chrome reaches the graphics card through Vulkan; while it's off, WebGPU stays in software:",
+      "relaunch": "{{step}}. Restart Chrome with the \"Relaunch\" button at the bottom and come back to this page. If the WebGPU row in the status card shows your graphics card's name, the hardware is in use.",
       "note": "These are experimental Chrome settings. Without them, Verse Shazam still works on the CPU (FastConformer)."
     }
   }

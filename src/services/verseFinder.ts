@@ -21,6 +21,8 @@ export interface DeviceSupport {
     secureContext: boolean;
     webgpu: WebGpuStatus;
     gpuName?: string;
+    /** The adapter is a CPU emulation (e.g. SwiftShader), not the device's graphics card. */
+    softwareGpu: boolean;
     shaderF16: boolean;
     microphone: boolean;
     worker: boolean;
@@ -33,6 +35,7 @@ export const checkDeviceSupport = async (): Promise<DeviceSupport> => {
         isWeb,
         secureContext: isWeb && g.isSecureContext !== false,
         webgpu: 'unsupported',
+        softwareGpu: false,
         shaderF16: false,
         microphone: isWeb && !!nav?.mediaDevices?.getUserMedia && typeof g.MediaRecorder !== 'undefined',
         worker: isWeb && typeof g.Worker !== 'undefined',
@@ -49,6 +52,7 @@ export const checkDeviceSupport = async (): Promise<DeviceSupport> => {
         const info = adapter.info;
         const name = [info?.vendor, info?.architecture || info?.description].filter(Boolean).join(' ');
         if (name) support.gpuName = name;
+        support.softwareGpu = !!(info?.isFallbackAdapter ?? adapter.isFallbackAdapter) || /swiftshader/i.test(name);
     } catch {
         support.webgpu = 'noAdapter';
     }
