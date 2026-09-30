@@ -15,6 +15,8 @@ interface AudioContextType {
     startMemorization: (surahNumber: number, startVerseNumber: number, endVerseNumber: number, repetitionCount: number, mode?: 'range' | 'individual') => Promise<void>;
     cancelMemorization: () => void;
     playPreviewWithReciter: (verse: VerseType, reciterId: string) => Promise<void>;
+    /** Playback position ticks (every ~100 ms) for the playing verse; returns the unsubscribe function. */
+    subscribeToPosition: (listener: (verseId: string, positionMillis: number) => void) => () => void;
 }
 
 const AudioContext = createContext<AudioContextType | null>(null);

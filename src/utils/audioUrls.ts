@@ -13,3 +13,10 @@ const getAudioBaseUrl = (): string => {
 /** e.g. https://kuran360.com/sudais_all_verse/002255.mp3 */
 export const getVerseAudioUrl = (surahNumber: number, verseNumber: number, reciterFolder: string = DEFAULT_RECITER_FOLDER): string =>
     `${getAudioBaseUrl()}/${reciterFolder}/${AUDIO_FILE_FORMAT(surahNumber, verseNumber)}`;
+
+/**
+ * Word timing files (public/wordTimings/<reciterId>.json, see scripts/build_word_timings.py).
+ * Web reads them from its own origin; native apps fetch them from the site.
+ */
+export const getWordTimingsUrl = (reciterId: string): string =>
+    Platform.OS === 'web' ? `/wordTimings/${reciterId}.json` : `https://kuran360.com/wordTimings/${reciterId}.json`;

@@ -14,6 +14,7 @@ interface VerseData {
   word_translations: Array<{
     arabic: string;
     turkish: string;
+    root?: string;
   }>;
   translations: Record<string, string>;
 }
@@ -29,8 +30,12 @@ const LEGACY_CACHE_KEY = 'quran_verses_data';
 const LEGACY_VERSION_KEY = 'quran_verses_version';
 
 // Bump whenever public/allVerses.json changes so users re-download it
-export const CURRENT_VERSION = '3.2';
+export const CURRENT_VERSION = '3.3';
 const META_VERSION_KEY = 'data_version';
+
+// Where the verse data is downloaded from. EXPO_PUBLIC_DATA_URL overrides the default (e.g. to test a local allVerses.json).
+export const VERSES_URL = process.env.EXPO_PUBLIC_DATA_URL
+  || (Platform.OS === 'web' ? '/allVerses.json' : 'https://kuran360.com/allVerses.json');
 
 // IndexedDB Helper Class
 class IndexedDBHelper {
@@ -447,7 +452,7 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
       logger.debug('📡 Loading from server...');
 
       // Add a timestamp to bypass cache
-      const fetchUrl = `/allVerses.json?t=${Date.now()}`;
+      const fetchUrl = `${VERSES_URL}?t=${Date.now()}`;
       const response = await fetch(fetchUrl);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -527,7 +532,7 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
       progressCallback?.(10, i18n.t('download.fromServer'));
 
       // Download data from server
-      const response = await fetch('https://kuran360.com/allVerses.json');
+      const response = await fetch(VERSES_URL);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -582,7 +587,8 @@ function convertToAppFormat(verseData: VerseData): Verse {
     transliteration: verseData.transliteration || '',
     wordTranslations: (verseData.word_translations || []).map(wt => ({
       arabic: wt.arabic,
-      translation: wt.turkish
+      translation: wt.turkish,
+      root: wt.root
     })),
     allTranslations: verseData.translations || {}
   };

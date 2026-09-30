@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Audio } from 'expo-av';
 import { Verse as VerseType, AudioState } from '@/types';
 import { loadSurah } from '@/data/quranData';
@@ -11,6 +11,10 @@ import { getVerseAudioUrl } from '@/utils/audioUrls';
 const OVERLAP_LEAD_MS = 60;
 // How long the previous sound may keep playing its tail before it is unloaded
 const OVERLAP_UNLOAD_DELAY_MS = 1000;
+// How often the player reports its position (word highlighting follows it); expo-av defaults to 500 ms
+const POSITION_UPDATE_INTERVAL_MS = 100;
+
+type PositionListener = (verseId: string, positionMillis: number) => void;
 
 export const useAudioPlayer = () => {
   const { settings, availableReciters } = useSettings();
@@ -38,6 +42,14 @@ export const useAudioPlayer = () => {
   // Upcoming verse audio, keyed by URI (so a reciter change never hits a stale entry).
   // Promises, so a transition can wait for an in-flight preload instead of downloading again.
   const preloadCache = useRef<Map<string, Promise<Audio.Sound | null>>>(new Map());
+
+  // Position ticks go straight to subscribers instead of through audioState, so only the
+  // components that follow the recitation re-render ten times a second
+  const positionListenersRef = useRef<Set<PositionListener>>(new Set());
+  const subscribeToPosition = useCallback((listener: PositionListener) => {
+    positionListenersRef.current.add(listener);
+    return () => { positionListenersRef.current.delete(listener); };
+  }, []);
 
   // Memorization mode state (range within a single surah, repeating the whole range N times)
   const memActiveRef = useRef(false);
@@ -563,15 +575,17 @@ export const useAudioPlayer = () => {
       };
 
       // Set up status update listener
+      newSound.setProgressUpdateIntervalAsync(POSITION_UPDATE_INTERVAL_MS).catch(() => { });
       newSound.setOnPlaybackStatusUpdate((status) => {
         if (!status.isLoaded) return;
-        setAudioState(prev => ({
-          ...prev,
-          isPlaying: status.isPlaying || false,
-          duration: status.durationMillis || 0,
-          position: status.positionMillis || 0,
-          isLoading: false,
-        }));
+        positionListenersRef.current.forEach(listener => listener(verse.id, status.positionMillis || 0));
+        // Position ticks alone don't touch audioState (nothing reads it; see subscribeToPosition)
+        setAudioState(prev => {
+          const isPlaying = status.isPlaying || false;
+          const duration = status.durationMillis || 0;
+          if (prev.isPlaying === isPlaying && prev.duration === duration && !prev.isLoading) return prev;
+          return { ...prev, isPlaying, duration, position: status.positionMillis || 0, isLoading: false };
+        });
 
         clearEarlyTimer();
         if (status.didJustFinish) {
@@ -854,5 +868,6 @@ export const useAudioPlayer = () => {
     startMemorization,
     cancelMemorization,
     playPreviewWithReciter,
+    subscribeToPosition,
   };
 };

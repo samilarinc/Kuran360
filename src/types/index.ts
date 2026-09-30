@@ -10,6 +10,7 @@ export type IconSpec =
 export interface WordTranslation {
   arabic: string;
   translation: string;
+  root?: string; // Arabic root letters without spaces (e.g. كتب); absent for particles, pronouns, etc.
 }
 
 export interface Verse {
@@ -54,9 +55,11 @@ export interface AppSettings {
   showTransliteration: boolean;
   showWordTranslations: boolean;
   inlineWordTranslations: boolean;
+  showWordRoots: boolean; // word roots: tinted word chips, root on the hover card, tap to open the root
   usePaginatedView: boolean;
   theme: ThemeName;
   audioTrackingEnabled: boolean;
+  wordTrackingEnabled: boolean; // Highlight the word being recited (reciters with word timings only)
   selectedReciter: string;
   playbackRate: number;
   // Audio play behavior

@@ -7,11 +7,13 @@ import {
     PenLine,
     Type,
     MousePointerClick,
+    Sprout,
     FileText,
     Hash,
     PenTool,
     Languages,
     Settings2,
+    Highlighter,
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
@@ -33,10 +35,12 @@ interface SettingsScreenProps {
 
 const COLORS = {
     audio: '#F59E0B',
+    wordTracking: '#22C55E',
     display: '#3B82F6',
     transliteration: '#8B5CF6',
     wordTranslations: '#10B981',
     inlineWordTranslations: '#F97316',
+    wordRoots: '#84CC16',
     paginatedView: '#0EA5E9',
     verseNumbers: '#EC4899',
     fonts: '#14B8A6',
@@ -48,6 +52,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     const { settings, updateSettings, availableTranslations } = useSettings();
     const { theme, common } = useTheme();
     const { t } = useTranslation();
+    // Word roots only show up in the word translation views: without either one the switch is off and locked
+    // (the saved choice is kept, so it is back as before once a view is turned on again)
+    const wordViewsOff = !settings.showWordTranslations && !settings.inlineWordTranslations;
     const styles = useTheme().common;
     const THEME_TOGGLE_LABELS = {
         light: t('settingsScreen.theme.light'),
@@ -236,6 +243,16 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         iconColor={COLORS.audio}
                         theme={theme}
                     />
+                    <SettingItem
+                        title={t('settingsScreen.items.wordTrackingTitle')}
+                        description={t('settingsScreen.items.wordTrackingDescription')}
+                        warning={t('settingsScreen.items.wordTrackingWarning')}
+                        value={settings.wordTrackingEnabled}
+                        onValueChange={(value) => updateSettings({ wordTrackingEnabled: value })}
+                        icon={<Highlighter size={17} color={COLORS.wordTracking} />}
+                        iconColor={COLORS.wordTracking}
+                        theme={theme}
+                    />
                     <ReciterSelector />
                 </CollapsibleSettingsSection>
 
@@ -261,34 +278,34 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         title={t('settingsScreen.items.wordTranslationsTitle')}
                         description={t('settingsScreen.items.wordTranslationsDescription')}
                         value={settings.showWordTranslations}
-                        onValueChange={(value) => {
-                            if (value && settings.inlineWordTranslations) {
-                                updateSettings({ showWordTranslations: value, inlineWordTranslations: false });
-                            } else {
-                                updateSettings({ showWordTranslations: value });
-                            }
-                        }}
+                        onValueChange={(value) => updateSettings({ showWordTranslations: value })}
                         icon={<Type size={16} color={COLORS.wordTranslations} />}
                         iconColor={COLORS.wordTranslations}
                         theme={theme}
-                        disabled={settings.inlineWordTranslations}
                     />
 
                     <SettingItem
                         title={t('settingsScreen.items.inlineWordTranslationsTitle')}
                         description={t('settingsScreen.items.inlineWordTranslationsDescription')}
+                        warning={t('settingsScreen.items.inlineWordTranslationsWarning')}
                         value={settings.inlineWordTranslations}
-                        onValueChange={(value) => {
-                            if (value && settings.showWordTranslations) {
-                                updateSettings({ inlineWordTranslations: value, showWordTranslations: false });
-                            } else {
-                                updateSettings({ inlineWordTranslations: value });
-                            }
-                        }}
+                        onValueChange={(value) => updateSettings({ inlineWordTranslations: value })}
                         icon={<MousePointerClick size={16} color={COLORS.inlineWordTranslations} />}
                         iconColor={COLORS.inlineWordTranslations}
                         theme={theme}
-                        disabled={settings.showWordTranslations}
+                    />
+
+                    <SettingItem
+                        title={t('settingsScreen.items.wordRootsTitle')}
+                        description={t('settingsScreen.items.wordRootsDescription')}
+                        warning={wordViewsOff ? t('settingsScreen.items.wordRootsWarning') : undefined}
+                        warningTone="error"
+                        disabled={wordViewsOff}
+                        value={settings.showWordRoots && !wordViewsOff}
+                        onValueChange={(value) => updateSettings({ showWordRoots: value })}
+                        icon={<Sprout size={16} color={COLORS.wordRoots} />}
+                        iconColor={COLORS.wordRoots}
+                        theme={theme}
                     />
 
                     <SettingItem

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
-import { isDataCached, loadAllVerses, ProgressCallback } from '@/data/quranData';
+import { isDataCached, loadAllVerses, ProgressCallback, VERSES_URL } from '@/data/quranData';
 
 interface UseDownloadDataOptions {
     isDataAvailable: boolean;
@@ -19,12 +19,7 @@ export const useDownloadData = ({ isDataAvailable, navigation }: UseDownloadData
     useEffect(() => {
         const getFileSize = async () => {
             try {
-                let response: Response;
-                if (Platform.OS === 'web') {
-                    response = await fetch('/allVerses.json', { method: 'HEAD' });
-                } else {
-                    response = await fetch('https://kuran360.com/allVerses.json', { method: 'HEAD' });
-                }
+                const response = await fetch(VERSES_URL, { method: 'HEAD' });
                 const contentLength = response.headers.get('content-length');
                 if (contentLength) {
                     setTotalBytes(parseInt(contentLength, 10));

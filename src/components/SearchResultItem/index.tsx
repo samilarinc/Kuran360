@@ -4,8 +4,9 @@ import { Type, PenLine, BookOpen } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { Badge } from '@/components/Badge';
+import { ArabicText } from '@/components/ArabicText';
 import { getSurahName } from '@/utils/surahName';
-import { getSpacedArabicText } from '@/utils/arabicText';
+import { getSpacedArabicText, getWordSegments } from '@/utils/arabicText';
 import { formatVerseNumber, VerseNumberStyle } from '@/utils/numerals';
 import { Verse, Surah } from '@/types';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
@@ -19,6 +20,8 @@ export interface SearchResult {
     translationName?: string;
     /** Optional tag next to the verse reference, e.g. how strong a topic match is. */
     badge?: { label: string; color: string };
+    /** Show the verse's Arabic text with the words of this root highlighted. */
+    highlightRoot?: string;
 }
 
 interface SearchResultItemProps {
@@ -76,10 +79,18 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({ result, vers
                 </Text>
             </View>
 
-            {result.matchedField === 'arabic' && (
-                <Text style={styles.resultArabic}>
+            {result.highlightRoot ? (
+                <ArabicText style={styles.resultArabic}>
+                    {getWordSegments(result.verse).map((segment, index) => (
+                        <Text key={index} style={segment.root === result.highlightRoot ? styles.highlightedText : undefined}>
+                            {segment.arabic}{' '}
+                        </Text>
+                    ))}
+                </ArabicText>
+            ) : result.matchedField === 'arabic' && (
+                <ArabicText style={styles.resultArabic}>
                     {getSpacedArabicText(result.verse)}
-                </Text>
+                </ArabicText>
             )}
 
             {highlightMatch(result.matchedText, result.matchedRange)}
@@ -124,7 +135,6 @@ const createStyles = (theme: Theme, common: CommonStyles) => {
             color: theme.text,
             textAlign: 'right',
             marginBottom: SPACING.xs,
-            fontFamily: 'Scheherazade New, Noto Naskh Arabic, serif',
             lineHeight: FONT_SIZES.arabic * 1.8,
         },
         resultText: {

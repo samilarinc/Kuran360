@@ -610,12 +610,19 @@
     "items": {
       "autoplayTitle": "Otomatik Oynatma",
       "autoplayDescription": "Bir ayet bitince otomatik olarak sonraki ayete geç",
+      "wordTrackingTitle": "Kelime Takibi",
+      "wordTrackingDescription": "Ayet dinlerken okunan kelimeyi ayet metninde işaretle.",
+      "wordTrackingWarning": "Şu an yalnızca Sudais okuyucusunda kullanılabilir.",
       "transliterationTitle": "Türkçe Okunuş",
       "transliterationDescription": "Ayetlerin okunuş şeklini göster",
       "wordTranslationsTitle": "Kelime Çevirileri",
       "wordTranslationsDescription": "Her kelimenin altında Türkçe karşılığını göster",
       "inlineWordTranslationsTitle": "Kelime Üstüne Gelince Çeviri",
-      "inlineWordTranslationsDescription": "Web'de ayet içinde kelimenin üstüne gelince çeviriyi göster",
+      "inlineWordTranslationsDescription": "Web'de ayet içinde kelimenin üstüne gelince çeviriyi göster.",
+      "inlineWordTranslationsWarning": "Dikkat: kelime boşlukları artar",
+      "wordRootsTitle": "Kelime Kökleri",
+      "wordRootsWarning": "Kelime Çevirileri veya Kelime Üstüne Gelince Çeviri'den birini açmalısınız.",
+      "wordRootsDescription": "Kelime çevirilerinde kökü olan kelimeleri işaretle; dokununca kökü ve kökten gelen ayetleri göster",
       "paginatedViewTitle": "Sayfalı Görünüm",
       "paginatedViewDescription": "Her ayeti ayrı sayfada göster (kaydırarak geçiş)",
       "arabicVerseNumbersTitle": "Arapça Durak Numaraları",
@@ -740,6 +747,8 @@
       {
         "date": "1 Ekim 2026",
         "bullets": [
+          "Kelime çevirilerine dokununca kelimenin Arapça kökü açılıyor; \"Kökü ara\" ile o kökten gelen kelimelerin geçtiği bütün ayetler listeleniyor. Ayarlardan kapatabilirsiniz.",
+          "Ayet dinlerken okunan kelimenin harfleri sağdan sola renkleniyor, okunan kelimeler boyalı kalıyor ve altındaki küçük üçgen imleç boyanan kısmı takip ediyor (Sudais okuyucusunda); Ayarlar > Ses Ayarları bölümündeki \"Kelime Takibi\" ile kapatılabilir.",
           "Sure sayfasında (okuma görünümünde) Arapça kelimeler artık yapışık değil, aralarında boşluk var.",
           "Son okunanlar listesi artık cihazınızda da saklanıyor, hesabınızla eşleşiyor ve tekrar okuduğunuz ayet listenin başına geçiyor.",
           "Ana sayfada sağ altta, en son okuduğunuz sure ve ayet numarasını gösteren bir buton belirdi; dokununca kaldığınız yerden devam edersiniz.",
@@ -1016,6 +1025,19 @@
     "dark": "Karanlık",
     "lightsOut": "Işıklar Kapalı",
     "accessibilityLabel": "Tema: {{current}}. Değiştirmek için dokun, sıradaki: {{next}}"
+  },
+  "wordRootModal": {
+    "root": "Kök",
+    "searchRoot": "Kökü ara",
+    "close": "Kapat"
+  },
+  "rootVerses": {
+    "title": "Kök: {{root}}",
+    "loading": "Ayetler aranıyor...",
+    "downloadTitle": "Kur'an verisi gerekli",
+    "downloadDescription": "Bu kökün geçtiği ayetleri listeleyebilmek için önce Kur'an metnini indirmeniz gerekiyor.",
+    "summary": "{{verses}} ayette, {{words}} kelimede geçiyor",
+    "showMore": "{{count}} ayet daha göster"
   },
   "verse": {
     "wordTranslations": "Kelime Çevirileri:",

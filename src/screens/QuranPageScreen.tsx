@@ -15,12 +15,13 @@ import { LoadingView } from '@/components/LoadingView';
 import { TranslationPickerModal, TranslationPickerOption } from '@/components/TranslationPickerModal';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useSettings } from '@/contexts/SettingsContext';
-import { Verse as VerseType } from '@/types';
+import { Verse as VerseType, WordTranslation } from '@/types';
 import { loadSurah } from '@/data/quranData';
 import { getVerseRangesForPage, TOTAL_MUSHAF_PAGES } from '@/data/pageMapping';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
 import { getSpacedArabicText, getWordSegments } from '@/utils/arabicText';
+import { WordRootModal } from '@/components/WordRootModal';
 import { createStyles } from './QuranPageScreen.styles';
 
 const MIN_FONT_SIZE = 18;
@@ -57,6 +58,7 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
   );
   const [segments, setSegments] = useState<PageSegment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedWord, setSelectedWord] = useState<WordTranslation | null>(null);
   const [pageInput, setPageInput] = useState(String(pageNumber));
   const [translationModalVisible, setTranslationModalVisible] = useState(false);
   const { theme, common } = useTheme();
@@ -218,10 +220,15 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
                         {settings.quranPageTranslation === WORD_BY_WORD_TRANSLATION_ID ? (
                           <View style={styles.wordByWordGrid}>
                             {getWordSegments(verse).map((word, idx) => (
-                              <View key={idx} style={common.wordItem}>
+                              <TouchableOpacity
+                                key={idx}
+                                style={[common.wordItem, settings.showWordRoots && !!word.root && common.wordItemWithRoot]}
+                                disabled={!settings.showWordRoots || !word.root}
+                                onPress={() => setSelectedWord(word)}
+                              >
                                 <ArabicText style={common.wordArabic}>{word.arabic}</ArabicText>
                                 <Text style={[common.wordTranslation, styles.translationFont]}>{word.translation}</Text>
-                              </View>
+                              </TouchableOpacity>
                             ))}
                           </View>
                         ) : (
@@ -278,6 +285,12 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
           </Text>
         </TouchableOpacity>
       </View>
+
+      <WordRootModal
+        word={selectedWord}
+        onClose={() => setSelectedWord(null)}
+        onSearchRoot={(root) => navigation.navigate('RootVerses', { root })}
+      />
 
       <TranslationPickerModal
         visible={translationModalVisible}

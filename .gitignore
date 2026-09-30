@@ -85,3 +85,6 @@ yarn-error.log
 
 # Local secrets (see .env.example)
 .env
+
+# Downloaded morphology data for scripts/add_roots.py
+scripts/.cache/

@@ -3,6 +3,7 @@ import React, { createContext, useContext } from 'react';
 type NavigationHelpers = {
     goToSurah: (surahNumber: number) => Promise<void>;
     goToSurahVerse: (surahNumber: number, verseIndex: number) => Promise<void>;
+    goToRoot: (root: string) => void;
 };
 
 const NavigationContext = createContext<NavigationHelpers | null>(null);

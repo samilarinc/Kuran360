@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { SHADOW } from '@msarinc/ui';
+import { MARKER_SPACE } from '../SpokenWordMarker/index.styles';
 import { FONT_SIZES, SPACING, FAVORITE_COLOR, FAVORITE_COLOR_DARK, Theme } from '@/theme';
+import type { CommonStyles } from '@/theme/common.styles';
 
 const headerIconButton = {
   borderRadius: 20,
@@ -11,7 +13,7 @@ const headerIconButton = {
   borderWidth: 1.5,
 };
 
-export const createStyles = (theme: Theme) => {
+export const createStyles = (theme: Theme, common: CommonStyles) => {
   return StyleSheet.create({
   container: {
     backgroundColor: theme.cardBackground,
@@ -65,18 +67,36 @@ export const createStyles = (theme: Theme) => {
   inlineArabicWordHover: {
     color: theme.secondary,
   },
-  hoverCard: {
+  // Words already recited stay colored while the verse plays (same color as the word being recited)
+  recitedWord: {
+    color: theme.primary,
+  },
+  // Room under every word for the line and pointer of the recited word
+  spokenWordBox: {
+    position: 'relative',
+    paddingBottom: MARKER_SPACE,
+  },
+  // Centers the card over the word: a box as wide as the card's maxWidth, centered on the word's middle
+  hoverCardWrap: {
     position: 'absolute',
     bottom: '100%',
-    right: 0,
-    marginBottom: 8,
+    left: '50%',
+    width: 200,
+    marginLeft: -100,
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  // Bottom padding is part of the hover area, so the pointer can get from the word onto the card
+  hoverCardBridge: {
+    paddingBottom: 8,
+  },
+  hoverCard: {
     backgroundColor: theme.cardBackground,
     borderRadius: 12,
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderWidth: 2,
     borderColor: theme.primary,
-    zIndex: 10,
     shadowColor: '#000',
     shadowOpacity: 0.25,
     shadowOffset: { width: 0, height: 4 },
@@ -91,6 +111,23 @@ export const createStyles = (theme: Theme) => {
     fontWeight: '600',
     textAlign: 'center',
     lineHeight: FONT_SIZES.medium * 1.2,
+  },
+  // Same tinted chip as a word-by-word box that has a root
+  hoverCardRootChip: {
+    ...common.wordItemWithRoot,
+    borderRadius: 6,
+    paddingTop: 0,
+    paddingBottom: 2,
+    paddingHorizontal: 8,
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 4,
+  },
+  hoverCardRoot: {
+    color: theme.primary,
+    fontSize: FONT_SIZES.medium,
+    textAlign: 'center',
+    writingDirection: 'rtl',
   },
   translationText: {
     fontSize: FONT_SIZES.translation,

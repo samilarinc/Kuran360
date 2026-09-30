@@ -7,6 +7,10 @@ import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext
 interface SettingItemProps {
     title: string;
     description: string;
+    /** Shown right after the description in the theme's warning color */
+    warning?: string;
+    /** 'error' paints the warning red (default: warning color) */
+    warningTone?: 'warning' | 'error';
     value: boolean;
     onValueChange: (value: boolean) => void;
     icon?: React.ReactNode;
@@ -18,6 +22,8 @@ interface SettingItemProps {
 export const SettingItem: React.FC<SettingItemProps> = ({
     title,
     description,
+    warning,
+    warningTone = 'warning',
     value,
     onValueChange,
     icon,
@@ -29,7 +35,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
     const styles = useThemedStyles(createStyles);
 
     return (
-        <View style={[styles.settingItem, disabled && common.disabled]}>
+        <View style={styles.settingItem}>
             <View style={common.rowFill}>
                 {icon && (
                     <View style={[styles.settingIconWrap, iconColor && { backgroundColor: iconColor + '1A' }, disabled && common.disabled]}>
@@ -42,6 +48,7 @@ export const SettingItem: React.FC<SettingItemProps> = ({
                     </Text>
                     <Text style={[styles.settingDescription, disabled && styles.settingDescriptionDisabled]}>
                         {description}
+                        {warning && <Text style={warningTone === 'error' ? styles.settingWarningError : styles.settingWarning}> {warning}</Text>}
                     </Text>
                 </View>
             </View>
@@ -91,6 +98,14 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             ...common.smallText,
             color: theme.secondary,
             lineHeight: 18,
+        },
+        settingWarning: {
+            color: theme.warning,
+            fontWeight: '600',
+        },
+        settingWarningError: {
+            color: theme.error,
+            fontWeight: '600',
         },
         settingDescriptionDisabled: {
             color: theme.border,

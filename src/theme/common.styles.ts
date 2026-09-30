@@ -55,8 +55,16 @@ export const createCommonStyles = (theme: Theme) => {
             paddingVertical: SPACING.xs,
             paddingHorizontal: SPACING.xs,
             borderRadius: 6,
+            borderWidth: 1,
+            borderColor: 'transparent', // keeps chips the same size as wordItemWithRoot, which has a visible border
             minWidth: 60,
             alignItems: 'center',
+        },
+        // Word chip that can be tapped to open its root (only words that have one)
+        wordItemWithRoot: {
+            backgroundColor: theme.primary + '15',
+            borderWidth: 1,
+            borderColor: theme.primary + '40',
         },
         wordArabic: {
             fontSize: FONT_SIZES.small,

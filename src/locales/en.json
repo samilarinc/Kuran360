@@ -610,12 +610,19 @@
     "items": {
       "autoplayTitle": "Autoplay",
       "autoplayDescription": "Automatically move to the next verse when one finishes",
+      "wordTrackingTitle": "Word Tracking",
+      "wordTrackingDescription": "Mark the word being recited in the verse text while listening.",
+      "wordTrackingWarning": "Currently only available for the Sudais reciter.",
       "transliterationTitle": "Transliteration",
       "transliterationDescription": "Show how the verses are pronounced",
       "wordTranslationsTitle": "Word Translations",
       "wordTranslationsDescription": "Show the meaning of each word underneath it",
       "inlineWordTranslationsTitle": "Translation on Hover",
-      "inlineWordTranslationsDescription": "On web, show the translation when hovering over a word in a verse",
+      "inlineWordTranslationsDescription": "On web, show the translation when hovering over a word in a verse.",
+      "inlineWordTranslationsWarning": "Note: spacing between words gets wider",
+      "wordRootsTitle": "Word Roots",
+      "wordRootsWarning": "Turn on Word Translations or Translation on Hover.",
+      "wordRootsDescription": "Highlight words that have a root in word translations; tap to see the root and the verses it appears in",
       "paginatedViewTitle": "Paginated View",
       "paginatedViewDescription": "Show each verse on its own page (swipe to move on)",
       "arabicVerseNumbersTitle": "Arabic Verse Numbers",
@@ -740,6 +747,8 @@
       {
         "date": "October 1, 2026",
         "bullets": [
+          "Tapping a word-by-word translation now opens the word's Arabic root; \"Search root\" lists every verse that contains a word from that root. You can turn it off in settings.",
+          "While a verse plays, the letters of the word being recited are colored from right to left, words already recited stay colored, and a small triangle under the word follows the colored part (for the Sudais reciter); it can be turned off with \"Word Tracking\" under Settings > Audio Settings.",
           "Arabic words on the surah page (reading view) are no longer stuck together; there is now a space between them.",
           "Recently read verses are now also saved on your device, synced with your account, and a verse you read again moves to the top of the list.",
           "A button at the bottom right of the home screen now shows the surah and verse you last read; tap it to continue where you left off.",
@@ -1015,6 +1024,19 @@
     "dark": "Dark",
     "lightsOut": "Lights Out",
     "accessibilityLabel": "Theme: {{current}}. Tap to switch, next: {{next}}"
+  },
+  "wordRootModal": {
+    "root": "Root",
+    "searchRoot": "Search root",
+    "close": "Close"
+  },
+  "rootVerses": {
+    "title": "Root: {{root}}",
+    "loading": "Finding verses...",
+    "downloadTitle": "Quran data required",
+    "downloadDescription": "You need to download the Quran text first to list the verses that use this root.",
+    "summary": "Appears in {{verses}} verses, {{words}} words",
+    "showMore": "Show {{count}} more verses"
   },
   "verse": {
     "wordTranslations": "Word translations:",
