@@ -58,20 +58,21 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({ result, vers
                     </Text>
                     {result.badge && <Badge label={result.badge.label} color={result.badge.color} variant="tint" size="small" />}
                 </View>
-                <View style={[common.row, common.gapXs]}>
-                    {result.matchedField === 'arabic' ? (
-                        <Type size={12} color={theme.secondary} />
-                    ) : result.matchedField === 'transliteration' ? (
-                        <PenLine size={12} color={theme.secondary} />
-                    ) : (
-                        <BookOpen size={12} color={theme.secondary} />
-                    )}
-                    <Text style={styles.resultMatchType}>
-                        {result.matchedField === 'arabic' ? t('searchScreen.matchField.arabic') :
-                            result.matchedField === 'transliteration' ? t('searchScreen.matchField.transliteration') :
-                                t('searchScreen.matchField.translation', { translation: result.translationName || t('searchScreen.defaultTranslationLabel') })}
-                    </Text>
-                </View>
+            </View>
+
+            <View style={[common.row, common.gapXs, styles.resultMatchInfo]}>
+                {result.matchedField === 'arabic' ? (
+                    <Type size={10} color={theme.secondary} />
+                ) : result.matchedField === 'transliteration' ? (
+                    <PenLine size={10} color={theme.secondary} />
+                ) : (
+                    <BookOpen size={10} color={theme.secondary} />
+                )}
+                <Text style={styles.resultMatchType}>
+                    {result.matchedField === 'arabic' ? t('searchScreen.matchField.arabic') :
+                        result.matchedField === 'transliteration' ? t('searchScreen.matchField.transliteration') :
+                            t('searchScreen.matchField.translation', { translation: result.translationName || t('searchScreen.defaultTranslationLabel') })}
+                </Text>
             </View>
 
             {result.matchedField === 'arabic' && (
@@ -106,10 +107,16 @@ const createStyles = (theme: Theme, common: CommonStyles) => {
             ...common.badgeText,
             color: theme.primary,
         },
+        resultMatchInfo: {
+            marginBottom: SPACING.xs,
+            opacity: 0.7,
+        },
         resultMatchType: {
             ...common.smallText,
+            fontSize: FONT_SIZES.small - 1,
             color: theme.secondary,
             fontStyle: 'italic',
+            flexShrink: 1,
         },
         resultArabic: {
             fontSize: FONT_SIZES.arabic,

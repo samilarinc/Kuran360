@@ -49,6 +49,34 @@ export const stemWords = (text: string): string[] =>
         .filter(word => word.length > 2)
         .map(word => word.slice(0, STEM_LENGTH));
 
+/**
+ * The translation that contains the most of the query's topical words, so a result shows the meal the
+ * keyword match came from. Ties go to the earlier name in `names`; null when no translation has any.
+ */
+export const bestMatchingTranslation = (
+    translations: Record<string, string> | undefined,
+    query: string,
+    names: string[],
+): string | null => {
+    const queryStems = new Set(stemWords(query));
+    let best: string | null = null;
+    let bestCount = 0;
+    for (const name of names) {
+        const text = translations?.[name];
+        if (!text) continue;
+        const stems = new Set(stemWords(text));
+        let count = 0;
+        queryStems.forEach(stem => {
+            if (stems.has(stem)) count++;
+        });
+        if (count > bestCount) {
+            best = name;
+            bestCount = count;
+        }
+    }
+    return best;
+};
+
 export const buildKeywordIndex = (docs: string[]): KeywordIndex => {
     const postings: KeywordIndex['postings'] = new Map();
     const docLength: number[] = [];

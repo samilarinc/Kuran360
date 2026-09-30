@@ -3,9 +3,9 @@ import { AUDIO_FILE_FORMAT } from '@/theme';
 
 export const DEFAULT_RECITER_FOLDER = 'sudais_all_verse';
 
-/** Web serves the audio from its own origin; native apps fetch it from the site. */
+/** Web serves the audio from its own origin; native apps and local dev builds (no audio files) fetch it from the site. */
 const getAudioBaseUrl = (): string => {
-    if (Platform.OS !== 'web') return 'https://kuran360.com';
+    if (Platform.OS !== 'web' || __DEV__) return 'https://kuran360.com';
     const win = (globalThis as any).window;
     return win?.location ? `${win.location.protocol}//${win.location.host}` : 'http://localhost:8081';
 };

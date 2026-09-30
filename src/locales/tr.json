@@ -730,6 +730,18 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "1 Ekim 2026",
+        "bullets": [
+          "Arama sonuçlarında meal ismi artık ayet başlığının altında, solda ve daha küçük görünüyor."
+        ]
+      },
+      {
+        "date": "30 Eylül 2026",
+        "bullets": [
+          "Konuya Göre Ara sonuçlarında ayet, favori mealiniz yerine eşleşmenin bulunduğu mealle gösteriliyor."
+        ]
+      },
+      {
         "date": "29 Eylül 2026",
         "bullets": [
           "Ezber Kontrolü ekranında ses modeli ve WebGPU durumu görünüyor.",

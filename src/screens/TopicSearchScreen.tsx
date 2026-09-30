@@ -21,7 +21,7 @@ import {
     searchTopics,
     TOPIC_MODEL_SIZE_MB,
 } from '@/services/topicSearch';
-import { MatchLevel } from '@/utils/topicSearch';
+import { bestMatchingTranslation, KEYWORD_MEALS, MatchLevel } from '@/utils/topicSearch';
 import { SPACING } from '@/theme';
 
 interface TopicSearchScreenProps {
@@ -112,12 +112,18 @@ export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation
                     const surah = await loadSurah(hit.surahNumber);
                     const verse = surah?.verses.find(item => item.number === hit.verseNumber);
                     if (!surah || !verse) continue;
+                    // Show the meal the keywords matched in; a meaning-only match falls back to the favorite
+                    const matchedMeal = bestMatchingTranslation(verse.allTranslations, text, [
+                        settings.favoriteTranslation,
+                        ...KEYWORD_MEALS,
+                    ]);
+                    const translationName = matchedMeal ?? settings.favoriteTranslation;
                     found.push({
                         verse,
                         surah,
-                        matchedText: verse.allTranslations?.[settings.favoriteTranslation] ?? verse.translation,
+                        matchedText: verse.allTranslations?.[translationName] ?? verse.translation,
                         matchedField: 'translation',
-                        translationName: settings.favoriteTranslation,
+                        translationName,
                         badge: { label: t(`topicSearch.level.${hit.level}`), color: LEVEL_COLORS[hit.level] },
                     });
                 }

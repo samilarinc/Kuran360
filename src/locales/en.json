@@ -730,6 +730,18 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "October 1, 2026",
+        "bullets": [
+          "In search results, the translation name now appears smaller, left-aligned below the verse heading."
+        ]
+      },
+      {
+        "date": "September 30, 2026",
+        "bullets": [
+          "Search by Topic results now show the verse in the translation where the match was found instead of your favorite one."
+        ]
+      },
+      {
         "date": "September 29, 2026",
         "bullets": [
           "The Memorization Check screen now shows the speech model and WebGPU status.",
