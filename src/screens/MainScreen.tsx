@@ -15,10 +15,8 @@ import {
     Brain,
     BookOpen,
     BookCheck,
-    Landmark,
-    Scroll,
     Compass,
-    Navigation2,
+    HandHeart,
     Moon,
     User,
     Settings,
@@ -30,11 +28,11 @@ import { AppHeader } from '@/components/AppHeader';
 import { MenuListRow } from '@/components/MenuListRow';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { FONT_SIZES } from '@/theme';
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { createStyles } from './MainScreen.styles';
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'SearchMenu' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'SearchMenu' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'UmrahMenu' | 'PrayerMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization') => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -47,23 +45,6 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
 
     const welcomeFontSize = isUltraNarrow ? FONT_SIZES.large : FONT_SIZES.xlarge;
     const descriptionFontSize = isUltraNarrow ? FONT_SIZES.small : FONT_SIZES.medium;
-
-    const handleHutbePress = async () => {
-        try {
-            const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
-            const response = await fetch(baseUrl + '/hutbe/hutbe.pdf', { method: 'HEAD' });
-            const contentType = response.headers.get('content-type');
-            // In many dev environments, a missing file returns index.html (text/html)
-            if (response.ok && contentType && contentType.includes('application/pdf')) {
-                onNavigate('Hutbe');
-            } else {
-                Alert.alert(t('mainScreen.hutbeInfoTitle'), t('mainScreen.hutbeInfoMessage'));
-            }
-        } catch (error) {
-            // On catch, we assume something went wrong with the fetch, stay safe
-            Alert.alert(t('mainScreen.hutbeErrorTitle'), t('mainScreen.hutbeErrorMessage'));
-        }
-    };
 
     const sections: { title: string; items: { id: string; title: string; Icon: LucideIcon; color: string; onPress: () => void }[] }[] = [
         {
@@ -86,9 +67,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             title: t('mainScreen.sections.worship'),
             items: [
-                { id: 'prayer-times', title: t('mainScreen.menu.prayerTimes'), Icon: Landmark, color: '#14B8A6', onPress: () => onNavigate('PrayerTimes') },
-                { id: 'qibla', title: t('mainScreen.menu.qibla'), Icon: Navigation2, color: '#0891B2', onPress: () => onNavigate('Qibla') },
-                { id: 'hutbe', title: t('mainScreen.menu.hutbe'), Icon: Scroll, color: '#F97316', onPress: handleHutbePress },
+                { id: 'prayers', title: t('mainScreen.menu.prayers'), Icon: HandHeart, color: '#14B8A6', onPress: () => onNavigate('PrayerMenu') },
                 { id: 'umrah', title: t('mainScreen.menu.umrah'), Icon: Compass, color: '#F43F5E', onPress: () => onNavigate('UmrahMenu') },
                 { id: 'hijri-calendar', title: t('mainScreen.menu.hijriCalendar'), Icon: Moon, color: '#6366F1', onPress: () => onNavigate('HijriCalendar') },
             ],

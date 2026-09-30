@@ -201,12 +201,8 @@
     "checklistDescription": "Umre öncesi yapılacaklar",
     "progressTitle": "Şu an neredeyim?",
     "progressDescription": "Tavaf ve Sa'y takibi yapın",
-    "duaListTitle": "Dua Listem",
-    "duaListDescription": "Kişisel dua çizelgesi oluşturun",
     "duasTitle": "Umre Duaları",
     "duasDescription": "Umre ibadetinde okunacak dualar",
-    "qiblaTitle": "Kıble Pusulası",
-    "qiblaDescription": "Bulunduğunuz yerden Kâbe yönünü bulun",
     "header": "Umre İbadetiniz İçin Araçlar"
   },
   "umrahProgressScreen": {
@@ -552,6 +548,17 @@
       "keyword": "Kelime eşleşmesi"
     }
   },
+  "prayerMenu": {
+    "title": "Namazlar ve Dualar",
+    "prayerTimesDescription": "Bulunduğunuz yerin namaz vakitlerini görün",
+    "qiblaDescription": "Bulunduğunuz yerden Kâbe yönünü bulun",
+    "duaListDescription": "Kişisel dua çizelgesi oluşturun",
+    "hutbeDescription": "Haftalık cuma hutbesini okuyun",
+    "hutbeInfoTitle": "Bilgi",
+    "hutbeInfoMessage": "Güncel hutbe henüz yüklenmedi.",
+    "hutbeErrorTitle": "Hata",
+    "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin."
+  },
   "searchMenu": {
     "title": "Arama",
     "classicTitle": "Klasik Arama",
@@ -648,6 +655,8 @@
       "prayerTimes": "Namaz Vakitleri",
       "qibla": "Kıble Pusulası",
       "hutbe": "Cuma Hutbesi",
+      "duaList": "Dua Listem",
+      "prayers": "Namazlar ve Dualar",
       "umrah": "Umre",
       "hijriCalendar": "Hicri Takvim",
       "about": "Hakkında"
@@ -658,10 +667,6 @@
       "app": "Uygulama"
     },
     "heroSubtitle": "Kur'an-ı Kerim'i sure sure oku",
-    "hutbeInfoTitle": "Bilgi",
-    "hutbeInfoMessage": "Güncel hutbe henüz yüklenmedi.",
-    "hutbeErrorTitle": "Hata",
-    "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin.",
     "footerQuote": "\"Yaratan Rabbinin adıyla oku.\"",
     "footerReference": "(Alak Suresi, 1. Ayet)"
   },
@@ -732,6 +737,7 @@
       {
         "date": "1 Ekim 2026",
         "bullets": [
+          "Namaz Vakitleri, Kıble Pusulası, Dua Listem ve Cuma Hutbesi yeni \"Namazlar ve Dualar\" alt menüsünde toplandı.",
           "Arama sonuçlarında meal ismi artık ayet başlığının altında, solda ve daha küçük görünüyor."
         ]
       },

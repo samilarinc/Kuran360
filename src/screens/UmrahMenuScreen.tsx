@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { ListChecks, Navigation, Navigation2, HandHeart, BookHeart } from 'lucide-react-native';
+import { ListChecks, Navigation, BookHeart } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { MenuListRow } from '@/components/MenuListRow';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
@@ -31,22 +31,6 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
             Icon: Navigation,
             color: '#8E24AA',
             onPress: () => navigation.navigate('UmrahProgress'),
-        },
-        {
-            id: 'qibla',
-            title: t('umrahMenuScreen.qiblaTitle'),
-            description: t('umrahMenuScreen.qiblaDescription'),
-            Icon: Navigation2,
-            color: '#0891B2',
-            onPress: () => navigation.navigate('Qibla'),
-        },
-        {
-            id: 'dua-list',
-            title: t('umrahMenuScreen.duaListTitle'),
-            description: t('umrahMenuScreen.duaListDescription'),
-            Icon: HandHeart,
-            color: '#558B2F',
-            onPress: () => navigation.navigate('DuaList'),
         },
         {
             id: 'umrah-duas',

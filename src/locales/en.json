@@ -201,12 +201,8 @@
     "checklistDescription": "Things to do before umrah",
     "progressTitle": "Where am I now?",
     "progressDescription": "Track your tawaf and sa'y",
-    "duaListTitle": "My Duas",
-    "duaListDescription": "Create a personal dua checklist",
     "duasTitle": "Umrah Duas",
     "duasDescription": "Duas to recite during umrah",
-    "qiblaTitle": "Qibla Compass",
-    "qiblaDescription": "Find the direction of the Kaaba from where you are",
     "header": "Tools for Your Umrah"
   },
   "umrahProgressScreen": {
@@ -552,6 +548,17 @@
       "keyword": "Word match"
     }
   },
+  "prayerMenu": {
+    "title": "Prayers and Duas",
+    "prayerTimesDescription": "See the prayer times for your location",
+    "qiblaDescription": "Find the direction of the Kaaba from where you are",
+    "duaListDescription": "Create a personal dua checklist",
+    "hutbeDescription": "Read the weekly Friday sermon",
+    "hutbeInfoTitle": "Info",
+    "hutbeInfoMessage": "The latest sermon hasn't been uploaded yet.",
+    "hutbeErrorTitle": "Error",
+    "hutbeErrorMessage": "Couldn't reach the sermon file. Please try again later."
+  },
   "searchMenu": {
     "title": "Search",
     "classicTitle": "Classic Search",
@@ -648,6 +655,8 @@
       "qibla": "Qibla Compass",
       "prayerTimes": "Prayer Times",
       "hutbe": "Friday Sermon",
+      "duaList": "My Duas",
+      "prayers": "Prayers and Duas",
       "umrah": "Umrah",
       "hijriCalendar": "Hijri Calendar",
       "about": "About"
@@ -658,10 +667,6 @@
       "app": "App"
     },
     "heroSubtitle": "Read the Quran surah by surah",
-    "hutbeInfoTitle": "Info",
-    "hutbeInfoMessage": "The latest sermon hasn't been uploaded yet.",
-    "hutbeErrorTitle": "Error",
-    "hutbeErrorMessage": "Couldn't reach the sermon file. Please try again later.",
     "footerQuote": "\"Read in the name of your Lord who created.\"",
     "footerReference": "(Surah Al-Alaq, Verse 1)"
   },
@@ -732,6 +737,7 @@
       {
         "date": "October 1, 2026",
         "bullets": [
+          "Prayer Times, Qibla Compass, My Duas and the Friday Sermon are now gathered in a new \"Prayers and Duas\" submenu.",
           "In search results, the translation name now appears smaller, left-aligned below the verse heading."
         ]
       },
