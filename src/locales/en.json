@@ -742,6 +742,7 @@
         "bullets": [
           "Recently read verses are now also saved on your device, synced with your account, and a verse you read again moves to the top of the list.",
           "A button at the bottom right of the home screen now shows the surah and verse you last read; tap it to continue where you left off.",
+          "Added a reciter (Qari) button to the top menu; change the reciter and listen to a preview without opening settings.",
           "Prayer Times, Qibla Compass, My Duas and the Friday Sermon are now gathered in a new \"Prayers and Duas\" submenu.",
           "In search results, the translation name now appears smaller, left-aligned below the verse heading."
         ]
@@ -1043,7 +1044,8 @@
   },
   "reciterSelector": {
     "title": "Reciter",
-    "description": "Choose the reciter for the audio"
+    "description": "Choose the reciter for the audio",
+    "preview": "Play preview"
   },
   "download": {
     "button": "📥 Download Translation Data",

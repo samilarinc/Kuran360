@@ -5,6 +5,7 @@ import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { SPACING, Theme } from '@/theme';
+import { RECITER_PREVIEW_VERSE } from '@/constants/reciterPreview';
 
 export const ReciterSelector: React.FC = () => {
     const { settings, updateSettings, availableReciters } = useSettings();
@@ -15,19 +16,8 @@ export const ReciterSelector: React.FC = () => {
 
     const playPreview = async (reciterId: string) => {
         try {
-            const previewVerse = {
-                id: '001002',
-                surahNumber: 1,
-                number: 2,
-                arabicText: 'ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ',
-                translation: 'Hamd, âlemlerin Rabbi Allah\'a mahsustur.',
-                transliteration: 'Al-hamdu lillahi rabbil-\'alameen',
-                wordTranslations: [],
-                allTranslations: {}
-            };
-
             // Use the new preview function that doesn't change settings
-            await playPreviewWithReciter(previewVerse, reciterId);
+            await playPreviewWithReciter(RECITER_PREVIEW_VERSE, reciterId);
         } catch (error) {
             console.log('Preview playback failed:', error);
         }

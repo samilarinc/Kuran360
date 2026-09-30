@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ThemeToggle, LanguageSelector, HeaderNavButtons, FontSizeToggle, HeaderMenu } from '@msarinc/ui';
 import { useTheme } from '@/contexts/ThemeContext';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
+import { HeaderReciterButton } from '@/components/HeaderReciterButton';
 
 const LANGUAGES = [
     { code: 'tr', label: 'Türkçe' },
@@ -57,6 +58,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     const controls = (
         <>
             {fontSizeControl}
+            <HeaderReciterButton />
             <LanguageSelector
                 compact
                 value={i18n.language}
