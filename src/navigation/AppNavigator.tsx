@@ -32,6 +32,7 @@ import { TopicSearchScreen } from '@/screens/TopicSearchScreen';
 import { MemorizationScreen } from '@/screens/MemorizationScreen';
 import { ForumProvider } from '@/contexts/ForumContext';
 import { ScreenWrapper } from '@/components/ScreenWrapper';
+import { ResumeReadingButton } from '@/components/ResumeReadingButton';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -524,6 +525,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   };
 
   const currentRoute = navigationHistory[currentIndex];
+  // Only the entry screens get the shortcut; while reading it would just cover the verses
+  const showResumeButton = currentRoute.screen === 'Main' || currentRoute.screen === 'Home';
 
   // Ensure the web document title is always 'Kuran360'
   useEffect(() => {
@@ -573,7 +576,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     >
       <NavigationProvider value={navHelpers}>
         <ForumProvider>
-          <ScreenWrapper>
+          <ScreenWrapper overlay={showResumeButton ? <ResumeReadingButton /> : undefined}>
             {currentRoute.screen === 'Main' ? (
               <MainScreen
                 onNavigate={(screen) => {

@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useEffect, ReactNode } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState, ReactNode } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { doc, setDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { db } from '@/services/firebase';
 import { useAuth } from './AuthContext';
@@ -28,6 +29,24 @@ const UserDataContext = createContext<UserDataContextType | undefined>(undefined
 
 const EMPTY_USER_DATA: UserData = { bookmarks: [], lastRead: [], duaList: [] };
 
+const LAST_READ_STORAGE_KEY = 'quran_app_last_read';
+const MAX_LAST_READ = 5;
+
+// Union of the lists: each verse keeps its newest timestamp, newest verses first, capped
+const mergeLastRead = (...lists: LastRead[][]): LastRead[] => {
+    const newest = new Map<string, LastRead>();
+    for (const item of lists.flat()) {
+        const key = `${item.surahNumber}:${item.verseNumber}`;
+        const existing = newest.get(key);
+        if (!existing || (item.timestamp ?? 0) > (existing.timestamp ?? 0)) newest.set(key, item);
+    }
+    return [...newest.values()].sort((a, b) => (b.timestamp ?? 0) - (a.timestamp ?? 0)).slice(0, MAX_LAST_READ);
+};
+
+const sameLastRead = (a: LastRead[], b: LastRead[]): boolean =>
+    a.length === b.length && a.every((item, i) =>
+        item.surahNumber === b[i].surahNumber && item.verseNumber === b[i].verseNumber && item.timestamp === b[i].timestamp);
+
 export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { user } = useAuth();
     const queryClient = useQueryClient();
@@ -50,6 +69,27 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         staleTime: Infinity,
     });
 
+    // Last read lives on the device for everyone; signed-in users also sync it with Firestore.
+    // Both sides are merged by timestamp, and whichever side is behind is brought up to date.
+    const [localLastRead, setLocalLastRead] = useState<LastRead[]>([]);
+    const [localLoaded, setLocalLoaded] = useState(false);
+    const [remoteReadyUid, setRemoteReadyUid] = useState<string | null>(null);
+
+    useEffect(() => {
+        AsyncStorage.getItem(LAST_READ_STORAGE_KEY)
+            .then((raw) => {
+                if (raw) setLocalLastRead((current) => mergeLastRead(current, JSON.parse(raw)));
+            })
+            .catch((error) => console.error('Error reading local last read:', error))
+            .finally(() => setLocalLoaded(true));
+    }, []);
+
+    useEffect(() => {
+        if (!localLoaded) return;
+        AsyncStorage.setItem(LAST_READ_STORAGE_KEY, JSON.stringify(localLastRead))
+            .catch((error) => console.error('Error saving local last read:', error));
+    }, [localLastRead, localLoaded]);
+
     useEffect(() => {
         if (!user?.uid) {
             queryClient.setQueryData(userDataKey, EMPTY_USER_DATA);
@@ -66,8 +106,10 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
                     lastRead: data.lastRead || [],
                     duaList: data.duaList || [],
                 });
+                setRemoteReadyUid(user.uid);
             } else if (!snapshot.metadata.fromCache) {
                 setDoc(userDocRef, EMPTY_USER_DATA);
+                setRemoteReadyUid(user.uid);
             }
         }, (error) => {
             console.error('Error listening to user data:', error);
@@ -90,7 +132,20 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user?.uid]);
 
-    const { bookmarks, lastRead, duaList = [] } = userData;
+    const { bookmarks, duaList = [] } = userData;
+    const remoteLastRead = userData.lastRead;
+    const remoteReady = !!user?.uid && remoteReadyUid === user.uid;
+    const lastRead = useMemo(() => mergeLastRead(localLastRead, remoteLastRead), [localLastRead, remoteLastRead]);
+
+    useEffect(() => {
+        if (!localLoaded) return;
+        if (!sameLastRead(lastRead, localLastRead)) setLocalLastRead(lastRead);
+        // Wait for the first Firestore snapshot so the device copy never overwrites newer cloud data
+        if (user?.uid && remoteReady && !sameLastRead(lastRead, remoteLastRead)) {
+            setDoc(doc(db, 'users', user.uid, 'data', 'userData'), { lastRead }, { merge: true })
+                .catch((error) => console.error('Error syncing last read:', error));
+        }
+    }, [lastRead, localLastRead, remoteLastRead, localLoaded, remoteReady, user?.uid]);
 
     const addBookmarkMutation = useMutation({
         mutationFn: async (newBookmark: Bookmark) => {
@@ -149,18 +204,9 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         return bookmarks.some(b => b.surahNumber === surahNumber && b.verseNumber === verseNumber);
     };
 
-    const updateLastReadMutation = useMutation({
-        mutationFn: async (updatedLastRead: LastRead[]) => {
-            if (!user?.uid) return;
-            const userDocRef = doc(db, 'users', user.uid, 'data', 'userData');
-            await updateDoc(userDocRef, { lastRead: updatedLastRead });
-        },
-    });
-
-    const addToLastRead = async (surahNumber: number, verseNumber: number, surahName: string, verseText: string) => {
-        if (!user?.uid) return;
-        if (!surahNumber || !verseNumber || !surahName || !verseText) {
-            console.error('Invalid last read data:', { surahNumber, verseNumber, surahName, verseText });
+    const addToLastRead = useCallback(async (surahNumber: number, verseNumber: number, surahName: string, verseText: string) => {
+        if (!surahNumber || !verseNumber || !surahName) {
+            console.error('Invalid last read data:', { surahNumber, verseNumber, surahName });
             return;
         }
 
@@ -173,29 +219,8 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
             url: `surah/${surahNumber}/verse/${verseNumber}`,
         };
 
-        try {
-            const existingIndex = lastRead.findIndex(lr =>
-                lr.surahNumber === surahNumber && lr.verseNumber === verseNumber
-            );
-
-            let updatedLastRead: LastRead[];
-            if (existingIndex !== -1) {
-                updatedLastRead = [
-                    newLastRead,
-                    ...lastRead.filter((_, index) => index !== existingIndex)
-                ];
-            } else {
-                updatedLastRead = [newLastRead, ...lastRead];
-                if (updatedLastRead.length > 5) {
-                    updatedLastRead = updatedLastRead.slice(0, 5);
-                }
-            }
-
-            await updateLastReadMutation.mutateAsync(updatedLastRead);
-        } catch (error) {
-            console.error('Error updating last read:', error);
-        }
-    };
+        setLocalLastRead((current) => mergeLastRead([newLastRead], current));
+    }, []);
 
     const addDuaMutation = useMutation({
         mutationFn: async (newDua: DuaItem) => {

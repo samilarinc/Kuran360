@@ -25,6 +25,9 @@
     "trackingOn": "Okunan ayet takip ediliyor",
     "trackingOff": "Ayet takibi kapalı"
   },
+  "resumeReading": {
+    "accessibilityLabel": "Kaldığın yerden devam et: {{place}}"
+  },
   "hatimErrors": {
     "notFound": "Hatim bulunamadı.",
     "locked": "Bu hatim kilitlenmiştir, işlem yapılamaz.",
@@ -737,6 +740,8 @@
       {
         "date": "1 Ekim 2026",
         "bullets": [
+          "Son okunanlar listesi artık cihazınızda da saklanıyor, hesabınızla eşleşiyor ve tekrar okuduğunuz ayet listenin başına geçiyor.",
+          "Ana sayfada sağ altta, en son okuduğunuz sure ve ayet numarasını gösteren bir buton belirdi; dokununca kaldığınız yerden devam edersiniz.",
           "Namaz Vakitleri, Kıble Pusulası, Dua Listem ve Cuma Hutbesi yeni \"Namazlar ve Dualar\" alt menüsünde toplandı.",
           "Arama sonuçlarında meal ismi artık ayet başlığının altında, solda ve daha küçük görünüyor."
         ]

@@ -11,7 +11,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserData } from '@/contexts/UserDataContext';
 import { useTranslation } from 'react-i18next';
-import { Surah, Verse as VerseType, LastRead } from '@/types';
+import { Surah, Verse as VerseType } from '@/types';
 import { loadSurah } from '@/data/quranData';
 import logger from '@/utils/logger';
 import { getSurahName } from '@/utils/surahName';
@@ -19,6 +19,8 @@ import { getSurahName } from '@/utils/surahName';
 const MIN_FONT_SIZE = 18;
 const MAX_FONT_SIZE = 44;
 const FONT_SIZE_STEP = 2;
+// A verse counts as last read once it has stayed in view this long, so scrolling past doesn't save
+const LAST_READ_SAVE_DELAY_MS = 3000;
 
 interface SurahDetailScreenProps {
   route: {
@@ -42,11 +44,13 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const [isUserScrolling, setIsUserScrolling] = useState(false);
   // Persist current verse index for the active surah to survive remounts
   const [currentPaginatedIndex, setCurrentPaginatedIndex] = useState<number>(route.params.verseIndex ?? 0);
+  // First verse in view in the scrolling (non-paginated) layouts
+  const [visibleVerseIndex, setVisibleVerseIndex] = useState<number>(route.params.verseIndex ?? 0);
   const { settings, updateSettings } = useSettings();
   const { common } = useTheme();
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { addToLastRead, lastRead } = useUserData();
+  const { addToLastRead } = useUserData();
   const { audioState, playVerse, stop, setVersesForAutoplay } = useGlobalAudio();
   const flatListRef = useRef<FlatList>(null);
   const initialScrollDone = useRef(false);
@@ -146,39 +150,16 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     return () => clearTimeout(timeoutId);
   }, [audioState.currentVerse, audioState.isPlaying, settings.audioTrackingEnabled, settings.usePaginatedView, surah.verses, isUserScrolling]);
 
+  const readingIndex = settings.usePaginatedView ? currentPaginatedIndex : visibleVerseIndex;
   useEffect(() => {
-    if (!user?.uid || !surah || surah.verses.length === 0) return;
-
-    // Set up 10-second interval to check current verse
-    const intervalId = setInterval(() => {
-      const currentVerse = settings.usePaginatedView
-        ? surah.verses[currentPaginatedIndex]
-        : (audioState.currentVerse || surah.verses[0]);
-
-      if (!currentVerse) return;
-
-      const surahName = getSurahName(t, surah);
-      const verseText = currentVerse.allTranslations?.[settings.favoriteTranslation] || currentVerse.translation || '';
-      if (!verseText.trim()) return;
-
-      // Check if this verse is already in lastRead
-      const isAlreadyInLastRead = lastRead.some((lr: LastRead) =>
-        lr.surahNumber === currentVerse.surahNumber && lr.verseNumber === currentVerse.number
-      );
-
-      // Only add if not already in the list
-      if (!isAlreadyInLastRead) {
-        addToLastRead(
-          currentVerse.surahNumber,
-          currentVerse.number,
-          surahName,
-          verseText
-        );
-      }
-    }, 10000); // Check every 10 seconds
-
-    return () => clearInterval(intervalId);
-  }, [user?.uid, surah, currentPaginatedIndex, audioState.currentVerse, settings.usePaginatedView, settings.favoriteTranslation, lastRead, addToLastRead, t]);
+    const verse = surah.verses[readingIndex];
+    if (!verse) return;
+    const timer = setTimeout(() => {
+      const verseText = verse.allTranslations?.[settings.favoriteTranslation] || verse.translation || '';
+      addToLastRead(verse.surahNumber, verse.number, getSurahName(t, surah), verseText);
+    }, LAST_READ_SAVE_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [surah, readingIndex, settings.favoriteTranslation, addToLastRead, t]);
 
   const handleVersePress = (verse: VerseType) => {
     // Temporarily disable auto-tracking when user manually selects a verse
@@ -228,6 +209,9 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
 
   // Handle viewable items change to update URL
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    if (viewableItems.length > 0 && typeof viewableItems[0].index === 'number') {
+      setVisibleVerseIndex(viewableItems[0].index);
+    }
     if (viewableItems.length > 0 && updateVerseUrl && !settings.usePaginatedView) {
       const firstVisibleItem = viewableItems[0];
       if (firstVisibleItem && firstVisibleItem.item) {
@@ -241,6 +225,24 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       }
     }
   }).current;
+
+  // Web renders every verse in a plain ScrollView (no viewability callbacks), so find the first
+  // verse still below the top edge of the scroll area by binary search over the verse elements
+  const handleWebScroll = useCallback((event: any) => {
+    if (Platform.OS !== 'web' || typeof document === 'undefined') return;
+    const container = event.target as HTMLElement | null;
+    if (!container?.getBoundingClientRect) return;
+    const topEdge = container.getBoundingClientRect().top;
+    let low = 0;
+    let high = surah.verses.length - 1;
+    while (low < high) {
+      const mid = Math.floor((low + high) / 2);
+      const el = document.getElementById(`verse-item-${mid}`);
+      if (el && el.getBoundingClientRect().bottom > topEdge) high = mid;
+      else low = mid + 1;
+    }
+    setVisibleVerseIndex(low);
+  }, [surah.verses.length]);
 
   const viewabilityConfig = useRef({
     itemVisiblePercentThreshold: 50,
@@ -310,6 +312,8 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             <ScrollView
               contentContainerStyle={common.pbXl}
               showsVerticalScrollIndicator={false}
+              onScroll={handleWebScroll}
+              scrollEventThrottle={200}
               onScrollBeginDrag={() => setIsUserScrolling(true)}
               onMomentumScrollEnd={() => setTimeout(() => setIsUserScrolling(false), 1000)}
             >
