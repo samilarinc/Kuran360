@@ -100,7 +100,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                 {/* Ayet Header */}
                 <View style={styles.verseHeader}>
                     <ArabicText style={styles.arabicText}>
-                        {verse.arabicText}
+                        {getSpacedArabicText(verse)}
                     </ArabicText>
                     <View style={[common.rowBetween, common.mtSm]}>
                         <Text style={styles.surahInfo}>

@@ -43,7 +43,7 @@ const InlineArabicWithHover: React.FC<{
   if (Platform.OS !== 'web' || !inlineWordTranslations || verse.wordTranslations.length === 0) {
     return (
       <ArabicText style={[common.arabicText, { fontSize: surahFontSize, lineHeight: surahFontSize * 1.5 }]}>
-        {verse.arabicText}
+        {getSpacedArabicText(verse)}
       </ArabicText>
     );
   }

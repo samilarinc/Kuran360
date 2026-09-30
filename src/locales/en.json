@@ -740,6 +740,7 @@
       {
         "date": "October 1, 2026",
         "bullets": [
+          "Arabic words on the surah page (reading view) are no longer stuck together; there is now a space between them.",
           "Recently read verses are now also saved on your device, synced with your account, and a verse you read again moves to the top of the list.",
           "A button at the bottom right of the home screen now shows the surah and verse you last read; tap it to continue where you left off.",
           "Added a reciter (Qari) button to the top menu; change the reciter and listen to a preview without opening settings.",

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { Badge } from '@/components/Badge';
 import { getSurahName } from '@/utils/surahName';
+import { getSpacedArabicText } from '@/utils/arabicText';
 import { formatVerseNumber, VerseNumberStyle } from '@/utils/numerals';
 import { Verse, Surah } from '@/types';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
@@ -77,7 +78,7 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({ result, vers
 
             {result.matchedField === 'arabic' && (
                 <Text style={styles.resultArabic}>
-                    {result.verse.arabicText}
+                    {getSpacedArabicText(result.verse)}
                 </Text>
             )}
 

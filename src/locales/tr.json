@@ -740,6 +740,7 @@
       {
         "date": "1 Ekim 2026",
         "bullets": [
+          "Sure sayfasında (okuma görünümünde) Arapça kelimeler artık yapışık değil, aralarında boşluk var.",
           "Son okunanlar listesi artık cihazınızda da saklanıyor, hesabınızla eşleşiyor ve tekrar okuduğunuz ayet listenin başına geçiyor.",
           "Ana sayfada sağ altta, en son okuduğunuz sure ve ayet numarasını gösteren bir buton belirdi; dokununca kaldığınız yerden devam edersiniz.",
           "Üst menüye okuyucu (Qari) butonu eklendi; ayarlara girmeden okuyucuyu değiştirebilir ve dinleyerek önizleyebilirsiniz.",
