@@ -754,7 +754,8 @@
           "A button at the bottom right of the home screen now shows the surah and verse you last read; tap it to continue where you left off.",
           "Added a reciter (Qari) button to the top menu; change the reciter and listen to a preview without opening settings.",
           "Prayer Times, Qibla Compass, My Duas and the Friday Sermon are now gathered in a new \"Prayers and Duas\" submenu.",
-          "In search results, the translation name now appears smaller, left-aligned below the verse heading."
+          "In search results, the translation name now appears smaller, left-aligned below the verse heading.",
+          "The top-right menu no longer blocks scrolling while open; tapping outside it closes it."
         ]
       },
       {

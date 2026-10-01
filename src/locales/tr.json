@@ -754,7 +754,8 @@
           "Ana sayfada sağ altta, en son okuduğunuz sure ve ayet numarasını gösteren bir buton belirdi; dokununca kaldığınız yerden devam edersiniz.",
           "Üst menüye okuyucu (Qari) butonu eklendi; ayarlara girmeden okuyucuyu değiştirebilir ve dinleyerek önizleyebilirsiniz.",
           "Namaz Vakitleri, Kıble Pusulası, Dua Listem ve Cuma Hutbesi yeni \"Namazlar ve Dualar\" alt menüsünde toplandı.",
-          "Arama sonuçlarında meal ismi artık ayet başlığının altında, solda ve daha küçük görünüyor."
+          "Arama sonuçlarında meal ismi artık ayet başlığının altında, solda ve daha küçük görünüyor.",
+          "Sağ üstteki menü açıkken sayfa artık kaydırılabiliyor; menünün dışına dokununca menü kapanıyor."
         ]
       },
       {
