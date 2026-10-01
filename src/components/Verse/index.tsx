@@ -132,9 +132,13 @@ interface VerseProps {
   showBookmarkButton?: boolean;
   showMemorization?: boolean;
   navigation?: any; // Navigation prop for going to all translations screen
+  /** Replaces the verse number in its badge, e.g. with the surah name where the surah isn't otherwise visible */
+  label?: string;
+  /** false hides the bookmark, translations and share buttons; the play button stays */
+  showActions?: boolean;
 }
 
-export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount, showBookmarkButton = false, showMemorization = true, navigation }) => {
+export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, surahVerseCount, showBookmarkButton = false, showMemorization = true, navigation, label, showActions = true }) => {
   const { settings } = useSettings();
   const { theme, common } = useTheme();
   const { t } = useTranslation();
@@ -283,11 +287,13 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   return (
     <View style={styles.container}>
       <View style={[common.rowBetween, common.mbMd]}>
-        <View style={styles.verseNumber}>
-          <Text style={styles.verseNumberText}>{formatVerseNumber(verse.number, settings.verseNumberStyle)}</Text>
+        <View style={[styles.verseNumber, label ? styles.verseNumberWithLabel : null]}>
+          <Text style={styles.verseNumberText} numberOfLines={1}>
+            {label ?? formatVerseNumber(verse.number, settings.verseNumberStyle)}
+          </Text>
         </View>
         <View style={common.rowGap}>
-          {showBookmarkButton && user && (
+          {showActions && showBookmarkButton && user && (
             <TouchableOpacity
               style={[styles.iconButton, { backgroundColor: BOOKMARK_COLOR + '1A', borderColor: BOOKMARK_COLOR }]}
               onPress={handleBookmarkToggle}
@@ -299,7 +305,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
               />
             </TouchableOpacity>
           )}
-          {navigation && (
+          {showActions && navigation && (
             <TouchableOpacity
               style={[styles.iconButton, { backgroundColor: ALL_TRANSLATIONS_COLOR + '1A', borderColor: ALL_TRANSLATIONS_COLOR }]}
               onPress={() => navigation.navigate('AllTranslations', { verse })}
@@ -307,12 +313,14 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
               <Library size={18} color={ALL_TRANSLATIONS_COLOR} />
             </TouchableOpacity>
           )}
-          <TouchableOpacity
-            style={[styles.iconButton, { backgroundColor: SHARE_COLOR + '1A', borderColor: SHARE_COLOR }]}
-            onPress={() => setShareModalVisible(true)}
-          >
-            <Share2 size={16} color={SHARE_COLOR} />
-          </TouchableOpacity>
+          {showActions && (
+            <TouchableOpacity
+              style={[styles.iconButton, { backgroundColor: SHARE_COLOR + '1A', borderColor: SHARE_COLOR }]}
+              onPress={() => setShareModalVisible(true)}
+            >
+              <Share2 size={16} color={SHARE_COLOR} />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={[
               styles.playButton,

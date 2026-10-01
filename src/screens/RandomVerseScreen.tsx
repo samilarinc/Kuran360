@@ -1,21 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
     View,
-    Text,
-    TouchableOpacity,
     SafeAreaView,
+    TouchableOpacity,
     Dimensions,
     Animated,
-    PanResponder,
     ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { BookOpen, MapPin, ListOrdered, Sparkles } from 'lucide-react-native';
+import { Shuffle } from 'lucide-react-native';
 import { Verse } from '@/components/Verse';
 import { AppHeader } from '@/components/AppHeader';
 import { DownloadRequired } from '@/components/DownloadRequired';
 import { AppButton } from '@/components/AppButton';
-import { Badge } from '@/components/Badge';
 import { LoadingView } from '@/components/LoadingView';
 import { ErrorView } from '@/components/ErrorView';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
@@ -47,7 +44,7 @@ const CACHE_KEY = 'randomVerse';
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation, isDataAvailable }) => {
-    const { theme, common } = useTheme();
+    const { common } = useTheme();
     const { t } = useTranslation();
     const styles = useThemedStyles(createStyles);
     const { audioState, toggleVerse } = useGlobalAudio();
@@ -69,11 +66,10 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
         handleDownloadData,
     } = useDownloadData({ isDataAvailable, navigation });
 
-    // Animation and swipe handling
+    // Slide animation when a new verse comes in
     const translateX = useRef(new Animated.Value(0)).current;
     const [isAnimating, setIsAnimating] = useState(false);
     const screenWidth = Dimensions.get('window').width;
-    const swipeThreshold = screenWidth * 0.3;
 
     // Load cached verse or get a new one
     const loadRandomVerse = async (forceNew = false) => {
@@ -172,32 +168,6 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
         }
     };
 
-    // Swipe gesture handler
-    const panResponder = PanResponder.create({
-        onMoveShouldSetPanResponder: (_, gestureState) => {
-            return Math.abs(gestureState.dx) > 10 && Math.abs(gestureState.dy) < 100;
-        },
-        onPanResponderMove: (_, gestureState) => {
-            if (!isAnimating && !isLoadingNew) {
-                translateX.setValue(gestureState.dx);
-            }
-        },
-        onPanResponderRelease: (_, gestureState) => {
-            if (!isAnimating && !isLoadingNew) {
-                if (Math.abs(gestureState.dx) > swipeThreshold) {
-                    // Swipe detected - get new random verse
-                    handleNewRandomVerse();
-                } else {
-                    // Snap back to original position
-                    Animated.spring(translateX, {
-                        toValue: 0,
-                        useNativeDriver: true,
-                    }).start();
-                }
-            }
-        },
-    });
-
     if (!isDataAvailable) {
         return (
             <SafeAreaView style={common.container}>
@@ -253,72 +223,34 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
                 onHomePress={() => navigation.navigate('Main')}
             />
 
-            {/* Paginated-style verse display */}
-            <View style={styles.verseContainer} {...panResponder.panHandlers}>
-                <Animated.View
-                    style={[
-                        styles.verseContent,
-                        {
-                            transform: [{ translateX }],
-                        },
-                    ]}
+            <Animated.View style={[common.flex1, { transform: [{ translateX }] }]}>
+                <ScrollView
+                    style={common.flex1}
+                    contentContainerStyle={styles.scrollContentContainer}
+                    showsVerticalScrollIndicator={false}
+                    scrollEnabled={!isAnimating}
                 >
-                    <ScrollView
-                        style={common.flex1}
-                        contentContainerStyle={styles.scrollContentContainer}
-                        showsVerticalScrollIndicator={false}
-                        scrollEnabled={!isAnimating}
-                    >
+                    {/* Tapping the verse opens it in its surah */}
+                    <TouchableOpacity onPress={handleGoToSurah} activeOpacity={0.8}>
                         <Verse
                             verse={currentVerse.verse}
                             isPlaying={audioState.isPlaying && audioState.currentVerse?.id === currentVerse.verse.id}
                             onPlayPress={handlePlayVerse}
-                            showBookmarkButton={true}
                             showMemorization={false}
+                            showActions={false}
                             navigation={navigation}
+                            label={t('randomVerseScreen.verseLabel', { surah: getSurahName(t, currentVerse.surah), verse: currentVerse.verse.number })}
                         />
-                    </ScrollView>
-                </Animated.View>
-            </View>
+                    </TouchableOpacity>
+                </ScrollView>
+            </Animated.View>
 
-            {/* Surah info moved to bottom */}
-            <TouchableOpacity
-                style={styles.surahInfoContainer}
-                onPress={handleGoToSurah}
-                activeOpacity={0.7}
-            >
-                <View style={[common.rowBetween, common.mbXs]}>
-                    <View style={common.center}>
-                        <Text style={styles.surahName}>
-                            {getSurahName(t, currentVerse.surah)}
-                        </Text>
-                        <Text style={styles.surahArabicName}>
-                            {currentVerse.surah.arabicName}
-                        </Text>
-                    </View>
-                    <View style={styles.verseNumberBadge}>
-                        <Text style={styles.verseNumberLabel}>
-                            {t('randomVerseScreen.verseBadge')}
-                        </Text>
-                        <Text style={styles.verseNumberText}>
-                            {currentVerse.verseIndex + 1}
-                        </Text>
-                    </View>
-                </View>
-                <View style={[common.rowGap, common.mtSm]}>
-                    <Badge variant="tint" icon={<BookOpen size={12} color={theme.primary} />} label={t('randomVerseScreen.surahLabel', { number: currentVerse.surah.number })} />
-                    <Badge variant="tint" icon={<MapPin size={12} color={theme.primary} />} label={t('randomVerseScreen.placeLabel', { place: t(`surahInfo.${currentVerse.surah.revelationPlace}`) })} />
-                    <Badge variant="tint" icon={<ListOrdered size={12} color={theme.primary} />} label={t('randomVerseScreen.verseCountLabel', { count: currentVerse.surah.verseCount })} />
-                </View>
-            </TouchableOpacity>
-
-            {/* Bottom actions */}
             <View style={styles.bottomActions}>
                 <AppButton
                     title={t('randomVerseScreen.newVerseButton')}
-                    icon={<Sparkles size={16} color="#fff" />}
+                    icon={<Shuffle size={18} color="#fff" />}
                     onPress={handleNewRandomVerse}
-                    variant="primary"
+                    size="large"
                     loading={isLoadingNew}
                     disabled={isAnimating}
                 />

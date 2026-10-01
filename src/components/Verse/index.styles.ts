@@ -31,6 +31,13 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  // Pill instead of a circle when the badge holds a label instead of just the number
+  verseNumberWithLabel: {
+    width: 'auto',
+    minWidth: 40,
+    paddingHorizontal: SPACING.md,
+    flexShrink: 1,
+  },
   verseNumberText: {
     color: '#FFFFFF', // Always white for good contrast
     fontSize: FONT_SIZES.medium,

@@ -127,11 +127,8 @@
     "loading": "Loading random verse...",
     "loadError": "Couldn't load the verse",
     "retry": "Try Again",
-    "verseBadge": "VERSE",
-    "surahLabel": "Surah {{number}}",
-    "placeLabel": "{{place}}",
-    "verseCountLabel": "{{count}} Verses",
-    "newVerseButton": "New Random Verse"
+    "newVerseButton": "Show another verse",
+    "verseLabel": "{{surah}}, {{verse}}"
   },
   "duaListScreen": {
     "topicRequired": "Please enter a topic",
@@ -743,6 +740,7 @@
       {
         "date": "October 2, 2026",
         "bullets": [
+          "The Random Verse screen is simpler: the surah name and verse number sit above the verse, tapping the verse opens it in its surah, a clear \"Show another verse\" button sits at the bottom, and swiping to change the verse was removed.",
           "Removed the description lines from page top bars and removed the welcome text from the home page.",
           "The Memorization Check summary shows how many hints you used on each verse.",
           "Memorization Check has a new \"+1 hint\" button: each tap reveals the next word of the verse.",
