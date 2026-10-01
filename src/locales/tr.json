@@ -641,7 +641,6 @@
   },
   "homeScreen": {
     "arabicTitle": "القرآن الكريم",
-    "subtitle": "Kur'an-ı Kerim",
     "loading": "Kur'an verileri yükleniyor...",
     "downloadTitle": "Kur'an-ı Kerim Meali",
     "downloadDescription": "Ayetleri okuyabilmek için Türkçe meal verilerini indirmeniz gerekmektedir.",
@@ -650,8 +649,6 @@
   "mainScreen": {
     "appTitle": "Kuran-ı Kerim",
     "appSubtitle": "Dijital Mushaf",
-    "welcome": "Hoş Geldiniz",
-    "description": "Kuran-ı Kerim'i okumak, aramak ve dinlemek için bir seçenek belirleyin",
     "menu": {
       "surahs": "Sureler",
       "randomVerse": "Rastgele Ayet",
@@ -676,7 +673,6 @@
       "worship": "İbadet",
       "app": "Uygulama"
     },
-    "heroSubtitle": "Kur'an-ı Kerim'i sure sure oku",
     "footerQuote": "\"Yaratan Rabbinin adıyla oku.\"",
     "footerReference": "(Alak Suresi, 1. Ayet)"
   },
@@ -747,6 +743,7 @@
       {
         "date": "2 Ekim 2026",
         "bullets": [
+          "Sayfaların üst çubuğundaki açıklama yazıları kaldırıldı; ana sayfadaki karşılama yazıları da kaldırıldı.",
           "Ezber Kontrolü özetinde her ayette kaç ipucu kullandığınız görünüyor.",
           "Ezber Kontrolü'nde \"+1 ipucu\" butonu eklendi: her basışta ayetin bir sonraki kelimesi görünüyor.",
           "Ezber Kontrolü'nde \"Dinle\" butonu eklendi: seçili okuyucu sadece o ayeti okuyup duruyor.",
@@ -1220,7 +1217,6 @@
   },
   "verseFinder": {
     "title": "Ayet Shazam",
-    "subtitle": "Okunan ayeti dinleyip bulur",
     "downloadTitle": "Kur'an verisi gerekli",
     "downloadDescription": "Okunan ayeti bulabilmek için önce Kur'an metnini indirmeniz gerekiyor.",
     "tapToStart": "Mikrofona dokunun ve okumaya başlayın. 5–10 saniye yeterli.",

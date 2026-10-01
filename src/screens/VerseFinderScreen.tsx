@@ -261,7 +261,6 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     const header = (
         <AppHeader
             title={t('verseFinder.title')}
-            subtitle={t('verseFinder.subtitle')}
             showBackButton={true}
             onBackPress={() => navigation.goBack()}
             showHomeButton={true}

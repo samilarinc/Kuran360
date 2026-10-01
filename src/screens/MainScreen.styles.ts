@@ -8,23 +8,8 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
     return StyleSheet.create({
         contentContainer: {
             paddingHorizontal: SPACING.lg,
-            paddingTop: SPACING.xl,
+            paddingTop: SPACING.lg,
             paddingBottom: SPACING.xl,
-        },
-        welcomeText: {
-            ...common.title,
-            fontSize: FONT_SIZES.xlarge,
-            fontWeight: '600',
-            textAlign: 'center',
-            marginBottom: SPACING.sm,
-        },
-        descriptionText: {
-            ...common.text,
-            color: theme.textSecondary,
-            textAlign: 'center',
-            lineHeight: FONT_SIZES.medium * 1.4,
-            marginBottom: SPACING.xl,
-            paddingHorizontal: SPACING.md,
         },
         heroCard: {
             flexDirection: 'row',
@@ -48,11 +33,6 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             fontSize: FONT_SIZES.large,
             fontWeight: '700',
             color: '#fff',
-        },
-        heroSubtitle: {
-            fontSize: FONT_SIZES.small,
-            color: 'rgba(255,255,255,0.85)',
-            marginTop: 2,
         },
         heroChevronWrap: {
             width: 32,

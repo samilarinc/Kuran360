@@ -5,7 +5,6 @@ import {
     TouchableOpacity,
     SafeAreaView,
     ScrollView,
-    useWindowDimensions,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {
@@ -27,7 +26,6 @@ import {
 import { AppHeader } from '@/components/AppHeader';
 import { MenuListRow } from '@/components/MenuListRow';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
-import { FONT_SIZES } from '@/theme';
 import { Platform } from 'react-native';
 import { createStyles } from './MainScreen.styles';
 
@@ -39,12 +37,6 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
     const { common } = useTheme();
     const { t } = useTranslation();
     const styles = useThemedStyles(createStyles);
-    const { width } = useWindowDimensions();
-
-    const isUltraNarrow = width < 360;
-
-    const welcomeFontSize = isUltraNarrow ? FONT_SIZES.large : FONT_SIZES.xlarge;
-    const descriptionFontSize = isUltraNarrow ? FONT_SIZES.small : FONT_SIZES.medium;
 
     const sections: { title: string; items: { id: string; title: string; Icon: LucideIcon; color: string; onPress: () => void }[] }[] = [
         {
@@ -96,13 +88,6 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                 contentContainerStyle={styles.contentContainer}
                 showsVerticalScrollIndicator={false}
             >
-                <Text style={[styles.welcomeText, { fontSize: welcomeFontSize }]}>
-                    {t('mainScreen.welcome')}
-                </Text>
-                <Text style={[styles.descriptionText, { fontSize: descriptionFontSize, lineHeight: descriptionFontSize * 1.4 }]}>
-                    {t('mainScreen.description')}
-                </Text>
-
                 {/* Featured action */}
                 <TouchableOpacity
                     style={styles.heroCard}
@@ -114,7 +99,6 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                     </View>
                     <View style={common.flex1}>
                         <Text style={styles.heroTitle}>{t('mainScreen.menu.surahs')}</Text>
-                        <Text style={styles.heroSubtitle}>{t('mainScreen.heroSubtitle')}</Text>
                     </View>
                     <View style={styles.heroChevronWrap}>
                         <ChevronRight size={20} color="#fff" strokeWidth={3} />

@@ -641,7 +641,6 @@
   },
   "homeScreen": {
     "arabicTitle": "القرآن الكريم",
-    "subtitle": "The Holy Quran",
     "loading": "Loading Quran data...",
     "downloadTitle": "Quran Translation",
     "downloadDescription": "You need to download the translation data to read the verses.",
@@ -650,8 +649,6 @@
   "mainScreen": {
     "appTitle": "The Holy Quran",
     "appSubtitle": "Digital Mushaf",
-    "welcome": "Welcome",
-    "description": "Choose an option to read, search or listen to the Quran",
     "menu": {
       "surahs": "Surahs",
       "randomVerse": "Random Verse",
@@ -676,7 +673,6 @@
       "worship": "Worship",
       "app": "App"
     },
-    "heroSubtitle": "Read the Quran surah by surah",
     "footerQuote": "\"Read in the name of your Lord who created.\"",
     "footerReference": "(Surah Al-Alaq, Verse 1)"
   },
@@ -747,6 +743,7 @@
       {
         "date": "October 2, 2026",
         "bullets": [
+          "Removed the description lines from page top bars and removed the welcome text from the home page.",
           "The Memorization Check summary shows how many hints you used on each verse.",
           "Memorization Check has a new \"+1 hint\" button: each tap reveals the next word of the verse.",
           "Memorization Check has a new \"Listen\" button: the selected reciter reads just that verse and stops.",
@@ -1219,7 +1216,6 @@
   },
   "verseFinder": {
     "title": "Verse Shazam",
-    "subtitle": "Listens to a recitation and finds the verse",
     "downloadTitle": "Quran data required",
     "downloadDescription": "To find recited verses, download the Quran text first.",
     "tapToStart": "Tap the microphone and start reciting. 5–10 seconds is enough.",

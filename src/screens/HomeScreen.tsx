@@ -81,7 +81,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       <SafeAreaView style={common.container}>
         <AppHeader
           title={t('homeScreen.arabicTitle')}
-          subtitle={t('homeScreen.subtitle')}
           showBackButton={true}
           onBackPress={() => navigation.navigate('Main')}
           showHomeButton={true}
@@ -98,7 +97,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       <SafeAreaView style={common.container}>
         <AppHeader
           title={t('homeScreen.arabicTitle')}
-          subtitle={t('homeScreen.subtitle')}
           showBackButton={true}
           onBackPress={() => navigation.navigate('Main')}
           showHomeButton={true}
@@ -122,7 +120,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     <SafeAreaView style={common.container}>
       <AppHeader
         title={t('homeScreen.arabicTitle')}
-        subtitle={t('homeScreen.subtitle')}
         showBackButton={true}
         onBackPress={() => navigation.navigate('Main')}
         showHomeButton={true}
