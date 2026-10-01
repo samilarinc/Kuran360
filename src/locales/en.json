@@ -740,6 +740,7 @@
       {
         "date": "October 2, 2026",
         "bullets": [
+          "The top-right menu now opens above everything on the page instead of hiding behind buttons or cards.",
           "The Random Verse screen is simpler: the surah name and verse number sit above the verse, tapping the verse opens it in its surah, a clear \"Show another verse\" button sits at the bottom, and swiping to change the verse was removed.",
           "Removed the description lines from page top bars and removed the welcome text from the home page.",
           "The Memorization Check summary shows how many hints you used on each verse.",

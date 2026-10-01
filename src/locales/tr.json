@@ -740,6 +740,7 @@
       {
         "date": "2 Ekim 2026",
         "bullets": [
+          "Sağ üstteki menü artık sayfadaki her şeyin üstünde açılıyor, butonların veya kartların altında kalmıyor.",
           "Rastgele Ayet ekranı sadeleşti: ayetin üstünde sure adı ve ayet numarası yazıyor, ayete dokununca suresinde açılıyor, altta belirgin bir \"Başka bir ayet getir\" butonu var; kaydırarak ayet değiştirme kaldırıldı.",
           "Sayfaların üst çubuğundaki açıklama yazıları kaldırıldı; ana sayfadaki karşılama yazıları da kaldırıldı.",
           "Ezber Kontrolü özetinde her ayette kaç ipucu kullandığınız görünüyor.",
