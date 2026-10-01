@@ -15,11 +15,22 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             borderColor: theme.warning,
             backgroundColor: theme.warning + '14',
         },
-        selectionCard: {
+        // The current surah's name, tapped to open the picker
+        selectionChip: {
+            ...common.row,
+            alignSelf: 'center',
+            gap: SPACING.xs,
+        },
+        navRow: {
             ...common.rowBetween,
             gap: SPACING.md,
+            marginTop: SPACING.md,
+            marginBottom: SPACING.sm,
+            paddingTop: SPACING.md,
+            borderTopWidth: 1,
+            borderTopColor: theme.border,
         },
-        selectionCenter: {
+        navCenter: {
             flex: 1,
             alignItems: 'center',
             gap: 2,
@@ -36,20 +47,6 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             ...common.subtitle,
             textAlign: 'center',
             paddingVertical: SPACING.lg,
-        },
-        // Word states of a checked recitation: read right, read wrong, skipped
-        wordOk: {
-            backgroundColor: theme.success + '30',
-            color: theme.text,
-        },
-        wordWrong: {
-            backgroundColor: theme.error + '30',
-            color: theme.error,
-        },
-        wordMissed: {
-            backgroundColor: theme.error + '14',
-            color: theme.error,
-            textDecorationLine: 'underline',
         },
         legendRow: {
             ...common.rowWrap,

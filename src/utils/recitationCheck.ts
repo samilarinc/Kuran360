@@ -13,10 +13,18 @@ import { toSkeleton } from '@/utils/verseMatcher';
 
 export type WordStatus = 'ok' | 'wrong' | 'missed';
 
+/** A stretch of a displayed word; `error` marks letters the alignment could not match. */
+export interface WordPart {
+    text: string;
+    error: boolean;
+}
+
 export interface WordResult {
     /** The word as displayed (Uthmani, with harakat). */
     text: string;
     status: WordStatus;
+    /** The word split into letters (with their harakat) flagged as misread; only set for wrong words. */
+    parts?: WordPart[];
 }
 
 export interface RecitationResult {
@@ -92,6 +100,28 @@ const align = (query: string, target: string): { ops: Op[]; inserted: number } =
     return { ops, inserted };
 };
 
+/**
+ * Splits a displayed word into letters, each with the marks that follow it, and flags the ones
+ * whose skeleton character was not matched. Letters the skeleton drops (alef, hamza) are never
+ * flagged since the alignment never saw them.
+ */
+const splitLetters = (text: string, ops: Op[]): WordPart[] => {
+    const parts: WordPart[] = [];
+    let skeletonIndex = 0;
+    for (const char of text) {
+        const kept = toSkeleton(char).length > 0;
+        if (kept) {
+            parts.push({ text: char, error: ops[skeletonIndex++] !== 'match' });
+        } else if (parts.length) {
+            // Harakat and other marks stay with the letter they sit on
+            parts[parts.length - 1].text += char;
+        } else {
+            parts.push({ text: char, error: false });
+        }
+    }
+    return parts;
+};
+
 /** `words` are the verse's words in order (see getWordSegments); `transcript` is what the user said. */
 export const checkRecitation = (words: string[], transcript: string): RecitationResult => {
     const skeletons = words.map(toSkeleton);
@@ -111,8 +141,12 @@ export const checkRecitation = (words: string[], transcript: string): Recitation
         // A word with no letters left after reduction can't be judged
         if (length === 0) return { text, status: 'ok' };
         if (length - matched <= allowedErrors(length)) return { text, status: 'ok' };
-        return { text, status: deleted === length ? 'missed' : 'wrong' };
+        if (deleted === length) return { text, status: 'missed' };
+        return { text, status: 'wrong', parts: splitLetters(text, own) };
     });
 
     return { words: results, accuracy: total ? correct / total : 0, extraChars: inserted };
 };
+
+/** Whether every word of the verse was read correctly. */
+export const isFlawless = (result: RecitationResult): boolean => result.words.every(word => word.status === 'ok');

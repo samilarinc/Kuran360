@@ -745,6 +745,14 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "2 Ekim 2026",
+        "bullets": [
+          "Ezber Kontrolü'nde yanlış okunan kelimelerin hatalı harfleri artık sarı ile işaretleniyor.",
+          "Ezber Kontrolü'nde sure ve ayet seçimi yenilendi: tek ekranda sureyi seçip tek ayet, bir ayet aralığı ya da bütün sureyi seçebilirsiniz.",
+          "Ezber Kontrolü'ne sıralı mod eklendi: seçtiğiniz ayetleri sırayla okursunuz, hatasız okunan ayetten sonra kendiliğinden sonrakine geçilir, sonunda ayet ayet sonuçları gösteren bir özet çıkar."
+        ]
+      },
+      {
         "date": "1 Ekim 2026",
         "bullets": [
           "Kelime çevirilerine dokununca kelimenin Arapça kökü açılıyor; \"Kökü ara\" ile o kökten gelen kelimelerin geçtiği bütün ayetler listeleniyor. Ayarlardan kapatabilirsiniz.",
@@ -1150,13 +1158,18 @@
     "title": "Ezber Kontrolü",
     "downloadTitle": "Kur'an verisi gerekli",
     "downloadDescription": "Ezberinizi kontrol edebilmek için önce Kur'an metnini indirmeniz gerekiyor.",
-    "verseOf": "{{verse}}. ayet / {{count}}",
-    "change": "Sure veya ayet değiştir",
+    "verseOf": "Ayet {{verse}} / {{count}}",
+    "change": "Değiştir",
     "picker": {
-      "surahTitle": "Sure seç",
+      "title": "Ne okuyacaksınız?",
       "searchPlaceholder": "Sure adı veya numarası",
       "verseCount": "{{count}} ayet",
-      "back": "Sure listesine dön"
+      "verse": "Ayet",
+      "from": "Başlangıç",
+      "to": "Bitiş",
+      "summarySingle": "{{verse}}. ayet",
+      "summaryRange": "{{from}}–{{to}}. ayetler, {{count}} ayet",
+      "start": "Başla"
     },
     "hiddenVerse": "Ayet gizli. Mikrofona dokunup ezberden okuyun.",
     "showVerse": "Ayeti göster",
@@ -1172,7 +1185,29 @@
     "legend": {
       "ok": "Doğru ({{count}})",
       "wrong": "Yanlış ({{count}})",
-      "missed": "Atlandı ({{count}})"
+      "missed": "Atlandı ({{count}})",
+      "letter": "Hatalı harf"
+    },
+    "progress": "{{read}} / {{count}} ayet okundu",
+    "autoAdvance": "Hatasız! Sonraki ayete geçiliyor…",
+    "autoFinish": "Hatasız! Özet hazırlanıyor…",
+    "showSummary": "Özeti gör",
+    "finish": "Bitir",
+    "scope": {
+      "single": "Tek ayet",
+      "range": "Aralık",
+      "surah": "Bütün sure"
+    },
+    "summaryView": {
+      "averageAccuracy": "ortalama doğruluk",
+      "flawless": "Hatasız",
+      "withMistakes": "Hatalı",
+      "unread": "Okunmadı",
+      "retryMistakes": "Hatalıları tekrarla",
+      "restart": "Baştan başla",
+      "newSelection": "Başka sure/ayet",
+      "verse": "{{verse}}. ayet",
+      "notRead": "Okunmadı"
     }
   },
   "verseFinder": {

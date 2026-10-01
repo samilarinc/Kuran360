@@ -745,6 +745,14 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "October 2, 2026",
+        "bullets": [
+          "In Memorization Check, the misread letters of wrong words are now highlighted in yellow.",
+          "Memorization Check has a new surah and verse picker: choose the surah, then a single verse, a range of verses or the whole surah on one screen.",
+          "Memorization Check has a new sequential mode: recite the chosen verses in order, it moves on by itself after a flawless verse, and a summary shows how each verse went at the end."
+        ]
+      },
+      {
         "date": "October 1, 2026",
         "bullets": [
           "Tapping a word-by-word translation now opens the word's Arabic root; \"Search root\" lists every verse that contains a word from that root. You can turn it off in settings.",
@@ -1149,13 +1157,18 @@
     "title": "Memorization Check",
     "downloadTitle": "Quran data required",
     "downloadDescription": "To check your memorization, you first need to download the Quran text.",
-    "verseOf": "Verse {{verse}} of {{count}}",
-    "change": "Change surah or verse",
+    "verseOf": "Verse {{verse}} / {{count}}",
+    "change": "Change",
     "picker": {
-      "surahTitle": "Choose a surah",
+      "title": "What will you recite?",
       "searchPlaceholder": "Surah name or number",
       "verseCount": "{{count}} verses",
-      "back": "Back to the surah list"
+      "verse": "Verse",
+      "from": "From",
+      "to": "To",
+      "summarySingle": "Verse {{verse}}",
+      "summaryRange": "Verses {{from}}–{{to}}, {{count}} verses",
+      "start": "Start"
     },
     "hiddenVerse": "The verse is hidden. Tap the microphone and recite it from memory.",
     "showVerse": "Show verse",
@@ -1171,7 +1184,29 @@
     "legend": {
       "ok": "Correct ({{count}})",
       "wrong": "Misread ({{count}})",
-      "missed": "Skipped ({{count}})"
+      "missed": "Skipped ({{count}})",
+      "letter": "Wrong letter"
+    },
+    "progress": "{{read}} / {{count}} verses read",
+    "autoAdvance": "Flawless! Moving to the next verse…",
+    "autoFinish": "Flawless! Preparing the summary…",
+    "showSummary": "See summary",
+    "finish": "Finish",
+    "scope": {
+      "single": "Single verse",
+      "range": "Range",
+      "surah": "Whole surah"
+    },
+    "summaryView": {
+      "averageAccuracy": "average accuracy",
+      "flawless": "Flawless",
+      "withMistakes": "With mistakes",
+      "unread": "Not read",
+      "retryMistakes": "Retry mistakes",
+      "restart": "Start over",
+      "newSelection": "Other surah/verses",
+      "verse": "Verse {{verse}}",
+      "notRead": "Not read"
     }
   },
   "verseFinder": {
