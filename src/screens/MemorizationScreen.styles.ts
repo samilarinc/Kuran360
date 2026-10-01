@@ -35,8 +35,10 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             alignItems: 'center',
             gap: 2,
         },
-        revealButton: {
-            alignSelf: 'flex-end',
+        // Listen and show/hide above the verse, apart from the text below
+        verseActions: {
+            ...common.rowBetween,
+            marginBottom: SPACING.md,
         },
         verseArabic: {
             ...common.arabicText,

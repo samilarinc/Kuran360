@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { CircleCheck, CircleAlert, CircleDashed, RotateCcw, ListRestart, BookOpen } from 'lucide-react-native';
+import { CircleCheck, CircleAlert, CircleDashed, Lightbulb, RotateCcw, ListRestart, BookOpen } from 'lucide-react-native';
 import { AppButton } from '@/components/AppButton';
 import { RecitedVerse } from '@/components/RecitedVerse';
 import { useTheme, useThemedStyles, Theme, CommonStyles } from '@/contexts/ThemeContext';
@@ -12,6 +12,8 @@ import { isFlawless, RecitationResult } from '@/utils/recitationCheck';
 export interface MemorizationAttempt {
     result: RecitationResult;
     transcript: string;
+    /** Words shown with the hint button before reciting. */
+    hints: number;
 }
 
 interface MemorizationSummaryProps {
@@ -43,6 +45,7 @@ export const MemorizationSummary: React.FC<MemorizationSummaryProps> = ({
     const withMistakes = read.length - flawless.length;
     const unread = verses.length - read.length;
     const accuracy = read.length ? read.reduce((sum, verse) => sum + attempts[verse].result.accuracy, 0) / read.length : 0;
+    const totalHints = read.reduce((sum, verse) => sum + attempts[verse].hints, 0);
     const countWords = (status: 'wrong' | 'missed') =>
         read.reduce((sum, verse) => sum + attempts[verse].result.words.filter(w => w.status === status).length, 0);
 
@@ -70,6 +73,9 @@ export const MemorizationSummary: React.FC<MemorizationSummaryProps> = ({
                     <Text style={[common.smallText, common.textCenter]}>
                         {t('memorization.summary', { wrong: countWords('wrong'), missed: countWords('missed') })}
                     </Text>
+                )}
+                {totalHints > 0 && (
+                    <Text style={[common.smallText, common.textCenter]}>{t('memorization.summaryView.totalHints', { count: totalHints })}</Text>
                 )}
             </View>
 
@@ -110,9 +116,17 @@ export const MemorizationSummary: React.FC<MemorizationSummaryProps> = ({
                                 <Icon size={18} color={color} />
                                 <Text style={common.textStrong}>{t('memorization.summaryView.verse', { verse })}</Text>
                             </View>
-                            <Text style={[styles.percent, { color }]}>
-                                {attempt ? `%${Math.round(attempt.result.accuracy * 100)}` : t('memorization.summaryView.notRead')}
-                            </Text>
+                            <View style={[common.row, common.gapSm]}>
+                                {attempt && attempt.hints > 0 && (
+                                    <View style={styles.hintBadge}>
+                                        <Lightbulb size={12} color={theme.warning} />
+                                        <Text style={styles.hintBadgeText}>{t('memorization.summaryView.hints', { count: attempt.hints })}</Text>
+                                    </View>
+                                )}
+                                <Text style={[styles.percent, { color }]}>
+                                    {attempt ? `%${Math.round(attempt.result.accuracy * 100)}` : t('memorization.summaryView.notRead')}
+                                </Text>
+                            </View>
                         </View>
                         {attempt && !ok && <RecitedVerse result={attempt.result} style={styles.verseText} />}
                     </TouchableOpacity>
@@ -154,6 +168,19 @@ const createStyles = (theme: Theme, common: CommonStyles) => {
         verseCard: {
             gap: SPACING.sm,
             borderRadius: RADIUS.md,
+        },
+        hintBadge: {
+            ...common.row,
+            gap: 2,
+            paddingHorizontal: SPACING.xs + 2,
+            paddingVertical: 2,
+            borderRadius: RADIUS.pill,
+            backgroundColor: theme.warning + '20',
+        },
+        hintBadgeText: {
+            fontSize: FONT_SIZES.small - 1,
+            fontWeight: '600',
+            color: theme.warning,
         },
         percent: {
             fontSize: FONT_SIZES.small,

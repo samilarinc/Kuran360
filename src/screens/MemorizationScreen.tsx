@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Mic, Square, Play, RotateCcw, Boxes, TriangleAlert, ChevronLeft, ChevronRight, Eye, EyeOff, ChevronDown, Flag } from 'lucide-react-native';
+import { Mic, Square, Play, RotateCcw, Boxes, TriangleAlert, ChevronLeft, ChevronRight, Eye, EyeOff, ChevronDown, Flag, Volume2, Lightbulb } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { ArabicText } from '@/components/ArabicText';
@@ -12,6 +12,7 @@ import { LETTER_WRONG_COLOR, RecitedVerse } from '@/components/RecitedVerse';
 import { MemorizationSelection, SurahVersePickerModal } from '@/components/SurahVersePickerModal';
 import { VerseModelManager } from '@/components/VerseModelManager';
 import { SpeechStatusRows, getSpeechEngineRows } from '@/components/SpeechStatusRows';
+import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useDownloadData } from '@/hooks/useDownloadData';
 import { useSpeechRecognizer } from '@/hooks/useSpeechRecognizer';
@@ -54,25 +55,44 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
     const [pickerVisible, setPickerVisible] = useState(false);
     const [words, setWords] = useState<string[]>([]);
     const [revealed, setRevealed] = useState(false);
+    // How many of the verse's first words the hint button has shown
+    const [hintCount, setHintCount] = useState(0);
     const [managerVisible, setManagerVisible] = useState(false);
     const sequential = selection.scope !== 'single';
-    const current = useRef({ words, verseNumber, sequential });
-    current.current = { words, verseNumber, sequential };
+    const current = useRef({ words, verseNumber, sequential, hintCount });
+    current.current = { words, verseNumber, sequential, hintCount };
 
     const handleTranscript = useCallback((text: string) => {
-        const { words: verseWords, verseNumber: verse, sequential: inSession } = current.current;
+        const { words: verseWords, verseNumber: verse, sequential: inSession, hintCount: hints } = current.current;
         // Nothing usable was heard (silence, noise): there's nothing to mark
         if (toSkeleton(text).length === 0) {
             setAttempts(({ [verse]: _, ...rest }) => rest);
             return;
         }
         const result = checkRecitation(verseWords, text);
-        setAttempts(previous => ({ ...previous, [verse]: { result, transcript: text } }));
+        setAttempts(previous => ({ ...previous, [verse]: { result, transcript: text, hints } }));
         if (inSession && isFlawless(result)) setAutoAdvance(true);
     }, []);
 
     const recognizer = useSpeechRecognizer(handleTranscript);
     const { support, activeModel, modelState, phase, elapsed, error, lastAudio, playing, canRecord, busy } = recognizer;
+    const audio = useGlobalAudio();
+    const listening = (audio.audioState.isPlaying || audio.audioState.isLoading)
+        && audio.audioState.currentVerse?.surahNumber === selection.surahNumber
+        && audio.audioState.currentVerse?.number === verseNumber;
+
+    const stopListening = () => {
+        if (!listening) return;
+        audio.cancelMemorization();
+        audio.stop();
+    };
+
+    /** Plays the current verse once in the selected reciter's voice, or stops it. */
+    const toggleListen = () => {
+        if (listening) stopListening();
+        // A one-verse, one-repeat memorization range stops by itself after the verse
+        else audio.startMemorization(selection.surahNumber, verseNumber, verseNumber, 1, 'individual');
+    };
 
     useEffect(() => {
         if (!isDataAvailable) return;
@@ -87,8 +107,10 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
 
     /** Moves to another verse; outside a session the previous verse's check is forgotten. */
     const goToVerse = (verse: number) => {
+        stopListening();
         setVerseNumber(verse);
         setRevealed(false);
+        setHintCount(0);
         setAutoAdvance(false);
         if (!sequential) setAttempts({});
         recognizer.reset();
@@ -101,6 +123,7 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
         setFinished(false);
         setVerseNumber(next.fromVerse);
         setRevealed(false);
+        setHintCount(0);
         setAutoAdvance(false);
         recognizer.reset();
     };
@@ -138,6 +161,7 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
         setFinished(false);
         setVerseNumber(remaining[0]);
         setRevealed(false);
+        setHintCount(0);
         recognizer.reset();
     };
 
@@ -270,16 +294,35 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                 ) : (
                     <>
                         <View style={common.sectionCard}>
-                            {!result && (
+                            <View style={styles.verseActions}>
                                 <AppButton
-                                    title={t(revealed ? 'memorization.hideVerse' : 'memorization.showVerse')}
-                                    icon={revealed ? <EyeOff size={16} color={theme.primary} /> : <Eye size={16} color={theme.primary} />}
+                                    title={t(listening ? 'memorization.stopListening' : 'memorization.listen')}
+                                    icon={listening ? <Square size={14} color={theme.primary} fill={theme.primary} /> : <Volume2 size={16} color={theme.primary} />}
                                     variant="ghost"
                                     size="small"
-                                    style={styles.revealButton}
-                                    onPress={() => setRevealed(shown => !shown)}
+                                    onPress={toggleListen}
+                                    disabled={phase === 'recording'}
                                 />
-                            )}
+                                {!result && (
+                                    <View style={common.row}>
+                                        <AppButton
+                                            title={t('memorization.hint')}
+                                            icon={<Lightbulb size={16} color={theme.primary} />}
+                                            variant="ghost"
+                                            size="small"
+                                            onPress={() => setHintCount(shown => shown + 1)}
+                                            disabled={revealed || hintCount >= words.length}
+                                        />
+                                        <AppButton
+                                            title={t(revealed ? 'memorization.hideVerse' : 'memorization.showVerse')}
+                                            icon={revealed ? <EyeOff size={16} color={theme.primary} /> : <Eye size={16} color={theme.primary} />}
+                                            variant="ghost"
+                                            size="small"
+                                            onPress={() => setRevealed(shown => !shown)}
+                                        />
+                                    </View>
+                                )}
+                            </View>
                             {result ? (
                                 <>
                                     <RecitedVerse result={result} />
@@ -300,6 +343,10 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                                 </>
                             ) : revealed ? (
                                 <ArabicText style={styles.verseArabic}>{words.join(' ')}</ArabicText>
+                            ) : hintCount > 0 ? (
+                                <ArabicText style={styles.verseArabic}>
+                                    {words.slice(0, hintCount).join(' ')}{hintCount < words.length ? ' …' : ''}
+                                </ArabicText>
                             ) : (
                                 <Text style={styles.hiddenVerse}>{t('memorization.hiddenVerse')}</Text>
                             )}
@@ -338,6 +385,8 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                                 style={[micStyles.micButton, phase === 'recording' && micStyles.micButtonRecording, (!canRecord || phase === 'recognizing') && common.disabled]}
                                 onPress={() => {
                                     setAutoAdvance(false);
+                                    // The microphone would hear the reciter
+                                    stopListening();
                                     recognizer.toggleRecording();
                                 }}
                                 disabled={!canRecord || phase === 'recognizing'}

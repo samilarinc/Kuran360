@@ -747,6 +747,9 @@
       {
         "date": "October 2, 2026",
         "bullets": [
+          "The Memorization Check summary shows how many hints you used on each verse.",
+          "Memorization Check has a new \"+1 hint\" button: each tap reveals the next word of the verse.",
+          "Memorization Check has a new \"Listen\" button: the selected reciter reads just that verse and stops.",
           "In Memorization Check, the misread letters of wrong words are now highlighted in yellow.",
           "Memorization Check has a new surah and verse picker: choose the surah, then a single verse, a range of verses or the whole surah on one screen.",
           "Memorization Check has a new sequential mode: recite the chosen verses in order, it moves on by itself after a flawless verse, and a summary shows how each verse went at the end."
@@ -1172,6 +1175,9 @@
     },
     "hiddenVerse": "The verse is hidden. Tap the microphone and recite it from memory.",
     "showVerse": "Show verse",
+    "listen": "Listen",
+    "stopListening": "Stop",
+    "hint": "+1 hint",
     "hideVerse": "Hide verse",
     "tapToStart": "Tap the microphone and recite the verse from memory; tap again when you're done.",
     "checking": "Checking your recitation…",
@@ -1206,6 +1212,8 @@
       "restart": "Start over",
       "newSelection": "Other surah/verses",
       "verse": "Verse {{verse}}",
+      "hints": "Hints: {{count}}",
+      "totalHints": "Hints used: {{count}}",
       "notRead": "Not read"
     }
   },
