@@ -1,0 +1,20 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'com.kuran360'
+version = '1.0.0'
+
+android {
+  namespace "expo.modules.quranspeech"
+  defaultConfig {
+    versionCode 1
+    versionName '1.0.0'
+  }
+}
+
+dependencies {
+  // Same version as onnxruntime-web in public/workers/fastconformer-worker.js
+  implementation 'com.microsoft.onnxruntime:onnxruntime-android:1.30.0'
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { TFunction } from 'i18next';
 import { useThemedStyles } from '@/contexts/ThemeContext';
 import { SPACING, Theme } from '@/theme';
@@ -14,7 +14,7 @@ export interface StatusRow {
     value: string;
 }
 
-/** The "speech model" and "WebGPU" rows shared by the screens that recognize speech in the browser. */
+/** The "speech model" and (on the web) "WebGPU" rows shared by the screens that recognize speech. */
 export const getSpeechEngineRows = (
     t: TFunction,
     theme: Theme,
@@ -46,7 +46,8 @@ export const getSpeechEngineRows = (
 
     return [
         { label: t('verseFinder.status.model'), ...modelRow },
-        { label: t('verseFinder.status.webgpu'), ...webgpuRow },
+        // The Android app runs its model on the CPU
+        ...(Platform.OS === 'web' ? [{ label: t('verseFinder.status.webgpu'), ...webgpuRow }] : []),
     ];
 };
 

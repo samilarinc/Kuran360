@@ -738,6 +738,12 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "3 Ekim 2026",
+        "bullets": [
+          "Ayet Shazam ve Ezber Kontrolü artık Android uygulamasında da var: ses modeli bir kez indirilir, tanıma tamamen telefonunuzda yapılır."
+        ]
+      },
+      {
         "date": "2 Ekim 2026",
         "bullets": [
           "Sağ üstteki menü artık sayfadaki her şeyin üstünde açılıyor, butonların veya kartların altında kalmıyor.",
@@ -1270,7 +1276,7 @@
       "delete": "Sil",
       "cancel": "İptal",
       "downloadError": "İndirilemedi: {{message}}",
-      "note": "Modeller bir kez indirilir ve tarayıcıda saklanır; tanıma tamamen cihazınızda yapılır, ses hiçbir yere gönderilmez.",
+      "note": "Modeller bir kez indirilir ve cihazınızda saklanır; tanıma tamamen cihazınızda yapılır, ses hiçbir yere gönderilmez.",
       "unsupported": {
         "webgpu": "Bu cihazda WebGPU yok",
         "shader-f16": "Bu cihazın GPU'su fp16 desteklemiyor",
@@ -1294,11 +1300,11 @@
       }
     },
     "errors": {
-      "microphone": "Mikrofona erişilemedi. Tarayıcı ayarlarından mikrofon iznini verin.",
-      "unsupported": "Bu tarayıcı ses kaydını desteklemiyor.",
+      "microphone": "Mikrofona erişilemedi. Tarayıcı ya da uygulama ayarlarından mikrofon iznini verin.",
+      "unsupported": "Bu cihaz ya da tarayıcı ses kaydını desteklemiyor.",
       "recognition": "Tanıma sırasında bir hata oluştu: {{message}}",
       "fileTooLarge": "Dosya çok büyük (en fazla {{size}} MB).",
-      "fileUnreadable": "Dosya okunamadı. Tarayıcınız bu ses biçimini desteklemiyor olabilir."
+      "fileUnreadable": "Dosya okunamadı. Bu ses biçimi desteklenmiyor olabilir."
     },
     "gpuHelp": {
       "show": "GPU erişimi nasıl açılır?",

@@ -1,11 +1,14 @@
-import { Platform } from 'react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
+import * as DocumentPicker from 'expo-document-picker';
 import { loadSurah, quranData } from '@/data/quranData';
 import { buildVerseIndex, findVerses, MatcherVerse, VerseIndex, VerseMatch } from '@/utils/verseMatcher';
-import type { VerseModel, VerseModelId } from '@/services/verseModels';
+import { getModelDir, VerseModel, VerseModelId } from '@/services/verseModels';
+import { QuranSpeech, takeSamples } from '../../modules/quran-speech';
 
 /**
- * Web-only plumbing for the verse finder: device capability checks, microphone recording,
- * and the speech model, which runs in a worker under public/workers/ so the UI stays responsive.
+ * Plumbing for the verse finder: device capability checks, microphone recording, and the
+ * speech model. On the web the model runs in a worker under public/workers/ so the UI stays
+ * responsive; on Android everything runs in the native module in modules/quran-speech/.
  */
 
 export const SAMPLE_RATE = 16000;
@@ -28,6 +31,7 @@ export interface DeviceSupport {
     softwareGpu: boolean;
     shaderF16: boolean;
     microphone: boolean;
+    /** A speech model can run: a web worker, or the native module on Android. */
     worker: boolean;
 }
 
@@ -36,12 +40,12 @@ export const checkDeviceSupport = async (): Promise<DeviceSupport> => {
     const nav = g.navigator;
     const support: DeviceSupport = {
         isWeb,
-        secureContext: isWeb && g.isSecureContext !== false,
+        secureContext: !isWeb || g.isSecureContext !== false,
         webgpu: 'unsupported',
         softwareGpu: false,
         shaderF16: false,
-        microphone: isWeb && !!nav?.mediaDevices?.getUserMedia && typeof g.MediaRecorder !== 'undefined',
-        worker: isWeb && typeof g.Worker !== 'undefined',
+        microphone: isWeb ? !!nav?.mediaDevices?.getUserMedia && typeof g.MediaRecorder !== 'undefined' : !!QuranSpeech,
+        worker: isWeb ? typeof g.Worker !== 'undefined' : !!QuranSpeech,
     };
     if (!isWeb || !nav?.gpu) return support;
     try {
@@ -77,8 +81,19 @@ export const isModelSupported = (model: VerseModel, support: DeviceSupport): boo
 
 type Pending = { resolve: (value: any) => void; reject: (error: Error) => void };
 
+interface SpeechModel {
+    /** The model loaded (or loading). */
+    modelId: VerseModelId | null;
+    ready: boolean;
+    /** Frees the model, e.g. before its files are deleted. */
+    unload(): void;
+    /** Loads the model from the downloaded files; reuses it if already loaded. */
+    load(model: VerseModel): Promise<void>;
+    transcribe(audio: Float32Array): Promise<{ text: string; ms: number }>;
+}
+
 /** Keeps one speech model loaded in its worker (public/workers/) across screen visits. */
-class SpeechModel {
+class WorkerSpeechModel implements SpeechModel {
     private worker: any = null;
     private loadPromise: Promise<void> | null = null;
     private pendingTranscribe: Pending | null = null;
@@ -148,7 +163,44 @@ class SpeechModel {
     }
 }
 
-export const speechModel = new SpeechModel();
+/** Keeps the model loaded in the native module (Android) across screen visits. */
+class NativeSpeechModel implements SpeechModel {
+    private loadPromise: Promise<void> | null = null;
+    modelId: VerseModelId | null = null;
+    ready = false;
+
+    unload() {
+        this.loadPromise = null;
+        this.modelId = null;
+        this.ready = false;
+        QuranSpeech?.unloadModel();
+    }
+
+    load(model: VerseModel): Promise<void> {
+        if (this.modelId !== model.id) this.unload();
+        if (this.loadPromise) return this.loadPromise;
+        if (!QuranSpeech) return Promise.reject(new Error('Speech module missing'));
+        this.modelId = model.id;
+        this.loadPromise = QuranSpeech.loadModel(getModelDir(model)).then(
+            () => {
+                this.ready = true;
+            },
+            error => {
+                this.unload();
+                throw error;
+            },
+        );
+        return this.loadPromise;
+    }
+
+    async transcribe(audio: Float32Array): Promise<{ text: string; ms: number }> {
+        if (!this.loadPromise || !QuranSpeech) throw new Error('Model not loaded');
+        await this.loadPromise;
+        return QuranSpeech.transcribe(QuranSpeech.putSamples(audio));
+    }
+}
+
+export const speechModel: SpeechModel = Platform.OS === 'web' ? new WorkerSpeechModel() : new NativeSpeechModel();
 
 /** Decodes an audio (or video) blob into 16 kHz mono samples. */
 const decodeAudio = async (blob: Blob): Promise<Float32Array> => {
@@ -171,9 +223,18 @@ export interface PickedAudio {
 /** Message of the error pickAudioFile rejects with for files too big to decode in the browser. */
 export const FILE_TOO_LARGE = 'file-too-large';
 
+const pickAudioFileNative = async (): Promise<PickedAudio | null> => {
+    const result = await DocumentPicker.getDocumentAsync({ type: ['audio/*', 'video/*'], copyToCacheDirectory: false });
+    const file = result.assets?.[0];
+    if (result.canceled || !file) return null;
+    if (file.size && file.size > MAX_FILE_MB * 1e6) throw new Error(FILE_TOO_LARGE);
+    const decoded = await QuranSpeech!.decodeFile(file.uri, MAX_FILE_SECONDS);
+    return { audio: takeSamples(decoded), truncated: decoded.truncated };
+};
+
 /** Lets the user choose an audio or video file; resolves null if they cancel. */
 export const pickAudioFile = (): Promise<PickedAudio | null> =>
-    new Promise((resolve, reject) => {
+    Platform.OS !== 'web' ? pickAudioFileNative() : new Promise((resolve, reject) => {
         const input = g.document.createElement('input');
         input.type = 'file';
         input.accept = 'audio/*,video/*,.opus,.m4a,.ogg,.mp3,.wav';
@@ -199,7 +260,18 @@ export interface Recording {
     cancel: () => void;
 }
 
+const startRecordingNative = async (): Promise<Recording> => {
+    const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+    if (granted !== PermissionsAndroid.RESULTS.GRANTED) throw new Error('Microphone permission denied');
+    await QuranSpeech!.startRecording();
+    return {
+        stop: async () => takeSamples(await QuranSpeech!.stopRecording()),
+        cancel: () => QuranSpeech!.cancelRecording(),
+    };
+};
+
 export const startRecording = async (): Promise<Recording> => {
+    if (Platform.OS !== 'web') return startRecordingNative();
     const stream = await g.navigator.mediaDevices.getUserMedia({
         audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false, autoGainControl: true },
     });
@@ -237,6 +309,7 @@ export const getPeakLevel = (audio: Float32Array): number => {
 
 /** Plays recorded 16 kHz samples back; resolves when playback ends. */
 export const playRecording = async (audio: Float32Array): Promise<void> => {
+    if (Platform.OS !== 'web') return QuranSpeech!.play(QuranSpeech!.putSamples(audio));
     const context = new g.AudioContext();
     const buffer = context.createBuffer(1, audio.length, SAMPLE_RATE);
     buffer.copyToChannel(audio, 0);

@@ -738,6 +738,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "October 3, 2026",
+        "bullets": [
+          "Verse Shazam and Memorization Check are now in the Android app too: the speech model is downloaded once and recognition runs entirely on your phone."
+        ]
+      },
+      {
         "date": "October 2, 2026",
         "bullets": [
           "The top-right menu now opens above everything on the page instead of hiding behind buttons or cards.",
@@ -1269,7 +1275,7 @@
       "delete": "Delete",
       "cancel": "Cancel",
       "downloadError": "Download failed: {{message}}",
-      "note": "Models are downloaded once and kept in the browser; recognition runs entirely on your device and no audio is sent anywhere.",
+      "note": "Models are downloaded once and kept on your device; recognition runs entirely on your device and no audio is sent anywhere.",
       "unsupported": {
         "webgpu": "This device has no WebGPU",
         "shader-f16": "This device's GPU doesn't support fp16",
@@ -1293,11 +1299,11 @@
       }
     },
     "errors": {
-      "microphone": "Could not access the microphone. Allow microphone access in your browser settings.",
-      "unsupported": "This browser does not support audio recording.",
+      "microphone": "Could not access the microphone. Allow microphone access in your browser or app settings.",
+      "unsupported": "This device or browser does not support audio recording.",
       "recognition": "Something went wrong during recognition: {{message}}",
       "fileTooLarge": "The file is too large (max {{size}} MB).",
-      "fileUnreadable": "Couldn't read the file. Your browser may not support this audio format."
+      "fileUnreadable": "Couldn't read the file. This audio format may not be supported."
     },
     "gpuHelp": {
       "show": "How to turn on GPU access?",

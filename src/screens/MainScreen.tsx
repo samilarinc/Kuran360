@@ -45,8 +45,8 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                 { id: 'random-verse', title: t('mainScreen.menu.randomVerse'), Icon: Sparkles, color: '#F59E0B', onPress: () => onNavigate('RandomVerse') },
                 // Topic search is web-only, so elsewhere the search button opens the classic search directly
                 { id: 'search', title: t('mainScreen.menu.search'), Icon: Search, color: '#3B82F6', onPress: () => onNavigate(Platform.OS === 'web' ? 'SearchMenu' : 'Search') },
-                // Speech recognition runs in the browser (WebGPU/WASM), so the verse finder and memorization check are web-only for now
-                ...(Platform.OS === 'web'
+                // Speech recognition runs in the browser (WebGPU/WASM) or natively on Android (modules/quran-speech), not on iOS yet
+                ...(Platform.OS === 'web' || Platform.OS === 'android'
                     ? [
                         { id: 'verse-finder', title: t('mainScreen.menu.verseFinder'), Icon: AudioLines, color: '#EC4899', onPress: () => onNavigate('VerseFinder') },
                         { id: 'memorization', title: t('mainScreen.menu.memorization'), Icon: Brain, color: '#A855F7', onPress: () => onNavigate('Memorization') },
