@@ -47,6 +47,8 @@ export interface PrayerNotificationConfig {
 interface PrayerNotificationModule {
     start(configJson: string): Promise<void>;
     stop(): Promise<void>;
+    /** Stores the times for the home screen widgets (they show them whether or not notifications are on) and updates them */
+    setWidgetData(json: string): Promise<void>;
     /** Whether the ongoing notification is on */
     isActive(): boolean;
     /** Copies a picked audio file into the sound library; returns the name to use as a prayer's `sound` */
@@ -58,6 +60,9 @@ interface PrayerNotificationModule {
     canScheduleExactAlarms(): boolean;
     openExactAlarmSettings(): void;
 }
+
+/** What the home screen widgets need: the times part of PrayerNotificationConfig. */
+export type PrayerWidgetData = Pick<PrayerNotificationConfig, 'location' | 'labels' | 'untilFormat' | 'days'>;
 
 /** Android only; null elsewhere. */
 export const PrayerNotification = requireOptionalNativeModule<PrayerNotificationModule>('PrayerNotification');

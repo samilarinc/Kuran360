@@ -7,7 +7,7 @@ import type { TFunction } from 'i18next';
 import { PrayerTime } from '@/types';
 import locations from '@/data/locations.json';
 import { getDistanceKm } from '@/utils/qibla';
-import { PrayerNotification, PrayerNotificationConfig } from '../../modules/prayer-notification';
+import { PrayerNotification, PrayerNotificationConfig, PrayerWidgetData } from '../../modules/prayer-notification';
 
 /** Prayer times data: one JSON file per location (Diyanet times), downloaded from kuran360.com and cached. */
 
@@ -356,13 +356,8 @@ export const formatLocationName = (location: { cityName: string; districtName?: 
 const isoDate = (date: Date) =>
     `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-const buildNotificationConfig = (
-    location: PrayerLocation,
-    times: PrayerTime[],
-    t: TFunction,
-    language: string,
-    settings: PrayerNotificationSettings,
-): PrayerNotificationConfig => {
+/** The times part of the native config, from yesterday on: what both the notifications and the widgets need. */
+const buildTimesData = (location: PrayerLocation, times: PrayerTime[], t: TFunction, language: string): PrayerWidgetData => {
     const year = dataYear(times);
     const todayIndex = dayOfYear(new Date());
     const days = times
@@ -377,11 +372,22 @@ const buildNotificationConfig = (
                 ramadan: day.hicri.includes('Ramazan'),
             };
         });
-    const label = (key: string, values?: Record<string, string>) => t(`prayerNotifications.texts.${key}`, values);
     return {
         location: formatLocationName(location),
         labels: PRAYER_KEYS.map(key => t(`prayerTimesScreen.prayers.${key}`)),
         untilFormat: t('prayerNotifications.ongoingUntil', { label: '%s' }),
+        days,
+    };
+};
+
+const buildNotificationConfig = (
+    timesData: PrayerWidgetData,
+    t: TFunction,
+    settings: PrayerNotificationSettings,
+): PrayerNotificationConfig => {
+    const label = (key: string, values?: Record<string, string>) => t(`prayerNotifications.texts.${key}`, values);
+    return {
+        ...timesData,
         ongoing: settings.ongoing,
         collapsedTimes: settings.collapsedTimes,
         // A sound removed from the library falls back to the default
@@ -407,20 +413,23 @@ const buildNotificationConfig = (
             kerahat: label('kerahat'),
             kazaLabels: PRAYER_KEYS.map(key => t(`prayerNotifications.kazaLabels.${key}`)),
         },
-        days,
     };
 };
 
-/** Applies the saved notification settings for `location`: schedules and shows what is on, removes what is off. */
+/**
+ * Sends `location`'s times to the home screen widgets, and applies the saved notification settings:
+ * schedules and shows what is on, removes what is off.
+ */
 export const syncPrayerNotifications = async (location: PrayerLocation, t: TFunction, language: string) => {
     if (!PrayerNotification) return;
     const settings = await getNotificationSettings();
+    const timesData = buildTimesData(location, await fetchPrayerTimes(location), t, language);
+    await PrayerNotification.setWidgetData(JSON.stringify(timesData));
     if (!hasAnyNotification(settings)) {
         await PrayerNotification.stop();
         return;
     }
-    const times = await fetchPrayerTimes(location);
-    await PrayerNotification.start(JSON.stringify(buildNotificationConfig(location, times, t, language, settings)));
+    await PrayerNotification.start(JSON.stringify(buildNotificationConfig(timesData, t, settings)));
 };
 
 /** Android 13+ asks before an app may post notifications. */

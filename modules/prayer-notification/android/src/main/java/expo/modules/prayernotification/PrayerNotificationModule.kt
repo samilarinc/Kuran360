@@ -25,6 +25,11 @@ class PrayerNotificationModule : Module() {
       PrayerNotifier.start(context, configJson)
     }
 
+    /** Stores the times for the home screen widgets (location, labels and days, as in the config) and updates them. */
+    AsyncFunction("setWidgetData") { json: String ->
+      PrayerWidgets.setData(context, json)
+    }
+
     AsyncFunction("stop") {
       PrayerNotifier.stop(context)
     }

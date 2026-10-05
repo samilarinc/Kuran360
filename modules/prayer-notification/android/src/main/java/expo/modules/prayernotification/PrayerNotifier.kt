@@ -63,10 +63,10 @@ private val LABEL_IDS = intArrayOf(R.id.prayer_label_0, R.id.prayer_label_1, R.i
 private val TIME_IDS = intArrayOf(R.id.prayer_time_0, R.id.prayer_time_1, R.id.prayer_time_2, R.id.prayer_time_3, R.id.prayer_time_4, R.id.prayer_time_5)
 
 /** One day of the config: "yyyy-MM-dd", six "HH:mm" times, the date line shown under them and whether it is in Ramadan. */
-private class Day(val date: String, val times: List<String>, val info: String, val ramadan: Boolean)
+internal class Day(val date: String, val times: List<String>, val info: String, val ramadan: Boolean)
 
 /** Texts from JS, already translated; `%1` is replaced with a prayer's name, `%2` with minutes. */
-private class Texts(
+internal class Texts(
   val alertAt: String,
   val alertBefore: String,
   val cuma: String,
@@ -81,7 +81,7 @@ private class Texts(
   val kazaLabels: List<String>,
 )
 
-private class Config(
+internal class Config(
   val location: String,
   val labels: List<String>,
   val untilFormat: String,
@@ -118,7 +118,7 @@ private enum class AlertKind { PRAYER, CUMA, SAHUR, IFTAR, KAZA_CHECK }
 private class Alert(val at: Long, val kind: AlertKind, val index: Int, val minutesBefore: Int, val time: String, val date: String)
 
 /** What the ongoing notification shows at a given moment. */
-private class State(
+internal class State(
   val day: Day,
   /** Date the current prayer belongs to: before imsak it is still the previous night's yatsı */
   val currentDate: String,
@@ -231,7 +231,7 @@ object PrayerNotifier {
 
   private fun alarmManager(context: Context) = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-  private fun parseConfig(json: String): Config {
+  internal fun parseConfig(json: String): Config {
     val obj = JSONObject(json)
     val labels = obj.getJSONArray("labels").let { arr -> List(arr.length()) { arr.getString(it) } }
     require(labels.size == PRAYER_COUNT) { "Expected $PRAYER_COUNT labels" }
@@ -320,7 +320,7 @@ object PrayerNotifier {
     ).filter { !it.isEmpty() }
   }
 
-  private fun computeState(config: Config, now: Long): State? {
+  internal fun computeState(config: Config, now: Long): State? {
     val todayStart = startOfDay(now)
     val tomorrowStart = startOfDay(now, 1)
     val today = config.days[dateKey(todayStart)] ?: return null
@@ -674,9 +674,11 @@ object PrayerNotifier {
    * the device wakes up instead of waking it. Exact when the user allows it, otherwise the system
    * may deliver it a few minutes late.
    */
-  private fun scheduleRefresh(context: Context, at: Long) {
+  private fun scheduleRefresh(context: Context, at: Long) = scheduleScreenUpdate(context, at, refreshIntent(context))
+
+  /** A non-wakeup alarm for something only seen on screen (the ongoing notification, the widgets); see scheduleRefresh. */
+  internal fun scheduleScreenUpdate(context: Context, at: Long, pending: PendingIntent) {
     val manager = alarmManager(context)
-    val pending = refreshIntent(context)
     if (canScheduleExactAlarms(context)) {
       manager.setExact(AlarmManager.RTC, at, pending)
     } else {

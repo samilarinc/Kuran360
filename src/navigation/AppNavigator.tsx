@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { Platform, BackHandler } from 'react-native';
+import { Platform, BackHandler, Linking } from 'react-native';
 import { HomeScreen } from '@/screens/HomeScreen';
 import { MainScreen } from '@/screens/MainScreen';
 import { SurahDetailScreen } from '@/screens/SurahDetailScreen';
@@ -430,6 +430,19 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       }
     }
   }, [parseUrl]);
+
+  // Native: links into the app ("kuran360://prayer-times"), e.g. from the home screen widgets; the path is the web route's
+  useEffect(() => {
+    if (Platform.OS === 'web') return;
+    const openLink = async (url: string | null) => {
+      if (!url) return;
+      const route = await parseUrl('/' + url.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '').replace(/^\/+/, ''));
+      if (route && route.screen !== 'Main') navigateToRoute(route, true);
+    };
+    Linking.getInitialURL().then(openLink).catch(() => { });
+    const subscription = Linking.addEventListener('url', ({ url }) => { openLink(url).catch(() => { }); });
+    return () => subscription.remove();
+  }, [parseUrl, navigateToRoute]);
 
   // Handle pending redirection after login
   useEffect(() => {

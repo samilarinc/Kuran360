@@ -16,7 +16,7 @@ private val HANDLED_ACTIONS = setOf(
 /**
  * Rebuilds the ongoing prayer times notification at each prayer time, after a reboot or update, and
  * when the clock or time zone changes; schedules it back when the user swipes it away; shows alerts
- * and handles their "Kıldım" / "Kılmadım" / "Kaza kıldım" buttons.
+ * and handles their "Kıldım" / "Kılmadım" / "Kaza kıldım" buttons; rebuilds the home screen widgets too.
  */
 class PrayerAlarmReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
@@ -24,7 +24,11 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
       ACTION_DISMISSED -> PrayerNotifier.onDismissed(context)
       ACTION_ALERT -> PrayerNotifier.onAlert(context, intent)
       ACTION_PRAYED, ACTION_MISSED, ACTION_MADE_UP -> PrayerNotifier.onAnswer(context, intent)
-      in HANDLED_ACTIONS -> PrayerNotifier.refresh(context)
+      ACTION_WIDGET_REFRESH -> PrayerWidgets.updateAll(context)
+      in HANDLED_ACTIONS -> {
+        PrayerNotifier.refresh(context)
+        PrayerWidgets.updateAll(context)
+      }
     }
   }
 }

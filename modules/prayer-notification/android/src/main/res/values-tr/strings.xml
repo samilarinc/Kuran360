@@ -2,4 +2,8 @@
 <resources>
   <string name="prayer_notification_channel">Namaz vakitleri</string>
   <string name="prayer_alerts_channel">Vakit bildirimleri</string>
+  <string name="widget_countdown_label">Vakit sayacı</string>
+  <string name="widget_countdown_description">Sıradaki vakit ve ona kalan süre</string>
+  <string name="widget_preview_prayer">Öğle</string>
+  <string name="widget_no_data">Vakitler için Kuran360\'ı açın</string>
 </resources>

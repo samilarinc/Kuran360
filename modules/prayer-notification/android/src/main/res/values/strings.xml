@@ -2,4 +2,8 @@
 <resources>
   <string name="prayer_notification_channel">Prayer times</string>
   <string name="prayer_alerts_channel">Prayer time alerts</string>
+  <string name="widget_countdown_label">Prayer countdown</string>
+  <string name="widget_countdown_description">The next prayer and the time left until it</string>
+  <string name="widget_preview_prayer">Dhuhr</string>
+  <string name="widget_no_data">Open Kuran360 to load the prayer times</string>
 </resources>

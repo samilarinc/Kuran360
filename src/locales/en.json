@@ -741,6 +741,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "October 6, 2026",
+        "bullets": [
+          "Added a 1x1 \"Prayer countdown\" home screen widget: shows the next prayer and the time left, tap to open the prayer times."
+        ]
+      },
+      {
         "date": "October 3, 2026",
         "bullets": [
           "Added missed prayer tracking: notifications have \"Prayed\" / \"Not prayed\" buttons; a prayer you answer \"Not prayed\" goes on your list and you're reminded the next day at the same time.",

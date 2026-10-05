@@ -741,6 +741,12 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "6 Ekim 2026",
+        "bullets": [
+          "Ana ekrana eklenebilen 1x1 \"Vakit sayacı\" widget'ı geldi: sıradaki vaktin adını ve kalan süreyi gösterir, dokununca vakitler açılır."
+        ]
+      },
+      {
         "date": "3 Ekim 2026",
         "bullets": [
           "Kaza takibi eklendi: bildirimlerde \"Kıldım\" / \"Kılmadım\" butonları var; \"Kılmadım\" dediğiniz namaz takibe eklenir ve ertesi gün aynı vakitte \"kazanız var\" diye hatırlatılır.",

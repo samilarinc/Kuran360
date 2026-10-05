@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 1x1 widget: the next prayer's name and the countdown to it (filled in PrayerWidgets.countdownViews) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+  <TextView
+      android:id="@+id/widget_label"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:maxLines="1"
+      android:text="@string/widget_preview_prayer"
+      android:textColor="#CCFFFFFF"
+      android:textSize="13sp"
+      android:textStyle="bold" />
+
+  <Chronometer
+      android:id="@+id/widget_countdown"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="2dp"
+      android:autoSizeMaxTextSize="22sp"
+      android:autoSizeMinTextSize="10sp"
+      android:autoSizeTextType="uniform"
+      android:fontFeatureSettings="tnum"
+      android:gravity="center"
+      android:maxLines="1"
+      android:textColor="#FFFFFF"
+      android:textSize="16sp"
+      android:textStyle="bold" />
+
+  <!-- Until the app has sent the times -->
+  <TextView
+      android:id="@+id/widget_empty"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:maxLines="3"
+      android:text="@string/widget_no_data"
+      android:textColor="#FFFFFF"
+      android:textSize="11sp"
+      android:visibility="gone" />
+</LinearLayout>
