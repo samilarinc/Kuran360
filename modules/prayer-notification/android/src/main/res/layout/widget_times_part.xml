@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Times part of the times and combined widgets: the countdown to the next prayer and today's six times,
+  the current one marked (filled in PrayerWidgets.bindTimes). Text auto-sizes to the widget's size.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_times_part"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+  <LinearLayout
+      android:id="@+id/widget_times_header"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="2"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:paddingStart="4dp"
+      android:paddingEnd="4dp">
+
+    <TextView
+        android:id="@+id/widget_next_label"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:autoSizeMaxTextSize="16sp"
+        android:autoSizeMinTextSize="8sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="start|center_vertical"
+        android:maxLines="1"
+        android:text="@string/widget_preview_until"
+        android:textColor="#CCFFFFFF"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <Chronometer
+        android:id="@+id/widget_times_countdown"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:autoSizeMaxTextSize="26sp"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeTextType="uniform"
+        android:fontFeatureSettings="tnum"
+        android:gravity="end|center_vertical"
+        android:maxLines="1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+  </LinearLayout>
+
+  <LinearLayout
+      android:id="@+id/widget_times_row"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="3"
+      android:layout_marginTop="4dp"
+      android:baselineAligned="false"
+      android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/widget_cell_0"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="2dp">
+
+      <TextView
+          android:id="@+id/widget_label_0"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="13sp"
+          android:autoSizeMinTextSize="7sp"
+          android:autoSizeTextType="uniform"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_label_0"
+          android:textColor="#CCFFFFFF"
+          android:textSize="11sp" />
+
+      <TextView
+          android:id="@+id/widget_time_0"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="17sp"
+          android:autoSizeMinTextSize="8sp"
+          android:autoSizeTextType="uniform"
+          android:fontFeatureSettings="tnum"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_time_0"
+          android:textColor="#FFFFFF"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/widget_cell_1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="2dp">
+
+      <TextView
+          android:id="@+id/widget_label_1"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="13sp"
+          android:autoSizeMinTextSize="7sp"
+          android:autoSizeTextType="uniform"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_label_1"
+          android:textColor="#CCFFFFFF"
+          android:textSize="11sp" />
+
+      <TextView
+          android:id="@+id/widget_time_1"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="17sp"
+          android:autoSizeMinTextSize="8sp"
+          android:autoSizeTextType="uniform"
+          android:fontFeatureSettings="tnum"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_time_1"
+          android:textColor="#FFFFFF"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/widget_cell_2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="2dp">
+
+      <TextView
+          android:id="@+id/widget_label_2"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="13sp"
+          android:autoSizeMinTextSize="7sp"
+          android:autoSizeTextType="uniform"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_label_2"
+          android:textColor="#CCFFFFFF"
+          android:textSize="11sp" />
+
+      <TextView
+          android:id="@+id/widget_time_2"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="17sp"
+          android:autoSizeMinTextSize="8sp"
+          android:autoSizeTextType="uniform"
+          android:fontFeatureSettings="tnum"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_time_2"
+          android:textColor="#FFFFFF"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/widget_cell_3"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="2dp">
+
+      <TextView
+          android:id="@+id/widget_label_3"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="13sp"
+          android:autoSizeMinTextSize="7sp"
+          android:autoSizeTextType="uniform"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_label_3"
+          android:textColor="#CCFFFFFF"
+          android:textSize="11sp" />
+
+      <TextView
+          android:id="@+id/widget_time_3"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="17sp"
+          android:autoSizeMinTextSize="8sp"
+          android:autoSizeTextType="uniform"
+          android:fontFeatureSettings="tnum"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_time_3"
+          android:textColor="#FFFFFF"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/widget_cell_4"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="2dp">
+
+      <TextView
+          android:id="@+id/widget_label_4"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="13sp"
+          android:autoSizeMinTextSize="7sp"
+          android:autoSizeTextType="uniform"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_label_4"
+          android:textColor="#CCFFFFFF"
+          android:textSize="11sp" />
+
+      <TextView
+          android:id="@+id/widget_time_4"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="17sp"
+          android:autoSizeMinTextSize="8sp"
+          android:autoSizeTextType="uniform"
+          android:fontFeatureSettings="tnum"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_time_4"
+          android:textColor="#FFFFFF"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/widget_cell_5"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="2dp">
+
+      <TextView
+          android:id="@+id/widget_label_5"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="13sp"
+          android:autoSizeMinTextSize="7sp"
+          android:autoSizeTextType="uniform"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_label_5"
+          android:textColor="#CCFFFFFF"
+          android:textSize="11sp" />
+
+      <TextView
+          android:id="@+id/widget_time_5"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:autoSizeMaxTextSize="17sp"
+          android:autoSizeMinTextSize="8sp"
+          android:autoSizeTextType="uniform"
+          android:fontFeatureSettings="tnum"
+          android:gravity="center"
+          android:maxLines="1"
+          android:text="@string/widget_preview_time_5"
+          android:textColor="#FFFFFF"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+  </LinearLayout>
+
+  <!-- Until the app has sent the times -->
+  <TextView
+      android:id="@+id/widget_times_empty"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:autoSizeMaxTextSize="16sp"
+      android:autoSizeMinTextSize="9sp"
+      android:autoSizeTextType="uniform"
+      android:gravity="center"
+      android:maxLines="3"
+      android:text="@string/widget_no_data"
+      android:textColor="#FFFFFF"
+      android:textSize="11sp"
+      android:visibility="gone" />
+</LinearLayout>

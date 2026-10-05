@@ -24,6 +24,12 @@ interface SurahVersePickerModalProps {
     selection: MemorizationSelection;
     onSelect: (selection: MemorizationSelection) => void;
     onClose: () => void;
+    /** Only one verse can be picked: no scope choice (the widget settings' fixed verse) */
+    singleOnly?: boolean;
+    /** Header and confirm button; the memorization texts by default */
+    title?: string;
+    confirmTitle?: string;
+    confirmIcon?: React.ReactNode;
 }
 
 const ROW_HEIGHT = 60;
@@ -109,7 +115,9 @@ const VerseStepper: React.FC<VerseStepperProps> = ({ label, value, min, max, onC
  * Picks what to recite in one screen: a searchable surah list, and below it the scope
  * (one verse, a range, the whole surah) with the verse numbers to start from.
  */
-export const SurahVersePickerModal: React.FC<SurahVersePickerModalProps> = ({ visible, selection, onSelect, onClose }) => {
+export const SurahVersePickerModal: React.FC<SurahVersePickerModalProps> = ({
+    visible, selection, onSelect, onClose, singleOnly = false, title, confirmTitle, confirmIcon,
+}) => {
     const { t } = useTranslation();
     const { theme, common } = useTheme();
     const styles = useThemedStyles(createStyles);
@@ -134,7 +142,7 @@ export const SurahVersePickerModal: React.FC<SurahVersePickerModalProps> = ({ vi
 
     const pickSurah = (number: number) => {
         const count = surahs.find(s => s.number === number)?.verseCount ?? 1;
-        update({ surahNumber: number, fromVerse: 1, toVerse: DEFAULT_RANGE }, count);
+        update({ surahNumber: number, fromVerse: 1, toVerse: singleOnly ? 1 : DEFAULT_RANGE }, count);
     };
 
     const pickScope = (scope: MemorizationScope) => {
@@ -153,7 +161,7 @@ export const SurahVersePickerModal: React.FC<SurahVersePickerModalProps> = ({ vi
             <View style={common.pickerOverlay}>
                 <SafeAreaView style={[common.modalContainerCentered, styles.container]}>
                     <View style={common.pickerHeader}>
-                        <Text style={common.pickerHeaderTitle}>{t('memorization.picker.title')}</Text>
+                        <Text style={common.pickerHeaderTitle}>{title ?? t('memorization.picker.title')}</Text>
                         <TouchableOpacity onPress={onClose} style={common.pickerCloseButton}>
                             <Text style={common.pickerCloseButtonText}>✕</Text>
                         </TouchableOpacity>
@@ -201,7 +209,7 @@ export const SurahVersePickerModal: React.FC<SurahVersePickerModalProps> = ({ vi
                     </ScrollView>
 
                     <View style={styles.panel}>
-                        <View style={styles.segments}>
+                        {!singleOnly && (<View style={styles.segments}>
                             {SCOPES.map(scope => (
                                 <TouchableOpacity
                                     key={scope}
@@ -213,7 +221,7 @@ export const SurahVersePickerModal: React.FC<SurahVersePickerModalProps> = ({ vi
                                     </Text>
                                 </TouchableOpacity>
                             ))}
-                        </View>
+                        </View>)}
 
                         {draft.scope === 'single' && (
                             <VerseStepper label={t('memorization.picker.verse')} value={draft.fromVerse} min={1} max={verseCount} onChange={v => update({ fromVerse: v })} />
@@ -233,8 +241,8 @@ export const SurahVersePickerModal: React.FC<SurahVersePickerModalProps> = ({ vi
                         </Text>
 
                         <AppButton
-                            title={t('memorization.picker.start')}
-                            icon={<Play size={16} color="#FFFFFF" />}
+                            title={confirmTitle ?? t('memorization.picker.start')}
+                            icon={confirmIcon ?? <Play size={16} color="#FFFFFF" />}
                             onPress={() => {
                                 onSelect(draft);
                                 onClose();

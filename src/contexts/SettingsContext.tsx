@@ -41,6 +41,8 @@ const DEFAULT_SETTINGS: AppSettings = {
         cityName: 'Istanbul',
     },
     useGPSForPrayer: false,
+    widgetVerseMode: 'prayer',
+    widgetFixedVerse: { surah: 2, verse: 255 },
 };
 
 // Available translations from the JSON data

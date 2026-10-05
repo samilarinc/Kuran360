@@ -6,4 +6,27 @@
   <string name="widget_countdown_description">The next prayer and the time left until it</string>
   <string name="widget_preview_prayer">Dhuhr</string>
   <string name="widget_no_data">Open Kuran360 to load the prayer times</string>
+  <string name="widget_times_label">Prayer times</string>
+  <string name="widget_times_description">Today's six prayer times and the time left until the next</string>
+  <string name="widget_verse_label">Verse</string>
+  <string name="widget_verse_description">A verse in Arabic with its translation; each prayer time, on tap or fixed</string>
+  <string name="widget_combined_label">Prayer times and verse</string>
+  <string name="widget_combined_description">The prayer times and countdown on top, a verse below</string>
+  <string name="widget_no_verse">Open Kuran360 to load the verses</string>
+  <string name="widget_preview_until">Until Dhuhr</string>
+  <string name="widget_preview_meal">In the name of Allah, the Most Gracious, the Most Merciful.</string>
+  <string name="widget_preview_ref">Al-Fatiha, 1</string>
+  <string name="widget_preview_label_0">Fajr</string>
+  <string name="widget_preview_label_1">Sunrise</string>
+  <string name="widget_preview_label_2">Dhuhr</string>
+  <string name="widget_preview_label_3">Asr</string>
+  <string name="widget_preview_label_4">Maghrib</string>
+  <string name="widget_preview_label_5">Isha</string>
+  <string name="widget_preview_arabic" translatable="false">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</string>
+  <string name="widget_preview_time_0" translatable="false">05:30</string>
+  <string name="widget_preview_time_1" translatable="false">07:01</string>
+  <string name="widget_preview_time_2" translatable="false">13:05</string>
+  <string name="widget_preview_time_3" translatable="false">16:12</string>
+  <string name="widget_preview_time_4" translatable="false">18:44</string>
+  <string name="widget_preview_time_5" translatable="false">20:08</string>
 </resources>

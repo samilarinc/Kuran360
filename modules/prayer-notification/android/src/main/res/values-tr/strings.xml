@@ -6,4 +6,20 @@
   <string name="widget_countdown_description">Sıradaki vakit ve ona kalan süre</string>
   <string name="widget_preview_prayer">Öğle</string>
   <string name="widget_no_data">Vakitler için Kuran360\'ı açın</string>
+  <string name="widget_times_label">Vakitler</string>
+  <string name="widget_times_description">Bugünün altı vakti ve sıradakine kalan süre</string>
+  <string name="widget_verse_label">Ayet</string>
+  <string name="widget_verse_description">Arapçası ve mealiyle bir ayet; her vakitte, dokununca ya da sabit</string>
+  <string name="widget_combined_label">Vakitler ve ayet</string>
+  <string name="widget_combined_description">Üstte vakitler ve geri sayım, altta bir ayet</string>
+  <string name="widget_no_verse">Ayetler için Kuran360\'ı açın</string>
+  <string name="widget_preview_until">Öğle vaktine</string>
+  <string name="widget_preview_meal">Rahmân ve Rahîm olan Allah\'ın adıyla.</string>
+  <string name="widget_preview_ref">Fatiha, 1</string>
+  <string name="widget_preview_label_0">İmsak</string>
+  <string name="widget_preview_label_1">Güneş</string>
+  <string name="widget_preview_label_2">Öğle</string>
+  <string name="widget_preview_label_3">İkindi</string>
+  <string name="widget_preview_label_4">Akşam</string>
+  <string name="widget_preview_label_5">Yatsı</string>
 </resources>

@@ -49,6 +49,8 @@ interface PrayerNotificationModule {
     stop(): Promise<void>;
     /** Stores the times for the home screen widgets (they show them whether or not notifications are on) and updates them */
     setWidgetData(json: string): Promise<void>;
+    /** Stores the verses for the verse widgets (a PrayerWidgetVerses) and updates them */
+    setWidgetVerses(json: string): Promise<void>;
     /** Whether the ongoing notification is on */
     isActive(): boolean;
     /** Copies a picked audio file into the sound library; returns the name to use as a prayer's `sound` */
@@ -63,6 +65,16 @@ interface PrayerNotificationModule {
 
 /** What the home screen widgets need: the times part of PrayerNotificationConfig. */
 export type PrayerWidgetData = Pick<PrayerNotificationConfig, 'location' | 'labels' | 'untilFormat' | 'days'>;
+
+/** What the verse widgets show: a pool they go through (a new verse each prayer time or tap), or one fixed verse. */
+export interface PrayerWidgetVerses {
+    mode: 'prayer' | 'tap' | 'fixed';
+    /** A new pool id starts the widgets from the pool's first verse */
+    poolId: string;
+    /** "Tap for a new verse", shown in 'tap' mode */
+    hint: string;
+    verses: { surah: number; verse: number; ref: string; arabic: string; meal: string }[];
+}
 
 /** Android only; null elsewhere. */
 export const PrayerNotification = requireOptionalNativeModule<PrayerNotificationModule>('PrayerNotification');

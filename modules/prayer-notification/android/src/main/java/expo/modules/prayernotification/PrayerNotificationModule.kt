@@ -30,6 +30,11 @@ class PrayerNotificationModule : Module() {
       PrayerWidgets.setData(context, json)
     }
 
+    /** Stores the verses for the verse widgets (the mode, and a pool to go through or the one fixed verse) and updates them. */
+    AsyncFunction("setWidgetVerses") { json: String ->
+      PrayerWidgets.setVerses(context, json)
+    }
+
     AsyncFunction("stop") {
       PrayerNotifier.stop(context)
     }

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Verse part of the verse and combined widgets: the verse in Arabic, its translation and a footer with
+  the reference ("Bakara, 255") and, when taps bring a new verse, a hint (filled in PrayerWidgets.bindVerse).
+  Text auto-sizes to the widget's size.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_verse_part"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+  <TextView
+      android:id="@+id/widget_verse_arabic"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="3"
+      android:autoSizeMaxTextSize="24sp"
+      android:autoSizeMinTextSize="9sp"
+      android:autoSizeTextType="uniform"
+      android:gravity="center"
+      android:lineSpacingMultiplier="1.15"
+      android:text="@string/widget_preview_arabic"
+      android:textColor="#FFFFFF"
+      android:textDirection="rtl"
+      android:textSize="16sp" />
+
+  <TextView
+      android:id="@+id/widget_verse_meal"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="3"
+      android:layout_marginTop="4dp"
+      android:autoSizeMaxTextSize="15sp"
+      android:autoSizeMinTextSize="8sp"
+      android:autoSizeTextType="uniform"
+      android:gravity="center"
+      android:text="@string/widget_preview_meal"
+      android:textColor="#E6FFFFFF"
+      android:textSize="12sp" />
+
+  <LinearLayout
+      android:id="@+id/widget_verse_footer"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:layout_marginTop="4dp"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/widget_verse_ref"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:autoSizeMaxTextSize="12sp"
+        android:autoSizeMinTextSize="7sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="start|center_vertical"
+        android:maxLines="1"
+        android:text="@string/widget_preview_ref"
+        android:textColor="#CCFFFFFF"
+        android:textSize="11sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/widget_verse_hint"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:autoSizeMaxTextSize="11sp"
+        android:autoSizeMinTextSize="7sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="end|center_vertical"
+        android:maxLines="1"
+        android:textColor="#99FFFFFF"
+        android:textSize="10sp"
+        android:visibility="gone" />
+  </LinearLayout>
+
+  <!-- Until the app has sent the verses (or the Quran data isn't downloaded yet) -->
+  <TextView
+      android:id="@+id/widget_verse_empty"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:autoSizeMaxTextSize="16sp"
+      android:autoSizeMinTextSize="9sp"
+      android:autoSizeTextType="uniform"
+      android:gravity="center"
+      android:maxLines="3"
+      android:text="@string/widget_no_verse"
+      android:textColor="#FFFFFF"
+      android:textSize="11sp"
+      android:visibility="gone" />
+</LinearLayout>

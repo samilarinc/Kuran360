@@ -78,7 +78,12 @@ export interface AppSettings {
     districtName?: string | null;
   };
   useGPSForPrayer?: boolean;
+  // Home screen verse widgets (Android): a new verse each prayer time, a new verse on every tap, or one fixed verse
+  widgetVerseMode: WidgetVerseMode;
+  widgetFixedVerse: { surah: number; verse: number };
 }
+
+export type WidgetVerseMode = 'prayer' | 'tap' | 'fixed';
 
 export interface PrayerTime {
   date_index: number;

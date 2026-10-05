@@ -744,7 +744,9 @@
         "date": "October 6, 2026",
         "bullets": [
           "Added a 1x1 \"Prayer countdown\" home screen widget: shows the next prayer and the time left, tap to open the prayer times.",
-          "The prayer countdown widget's text now grows with the widget when you resize it."
+          "New widgets: \"Prayer times\" with the six times and the countdown, \"Verse\" with the Arabic and its translation, and \"Prayer times and verse\" combining both.",
+          "The verse widget can show a new verse at each prayer time or on tap, or a fixed verse you pick in Settings > Widgets.",
+          "Widget text grows and shrinks with the widget's size."
         ]
       },
       {
@@ -1423,5 +1425,30 @@
     "message": "Newer translations and word meanings are ready. Download them now? Your current data keeps working until then.",
     "later": "Later",
     "update": "Download"
+  },
+  "widgets": {
+    "sectionTitle": "Widgets",
+    "sectionSubtitle": "Settings of the home screen widgets",
+    "verseTitle": "Verse widget",
+    "verseDescription": "How should the verse in the verse and combined widgets change?",
+    "modes": {
+      "prayer": {
+        "title": "New verse each prayer time",
+        "description": "A new verse comes at every prayer time. Tap the verse to open it in the app."
+      },
+      "tap": {
+        "title": "New verse on tap",
+        "description": "Every tap on the widget brings a new verse. Tap the surah name to open the verse in the app."
+      },
+      "fixed": {
+        "title": "Fixed verse",
+        "description": "The verse you pick is always shown."
+      }
+    },
+    "verseRef": "{{surah}}, {{verse}}",
+    "tapHint": "Tap for a new verse",
+    "changeVerse": "Change",
+    "pickerTitle": "Widget verse",
+    "pickerConfirm": "Select"
   }
 }

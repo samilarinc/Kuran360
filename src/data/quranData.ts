@@ -755,6 +755,14 @@ export async function loadSurah(surahNumber: number): Promise<Surah | null> {
   return surah;
 }
 
+/** One verse, read on its own without loading (and caching) its whole surah; null when it isn't there or the data isn't downloaded. */
+export async function loadVerse(surahNumber: number, verseNumber: number): Promise<Verse | null> {
+  const verseData = Platform.OS === 'web'
+    ? await idbHelper.getVerse(surahNumber, verseNumber)
+    : await sqliteHelper.getVerse(surahNumber, verseNumber);
+  return verseData ? convertToAppFormat(verseData) : null;
+}
+
 // Get basic surah info (for listing) - doesn't load verses
 export function getSurahsList() {
   return SURAH_METADATA.map(meta => ({

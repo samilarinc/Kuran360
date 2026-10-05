@@ -8,12 +8,15 @@ import {
     findPrayerLocation,
     syncPrayerNotifications,
 } from '@/services/prayerTimes';
+import { syncVerseWidget } from '@/services/widgets';
 
 /**
  * Background upkeep for prayer times while the app is open, wherever the user is:
  * - travel mode: switches the location when the device has moved (at most once an hour)
  * - the notifications (alerts and the ongoing one) and the home screen widgets: re-sent when the
  *   location or language changes, and on every return to the app so a new year's times reach them
+ * - the verse widgets: re-sent when their settings, the favorite translation or the language change, and
+ *   on every return to the app (a new verse pool every two weeks, the data once it is downloaded)
  */
 export const PrayerTimesSync: React.FC = () => {
     const { settings, updateSettings } = useSettings();
@@ -51,6 +54,20 @@ export const PrayerTimesSync: React.FC = () => {
             clearInterval(timer);
         };
     }, [locationId, t, i18n.language]);
+
+    const { widgetVerseMode, favoriteTranslation } = settings;
+    const { surah: fixedSurah, verse: fixedVerse } = settings.widgetFixedVerse;
+    useEffect(() => {
+        const refreshVerses = () =>
+            syncVerseWidget({ mode: widgetVerseMode, fixedVerse: { surah: fixedSurah, verse: fixedVerse }, translation: favoriteTranslation }, t)
+                .catch(error => console.warn('Verse widget refresh failed:', error));
+
+        refreshVerses();
+        const subscription = AppState.addEventListener('change', state => {
+            if (state === 'active') refreshVerses();
+        });
+        return () => subscription.remove();
+    }, [widgetVerseMode, fixedSurah, fixedVerse, favoriteTranslation, t, i18n.language]);
 
     return null;
 };

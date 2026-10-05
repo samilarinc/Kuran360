@@ -43,5 +43,41 @@
           android:name="android.appwidget.provider"
           android:resource="@xml/widget_countdown_info" />
     </receiver>
+
+    <receiver
+        android:name="expo.modules.prayernotification.TimesWidget"
+        android:exported="false"
+        android:label="@string/widget_times_label">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data
+          android:name="android.appwidget.provider"
+          android:resource="@xml/widget_times_info" />
+    </receiver>
+
+    <receiver
+        android:name="expo.modules.prayernotification.VerseWidget"
+        android:exported="false"
+        android:label="@string/widget_verse_label">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data
+          android:name="android.appwidget.provider"
+          android:resource="@xml/widget_verse_info" />
+    </receiver>
+
+    <receiver
+        android:name="expo.modules.prayernotification.CombinedWidget"
+        android:exported="false"
+        android:label="@string/widget_combined_label">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data
+          android:name="android.appwidget.provider"
+          android:resource="@xml/widget_combined_info" />
+    </receiver>
   </application>
 </manifest>

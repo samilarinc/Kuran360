@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Times widget: the countdown and today's six times (see widget_times_part) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+  <include
+      layout="@layout/widget_times_part"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
+</LinearLayout>

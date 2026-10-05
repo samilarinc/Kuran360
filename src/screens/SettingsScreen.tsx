@@ -15,6 +15,7 @@ import {
     Settings2,
     Highlighter,
     BellRing,
+    LayoutGrid,
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
@@ -30,6 +31,7 @@ import { TranslationsSection } from '@/components/TranslationsSection';
 import { DataUpdateSection } from '@/components/DataUpdateSection';
 import { SPACING } from '@/theme';
 import { isPrayerNotificationSupported } from '@/services/prayerTimes';
+import { WidgetSettingsSection } from '@/components/WidgetSettingsSection';
 
 interface SettingsScreenProps {
     navigation: any;
@@ -51,6 +53,7 @@ const COLORS = {
     translations: '#6366F1',
     system: '#64748B',
     prayerNotifications: '#14B8A6',
+    widgets: '#0EA5E9',
 };
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, startDataUpdate }) => {
@@ -72,6 +75,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, star
         display: false,
         fonts: false,
         translations: false,
+        widgets: false,
         system: !!startDataUpdate,
     });
     const [isUpdating, setIsUpdating] = useState(false);
@@ -387,6 +391,20 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, star
                         color={COLORS.prayerNotifications}
                         onToggle={() => navigation.navigate('PrayerNotificationSettings')}
                     />
+                )}
+
+                {/* Home screen widgets are Android only, like the notifications (same native module) */}
+                {isPrayerNotificationSupported() && (
+                    <CollapsibleSettingsSection
+                        title={t('widgets.sectionTitle')}
+                        subtitle={t('widgets.sectionSubtitle')}
+                        icon={LayoutGrid}
+                        color={COLORS.widgets}
+                        expanded={expandedSections.widgets}
+                        onToggle={() => toggleSection('widgets')}
+                    >
+                        <WidgetSettingsSection />
+                    </CollapsibleSettingsSection>
                 )}
 
                 <CollapsibleSettingsSection
