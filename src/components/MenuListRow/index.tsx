@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleProp, ViewStyle, TextStyle, StyleSheet } from 'react-native';
+import { ChevronRight } from 'lucide-react-native';
 import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
@@ -40,7 +41,7 @@ export const MenuListRow: React.FC<MenuListRowProps> = ({
     titleStyle,
     chevronStyle,
 }) => {
-    const { common } = useTheme();
+    const { theme, common } = useTheme();
     const styles = useThemedStyles(createStyles);
 
     const isCard = variant === 'card';
@@ -88,9 +89,7 @@ export const MenuListRow: React.FC<MenuListRowProps> = ({
 
             {showChevron && (
                 isCard ? (
-                    <View style={styles.cardArrowContainer}>
-                        <Text style={styles.cardArrow}>›</Text>
-                    </View>
+                    <ChevronRight size={22} color={theme.textSecondary} style={styles.cardArrow} />
                 ) : (
                     <Text style={[styles.listChevron, chevronStyle]}>›</Text>
                 )
@@ -148,15 +147,8 @@ const createStyles = (theme: Theme, common: CommonStyles) => {
         },
 
         // Chevron — card variant
-        cardArrowContainer: {
-            width: 24,
-            height: 24,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
         cardArrow: {
-            fontSize: 32,
-            color: theme.textSecondary,
+            marginLeft: SPACING.sm,
         },
         // Chevron — list variant
         listChevron: {

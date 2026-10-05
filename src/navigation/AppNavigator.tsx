@@ -15,6 +15,7 @@ import { AllTranslationsScreen } from '@/screens/AllTranslationsScreen';
 import { HatimScreen } from '@/screens/HatimScreen';
 import { HatimDetailScreen } from '@/screens/HatimDetailScreen';
 import { PrayerTimesScreen } from '@/screens/PrayerTimesScreen';
+import { PrayerNotificationSettingsScreen } from '@/screens/PrayerNotificationSettingsScreen';
 import { QiblaScreen } from '@/screens/QiblaScreen';
 import { HutbeScreen } from '@/screens/HutbeScreen';
 import { UmrahProgressScreen } from '@/screens/UmrahProgressScreen';
@@ -72,6 +73,7 @@ export type RootStackParamList = {
   Hatim: undefined;
   HatimDetail: { hatimId: string };
   PrayerTimes: undefined;
+  PrayerNotificationSettings: undefined;
   Qibla: undefined;
   Hutbe: undefined;
   UmrahMenu: undefined;
@@ -88,7 +90,7 @@ export type RootStackParamList = {
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'RootVerses';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'RootVerses';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -99,6 +101,7 @@ type NavigationHistoryItem = {
     verse?: any;
     pageNumber?: number;
     root?: string;
+    startDataUpdate?: boolean;
   };
 };
 
@@ -163,6 +166,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return route.params?.hatimId ? `/hatim/${route.params.hatimId}` : '/hatim';
       case 'PrayerTimes':
         return '/prayer-times';
+      case 'PrayerNotificationSettings':
+        return '/prayer-notifications';
       case 'Qibla':
         return '/qibla';
       case 'Hutbe':
@@ -271,6 +276,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
     if (pathname === '/prayer-times') {
       return { screen: 'PrayerTimes' };
+    }
+
+    if (pathname === '/prayer-notifications') {
+      return { screen: 'PrayerNotificationSettings' };
     }
 
     const duaRequestMatch = pathname.match(/^\/dua-request\/(.+)$/);
@@ -432,7 +441,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = useMemo(() => ({
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'RootVerses', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'RootVerses', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -594,8 +603,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
           <ScreenWrapper overlay={showResumeButton ? <ResumeReadingButton /> : undefined}>
             {currentRoute.screen === 'Main' ? (
               <MainScreen
-                onNavigate={(screen) => {
-                  navigation.navigate(screen);
+                onNavigate={(screen, params) => {
+                  navigation.navigate(screen, params);
                 }}
               />
             ) : currentRoute.screen === 'Home' ? (
@@ -606,7 +615,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
                 isDataAvailable={isDataAvailable}
               />
             ) : currentRoute.screen === 'Settings' ? (
-              <SettingsScreen navigation={navigation} />
+              <SettingsScreen navigation={navigation} startDataUpdate={currentRoute.params?.startDataUpdate} />
             ) : currentRoute.screen === 'Search' ? (
               <SearchScreen navigation={navigation} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'About' ? (
@@ -633,6 +642,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <HatimDetailScreen navigation={navigation} route={{ params: { hatimId: currentRoute.params.hatimId } }} />
             ) : currentRoute.screen === 'PrayerTimes' ? (
               <PrayerTimesScreen navigation={navigation} />
+            ) : currentRoute.screen === 'PrayerNotificationSettings' ? (
+              <PrayerNotificationSettingsScreen navigation={navigation} />
             ) : currentRoute.screen === 'Qibla' ? (
               <QiblaScreen navigation={navigation} />
             ) : currentRoute.screen === 'Hutbe' ? (
@@ -671,8 +682,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               />
             ) : (
               <MainScreen
-                onNavigate={(screen) => {
-                  navigation.navigate(screen);
+                onNavigate={(screen, params) => {
+                  navigation.navigate(screen, params);
                 }}
               />
             )}

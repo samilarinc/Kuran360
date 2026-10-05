@@ -125,7 +125,9 @@ export const createCommonStyles = (theme: Theme) => {
             padding: 0,
         },
         pickerList: {
-            flex: 1,
+            // Not flex: 1 (basis 0): inside a container sized only by maxHeight the list would collapse to nothing
+            flexGrow: 1,
+            flexShrink: 1,
             padding: SPACING.sm,
         },
         pickerOption: {

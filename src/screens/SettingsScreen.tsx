@@ -14,6 +14,7 @@ import {
     Languages,
     Settings2,
     Highlighter,
+    BellRing,
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
@@ -28,9 +29,12 @@ import { ArabicFontPicker } from '@/components/ArabicFontPicker';
 import { TranslationsSection } from '@/components/TranslationsSection';
 import { DataUpdateSection } from '@/components/DataUpdateSection';
 import { SPACING } from '@/theme';
+import { isPrayerNotificationSupported } from '@/services/prayerTimes';
 
 interface SettingsScreenProps {
     navigation: any;
+    /** Opened from the new data prompt: start downloading right away (already confirmed there) */
+    startDataUpdate?: boolean;
 }
 
 const COLORS = {
@@ -46,9 +50,10 @@ const COLORS = {
     fonts: '#14B8A6',
     translations: '#6366F1',
     system: '#64748B',
+    prayerNotifications: '#14B8A6',
 };
 
-export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
+export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, startDataUpdate }) => {
     const { settings, updateSettings, availableTranslations } = useSettings();
     const { theme, common } = useTheme();
     const { t } = useTranslation();
@@ -67,7 +72,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         display: false,
         fonts: false,
         translations: false,
-        system: false,
+        system: !!startDataUpdate,
     });
     const [isUpdating, setIsUpdating] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState(0);
@@ -156,45 +161,54 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         });
     };
 
-    const handleUpdateData = () => {
-        const title = t('settingsScreen.updateData.title');
-        const message = t('settingsScreen.updateData.message');
+    const runUpdate = async () => {
+        setIsUpdating(true);
+        setDownloadProgress(0);
+        setDownloadStatus(t('settingsScreen.updateData.preparing'));
 
-        const runUpdate = async () => {
-            setIsUpdating(true);
-            setDownloadProgress(0);
-            setDownloadStatus(t('settingsScreen.updateData.preparing'));
-
-            const progressCallback: ProgressCallback = (progress, status, downloaded, total) => {
-                setDownloadProgress(progress);
-                setDownloadStatus(status);
-                if (downloaded !== undefined) setDownloadedBytes(downloaded);
-                if (total !== undefined) setTotalBytes(total);
-            };
-
-            try {
-                await clearCachedData();
-                await loadAllVerses(progressCallback);
-                setIsUpdating(false);
-
-                // Logically update dataVersion state after successful update
-                setDataVersion(CURRENT_VERSION);
-
-                if (Platform.OS === 'web') {
-                    setTimeout(() => {
-                        const win: any = globalThis;
-                        if (win.window?.location) win.window.location.reload();
-                    }, 500);
-                } else {
-                    Alert.alert(t('settingsScreen.updateData.successTitle'), t('settingsScreen.updateData.successMessage'));
-                }
-            } catch (error) {
-                console.error('Update failed:', error);
-                setIsUpdating(false);
-                setDownloadStatus(t('settingsScreen.updateData.errorPrefix') + (error as Error).message);
-                Alert.alert(t('settingsScreen.updateData.errorTitle'), t('settingsScreen.updateData.errorMessage'));
-            }
+        const progressCallback: ProgressCallback = (progress, status, downloaded, total) => {
+            setDownloadProgress(progress);
+            setDownloadStatus(status);
+            if (downloaded !== undefined) setDownloadedBytes(downloaded);
+            if (total !== undefined) setTotalBytes(total);
         };
+
+        try {
+            await clearCachedData();
+            await loadAllVerses(progressCallback);
+            setIsUpdating(false);
+
+            // Logically update dataVersion state after successful update
+            setDataVersion(CURRENT_VERSION);
+
+            if (Platform.OS === 'web') {
+                setTimeout(() => {
+                    const win: any = globalThis;
+                    if (win.window?.location) win.window.location.reload();
+                }, 500);
+            } else {
+                Alert.alert(t('settingsScreen.updateData.successTitle'), t('settingsScreen.updateData.successMessage'));
+            }
+        } catch (error) {
+            console.error('Update failed:', error);
+            setIsUpdating(false);
+            setDownloadStatus(t('settingsScreen.updateData.errorPrefix') + (error as Error).message);
+            Alert.alert(t('settingsScreen.updateData.errorTitle'), t('settingsScreen.updateData.errorMessage'));
+        }
+    };
+
+    const scrollRef = React.useRef<ScrollView>(null);
+
+    // Opened from the new data prompt on the main screen: the system section is open, show its progress
+    React.useEffect(() => {
+        if (!startDataUpdate) return;
+        runUpdate();
+        setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const handleUpdateData = () => {
+        const message = t('settingsScreen.updateData.message');
 
         if (Platform.OS === 'web') {
             const confirmed = (globalThis as any).confirm?.(message);
@@ -202,7 +216,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 runUpdate();
             }
         } else {
-            Alert.alert(title, message, [
+            Alert.alert(t('settingsScreen.updateData.title'), message, [
                 { text: t('settingsScreen.updateData.cancel'), style: 'cancel' },
                 { text: t('settingsScreen.updateData.confirm'), style: 'destructive', onPress: runUpdate }
             ]);
@@ -220,6 +234,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
             />
 
             <ScrollView
+                ref={scrollRef}
                 style={common.flex1}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingHorizontal: SPACING.lg, paddingBottom: SPACING.xl }}
@@ -361,6 +376,18 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         onSelectDefault={selectDefaultTranslations}
                     />
                 </CollapsibleSettingsSection>
+
+                {/* Prayer time notifications are Android only (modules/prayer-notification) */}
+                {isPrayerNotificationSupported() && (
+                    <CollapsibleSettingsSection
+                        link
+                        title={t('prayerNotifications.title')}
+                        subtitle={t('prayerNotifications.menuDescription')}
+                        icon={BellRing}
+                        color={COLORS.prayerNotifications}
+                        onToggle={() => navigation.navigate('PrayerNotificationSettings')}
+                    />
+                )}
 
                 <CollapsibleSettingsSection
                     title={t('settingsScreen.sections.systemTitle')}

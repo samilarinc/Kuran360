@@ -42,7 +42,7 @@ export const SearchMenuScreen: React.FC<SearchMenuScreenProps> = ({ navigation }
                 showHomeButton={true}
                 onHomePress={() => navigation.navigate('Main')}
             />
-            <ScrollView style={common.contentLarge} contentContainerStyle={common.listContent}>
+            <ScrollView style={common.flex1} contentContainerStyle={common.listContent}>
                 {menuItems.map(item => (
                     <MenuListRow
                         key={item.id}

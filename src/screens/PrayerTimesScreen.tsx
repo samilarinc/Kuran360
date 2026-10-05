@@ -1,298 +1,149 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import {
-    View,
-    Text,
-    ScrollView,
-    TouchableOpacity,
-    Alert,
-    Platform,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import * as Location from 'expo-location';
+import { LocateFixed, MapPin, Settings } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { LoadingView } from '@/components/LoadingView';
+import { ProgressBar } from '@/components/ProgressBar';
 import { SearchInput } from '@/components/SearchInput';
+import { PRAYER_COLORS, PRAYER_ICONS } from '@/constants/prayerIcons';
 import { PrayerTime } from '@/types';
-import locations from '@/data/locations.json';
+import {
+    PRAYER_KEYS,
+    PRAYER_LOCATIONS,
+    PrayerLocation,
+    PrayerStatus,
+    detectPrayerLocation,
+    fetchPrayerTimes,
+    findPrayerLocation,
+    formatCountdown,
+    formatLocationName,
+    formatPrayerDate,
+    getPrayerStatus,
+    isPrayerNotificationSupported,
+} from '@/services/prayerTimes';
 import { createStyles } from './PrayerTimesScreen.styles';
 
-interface Location {
-    id: string;
-    cityName: string;
-    districtName: string | null;
-    fileName: string;
-}
+
+/** "05:09", comparable as a string with the data's times */
+const toHHMM = (date: Date) => `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+
+/** Ticks every second on its own so the rest of the screen doesn't re-render with it. */
+const Countdown: React.FC<{ status: PrayerStatus }> = ({ status }) => {
+    const { t } = useTranslation();
+    const styles = useThemedStyles(createStyles);
+    const [now, setNow] = useState(Date.now());
+
+    useEffect(() => {
+        const timer = setInterval(() => setNow(Date.now()), 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const start = status.currentAt.getTime();
+    const end = status.nextAt.getTime();
+    const progress = ((now - start) / (end - start)) * 100;
+    const currentKey = PRAYER_KEYS[status.currentIndex];
+    const nextKey = PRAYER_KEYS[status.nextIndex];
+
+    return (
+        <View style={styles.countdownBlock}>
+            <Text style={styles.countdownLabel}>
+                {t('prayerTimesScreen.timeRemaining', { label: t(`prayerTimesScreen.prayers.${nextKey}`) })}
+            </Text>
+            <Text style={styles.countdown}>{formatCountdown(end - now)}</Text>
+            <ProgressBar progress={progress} height={6} trackColor="rgba(255,255,255,0.25)" fillColor="#FFF" style={styles.heroProgress} />
+            <View style={styles.heroProgressLabels}>
+                <Text style={styles.heroProgressText}>{t(`prayerTimesScreen.prayers.${currentKey}`)} {toHHMM(status.currentAt)}</Text>
+                <Text style={styles.heroProgressText}>{t(`prayerTimesScreen.prayers.${nextKey}`)} {toHHMM(status.nextAt)}</Text>
+            </View>
+        </View>
+    );
+};
 
 export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { theme, common } = useTheme();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const styles = useThemedStyles(createStyles);
     const { settings, updateSettings } = useSettings();
-    const [, setPrayerTimes] = useState<PrayerTime[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [todayTimes, setTodayTimes] = useState<PrayerTime | null>(null);
-    const [nextPrayer, setNextPrayer] = useState<{ label: string, time: string, remaining: string } | null>(null);
-    const [currentPrayerLabel, setCurrentPrayerLabel] = useState<string | null>(null);
+    const [times, setTimes] = useState<PrayerTime[] | null>(null);
+    const [loadFailed, setLoadFailed] = useState(false);
+    const [now, setNow] = useState(new Date());
+    const [locating, setLocating] = useState(false);
     const [showLocationPicker, setShowLocationPicker] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
-    const updatePrayerStatus = useCallback((times: PrayerTime | null = todayTimes) => {
-        if (!times) return;
+    const location = findPrayerLocation(settings.prayerLocation?.id);
 
-        const now = new Date();
-        const currentTime = now.getHours() * 60 + now.getMinutes();
-
-        const parseTime = (timeStr: string) => {
-            const [hours, minutes] = timeStr.split(':').map(Number);
-            return hours * 60 + minutes;
-        };
-
-        const prayerSchedule = [
-            { key: 'imsak', time: times.imsak },
-            { key: 'gunes', time: times.gunes },
-            { key: 'ogle', time: times.ogle },
-            { key: 'ikindi', time: times.ikindi },
-            { key: 'aksam', time: times.aksam },
-            { key: 'yatsi', time: times.yatsi },
-        ];
-
-        let current = 'yatsi';
-        let nextIndex = 0;
-
-        for (let i = 0; i < prayerSchedule.length; i++) {
-            const time = parseTime(prayerSchedule[i].time);
-            if (currentTime < time) {
-                nextIndex = i;
-                current = i === 0 ? 'yatsi' : prayerSchedule[i - 1].key;
-                break;
-            }
-            if (i === prayerSchedule.length - 1) {
-                nextIndex = 0; // Next is tomorrow's Imsak
-                current = 'yatsi';
-            }
-        }
-
-        setCurrentPrayerLabel(current);
-
-        const next = prayerSchedule[nextIndex];
-        let nextTimeMinutes = parseTime(next.time);
-
-        if (nextIndex === 0 && currentTime >= parseTime(prayerSchedule[prayerSchedule.length - 1].time)) {
-            nextTimeMinutes += 24 * 60; // Tomorrow's Imsak
-        }
-
-        const diffMinutes = nextTimeMinutes - currentTime;
-        const hours = Math.floor(diffMinutes / 60);
-        const mins = diffMinutes % 60;
-
-        setNextPrayer({
-            label: next.key,
-            time: next.time,
-            remaining: hours > 0
-                ? t('prayerTimesScreen.remainingHoursMinutes', { hours, minutes: mins })
-                : t('prayerTimesScreen.remainingMinutes', { minutes: mins })
-        });
-    }, [todayTimes, t]);
-
-    const loadPrayerTimes = useCallback(async () => {
-        const locationId = settings.prayerLocation?.id || '9541'; // Default to Istanbul
-        const selectedLocation = (locations as Location[]).find(l => l.id === locationId);
-
-        if (!selectedLocation) return;
-
-        setLoading(true);
+    const loadTimes = useCallback(async () => {
+        setLoadFailed(false);
         try {
-            const baseUrl = Platform.OS === 'web' ? '' : 'https://kuran360.com';
-            const response = await fetch(`${baseUrl}/2025_ezan/${selectedLocation.fileName}`);
-            const data = await response.json();
-            setPrayerTimes(data);
-
-            // Find today's times
-            // Note: The date_index in JSON seems to be day of year (1-365)
-            const now = new Date();
-            const start = new Date(now.getFullYear(), 0, 0);
-            const diff = (now.getTime() - start.getTime()) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
-            const oneDay = 1000 * 60 * 60 * 24;
-            const dayOfYear = Math.floor(diff / oneDay);
-
-            const today = data.find((pt: PrayerTime) => pt.date_index === dayOfYear);
-            setTodayTimes(today || data[0]);
-            updatePrayerStatus(today || data[0]);
+            setTimes(await fetchPrayerTimes(location));
         } catch (error) {
             console.error('Error loading prayer times:', error);
-        } finally {
-            setLoading(false);
+            setLoadFailed(true);
         }
-    }, [settings.prayerLocation?.id, updatePrayerStatus]);
+    }, [location]);
 
-    // Load prayer times when location changes
     useEffect(() => {
-        loadPrayerTimes();
-    }, [loadPrayerTimes]);
+        loadTimes();
+    }, [loadTimes]);
 
-    // Update prayer status periodically
+    // The current/next prayer only changes at prayer times; the countdown ticks on its own
     useEffect(() => {
-        updatePrayerStatus();
-        const timer = setInterval(() => {
-            updatePrayerStatus();
-        }, 60000);
+        const timer = setInterval(() => setNow(new Date()), 15000);
         return () => clearInterval(timer);
-    }, [updatePrayerStatus]);
+    }, []);
 
-    const handleUseGPS = async () => {
-        setLoading(true);
+    const status = useMemo(() => (times ? getPrayerStatus(times, now) : null), [times, now]);
+
+    const selectLocation = (selected: PrayerLocation) => {
+        updateSettings({
+            prayerLocation: { id: selected.id, cityName: selected.cityName, districtName: selected.districtName || null },
+        });
+        setShowLocationPicker(false);
+        setSearchQuery('');
+    };
+
+    const showLocationNotFound = () =>
+        Alert.alert(t('prayerTimesScreen.locationNotFoundTitle'), t('prayerTimesScreen.locationNotFoundMessage'));
+
+    const showPermissionDenied = () =>
+        Alert.alert(t('prayerTimesScreen.permissionDeniedTitle'), t('prayerTimesScreen.permissionDeniedMessage'));
+
+    /** Detects the location and switches to it */
+    const locate = async () => {
+        setLocating(true);
         try {
-            const { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                Alert.alert(t('prayerTimesScreen.permissionDeniedTitle'), t('prayerTimesScreen.permissionDeniedMessage'));
-                return;
-            }
-
-            const location = await Location.getCurrentPositionAsync({});
-            console.log('Current location:', location);
-
-            let reverseGeocode = await Location.reverseGeocodeAsync({
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-            });
-            console.log('Expo Reverse geocode:', reverseGeocode);
-
-            // Fallback for Web/SDK 49+ where Expo's reverseGeocode might return empty
-            if (reverseGeocode.length === 0 || (!reverseGeocode[0].city && !reverseGeocode[0].district)) {
-                console.log('Using Nominatim fallback for reverse geocoding...');
-                try {
-                    const response = await fetch(
-                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.coords.latitude}&lon=${location.coords.longitude}&addressdetails=1`,
-                        { headers: { 'Accept-Language': 'tr' } }
-                    );
-                    const data = await response.json();
-                    if (data && data.address) {
-                        reverseGeocode = [{
-                            city: data.address.province || data.address.city || data.address.town,
-                            district: data.address.district || data.address.suburb || data.address.borough || data.address.city_district,
-                            region: data.address.region,
-                            subregion: data.address.county,
-                            street: data.address.road,
-                            streetNumber: data.address.house_number,
-                            postalCode: data.address.postcode,
-                            name: data.display_name,
-                            isoCountryCode: data.address.country_code?.toUpperCase(),
-                            country: data.address.country,
-                            timezone: null,
-                            formattedAddress: data.display_name
-                        } as Location.LocationGeocodedAddress];
-                        console.log('Nominatim result:', reverseGeocode[0]);
-                    }
-                } catch (err) {
-                    console.error('Nominatim fallback failed:', err);
-                }
-            }
-
-            if (reverseGeocode.length > 0) {
-                const { city, district, subregion, region, name } = reverseGeocode[0];
-                console.log('Detected location components:', { city, district, subregion, region, name });
-
-                const searchTerms = [
-                    district,
-                    subregion,
-                    city,
-                    region,
-                    // Extract possible city/district from name if others are missing
-                    ...(name ? name.split(',').map(s => s.trim()) : [])
-                ].filter(Boolean) as string[];
-
-                let bestMatch: any = null;
-                const locs = locations as Location[];
-
-                // Phase 1: Exact match on district or city
-                for (const term of searchTerms) {
-                    const normalizedTerm = term.toLocaleLowerCase('tr');
-                    bestMatch = locs.find(l =>
-                        l.districtName?.toLocaleLowerCase('tr') === normalizedTerm ||
-                        (l.cityName.toLocaleLowerCase('tr') === normalizedTerm && !l.districtName)
-                    );
-                    if (bestMatch) break;
-                }
-
-                // Phase 2: Fuzzy match if exact failed
-                if (!bestMatch) {
-                    for (const term of searchTerms) {
-                        const normalizedTerm = term.toLocaleLowerCase('tr');
-                        bestMatch = locs.find(l =>
-                            (l.districtName && normalizedTerm.includes(l.districtName.toLocaleLowerCase('tr'))) ||
-                            normalizedTerm.includes(l.cityName.toLocaleLowerCase('tr'))
-                        );
-                        if (bestMatch) break;
-                    }
-                }
-
-                if (bestMatch) {
-                    handleSelectLocation(bestMatch);
-                } else {
-                    Alert.alert(
-                        t('prayerTimesScreen.locationNotFoundTitle'),
-                        t('prayerTimesScreen.locationNotFoundMessage', { term: searchTerms[0] || t('prayerTimesScreen.unknown') }),
-                        [{ text: t('prayerTimesScreen.ok') }]
-                    );
-                }
-            }
+            const result = await detectPrayerLocation();
+            if (result.status === 'denied') showPermissionDenied();
+            else if (result.status === 'notFound') showLocationNotFound();
+            else selectLocation(result.location);
         } catch (error) {
             console.error('Error getting location:', error);
             Alert.alert(t('prayerTimesScreen.errorTitle'), t('prayerTimesScreen.locationErrorMessage'));
         } finally {
-            setLoading(false);
+            setLocating(false);
         }
     };
 
-    const handleSelectLocation = (location: Location) => {
-        updateSettings({
-            prayerLocation: {
-                id: location.id,
-                cityName: location.cityName,
-                districtName: location.districtName || null,
-            }
-        });
-        setShowLocationPicker(false);
-    };
-
     const filteredLocations = useMemo(() => {
-        if (!searchQuery) return (locations as Location[]).slice(0, 50);
+        if (!searchQuery) return PRAYER_LOCATIONS.slice(0, 50);
         const query = searchQuery.toLocaleLowerCase('tr');
-        return (locations as Location[]).filter(l =>
+        return PRAYER_LOCATIONS.filter(l =>
             l.cityName.toLocaleLowerCase('tr').includes(query) ||
             (l.districtName && l.districtName.toLocaleLowerCase('tr').includes(query))
         ).slice(0, 50);
     }, [searchQuery]);
 
-    const renderTimeRow = (key: string, time: string, icon: string) => {
-        const isCurrent = currentPrayerLabel === key;
-        return (
-            <View style={[
-                styles.timeRow,
-                isCurrent && styles.currentTimeRow
-            ]}>
-                <View style={common.row}>
-                    <Ionicons name={icon as any} size={24} color={isCurrent ? theme.primary : theme.textSecondary} />
-                    <Text style={[
-                        styles.timeLabel,
-                        isCurrent && styles.currentText
-                    ]}>{t(`prayerTimesScreen.prayers.${key}`)}</Text>
-                </View>
-                <Text style={[
-                    styles.timeValue,
-                    isCurrent && styles.currentText
-                ]}>{time}</Text>
-            </View>
-        );
-    };
-
-    if (loading && !todayTimes) {
+    if (!times && !loadFailed) {
         return <LoadingView />;
     }
+
+    const today = status?.today;
 
     return (
         <View style={common.container}>
@@ -304,54 +155,84 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                 onHomePress={() => navigation.navigate('Main')}
             />
 
-            <ScrollView contentContainerStyle={common.pMd}>
-                <View style={styles.currentLocationCard}>
-                    <View style={styles.locationHeaderRow}>
-                        <Text style={styles.locationName}>
-                            {settings.prayerLocation?.cityName}
-                            {settings.prayerLocation?.districtName ? `, ${settings.prayerLocation.districtName}` : ''}
-                        </Text>
+            <ScrollView contentContainerStyle={[common.pMd, common.pbXl]}>
+                <View style={styles.hero}>
+                    <View style={styles.heroTopRow}>
+                        <TouchableOpacity
+                            style={styles.locationButton}
+                            onPress={() => setShowLocationPicker(true)}
+                            accessibilityLabel={t('prayerTimesScreen.changeLocation')}
+                        >
+                            <MapPin size={18} color="#FFF" />
+                            <Text style={styles.locationName} numberOfLines={1}>
+                                {formatLocationName(location)}
+                            </Text>
+                            <Ionicons name="chevron-down" size={16} color="rgba(255,255,255,0.8)" />
+                        </TouchableOpacity>
                         <View style={common.rowGap}>
                             <AppButton
-                                onPress={() => setShowLocationPicker(true)}
+                                onPress={locate}
                                 variant="translucent"
                                 shape="circle"
                                 size="small"
-                                icon={<Ionicons name="search" size={24} color="#FFF" />}
+                                disabled={locating}
+                                icon={locating ? <ActivityIndicator size="small" color="#FFF" /> : <LocateFixed size={20} color="#FFF" />}
                             />
-                            <AppButton
-                                onPress={handleUseGPS}
-                                variant="translucent"
-                                shape="circle"
-                                size="small"
-                                icon={<Ionicons name="locate" size={24} color="#FFF" />}
-                            />
+                            {/* Prayer time notifications are Android only (modules/prayer-notification) */}
+                            {isPrayerNotificationSupported() && (
+                                <AppButton
+                                    onPress={() => navigation.navigate('PrayerNotificationSettings')}
+                                    variant="translucent"
+                                    shape="circle"
+                                    size="small"
+                                    icon={<Settings size={20} color="#FFF" />}
+                                />
+                            )}
                         </View>
                     </View>
-                    <Text style={styles.dateText}>{todayTimes?.miladi}</Text>
-                    <Text style={styles.hicriText}>{todayTimes?.hicri}</Text>
+                    <Text style={styles.dateText}>{formatPrayerDate(now, i18n.language)}</Text>
+                    {today && <Text style={styles.hicriText}>{today.hicri}</Text>}
+
+                    {status && <Countdown status={status} />}
                 </View>
 
-                <View style={common.card}>
-                    {nextPrayer && (
-                        <View style={styles.nextPrayerInfo}>
-                            <Text style={[common.subtitle, common.mbXs]}>{t('prayerTimesScreen.timeRemaining', { label: t(`prayerTimesScreen.prayers.${nextPrayer.label}`) })}</Text>
-                            <Text style={styles.remainingTime}>{nextPrayer.remaining}</Text>
-                        </View>
-                    )}
-                    {todayTimes && (
-                        <>
-                            {renderTimeRow('imsak', todayTimes.imsak, 'sunny-outline')}
-                            {renderTimeRow('gunes', todayTimes.gunes, 'sunny')}
-                            {renderTimeRow('ogle', todayTimes.ogle, 'partly-sunny')}
-                            {renderTimeRow('ikindi', todayTimes.ikindi, 'cloudy-night-outline')}
-                            {renderTimeRow('aksam', todayTimes.aksam, 'moon-outline')}
-                            {renderTimeRow('yatsi', todayTimes.yatsi, 'moon')}
-                        </>
-                    )}
-                </View>
+                {loadFailed && !times && (
+                    <View style={[common.card, common.center]}>
+                        <Text style={[common.text, common.textCenter, common.mbMd]}>{t('prayerTimesScreen.loadErrorMessage')}</Text>
+                        <AppButton title={t('prayerTimesScreen.retry')} onPress={loadTimes} />
+                    </View>
+                )}
 
-                {/* Optional: Add a next prayer countdown or highlight current prayer */}
+                {today && status && (
+                    <View style={styles.timesCard}>
+                        {PRAYER_KEYS.map((key, index) => {
+                            const Icon = PRAYER_ICONS[index];
+                            const isCurrent = index === status.currentIndex;
+                            const isPast = !isCurrent && today[key] <= toHHMM(now);
+                            const isNext = index === status.nextIndex && !isPast;
+                            return (
+                                <View
+                                    key={key}
+                                    style={[styles.timeRow, index === PRAYER_KEYS.length - 1 && styles.timeRowLast, isCurrent && styles.currentTimeRow, isPast && common.disabled]}
+                                >
+                                    <View style={[styles.timeIcon, { backgroundColor: PRAYER_COLORS[index] + '1F' }]}>
+                                        <Icon size={20} color={PRAYER_COLORS[index]} />
+                                    </View>
+                                    <Text style={[styles.timeLabel, isCurrent && styles.currentText]}>
+                                        {t(`prayerTimesScreen.prayers.${key}`)}
+                                    </Text>
+                                    {isCurrent && (
+                                        <View style={[common.badge, styles.nowBadge]}>
+                                            <Text style={[common.badgeText, styles.nowBadgeText]}>{t('prayerTimesScreen.now')}</Text>
+                                        </View>
+                                    )}
+                                    <Text style={[styles.timeValue, (isCurrent || isNext) && styles.currentText]}>{today[key]}</Text>
+                                </View>
+                            );
+                        })}
+                    </View>
+                )}
+
             </ScrollView>
 
             {showLocationPicker && (
@@ -375,9 +256,9 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                                 <TouchableOpacity
                                     key={loc.id}
                                     style={styles.locationItem}
-                                    onPress={() => handleSelectLocation(loc)}
+                                    onPress={() => selectLocation(loc)}
                                 >
-                                    <Text style={common.text}>
+                                    <Text style={[common.text, loc.id === location.id && styles.currentText]}>
                                         {loc.cityName}{loc.districtName ? ` - ${loc.districtName}` : ''}
                                     </Text>
                                 </TouchableOpacity>
@@ -389,5 +270,3 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
         </View>
     );
 };
-
-

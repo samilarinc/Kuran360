@@ -17,6 +17,7 @@ config.resolver = {
     ...config.resolver?.extraNodeModules,
     react: path.resolve(__dirname, 'node_modules/react'),
     'react-native': path.resolve(__dirname, 'node_modules/react-native'),
+    'react-native-svg': path.resolve(__dirname, 'node_modules/react-native-svg'),
   },
   blockList: exclusionList([
     /msarinc-common\/.*node_modules\/react\/.*/,
@@ -24,6 +25,8 @@ config.resolver = {
     /msarinc-common\/.*node_modules\/react-is\/.*/,
     /msarinc-common\/.*node_modules\/react-devtools-core\/.*/,
     /msarinc-common\/.*node_modules\/react-dom\/.*/,
+    // A second copy registers the native SVG views twice and crashes on Android
+    /msarinc-common\/.*node_modules\/react-native-svg\/.*/,
   ]),
 };
 

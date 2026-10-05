@@ -20,12 +20,19 @@ export const getQiblaBearing = (latitude: number, longitude: number) => {
     return normalizeDegrees(toDeg(Math.atan2(y, x)));
 };
 
-/** Great-circle distance from a point to the Kaaba, in kilometres (haversine). */
-export const getKaabaDistanceKm = (latitude: number, longitude: number) => {
-    const dPhi = toRad(KAABA.latitude - latitude);
-    const dLambda = toRad(KAABA.longitude - longitude);
+/** Great-circle distance between two points, in kilometres (haversine). */
+export const getDistanceKm = (
+    from: { latitude: number; longitude: number },
+    to: { latitude: number; longitude: number },
+) => {
+    const dPhi = toRad(to.latitude - from.latitude);
+    const dLambda = toRad(to.longitude - from.longitude);
     const a =
         Math.sin(dPhi / 2) ** 2 +
-        Math.cos(toRad(latitude)) * Math.cos(toRad(KAABA.latitude)) * Math.sin(dLambda / 2) ** 2;
+        Math.cos(toRad(from.latitude)) * Math.cos(toRad(to.latitude)) * Math.sin(dLambda / 2) ** 2;
     return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(a));
 };
+
+/** Great-circle distance from a point to the Kaaba, in kilometres. */
+export const getKaabaDistanceKm = (latitude: number, longitude: number) =>
+    getDistanceKm({ latitude, longitude }, KAABA);

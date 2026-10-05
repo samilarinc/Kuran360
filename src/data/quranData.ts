@@ -822,4 +822,8 @@ export const getStoredDataVersion = async (): Promise<string | null> => {
   }
 };
 
+/** Data is downloaded but older than this app version's (CURRENT_VERSION); the old data keeps working until updated. */
+export const isDataUpdateAvailable = async (): Promise<boolean> =>
+  (await hasAnyData()) && (await getStoredDataVersion()) !== CURRENT_VERSION;
+
 export default quranData;

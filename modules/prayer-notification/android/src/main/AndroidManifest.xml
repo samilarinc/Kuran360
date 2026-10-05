@@ -1,0 +1,35 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+  <application>
+    <!-- Exported without a permission so the system can play the user's alert sound; read only, see PrayerSoundProvider -->
+    <provider
+        android:name="expo.modules.prayernotification.PrayerSoundProvider"
+        android:authorities="${applicationId}.prayersounds"
+        android:exported="true" />
+
+    <service
+        android:name="expo.modules.prayernotification.PrayerForegroundService"
+        android:exported="false"
+        android:foregroundServiceType="specialUse">
+      <!-- Explains the special use to Play review; the Play Console declaration must say the same -->
+      <property
+          android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+          android:value="Shows today's prayer times and a live countdown to the next prayer in an ongoing notification the user turns on in the app" />
+    </service>
+
+    <receiver android:name="expo.modules.prayernotification.PrayerAlarmReceiver" android:exported="false">
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+        <action android:name="android.intent.action.TIME_SET" />
+        <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+        <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
+      </intent-filter>
+    </receiver>
+  </application>
+</manifest>

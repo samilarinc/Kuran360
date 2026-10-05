@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
+    Alert,
     View,
     Text,
     TouchableOpacity,
@@ -27,16 +28,39 @@ import { AppHeader } from '@/components/AppHeader';
 import { MenuListRow } from '@/components/MenuListRow';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { Platform } from 'react-native';
+import { isDataUpdateAvailable } from '@/data/quranData';
 import { createStyles } from './MainScreen.styles';
 
+/** The new data prompt is shown once per app launch, not every time the main screen opens */
+let dataUpdatePromptShown = false;
+
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'SearchMenu' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'UmrahMenu' | 'PrayerMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization') => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'SearchMenu' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'UmrahMenu' | 'PrayerMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization', params?: any) => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
     const { common } = useTheme();
     const { t } = useTranslation();
     const styles = useThemedStyles(createStyles);
+
+    // A newer app version can bring newer data (translations, word meanings): offer to download it
+    useEffect(() => {
+        if (dataUpdatePromptShown) return;
+        isDataUpdateAvailable().then(available => {
+            if (!available || dataUpdatePromptShown) return;
+            dataUpdatePromptShown = true;
+            const startUpdate = () => onNavigate('Settings', { startDataUpdate: true });
+            if (Platform.OS === 'web') {
+                // Alert.alert does nothing on web
+                if ((globalThis as any).confirm?.(`${t('dataUpdatePrompt.title')}\n\n${t('dataUpdatePrompt.message')}`)) startUpdate();
+            } else {
+                Alert.alert(t('dataUpdatePrompt.title'), t('dataUpdatePrompt.message'), [
+                    { text: t('dataUpdatePrompt.later'), style: 'cancel' },
+                    { text: t('dataUpdatePrompt.update'), onPress: startUpdate },
+                ]);
+            }
+        });
+    }, [onNavigate, t]);
 
     const sections: { title: string; items: { id: string; title: string; Icon: LucideIcon; color: string; onPress: () => void }[] }[] = [
         {

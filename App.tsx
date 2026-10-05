@@ -3,6 +3,7 @@ import { View, ActivityIndicator } from 'react-native';
 import './src/i18n';
 import { useFonts } from 'expo-font';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider as MsarincThemeProvider } from '@msarinc/ui';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { SettingsProvider } from './src/contexts/SettingsContext';
@@ -12,6 +13,7 @@ import { ThemeProvider } from './src/contexts/ThemeContext';
 import { AudioProvider } from './src/contexts/AudioContext';
 import { StatusBarManager } from './src/components/StatusBarManager';
 import { ThemeSyncBridge } from './src/components/ThemeSyncBridge';
+import { PrayerTimesSync } from './src/components/PrayerTimesSync';
 import { LIGHT_COLORS as COLORS, LIBRARY_PALETTES } from './src/theme';
 import { hasAnyData } from './src/data/quranData';
 import { BUNDLED_FONTS } from './src/constants/fonts';
@@ -171,23 +173,26 @@ const App: React.FC = () => {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <UserDataProvider>
-          <SettingsProvider>
-            <MsarincThemeProvider palettes={LIBRARY_PALETTES}>
-              <ThemeSyncBridge />
-              <ThemeProvider>
-                <AudioProvider>
-                  <StatusBarManager />
-                  <AppNavigator isDataAvailable={isDataAvailable} />
-                </AudioProvider>
-              </ThemeProvider>
-            </MsarincThemeProvider>
-          </SettingsProvider>
-        </UserDataProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <SafeAreaProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <UserDataProvider>
+            <SettingsProvider>
+              <MsarincThemeProvider palettes={LIBRARY_PALETTES}>
+                <ThemeSyncBridge />
+                <PrayerTimesSync />
+                <ThemeProvider>
+                  <AudioProvider>
+                    <StatusBarManager />
+                    <AppNavigator isDataAvailable={isDataAvailable} />
+                  </AudioProvider>
+                </ThemeProvider>
+              </MsarincThemeProvider>
+            </SettingsProvider>
+          </UserDataProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </SafeAreaProvider>
   );
 };
 

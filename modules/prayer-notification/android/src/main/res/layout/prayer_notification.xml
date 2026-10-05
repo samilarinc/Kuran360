@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Collapsed prayer times notification: countdown to the next prayer, optionally today's times (filled in PrayerNotifier.bindViews) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/prayer_next_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textAppearance="@android:style/TextAppearance.Material.Notification.Title" />
+
+    <Chronometer
+        android:id="@+id/prayer_countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:maxLines="1"
+        android:textAppearance="@android:style/TextAppearance.Material.Notification.Title"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/prayer_kerahat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:maxLines="1"
+        android:textAppearance="@android:style/TextAppearance.Material.Notification.Info"
+        android:textColor="#F57C00"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/prayer_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="end"
+        android:maxLines="1"
+        android:textAppearance="@android:style/TextAppearance.Material.Notification.Info" />
+  </LinearLayout>
+
+  <!-- Hidden unless the user chose to see the times in the collapsed notification too -->
+  <LinearLayout
+      android:id="@+id/prayer_times_row"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:baselineAligned="false"
+      android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/prayer_cell_0"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
+
+      <TextView
+          android:id="@+id/prayer_time_0"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:maxLines="1"
+          android:textAppearance="@android:style/TextAppearance.Material.Notification"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/prayer_cell_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
+
+      <TextView
+          android:id="@+id/prayer_time_1"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:maxLines="1"
+          android:textAppearance="@android:style/TextAppearance.Material.Notification"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/prayer_cell_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
+
+      <TextView
+          android:id="@+id/prayer_time_2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:maxLines="1"
+          android:textAppearance="@android:style/TextAppearance.Material.Notification"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/prayer_cell_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
+
+      <TextView
+          android:id="@+id/prayer_time_3"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:maxLines="1"
+          android:textAppearance="@android:style/TextAppearance.Material.Notification"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/prayer_cell_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
+
+      <TextView
+          android:id="@+id/prayer_time_4"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:maxLines="1"
+          android:textAppearance="@android:style/TextAppearance.Material.Notification"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/prayer_cell_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
+
+      <TextView
+          android:id="@+id/prayer_time_5"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:maxLines="1"
+          android:textAppearance="@android:style/TextAppearance.Material.Notification"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>
