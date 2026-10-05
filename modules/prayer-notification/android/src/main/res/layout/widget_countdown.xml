@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 1x1 widget: the next prayer's name and the countdown to it (filled in PrayerWidgets.countdownViews) -->
+<!--
+  Countdown widget: the next prayer's name and the countdown to it (filled in PrayerWidgets.countdownViews).
+  Rows share the height by weight and auto-size their text, so the text grows with the widget (1x1, 1x2, 2x2...).
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_root"
     android:layout_width="match_parent"
@@ -12,7 +15,11 @@
   <TextView
       android:id="@+id/widget_label"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="0dp"
+      android:layout_weight="2"
+      android:autoSizeMaxTextSize="40sp"
+      android:autoSizeMinTextSize="9sp"
+      android:autoSizeTextType="uniform"
       android:gravity="center"
       android:maxLines="1"
       android:text="@string/widget_preview_prayer"
@@ -23,9 +30,9 @@
   <Chronometer
       android:id="@+id/widget_countdown"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="2dp"
-      android:autoSizeMaxTextSize="22sp"
+      android:layout_height="0dp"
+      android:layout_weight="3"
+      android:autoSizeMaxTextSize="72sp"
       android:autoSizeMinTextSize="10sp"
       android:autoSizeTextType="uniform"
       android:fontFeatureSettings="tnum"
@@ -39,7 +46,10 @@
   <TextView
       android:id="@+id/widget_empty"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
+      android:autoSizeMaxTextSize="24sp"
+      android:autoSizeMinTextSize="9sp"
+      android:autoSizeTextType="uniform"
       android:gravity="center"
       android:maxLines="3"
       android:text="@string/widget_no_data"

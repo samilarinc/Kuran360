@@ -17,7 +17,7 @@ private const val PREFS = "prayer_widgets"
 private const val KEY_DATA = "data"
 const val ACTION_WIDGET_REFRESH = "expo.modules.prayernotification.WIDGET_REFRESH"
 
-/** 1x1: the next prayer's name and the countdown to it. */
+/** Resizable (1x1 by default): the next prayer's name and the countdown to it. */
 class CountdownWidget : AppWidgetProvider() {
   override fun onUpdate(context: Context, manager: AppWidgetManager, ids: IntArray) = PrayerWidgets.updateAll(context)
 

@@ -743,7 +743,8 @@
       {
         "date": "6 Ekim 2026",
         "bullets": [
-          "Ana ekrana eklenebilen 1x1 \"Vakit sayacı\" widget'ı geldi: sıradaki vaktin adını ve kalan süreyi gösterir, dokununca vakitler açılır."
+          "Ana ekrana eklenebilen 1x1 \"Vakit sayacı\" widget'ı geldi: sıradaki vaktin adını ve kalan süreyi gösterir, dokununca vakitler açılır.",
+          "Vakit sayacı widget'ını büyüttüğünüzde yazılar da widget'ın boyutuna göre büyür."
         ]
       },
       {

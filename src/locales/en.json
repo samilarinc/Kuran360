@@ -743,7 +743,8 @@
       {
         "date": "October 6, 2026",
         "bullets": [
-          "Added a 1x1 \"Prayer countdown\" home screen widget: shows the next prayer and the time left, tap to open the prayer times."
+          "Added a 1x1 \"Prayer countdown\" home screen widget: shows the next prayer and the time left, tap to open the prayer times.",
+          "The prayer countdown widget's text now grows with the widget when you resize it."
         ]
       },
       {
