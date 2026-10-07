@@ -741,6 +741,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "October 7, 2026",
+        "bullets": [
+          "Fixed the reciter picker opened from the header menu on narrow screens: taps no longer pass through to the buttons behind it, so you can pick a reciter again."
+        ]
+      },
+      {
         "date": "October 6, 2026",
         "bullets": [
           "Added a 1x1 \"Prayer countdown\" home screen widget: shows the next prayer and the time left, tap to open the prayer times.",
