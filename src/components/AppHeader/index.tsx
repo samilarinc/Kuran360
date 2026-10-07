@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ThemeToggle, LanguageSelector, HeaderNavButtons, FontSizeToggle, HeaderMenu } from '@msarinc/ui';
 import { useTheme } from '@/contexts/ThemeContext';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
 import { HeaderReciterButton } from '@/components/HeaderReciterButton';
+import { ReciterPickerModal } from '@/components/ReciterPickerModal';
 
 const LANGUAGES = [
     { code: 'tr', label: 'Türkçe' },
@@ -52,13 +53,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     };
     const { width } = useWindowDimensions();
     const useMenu = width < MENU_BREAKPOINT;
+    const [reciterPickerVisible, setReciterPickerVisible] = useState(false);
 
     const fontSizeControl = useMenu ? toMenuForm(fontSizeToggle, { vertical: true }, FontSizeToggle) : fontSizeToggle;
 
     const controls = (
         <>
             {fontSizeControl}
-            <HeaderReciterButton />
+            <HeaderReciterButton onPress={() => setReciterPickerVisible(true)} />
             <LanguageSelector
                 compact
                 value={i18n.language}
@@ -99,6 +101,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
                 {children}
             </View>
+
+            {/* Kept outside HeaderMenu so the modal receives touches even when the controls are folded into the menu */}
+            <ReciterPickerModal visible={reciterPickerVisible} onClose={() => setReciterPickerVisible(false)} />
         </View>
     );
 };

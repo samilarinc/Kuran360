@@ -741,6 +741,12 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "7 Ekim 2026",
+        "bullets": [
+          "Dar ekranlarda üst menüden açılan kari seçiminde dokunuşların arkadaki tuşlara geçmesi düzeltildi; kari artık seçilebiliyor."
+        ]
+      },
+      {
         "date": "6 Ekim 2026",
         "bullets": [
           "Ana ekrana eklenebilen 1x1 \"Vakit sayacı\" widget'ı geldi: sıradaki vaktin adını ve kalan süreyi gösterir, dokununca vakitler açılır.",
