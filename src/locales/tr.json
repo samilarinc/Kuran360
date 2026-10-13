@@ -741,6 +741,14 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "13 Ekim 2026",
+        "bullets": [
+          "İlk açılışta meal verileri indirildikten sonra indirme ekranının tekrar gelmesi düzeltildi; uygulamayı yeniden başlatmaya gerek kalmadı.",
+          "Ayarlar'dan veri güncellemesi yarıda kesilirse eski veriler artık silinmiyor; veri kalmadıysa indirme ekranı doğru şekilde gösteriliyor.",
+          "Sayfalı görünümde ayet kaydırırken bir anlığına önceki ayetin görünmesi düzeltildi; uzak bir ayete atlarken de arada başka ayet görünmüyor."
+        ]
+      },
+      {
         "date": "7 Ekim 2026",
         "bullets": [
           "Dar ekranlarda üst menüden açılan kari seçiminde dokunuşların arkadaki tuşlara geçmesi düzeltildi; kari artık seçilebiliyor."

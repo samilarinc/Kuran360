@@ -410,44 +410,6 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
       }
 
       // No data - need to download
-      // First, clear any existing databases
-      progressCallback?.(0, i18n.t('download.clearingOld'));
-      logger.debug('🧹 Clearing any existing databases...');
-
-      try {
-        const globalObj = globalThis as any;
-        if (globalObj.indexedDB) {
-          // Delete old databases
-          await new Promise<void>((resolve) => {
-            const req1 = globalObj.indexedDB.deleteDatabase('QuranAppDB');
-            req1.onsuccess = () => resolve();
-            req1.onerror = () => resolve();
-            req1.onblocked = () => resolve();
-          });
-
-          await new Promise<void>((resolve) => {
-            const req2 = globalObj.indexedDB.deleteDatabase('QuranApp');
-            req2.onsuccess = () => resolve();
-            req2.onerror = () => resolve();
-            req2.onblocked = () => resolve();
-          });
-
-          await new Promise<void>((resolve) => {
-            const req3 = globalObj.indexedDB.deleteDatabase(DB_NAME);
-            req3.onsuccess = () => resolve();
-            req3.onerror = () => resolve();
-            req3.onblocked = () => resolve();
-          });
-
-          // Reset db connection
-          idbHelper.resetConnection();
-
-          logger.debug('✅ Old databases deleted');
-        }
-      } catch (clearError) {
-        logger.warn('⚠️ Error clearing old databases:', clearError);
-      }
-
       progressCallback?.(5, i18n.t('download.fromServer'));
       logger.debug('📡 Loading from server...');
 
@@ -503,6 +465,44 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
       const versesArray: VerseData[] = Array.isArray(data) ? data : Object.values(data);
 
       logger.debug(`📥 Downloaded ${versesArray.length} verses`);
+
+      // Clear existing databases only once the new data is in hand, so a failed download keeps the old data
+      progressCallback?.(88, i18n.t('download.clearingOld'));
+      logger.debug('🧹 Clearing any existing databases...');
+
+      try {
+        const globalObj = globalThis as any;
+        if (globalObj.indexedDB) {
+          // Delete old databases
+          await new Promise<void>((resolve) => {
+            const req1 = globalObj.indexedDB.deleteDatabase('QuranAppDB');
+            req1.onsuccess = () => resolve();
+            req1.onerror = () => resolve();
+            req1.onblocked = () => resolve();
+          });
+
+          await new Promise<void>((resolve) => {
+            const req2 = globalObj.indexedDB.deleteDatabase('QuranApp');
+            req2.onsuccess = () => resolve();
+            req2.onerror = () => resolve();
+            req2.onblocked = () => resolve();
+          });
+
+          await new Promise<void>((resolve) => {
+            const req3 = globalObj.indexedDB.deleteDatabase(DB_NAME);
+            req3.onsuccess = () => resolve();
+            req3.onerror = () => resolve();
+            req3.onblocked = () => resolve();
+          });
+
+          // Reset db connection
+          idbHelper.resetConnection();
+
+          logger.debug('✅ Old databases deleted');
+        }
+      } catch (clearError) {
+        logger.warn('⚠️ Error clearing old databases:', clearError);
+      }
 
       progressCallback?.(90, i18n.t('download.savingToDb'));
 

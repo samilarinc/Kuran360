@@ -20,6 +20,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useDataAvailability } from '@/contexts/DataAvailabilityContext';
 import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion, CURRENT_VERSION } from '@/data/quranData';
 import { AppHeader } from '@/components/AppHeader';
 import { ReciterSelector } from '@/components/ReciterSelector';
@@ -60,6 +61,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, star
     const { settings, updateSettings, availableTranslations } = useSettings();
     const { theme, common } = useTheme();
     const { t } = useTranslation();
+    const { refreshDataAvailability } = useDataAvailability();
     // Word roots only show up in the word translation views: without either one the switch is off and locked
     // (the saved choice is kept, so it is back as before once a view is turned on again)
     const wordViewsOff = !settings.showWordTranslations && !settings.inlineWordTranslations;
@@ -196,6 +198,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, star
         } catch (error) {
             console.error('Update failed:', error);
             setIsUpdating(false);
+            // The failed update may have left no data behind; let the screens show the download prompt then
+            await refreshDataAvailability();
             setDownloadStatus(t('settingsScreen.updateData.errorPrefix') + (error as Error).message);
             Alert.alert(t('settingsScreen.updateData.errorTitle'), t('settingsScreen.updateData.errorMessage'));
         }

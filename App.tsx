@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import './src/i18n';
 import { useFonts } from 'expo-font';
@@ -10,6 +10,7 @@ import { SettingsProvider } from './src/contexts/SettingsContext';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { UserDataProvider } from './src/contexts/UserDataContext';
 import { ThemeProvider } from './src/contexts/ThemeContext';
+import { DataAvailabilityProvider } from './src/contexts/DataAvailabilityContext';
 import { AudioProvider } from './src/contexts/AudioContext';
 import { StatusBarManager } from './src/components/StatusBarManager';
 import { ThemeSyncBridge } from './src/components/ThemeSyncBridge';
@@ -25,6 +26,13 @@ const App: React.FC = () => {
   const [isAppReady, setIsAppReady] = useState(false);
   const [isDataAvailable, setIsDataAvailable] = useState(false);
   const [fontsLoaded] = useFonts(BUNDLED_FONTS);
+  const dataAvailability = useMemo(
+    () => ({
+      isDataAvailable,
+      refreshDataAvailability: async () => setIsDataAvailable(await hasAnyData()),
+    }),
+    [isDataAvailable],
+  );
 
   useEffect(() => {
     const checkDataAvailability = async () => {
@@ -184,7 +192,9 @@ const App: React.FC = () => {
                 <ThemeProvider>
                   <AudioProvider>
                     <StatusBarManager />
-                    <AppNavigator isDataAvailable={isDataAvailable} />
+                    <DataAvailabilityProvider value={dataAvailability}>
+                      <AppNavigator isDataAvailable={isDataAvailable} />
+                    </DataAvailabilityProvider>
                   </AudioProvider>
                 </ThemeProvider>
               </MsarincThemeProvider>

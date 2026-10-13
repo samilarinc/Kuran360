@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     View,
@@ -57,9 +57,18 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
     const screenWidth = screenDimensions.width;
     const isMobileScreen = screenWidth < 768; // Mobile vs tablet threshold
 
-    // Animation values
-    const translateX = useRef(new Animated.Value(0)).current;
+    // Animation values: the strip's absolute offset, -index * screenWidth when at rest.
+    // Each verse sits at a fixed position on the strip, so finishing a swipe never needs a reset
+    // (resetting the offset before React swapped the verses briefly flashed the old verse).
+    const translateX = useRef(new Animated.Value(-initialVerseIndex * initialDimensions.width)).current;
     const [isAnimating, setIsAnimating] = useState(false);
+    const restOffset = (index: number) => -index * screenWidth;
+
+    // Keep the strip on the current verse when the index changes without a swipe (init, audio follow, jumps) or the screen resizes
+    useLayoutEffect(() => {
+        translateX.setValue(restOffset(currentVerseIndex));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentVerseIndex, screenWidth]);
 
     useEffect(() => {
         // Listen for dimension changes (web resize, device rotation)
@@ -145,22 +154,15 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                 setTimeout(() => setIsUserNavigating(false), 2000);
             }
 
-            if (animated) {
+            // Only neighbours are rendered, so farther jumps switch directly instead of sliding in the wrong verse
+            if (animated && Math.abs(index - currentVerseIndex) === 1) {
                 setIsAnimating(true);
-                const direction = index > currentVerseIndex ? -1 : 1;
-                const distance = screenWidth * direction;
-
-                // Animate to the target position
                 Animated.timing(translateX, {
-                    toValue: distance,
+                    toValue: restOffset(index),
                     duration: 300,
                     useNativeDriver: true,
                 }).start(() => {
-                    // Update the verse index without animation
                     setCurrentVerseIndex(index);
-
-                    // Reset position instantly
-                    translateX.setValue(0);
                     setIsAnimating(false);
                 });
             } else {
@@ -216,7 +218,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
             }
 
             // Update translation in real-time
-            translateX.setValue(clampedDx);
+            translateX.setValue(restOffset(currentVerseIndex) + clampedDx);
         },
         onPanResponderRelease: (evt, gestureState) => {
             if (isAnimating) return;
@@ -246,12 +248,11 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                 }
 
                 Animated.timing(translateX, {
-                    toValue: screenWidth,
+                    toValue: restOffset(currentVerseIndex - 1),
                     duration: 200,
                     useNativeDriver: true,
                 }).start(() => {
                     setCurrentVerseIndex(currentVerseIndex - 1);
-                    translateX.setValue(0);
                     setIsAnimating(false);
                     // Re-enable auto-navigation after a delay
                     setTimeout(() => setIsUserNavigating(false), 2000);
@@ -264,12 +265,11 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                 }
 
                 Animated.timing(translateX, {
-                    toValue: -screenWidth,
+                    toValue: restOffset(currentVerseIndex + 1),
                     duration: 200,
                     useNativeDriver: true,
                 }).start(() => {
                     setCurrentVerseIndex(currentVerseIndex + 1);
-                    translateX.setValue(0);
                     setIsAnimating(false);
                     // Re-enable auto-navigation after a delay
                     setTimeout(() => setIsUserNavigating(false), 2000);
@@ -277,7 +277,7 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
             } else {
                 // Snap back to original position
                 Animated.spring(translateX, {
-                    toValue: 0,
+                    toValue: restOffset(currentVerseIndex),
                     useNativeDriver: true,
                     tension: 150,
                     friction: 8,
@@ -289,17 +289,6 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
             }
         },
     });
-
-    // Get the three verses: previous, current, next
-    const getVisibleVerses = () => {
-        return {
-            previous: currentVerseIndex > 0 ? verses[currentVerseIndex - 1] : null,
-            current: verses[currentVerseIndex],
-            next: currentVerseIndex < verses.length - 1 ? verses[currentVerseIndex + 1] : null,
-        };
-    };
-
-    const visibleVerses = getVisibleVerses();
 
     const currentVerse = verses[currentVerseIndex];
 
@@ -358,83 +347,40 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                 <Animated.View
                     style={[
                         styles.animatedContainer,
-                        {
-                            flexDirection: 'row',
-                            width: screenWidth * 3, // Width for 3 verses
-                            transform: [{
-                                translateX: Animated.add(translateX, new Animated.Value(-screenWidth))
-                            }]
-                        }
+                        { transform: [{ translateX }] }
                     ]}
                 >
-                    {/* Previous Verse */}
-                    <View style={[common.flex1, { width: screenWidth }]}>
-                        {visibleVerses.previous ? (
-                            <ScrollView
-                                style={common.flex1}
-                                showsVerticalScrollIndicator={false}
-                                contentContainerStyle={styles.scrollContent}
-                                scrollEnabled={!isAnimating}
-                            >
-                                <Verse
-                                    verse={visibleVerses.previous}
-                                    isPlaying={false} // Previous verse shouldn't show as playing
-                                    onPlayPress={toggleVerse}
-                                    surahVerseCount={verses.length}
-                                    showBookmarkButton={!!user}
-                                    navigation={navigation}
-                                />
-                            </ScrollView>
-                        ) : (
-                            <View style={styles.emptyVerseContainer}>
-                                <Text style={common.emptyStateText}>{t('pagedView.first')}</Text>
+                    {/* Previous, current and next verse, each at its own fixed spot on the strip */}
+                    {[currentVerseIndex - 1, currentVerseIndex, currentVerseIndex + 1].map(index => {
+                        const verse = verses[index];
+                        const slotStyle = [styles.verseSlot, { left: index * screenWidth, width: screenWidth }];
+                        if (!verse) {
+                            return (
+                                <View key={`edge-${index}`} style={[slotStyle, styles.emptyVerseContainer]}>
+                                    <Text style={common.emptyStateText}>{t(index < 0 ? 'pagedView.first' : 'pagedView.last')}</Text>
+                                </View>
+                            );
+                        }
+                        return (
+                            <View key={`verse-${verse.id}`} style={slotStyle}>
+                                <ScrollView
+                                    style={common.flex1}
+                                    showsVerticalScrollIndicator={false}
+                                    contentContainerStyle={styles.scrollContent}
+                                    scrollEnabled={!isAnimating}
+                                >
+                                    <Verse
+                                        verse={verse}
+                                        isPlaying={index === currentVerseIndex && audioState?.currentVerse?.id === verse.id && audioState?.isPlaying}
+                                        onPlayPress={toggleVerse}
+                                        surahVerseCount={verses.length}
+                                        showBookmarkButton={!!user}
+                                        navigation={navigation}
+                                    />
+                                </ScrollView>
                             </View>
-                        )}
-                    </View>
-
-                    {/* Current Verse */}
-                    <View style={[common.flex1, { width: screenWidth }]}>
-                        <ScrollView
-                            style={common.flex1}
-                            showsVerticalScrollIndicator={false}
-                            contentContainerStyle={styles.scrollContent}
-                            scrollEnabled={!isAnimating}
-                        >
-                            <Verse
-                                verse={visibleVerses.current}
-                                isPlaying={audioState?.currentVerse?.id === visibleVerses.current?.id && audioState?.isPlaying}
-                                onPlayPress={toggleVerse}
-                                surahVerseCount={verses.length}
-                                showBookmarkButton={!!user}
-                                navigation={navigation}
-                            />
-                        </ScrollView>
-                    </View>
-
-                    {/* Next Verse */}
-                    <View style={[common.flex1, { width: screenWidth }]}>
-                        {visibleVerses.next ? (
-                            <ScrollView
-                                style={common.flex1}
-                                showsVerticalScrollIndicator={false}
-                                contentContainerStyle={styles.scrollContent}
-                                scrollEnabled={!isAnimating}
-                            >
-                                <Verse
-                                    verse={visibleVerses.next}
-                                    isPlaying={false} // Next verse shouldn't show as playing
-                                    onPlayPress={toggleVerse}
-                                    surahVerseCount={verses.length}
-                                    showBookmarkButton={!!user}
-                                    navigation={navigation}
-                                />
-                            </ScrollView>
-                        ) : (
-                            <View style={styles.emptyVerseContainer}>
-                                <Text style={common.emptyStateText}>{t('pagedView.last')}</Text>
-                            </View>
-                        )}
-                    </View>
+                        );
+                    })}
                 </Animated.View>
             </View>
 

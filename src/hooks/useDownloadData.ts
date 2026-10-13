@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import { isDataCached, loadAllVerses, ProgressCallback, VERSES_URL } from '@/data/quranData';
+import { useDataAvailability } from '@/contexts/DataAvailabilityContext';
 
 interface UseDownloadDataOptions {
     isDataAvailable: boolean;
@@ -10,6 +11,7 @@ interface UseDownloadDataOptions {
 
 export const useDownloadData = ({ isDataAvailable, navigation }: UseDownloadDataOptions) => {
     const { t } = useTranslation();
+    const { refreshDataAvailability } = useDataAvailability();
     const [downloading, setDownloading] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState(0);
     const [downloadStatus, setDownloadStatus] = useState('');
@@ -59,7 +61,8 @@ export const useDownloadData = ({ isDataAvailable, navigation }: UseDownloadData
                         }
                     }, 500);
                 } else {
-                    setTimeout(() => {
+                    setTimeout(async () => {
+                        await refreshDataAvailability();
                         navigation.navigate('Main');
                     }, 500);
                 }

@@ -741,6 +741,14 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "October 13, 2026",
+        "bullets": [
+          "Fixed the download screen coming back after downloading the translation data on first launch; no app restart needed anymore.",
+          "If a data update from Settings fails midway, your existing data is no longer wiped; if no data is left, the download screen now shows correctly.",
+          "Fixed the previous verse flashing for a moment when swiping in paged view; jumping to a distant verse no longer shows another verse in between."
+        ]
+      },
+      {
         "date": "October 7, 2026",
         "bullets": [
           "Fixed the reciter picker opened from the header menu on narrow screens: taps no longer pass through to the buttons behind it, so you can pick a reciter again."

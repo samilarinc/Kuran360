@@ -82,6 +82,11 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         flex: 1,
         width: '100%',
     },
+    verseSlot: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+    },
     scrollContent: {
         padding: SPACING.md,
         minHeight: '100%',
