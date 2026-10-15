@@ -4,6 +4,23 @@
     "homeButton": "Ana Sayfa",
     "menu": "Görünüm ayarları"
   },
+  "bugReport": {
+    "title": "Hata Bildir",
+    "intro": "Karşılaştığınız sorunu ya da önerinizi yazın, en kısa sürede inceleyelim.",
+    "messageLabel": "Mesajınız",
+    "messagePlaceholder": "Ne oldu? Neyi yaparken oldu?",
+    "nameLabel": "İsim (isteğe bağlı)",
+    "namePlaceholder": "Adınız",
+    "emailLabel": "E-posta (isteğe bağlı)",
+    "emailPlaceholder": "Size dönüş yapabilmemiz için",
+    "attachedInfo": "Rapora uygulama sürümü, cihaz bilgisi, açık olan ekran ve uygulama ayarları da eklenir.",
+    "submit": "Gönder",
+    "messageRequired": "Lütfen bir mesaj yazın.",
+    "submitError": "Rapor gönderilemedi. Lütfen internet bağlantınızı kontrol edip tekrar deneyin.",
+    "successTitle": "Teşekkürler!",
+    "successMessage": "Raporunuz bize ulaştı.",
+    "close": "Kapat"
+  },
   "audioBar": {
     "verse": "{{number}}. Ayet",
     "loading": "Yükleniyor...",
@@ -743,6 +760,7 @@
       {
         "date": "15 Ekim 2026",
         "bullets": [
+          "Hata bildirme eklendi: telefonu birkaç saniye sallayın ya da üstteki böcek simgesine dokunun",
           "Hakkında sayfasına geliştiriciye destek için \"Buy Me a Zamzam\" bağlantısı eklendi",
           "Kelime üstü çeviri artık Android'de ve telefonda webde de çalışıyor: kelimeye dokununca çeviri, tekrar dokununca kök açılıyor",
           "Webde meal verileri indirilirken ilerleme yüzdesinin %100'ü aşması ve durum yazısının sonunda fazladan \"0\" görünmesi düzeltildi",

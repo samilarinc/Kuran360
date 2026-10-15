@@ -6,6 +6,9 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
 import { HeaderReciterButton } from '@/components/HeaderReciterButton';
 import { ReciterPickerModal } from '@/components/ReciterPickerModal';
+import { HeaderIconButton } from '@/components/HeaderIconButton';
+import { useBugReport } from '@/contexts/BugReportContext';
+import { Bug } from 'lucide-react-native';
 
 const LANGUAGES = [
     { code: 'tr', label: 'Türkçe' },
@@ -54,6 +57,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     const { width } = useWindowDimensions();
     const useMenu = width < MENU_BREAKPOINT;
     const [reciterPickerVisible, setReciterPickerVisible] = useState(false);
+    const { openBugReport } = useBugReport();
 
     const fontSizeControl = useMenu ? toMenuForm(fontSizeToggle, { vertical: true }, FontSizeToggle) : fontSizeToggle;
 
@@ -68,6 +72,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 onChange={(code: string) => i18n.changeLanguage(code)}
             />
             <ThemeToggle compact labels={themeToggleLabels} />
+            <HeaderIconButton icon={Bug} accessibilityLabel={t('bugReport.title')} onPress={openBugReport} />
         </>
     );
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
+import { installLogBuffer } from './src/services/logBuffer';
 import './src/i18n';
 import { useFonts } from 'expo-font';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -12,6 +13,7 @@ import { UserDataProvider } from './src/contexts/UserDataContext';
 import { ThemeProvider } from './src/contexts/ThemeContext';
 import { DataAvailabilityProvider } from './src/contexts/DataAvailabilityContext';
 import { AudioProvider } from './src/contexts/AudioContext';
+import { BugReportProvider } from './src/contexts/BugReportContext';
 import { StatusBarManager } from './src/components/StatusBarManager';
 import { ThemeSyncBridge } from './src/components/ThemeSyncBridge';
 import { PrayerTimesSync } from './src/components/PrayerTimesSync';
@@ -19,6 +21,8 @@ import { LIGHT_COLORS as COLORS, LIBRARY_PALETTES } from './src/theme';
 import { hasAnyData } from './src/data/quranData';
 import { BUNDLED_FONTS } from './src/constants/fonts';
 import { Platform } from 'react-native';
+
+installLogBuffer();
 
 const queryClient = new QueryClient();
 
@@ -192,9 +196,11 @@ const App: React.FC = () => {
                 <ThemeProvider>
                   <AudioProvider>
                     <StatusBarManager />
-                    <DataAvailabilityProvider value={dataAvailability}>
-                      <AppNavigator isDataAvailable={isDataAvailable} />
-                    </DataAvailabilityProvider>
+                    <BugReportProvider>
+                      <DataAvailabilityProvider value={dataAvailability}>
+                        <AppNavigator isDataAvailable={isDataAvailable} />
+                      </DataAvailabilityProvider>
+                    </BugReportProvider>
                   </AudioProvider>
                 </ThemeProvider>
               </MsarincThemeProvider>

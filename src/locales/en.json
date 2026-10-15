@@ -4,6 +4,23 @@
     "homeButton": "Home",
     "menu": "View settings"
   },
+  "bugReport": {
+    "title": "Report a Bug",
+    "intro": "Describe the problem you ran into or your suggestion, and we'll look into it as soon as possible.",
+    "messageLabel": "Your message",
+    "messagePlaceholder": "What happened? What were you doing?",
+    "nameLabel": "Name (optional)",
+    "namePlaceholder": "Your name",
+    "emailLabel": "E-mail (optional)",
+    "emailPlaceholder": "So we can get back to you",
+    "attachedInfo": "The app version, device info, the open screen and your app settings are added to the report.",
+    "submit": "Send",
+    "messageRequired": "Please write a message.",
+    "submitError": "The report couldn't be sent. Please check your internet connection and try again.",
+    "successTitle": "Thank you!",
+    "successMessage": "Your report has reached us.",
+    "close": "Close"
+  },
   "audioBar": {
     "verse": "Verse {{number}}",
     "loading": "Loading...",
@@ -743,6 +760,7 @@
       {
         "date": "October 15, 2026",
         "bullets": [
+          "Added bug reporting: shake your phone for a few seconds or tap the bug icon at the top",
           "Added a \"Buy Me a Zamzam\" link to the About page to support the developer",
           "Word translations on hover now work on Android and mobile web too: tap a word for its translation, tap again for its root",
           "Fixed the download percentage going past 100% on web while downloading translation data, and a stray \"0\" at the end of the status text",

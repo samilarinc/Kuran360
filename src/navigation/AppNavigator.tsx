@@ -38,6 +38,7 @@ import { ResumeReadingButton } from '@/components/ResumeReadingButton';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useBugReport } from '@/contexts/BugReportContext';
 import { Surah } from '@/types';
 import { loadSurah } from '@/data/quranData';
 import { rootToSlug, slugToRoot } from '@/utils/arabicText';
@@ -116,6 +117,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   const { user } = useAuth();
   const { audioState } = useGlobalAudio();
   const { settings, updateSettings } = useSettings();
+  const { setCurrentScreen } = useBugReport();
 
   useEffect(() => { currentIndexRef.current = currentIndex; }, [currentIndex]);
 
@@ -559,6 +561,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   };
 
   const currentRoute = navigationHistory[currentIndex];
+  useEffect(() => { setCurrentScreen(currentRoute.screen); }, [currentRoute.screen, setCurrentScreen]);
   // Only the entry screens get the shortcut; while reading it would just cover the verses
   const showResumeButton = currentRoute.screen === 'Main' || currentRoute.screen === 'Home';
 

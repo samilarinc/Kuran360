@@ -37,6 +37,31 @@ service cloud.firestore {
     }
 
 
+    function isStringUpTo(value, maxLength) {
+      return value is string && value.size() <= maxLength;
+    }
+
+    // Bug reports: anyone (even signed out) may send one; nobody can read them from the app.
+    // Limits match src/services/bugReport.ts
+    match /bugReports/{reportId} {
+      allow create: if request.resource.data.keys().hasOnly(['message', 'name', 'email', 'uid', 'screen', 'platform', 'osVersion', 'deviceModel', 'appVersion', 'language', 'settings', 'logs', 'status', 'createdAt'])
+        && isShortString(request.resource.data.message, 4000)
+        && isStringUpTo(request.resource.data.name, 100)
+        && isStringUpTo(request.resource.data.email, 200)
+        && ((request.auth == null && request.resource.data.uid == '')
+          || (request.auth != null && request.resource.data.uid == request.auth.uid))
+        && isStringUpTo(request.resource.data.screen, 100)
+        && isStringUpTo(request.resource.data.platform, 20)
+        && isStringUpTo(request.resource.data.osVersion, 50)
+        && isStringUpTo(request.resource.data.deviceModel, 300)
+        && isStringUpTo(request.resource.data.appVersion, 50)
+        && isStringUpTo(request.resource.data.language, 10)
+        && isStringUpTo(request.resource.data.settings, 4000)
+        && isStringUpTo(request.resource.data.logs, 16000)
+        && request.resource.data.status == 'new'
+        && request.resource.data.createdAt is int;
+    }
+
     // Forum threads
     match /threads/{threadId} {
       allow read: if true;
