@@ -741,6 +741,12 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "15 Ekim 2026",
+        "bullets": [
+          "Hakkında sayfasına geliştiriciye destek için \"Buy Me a Zamzam\" bağlantısı eklendi"
+        ]
+      },
+      {
         "date": "13 Ekim 2026",
         "bullets": [
           "İlk açılışta meal verileri indirildikten sonra indirme ekranının tekrar gelmesi düzeltildi; uygulamayı yeniden başlatmaya gerek kalmadı.",
@@ -1062,7 +1068,8 @@
         ]
       }
     ],
-    "sourceCode": "Kaynak Kod (GitHub)"
+    "sourceCode": "Kaynak Kod",
+    "buyMeZamzam": "Buy Me a Zamzam"
   },
   "common": {
     "error": "Hata",

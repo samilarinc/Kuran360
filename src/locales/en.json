@@ -741,6 +741,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "October 15, 2026",
+        "bullets": [
+          "Added a \"Buy Me a Zamzam\" link to the About page to support the developer"
+        ]
+      },
+      {
         "date": "October 13, 2026",
         "bullets": [
           "Fixed the download screen coming back after downloading the translation data on first launch; no app restart needed anymore.",
@@ -1061,7 +1067,8 @@
         ]
       }
     ],
-    "sourceCode": "Source Code (GitHub)"
+    "sourceCode": "Source Code",
+    "buyMeZamzam": "Buy Me a Zamzam"
   },
   "common": {
     "error": "Error",
