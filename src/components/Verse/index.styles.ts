@@ -64,6 +64,10 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  inlineArabicWordWrapActive: {
+    zIndex: 10,
+    elevation: 8,
+  },
   inlineArabicWord: {
     borderRadius: 6,
     paddingHorizontal: 4,
@@ -86,7 +90,6 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
   // Centers the card over the word: a box as wide as the card's maxWidth, centered on the word's middle
   hoverCardWrap: {
     position: 'absolute',
-    bottom: '100%',
     left: '50%',
     width: 200,
     marginLeft: -100,

@@ -103,7 +103,7 @@
     "loadErrorMessage": "Couldn't load the prayer times. Check your internet connection and try again.",
     "retry": "Try again",
     "travelModeTitle": "Travel mode",
-    "travelModeDescription": "When your location changes while you use the app, the times switch to where you are (checked at most once an hour)."
+    "travelModeDescription": "Times update automatically when your location changes."
   },
   "qiblaScreen": {
     "north": "N",
@@ -618,7 +618,7 @@
       "wordTranslationsTitle": "Word Translations",
       "wordTranslationsDescription": "Show the meaning of each word underneath it",
       "inlineWordTranslationsTitle": "Translation on Hover",
-      "inlineWordTranslationsDescription": "On web, show the translation when hovering over a word in a verse.",
+      "inlineWordTranslationsDescription": "Show the translation when hovering over a word in a verse (or tapping it on a touch screen).",
       "inlineWordTranslationsWarning": "Note: spacing between words gets wider",
       "wordRootsTitle": "Word Roots",
       "wordRootsWarning": "Turn on Word Translations or Translation on Hover.",
@@ -743,7 +743,10 @@
       {
         "date": "October 15, 2026",
         "bullets": [
-          "Added a \"Buy Me a Zamzam\" link to the About page to support the developer"
+          "Added a \"Buy Me a Zamzam\" link to the About page to support the developer",
+          "Word translations on hover now work on Android and mobile web too: tap a word for its translation, tap again for its root",
+          "Fixed the download percentage going past 100% on web while downloading translation data, and a stray \"0\" at the end of the status text",
+          "Shortened the descriptions in prayer time settings and removed unnecessary ones"
         ]
       },
       {
@@ -1371,15 +1374,13 @@
     "title": "Prayer Time Settings",
     "menuDescription": "Prayer alerts, live countdown, travel mode",
     "alertsTitle": "Prayer alerts",
-    "alertsDescription": "Get notified when the prayer times you choose begin, and optionally some minutes before.",
     "atTime": "Notify when it begins",
     "before": "Remind me before (minutes)",
     "off": "None",
     "ongoingTitle": "Persistent notification",
-    "ongoingDescription": "The time left until the next prayer stays at the top of the notification shade; pull it down to see today's times.",
+    "ongoingDescription": "Time left until the next prayer stays in the notification shade.",
     "ongoingUntil": "Until {{label}}",
     "collapsedTimesTitle": "Show times when collapsed",
-    "collapsedTimesDescription": "Also show today's times under the countdown while the persistent notification is collapsed.",
     "locationNote": "Notifications follow the selected location: {{location}}.",
     "androidOnly": "Notifications are only available in the Android app for now.",
     "permissionTitle": "Notification permission needed",
@@ -1392,15 +1393,13 @@
     "locationTitle": "Location",
     "ongoingSectionTitle": "Countdown",
     "cumaTitle": "Friday prayer reminder",
-    "cumaDescription": "On Fridays you get a reminder before Dhuhr.",
     "cumaBefore": "Minutes before",
     "kazaTitle": "Missed prayer tracking",
-    "kazaDescription": "Prayer alerts and the persistent notification get \"Prayed\" / \"Not prayed\" buttons. A prayer you answer \"Not prayed\" goes on your missed prayer list and you're reminded the next day at the same time.",
+    "kazaDescription": "Adds \"Prayed\" / \"Not prayed\" buttons to alerts; missed prayers are reminded the next day.",
     "fastingTitle": "Fasting",
     "ramadanTitle": "Suhoor and iftar alerts in Ramadan",
-    "ramadanDescription": "Throughout Ramadan you get a suhoor reminder and an alert at iftar.",
     "fastingModeTitle": "Fasting mode",
-    "fastingModeDescription": "Turn on when you fast outside Ramadan; suhoor and iftar alerts then come every day.",
+    "fastingModeDescription": "Suhoor and iftar alerts every day, outside Ramadan too.",
     "sahurBefore": "Suhoor reminder (minutes before Fajr)",
     "sounds": {
       "default": "Default",
@@ -1433,7 +1432,6 @@
     },
     "kazaListTitle": "Missed prayers to make up",
     "mySoundsTitle": "My sounds",
-    "mySoundsDescription": "Sounds you add here can be chosen for each prayer separately.",
     "addSound": "Add a sound",
     "deleteSound": "Delete sound",
     "soundLabel": "Sound: {{sound}}",

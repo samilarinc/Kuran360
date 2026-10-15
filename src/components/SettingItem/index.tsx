@@ -6,7 +6,7 @@ import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext
 
 interface SettingItemProps {
     title: string;
-    description: string;
+    description?: string;
     /** Shown right after the description in the theme's warning color */
     warning?: string;
     /** 'error' paints the warning red (default: warning color) */
@@ -46,10 +46,12 @@ export const SettingItem: React.FC<SettingItemProps> = ({
                     <Text style={[styles.settingLabel, disabled && styles.settingLabelDisabled]}>
                         {title}
                     </Text>
-                    <Text style={[styles.settingDescription, disabled && styles.settingDescriptionDisabled]}>
-                        {description}
-                        {warning && <Text style={warningTone === 'error' ? styles.settingWarningError : styles.settingWarning}> {warning}</Text>}
-                    </Text>
+                    {(description || warning) && (
+                        <Text style={[styles.settingDescription, disabled && styles.settingDescriptionDisabled]}>
+                            {description}
+                            {warning && <Text style={warningTone === 'error' ? styles.settingWarningError : styles.settingWarning}> {warning}</Text>}
+                        </Text>
+                    )}
                 </View>
             </View>
             <ModernSwitch

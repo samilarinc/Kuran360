@@ -103,7 +103,7 @@
     "loadErrorMessage": "Vakitler yüklenemedi. İnternet bağlantınızı kontrol edip tekrar deneyin.",
     "retry": "Tekrar dene",
     "travelModeTitle": "Seyahat modu",
-    "travelModeDescription": "Uygulamayı kullanırken konumunuz değiştiyse vakitler bulunduğunuz yere göre kendiliğinden güncellenir (en fazla saatte bir kontrol edilir)."
+    "travelModeDescription": "Konumunuz değişince vakitler otomatik güncellenir."
   },
   "qiblaScreen": {
     "north": "K",
@@ -618,7 +618,7 @@
       "wordTranslationsTitle": "Kelime Çevirileri",
       "wordTranslationsDescription": "Her kelimenin altında Türkçe karşılığını göster",
       "inlineWordTranslationsTitle": "Kelime Üstüne Gelince Çeviri",
-      "inlineWordTranslationsDescription": "Web'de ayet içinde kelimenin üstüne gelince çeviriyi göster.",
+      "inlineWordTranslationsDescription": "Ayet içinde kelimenin üstüne gelince (dokunmatik ekranda dokununca) çeviriyi göster.",
       "inlineWordTranslationsWarning": "Dikkat: kelime boşlukları artar",
       "wordRootsTitle": "Kelime Kökleri",
       "wordRootsWarning": "Kelime Çevirileri veya Kelime Üstüne Gelince Çeviri'den birini açmalısınız.",
@@ -743,7 +743,10 @@
       {
         "date": "15 Ekim 2026",
         "bullets": [
-          "Hakkında sayfasına geliştiriciye destek için \"Buy Me a Zamzam\" bağlantısı eklendi"
+          "Hakkında sayfasına geliştiriciye destek için \"Buy Me a Zamzam\" bağlantısı eklendi",
+          "Kelime üstü çeviri artık Android'de ve telefonda webde de çalışıyor: kelimeye dokununca çeviri, tekrar dokununca kök açılıyor",
+          "Webde meal verileri indirilirken ilerleme yüzdesinin %100'ü aşması ve durum yazısının sonunda fazladan \"0\" görünmesi düzeltildi",
+          "Ezan vakti ayarlarındaki açıklamalar kısaltıldı, gereksiz olanlar kaldırıldı"
         ]
       },
       {
@@ -1372,15 +1375,13 @@
     "title": "Ezan Vakti Ayarları",
     "menuDescription": "Vakit bildirimleri, kalıcı geri sayım, seyahat modu",
     "alertsTitle": "Vakit bildirimleri",
-    "alertsDescription": "Seçtiğiniz vakitler girince bildirim gelir; isterseniz vakitten önce de hatırlatılır.",
     "atTime": "Vakit girince bildir",
     "before": "Önceden hatırlat (dakika)",
     "off": "Yok",
     "ongoingTitle": "Kalıcı bildirim",
-    "ongoingDescription": "Sonraki vakte kalan süre bildirim panelinin üstünde sürekli görünür; aşağı çekince bugünün vakitleri çıkar.",
+    "ongoingDescription": "Sonraki vakte kalan süre bildirim panelinde hep görünür.",
     "ongoingUntil": "{{label}} vaktine",
     "collapsedTimesTitle": "Kapalıyken vakitleri de göster",
-    "collapsedTimesDescription": "Kalıcı bildirim kapalıyken de kalan sürenin altında bugünün vakitleri görünür.",
     "locationNote": "Bildirimler seçili konuma göre gelir: {{location}}.",
     "androidOnly": "Bildirimler şimdilik yalnızca Android uygulamasında var.",
     "permissionTitle": "Bildirim izni gerekli",
@@ -1393,15 +1394,13 @@
     "locationTitle": "Konum",
     "ongoingSectionTitle": "Geri sayım",
     "cumaTitle": "Cuma namazı hatırlatması",
-    "cumaDescription": "Cuma günleri öğle vaktinden önce hatırlatılır.",
     "cumaBefore": "Kaç dakika önce",
     "kazaTitle": "Kaza takibi",
-    "kazaDescription": "Vakit bildirimlerinde ve kalıcı bildirimde \"Kıldım\" / \"Kılmadım\" butonları çıkar. \"Kılmadım\" dediğiniz namaz kaza takibine eklenir ve ertesi gün aynı vakitte \"kazanız var\" diye hatırlatılır.",
+    "kazaDescription": "Bildirimlere \"Kıldım\" / \"Kılmadım\" butonları eklenir; kılınmayanlar ertesi gün hatırlatılır.",
     "fastingTitle": "Oruç",
     "ramadanTitle": "Ramazan'da sahur ve iftar bildirimleri",
-    "ramadanDescription": "Ramazan boyunca sahur hatırlatması ve iftar vaktinde bildirim kendiliğinden gelir.",
     "fastingModeTitle": "Oruç modu",
-    "fastingModeDescription": "Ramazan dışında oruç tutarken açın; sahur ve iftar bildirimleri her gün gelir.",
+    "fastingModeDescription": "Ramazan dışında da her gün sahur ve iftar bildirimi gelir.",
     "sahurBefore": "Sahur hatırlatması (imsaktan kaç dakika önce)",
     "sounds": {
       "default": "Varsayılan",
@@ -1434,7 +1433,6 @@
     },
     "kazaListTitle": "Takipteki kazalar",
     "mySoundsTitle": "Seslerim",
-    "mySoundsDescription": "Eklediğiniz sesleri her vakit için ayrı ayrı seçebilirsiniz.",
     "addSound": "Ses ekle",
     "deleteSound": "Sesi sil",
     "soundLabel": "Ses: {{sound}}",

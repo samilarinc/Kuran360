@@ -21,10 +21,6 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             marginTop: SPACING.sm,
             marginBottom: SPACING.xs,
         },
-        sectionDescription: {
-            ...common.smallText,
-            marginBottom: SPACING.sm,
-        },
         prayerRow: {
             paddingVertical: SPACING.md,
             paddingHorizontal: SPACING.md,

@@ -31,8 +31,10 @@ export const DataUpdateProgress: React.FC<DataUpdateProgressProps> = ({
             />
             <Text style={styles.progressText}>
                 %{Math.round(progress)} - {status}
-                {totalBytes && totalBytes > 0 && downloadedBytes !== undefined && downloadedBytes > 0 && (
-                    `\n${(downloadedBytes / (1024 * 1024)).toFixed(1)}MB / ${(totalBytes / (1024 * 1024)).toFixed(1)}MB`
+                {/* Total is unknown for a compressed download: show only how much has arrived */}
+                {!!downloadedBytes && downloadedBytes > 0 && (
+                    `\n${(downloadedBytes / (1024 * 1024)).toFixed(1)}MB`
+                    + (totalBytes && totalBytes > 0 ? ` / ${(totalBytes / (1024 * 1024)).toFixed(1)}MB` : '')
                 )}
             </Text>
             <ActivityIndicator size="large" color={theme.primary} style={styles.activityIndicator} />

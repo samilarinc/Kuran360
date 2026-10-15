@@ -266,7 +266,6 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                         )}
 
                         <Text style={styles.sectionTitle}>{t('prayerNotifications.alertsTitle')}</Text>
-                        <Text style={styles.sectionDescription}>{t('prayerNotifications.alertsDescription')}</Text>
                         <View style={styles.card}>
                             {PRAYER_KEYS.map((key, index) => {
                                 const Icon = PRAYER_ICONS[index];
@@ -310,7 +309,6 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                         <View style={styles.card}>
                             <SettingItem
                                 title={t('prayerNotifications.cumaTitle')}
-                                description={t('prayerNotifications.cumaDescription')}
                                 value={settings.cuma.enabled}
                                 onValueChange={enabled => update({ ...settings, cuma: { ...settings.cuma, enabled } })}
                                 icon={<Landmark size={20} color="#14B8A6" />}
@@ -357,7 +355,6 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                         <View style={styles.card}>
                             <SettingItem
                                 title={t('prayerNotifications.ramadanTitle')}
-                                description={t('prayerNotifications.ramadanDescription')}
                                 value={settings.fasting.ramadan}
                                 onValueChange={ramadan => update({ ...settings, fasting: { ...settings.fasting, ramadan } })}
                                 icon={<Moon size={20} color="#8B5CF6" />}
@@ -387,7 +384,6 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                         </View>
 
                         <Text style={styles.sectionTitle}>{t('prayerNotifications.mySoundsTitle')}</Text>
-                        <Text style={styles.sectionDescription}>{t('prayerNotifications.mySoundsDescription')}</Text>
                         <View style={styles.card}>
                             {settings.sounds.map(sound => (
                                 <View key={sound.name} style={styles.soundItem}>
@@ -427,7 +423,6 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                             {settings.ongoing && (
                                 <SettingItem
                                     title={t('prayerNotifications.collapsedTimesTitle')}
-                                    description={t('prayerNotifications.collapsedTimesDescription')}
                                     value={settings.collapsedTimes}
                                     onValueChange={value => update({ ...settings, collapsedTimes: value })}
                                     icon={<CalendarClock size={20} color={theme.primary} />}

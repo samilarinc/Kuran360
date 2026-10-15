@@ -34,7 +34,11 @@ const ALL_TRANSLATIONS_COLOR = '#6366F1';
 const SHARE_COLOR = '#F97316';
 const PLAY_COLOR = '#10B981';
 
-// Inline hover translations in the main Arabic line (web only)
+// Mouse/trackpad that can hover. Touch screens (phones on web, native) open the card with a tap instead.
+const CAN_HOVER =
+  Platform.OS === 'web' && typeof window !== 'undefined' && !!window.matchMedia?.('(hover: hover) and (pointer: fine)').matches;
+
+// Inline word translations in the main Arabic line: hover on desktop web, tap on touch screens
 const InlineArabicWithHover: React.FC<{
   verse: VerseType;
   inlineWordTranslations: boolean;
@@ -45,6 +49,8 @@ const InlineArabicWithHover: React.FC<{
   onWordPress: (word: WordTranslation) => void;
 }> = ({ verse, inlineWordTranslations, surahFontSize, arabicFontFamily, common, styles, onWordPress }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  // Height of the open card, so it sits right above its word. A percentage offset lands far off on Android.
+  const [cardHeight, setCardHeight] = useState(0);
   // Width of the space between words, measured once; the recited-word bands extend half of it on each side
   const [spaceWidth, setSpaceWidth] = useState(0);
   // Word being recited (null when the verse isn't playing or the reciter has no word timings)
@@ -52,15 +58,27 @@ const InlineArabicWithHover: React.FC<{
   const { settings } = useSettings();
   const showRoots = settings.showWordRoots;
   const hiddenWordStyle = useHiddenWordStyle();
-  // Hover translations (web) need the word-by-word layout. It is also used when they are off, so the line
+  // Hover/tap translations need the word-by-word layout. It is also used when they are off, so the line
   // spacing is the same whether or not the verse plays (the recited word's marker needs the room under it).
   // In that case it mimics a plain paragraph: no word padding and a real Arabic space.
-  const hasHoverWords = Platform.OS === 'web' && inlineWordTranslations && verse.wordTranslations.length > 0;
+  const hasHoverWords = inlineWordTranslations && verse.wordTranslations.length > 0;
   const arabicLineStyle = { fontFamily: arabicFontFamily, fontSize: surahFontSize, lineHeight: surahFontSize * 1.5 };
   const wordStyle = [common.arabicText, arabicLineStyle, hasHoverWords && styles.inlineArabicWord];
 
   // Source text has no spaces; each segment is one listed word plus any particle folded into its translation
   const segments = getWordSegments(verse);
+
+  // Hover: a click opens the root directly. Touch: the first tap shows the card, a second tap on the same word
+  // opens the root (or closes the card when there is no root); the card's root chip also opens it.
+  const handleWordPress = (segment: WordTranslation, idx: number) => {
+    const canOpenRoot = showRoots && !!segment.root;
+    if (CAN_HOVER || hoveredIndex === idx) {
+      if (canOpenRoot) onWordPress(segment);
+      if (!CAN_HOVER) setHoveredIndex(null);
+      return;
+    }
+    setHoveredIndex(segment.translation ? idx : null);
+  };
 
   return (
     <View style={styles.inlineArabicRow}>
@@ -70,17 +88,18 @@ const InlineArabicWithHover: React.FC<{
         return (
           <View
             key={idx}
-            style={styles.inlineArabicWordWrap}
+            // Raised while its card is open, so the card draws over the words after it
+            style={[styles.inlineArabicWordWrap, isHover && styles.inlineArabicWordWrapActive]}
             // @ts-ignore web-only hover handlers: on the wrapper, so the pointer can move from the word onto its card
-            onMouseEnter={() => setHoveredIndex(idx)}
+            onMouseEnter={CAN_HOVER ? () => setHoveredIndex(idx) : undefined}
             // @ts-ignore
-            onMouseLeave={() => setHoveredIndex(null)}
+            onMouseLeave={CAN_HOVER ? () => setHoveredIndex(null) : undefined}
           >
             <View style={styles.spokenWordBox}>
               {activeWord && idx < activeWord.index && <RecitedBackdrop padX={spaceWidth / 2} />}
               <Text
                 style={[wordStyle, isHover && styles.inlineArabicWordHover, activeWord && idx < activeWord.index && styles.recitedWord, activeWord?.index === idx && hiddenWordStyle]}
-                onPress={hasHoverWords && showRoots && segment.root ? () => onWordPress(segment) : undefined}
+                onPress={hasHoverWords && (!CAN_HOVER || (showRoots && segment.root)) ? () => handleWordPress(segment, idx) : undefined}
               >
                 {segment.arabic}
               </Text>
@@ -96,12 +115,16 @@ const InlineArabicWithHover: React.FC<{
                 />
               )}
               {isHover && (
-                <View style={styles.hoverCardWrap} pointerEvents="box-none">
+                <View
+                  style={[styles.hoverCardWrap, { top: -cardHeight, opacity: cardHeight ? 1 : 0 }]}
+                  pointerEvents="box-none"
+                  onLayout={(e: LayoutChangeEvent) => setCardHeight(e.nativeEvent.layout.height)}
+                >
                   <View style={styles.hoverCardBridge}>
                     <View style={styles.hoverCard}>
                       <Text style={styles.hoverCardText}>{tr}</Text>
                       {showRoots && !!segment.root && (
-                        <TouchableOpacity style={styles.hoverCardRootChip} onPress={() => onWordPress(segment)}>
+                        <TouchableOpacity style={styles.hoverCardRootChip} onPress={() => { onWordPress(segment); if (!CAN_HOVER) setHoveredIndex(null); }}>
                           <ArabicText style={styles.hoverCardRoot}>{formatRoot(segment.root)}</ArabicText>
                         </TouchableOpacity>
                       )}

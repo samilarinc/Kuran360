@@ -420,9 +420,12 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Get total size from content-length header
+      // Get total size from content-length header. With a compressed response (gzip/br) it is the compressed
+      // size while the reader yields decompressed bytes, so the ratio would run far past 100%: treat it as unknown.
       const contentLength = response.headers.get('content-length');
-      const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
+      const contentEncoding = response.headers.get('content-encoding');
+      const isCompressed = !!contentEncoding && contentEncoding !== 'identity';
+      const totalBytes = contentLength && !isCompressed ? parseInt(contentLength, 10) : 0;
 
       let downloadedBytes = 0;
       const reader = response.body?.getReader();
@@ -437,7 +440,7 @@ export const loadAllVerses = async (progressCallback?: ProgressCallback): Promis
           downloadedBytes += value.length;
 
           if (totalBytes > 0) {
-            const downloadProgress = (downloadedBytes / totalBytes) * 80; // 0-80% for download
+            const downloadProgress = Math.min(80, (downloadedBytes / totalBytes) * 80); // 0-80% for download
             progressCallback?.(downloadProgress, i18n.t('download.downloading'), downloadedBytes, totalBytes);
           } else {
             // Fallback progress if size unknown
