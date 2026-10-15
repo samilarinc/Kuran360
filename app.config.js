@@ -40,6 +40,25 @@ function withReleaseSigningConfig(config) {
     return config;
 }
 
+// R8 shrinking and obfuscation for release builds: Google Play flags apps whose DEX code is barely optimized
+function withReleaseMinify(config) {
+    return withGradleProperties(config, (c) => {
+        const props = [
+            { type: 'property', key: 'android.enableMinifyInReleaseBuilds', value: 'true' },
+            { type: 'property', key: 'android.enableShrinkResourcesInReleaseBuilds', value: 'true' },
+        ];
+        for (const prop of props) {
+            const idx = c.modResults.findIndex(p => p.type === 'property' && p.key === prop.key);
+            if (idx >= 0) {
+                c.modResults[idx].value = prop.value;
+            } else {
+                c.modResults.push(prop);
+            }
+        }
+        return c;
+    });
+}
+
 export default ({ config }) => ({
     ...config,
     name: "Kuran360",
@@ -97,7 +116,8 @@ export default ({ config }) => ({
     },
     plugins: [
         "expo-asset",
-        withReleaseSigningConfig
+        withReleaseSigningConfig,
+        withReleaseMinify
     ],
     extra: {
         ...(config?.extra || {}),
