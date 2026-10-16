@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Animated, Switch, TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import { Theme, SPACING } from '@/theme';
 import { useThemedStyles } from '@/contexts/ThemeContext';
+import { shadow } from '@msarinc/ui';
 
 interface ModernSwitchProps {
     value: boolean;
@@ -111,11 +112,7 @@ const createStyles = (_theme: Theme) => StyleSheet.create({
         height: 28,
         borderRadius: 14,
         justifyContent: 'center',
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
+        ...shadow({ opacity: 0.2, radius: 2, offset: { width: 0, height: 1 }, elevation: 2 }),
     },
     modernSwitchDisabled: {
         opacity: 0.6,
@@ -126,11 +123,7 @@ const createStyles = (_theme: Theme) => StyleSheet.create({
         borderRadius: 12,
         backgroundColor: '#FFFFFF',
         position: 'absolute',
-        elevation: 4,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 3,
+        ...shadow({ opacity: 0.3, radius: 3, offset: { width: 0, height: 2 }, elevation: 4 }),
     },
     modernSwitchThumbActive: {
         backgroundColor: '#FFFFFF',

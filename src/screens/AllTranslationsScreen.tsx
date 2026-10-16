@@ -13,6 +13,7 @@ import { Verse as VerseType, VerseShareData } from '@/types';
 import { getSpacedArabicText } from '@/utils/arabicText';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
+import { shadow } from '@msarinc/ui';
 
 interface AllTranslationsScreenProps {
     navigation: any;
@@ -190,7 +191,7 @@ const createStyles = (theme: Theme, common: CommonStyles) => {
         borderRadius: 12,
         borderLeftWidth: 4,
         borderLeftColor: theme.primary,
-        shadowRadius: 2,
+        ...shadow({ opacity: 0.1, radius: 2, offset: { width: 0, height: 1 }, elevation: 2 }),
     },
     favoriteTranslationItem: {
         backgroundColor: FAVORITE_COLOR + '10',

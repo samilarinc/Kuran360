@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
 import type { CommonStyles } from '@/contexts/ThemeContext';
+import { shadow } from '@msarinc/ui';
 
 export const createStyles = (theme: Theme, common: CommonStyles) => {
 
@@ -10,9 +11,7 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
         padding: SPACING.xl,
         marginBottom: SPACING.lg,
         alignItems: 'center',
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 4,
-        elevation: 3,
+        ...shadow({ opacity: 0.1, radius: 4, offset: { width: 0, height: 2 }, elevation: 3 }),
     },
     icon: {
         fontSize: 48,
@@ -47,9 +46,7 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
         padding: SPACING.xl,
         marginBottom: SPACING.lg,
         borderWidth: 2,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 4,
-        elevation: 3,
+        ...shadow({ opacity: 0.1, radius: 4, offset: { width: 0, height: 2 }, elevation: 3 }),
         borderColor: theme.border,
     },
     ihramCardActive: {

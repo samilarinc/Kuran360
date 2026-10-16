@@ -5,6 +5,7 @@ import { useTheme, CommonStyles, useThemedStyles } from '@/contexts/ThemeContext
 import { SPACING, FONT_SIZES, Theme } from '@/theme';
 import { HatimPart } from '@/types';
 import { ProgressBar } from '@/components/ProgressBar';
+import { shadow } from '@msarinc/ui';
 
 interface HatimPartsGridProps {
     parts: HatimPart[];
@@ -102,7 +103,7 @@ const createStyles = (theme: Theme, common: CommonStyles) => {
             justifyContent: 'center',
             alignItems: 'center',
             padding: SPACING.xs,
-            shadowRadius: 2,
+            ...shadow({ opacity: 0.1, radius: 2, offset: { width: 0, height: 1 }, elevation: 2 }),
             borderColor: theme.border,
             marginRight: SPACING.md / 2,
             marginLeft: SPACING.md / 2,

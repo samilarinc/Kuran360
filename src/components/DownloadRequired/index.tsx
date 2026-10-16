@@ -5,6 +5,7 @@ import { useTheme, Theme, CommonStyles, useThemedStyles } from '@/contexts/Theme
 import { DataUpdateProgress } from '../DataUpdateProgress';
 import { AppButton } from '../AppButton';
 import { SPACING } from '@/theme';
+import { shadow } from '@msarinc/ui';
 
 interface DownloadRequiredProps {
     title: string;
@@ -76,9 +77,7 @@ const createStyles = (theme: Theme, common: CommonStyles) => {
         borderRadius: 12,
         padding: SPACING.xl,
         margin: SPACING.md,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 4,
-        elevation: 3,
+        ...shadow({ opacity: 0.1, radius: 4, offset: { width: 0, height: 2 }, elevation: 3 }),
         alignItems: 'center',
         maxWidth: 400,
         width: '100%',

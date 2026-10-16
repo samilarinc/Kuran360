@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
+import { shadow } from '@msarinc/ui';
 
 export const createStyles = (theme: Theme) => StyleSheet.create({
     header: {
@@ -39,14 +40,7 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         backgroundColor: theme.primary,
         borderWidth: 2,
         borderColor: '#ffffff30',
-        elevation: 8,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
+        ...shadow({ opacity: 0.3, radius: 6, offset: { width: 0, height: 4 }, elevation: 8 }),
         // 3D effect with inner shadow simulation
         borderBottomWidth: 3,
         borderRightWidth: 3,

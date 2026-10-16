@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { SHADOW } from '@msarinc/ui';
+import { SHADOW, shadow } from '@msarinc/ui';
 import { MARKER_SPACE } from '../SpokenWordMarker/index.styles';
 import { FONT_SIZES, SPACING, FAVORITE_COLOR, FAVORITE_COLOR_DARK, Theme } from '@/theme';
 import type { CommonStyles } from '@/theme/common.styles';
@@ -107,11 +107,7 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
     paddingHorizontal: 12,
     borderWidth: 2,
     borderColor: theme.primary,
-    shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-    elevation: 8,
+    ...shadow({ opacity: 0.25, radius: 8, offset: { width: 0, height: 4 }, elevation: 8 }),
     maxWidth: 200,
     minWidth: 80,
   },

@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@/theme';
 import type { CommonStyles } from '@/contexts/ThemeContext';
+import { shadow } from '@msarinc/ui';
 
 export const createStyles = (theme: Theme, common: CommonStyles) => {
 
@@ -10,9 +11,7 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             backgroundColor: theme.primary,
             padding: 24,
             alignItems: 'center',
-            elevation: 4,
-            shadowOffset: { width: 0, height: 2 },
-            shadowRadius: 4,
+            ...shadow({ opacity: 0.1, radius: 4, offset: { width: 0, height: 2 }, elevation: 4 }),
         },
         infoTitle: {
             fontSize: 20,

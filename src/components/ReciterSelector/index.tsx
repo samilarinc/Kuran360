@@ -6,6 +6,7 @@ import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { SPACING, Theme } from '@/theme';
 import { RECITER_PREVIEW_VERSE } from '@/constants/reciterPreview';
+import { shadow } from '@msarinc/ui';
 
 export const ReciterSelector: React.FC = () => {
     const { settings, updateSettings, availableReciters } = useSettings();
@@ -95,20 +96,14 @@ const createStyles = (theme: Theme, common: CommonStyles) => {
         borderWidth: 1,
         borderColor: theme.border,
         // 3D effect
-        shadowRadius: 2,
+        ...shadow({ opacity: 0.1, radius: 2, offset: { width: 0, height: 1 }, elevation: 2 }),
     },
     selectedReciterItem: {
         backgroundColor: theme.primary + '15',
         borderColor: theme.primary,
         borderWidth: 2,
         // Enhanced 3D effect for selected state
-        elevation: 4,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
+        ...shadow({ opacity: 0.2, radius: 4, offset: { width: 0, height: 2 }, elevation: 4 }),
     },
     previewButton: {
         width: 32,
