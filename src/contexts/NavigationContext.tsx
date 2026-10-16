@@ -2,7 +2,8 @@ import React, { createContext, useContext } from 'react';
 
 type NavigationHelpers = {
     goToSurah: (surahNumber: number) => Promise<void>;
-    goToSurahVerse: (surahNumber: number, verseIndex: number) => Promise<void>;
+    // replace swaps the current history entry instead of pushing a new one
+    goToSurahVerse: (surahNumber: number, verseIndex: number, replace?: boolean) => Promise<void>;
     goToRoot: (root: string) => void;
 };
 

@@ -10,6 +10,7 @@ import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserData } from '@/contexts/UserDataContext';
+import { useNavigationHelpers } from '@/contexts/NavigationContext';
 import { useTranslation } from 'react-i18next';
 import { Surah, Verse as VerseType } from '@/types';
 import { loadSurah } from '@/data/quranData';
@@ -54,6 +55,9 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const { audioState, playVerse, stop, setVersesForAutoplay } = useGlobalAudio();
   const flatListRef = useRef<FlatList>(null);
   const initialScrollDone = useRef(false);
+  const { goToSurahVerse } = useNavigationHelpers();
+  // Surah of the last verse audio played, to tell autoplay moving on from the user opening another surah
+  const lastAudioSurahRef = useRef(audioState.currentVerse?.surahNumber);
 
   useEffect(() => {
     const loadSurahData = async () => {
@@ -105,6 +109,18 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       updateVerseUrl(surah, verseIndex);
     }
   }, [basicSurah.number, route.params.verseIndex, updateVerseUrl, surah]);
+
+  // Follow the audio into the next surah: when tracking is on and playback moves on from the surah on screen, open the new one
+  useEffect(() => {
+    const playingVerse = audioState.currentVerse;
+    if (!playingVerse) return;
+    const previousSurah = lastAudioSurahRef.current;
+    lastAudioSurahRef.current = playingVerse.surahNumber;
+    if (!settings.audioTrackingEnabled || previousSurah !== basicSurah.number || playingVerse.surahNumber === basicSurah.number) return;
+    goToSurahVerse(playingVerse.surahNumber, playingVerse.number - 1, true);
+    // Only react to the playing surah changing; the screen's own surah changes are handled above
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioState.currentVerse?.surahNumber]);
 
   // Scroll to bookmark/verse index on load (non-paginated view)
   useEffect(() => {
