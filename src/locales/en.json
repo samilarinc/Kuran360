@@ -800,6 +800,13 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "October 17, 2026",
+        "bullets": [
+          "Topic search is now in the Android app too: open it from the Search menu and, after a one-time model download, it runs on your device",
+          "Fixed the app repeatedly showing \"keeps stopping\" in the background while the ongoing prayer times notification is on"
+        ]
+      },
+      {
         "date": "October 16, 2026",
         "bullets": [
           "See the reports you've sent and their status, or create a new one, under \"My Bug Reports\" on the profile page",

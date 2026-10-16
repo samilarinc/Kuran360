@@ -67,8 +67,8 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
             title: t('mainScreen.sections.quran'),
             items: [
                 { id: 'random-verse', title: t('mainScreen.menu.randomVerse'), Icon: Sparkles, color: '#F59E0B', onPress: () => onNavigate('RandomVerse') },
-                // Topic search is web-only, so elsewhere the search button opens the classic search directly
-                { id: 'search', title: t('mainScreen.menu.search'), Icon: Search, color: '#3B82F6', onPress: () => onNavigate(Platform.OS === 'web' ? 'SearchMenu' : 'Search') },
+                // Topic search runs in the browser or natively on Android (modules/quran-speech); on iOS the search button opens the classic search directly
+                { id: 'search', title: t('mainScreen.menu.search'), Icon: Search, color: '#3B82F6', onPress: () => onNavigate(Platform.OS === 'web' || Platform.OS === 'android' ? 'SearchMenu' : 'Search') },
                 // Speech recognition runs in the browser (WebGPU/WASM) or natively on Android (modules/quran-speech), not on iOS yet
                 ...(Platform.OS === 'web' || Platform.OS === 'android'
                     ? [

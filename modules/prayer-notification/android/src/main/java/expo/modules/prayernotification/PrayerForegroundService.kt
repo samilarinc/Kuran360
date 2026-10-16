@@ -1,10 +1,12 @@
 package expo.modules.prayernotification
 
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 
 /**
  * Holds the prayer times notification as a foreground service notification (see
@@ -20,10 +22,20 @@ class PrayerForegroundService : Service() {
       stopSelf()
       return START_NOT_STICKY
     }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-      startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
-    } else {
-      startForeground(NOTIFICATION_ID, notification)
+    try {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+      } else {
+        startForeground(NOTIFICATION_ID, notification)
+      }
+    } catch (e: Exception) {
+      // Android 12+ refuses it while the app is in the background, e.g. when the system restarts this
+      // sticky service after killing the process. Uncaught, that crashes the app on every restart, so
+      // show the notification on its own instead; the service starts the next time the app is opened.
+      Log.w("PrayerForegroundService", "Couldn't start in the foreground", e)
+      getSystemService(NotificationManager::class.java).notify(NOTIFICATION_ID, notification)
+      stopSelf()
+      return START_NOT_STICKY
     }
     isRunning = true
     // Recreated by the system if its process is killed

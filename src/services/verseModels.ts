@@ -81,14 +81,14 @@ export const getVerseModel = (id: VerseModelId): VerseModel =>
 const g = globalThis as any;
 const openCache = () => g.caches.open(CACHE_NAME);
 
-const HF_PREFIX = 'https://huggingface.co/';
 const MODELS_DIR = `${FileSystem.documentDirectory}speech-models/`;
 
-/** Where a model file is saved on Android: speech-models/<repo>/<file>. */
-const getLocalPath = (url: string) => MODELS_DIR + url.slice(HF_PREFIX.length).replace('/resolve/main/', '/');
+/** Where a model file is saved on Android: speech-models/<repo>/<file>, or speech-models/<host>/<path> off Hugging Face. */
+export const getLocalPath = (url: string) =>
+    MODELS_DIR + url.replace(/^https:\/\/(huggingface\.co\/)?/, '').replace('/resolve/main/', '/');
 
 /** The folder holding a model's files on Android, as a plain path for the native module. */
-export const getModelDir = (model: VerseModel): string => {
+export const getModelDir = (model: Pick<VerseModel, 'files'>): string => {
     const path = getLocalPath(model.files[0]);
     return decodeURI(path.slice(0, path.lastIndexOf('/'))).replace(/^file:\/\//, '');
 };

@@ -19,6 +19,9 @@ interface QuranSpeechModule {
     loadModel(dir: string): Promise<void>;
     unloadModel(): Promise<void>;
     transcribe(handle: number): Promise<{ text: string; ms: number }>;
+    loadEmbedder(dir: string): Promise<void>;
+    unloadEmbedder(): Promise<void>;
+    embed(text: string): Promise<number[]>;
 }
 
 /** Android only; null elsewhere. */

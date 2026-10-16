@@ -9,20 +9,29 @@ import {
     MatchLevel,
     rankTopics,
 } from '@/utils/topicSearch';
-import { areFilesCached, downloadFiles } from '@/services/verseModels';
+import { Platform } from 'react-native';
+import { File } from 'expo-file-system';
+import { areFilesCached, downloadFiles, getLocalPath, getModelDir } from '@/services/verseModels';
+import { QuranSpeech } from '../../modules/quran-speech';
 
 /**
- * Web-only plumbing for the topic search: the embedding model (multilingual-e5-small), which runs in
- * a worker under public/workers/, the precomputed verse vectors in public/embeddings/, and the keyword
- * index built from the downloaded translations. The ranking itself is in utils/topicSearch.ts.
+ * Plumbing for the topic search: the embedding model (multilingual-e5-small), which runs in a worker
+ * under public/workers/ on the web and in the native speech module on Android, the precomputed verse
+ * vectors in public/embeddings/, and the keyword index built from the downloaded translations.
+ * The ranking itself is in utils/topicSearch.ts.
  */
 
 const g = globalThis as any;
+const isWeb = Platform.OS === 'web';
 
 const MODEL = 'https://huggingface.co/Xenova/multilingual-e5-small/resolve/main/';
-export const TOPIC_MODEL_FILES = ['config.json', 'tokenizer.json', 'tokenizer_config.json', 'onnx/model_quantized.onnx'].map(
-    file => MODEL + file,
-);
+/** The web app serves the verse vectors itself; Android downloads them from it along with the model. */
+const VECTORS = (isWeb ? '/embeddings/' : 'https://kuran360.com/embeddings/') + 'topics-e5-small';
+const VECTOR_FILES = [`${VECTORS}.json`, `${VECTORS}.bin`];
+export const TOPIC_MODEL_FILES = [
+    ...['config.json', 'tokenizer.json', 'tokenizer_config.json', 'onnx/model_quantized.onnx'].map(file => MODEL + file),
+    ...(isWeb ? [] : VECTOR_FILES),
+];
 export const TOPIC_MODEL_SIZE_MB = 136;
 /** e5 was trained with these prefixes: queries are "query: ...", verses were embedded as "passage: ...". */
 const QUERY_PREFIX = 'query: ';
@@ -39,8 +48,17 @@ export const downloadTopicModel = (onProgress: (fraction: number) => void, signa
 
 type Pending = { resolve: (vector: Float32Array) => void; reject: (error: Error) => void };
 
+interface EmbeddingModel {
+    ready: boolean;
+    /** Frees the model, e.g. before its files are deleted. */
+    unload(): void;
+    /** Loads the model from the downloaded files; reuses it if already loaded. */
+    load(): Promise<void>;
+    embed(text: string): Promise<Float32Array>;
+}
+
 /** Keeps the embedding model loaded in its worker across screen visits. */
-class EmbeddingModel {
+class WorkerEmbeddingModel implements EmbeddingModel {
     private worker: any = null;
     private loadPromise: Promise<void> | null = null;
     private pending = new Map<number, Pending>();
@@ -52,7 +70,6 @@ class EmbeddingModel {
         this.pending.clear();
     }
 
-    /** Stops the worker and frees the model, e.g. before its files are deleted. */
     unload() {
         this.worker?.terminate();
         this.worker = null;
@@ -61,7 +78,6 @@ class EmbeddingModel {
         this.failAll(new Error('Model unloaded'));
     }
 
-    /** Starts the model in its worker from the downloaded files; reuses it if already loaded. */
     load(): Promise<void> {
         if (this.loadPromise) return this.loadPromise;
         // Not under /topic-search/: a folder named like the page route makes the server answer the page URL with it
@@ -105,17 +121,56 @@ class EmbeddingModel {
     }
 }
 
-export const embeddingModel = new EmbeddingModel();
+/** Keeps the embedding model loaded in the native module (Android) across screen visits. */
+class NativeEmbeddingModel implements EmbeddingModel {
+    private loadPromise: Promise<void> | null = null;
+    ready = false;
+
+    unload() {
+        this.loadPromise = null;
+        this.ready = false;
+        QuranSpeech?.unloadEmbedder();
+    }
+
+    load(): Promise<void> {
+        if (this.loadPromise) return this.loadPromise;
+        if (!QuranSpeech) return Promise.reject(new Error('Speech module missing'));
+        this.loadPromise = QuranSpeech.loadEmbedder(getModelDir({ files: TOPIC_MODEL_FILES })).then(
+            () => {
+                this.ready = true;
+            },
+            error => {
+                this.unload();
+                throw error;
+            },
+        );
+        return this.loadPromise;
+    }
+
+    async embed(text: string): Promise<Float32Array> {
+        if (!this.loadPromise || !QuranSpeech) throw new Error('Model not loaded');
+        await this.loadPromise;
+        return Float32Array.from(await QuranSpeech.embed(text));
+    }
+}
+
+export const embeddingModel: EmbeddingModel = isWeb ? new WorkerEmbeddingModel() : new NativeEmbeddingModel();
 
 let denseIndexPromise: Promise<DenseIndex> | null = null;
 
 /** Loads the precomputed verse vectors once: 6236 int8 rows in Qur'an order. */
 const getDenseIndex = (): Promise<DenseIndex> => {
     denseIndexPromise ??= (async () => {
-        const [meta, bin] = await Promise.all([
-            fetch('/embeddings/topics-e5-small.json').then(response => response.json()),
-            fetch('/embeddings/topics-e5-small.bin').then(response => response.arrayBuffer()),
-        ]);
+        const [metaUrl, binUrl] = VECTOR_FILES;
+        const [meta, bin] = isWeb
+            ? await Promise.all([
+                fetch(metaUrl).then(response => response.json()),
+                fetch(binUrl).then(response => response.arrayBuffer()),
+            ])
+            : await Promise.all([
+                new File(getLocalPath(metaUrl)).text().then(JSON.parse),
+                new File(getLocalPath(binUrl)).bytes().then(bytes => bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength)),
+            ]);
         return { vectors: new Int8Array(bin), dim: meta.dim, count: meta.count, scale: meta.scale };
     })().catch(error => {
         denseIndexPromise = null;

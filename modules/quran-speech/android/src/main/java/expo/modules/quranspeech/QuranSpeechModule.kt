@@ -19,7 +19,8 @@ private const val MAX_RECORDING_SECONDS = 60
 
 /**
  * Speech recognition for the verse finder and memorization check on Android: microphone
- * recording, audio file decoding, playback and the FastConformer model.
+ * recording, audio file decoding, playback and the FastConformer model. Also runs the topic
+ * search's embedding model, as it shares ONNX Runtime with FastConformer.
  *
  * Samples cross to JS only through the synchronous putSamples/takeSamples, since a typed array
  * can only be read on the JS thread; the async functions take or return a handle to them.
@@ -32,6 +33,8 @@ class QuranSpeechModule : Module() {
   private var model: FastConformer? = null
   private var modelDir: String? = null
   private val modelLock = Mutex()
+  private var embedder: E5Embedder? = null
+  private val embedderLock = Mutex()
 
   private fun store(samples: FloatArray): Int = nextHandle.getAndIncrement().also { buffers[it] = samples }
 
@@ -46,6 +49,7 @@ class QuranSpeechModule : Module() {
     OnDestroy {
       recorder?.stop()
       model?.close()
+      embedder?.close()
     }
 
     AsyncFunction("startRecording") {
@@ -117,6 +121,27 @@ class QuranSpeechModule : Module() {
         val started = System.currentTimeMillis()
         val text = withContext(Dispatchers.Default) { loaded.transcribe(audio) }
         mapOf("text" to text, "ms" to (System.currentTimeMillis() - started))
+      }
+    }
+
+    /** Loads the topic search model from a folder holding tokenizer.json and onnx/model_quantized.onnx. */
+    AsyncFunction("loadEmbedder") Coroutine { dir: String ->
+      embedderLock.withLock {
+        if (embedder == null) embedder = withContext(Dispatchers.Default) { E5Embedder(File(dir)) }
+      }
+    }
+
+    AsyncFunction("unloadEmbedder") Coroutine { ->
+      embedderLock.withLock {
+        embedder?.close()
+        embedder = null
+      }
+    }
+
+    AsyncFunction("embed") Coroutine { text: String ->
+      embedderLock.withLock {
+        val loaded = embedder ?: throw IllegalStateException("Embedding model not loaded")
+        withContext(Dispatchers.Default) { loaded.embed(text) }.toList()
       }
     }
   }

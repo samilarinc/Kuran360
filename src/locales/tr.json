@@ -800,6 +800,13 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "17 Ekim 2026",
+        "bullets": [
+          "Konuya göre arama artık Android uygulamasında da var: Arama menüsünden açıp modeli bir kez indirdikten sonra cihazınızda çalışıyor",
+          "Kalıcı namaz vakti bildirimi açıkken uygulamanın arka planda sürekli \"durduruldu\" hatası vermesi düzeltildi"
+        ]
+      },
+      {
         "date": "16 Ekim 2026",
         "bullets": [
           "Profil sayfasındaki \"Hata Raporlarım\" bölümünden gönderdiğiniz raporları ve durumlarını görebilir, yeni rapor oluşturabilirsiniz",
