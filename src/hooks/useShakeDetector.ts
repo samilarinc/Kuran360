@@ -7,14 +7,14 @@ const UPDATE_INTERVAL_MS = 50;
 const JOLT_THRESHOLD_G = 2.0;
 // One swing spans several samples above the threshold; count it once
 const MIN_JOLT_GAP_MS = 120;
-// Only sustained, vigorous shaking fires: this many jolts within the window (~1.5-2 s of shaking).
-// Walking, running or dropping the phone into a pocket stay well below it.
-const WINDOW_MS = 2000;
-const REQUIRED_JOLTS = 8;
+// A few quick, firm shakes fire: this many jolts within the window (2-3 shakes).
+// Walking or dropping the phone into a pocket stay below it.
+const WINDOW_MS = 1500;
+const REQUIRED_JOLTS = 3;
 const COOLDOWN_MS = 3000;
 
 /**
- * Calls `onShake` when the device is shaken hard for a couple of seconds.
+ * Calls `onShake` when the device is shaken firmly 2-3 times.
  * Native only; listens only while `enabled` and the app is in the foreground.
  */
 export const useShakeDetector = (onShake: () => void, enabled: boolean) => {

@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useMemo, useRef, useState, ReactNode } from 'react';
 import { BugReportModal } from '@/components/BugReportModal';
+import * as Haptics from 'expo-haptics';
 import { useShakeDetector } from '@/hooks/useShakeDetector';
 
 type BugReportContextType = {
@@ -24,7 +25,12 @@ export const BugReportProvider: React.FC<{ children: ReactNode }> = ({ children 
         [openBugReport, setCurrentScreen, submittedCount],
     );
 
-    useShakeDetector(openBugReport, !visible);
+    // A light buzz tells the user the report screen opened because of the shake
+    const openFromShake = useCallback(() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+        setVisible(true);
+    }, []);
+    useShakeDetector(openFromShake, !visible);
 
     return (
         <BugReportContext.Provider value={value}>

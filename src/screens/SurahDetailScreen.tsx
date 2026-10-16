@@ -189,11 +189,9 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
       // If this verse is currently playing, stop it
       stop();
     } else {
-      // Auto-disable audio tracking when user manually selects a different verse
-      if (settings.audioTrackingEnabled && audioState.currentVerse &&
-        (audioState.currentVerse.surahNumber !== verse.surahNumber ||
-          audioState.currentVerse.number !== verse.number)) {
-        updateSettings({ audioTrackingEnabled: false });
+      // Starting to play a verse turns tracking on, so the screen follows the recitation
+      if (!settings.audioTrackingEnabled) {
+        updateSettings({ audioTrackingEnabled: true });
       }
 
       // If this verse is not playing, play it

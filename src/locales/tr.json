@@ -804,7 +804,9 @@
         "bullets": [
           "Profil sayfasındaki \"Hata Raporlarım\" bölümünden gönderdiğiniz raporları ve durumlarını görebilir, yeni rapor oluşturabilirsiniz",
           "Çözülen raporlarda neyin düzeltildiğini anlatan bir not görünüyor, nottaki linklere dokunarak açabilirsiniz",
-          "Ayet takibi açıkken okuma sonraki sureye geçtiğinde ekran da yeni sureye geçip okunan ayeti takip etmeye devam ediyor"
+          "Ayet takibi açıkken okuma sonraki sureye geçtiğinde ekran da yeni sureye geçip okunan ayeti takip etmeye devam ediyor",
+          "Bir ayeti okutmaya başladığınızda ayet takibi otomatik açılıyor",
+          "Hata raporu ekranını açmak için telefonu 2-3 kez sallamak yetiyor; ekran açılırken telefon hafifçe titriyor"
         ]
       },
       {
