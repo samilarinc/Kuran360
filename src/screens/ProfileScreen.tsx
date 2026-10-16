@@ -194,17 +194,15 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                             />
                         </View>
 
-                        {isAdminUid(user.uid) && (
-                            <MenuListRow
-                                variant="card"
-                                icon={<Bug size={26} color={theme.primary} />}
-                                iconColor={theme.primary + '15'}
-                                title={t('profileScreen.bugReports')}
-                                subtitle={t('profileScreen.bugReportsSubtitle')}
-                                onPress={() => navigation.navigate('BugReports')}
-                                containerStyle={common.mtMd}
-                            />
-                        )}
+                        <MenuListRow
+                            variant="card"
+                            icon={<Bug size={26} color={theme.primary} />}
+                            iconColor={theme.primary + '15'}
+                            title={isAdminUid(user.uid) ? t('profileScreen.bugReports') : t('profileScreen.myBugReports')}
+                            subtitle={isAdminUid(user.uid) ? t('profileScreen.bugReportsSubtitle') : t('profileScreen.myBugReportsSubtitle')}
+                            onPress={() => navigation.navigate('BugReports')}
+                            containerStyle={common.mtMd}
+                        />
 
                         {/* Bookmarks Section */}
                         <View style={styles.section}>

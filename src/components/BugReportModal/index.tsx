@@ -12,9 +12,10 @@ interface BugReportModalProps {
     visible: boolean;
     screenRef: React.MutableRefObject<string>;
     onClose: () => void;
+    onSubmitted: () => void;
 }
 
-export const BugReportModal: React.FC<BugReportModalProps> = ({ visible, screenRef, onClose }) => {
+export const BugReportModal: React.FC<BugReportModalProps> = ({ visible, screenRef, onClose, onSubmitted }) => {
     const { t, i18n } = useTranslation();
     const { theme, common } = useTheme();
     const styles = useThemedStyles(createStyles);
@@ -57,6 +58,7 @@ export const BugReportModal: React.FC<BugReportModalProps> = ({ visible, screenR
             });
             setMessage('');
             setIsSuccess(true);
+            onSubmitted();
         } catch (e) {
             console.error('Error submitting bug report:', e);
             setError(t('bugReport.submitError'));

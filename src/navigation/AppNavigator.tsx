@@ -199,7 +199,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       case 'RootVerses':
         return `/root/${rootToSlug(route.params?.root ?? '')}`;
       case 'BugReports':
-        return '/admin/bug-reports';
+        return '/bug-reports';
       default:
         return '/';
     }
@@ -314,7 +314,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       return { screen: 'Memorization' };
     }
 
-    if (pathname === '/admin/bug-reports') {
+    if (pathname === '/bug-reports') {
       return { screen: 'BugReports' };
     }
 

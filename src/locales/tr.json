@@ -50,7 +50,12 @@
     "empty": "Bu filtrede rapor yok.",
     "loadError": "Raporlar yüklenemedi.",
     "updateError": "İşlem yapılamadı, lütfen tekrar deneyin.",
-    "notAuthorized": "Bu sayfayı yalnızca admin görebilir."
+    "newReport": "Yeni rapor",
+    "signInToSee": "Gönderdiğiniz raporları görmek için giriş yapın. Giriş yapmadan da rapor gönderebilirsiniz.",
+    "resolutionNote": "Çözüm notu",
+    "resolutionNotePlaceholder": "Ne yapıldı? İsterseniz bir link de ekleyebilirsiniz",
+    "saveResolved": "Kaydet ve çözüldü işaretle",
+    "editNote": "Notu düzenle"
   },
   "audioBar": {
     "verse": "{{number}}. Ayet",
@@ -99,7 +104,8 @@
     "prayerTimes": "Ezan Vakitleri",
     "qibla": "Kıble Pusulası",
     "hutbe": "Cuma Hutbesi",
-    "bugReports": "Hata Raporları"
+    "bugReports": "Hata Raporları",
+    "myBugReports": "Hata Raporlarım"
   },
   "allTranslationsScreen": {
     "noTranslationsFound": "Bu ayet için meal bulunamadı.",
@@ -128,7 +134,9 @@
     "notSignedIn": "Oturum açılmamış.",
     "signInWithGoogle": "Google ile Giriş Yap",
     "bugReports": "Hata Raporları",
-    "bugReportsSubtitle": "Kullanıcıların gönderdiği raporlar (yalnızca admin)"
+    "bugReportsSubtitle": "Kullanıcıların gönderdiği raporlar (yalnızca admin)",
+    "myBugReports": "Hata Raporlarım",
+    "myBugReportsSubtitle": "Gönderdiğiniz raporlar ve durumları"
   },
   "prayerTimesScreen": {
     "permissionDeniedTitle": "İzin Reddedildi",
@@ -791,6 +799,13 @@
     ],
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
+      {
+        "date": "16 Ekim 2026",
+        "bullets": [
+          "Profil sayfasındaki \"Hata Raporlarım\" bölümünden gönderdiğiniz raporları ve durumlarını görebilir, yeni rapor oluşturabilirsiniz",
+          "Çözülen raporlarda neyin düzeltildiğini anlatan bir not görünüyor, nottaki linklere dokunarak açabilirsiniz"
+        ]
+      },
       {
         "date": "15 Ekim 2026",
         "bullets": [

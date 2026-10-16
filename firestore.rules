@@ -47,7 +47,7 @@ service cloud.firestore {
       return value is string && value.size() <= maxLength;
     }
 
-    // Bug reports: anyone (even signed out) may send one; only the admin can read or manage them.
+    // Bug reports: anyone (even signed out) may send one; senders see their own, the admin sees and manages all.
     // Limits match src/services/bugReport.ts
     match /bugReports/{reportId} {
       allow create: if request.resource.data.keys().hasOnly(['message', 'name', 'email', 'uid', 'screen', 'platform', 'osVersion', 'deviceModel', 'appVersion', 'language', 'settings', 'logs', 'status', 'createdAt'])
@@ -66,7 +66,9 @@ service cloud.firestore {
         && isStringUpTo(request.resource.data.logs, 16000)
         && request.resource.data.status == 'new'
         && request.resource.data.createdAt is int;
-      allow read, update, delete: if isAdmin();
+      // Signed-in senders can see their own reports (anonymous ones carry no uid, so they can't be listed back)
+      allow read: if isAdmin() || (isSignedIn() && resource.data.uid == request.auth.uid);
+      allow update, delete: if isAdmin();
     }
 
     // Forum threads

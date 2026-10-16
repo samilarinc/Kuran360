@@ -50,7 +50,12 @@
     "empty": "No reports in this filter.",
     "loadError": "Couldn't load the reports.",
     "updateError": "Couldn't complete the action, please try again.",
-    "notAuthorized": "Only the admin can see this page."
+    "newReport": "New report",
+    "signInToSee": "Sign in to see the reports you've sent. You can still send a report without signing in.",
+    "resolutionNote": "Resolution note",
+    "resolutionNotePlaceholder": "What was done? You can add a link too",
+    "saveResolved": "Save and mark resolved",
+    "editNote": "Edit note"
   },
   "audioBar": {
     "verse": "Verse {{number}}",
@@ -99,7 +104,8 @@
     "qibla": "Qibla Compass",
     "prayerTimes": "Prayer Times",
     "hutbe": "Friday Sermon",
-    "bugReports": "Bug Reports"
+    "bugReports": "Bug Reports",
+    "myBugReports": "My Bug Reports"
   },
   "allTranslationsScreen": {
     "noTranslationsFound": "No translations found for this verse.",
@@ -128,7 +134,9 @@
     "notSignedIn": "Not signed in.",
     "signInWithGoogle": "Sign in with Google",
     "bugReports": "Bug Reports",
-    "bugReportsSubtitle": "Reports sent by users (admin only)"
+    "bugReportsSubtitle": "Reports sent by users (admin only)",
+    "myBugReports": "My Bug Reports",
+    "myBugReportsSubtitle": "Reports you've sent and their status"
   },
   "prayerTimesScreen": {
     "permissionDeniedTitle": "Permission Denied",
@@ -791,6 +799,13 @@
     ],
     "updatesSectionTitle": "Release Notes",
     "updates": [
+      {
+        "date": "October 16, 2026",
+        "bullets": [
+          "See the reports you've sent and their status, or create a new one, under \"My Bug Reports\" on the profile page",
+          "Resolved reports now show a note on what was fixed; tap links in the note to open them"
+        ]
+      },
       {
         "date": "October 15, 2026",
         "bullets": [
