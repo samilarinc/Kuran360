@@ -6,6 +6,11 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // UIDs aren't secrets: request.auth.uid comes from a verified ID token, so knowing it doesn't grant access
+    function isAdmin() {
+      return isSignedIn() && request.auth.uid == 'gxQzSuAVefQzDlIGMiKUKiSa6Xk1';
+    }
+
     function isShortString(value, maxLength) {
       return value is string && value.size() > 0 && value.size() <= maxLength;
     }
@@ -41,7 +46,7 @@ service cloud.firestore {
       return value is string && value.size() <= maxLength;
     }
 
-    // Bug reports: anyone (even signed out) may send one; nobody can read them from the app.
+    // Bug reports: anyone (even signed out) may send one; only the admin can read or manage them.
     // Limits match src/services/bugReport.ts
     match /bugReports/{reportId} {
       allow create: if request.resource.data.keys().hasOnly(['message', 'name', 'email', 'uid', 'screen', 'platform', 'osVersion', 'deviceModel', 'appVersion', 'language', 'settings', 'logs', 'status', 'createdAt'])
@@ -60,6 +65,7 @@ service cloud.firestore {
         && isStringUpTo(request.resource.data.logs, 16000)
         && request.resource.data.status == 'new'
         && request.resource.data.createdAt is int;
+      allow read, update, delete: if isAdmin();
     }
 
     // Forum threads
