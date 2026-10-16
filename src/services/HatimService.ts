@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { Hatim, HatimPart } from '@/types';
+import { isAdminUid } from '@/constants/admin';
 
 const HATIMS_COLLECTION = 'hatims';
 
@@ -86,7 +87,10 @@ export const HatimService = {
     async getHatims(userId?: string): Promise<Hatim[]> {
         let q;
 
-        if (userId) {
+        if (isAdminUid(userId)) {
+            // The admin sees every hatim, private ones included
+            q = query(collection(db, HATIMS_COLLECTION));
+        } else if (userId) {
             // Logged in users can see public hatims and their own hatims
             // We use an 'or' query to satisfy security rules while getting both types
             q = query(

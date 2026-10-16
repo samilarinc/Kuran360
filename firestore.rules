@@ -6,7 +6,8 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // UIDs aren't secrets: request.auth.uid comes from a verified ID token, so knowing it doesn't grant access
+    // UIDs aren't secrets: request.auth.uid comes from a verified ID token, so knowing it doesn't grant access.
+    // Keep in sync with ADMIN_UID in src/constants/admin.ts
     function isAdmin() {
       return isSignedIn() && request.auth.uid == 'gxQzSuAVefQzDlIGMiKUKiSa6Xk1';
     }
@@ -115,7 +116,8 @@ service cloud.firestore {
       }
 
       allow read: if resource.data.get('isPrivate', false) == false
-        || (isSignedIn() && resource.data.creatorId == request.auth.uid);
+        || (isSignedIn() && resource.data.creatorId == request.auth.uid)
+        || isAdmin();
       allow create: if isSignedIn()
         && request.resource.data.creatorId == request.auth.uid
         && request.resource.data.parts.size() == 30;
