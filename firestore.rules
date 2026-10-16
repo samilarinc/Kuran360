@@ -121,15 +121,15 @@ service cloud.firestore {
       allow create: if isSignedIn()
         && request.resource.data.creatorId == request.auth.uid
         && request.resource.data.parts.size() == 30;
-      // Creator: anything except ownership. Others: only their own parts, and only while unlocked.
+      // Creator and admin: anything except ownership. Others: only their own parts, and only while unlocked.
       allow update: if isSignedIn() && request.resource.data.creatorId == resource.data.creatorId && (
-        resource.data.creatorId == request.auth.uid || (
+        resource.data.creatorId == request.auth.uid || isAdmin() || (
           !resource.data.get('isLocked', false)
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['parts', 'isCompleted'])
           && onlyOwnPartsChanged()
         )
       );
-      allow delete: if isSignedIn() && resource.data.creatorId == request.auth.uid;
+      allow delete: if isSignedIn() && (resource.data.creatorId == request.auth.uid || isAdmin());
     }
   }
 }

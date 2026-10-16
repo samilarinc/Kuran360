@@ -3,7 +3,7 @@ import { View, Text, SafeAreaView, ScrollView, Alert, useWindowDimensions, Platf
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { HatimService } from '@/services/HatimService';
+import { HatimService, canManageHatim } from '@/services/HatimService';
 import { Hatim, HatimPart } from '@/types';
 import { SPACING } from '@/theme';
 import { AppHeader } from '@/components/AppHeader';
@@ -339,7 +339,7 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                 showHomeButton={true}
                 onHomePress={() => navigation.navigate('Main')}
             >
-                {hatim.creatorId === user?.uid && (
+                {canManageHatim(hatim, user?.uid) && (
                     <AppButton
                         title={t('hatimDetailScreen.edit')}
                         onPress={openEditModal}

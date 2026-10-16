@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { Hatim, HatimPart } from '@/types';
 import { AppButton } from '@/components/AppButton';
+import { canManageHatim } from '@/services/HatimService';
 import { SPACING, FONT_SIZES, Theme } from '@/theme';
 
 interface PartActionModalProps {
@@ -42,7 +43,7 @@ export const PartActionModal: React.FC<PartActionModalProps> = ({
     if (!part) return null;
 
     const isOwnPart = part.claimedById === currentUserId;
-    const isCreator = hatim.creatorId === currentUserId;
+    const isCreator = canManageHatim(hatim, currentUserId);
 
     return (
         <Modal transparent visible={visible} animationType="fade" onRequestClose={onClose}>

@@ -15,6 +15,10 @@ import { db } from './firebase';
 import { Hatim, HatimPart } from '@/types';
 import { isAdminUid } from '@/constants/admin';
 
+/** The creator and the admin may edit a hatim and manage everyone's parts */
+export const canManageHatim = (hatim: Hatim, userId?: string | null) =>
+    !!userId && (hatim.creatorId === userId || isAdminUid(userId));
+
 const HATIMS_COLLECTION = 'hatims';
 
 /** Error whose message is an i18n key under `hatimErrors`, so screens can show it translated. */
@@ -133,7 +137,7 @@ export const HatimService = {
 
     unclaimPart(hatimId: string, partNumber: number, userId: string): Promise<void> {
         return updatePart(hatimId, partNumber, (part, hatim) => {
-            if (part.claimedById !== userId && hatim.creatorId !== userId) throw new HatimError('notYourPart');
+            if (part.claimedById !== userId && !canManageHatim(hatim, userId)) throw new HatimError('notYourPart');
             return { ...part, claimedById: null, claimedByName: null, claimedAt: 0, isCompleted: false, completedAt: 0 };
         });
     },
@@ -141,14 +145,14 @@ export const HatimService = {
     togglePartCompletion(hatimId: string, partNumber: number, userId: string, completed: boolean): Promise<void> {
         return updatePart(hatimId, partNumber, (part, hatim) => {
             // Allow creator or the person who claimed it to toggle completion
-            if (part.claimedById !== userId && hatim.creatorId !== userId) throw new HatimError('notYourPart');
+            if (part.claimedById !== userId && !canManageHatim(hatim, userId)) throw new HatimError('notYourPart');
             return { ...part, isCompleted: completed, completedAt: completed ? Date.now() : 0 };
         });
     },
 
     updatePartProgress(hatimId: string, partNumber: number, userId: string, pagesRead: number): Promise<void> {
         return updatePart(hatimId, partNumber, (part, hatim) => {
-            if (part.claimedById !== userId && hatim.creatorId !== userId) throw new HatimError('notYourPart');
+            if (part.claimedById !== userId && !canManageHatim(hatim, userId)) throw new HatimError('notYourPart');
             const completed = pagesRead >= (part.totalPages || 20);
             return { ...part, pagesRead, isCompleted: completed, completedAt: completed ? Date.now() : 0 };
         });
