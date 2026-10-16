@@ -16,6 +16,12 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {},
+    "closed": {
+      "android": {
+        "track": "alpha",
+        "serviceAccountKeyPath": "./credentials/play-service-account.json"
+      }
+    }
   }
 }

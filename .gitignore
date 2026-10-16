@@ -87,6 +87,8 @@ yarn-error.log
 
 # Local secrets (see .env.example)
 .env
+# Google Play service account key used by `eas submit` (see eas.json)
+/credentials/
 
 # Downloaded morphology data for scripts/add_roots.py
 scripts/.cache/

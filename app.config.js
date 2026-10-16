@@ -86,7 +86,10 @@ export default ({ config }) => ({
             backgroundColor: "#2E7D32"
         },
         package: "com.kuran360",
-        softwareKeyboardLayoutMode: "pan"
+        softwareKeyboardLayoutMode: "pan",
+        // expo-sensors declares this for its pedometer; shake detection only uses the accelerometer,
+        // and Google Play treats apps holding it as health apps
+        blockedPermissions: ["android.permission.ACTIVITY_RECOGNITION"]
     },
     web: {
         favicon: "./public/favicon.png",

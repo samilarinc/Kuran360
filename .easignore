@@ -90,6 +90,7 @@ yarn-error.log
 !.yarn/versions
 
 # Local secrets (see .env.example)
+/credentials/
 
 
 # Downloaded morphology data for scripts/add_roots.py
