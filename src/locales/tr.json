@@ -21,6 +21,37 @@
     "successMessage": "Raporunuz bize ulaştı.",
     "close": "Kapat"
   },
+  "bugReportsScreen": {
+    "filter": {
+      "new": "Yeni",
+      "resolved": "Çözüldü",
+      "all": "Tümü"
+    },
+    "status": {
+      "new": "Yeni",
+      "resolved": "Çözüldü"
+    },
+    "anonymous": "İsimsiz",
+    "screenLabel": "Ekran: {{screen}}",
+    "showDetails": "Ayrıntıları göster",
+    "hideDetails": "Ayrıntıları gizle",
+    "deviceModel": "Cihaz",
+    "language": "Dil",
+    "settings": "Ayarlar",
+    "logs": "Son uyarı ve hatalar",
+    "noLogs": "Kayıt yok",
+    "markResolved": "Çözüldü işaretle",
+    "reopen": "Yeniden aç",
+    "delete": "Sil",
+    "cancel": "Vazgeç",
+    "deleteTitle": "Raporu sil",
+    "deleteConfirm": "Bu rapor kalıcı olarak silinsin mi?",
+    "refresh": "Yenile",
+    "empty": "Bu filtrede rapor yok.",
+    "loadError": "Raporlar yüklenemedi.",
+    "updateError": "İşlem yapılamadı, lütfen tekrar deneyin.",
+    "notAuthorized": "Bu sayfayı yalnızca admin görebilir."
+  },
   "audioBar": {
     "verse": "{{number}}. Ayet",
     "loading": "Yükleniyor...",
@@ -67,7 +98,8 @@
     "umrahDuas": "Umre Duaları",
     "prayerTimes": "Ezan Vakitleri",
     "qibla": "Kıble Pusulası",
-    "hutbe": "Cuma Hutbesi"
+    "hutbe": "Cuma Hutbesi",
+    "bugReports": "Hata Raporları"
   },
   "allTranslationsScreen": {
     "noTranslationsFound": "Bu ayet için meal bulunamadı.",
@@ -94,7 +126,9 @@
     "lastReadTitle": "Son Okuduklarım ({{count}})",
     "noLastRead": "Henüz okunmuş ayet bulunmuyor.",
     "notSignedIn": "Oturum açılmamış.",
-    "signInWithGoogle": "Google ile Giriş Yap"
+    "signInWithGoogle": "Google ile Giriş Yap",
+    "bugReports": "Hata Raporları",
+    "bugReportsSubtitle": "Kullanıcıların gönderdiği raporlar (yalnızca admin)"
   },
   "prayerTimesScreen": {
     "permissionDeniedTitle": "İzin Reddedildi",

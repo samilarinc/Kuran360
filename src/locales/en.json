@@ -21,6 +21,37 @@
     "successMessage": "Your report has reached us.",
     "close": "Close"
   },
+  "bugReportsScreen": {
+    "filter": {
+      "new": "New",
+      "resolved": "Resolved",
+      "all": "All"
+    },
+    "status": {
+      "new": "New",
+      "resolved": "Resolved"
+    },
+    "anonymous": "Anonymous",
+    "screenLabel": "Screen: {{screen}}",
+    "showDetails": "Show details",
+    "hideDetails": "Hide details",
+    "deviceModel": "Device",
+    "language": "Language",
+    "settings": "Settings",
+    "logs": "Recent warnings and errors",
+    "noLogs": "No entries",
+    "markResolved": "Mark resolved",
+    "reopen": "Reopen",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "deleteTitle": "Delete report",
+    "deleteConfirm": "Delete this report permanently?",
+    "refresh": "Refresh",
+    "empty": "No reports in this filter.",
+    "loadError": "Couldn't load the reports.",
+    "updateError": "Couldn't complete the action, please try again.",
+    "notAuthorized": "Only the admin can see this page."
+  },
   "audioBar": {
     "verse": "Verse {{number}}",
     "loading": "Loading...",
@@ -67,7 +98,8 @@
     "umrahDuas": "Umrah Duas",
     "qibla": "Qibla Compass",
     "prayerTimes": "Prayer Times",
-    "hutbe": "Friday Sermon"
+    "hutbe": "Friday Sermon",
+    "bugReports": "Bug Reports"
   },
   "allTranslationsScreen": {
     "noTranslationsFound": "No translations found for this verse.",
@@ -94,7 +126,9 @@
     "lastReadTitle": "Recently Read ({{count}})",
     "noLastRead": "No verses read yet.",
     "notSignedIn": "Not signed in.",
-    "signInWithGoogle": "Sign in with Google"
+    "signInWithGoogle": "Sign in with Google",
+    "bugReports": "Bug Reports",
+    "bugReportsSubtitle": "Reports sent by users (admin only)"
   },
   "prayerTimesScreen": {
     "permissionDeniedTitle": "Permission Denied",

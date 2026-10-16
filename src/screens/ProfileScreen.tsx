@@ -6,6 +6,9 @@ import { AppButton } from '@/components/AppButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserData } from '@/contexts/UserDataContext';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
+import { MenuListRow } from '@/components/MenuListRow';
+import { isAdminUid } from '@/constants/admin';
+import { Bug } from 'lucide-react-native';
 import { SPACING } from '@/theme';
 import { createStyles } from './ProfileScreen.styles';
 
@@ -190,6 +193,18 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                 style={{ marginTop: SPACING.lg }}
                             />
                         </View>
+
+                        {isAdminUid(user.uid) && (
+                            <MenuListRow
+                                variant="card"
+                                icon={<Bug size={26} color={theme.primary} />}
+                                iconColor={theme.primary + '15'}
+                                title={t('profileScreen.bugReports')}
+                                subtitle={t('profileScreen.bugReportsSubtitle')}
+                                onPress={() => navigation.navigate('BugReports')}
+                                containerStyle={common.mtMd}
+                            />
+                        )}
 
                         {/* Bookmarks Section */}
                         <View style={styles.section}>

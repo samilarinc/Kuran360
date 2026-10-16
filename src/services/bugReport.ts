@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, orderBy, limit, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/services/firebase';
 import { getRecentLogs } from '@/services/logBuffer';
 import { AppSettings } from '@/types';
@@ -13,6 +13,29 @@ const MAX_SETTINGS_LENGTH = 4000;
 const MAX_LOGS_LENGTH = 16000;
 
 const clip = (value: string, max: number) => (value.length > max ? value.slice(0, max) : value);
+
+const BUG_REPORTS_COLLECTION = 'bugReports';
+const LIST_LIMIT = 200;
+
+export type BugReportStatus = 'new' | 'resolved';
+
+export interface BugReport {
+    id: string;
+    message: string;
+    name: string;
+    email: string;
+    uid: string;
+    screen: string;
+    platform: string;
+    osVersion: string;
+    deviceModel: string;
+    appVersion: string;
+    language: string;
+    settings: string;
+    logs: string;
+    status: BugReportStatus;
+    createdAt: number;
+}
 
 export interface BugReportInput {
     message: string;
@@ -37,7 +60,7 @@ export const submitBugReport = async (input: BugReportInput) => {
     const settings: Partial<AppSettings> = { ...input.settings };
     delete settings.prayerLocation;
 
-    await addDoc(collection(db, 'bugReports'), {
+    await addDoc(collection(db, BUG_REPORTS_COLLECTION), {
         message: clip(input.message.trim(), MAX_MESSAGE_LENGTH),
         name: clip(input.name.trim(), MAX_NAME_LENGTH),
         email: clip(input.email.trim(), MAX_EMAIL_LENGTH),
@@ -55,3 +78,14 @@ export const submitBugReport = async (input: BugReportInput) => {
         createdAt: Date.now(),
     });
 };
+
+// Admin only (see firestore.rules): newest first
+export const fetchBugReports = async (): Promise<BugReport[]> => {
+    const snapshot = await getDocs(query(collection(db, BUG_REPORTS_COLLECTION), orderBy('createdAt', 'desc'), limit(LIST_LIMIT)));
+    return snapshot.docs.map(d => ({ id: d.id, ...d.data() } as BugReport));
+};
+
+export const setBugReportStatus = (id: string, status: BugReportStatus) =>
+    updateDoc(doc(db, BUG_REPORTS_COLLECTION, id), { status });
+
+export const deleteBugReport = (id: string) => deleteDoc(doc(db, BUG_REPORTS_COLLECTION, id));
