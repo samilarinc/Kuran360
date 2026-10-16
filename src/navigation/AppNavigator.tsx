@@ -604,11 +604,11 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         navigateToRoute(route, true);
       }
     },
-    goToSurahVerse: async (surahNumber: number, verseIndex: number) => {
+    goToSurahVerse: async (surahNumber: number, verseIndex: number, replace = false) => {
       const surah = await loadSurah(surahNumber);
       if (surah) {
         const route: NavigationHistoryItem = { screen: 'SurahDetail', params: { surah, verseIndex } };
-        navigateToRoute(route, true);
+        navigateToRoute(route, !replace);
       }
     },
     goToRoot: (root: string) => {

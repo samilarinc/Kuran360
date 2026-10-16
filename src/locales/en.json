@@ -803,7 +803,10 @@
         "date": "October 16, 2026",
         "bullets": [
           "See the reports you've sent and their status, or create a new one, under \"My Bug Reports\" on the profile page",
-          "Resolved reports now show a note on what was fixed; tap links in the note to open them"
+          "Resolved reports now show a note on what was fixed; tap links in the note to open them",
+          "With verse tracking on, the screen now moves to the next surah along with the recitation and keeps following the playing verse",
+          "Verse tracking now turns on automatically when you start playing a verse",
+          "Shaking the phone 2-3 times is now enough to open the bug report screen, and a light vibration lets you know it opened"
         ]
       },
       {
