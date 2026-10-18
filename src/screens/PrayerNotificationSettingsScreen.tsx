@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Audio } from 'expo-av';
 import { View, Text, ScrollView, TouchableOpacity, Alert, AppState } from 'react-native';
-import { AlarmClock, BellOff, BellRing, CalendarClock, CheckCircle2, ChevronDown, Landmark, Moon, Music, Plane, Play, Plus, Square, Trash2, UtensilsCrossed } from 'lucide-react-native';
+import { AlarmClock, BellOff, BellRing, CalendarClock, CheckCircle2, ChevronDown, Landmark, Moon, MoonStar, Music, Plane, Play, Plus, Sparkles, Square, Star, Trash2, UtensilsCrossed } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
@@ -40,6 +40,7 @@ import {
     setTravelMode,
     syncPrayerNotifications,
 } from '@/services/prayerTimes';
+import { SPECIAL_DAY_LEAD_OPTIONS } from '@/utils/specialDayReminders';
 import { createStyles } from './PrayerNotificationSettingsScreen.styles';
 
 /** A row of choice pills; `format` labels each value */
@@ -156,6 +157,16 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
     const updateAlert = (index: number, change: Partial<PrayerNotificationSettings['alerts'][number]>) => {
         if (!settings) return;
         update({ ...settings, alerts: settings.alerts.map((alert, i) => (i === index ? { ...alert, ...change } : alert)) });
+    };
+
+    const updateSpecialDays = (change: Partial<PrayerNotificationSettings['specialDays']>) => {
+        if (!settings) return;
+        update({ ...settings, specialDays: { ...settings.specialDays, ...change } });
+    };
+
+    const updateSpecialDayCategory = (change: Partial<PrayerNotificationSettings['specialDays']['categories']>) => {
+        if (!settings) return;
+        updateSpecialDays({ categories: { ...settings.specialDays.categories, ...change } });
     };
 
     /** Turning travel mode on looks the location up right away (asking for permission) */
@@ -380,6 +391,59 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                         format={minutes => (minutes === 0 ? t('prayerNotifications.off') : String(minutes))}
                                     />
                                 </View>
+                            )}
+                        </View>
+
+                        <Text style={styles.sectionTitle}>{t('specialDays.settings.sectionTitle')}</Text>
+                        <View style={styles.card}>
+                            <SettingItem
+                                title={t('specialDays.settings.enabledTitle')}
+                                description={t('specialDays.settings.enabledDescription')}
+                                value={settings.specialDays.enabled}
+                                onValueChange={enabled => updateSpecialDays({ enabled })}
+                                icon={<MoonStar size={20} color="#6366F1" />}
+                                iconColor="#6366F1"
+                                theme={theme}
+                            />
+                            {settings.specialDays.enabled && (
+                                <>
+                                    <SettingItem
+                                        title={t('specialDays.settings.kandilTitle')}
+                                        description={t('specialDays.settings.kandilDescription')}
+                                        value={settings.specialDays.categories.kandil}
+                                        onValueChange={kandil => updateSpecialDayCategory({ kandil })}
+                                        icon={<Star size={20} color="#F59E0B" />}
+                                        iconColor="#F59E0B"
+                                        theme={theme}
+                                    />
+                                    <SettingItem
+                                        title={t('specialDays.settings.bayramTitle')}
+                                        description={t('specialDays.settings.bayramDescription')}
+                                        value={settings.specialDays.categories.bayram}
+                                        onValueChange={bayram => updateSpecialDayCategory({ bayram })}
+                                        icon={<Sparkles size={20} color="#EC4899" />}
+                                        iconColor="#EC4899"
+                                        theme={theme}
+                                    />
+                                    <SettingItem
+                                        title={t('specialDays.settings.blessedTitle')}
+                                        description={t('specialDays.settings.blessedDescription')}
+                                        value={settings.specialDays.categories.blessed}
+                                        onValueChange={blessed => updateSpecialDayCategory({ blessed })}
+                                        icon={<CalendarClock size={20} color="#14B8A6" />}
+                                        iconColor="#14B8A6"
+                                        theme={theme}
+                                    />
+                                    <View style={styles.subOptions}>
+                                        <Text style={styles.beforeLabel}>{t('specialDays.settings.leadLabel')}</Text>
+                                        <Pills
+                                            options={SPECIAL_DAY_LEAD_OPTIONS}
+                                            value={settings.specialDays.leadDays}
+                                            onChange={leadDays => updateSpecialDays({ leadDays })}
+                                            format={days => (days === 0 ? t('prayerNotifications.off') : String(days))}
+                                        />
+                                    </View>
+                                </>
                             )}
                         </View>
 

@@ -23,6 +23,8 @@ export interface PrayerNotificationConfig {
     kaza: { enabled: boolean };
     /** Sahur (`sahurBefore` minutes before imsak, 0 = off) and iftar alerts: in Ramadan (`ramadan`) or every day (`mode`) */
     fasting: { ramadan: boolean; mode: boolean; sahurBefore: number; iftar: boolean };
+    /** Kandil and blessed-day reminders, soonest first: epoch millis of the alert, with its translated title and text */
+    reminders: { at: number; title: string; text: string }[];
     /** Minutes of the kerahat windows */
     kerahat: { afterSunrise: number; beforeOgle: number; beforeAksam: number };
     /** Translated texts; `%1` is replaced with a prayer's name, `%2` with minutes */

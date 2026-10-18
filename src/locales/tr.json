@@ -615,11 +615,172 @@
     "prayerTimesDescription": "Bulunduğunuz yerin namaz vakitlerini görün",
     "qiblaDescription": "Bulunduğunuz yerden Kâbe yönünü bulun",
     "duaListDescription": "Kişisel dua çizelgesi oluşturun",
+    "zikirmatikDescription": "Zikir ve tesbihatlarınızı sayın, kendi zikrinizi ekleyin",
     "hutbeDescription": "Haftalık cuma hutbesini okuyun",
     "hutbeInfoTitle": "Bilgi",
     "hutbeInfoMessage": "Güncel hutbe henüz yüklenmedi.",
     "hutbeErrorTitle": "Hata",
     "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin."
+  },
+  "zikirmatik": {
+    "title": "Zikirmatik",
+    "sections": {
+      "tesbihat": "TESBİHATLAR",
+      "counts": "ZİKİR SAYILARI",
+      "custom": "KENDİ ZİKİRLERİM"
+    },
+    "newDhikr": "Yeni zikir ekle",
+    "customDescription": "Kendi zikriniz · {{count}} defa",
+    "completed": "Tamamlandı",
+    "inProgress": "Devam ediyor · %{{percent}}",
+    "step": "Adım {{current}} / {{total}}",
+    "openVerse": "Ayeti aç",
+    "noText": "Zikrinizi söyleyip dokunarak sayın.",
+    "doneTitle": "Tamamlandı",
+    "doneSequence": "Tesbihatı tamamladınız. Allah kabul etsin.",
+    "doneCount": "{{count}} defa tamamlandı. Allah kabul etsin.",
+    "restart": "Baştan başla",
+    "backToList": "Listeye dön",
+    "target": "Hedef: {{count}}",
+    "customTarget": "Özel",
+    "customTargetPlaceholder": "Hedef sayısı",
+    "tapToCount": "Saymak için dokunun",
+    "undo": "Geri al",
+    "reset": "Sıfırla",
+    "skip": "Adımı geç",
+    "previous": "Önceki",
+    "next": "Sonraki",
+    "finish": "Bitir",
+    "deleteDhikr": "Bu zikri sil",
+    "deleteTitle": "Zikri sil",
+    "deleteConfirm": "Bu zikir ve sayacı silinsin mi?",
+    "form": {
+      "title": "Yeni zikir",
+      "textLabel": "ZİKİR METNİ",
+      "textPlaceholder": "Zikrinizi yazın",
+      "targetLabel": "HEDEF",
+      "save": "Kaydet",
+      "voiceHint": "Ya da mikrofona dokunup zikri okuyun; duyulan metin yukarıya eklenir.",
+      "voiceStart": "Sesle yaz",
+      "transcribing": "Ses yazıya çevriliyor…",
+      "nothingHeard": "Bir şey duyulamadı, tekrar deneyin."
+    },
+    "presets": {
+      "free": {
+        "name": "Serbest sayaç",
+        "description": "Zikrinizi söyleyin, dokunarak sayın"
+      },
+      "postPrayer": {
+        "name": "Namaz sonrası tesbihat",
+        "description": "33 Sübhânallah, 33 Elhamdülillah, 33 Allâhu Ekber ve kelime-i tevhid"
+      },
+      "kucukTesbihat": {
+        "name": "Küçük Tesbihat",
+        "description": "Salâten Tüncînâ, tesbihler, salavatlar, esma ve son dua; adım adım"
+      },
+      "tevhid100": {
+        "name": "Kelime-i Tevhid (100)",
+        "description": "Lâ ilâhe illallâh · 100 defa"
+      },
+      "istigfar100": {
+        "name": "Estağfirullah (100)",
+        "description": "Estağfirullah · 100 defa"
+      },
+      "salavat100": {
+        "name": "Salavat (100)",
+        "description": "Allâhümme salli alâ Seyyidinâ Muhammed · 100 defa"
+      },
+      "havqala100": {
+        "name": "Lâ havle ve lâ kuvvete illâ billâh (100)",
+        "description": "Havkale · 100 defa"
+      },
+      "tevhid500": {
+        "name": "Kelime-i Tevhid (500)",
+        "description": "Lâ ilâhe illallâh · 500 defa"
+      },
+      "tevhid1000": {
+        "name": "Kelime-i Tevhid (1000)",
+        "description": "Lâ ilâhe illallâh · 1000 defa"
+      }
+    },
+    "texts": {
+      "free": {
+        "note": "Zikrinizi söyleyip dokunarak sayın."
+      },
+      "subhanallah": {
+        "meaning": "Allah'ı her türlü eksiklikten uzak tutarım."
+      },
+      "elhamdulillah": {
+        "meaning": "Hamd Allah'a mahsustur."
+      },
+      "allahuEkber": {
+        "meaning": "Allah en büyüktür."
+      },
+      "tevhid": {
+        "meaning": "Allah'tan başka ilah yoktur."
+      },
+      "tevhidFull": {
+        "meaning": "Allah'tan başka ilah yoktur. O tektir, ortağı yoktur. Mülk O'nundur, hamd O'na aittir; O her şeye kadirdir."
+      },
+      "istigfar": {
+        "meaning": "Allah'tan bağışlanma dilerim."
+      },
+      "salavat": {
+        "meaning": "Allah'ım, efendimiz Muhammed'e salât eyle."
+      },
+      "havqala": {
+        "meaning": "Güç ve kuvvet ancak Allah'tandır."
+      },
+      "selam": {
+        "note": "Farz namazdan sonra selam verilince okunur.",
+        "meaning": "Allah'ım, sen selâmsın, selâm da sendendir. Ey celâl ve ikram sahibi, ne yücesin."
+      },
+      "salatenTuncina": {
+        "note": "Salâten Tüncînâ duası okunur."
+      },
+      "alaRasulina": {
+        "note": "Tesbihler"
+      },
+      "ayetelKursi": {
+        "note": "Âyete'l-Kürsî okunur."
+      },
+      "zulCelali": {
+        "note": "33 defa \"Subhânallah\" denir."
+      },
+      "zulCemali": {
+        "note": "33 defa \"Elhamdülillâh\" denir."
+      },
+      "zulKemali": {
+        "note": "33 defa \"Allâhu Ekber\" denir."
+      },
+      "tevhidFullKucuk": {
+        "meaning": "Allah'tan başka ilah yoktur. O tektir, ortağı yoktur. Mülk O'nundur, hamd O'na aittir; O her şeye kadirdir."
+      },
+      "dua": {
+        "note": "Dua edilir."
+      },
+      "faalem": {
+        "note": "Duadan sonra 1 defa \"Fâ'lem ennehû\", ardından 33 defa \"Lâ ilâhe illâllah\" denir."
+      },
+      "tevhidKucuk": {
+        "note": "33 defa."
+      },
+      "muhammedurResulullah": {
+        "note": "1 defa."
+      },
+      "innallahe": {
+        "note": "Birinci Kısım — Bismillâhirrahmânirrahîm"
+      },
+      "kesira": {
+        "note": "3 defa okunur; üçüncüsünde \"kesîran kesîra\" denir."
+      },
+      "esma": {
+        "note": "Bismillâhirrahmânirrahîm. Her isimden sonra \"yâ Allah\" denir."
+      },
+      "sonDua": {
+        "note": "Avuçlar yukarı gelecek şekilde eller açılır."
+      }
+    }
   },
   "searchMenu": {
     "title": "Arama",
@@ -724,6 +885,7 @@
       "duaList": "Dua Listem",
       "prayers": "Namazlar ve Dualar",
       "umrah": "Umre",
+      "zikirmatik": "Zikirmatik",
       "hijriCalendar": "Hicri Takvim",
       "about": "Hakkında"
     },
@@ -799,6 +961,14 @@
     ],
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
+      {
+        "date": "18 Ekim 2026",
+        "bullets": [
+          "Kandil geceleri, bayramlar ve mübarek günler için hatırlatmalar eklendi: Regaib, Miraç, Berat, Mevlid, Kadir Gecesi, bayramlar ve arefeler. Ezan Vakti Ayarları'ndan açıp kapatabilir, hangi günlerin ve kaç gün önce hatırlatılacağını seçebilirsiniz",
+          "Hicri takvim bazı kandil ve bayram günlerini bir gün geç gösteriyordu; Diyanet takvimine göre düzeltildi, Regaib Kandili de takvimde işaretlendi",
+          "Zikirmatik eklendi: Namazlar ve Dualar menüsünden namaz sonrası tesbihat, Küçük Tesbihat ve 100/500/1000'lik zikirleri sayabilir, hedef belirleyebilir ve kendi zikrinizi yazarak (Android'de sesle de) ekleyebilirsiniz"
+        ]
+      },
       {
         "date": "17 Ekim 2026",
         "bullets": [
@@ -1447,6 +1617,56 @@
     },
     "pickFile": "Veya bir ses dosyası seçin",
     "fileTruncated": "Dosyanın ilk {{seconds}} saniyesi dinlendi."
+  },
+  "specialDays": {
+    "names": {
+      "hijriNewYear": "Hicri Yılbaşı",
+      "ashura": "Aşure Günü",
+      "mawlid": "Mevlid Kandili",
+      "regaib": "Regaib Kandili",
+      "miraj": "Miraç Kandili",
+      "berat": "Berat Kandili",
+      "ramadanStart": "Ramazan Başlangıcı",
+      "qadr": "Kadir Gecesi",
+      "ramadanArefe": "Ramazan Bayramı Arefesi",
+      "fitr": "Ramazan Bayramı",
+      "tarwiyah": "Terviye Günü",
+      "arafah": "Arefe Günü",
+      "adha": "Kurban Bayramı"
+    },
+    "texts": {
+      "hijriNewYear": "Yeni Hicri yılınız hayırlara vesile olsun.",
+      "ashura": "Muharrem'in onuncu günü; oruç tutmak ve dua etmek için kıymetli bir gün.",
+      "mawlid": "Peygamberimizin doğum gecesi; salavat getirmek, Kur'an okumak ve dua etmek için güzel bir fırsat.",
+      "regaib": "Üç ayların ilk kandili; ibadet, dua ve istiğfarla değerlendirebilirsiniz.",
+      "miraj": "Miraç gecesi; nafile namaz, Kur'an okumak ve dua için kıymetli bir gece.",
+      "berat": "Af ve bağışlanma gecesi; tövbe, dua ve nafile ibadetle değerlendirebilirsiniz.",
+      "ramadanStart": "Bu akşam ilk teravih. Ramazanınız mübarek olsun.",
+      "qadr": "Bin aydan hayırlı gece; Kur'an okuyarak, namaz kılarak ve dua ederek değerlendirebilirsiniz.",
+      "ramadanArefe": "Yarın Ramazan Bayramı. Fitrenizi vermeyi unutmayın.",
+      "fitr": "Ramazan Bayramınız mübarek olsun.",
+      "tarwiyah": "",
+      "arafah": "Arefe günü; dua, zikir ve oruç için kıymetli bir gün.",
+      "adha": "Kurban Bayramınız mübarek olsun."
+    },
+    "early": {
+      "tomorrow": "Yarın",
+      "inDays": "{{count}} gün sonra",
+      "night": "{{when}} akşam başlıyor.",
+      "day": "{{when}}, {{date}}."
+    },
+    "settings": {
+      "sectionTitle": "Kandiller ve mübarek günler",
+      "enabledTitle": "Kandil ve mübarek gün hatırlatmaları",
+      "enabledDescription": "Hicri takvime göre; kandil geceleri akşam namazı vaktinde, bayramlar sabah hatırlatılır",
+      "kandilTitle": "Kandil geceleri",
+      "kandilDescription": "Regaib, Miraç, Berat, Mevlid ve Kadir Gecesi",
+      "bayramTitle": "Bayramlar ve arefeler",
+      "bayramDescription": "Ramazan ve Kurban Bayramı ile arefeleri",
+      "blessedTitle": "Diğer mübarek günler",
+      "blessedDescription": "Hicri Yılbaşı, Aşure ve Ramazan'ın başı",
+      "leadLabel": "Önceden de hatırlat (kaç gün önce)"
+    }
   },
   "prayerNotifications": {
     "title": "Ezan Vakti Ayarları",

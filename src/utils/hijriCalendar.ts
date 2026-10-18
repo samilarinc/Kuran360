@@ -71,19 +71,118 @@ export const MONTHS = [
 ];
 export const WD = ['الأحَد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخَميس', 'الجُمعة', 'السَّبت'];
 export const GM = ['', 'Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
-export const EVT: Record<number, Record<number, { ar: string; tr: string }>> = {
-    1: { 1: { ar: 'رأس السنة الهجرية', tr: 'Hicri Yılbaşı' },
-        10: { ar: 'يوم عاشوراء', tr: 'Aşure Günü' } },
-    3: { 12: { ar: 'المولد النبوي', tr: 'Mevlid Kandili' } },
-    7: { 27: { ar: 'الإسراء والمعراج', tr: 'Miraç Kandili' } },
-    8: { 15: { ar: 'ليلة البَراءة', tr: 'Berat Kandili' } },
-    9: { 1: { ar: 'أوّل رمضان', tr: 'Ramazan Başlangıcı' },
-        27: { ar: 'ليلة القَدْر', tr: 'Kadir Gecesi' } },
-    10: { 1: { ar: 'عيد الفِطر', tr: 'Ramazan Bayramı' } },
-    12: { 8: { ar: 'يوم التَّروية', tr: 'Terviye Günü' },
-        9: { ar: 'يوم عَرَفة', tr: 'Arefe Günü' },
-        10: { ar: 'عيد الأضحى', tr: 'Kurban Bayramı' } },
+// ── Special days (single source for the calendar screen and the reminders) ────
+
+export type SpecialDayId =
+    | 'hijriNewYear' | 'ashura' | 'mawlid' | 'regaib' | 'miraj' | 'berat'
+    | 'ramadanStart' | 'qadr' | 'ramadanArefe' | 'fitr' | 'tarwiyah' | 'arafah' | 'adha';
+
+/** What the reminder settings group days by; days without a category are only shown in the calendar. */
+export type SpecialDayCategory = 'kandil' | 'bayram' | 'blessed';
+
+export interface SpecialDayDef {
+    id: SpecialDayId;
+    ar: string;
+    category?: SpecialDayCategory;
+    /**
+     * Islamic days begin at sunset, so a "night" (kandil, the first teravih) belongs to the evening
+     * before the Gregorian day the calendar marks, the same way Diyanet lists kandils: Miraç 2027
+     * is marked on 5 Jan (27 Recep) and the night starts at maghrib on 4 Jan. Other days start
+     * with the Gregorian day itself.
+     */
+    night: boolean;
+    month: number;
+    /** Hijri day of the month; with `firstFriday` the first Friday on or after it (Regaib: first Friday of Recep) */
+    day: number;
+    firstFriday?: boolean;
+    /** Days from the Hijri date (-1 = the day before; Ramazan Bayramı arefesi is the day before 1 Şevval) */
+    offset?: number;
+}
+
+export const SPECIAL_DAYS: SpecialDayDef[] = [
+    { id: 'hijriNewYear', ar: 'رأس السنة الهجرية', category: 'blessed', night: false, month: 1, day: 1 },
+    { id: 'ashura', ar: 'يوم عاشوراء', category: 'blessed', night: false, month: 1, day: 10 },
+    { id: 'mawlid', ar: 'المولد النبوي', category: 'kandil', night: true, month: 3, day: 12 },
+    { id: 'regaib', ar: 'ليلة الرغائب', category: 'kandil', night: true, month: 7, day: 1, firstFriday: true },
+    { id: 'miraj', ar: 'الإسراء والمعراج', category: 'kandil', night: true, month: 7, day: 27 },
+    { id: 'berat', ar: 'ليلة البَراءة', category: 'kandil', night: true, month: 8, day: 15 },
+    { id: 'ramadanStart', ar: 'أوّل رمضان', category: 'blessed', night: true, month: 9, day: 1 },
+    { id: 'qadr', ar: 'ليلة القَدْر', category: 'kandil', night: true, month: 9, day: 27 },
+    { id: 'ramadanArefe', ar: 'وقفة عيد الفِطر', category: 'bayram', night: false, month: 10, day: 1, offset: -1 },
+    { id: 'fitr', ar: 'عيد الفِطر', category: 'bayram', night: false, month: 10, day: 1 },
+    { id: 'tarwiyah', ar: 'يوم التَّروية', night: false, month: 12, day: 8 },
+    { id: 'arafah', ar: 'يوم عَرَفة', category: 'bayram', night: false, month: 12, day: 9 },
+    { id: 'adha', ar: 'عيد الأضحى', category: 'bayram', night: false, month: 12, day: 10 },
+];
+
+export interface SpecialDayOccurrence {
+    def: SpecialDayDef;
+    hijriYear: number;
+    /** The Gregorian day the calendar marks (local midnight) */
+    date: Date;
+    /** Gregorian day it starts on: the evening before `date` for nights, `date` itself otherwise */
+    startDate: Date;
+}
+
+const localDate = ([y, m, d]: [number, number, number]) => new Date(y, m - 1, d);
+
+const shiftDays = (date: Date, days: number) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
+
+/**
+ * The arithmetic Hijri calendar above can be a day off from Diyanet's (which sets month starts by
+ * its own calculation), and a kandil reminder a day late is wrong. Where Diyanet's published
+ * calendar is known, its date wins: key `<id>-<Hijri year>`, value the Gregorian day the calendar
+ * marks (for a night, the day after the evening it starts). Extend it each year from the dini
+ * günler takvimi; days not listed here fall back to the arithmetic calendar.
+ * Sources: Diyanet's 2027 calendar as reported in the press, e.g. Miraç Kandili "4 Ocak 2027" is the evening of 4 Jan.
+ */
+const DIYANET_DATES: Record<string, string> = {
+    'miraj-1448': '2027-01-05',
+    'berat-1448': '2027-01-23',
+    'ramadanArefe-1448': '2027-03-08',
+    'fitr-1448': '2027-03-09',
+    'tarwiyah-1448': '2027-05-14',
+    'arafah-1448': '2027-05-15',
+    'adha-1448': '2027-05-16',
+    'mawlid-1449': '2027-08-14',
 };
+
+/** Julian day number of a special day in a Hijri year */
+const specialDayJD = (def: SpecialDayDef, hy: number) => {
+    const known = DIYANET_DATES[`${def.id}-${hy}`];
+    if (known) {
+        const [y, m, d] = known.split('-').map(Number);
+        return g2jd(y, m, d);
+    }
+    let jd = h2jd(hy, def.month, def.day);
+    if (def.firstFriday) {
+        while (localDate(jd2g(jd)).getDay() !== 5) jd += 1;
+    }
+    return jd + (def.offset ?? 0);
+};
+
+/** The special day marked on a Hijri date, for the calendar screen */
+export function getSpecialDay(hy: number, hm: number, hd: number): SpecialDayDef | undefined {
+    const jd = h2jd(hy, hm, hd);
+    return SPECIAL_DAYS.find(def => specialDayJD(def, hy) === jd);
+}
+
+/** Every special day whose marked Gregorian day is in [from, to] (dates only, time ignored), in date order. */
+export function specialDaysBetween(from: Date, to: Date): SpecialDayOccurrence[] {
+    const first = localDate(jd2g(g2jd(from.getFullYear(), from.getMonth() + 1, from.getDate())));
+    const last = localDate(jd2g(g2jd(to.getFullYear(), to.getMonth() + 1, to.getDate())));
+    const [fromYear] = jd2h(g2jd(first.getFullYear(), first.getMonth() + 1, first.getDate()));
+    const [toYear] = jd2h(g2jd(last.getFullYear(), last.getMonth() + 1, last.getDate()));
+    const result: SpecialDayOccurrence[] = [];
+    for (let hy = fromYear; hy <= toYear; hy++) {
+        for (const def of SPECIAL_DAYS) {
+            const date = localDate(jd2g(specialDayJD(def, hy)));
+            if (date < first || date > last) continue;
+            result.push({ def, hijriYear: hy, date, startDate: def.night ? shiftDays(date, -1) : date });
+        }
+    }
+    return result.sort((a, b) => a.date.getTime() - b.date.getTime());
+}
 
 // ── Palettes (original "Midnight Emerald" dark + "Parchment Ink" light) ────────
 

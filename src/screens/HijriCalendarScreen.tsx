@@ -16,8 +16,8 @@ import { HijriInfoPanel } from '@/components/HijriInfoPanel';
 import { HijriTodayButton } from '@/components/HijriTodayButton';
 import { HijriNotesModal } from '@/components/HijriNotesModal';
 import {
-    EMERALD, LAPIS, MONTHS, WD, GM, EVT, NOTES_KEY, STARS,
-    jd2g, h2jd, hMonthLen, addHM, toAr, moonPhase, phaseLabel, getTodayH, noteKey,
+    EMERALD, LAPIS, MONTHS, WD, GM, NOTES_KEY, STARS,
+    jd2g, h2jd, hMonthLen, addHM, toAr, moonPhase, phaseLabel, getTodayH, noteKey, getSpecialDay,
     HijriNoteEntry,
 } from '@/utils/hijriCalendar';
 
@@ -150,7 +150,8 @@ export const HijriCalendarScreen: React.FC<{ navigation: any }> = ({ navigation 
     const [sg0, sg1, sg2] = jd2g(selJD);
     const wd = new Date(sg0, sg1 - 1, sg2).getDay();
     const selPh = moonPhase(selJD);
-    const selEv = EVT[viewM]?.[selD];
+    const selSpecial = getSpecialDay(viewY, viewM, selD);
+    const selEv = selSpecial && { ar: selSpecial.ar, tr: t(`specialDays.names.${selSpecial.id}`) };
 
     const isToday = viewY === todayH.y && viewM === todayH.m && selD === todayH.d;
     const isCurrentMonth = viewY === todayH.y && viewM === todayH.m;
@@ -267,7 +268,7 @@ export const HijriCalendarScreen: React.FC<{ navigation: any }> = ({ navigation 
                     sidePhase={sidePhase}
                     selDay={selD}
                     isDayToday={(d) => viewY === todayH.y && viewM === todayH.m && d === todayH.d}
-                    hasEvent={(d) => !!(EVT[viewM]?.[d])}
+                    hasEvent={(d) => !!getSpecialDay(viewY, viewM, d)}
                     hasNote={(d) => !!(notes[noteKey(viewY, viewM, d)]?.length)}
                     onDayPress={onDayPress}
                 />

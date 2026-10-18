@@ -7,6 +7,7 @@ import type { TFunction } from 'i18next';
 import { PrayerTime } from '@/types';
 import locations from '@/data/locations.json';
 import { getDistanceKm } from '@/utils/qibla';
+import { PlannedReminder, SpecialDayReminderSettings, planSpecialDayReminders } from '@/utils/specialDayReminders';
 import { PrayerNotification, PrayerNotificationConfig, PrayerWidgetData } from '../../modules/prayer-notification';
 
 /** Prayer times data: one JSON file per location (Diyanet times), downloaded from kuran360.com and cached. */
@@ -300,6 +301,8 @@ export interface PrayerNotificationSettings {
     fasting: { ramadan: boolean; mode: boolean; sahurBefore: number };
     /** The user's own sounds ("Seslerim"), to choose from for each prayer; `label` is the original file name */
     sounds: { name: string; label: string }[];
+    /** Reminders for kandil nights, bayrams and other blessed days (see SPECIAL_DAYS) */
+    specialDays: SpecialDayReminderSettings;
 }
 
 /** Choices for the reminder before a prayer time, in minutes (0 = none) */
@@ -321,6 +324,8 @@ const DEFAULT_NOTIFICATION_SETTINGS: PrayerNotificationSettings = {
     kaza: { enabled: false },
     fasting: { ramadan: true, mode: false, sahurBefore: 45 },
     sounds: [],
+    // On like the Cuma and Ramadan reminders: a handful of notifications a year; the less common blessed days are opt-in
+    specialDays: { enabled: true, categories: { kandil: true, bayram: true, blessed: false }, leadDays: 1 },
 };
 
 /** Kept on the device, not in the synced settings: notifications belong to the phone they ring on. */
@@ -336,6 +341,11 @@ export const getNotificationSettings = async (): Promise<PrayerNotificationSetti
         cuma: { ...defaults.cuma, ...parsed.cuma },
         kaza: { ...defaults.kaza, ...parsed.kaza },
         fasting: { ...defaults.fasting, ...parsed.fasting },
+        specialDays: {
+            ...defaults.specialDays,
+            ...parsed.specialDays,
+            categories: { ...defaults.specialDays.categories, ...parsed.specialDays?.categories },
+        },
     };
 };
 
@@ -348,7 +358,8 @@ export const hasAnyNotification = (settings: PrayerNotificationSettings) =>
     settings.cuma.enabled ||
     settings.kaza.enabled ||
     settings.fasting.ramadan ||
-    settings.fasting.mode;
+    settings.fasting.mode ||
+    (settings.specialDays.enabled && Object.values(settings.specialDays.categories).some(Boolean));
 
 export const formatLocationName = (location: { cityName: string; districtName?: string | null }) =>
     location.districtName ? `${location.cityName}, ${location.districtName}` : location.cityName;
@@ -380,10 +391,35 @@ const buildTimesData = (location: PrayerLocation, times: PrayerTime[], t: TFunct
     };
 };
 
+/** "HH:mm" akşam of a Gregorian day; the data covers one year, and maghrib moves by less than a minute from year to year, so other years use the same date. */
+const maghribOf = (times: PrayerTime[]) => (day: Date) => {
+    const sameDate = new Date(dataYear(times), day.getMonth(), day.getDate());
+    return times.find(pt => pt.date_index === dayOfYear(sameDate))?.aksam;
+};
+
+/** The text of a planned reminder: the day's name and a short line, or how soon it comes when sent ahead */
+const specialDayReminderTexts = (reminder: PlannedReminder, t: TFunction, language: string) => {
+    const { id, night } = reminder.def;
+    const title = t(`specialDays.names.${id}`);
+    if (reminder.daysBefore === 0) return { title, text: t(`specialDays.texts.${id}`) };
+    const when = reminder.daysBefore === 1 ? t('specialDays.early.tomorrow') : t('specialDays.early.inDays', { count: reminder.daysBefore });
+    if (night) return { title, text: t('specialDays.early.night', { when }) };
+    const date = reminder.date.toLocaleDateString(language, { weekday: 'long', day: 'numeric', month: 'long' });
+    return { title, text: t('specialDays.early.day', { when, date }) };
+};
+
+/** Reminders for the coming year of kandil nights and blessed days, with their texts. */
+const buildSpecialDayReminders = (times: PrayerTime[], settings: PrayerNotificationSettings, t: TFunction, language: string) =>
+    planSpecialDayReminders(new Date(), settings.specialDays, maghribOf(times)).map(reminder => ({
+        at: reminder.at.getTime(),
+        ...specialDayReminderTexts(reminder, t, language),
+    }));
+
 const buildNotificationConfig = (
     timesData: PrayerWidgetData,
     t: TFunction,
     settings: PrayerNotificationSettings,
+    reminders: PrayerNotificationConfig['reminders'],
 ): PrayerNotificationConfig => {
     const label = (key: string, values?: Record<string, string>) => t(`prayerNotifications.texts.${key}`, values);
     return {
@@ -400,6 +436,7 @@ const buildNotificationConfig = (
         // Fasting always comes with the iftar alert
         fasting: { ...settings.fasting, iftar: true },
         kerahat: KERAHAT,
+        reminders,
         texts: {
             alertAt: label('alertAt', { label: '%1' }),
             alertBefore: label('alertBefore', { label: '%1', minutes: '%2' }),
@@ -423,13 +460,14 @@ const buildNotificationConfig = (
 export const syncPrayerNotifications = async (location: PrayerLocation, t: TFunction, language: string) => {
     if (!PrayerNotification) return;
     const settings = await getNotificationSettings();
-    const timesData = buildTimesData(location, await fetchPrayerTimes(location), t, language);
+    const times = await fetchPrayerTimes(location);
+    const timesData = buildTimesData(location, times, t, language);
     await PrayerNotification.setWidgetData(JSON.stringify(timesData));
     if (!hasAnyNotification(settings)) {
         await PrayerNotification.stop();
         return;
     }
-    await PrayerNotification.start(JSON.stringify(buildNotificationConfig(timesData, t, settings)));
+    await PrayerNotification.start(JSON.stringify(buildNotificationConfig(timesData, t, settings, buildSpecialDayReminders(times, settings, t, language))));
 };
 
 /** Android 13+ asks before an app may post notifications. */

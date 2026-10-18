@@ -31,6 +31,7 @@ import { PrayerMenuScreen } from '@/screens/PrayerMenuScreen';
 import { SearchMenuScreen } from '@/screens/SearchMenuScreen';
 import { TopicSearchScreen } from '@/screens/TopicSearchScreen';
 import { MemorizationScreen } from '@/screens/MemorizationScreen';
+import { ZikirmatikScreen } from '@/screens/ZikirmatikScreen';
 import { RootVersesScreen } from '@/screens/RootVersesScreen';
 import { BugReportsScreen } from '@/screens/BugReportsScreen';
 import { ForumProvider } from '@/contexts/ForumContext';
@@ -88,12 +89,13 @@ export type RootStackParamList = {
   QuranPage: { pageNumber?: number };
   VerseFinder: undefined;
   Memorization: undefined;
+  Zikirmatik: undefined;
   RootVerses: { root: string };
   BugReports: undefined;
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'RootVerses' | 'BugReports';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'RootVerses' | 'BugReports';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -196,6 +198,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return '/verse-finder';
       case 'Memorization':
         return '/memorization';
+      case 'Zikirmatik':
+        return '/zikirmatik';
       case 'RootVerses':
         return `/root/${rootToSlug(route.params?.root ?? '')}`;
       case 'BugReports':
@@ -312,6 +316,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
     if (pathname === '/memorization') {
       return { screen: 'Memorization' };
+    }
+
+    if (pathname === '/zikirmatik') {
+      return { screen: 'Zikirmatik' };
     }
 
     if (pathname === '/bug-reports') {
@@ -464,7 +472,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = useMemo(() => ({
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'RootVerses' | 'BugReports', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'RootVerses' | 'BugReports', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -696,6 +704,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <VerseFinderScreen navigation={navigation} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'Memorization' ? (
               <MemorizationScreen navigation={navigation} isDataAvailable={isDataAvailable} />
+            ) : currentRoute.screen === 'Zikirmatik' ? (
+              <ZikirmatikScreen navigation={navigation} />
             ) : currentRoute.screen === 'RootVerses' && currentRoute.params?.root ? (
               <RootVersesScreen navigation={navigation} root={currentRoute.params.root} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'BugReports' ? (

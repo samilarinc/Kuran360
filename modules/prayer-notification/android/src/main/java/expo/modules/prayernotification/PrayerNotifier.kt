@@ -44,6 +44,8 @@ const val NOTIFICATION_ID = 36001
 private const val ALERT_NOTIFICATION_ID = 37000
 private const val KAZA_NOTIFICATION_ID = 37100
 private const val OTHER_NOTIFICATION_ID = 37200
+/** Kandil and blessed-day reminders: 1024 ids, picked from the reminder's time and title */
+private const val SPECIAL_NOTIFICATION_ID = 38000
 private const val EXTRA_AT = "at"
 private const val EXTRA_INDEX = "index"
 private const val EXTRA_DATE = "date"
@@ -64,6 +66,9 @@ private val TIME_IDS = intArrayOf(R.id.prayer_time_0, R.id.prayer_time_1, R.id.p
 
 /** One day of the config: "yyyy-MM-dd", six "HH:mm" times, the date line shown under them and whether it is in Ramadan. */
 internal class Day(val date: String, val times: List<String>, val info: String, val ramadan: Boolean)
+
+/** A kandil or blessed-day reminder, due at epoch millis `at`, with its translated title and text. */
+internal class Reminder(val at: Long, val title: String, val text: String)
 
 /** Texts from JS, already translated; `%1` is replaced with a prayer's name, `%2` with minutes. */
 internal class Texts(
@@ -110,12 +115,24 @@ internal class Config(
   val kerahatBeforeAksam: Int,
   val texts: Texts,
   val days: Map<String, Day>,
+  /** Kandil nights and blessed days, soonest first; not tied to the prayer times */
+  val reminders: List<Reminder>,
 )
 
-private enum class AlertKind { PRAYER, CUMA, SAHUR, IFTAR, KAZA_CHECK }
+private enum class AlertKind { PRAYER, CUMA, SAHUR, IFTAR, KAZA_CHECK, SPECIAL }
 
 /** One scheduled alert, due `at`, about prayer `index` at `time` ("HH:mm") on `date`. */
-private class Alert(val at: Long, val kind: AlertKind, val index: Int, val minutesBefore: Int, val time: String, val date: String)
+private class Alert(
+  val at: Long,
+  val kind: AlertKind,
+  val index: Int,
+  val minutesBefore: Int,
+  val time: String,
+  val date: String,
+  /** SPECIAL alerts carry their own texts */
+  val title: String = "",
+  val text: String = "",
+)
 
 /** What the ongoing notification shows at a given moment. */
 internal class State(
@@ -251,6 +268,11 @@ object PrayerNotifier {
     val kaza = obj.optJSONObject("kaza")
     val fasting = obj.optJSONObject("fasting")
     val kerahat = obj.optJSONObject("kerahat")
+    val remindersArr = obj.optJSONArray("reminders")
+    val reminders = List(remindersArr?.length() ?: 0) {
+      val r = remindersArr!!.getJSONObject(it)
+      Reminder(r.getLong("at"), r.getString("title"), r.optString("text"))
+    }
     return Config(
       location = obj.getString("location"),
       labels = labels,
@@ -283,6 +305,7 @@ object PrayerNotifier {
         kazaLabels = if (kazaLabels?.size == PRAYER_COUNT) kazaLabels else labels,
       ),
       days = days,
+      reminders = reminders,
     )
   }
 
@@ -509,14 +532,20 @@ object PrayerNotifier {
     return result
   }
 
-  /** The first alert due after `from`, looking at today and the next two days. */
+  private fun reminderAlert(reminder: Reminder) =
+    Alert(reminder.at, AlertKind.SPECIAL, 0, 0, "", "", reminder.title, reminder.text)
+
+  /** The first alert due after `from`: prayer alerts of today and the next two days, or a kandil / blessed-day reminder. */
   private fun nextAlert(context: Context, config: Config, from: Long): Alert? {
+    var prayerAlert: Alert? = null
     for (offset in 0..2) {
       val dayStart = startOfDay(from, offset)
       val day = config.days[dateKey(dayStart)] ?: continue
-      alertsOf(context, config, dayStart, day).filter { it.at > from }.minByOrNull { it.at }?.let { return it }
+      prayerAlert = alertsOf(context, config, dayStart, day).filter { it.at > from }.minByOrNull { it.at }
+      if (prayerAlert != null) break
     }
-    return null
+    val reminder = config.reminders.filter { it.at > from }.minByOrNull { it.at }?.let { reminderAlert(it) }
+    return listOfNotNull(prayerAlert, reminder).minByOrNull { it.at }
   }
 
   /** One alarm at a time: the next alert, which schedules the one after it when it fires. */
@@ -551,11 +580,16 @@ object PrayerNotifier {
         due.filterNot { cuma && it.kind == AlertKind.PRAYER && it.index == OGLE && it.minutesBefore > 0 }
           .forEach { showAlert(context, config, it) }
       }
+      config.reminders.filter { it.at == at }.forEach { showAlert(context, config, reminderAlert(it)) }
     }
     scheduleNextAlert(context, config, maxOf(now, at))
   }
 
   private fun showAlert(context: Context, config: Config, alert: Alert) {
+    if (alert.kind == AlertKind.SPECIAL) {
+      showSpecialAlert(context, alert)
+      return
+    }
     val texts = config.texts
     val label = config.labels[alert.index]
     fun format(template: String, name: String = label) = template.replace("%1", name).replace("%2", alert.minutesBefore.toString())
@@ -565,6 +599,7 @@ object PrayerNotifier {
       AlertKind.SAHUR -> format(texts.sahur) to OTHER_NOTIFICATION_ID + 1
       AlertKind.IFTAR -> format(texts.iftar) to OTHER_NOTIFICATION_ID + 2
       AlertKind.KAZA_CHECK -> format(texts.kaza, texts.kazaLabels[alert.index]) to KAZA_NOTIFICATION_ID + alert.index
+      AlertKind.SPECIAL -> alert.title to SPECIAL_NOTIFICATION_ID // shown by showSpecialAlert, never here
     }
     // Cuma, sahur and iftar sound like öğle, imsak and akşam
     val sound = config.alertSound[alert.index]
@@ -590,6 +625,29 @@ object PrayerNotifier {
     notificationManager(context).notify(notificationId, builder.build())
   }
 
+  /** A kandil or blessed-day reminder: the default alert sound, whatever the prayers are set to. */
+  private fun showSpecialAlert(context: Context, alert: Alert) {
+    @Suppress("DEPRECATION")
+    val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      Notification.Builder(context, ensureAlertChannel(context, "default"))
+    } else {
+      Notification.Builder(context).setPriority(Notification.PRIORITY_HIGH).also { legacySound(context, it, "default") }
+    }
+    builder
+      .setSmallIcon(R.drawable.ic_stat_prayer)
+      .setColor(0xFF2E7D32.toInt())
+      .setContentTitle(alert.title)
+      .setContentText(alert.text)
+      .setStyle(Notification.BigTextStyle().bigText(alert.text))
+      .setCategory(Notification.CATEGORY_REMINDER)
+      .setVisibility(Notification.VISIBILITY_PUBLIC)
+      .setAutoCancel(true)
+      .setContentIntent(launchIntent(context))
+    // One id per reminder, so an early reminder and the one on the day don't replace each other
+    val id = SPECIAL_NOTIFICATION_ID + ((alert.title.hashCode() xor alert.at.hashCode()) and 0x3FF)
+    notificationManager(context).notify(id, builder.build())
+  }
+
   private fun customSoundUri(context: Context, sound: String): Uri? =
     if (sound in listOf("default", "vibrate", "silent")) null else PrayerSoundProvider.uri(context, sound)
 
@@ -598,7 +656,8 @@ object PrayerNotifier {
   /** Android fixes a channel's sound when it is created, so each sound gets its own channel; drops the ones no prayer uses any more. */
   private fun removeUnusedAlertChannels(context: Context, config: Config) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-    val used = config.alertSound.map { alertChannelId(it) }.toSet()
+    // The default channel also carries the kandil reminders
+    val used = config.alertSound.map { alertChannelId(it) }.toSet() + alertChannelId("default")
     val manager = notificationManager(context)
     manager.notificationChannels
       .filter { (it.id.startsWith(ALERT_CHANNEL_PREFIX) || it.id == "prayer_times_alerts") && it.id !in used }
