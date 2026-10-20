@@ -13,13 +13,11 @@ import { useUserData } from '@/contexts/UserDataContext';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
 import { useTranslation } from 'react-i18next';
 import { Surah, Verse as VerseType } from '@/types';
+import { SURAH_FONT_SIZE } from '@/constants/fonts';
 import { loadSurah } from '@/data/quranData';
 import logger from '@/utils/logger';
 import { getSurahName } from '@/utils/surahName';
 
-const MIN_FONT_SIZE = 18;
-const MAX_FONT_SIZE = 44;
-const FONT_SIZE_STEP = 2;
 // A verse counts as last read once it has stayed in view this long, so scrolling past doesn't save
 const LAST_READ_SAVE_DELAY_MS = 3000;
 
@@ -279,8 +277,8 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   // Memoize styles to prevent re-creation on every render
 
   const fontSize = settings.surahFontSize;
-  const decreaseFontSize = () => updateSettings({ surahFontSize: Math.max(MIN_FONT_SIZE, fontSize - FONT_SIZE_STEP) });
-  const increaseFontSize = () => updateSettings({ surahFontSize: Math.min(MAX_FONT_SIZE, fontSize + FONT_SIZE_STEP) });
+  const decreaseFontSize = () => updateSettings({ surahFontSize: Math.max(SURAH_FONT_SIZE.min, fontSize - SURAH_FONT_SIZE.step) });
+  const increaseFontSize = () => updateSettings({ surahFontSize: Math.min(SURAH_FONT_SIZE.max, fontSize + SURAH_FONT_SIZE.step) });
 
   return (
     <SafeAreaView style={common.container}>
@@ -302,8 +300,8 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               <FontSizeToggle
                 onDecrease={decreaseFontSize}
                 onIncrease={increaseFontSize}
-                disabledDecrease={fontSize <= MIN_FONT_SIZE}
-                disabledIncrease={fontSize >= MAX_FONT_SIZE}
+                disabledDecrease={fontSize <= SURAH_FONT_SIZE.min}
+                disabledIncrease={fontSize >= SURAH_FONT_SIZE.max}
                 labels={{
                   decrease: t('surahDetailScreen.decreaseFontSize'),
                   increase: t('surahDetailScreen.increaseFontSize'),

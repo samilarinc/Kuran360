@@ -3,19 +3,24 @@ import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Alert, Platform
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import {
-    BookOpen, CheckCircle2, ChevronLeft, ChevronRight, CircleDot, ListChecks, PenLine, Plus, Repeat, RotateCcw, SkipForward, Target, Trash2, Undo2,
+    BookOpen, CheckCircle2, ChevronLeft, ChevronRight, CircleDot, ListChecks, PenLine, Plus, Repeat, RotateCcw, Target, Trash2, Undo2,
 } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { ArabicText } from '@/components/ArabicText';
 import { DhikrForm } from '@/components/DhikrForm';
+import { DhikrAudioBar } from '@/components/DhikrAudioBar';
 import { DhikrTargetPicker } from '@/components/DhikrTargetPicker';
 import { LoadingView } from '@/components/LoadingView';
 import { MenuListRow } from '@/components/MenuListRow';
 import { ProgressBar } from '@/components/ProgressBar';
+import { SearchFilterPill } from '@/components/SearchFilterPill';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
+import { useGlobalAudio } from '@/contexts/AudioContext';
+import { DHIKR_AUDIO } from '@/data/dhikrAudio';
 import { DHIKR_PRESETS, DhikrStep, FREE_COUNTER_ID } from '@/data/dhikrPresets';
+import { useDhikrAudio } from '@/hooks/useDhikrAudio';
 import {
     advance,
     clampProgress,
@@ -25,9 +30,13 @@ import {
     EMPTY_STATE,
     getProgressFraction,
     loadState,
+    previous,
+    reset,
+    progressAtTime,
     resolvePreset,
     saveState,
     tap,
+    timeAtProgress,
     undo,
     ZikirmatikState,
 } from '@/services/zikirmatik';
@@ -48,6 +57,7 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
     const { t, i18n } = useTranslation();
     const styles = useThemedStyles(createStyles);
     const { goToSurahVerse } = useNavigationHelpers();
+    const verseAudio = useGlobalAudio();
 
     const [state, setState] = useState<ZikirmatikState>(EMPTY_STATE);
     const [loaded, setLoaded] = useState(false);
@@ -78,6 +88,53 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
     const setProgress = (id: string, next: DhikrProgress) => {
         const current = stateRef.current;
         commit({ ...current, progress: { ...current.progress, [id]: next } });
+    };
+
+    const audio = activeId ? DHIKR_AUDIO[activeId] : undefined;
+    // Where the recording last moved the counter, so it only writes when it moves on
+    const followedRef = useRef<DhikrProgress | null>(null);
+
+    const followAudio = (seconds: number) => {
+        if (!preset || !activeId || !audio) return;
+        const next = progressAtTime(preset, audio, seconds);
+        const last = followedRef.current;
+        if (last && last.step === next.step && last.count === next.count) return;
+        followedRef.current = next;
+        if (last && next.count > 0) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => { });
+        setProgress(activeId, next);
+    };
+
+    const finishWithAudio = () => {
+        if (!preset || !activeId) return;
+        const lastStep = preset.steps.length - 1;
+        setProgress(activeId, { step: lastStep, count: preset.steps[lastStep].count ?? 0, done: true });
+    };
+
+    const player = useDhikrAudio(audio?.url ?? null, state.audioRate, followAudio, finishWithAudio);
+
+    const toggleAudio = () => {
+        if (!preset || !audio) return;
+        if (player.state.isPlaying) {
+            player.pause();
+            return;
+        }
+        if (verseAudio.audioState.isPlaying) verseAudio.pause();
+        // Resume where it paused if the counter is still there; otherwise start from where the counter is
+        const atPause = player.state.duration > 0 ? progressAtTime(preset, audio, player.state.position) : null;
+        const inSync = atPause && atPause.step === progress.step && atPause.count === progress.count;
+        followedRef.current = null;
+        player.play(inSync ? undefined : (progress.done ? 0 : timeAtProgress(preset, audio, progress) ?? 0));
+    };
+
+    /** Sets progress from a button (previous, next, reset...), taking the recording along to that step. */
+    const moveTo = (next: DhikrProgress) => {
+        if (!preset || !activeId) return;
+        setProgress(activeId, next);
+        const at = audio && !next.done ? timeAtProgress(preset, audio, next) : null;
+        if (at !== null && player.state.duration > 0) {
+            followedRef.current = next;
+            player.seek(at);
+        }
     };
 
     const open = (id: string) => {
@@ -142,6 +199,7 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
             const { [activeId]: _progress, ...progressRest } = current.progress;
             const { [activeId]: _target, ...targetsRest } = current.targets;
             commit({
+                ...current,
                 activeId: null,
                 custom: current.custom.filter(c => CUSTOM_PREFIX + c.id !== activeId),
                 progress: progressRest,
@@ -242,8 +300,20 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
     const target = step.count ?? 0;
     const meaning = stepText(step.id, 'meaning');
     const note = stepText(step.id, 'note');
-    const hasText = !!(step.arabic || step.transliteration || meaning || note || step.verse);
+    const shown = step.last && target > 0 && progress.count === target - 1 ? { ...step, ...step.last } : step;
+    // One script at a time, falling back to the other when a step is written only in that
+    const showArabic = !!shown.arabic && (state.textMode === 'arabic' || !shown.transliteration);
+    const transliteration = showArabic ? undefined : shown.transliteration;
+    const hasText = !!(shown.arabic || shown.transliteration || meaning || note || step.verse);
+    const hasBothScripts = preset.steps.some(s => s.arabic && s.transliteration);
     const isLast = progress.step === preset.steps.length - 1;
+    const atStart = progress.step === 0 && progress.count === 0;
+    // The recording covers part of the preset: its player shows on those steps, a note before them
+    const firstRecordedStep = audio ? preset.steps.findIndex(s => audio.timeline[s.id]) : -1;
+    const showPlayer = !!audio && !progress.done && !!audio.timeline[step.id];
+    const beforeRecording = !!audio && !progress.done && progress.step < firstRecordedStep;
+    // While the recording plays it drives the counter; pausing hands it back
+    const locked = player.state.isPlaying;
     const overall = getProgressFraction(preset, progress) * 100;
 
     return (
@@ -256,6 +326,18 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                 onHomePress={() => navigation.navigate('Main')}
             />
             <View style={styles.counterContainer}>
+                {hasBothScripts && (
+                    <View style={styles.textModeRow}>
+                        {(['arabic', 'transliteration'] as const).map(mode => (
+                            <SearchFilterPill
+                                key={mode}
+                                label={t(`zikirmatik.textMode.${mode}`)}
+                                selected={state.textMode === mode}
+                                onPress={() => commit({ ...stateRef.current, textMode: mode })}
+                            />
+                        ))}
+                    </View>
+                )}
                 {multiStep && (
                     <View>
                         <View style={styles.stepRow}>
@@ -267,11 +349,27 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                         <ProgressBar progress={overall} style={common.mtSm} />
                     </View>
                 )}
+                {showPlayer && (
+                    <DhikrAudioBar
+                        title={t('zikirmatik.audio.title', { reciter: audio.reciter })}
+                        hint={t('zikirmatik.audio.hint')}
+                        state={player.state}
+                        rate={state.audioRate}
+                        onToggle={toggleAudio}
+                        onSeek={player.seek}
+                        onRateChange={audioRate => commit({ ...stateRef.current, audioRate })}
+                    />
+                )}
+                {beforeRecording && (
+                    <Text style={common.smallText}>
+                        {t('zikirmatik.audio.startsAt', { reciter: audio.reciter, step: firstRecordedStep + 1 })}
+                    </Text>
+                )}
 
                 <ScrollView style={common.flex1} contentContainerStyle={styles.textScroll} showsVerticalScrollIndicator={false}>
                     <View style={styles.textCard}>
-                        {step.arabic && <ArabicText style={styles.arabic}>{step.arabic}</ArabicText>}
-                        {step.transliteration && <Text style={styles.transliteration}>{step.transliteration}</Text>}
+                        {showArabic && <ArabicText style={styles.arabic}>{shown.arabic}</ArabicText>}
+                        {transliteration && <Text style={styles.transliteration}>{transliteration}</Text>}
                         {meaning ? <Text style={styles.meaning}>{meaning}</Text> : null}
                         {note ? <Text style={styles.note}>{note}</Text> : null}
                         {step.verse && (
@@ -299,7 +397,7 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                                 <AppButton
                                     title={t('zikirmatik.restart')}
                                     icon={<RotateCcw size={16} color="#FFFFFF" />}
-                                    onPress={() => setProgress(activeId, EMPTY_PROGRESS)}
+                                    onPress={() => moveTo(EMPTY_PROGRESS)}
                                 />
                                 <AppButton title={t('zikirmatik.backToList')} variant="outline" onPress={closePreset} />
                             </View>
@@ -321,8 +419,9 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                                 </>
                             )}
                             <TouchableOpacity
-                                style={styles.tapButton}
+                                style={[styles.tapButton, locked && common.disabled]}
                                 onPress={handleTap}
+                                disabled={locked}
                                 activeOpacity={0.85}
                                 accessibilityLabel={t('zikirmatik.tapToCount')}
                             >
@@ -331,29 +430,41 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                             </TouchableOpacity>
                             <ProgressBar progress={(progress.count / target) * 100} style={{ alignSelf: 'stretch' }} />
                             <View style={styles.buttonRow}>
+                                {multiStep && (
+                                    <AppButton
+                                        title={t('zikirmatik.previous')}
+                                        icon={<ChevronLeft size={16} color={theme.primary} />}
+                                        variant="ghost"
+                                        size="small"
+                                        onPress={() => moveTo(previous(progress))}
+                                        disabled={locked || progress.step === 0}
+                                    />
+                                )}
                                 <AppButton
                                     title={t('zikirmatik.undo')}
                                     icon={<Undo2 size={16} color={theme.primary} />}
                                     variant="outline"
                                     size="small"
                                     onPress={() => setProgress(activeId, undo(preset, progress))}
-                                    disabled={progress.step === 0 && progress.count === 0}
+                                    disabled={locked || progress.count === 0}
                                 />
                                 <AppButton
                                     title={t('zikirmatik.reset')}
                                     icon={<RotateCcw size={16} color={theme.primary} />}
                                     variant="outline"
                                     size="small"
-                                    onPress={() => setProgress(activeId, EMPTY_PROGRESS)}
-                                    disabled={progress.step === 0 && progress.count === 0}
+                                    onPress={() => moveTo(reset(progress))}
+                                    disabled={locked || atStart}
                                 />
                                 {multiStep && (
                                     <AppButton
-                                        title={t('zikirmatik.skip')}
-                                        icon={<SkipForward size={16} color={theme.primary} />}
+                                        title={t('zikirmatik.next')}
+                                        icon={<ChevronRight size={16} color={theme.primary} />}
+                                        iconPosition="right"
                                         variant="ghost"
                                         size="small"
-                                        onPress={() => setProgress(activeId, advance(preset, progress))}
+                                        onPress={() => moveTo(advance(preset, progress))}
+                                        disabled={locked}
                                     />
                                 )}
                             </View>
@@ -364,17 +475,21 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                                 title={t('zikirmatik.previous')}
                                 icon={<ChevronLeft size={18} color={theme.primary} />}
                                 variant="outline"
-                                onPress={() => setProgress(activeId, undo(preset, progress))}
-                                disabled={progress.step === 0}
+                                onPress={() => moveTo(previous(progress))}
+                                disabled={locked || progress.step === 0}
+                                style={common.flex1}
                             />
                             <AppButton
                                 title={isLast ? t('zikirmatik.finish') : t('zikirmatik.next')}
                                 icon={<ChevronRight size={18} color="#FFFFFF" />}
                                 iconPosition="right"
-                                onPress={() => setProgress(activeId, advance(preset, progress))}
+                                onPress={() => moveTo(advance(preset, progress))}
+                                disabled={locked}
+                                style={common.flex1}
                             />
                         </View>
                     )}
+                    {locked && <Text style={common.smallText}>{t('zikirmatik.audio.locked')}</Text>}
                     {isCustomActive && (
                         <AppButton
                             title={t('zikirmatik.deleteDhikr')}

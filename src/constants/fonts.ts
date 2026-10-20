@@ -101,6 +101,9 @@ export const ARABIC_FONT_OPTIONS: ArabicFontOption[] = [
   },
 ];
 
+/** Bounds of the Arabic text size in the verse list (settings.surahFontSize), also used by the duas */
+export const SURAH_FONT_SIZE = { min: 18, max: 44, step: 2 };
+
 export const DEFAULT_ARABIC_FONT_ID = 'scheherazade';
 export const DEFAULT_IMAGE_FONT_ID = 'amiri';
 

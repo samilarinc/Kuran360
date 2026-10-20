@@ -32,6 +32,7 @@ import { SearchMenuScreen } from '@/screens/SearchMenuScreen';
 import { TopicSearchScreen } from '@/screens/TopicSearchScreen';
 import { MemorizationScreen } from '@/screens/MemorizationScreen';
 import { ZikirmatikScreen } from '@/screens/ZikirmatikScreen';
+import { DuasScreen } from '@/screens/DuasScreen';
 import { RootVersesScreen } from '@/screens/RootVersesScreen';
 import { BugReportsScreen } from '@/screens/BugReportsScreen';
 import { ForumProvider } from '@/contexts/ForumContext';
@@ -90,12 +91,13 @@ export type RootStackParamList = {
   VerseFinder: undefined;
   Memorization: undefined;
   Zikirmatik: undefined;
+  Duas: { duaId?: string } | undefined;
   RootVerses: { root: string };
   BugReports: undefined;
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'RootVerses' | 'BugReports';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'Duas' | 'RootVerses' | 'BugReports';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -106,6 +108,7 @@ type NavigationHistoryItem = {
     verse?: any;
     pageNumber?: number;
     root?: string;
+    duaId?: string;
     startDataUpdate?: boolean;
   };
 };
@@ -200,6 +203,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return '/memorization';
       case 'Zikirmatik':
         return '/zikirmatik';
+      case 'Duas':
+        return route.params?.duaId ? `/duas/${route.params.duaId}` : '/duas';
       case 'RootVerses':
         return `/root/${rootToSlug(route.params?.root ?? '')}`;
       case 'BugReports':
@@ -322,6 +327,11 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       return { screen: 'Zikirmatik' };
     }
 
+    const duaMatch = pathname.match(/^\/duas(?:\/([^/]+))?$/);
+    if (duaMatch) {
+      return { screen: 'Duas', params: duaMatch[1] ? { duaId: duaMatch[1] } : undefined };
+    }
+
     if (pathname === '/bug-reports') {
       return { screen: 'BugReports' };
     }
@@ -421,7 +431,9 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         const initializeRoute = async () => {
           setIsLoadingRoute(true);
           try {
-            const initialRoute = await parseUrl(windowObj.location.pathname);
+            // Kept aside: the replaceState below changes location.pathname to '/'
+            const { pathname } = windowObj.location;
+            const initialRoute = await parseUrl(pathname);
             if (initialRoute && initialRoute.screen !== 'Main') {
               const mainRoute: NavigationHistoryItem = { screen: 'Main' };
               setNavigationHistory([mainRoute, initialRoute]);
@@ -429,9 +441,9 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               currentIndexRef.current = 1;
               // Inject Main into browser history, then push the deep-linked route
               windowObj.history.replaceState({ navIndex: 0 }, 'Kuran360', '/');
-              windowObj.history.pushState({ navIndex: 1 }, 'Kuran360', windowObj.location.pathname);
+              windowObj.history.pushState({ navIndex: 1 }, 'Kuran360', pathname);
             } else {
-              windowObj.history.replaceState({ navIndex: 0 }, 'Kuran360', windowObj.location.pathname);
+              windowObj.history.replaceState({ navIndex: 0 }, 'Kuran360', pathname);
             }
           } catch (error) {
             console.error('Error parsing initial URL:', error);
@@ -472,7 +484,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = useMemo(() => ({
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'RootVerses' | 'BugReports', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'Duas' | 'RootVerses' | 'BugReports', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -706,6 +718,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <MemorizationScreen navigation={navigation} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'Zikirmatik' ? (
               <ZikirmatikScreen navigation={navigation} />
+            ) : currentRoute.screen === 'Duas' ? (
+              <DuasScreen navigation={navigation} duaId={currentRoute.params?.duaId} />
             ) : currentRoute.screen === 'RootVerses' && currentRoute.params?.root ? (
               <RootVersesScreen navigation={navigation} root={currentRoute.params.root} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'BugReports' ? (

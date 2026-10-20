@@ -92,3 +92,6 @@ yarn-error.log
 
 # Downloaded morphology data for scripts/add_roots.py
 scripts/.cache/
+
+# Recordings are uploaded with the web deploy, not kept in git
+public/audio/

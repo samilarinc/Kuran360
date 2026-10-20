@@ -620,7 +620,8 @@
     "hutbeInfoTitle": "Bilgi",
     "hutbeInfoMessage": "Güncel hutbe henüz yüklenmedi.",
     "hutbeErrorTitle": "Hata",
-    "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin."
+    "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin.",
+    "duasDescription": "Hazır duaları ayet görünümüyle okuyun"
   },
   "zikirmatik": {
     "title": "Zikirmatik",
@@ -647,13 +648,25 @@
     "tapToCount": "Saymak için dokunun",
     "undo": "Geri al",
     "reset": "Sıfırla",
-    "skip": "Adımı geç",
     "previous": "Önceki",
     "next": "Sonraki",
     "finish": "Bitir",
     "deleteDhikr": "Bu zikri sil",
     "deleteTitle": "Zikri sil",
     "deleteConfirm": "Bu zikir ve sayacı silinsin mi?",
+    "textMode": {
+      "arabic": "Arapça",
+      "transliteration": "Okunuş"
+    },
+    "audio": {
+      "title": "{{reciter}} ile birlikte okuyun",
+      "hint": "Sayaç okuyanı takip eder, sayılar kendiliğinden ilerler",
+      "play": "Sesi oynat",
+      "pause": "Sesi duraklat",
+      "loadError": "Ses yüklenemedi, internet bağlantınızı kontrol edin",
+      "startsAt": "{{reciter}} ile sesli okuma {{step}}. adımdan başlıyor",
+      "locked": "Ses çalarken sayaç kendiliğinden ilerler; elle ilerletmek için sesi durdurun"
+    },
     "form": {
       "title": "Yeni zikir",
       "textLabel": "ZİKİR METNİ",
@@ -961,6 +974,20 @@
     ],
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
+      {
+        "date": "21 Ekim 2026",
+        "bullets": [
+          "Namazlar ve Dualar menüsüne Dualar ekranı eklendi: hazır duaları ayet görünümüyle (Arapça, okunuş ve meal) okuyabilirsiniz; ilk olarak Kadir Gecesi Kunut Duası sesiyle birlikte eklendi; ses çalarken okunan kısım ve kelime, ayetlerdeki gibi kelime kelime takip ediliyor",
+          "Tesbihatların hepsinin Arapçası eklendi; üstteki Arapça / Okunuş seçimiyle ikisi arasında geçebilirsiniz",
+          "Küçük Tesbihat artık sesli: Fâ'lem ennehû'dan itibaren Ömer Arslan'ın okuyuşunu açınca ekran okunan kısmı takip ediyor, 33'lük tevhidde sayaç kendiliğinden ilerliyor",
+          "Küçük Tesbihat'ın sesini 0.75x ile 2x arasında yavaşlatıp hızlandırabilirsiniz",
+          "Küçük Tesbihat'ta salavatın üçüncü okunuşunda metin \"kesîran kesîrâ\" ile bitecek şekilde değişiyor",
+          "Zikirmatik'te bir sonraki adıma geçtikten sonra geri dönülemiyordu; artık \"Önceki\" ile önceki adıma baştan dönebilirsiniz, \"Geri al\" yalnızca son sayımı siler",
+          "\"Sıfırla\" önce o adımın sayacını, ikinci basışta tüm tesbihatı sıfırlıyor",
+          "Kendi zikrinizi eklerken sesle yazma artık web'de de çalışıyor: Ayet Shazam'daki ses modeliyle okuduğunuz zikir metin alanına yazılıyor",
+          "Web'de bir sayfayı yenileyince adres ana sayfaya dönüyor, ikinci yenilemede ana sayfa açılıyordu; artık yenilediğiniz sayfada kalıyorsunuz"
+        ]
+      },
       {
         "date": "18 Ekim 2026",
         "bullets": [
@@ -1767,5 +1794,34 @@
     "changeVerse": "Değiştir",
     "pickerTitle": "Widget ayeti",
     "pickerConfirm": "Seç"
+  },
+  "duas": {
+    "title": "Dualar",
+    "listen": "Sesli dinleyin",
+    "listenWith": "{{reciter}} okuyuşuyla dinleyin",
+    "audioHint": "Okunan kısım vurgulanır; bir kısma dokunarak oradan dinleyin",
+    "items": {
+      "kunutKadir": {
+        "title": "Kunut Duası",
+        "description": "İskenderiye'deki Kaid İbrahim Camii'nde 2010 Kadir Gecesi okunan kunut duası; Hasan b. Ali'nin rivayet ettiği kunut ile af ve Ramazan'a veda duaları",
+        "parts": [
+          "Allah'ım! Hidayet verdiklerinle birlikte bizi de hidayete erdir. Afiyet verdiklerinle birlikte bize de afiyet ver. Dost edindiklerinle birlikte bizi de dost edin. Verdiklerini bize bereketli kıl. Hükmettiklerinin şerrinden bizi koru.",
+          "Çünkü hükmeden Sensin, Sana hükmedilmez. Senin dost edindiğin zelil olmaz, düşman olduğun aziz olmaz. Rabbimiz, Sen mübareksin, yücesin. Senden kaçıp sığınılacak yer yine ancak Sensin.",
+          "Allah'ım! Ciddi ve şaka yollu, yanlışlıkla ve bilerek yaptıklarımızı bağışla; bunların hepsi bizde var.",
+          "Allah'ım! Bizi Seni çokça anan, Sana çokça şükreden, Senden hakkıyla korkan, Sana tam itaat eden, Sana gönülden boyun eğen, Sana yalvararak yönelen kullar eyle.",
+          "Allah'ım! Tövbemizi kabul et, günahımızı yıka, duamıza icabet et, dilimizi doğrulukta sabit kıl, göğüslerimizdeki kırgınlığı çekip al. Kalplerimizden kini, nefreti ve hasedi söküp at.",
+          "Sana isyan ettik, bize mühlet verdin. Sana itaat ettik, karşılığını verdin. Sana dönersek bizi kabul edersin.",
+          "Cömert bir Rab, şükrün karşılığını veren bir Rab, bağışlayan bir Rab.",
+          "Rabbim, ne kadar halimsin! Rabbim, ne kadar merhametlisin! Rabbim, ne kadar merhametlisin! Rabbim, ne kadar halimsin! Rabbim, ne kadar bilensin! Rabbimiz! Rabbim, ne kadar halimsin! Rabbim, ne kadar merhametlisin!",
+          "Allah'ım! Sen affedicisin, cömertsin, affetmeyi seversin; bizi affet.",
+          "Affını dileriz ey Afüvv, affını! Ey Rahmân, ey Rahîm, ey Halîm, affını dileriz!",
+          "Hayatta da, ölümde de, kabirde de, diriliş anında da, Sırat'tan geçerken de, Mizan'da da, hesapta da affını dileriz. Ey Afüvv, ey Halîm, affını!",
+          "İlâhımız, Yaratanımız, Rızık verenimiz! Ağlamak değerli bir şeyin ardından olacaksa, Ramazan'ın ardından ağlamaya en layık olan biziz, ey âlemlerin Rabbi!",
+          "Ey Ramazan'ın Rabbi! Ramazan gitti; günler ve geceler geçip gitti. Bize Senden başkası kalmadı. Sen ölmeyen, ebedî diri olansın.",
+          "Allah'ım! Ramazan'dan sonra bizi lütfundan, cömertliğinden ve ikramından mahrum bırakma, ey âlemlerin Rabbi!",
+          "Allah, efendimiz Muhammed'e, ailesine ve bütün ashabına salât eylesin."
+        ]
+      }
+    }
   }
 }

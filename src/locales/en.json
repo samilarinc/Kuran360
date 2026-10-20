@@ -620,7 +620,8 @@
     "hutbeInfoTitle": "Info",
     "hutbeInfoMessage": "The latest sermon hasn't been uploaded yet.",
     "hutbeErrorTitle": "Error",
-    "hutbeErrorMessage": "Couldn't reach the sermon file. Please try again later."
+    "hutbeErrorMessage": "Couldn't reach the sermon file. Please try again later.",
+    "duasDescription": "Read ready-made duas in the verse view"
   },
   "zikirmatik": {
     "title": "Dhikr Counter",
@@ -647,13 +648,25 @@
     "tapToCount": "Tap to count",
     "undo": "Undo",
     "reset": "Reset",
-    "skip": "Skip step",
     "previous": "Previous",
     "next": "Next",
     "finish": "Finish",
     "deleteDhikr": "Delete this dhikr",
     "deleteTitle": "Delete dhikr",
     "deleteConfirm": "Delete this dhikr and its counter?",
+    "textMode": {
+      "arabic": "Arabic",
+      "transliteration": "Transliteration"
+    },
+    "audio": {
+      "title": "Recite along with {{reciter}}",
+      "hint": "The counter follows the recitation and counts by itself",
+      "play": "Play audio",
+      "pause": "Pause audio",
+      "loadError": "The audio could not be loaded; check your internet connection",
+      "startsAt": "Reciting along with {{reciter}} starts at step {{step}}",
+      "locked": "While the audio plays the counter moves by itself; pause it to move by hand"
+    },
     "form": {
       "title": "New dhikr",
       "textLabel": "DHIKR TEXT",
@@ -961,6 +974,20 @@
     ],
     "updatesSectionTitle": "Release Notes",
     "updates": [
+      {
+        "date": "October 21, 2026",
+        "bullets": [
+          "Added a Duas screen to the Prayers and Duas menu: read ready-made duas in the verse view (Arabic, transliteration and meaning), starting with the Laylat al-Qadr Qunut Dua with its recording; the part and the word being recited are followed word by word as it plays, like the verses",
+          "Every tasbihat now has its Arabic text; switch between Arabic and transliteration with the toggle at the top",
+          "Küçük Tesbihat now has audio: from Fâ'lem ennehû on, play Ömer Arslan's recitation and the screen follows along, counting the 33 tawhid by itself",
+          "You can slow down or speed up the Küçük Tesbihat audio, from 0.75x to 2x",
+          "In Küçük Tesbihat, the salawat's text switches to end with \"kesîran kesîrâ\" for its third reading",
+          "In the dhikr counter you couldn't go back after moving to the next step; \"Previous\" now takes you back to the start of the previous step, and \"Undo\" only takes back the last count",
+          "\"Reset\" first clears the current step's count, and a second press starts the whole tasbihat over",
+          "Writing your own dhikr by voice now works on the web too: the Verse Shazam speech model types what you recite into the text field",
+          "On the web, reloading a page reset the address to the home page, so a second reload opened the home page; you now stay on the page you reloaded"
+        ]
+      },
       {
         "date": "October 18, 2026",
         "bullets": [
@@ -1766,5 +1793,34 @@
     "changeVerse": "Change",
     "pickerTitle": "Widget verse",
     "pickerConfirm": "Select"
+  },
+  "duas": {
+    "title": "Duas",
+    "listen": "Listen",
+    "listenWith": "Listen to {{reciter}}",
+    "audioHint": "The part being recited is highlighted; tap a part to listen from there",
+    "items": {
+      "kunutKadir": {
+        "title": "Qunut Dua",
+        "description": "The qunut recited on Laylat al-Qadr 2010 at the Al-Qaid Ibrahim Mosque in Alexandria: the qunut narrated by Hasan ibn Ali, with prayers for pardon and a farewell to Ramadan",
+        "parts": [
+          "O Allah! Guide us among those You have guided, grant us well-being among those You have granted well-being, take us into Your care among those You have taken into Your care, bless us in what You have given, and protect us from the evil of what You have decreed.",
+          "For You decree and none decrees over You. Whoever You befriend is never humbled, and whoever You oppose is never honored. Blessed and exalted are You, our Lord. There is no refuge from You except in You.",
+          "O Allah! Forgive us what we did in earnest and in jest, by mistake and on purpose; all of that is in us.",
+          "O Allah! Make us ever remembering You, ever thankful to You, ever in awe of You, ever obedient to You, humble before You, and turning to You in earnest prayer and repentance.",
+          "O Allah! Accept our repentance, wash away our sin, answer our prayer, make our tongues speak what is right, and draw the resentment out of our chests. Remove rancor, hatred and envy from our hearts.",
+          "We disobeyed You and You gave us respite; we obeyed You and You rewarded us; and if we return to You, You accept us.",
+          "A generous Lord, an appreciative Lord, a forgiving Lord.",
+          "My Lord, how forbearing You are! My Lord, how merciful You are! My Lord, how merciful You are! My Lord, how forbearing You are! My Lord, how knowing You are! Our Lord! My Lord, how forbearing You are! My Lord, how merciful You are!",
+          "O Allah! You are pardoning and generous and You love to pardon, so pardon us.",
+          "Your pardon, O Pardoner, Your pardon! O Most Gracious, O Most Merciful, O Forbearing, Your pardon!",
+          "Your pardon in life, in death, in the grave, at the resurrection, when crossing the Sirat, at the Scale and at the reckoning. Your pardon, O Pardoner, O Forbearing!",
+          "Our God, our Creator and our Provider! If weeping is for something dear, then we are the most deserving to weep over Ramadan, O Lord of the worlds!",
+          "O Lord of Ramadan! Ramadan has gone, the days and nights have gone, and none is left for us but You. You are the Ever-Living who never dies.",
+          "O Allah! Do not deprive us of Your favor, Your bounty and Your generosity after Ramadan, O Lord of the worlds!",
+          "May Allah send blessings upon our master Muhammad, his family and all his companions."
+        ]
+      }
+    }
   }
 }

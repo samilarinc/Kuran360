@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Boxes, Mic, Square } from 'lucide-react-native';
 import { AppButton } from '@/components/AppButton';
@@ -19,7 +19,7 @@ interface DhikrFormProps {
     onCancel: () => void;
 }
 
-/** Create a custom dhikr: its text (typed, or spoken on Android) and a target. */
+/** Create a custom dhikr: its text (typed, or spoken on the web and Android) and a target. */
 export const DhikrForm: React.FC<DhikrFormProps> = ({ onSave, onCancel }) => {
     const { theme, common } = useTheme();
     const { t } = useTranslation();
@@ -45,7 +45,7 @@ export const DhikrForm: React.FC<DhikrFormProps> = ({ onSave, onCancel }) => {
                     multiline
                     textAlignVertical="top"
                 />
-                {QuranSpeech && <DhikrVoiceInput onHeard={appendHeard} />}
+                {(Platform.OS === 'web' || QuranSpeech) && <DhikrVoiceInput onHeard={appendHeard} />}
             </View>
 
             <View style={common.sectionCard}>

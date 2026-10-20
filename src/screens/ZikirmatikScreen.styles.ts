@@ -23,6 +23,11 @@ export const createStyles = (theme: Theme, common: CommonStyles) => StyleSheet.c
         padding: SPACING.md,
         gap: SPACING.md,
     },
+    textModeRow: {
+        ...common.row,
+        gap: SPACING.sm,
+        justifyContent: 'flex-end',
+    },
     stepRow: {
         ...common.rowBetween,
         gap: SPACING.md,
@@ -87,6 +92,7 @@ export const createStyles = (theme: Theme, common: CommonStyles) => StyleSheet.c
     },
     buttonRow: {
         ...common.row,
+        flexWrap: 'wrap',
         gap: SPACING.sm,
         alignSelf: 'stretch',
         justifyContent: 'center',

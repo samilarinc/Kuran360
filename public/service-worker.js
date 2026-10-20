@@ -33,7 +33,8 @@ self.addEventListener('activate', (event) => {
 // are content-addressed, so they're safe to cache-first.
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-  if (request.method !== 'GET') {
+  // Range requests (audio streaming) get 206 responses, which the Cache API can't store
+  if (request.method !== 'GET' || request.headers.has('range')) {
     return;
   }
 

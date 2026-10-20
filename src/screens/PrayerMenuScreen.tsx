@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Platform, SafeAreaView, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { CircleDot, HandHeart, Landmark, Navigation2, Scroll } from 'lucide-react-native';
+import { BookHeart, CircleDot, HandHeart, Landmark, Navigation2, Scroll } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { MenuListRow } from '@/components/MenuListRow';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -47,6 +47,14 @@ export const PrayerMenuScreen: React.FC<PrayerMenuScreenProps> = ({ navigation }
             Icon: Navigation2,
             color: '#0891B2',
             onPress: () => navigation.navigate('Qibla'),
+        },
+        {
+            id: 'duas',
+            title: t('duas.title'),
+            description: t('prayerMenu.duasDescription'),
+            Icon: BookHeart,
+            color: '#0EA5E9',
+            onPress: () => navigation.navigate('Duas'),
         },
         {
             id: 'dua-list',
