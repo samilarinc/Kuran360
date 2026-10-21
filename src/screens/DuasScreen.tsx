@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { LayoutChangeEvent, SafeAreaView, ScrollView, StyleProp, Text, TextStyle, TouchableOpacity, View } from 'react-native';
+import { LayoutChangeEvent, Linking, SafeAreaView, ScrollView, StyleProp, Text, TextStyle, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { HandHeart } from 'lucide-react-native';
+import { ExternalLink, HandHeart } from 'lucide-react-native';
+import { AppButton } from '@/components/AppButton';
 import { FontSizeToggle } from '@msarinc/ui';
 import { AppHeader } from '@/components/AppHeader';
 import { DhikrAudioBar } from '@/components/DhikrAudioBar';
@@ -82,7 +83,7 @@ export const DuasScreen: React.FC<DuasScreenProps> = ({ navigation, duaId }) => 
 };
 
 const DuaReader: React.FC<{ dua: Dua; onBack: () => void; onHome: () => void }> = ({ dua, onBack, onHome }) => {
-    const { common } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
     const { settings, updateSettings } = useSettings();
     const verseStyles = useThemedStyles(createVerseStyles);
@@ -217,6 +218,16 @@ const DuaReader: React.FC<{ dua: Dua; onBack: () => void; onHome: () => void }> 
                                 <View style={verseStyles.translationContainer}>
                                     <Text style={verseStyles.translationText}>{meanings[index]}</Text>
                                 </View>
+                            )}
+                            {part.article && (
+                                <AppButton
+                                    title={t('duas.articleLink', { title: part.article.title })}
+                                    icon={<ExternalLink size={14} color={theme.primary} />}
+                                    variant="ghost"
+                                    size="small"
+                                    style={styles.articleLink}
+                                    onPress={() => Linking.openURL(part.article!.url).catch(() => { })}
+                                />
                             )}
                         </View>
                     </TouchableOpacity>

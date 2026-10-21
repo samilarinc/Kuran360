@@ -978,6 +978,7 @@
         "date": "October 21, 2026",
         "bullets": [
           "Added a Duas screen to the Prayers and Duas menu: read ready-made duas in the verse view (Arabic, transliteration and meaning), starting with the Laylat al-Qadr Qunut Dua with its recording; the part and the word being recited are followed word by word as it plays, like the verses",
+          "Under the \"Asaynâke fe emheltenâ\" part of the Qunut Dua, a link to \"İsyan ve Kayboluş\", an essay on that part (in Turkish)",
           "Every tasbihat now has its Arabic text; switch between Arabic and transliteration with the toggle at the top",
           "Küçük Tesbihat now has audio: from Fâ'lem ennehû on, play Ömer Arslan's recitation and the screen follows along, counting the 33 tawhid by itself",
           "You can slow down or speed up the Küçük Tesbihat audio, from 0.75x to 2x",
@@ -1799,6 +1800,7 @@
     "listen": "Listen",
     "listenWith": "Listen to {{reciter}}",
     "audioHint": "The part being recited is highlighted; tap a part to listen from there",
+    "articleLink": "An essay on this part (in Turkish): {{title}}",
     "items": {
       "kunutKadir": {
         "title": "Qunut Dua",

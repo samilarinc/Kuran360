@@ -17,6 +17,9 @@ export const createStyles = (theme: Theme, common: CommonStyles) => StyleSheet.c
         marginHorizontal: SPACING.md,
         marginVertical: SPACING.sm,
     },
+    articleLink: {
+        alignSelf: 'flex-start',
+    },
     // The part being recited
     activePart: {
         borderWidth: 2,

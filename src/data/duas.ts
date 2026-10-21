@@ -16,6 +16,8 @@ export interface DuaPart {
     start?: number;
     /** Second each word of `arabic` (split at spaces) starts, for word-by-word highlighting. */
     words?: number[];
+    /** A piece written about this part, linked under its meaning. */
+    article?: { title: string; url: string };
 }
 
 export interface Dua {
@@ -64,6 +66,7 @@ export const DUAS: Dua[] = [
             {
                 start: 81.9,
                 words: [82.24, 83.92, 85.5, 87.4, 89.04, 90.3, 90.98, 92.04],
+                article: { title: 'İsyan ve Kayboluş', url: 'https://blog.msarinc.com.tr/post/isyan_ve_kaybolus' },
                 arabic: 'عَصَيْنَاكَ فَأَمْهَلْتَنَا، وَأَطَعْنَاكَ فَشَكَرْتَنَا، وَإِنْ عُدْنَا إِلَيْكَ قَبِلْتَنَا',
                 transliteration: 'Asaynâke fe emheltenâ, ve eta\'nâke fe şekertenâ, ve in udnâ ileyke kabiltenâ.',
             },

@@ -978,6 +978,7 @@
         "date": "21 Ekim 2026",
         "bullets": [
           "Namazlar ve Dualar menüsüne Dualar ekranı eklendi: hazır duaları ayet görünümüyle (Arapça, okunuş ve meal) okuyabilirsiniz; ilk olarak Kadir Gecesi Kunut Duası sesiyle birlikte eklendi; ses çalarken okunan kısım ve kelime, ayetlerdeki gibi kelime kelime takip ediliyor",
+          "Kunut Duası'nın \"Asaynâke fe emheltenâ\" bölümünün altına bu bölüm üzerine yazılmış \"İsyan ve Kayboluş\" yazısının bağlantısı eklendi",
           "Tesbihatların hepsinin Arapçası eklendi; üstteki Arapça / Okunuş seçimiyle ikisi arasında geçebilirsiniz",
           "Küçük Tesbihat artık sesli: Fâ'lem ennehû'dan itibaren Ömer Arslan'ın okuyuşunu açınca ekran okunan kısmı takip ediyor, 33'lük tevhidde sayaç kendiliğinden ilerliyor",
           "Küçük Tesbihat'ın sesini 0.75x ile 2x arasında yavaşlatıp hızlandırabilirsiniz",
@@ -1800,6 +1801,7 @@
     "listen": "Sesli dinleyin",
     "listenWith": "{{reciter}} okuyuşuyla dinleyin",
     "audioHint": "Okunan kısım vurgulanır; bir kısma dokunarak oradan dinleyin",
+    "articleLink": "Bu bölüm üzerine bir yazı: {{title}}",
     "items": {
       "kunutKadir": {
         "title": "Kunut Duası",
