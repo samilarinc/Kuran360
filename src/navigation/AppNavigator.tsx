@@ -12,6 +12,8 @@ import { ForumScreen } from '@/screens/ForumScreen';
 import { ForumThreadScreen } from '@/screens/ForumThreadScreen';
 import { RandomVerseScreen } from '@/screens/RandomVerseScreen';
 import { AllTranslationsScreen } from '@/screens/AllTranslationsScreen';
+import { TafsirScreen } from '@/screens/TafsirScreen';
+import { DataManagementScreen } from '@/screens/DataManagementScreen';
 import { HatimScreen } from '@/screens/HatimScreen';
 import { HatimDetailScreen } from '@/screens/HatimDetailScreen';
 import { PrayerTimesScreen } from '@/screens/PrayerTimesScreen';
@@ -74,6 +76,7 @@ export type RootStackParamList = {
   ForumThread: { threadId: string };
   RandomVerse: undefined;
   AllTranslations: { verse: any };
+  Tafsir: { surahNumber?: number; verseNumber?: number };
   Hatim: undefined;
   HatimDetail: { hatimId: string };
   PrayerTimes: undefined;
@@ -97,7 +100,7 @@ export type RootStackParamList = {
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'Duas' | 'RootVerses' | 'BugReports';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'Duas' | 'RootVerses' | 'BugReports' | 'Tafsir' | 'DataManagement';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -107,6 +110,8 @@ type NavigationHistoryItem = {
     lastSelectedSurah?: Surah;
     verse?: any;
     pageNumber?: number;
+    surahNumber?: number; // Tafsir
+    verseNumber?: number; // Tafsir
     root?: string;
     duaId?: string;
     startDataUpdate?: boolean;
@@ -209,6 +214,12 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return `/root/${rootToSlug(route.params?.root ?? '')}`;
       case 'BugReports':
         return '/bug-reports';
+      case 'DataManagement':
+        return '/data';
+      case 'Tafsir': {
+        const { surahNumber, verseNumber } = route.params ?? {};
+        return `/tafsir${surahNumber ? `/${surahNumber}${verseNumber ? `/${verseNumber}` : ''}` : ''}`;
+      }
       default:
         return '/';
     }
@@ -323,6 +334,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
       return { screen: 'Memorization' };
     }
 
+    if (pathname === '/data') {
+      return { screen: 'DataManagement' };
+    }
+
     if (pathname === '/zikirmatik') {
       return { screen: 'Zikirmatik' };
     }
@@ -345,6 +360,14 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     const pageMatch = pathname.match(/^\/page\/(\d+)$/);
     if (pageMatch) {
       return { screen: 'QuranPage', params: { pageNumber: parseInt(pageMatch[1], 10) } };
+    }
+
+    // Tafsir reading: /tafsir, /tafsir/2 (a surah), /tafsir/2/255 (opened at a verse)
+    const tafsirMatch = pathname.match(/^\/tafsir(?:\/(\d+)(?:\/(\d+))?)?$/);
+    if (tafsirMatch) {
+      const surahNumber = tafsirMatch[1] ? parseInt(tafsirMatch[1], 10) : undefined;
+      const verseNumber = tafsirMatch[2] ? parseInt(tafsirMatch[2], 10) : undefined;
+      return { screen: 'Tafsir', params: surahNumber && surahNumber <= 114 ? { surahNumber, verseNumber } : {} };
     }
 
     // Check for verse-specific URLs: /surah/1/verse/3
@@ -484,7 +507,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = useMemo(() => ({
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'Duas' | 'RootVerses' | 'BugReports', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'Duas' | 'RootVerses' | 'BugReports' | 'Tafsir' | 'DataManagement', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -536,40 +559,33 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     }
   }, [currentIndex, navigation]);
 
-  // Function to update the URL with verse information without creating a new navigation entry
-  const updateVerseUrl = useCallback((surah: Surah, verseIndex?: number) => {
-    if (Platform.OS === 'web') {
-      const route: NavigationHistoryItem = {
-        screen: 'SurahDetail',
-        params: { surah, verseIndex }
-      };
-      const url = buildUrl(route);
-      const windowObj = getWindow();
-      if (windowObj && windowObj.history) {
-        try {
-          const doc = (globalThis as any).document;
-          if (doc) doc.title = 'Kuran360';
-        } catch { }
-        windowObj.history.replaceState({ navIndex: currentIndexRef.current }, 'Kuran360', url);
-      }
+  // Replaces the URL of the current entry, for screens whose position changes in place (no new history entries)
+  const replaceRouteUrl = useCallback((route: NavigationHistoryItem) => {
+    if (Platform.OS !== 'web') return;
+    const windowObj = getWindow();
+    if (windowObj && windowObj.history) {
+      try {
+        const doc = (globalThis as any).document;
+        if (doc) doc.title = 'Kuran360';
+      } catch { }
+      windowObj.history.replaceState({ navIndex: currentIndexRef.current }, 'Kuran360', buildUrl(route));
     }
   }, [buildUrl]);
 
-  // Turning a mushaf page updates the URL in place instead of pushing new history entries
+  // Scrolling a surah updates the URL with the verse
+  const updateVerseUrl = useCallback((surah: Surah, verseIndex?: number) => {
+    replaceRouteUrl({ screen: 'SurahDetail', params: { surah, verseIndex } });
+  }, [replaceRouteUrl]);
+
+  // Turning a mushaf page
   const updatePageUrl = useCallback((pageNumber: number) => {
-    if (Platform.OS === 'web') {
-      const route: NavigationHistoryItem = { screen: 'QuranPage', params: { pageNumber } };
-      const url = buildUrl(route);
-      const windowObj = getWindow();
-      if (windowObj && windowObj.history) {
-        try {
-          const doc = (globalThis as any).document;
-          if (doc) doc.title = 'Kuran360';
-        } catch { }
-        windowObj.history.replaceState({ navIndex: currentIndexRef.current }, 'Kuran360', url);
-      }
-    }
-  }, [buildUrl]);
+    replaceRouteUrl({ screen: 'QuranPage', params: { pageNumber } });
+  }, [replaceRouteUrl]);
+
+  // Picking another surah on the tafsir screen
+  const updateTafsirUrl = useCallback((surahNumber: number) => {
+    replaceRouteUrl({ screen: 'Tafsir', params: { surahNumber } });
+  }, [replaceRouteUrl]);
 
   const handleSurahSelect = (surah: Surah) => {
     // Update the current Home route to remember the selected surah
@@ -659,7 +675,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
                 isDataAvailable={isDataAvailable}
               />
             ) : currentRoute.screen === 'Settings' ? (
-              <SettingsScreen navigation={navigation} startDataUpdate={currentRoute.params?.startDataUpdate} />
+              <SettingsScreen navigation={navigation} />
             ) : currentRoute.screen === 'Search' ? (
               <SearchScreen navigation={navigation} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'About' ? (
@@ -674,6 +690,15 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <RandomVerseScreen navigation={navigation} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'AllTranslations' && currentRoute.params?.verse ? (
               <AllTranslationsScreen navigation={navigation} route={{ params: { verse: currentRoute.params.verse } }} />
+            ) : currentRoute.screen === 'DataManagement' ? (
+              <DataManagementScreen navigation={navigation} startDataUpdate={currentRoute.params?.startDataUpdate} />
+            ) : currentRoute.screen === 'Tafsir' ? (
+              <TafsirScreen
+                navigation={navigation}
+                surahNumber={currentRoute.params?.surahNumber}
+                verseNumber={currentRoute.params?.verseNumber}
+                updateTafsirUrl={updateTafsirUrl}
+              />
             ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
               <SurahDetailScreen
                 navigation={navigation}

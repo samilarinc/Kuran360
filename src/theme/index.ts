@@ -90,6 +90,9 @@ export const FONT_SIZES = {
 export const FAVORITE_COLOR = '#FFD700';
 export const FAVORITE_COLOR_DARK = '#B8860B';
 
+// Tafsir accent: the verse's tafsir button, the main menu entry and the settings section
+export const TAFSIR_COLOR = '#0EA5E9';
+
 /** The app's colors in @msarinc/ui's palette shape, so library components (header toggles, menus) match the app. */
 const toLibraryPalette = (theme: Theme): Palette => ({
     background: theme.background,

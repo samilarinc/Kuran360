@@ -11,7 +11,7 @@ import {
 } from '@/utils/topicSearch';
 import { Platform } from 'react-native';
 import { File } from 'expo-file-system';
-import { areFilesCached, downloadFiles, getLocalPath, getModelDir } from '@/services/verseModels';
+import { areFilesCached, deleteFiles, downloadFiles, getLocalPath, getModelDir } from '@/services/verseModels';
 import { QuranSpeech } from '../../modules/quran-speech';
 
 /**
@@ -209,6 +209,12 @@ const getVerseTable = (): Promise<VerseTable> => {
 };
 
 /** Warms up the index and verse data so the first search is quick. */
+/** Frees the loaded model and removes its files (and on Android the verse vectors downloaded with it). */
+export const deleteTopicModel = async (): Promise<void> => {
+    embeddingModel.unload();
+    await deleteFiles(TOPIC_MODEL_FILES);
+};
+
 export const prepareTopicSearch = (): Promise<void> =>
     Promise.all([getDenseIndex(), getVerseTable()]).then(() => undefined);
 

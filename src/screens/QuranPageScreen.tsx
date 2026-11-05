@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,9 @@ import {
   SafeAreaView,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
+import { Pause, Play } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { FontSizeToggle } from '@msarinc/ui';
 import { ArabicText } from '@/components/ArabicText';
@@ -15,9 +17,10 @@ import { LoadingView } from '@/components/LoadingView';
 import { TranslationPickerModal, TranslationPickerOption } from '@/components/TranslationPickerModal';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useSettings } from '@/contexts/SettingsContext';
+import { useGlobalAudio } from '@/contexts/AudioContext';
 import { Verse as VerseType, WordTranslation } from '@/types';
 import { loadSurah } from '@/data/quranData';
-import { getVerseRangesForPage, TOTAL_MUSHAF_PAGES } from '@/data/pageMapping';
+import { getPageForVerse, getVerseRangesForPage, TOTAL_MUSHAF_PAGES } from '@/data/pageMapping';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
 import { getSpacedArabicText, getWordSegments } from '@/utils/arabicText';
@@ -65,6 +68,48 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
   const { t } = useTranslation();
   const { settings, updateSettings, availableTranslations } = useSettings();
   const styles = useThemedStyles(createStyles);
+  const { audioState, playVerse, stop, togglePlayPause, setVersesForAutoplay } = useGlobalAudio();
+
+  const playing = audioState.currentVerse;
+  const isOnPage = (verse: { surahNumber: number; number: number } | null) =>
+    !!verse && segments.some(seg => seg.surahNumber === verse.surahNumber && seg.verses.some(v => v.number === verse.number));
+  const isPlayingVerse = (verse: VerseType) =>
+    playing?.surahNumber === verse.surahNumber && playing?.number === verse.number;
+
+  // Tapping a verse plays it (or stops it while it plays). Autoplay then runs through the verse's whole surah, not
+  // just this page, so the recitation carries on across pages.
+  const handleVersePress = async (verse: VerseType) => {
+    if (isPlayingVerse(verse) && audioState.isPlaying) {
+      stop();
+      return;
+    }
+    const surah = await loadSurah(verse.surahNumber);
+    if (surah) setVersesForAutoplay(surah.verses);
+    playVerse(verse);
+  };
+
+  // The pager's play button: pauses or resumes a verse of this page, otherwise reads the page from its first verse
+  const handlePagePlay = () => {
+    if (isOnPage(playing)) {
+      togglePlayPause();
+    } else if (segments[0]?.verses[0]) {
+      handleVersePress(segments[0].verses[0]);
+    }
+  };
+  const pagePlaying = isOnPage(playing) && audioState.isPlaying;
+
+  // Follow the recitation: when the verse after one on this page is on another page, turn to it. Turning pages by
+  // hand while it plays elsewhere doesn't pull the reader back.
+  const lastPlayedRef = useRef(playing);
+  useEffect(() => {
+    const previous = lastPlayedRef.current;
+    lastPlayedRef.current = playing;
+    if (!playing || !previous || isOnPage(playing) || !isOnPage(previous)) return;
+    const page = getPageForVerse(playing.surahNumber, playing.number);
+    if (page) setPageNumber(page);
+    // Only the playing verse changing matters here
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playing?.surahNumber, playing?.number]);
 
   const translationOptions: TranslationPickerOption[] = useMemo(() => [
     { id: NO_TRANSLATION_ID, label: t('quranPageScreen.noTranslation') },
@@ -188,10 +233,15 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
                   >
                     {segment.verses.map(verse => (
                       <React.Fragment key={verse.number}>
-                        {getSpacedArabicText(verse)}
-                        {'\u00A0'}
-                        <Text style={[styles.verseNumberMark, { fontSize: Math.max(14, fontSize * 0.6) }]}>
-                          {`\ufd3f${formatVerseNumber(verse.number, settings.verseNumberStyle)}\ufd3e`}
+                        <Text
+                          style={isPlayingVerse(verse) && styles.playingVerse}
+                          onPress={() => handleVersePress(verse)}
+                        >
+                          {getSpacedArabicText(verse)}
+                          {'\u00A0'}
+                          <Text style={[styles.verseNumberMark, { fontSize: Math.max(14, fontSize * 0.6) }]}>
+                            {`\ufd3f${formatVerseNumber(verse.number, settings.verseNumberStyle)}\ufd3e`}
+                          </Text>
                         </Text>
                         {' '}
                       </React.Fragment>
@@ -203,12 +253,13 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
                   // directly underneath it, naturally spanning about the same width as the verse.
                   <View style={styles.versesRow}>
                     {segment.verses.map(verse => (
-                      <View key={verse.number} style={styles.verseColumn}>
+                      <View key={verse.number} style={[styles.verseColumn, isPlayingVerse(verse) && styles.playingVerse]}>
                         <ArabicText
                           style={[
                             styles.verseColumnArabicText,
                             { fontSize, lineHeight: fontSize * 2.2 },
                           ]}
+                          onPress={() => handleVersePress(verse)}
                         >
                           {getSpacedArabicText(verse)}
                           {'\u00A0'}
@@ -255,6 +306,20 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
           <Text style={common.textStrong}>{t('quranPageScreen.previousPage')}</Text>
         </TouchableOpacity>
 
+        <View style={[common.row, common.gapSm]}>
+          <TouchableOpacity
+            style={styles.playButton}
+            onPress={handlePagePlay}
+            accessibilityLabel={t(pagePlaying ? 'quranPageScreen.pause' : 'quranPageScreen.playPage')}
+          >
+            {isOnPage(playing) && audioState.isLoading ? (
+              <ActivityIndicator size="small" color={theme.headerText} />
+            ) : pagePlaying ? (
+              <Pause size={18} color={theme.headerText} fill={theme.headerText} />
+            ) : (
+              <Play size={18} color={theme.headerText} fill={theme.headerText} />
+            )}
+          </TouchableOpacity>
         <TextInput
           style={styles.pageInput}
           value={pageInput}
@@ -265,6 +330,7 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
           placeholder={`1-${TOTAL_MUSHAF_PAGES}`}
           placeholderTextColor={theme.textSecondary}
         />
+        </View>
 
         <TouchableOpacity
           style={[styles.pagerButton, pageNumber >= TOTAL_MUSHAF_PAGES && common.disabled]}

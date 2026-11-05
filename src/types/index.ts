@@ -1,4 +1,4 @@
-import type { ThemeName } from '@msarinc/theme-core';
+import type { ThemePreference } from '@msarinc/theme-core';
 import type { LucideIcon } from 'lucide-react-native';
 
 // A renderable icon: either a lucide icon component, or a real brand logo
@@ -57,7 +57,7 @@ export interface AppSettings {
   inlineWordTranslations: boolean;
   showWordRoots: boolean; // word roots: tinted word chips, root on the hover card, tap to open the root
   usePaginatedView: boolean;
-  theme: ThemeName;
+  theme: ThemePreference;
   audioTrackingEnabled: boolean;
   wordTrackingEnabled: boolean; // Highlight the word being recited (reciters with word timings only)
   selectedReciter: string;
@@ -71,6 +71,7 @@ export interface AppSettings {
   surahFontSize: number; // Arabic text size (px) in the surah (verse list) view
   quranPageTranslation: string; // translation shown below verses in the page view; '' = none, see WORD_BY_WORD_TRANSLATION_ID
   verseNumberStyle: 'latin' | 'arabic'; // digit style used for ayet numbers throughout the app
+  tafsirSource: string; // TafsirSourceId (services/tafsir.ts) the verse's tafsir button opens
   // Prayer times
   prayerLocation?: {
     id: string;

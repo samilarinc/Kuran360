@@ -90,19 +90,19 @@ export const VerseModelManager: React.FC<VerseModelManagerProps> = ({
                                     disabled={!canSelect}
                                 >
                                     <View style={[common.row, common.gapSm]}>
-                                        <View style={[styles.radio, isSelected && styles.radioSelected]}>
-                                            {isSelected && <View style={styles.radioDot} />}
+                                        <View style={[common.pickerRadio, isSelected && common.pickerRadioSelected]}>
+                                            {isSelected && <View style={common.pickerRadioDot} />}
                                         </View>
                                         <Text style={[common.textStrong, common.flex1, isSelected && common.textAccent]}>
                                             {t(`verseFinder.models.${model.id}.name`)}
                                         </Text>
                                         <Text style={common.smallText}>{t('verseFinder.models.size', { size: model.sizeMb })}</Text>
                                     </View>
-                                    <Text style={[common.smallText, styles.indented]}>
+                                    <Text style={[common.smallText, common.pickerRadioIndented]}>
                                         {t(`verseFinder.models.${model.id}.description`)}
                                     </Text>
 
-                                    <View style={[styles.indented, styles.actions]}>
+                                    <View style={[common.pickerRadioIndented, styles.actions]}>
                                         {isDownloading ? (
                                             <>
                                                 <ProgressBar progress={downloading.progress} style={common.flex1} />
@@ -144,7 +144,7 @@ export const VerseModelManager: React.FC<VerseModelManagerProps> = ({
                                         )}
                                     </View>
                                     {error?.id === model.id && (
-                                        <Text style={[common.smallText, styles.indented, styles.errorText]}>
+                                        <Text style={[common.smallText, common.pickerRadioIndented, styles.errorText]}>
                                             {t('verseFinder.models.downloadError', { message: error.message })}
                                         </Text>
                                     )}
@@ -159,31 +159,7 @@ export const VerseModelManager: React.FC<VerseModelManagerProps> = ({
     );
 };
 
-const RADIO = 18;
-
 const createStyles = (theme: Theme) => StyleSheet.create({
-    radio: {
-        width: RADIO,
-        height: RADIO,
-        borderRadius: RADIO / 2,
-        borderWidth: 2,
-        borderColor: theme.border,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    radioSelected: {
-        borderColor: theme.primary,
-    },
-    radioDot: {
-        width: RADIO / 2,
-        height: RADIO / 2,
-        borderRadius: RADIO / 4,
-        backgroundColor: theme.primary,
-    },
-    indented: {
-        marginLeft: RADIO + SPACING.sm,
-        marginTop: SPACING.xs,
-    },
     actions: {
         flexDirection: 'row',
         alignItems: 'center',

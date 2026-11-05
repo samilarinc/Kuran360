@@ -10,6 +10,7 @@ import { SPACING, Theme } from '@/theme';
 const COLOR = '#F59E0B';
 
 interface ThemeToggleLabels {
+    system: string;
     light: string;
     dark: string;
     lightsOut: string;
@@ -39,7 +40,7 @@ export const QuickThemeSetting: React.FC<QuickThemeSettingProps> = ({ labels }) 
                         <Text style={settingItemStyles.settingDescription}>{t('settingsScreen.themeDescription')}</Text>
                     </View>
                 </View>
-                <ThemeToggle labels={labels} compact={false} />
+                <ThemeToggle labels={labels} compact={false} includeSystem />
             </View>
         </View>
     );

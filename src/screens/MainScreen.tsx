@@ -14,6 +14,7 @@ import {
     AudioLines,
     Brain,
     BookOpen,
+    BookOpenText,
     BookCheck,
     Compass,
     HandHeart,
@@ -26,6 +27,7 @@ import {
 } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { MenuListRow } from '@/components/MenuListRow';
+import { TAFSIR_COLOR } from '@/theme';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { Platform } from 'react-native';
 import { isDataUpdateAvailable } from '@/data/quranData';
@@ -35,7 +37,7 @@ import { createStyles } from './MainScreen.styles';
 let dataUpdatePromptShown = false;
 
 interface MainScreenProps {
-    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'SearchMenu' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'UmrahMenu' | 'PrayerMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization', params?: any) => void;
+    onNavigate: (screen: 'Home' | 'Settings' | 'Search' | 'SearchMenu' | 'About' | 'Profile' | 'RandomVerse' | 'Hatim' | 'UmrahMenu' | 'PrayerMenu' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Tafsir' | 'DataManagement', params?: any) => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
@@ -49,7 +51,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         isDataUpdateAvailable().then(available => {
             if (!available || dataUpdatePromptShown) return;
             dataUpdatePromptShown = true;
-            const startUpdate = () => onNavigate('Settings', { startDataUpdate: true });
+            const startUpdate = () => onNavigate('DataManagement', { startDataUpdate: true });
             if (Platform.OS === 'web') {
                 // Alert.alert does nothing on web
                 if ((globalThis as any).confirm?.(`${t('dataUpdatePrompt.title')}\n\n${t('dataUpdatePrompt.message')}`)) startUpdate();
@@ -77,6 +79,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                     ]
                     : []),
                 { id: 'quran-page', title: t('mainScreen.menu.quranPage'), Icon: BookOpen, color: '#10B981', onPress: () => onNavigate('QuranPage') },
+                { id: 'tafsir', title: t('mainScreen.menu.tafsir'), Icon: BookOpenText, color: TAFSIR_COLOR, onPress: () => onNavigate('Tafsir') },
                 { id: 'hatim', title: t('mainScreen.menu.hatim'), Icon: BookCheck, color: '#8B5CF6', onPress: () => onNavigate('Hatim') },
             ],
         },
@@ -132,10 +135,10 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
                 {/* Menu Sections */}
                 {sections.map((section) => (
                     <View key={section.title} style={common.mbLg}>
-                        <Text style={styles.sectionHeader}>
+                        <Text style={common.groupLabel}>
                             {section.title}
                         </Text>
-                        <View style={styles.sectionCard}>
+                        <View style={common.groupCard}>
                             {section.items.map((item, index) => (
                                 <View
                                     key={item.id}

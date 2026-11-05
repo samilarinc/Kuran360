@@ -96,7 +96,9 @@
     "duaList": "Dua Listem",
     "randomVerse": "Rastgele Ayet",
     "profile": "Profil",
+    "dataManagement": "Veri Yönetimi",
     "allTranslations": "Bütün Mealler",
+    "tafsir": "Tefsir",
     "umrahChecklist": "Umre Hazırlık Listesi",
     "umrahMenu": "Umre Rehberi",
     "umrahProgress": "Şu an neredeyim?",
@@ -347,6 +349,8 @@
     "increaseFontSize": "Yazıyı büyüt"
   },
   "quranPageScreen": {
+    "playPage": "Sayfayı dinle",
+    "pause": "Duraklat",
     "loading": "Sayfa yükleniyor...",
     "previousPage": "‹ Önceki",
     "nextPage": "Sonraki ›",
@@ -805,6 +809,7 @@
   "settingsScreen": {
     "title": "Ayarlar",
     "theme": {
+      "system": "Sistem",
       "light": "Aydınlık",
       "dark": "Karanlık",
       "lightsOut": "Işıklar Kapalı",
@@ -888,6 +893,7 @@
       "search": "Arama",
       "verseFinder": "Ayet Shazam",
       "memorization": "Ezber Kontrolü",
+      "tafsir": "Tefsir",
       "quranPage": "Sayfa Görünümü",
       "settings": "Ayarlar",
       "profile": "Profil",
@@ -975,6 +981,17 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "5 Kasım 2026",
+        "bullets": [
+          "Tefsir eklendi: ana menüdeki Tefsir'den sure sure okuyabilir, ayetteki kitap butonuyla o ayetin tefsirine gidebilirsiniz. Kaynağı sayfanın üstünden seçebilir, ayet numarasına dokunarak ayete gidebilirsiniz. İsterseniz Ayarlar > Veri Yönetimi'nden indirip internetsiz okuyabilirsiniz",
+          "Tefsir kaynaklarına Tefsîru's-Sa'dî eklendi: Ayarlar > Tefsir'den seçip daha ayrıntılı açıklamaları okuyabilirsiniz",
+          "Tefsir kaynaklarına Diyanet'in Kur'an Yolu Tefsiri eklendi",
+          "Tefsir kaynaklarına Elmalılı Hamdi Yazır'ın Hak Dini Kur'an Dili tefsiri eklendi",
+          "Sayfa Görünümü'nde sesli dinleme: ayete dokununca okunur, okunan ayet vurgulanır ve sayfa kendiliğinden döner; alttaki butonla sayfayı baştan dinleyebilirsiniz",
+          "Ayarlar'a Veri Yönetimi sayfası eklendi: Kur'an verisi ve mealler, tefsirler, ses tanıma ve konu araması modelleri tek yerden indirilip güncellenebilir ya da silinebilir"
+        ]
+      },
+      {
         "date": "21 Ekim 2026",
         "bullets": [
           "Namazlar ve Dualar menüsüne Dualar ekranı eklendi: hazır duaları ayet görünümüyle (Arapça, okunuş ve meal) okuyabilirsiniz; ilk olarak Kadir Gecesi Kunut Duası sesiyle birlikte eklendi; ses çalarken okunan kısım ve kelime, ayetlerdeki gibi kelime kelime takip ediliyor",
@@ -987,6 +1004,12 @@
           "\"Sıfırla\" önce o adımın sayacını, ikinci basışta tüm tesbihatı sıfırlıyor",
           "Kendi zikrinizi eklerken sesle yazma artık web'de de çalışıyor: Ayet Shazam'daki ses modeliyle okuduğunuz zikir metin alanına yazılıyor",
           "Web'de bir sayfayı yenileyince adres ana sayfaya dönüyor, ikinci yenilemede ana sayfa açılıyordu; artık yenilediğiniz sayfada kalıyorsunuz"
+        ]
+      },
+      {
+        "date": "19 Ekim 2026",
+        "bullets": [
+          "Temaya \"Sistem\" seçeneği eklendi: uygulama telefonunuzun aydınlık/karanlık ayarını takip eder. Yeni kurulumlarda varsayılan budur"
         ]
       },
       {
@@ -1362,10 +1385,82 @@
     "share": "Paylaş"
   },
   "themeToggle": {
+    "system": "Sistem",
     "light": "Aydınlık",
     "dark": "Karanlık",
     "lightsOut": "Işıklar Kapalı",
     "accessibilityLabel": "Tema: {{current}}. Değiştirmek için dokun, sıradaki: {{next}}"
+  },
+  "dataManagement": {
+    "settingsTitle": "Veri Yönetimi",
+    "settingsSubtitle": "Kur'an verisi, mealler, tefsirler ve modeller: indirme, güncelleme, silme",
+    "used": "Cihazda yaklaşık {{size}} MB",
+    "size": "{{size}} MB",
+    "downloaded": "İndirildi",
+    "notDownloaded": "İndirilmedi",
+    "live": "İnternetten okunuyor",
+    "download": "İndir",
+    "update": "Güncelle",
+    "delete": "Sil",
+    "cancel": "İptal",
+    "error": "Olmadı: {{message}}",
+    "deleteTitle": "Silinsin mi?",
+    "deleteMessage": "{{name}} cihazdan silinecek. Gerekirse yeniden indirebilirsiniz.",
+    "speechNote": "Ses modelleri Ayet Bulucu, Ezber ve Zikirmatik'te sesli tanıma için kullanılır. Tanıma tamamen cihazda yapılır.",
+    "sections": {
+      "quran": "KUR'AN VE MEALLER",
+      "tafsir": "TEFSİRLER",
+      "speech": "SES TANIMA MODELLERİ",
+      "topic": "KONU ARAMASI"
+    },
+    "quran": {
+      "title": "Kur'an verisi",
+      "description": "Arapça metin, {{count}} meal, kelime anlamları ve kökler. Uygulamanın çalışması için gerekli.",
+      "upToDate": "Güncel (sürüm {{version}})",
+      "updateAvailable": "Yeni sürüm var"
+    },
+    "topic": {
+      "title": "Konu araması modeli",
+      "description": "Ayetleri anlamına göre bulan çok dilli model. Konu aramasında kullanılır."
+    }
+  },
+  "tafsir": {
+    "surahOption": "{{number}}. {{name}}",
+    "blockVerse": "{{verse}}. ayet",
+    "blockRange": "{{from}}–{{to}}. ayetler",
+    "surahEmpty": "Bu kaynakta bu sure için tefsir yok.",
+    "open": "Tefsiri aç",
+    "verse": "{{surah}} {{verse}}. ayet",
+    "verseRange": "{{surah}} {{from}}–{{to}}. ayetler",
+    "loadError": "Tefsir yüklenemedi. İnternet bağlantınızı kontrol edin.",
+    "downloadHint": "İnternetsiz okumak için tefsiri Ayarlar > Veri Yönetimi'nden indirebilirsiniz.",
+    "downloadNote": "Tefsirleri internetsiz okumak için Ayarlar > Veri Yönetimi'nden indirebilirsiniz.",
+    "retry": "Tekrar dene",
+    "empty": "Bu kaynakta bu ayet için ayrı bir açıklama yok; yakın ayetlerin tefsirine bakabilirsiniz.",
+    "settingsTitle": "Tefsir",
+    "settingsSubtitle": "Tefsir sayfasının açıldığı kaynak",
+    "sources": {
+      "muhtasar": {
+        "name": "el-Muhtasar Tefsiri",
+        "description": "Her ayet için kısa ve sade açıklama. Tefsir Araştırmaları Merkezi.",
+        "credit": "Kaynak: el-Muhtasar fi Tefsîri'l-Kur'âni'l-Kerîm, Tefsir Araştırmaları Merkezi · QuranEnc.com"
+      },
+      "saadi": {
+        "name": "Tefsîru's-Sa'dî",
+        "description": "Abdurrahman es-Sa'dî'nin ayrıntılı tefsiri. Bazı ayetler grup halinde açıklanır.",
+        "credit": "Kaynak: Teysîru'l-Kerîmi'r-Rahmân fî Tefsîri Kelâmi'l-Mennân, Abdurrahman es-Sa'dî · QuranEnc.com"
+      },
+      "kuranyolu": {
+        "name": "Kur'an Yolu Tefsiri (Diyanet)",
+        "description": "Diyanet İşleri Başkanlığı'nın Kur'an Yolu Türkçe Meal ve Tefsiri. Ayetler konu gruplarıyla açıklanır.",
+        "credit": "Kaynak: Kur'an Yolu Türkçe Meal ve Tefsir, Diyanet İşleri Başkanlığı Yayınları · izinle kullanılmıştır"
+      },
+      "elmalili": {
+        "name": "Hak Dini Kur'an Dili (Elmalılı)",
+        "description": "Elmalılı Muhammed Hamdi Yazır'ın tefsirinin sadeleştirilmiş hali. Uzun ve derinlikli açıklamalar; bazı ayetlerin tefsiri eksik.",
+        "credit": "Kaynak: Elmalılı Muhammed Hamdi Yazır, Hak Dini Kur'an Dili (sadeleştirilmiş)"
+      }
+    }
   },
   "wordRootModal": {
     "root": "Kök",

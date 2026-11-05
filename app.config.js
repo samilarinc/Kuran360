@@ -67,7 +67,7 @@ export default ({ config }) => ({
     version: "1.0.0",
     orientation: "portrait",
     icon: "./public/favicon.png",
-    userInterfaceStyle: "light",
+    userInterfaceStyle: "automatic",
     scheme: process.env.APP_SCHEME || "kuran360",
     splash: {
         image: "./public/favicon.png",

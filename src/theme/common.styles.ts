@@ -3,6 +3,7 @@ import { createBaseStyles, SHADOW } from '@msarinc/ui';
 import { SPACING, FONT_SIZES, RADIUS, Theme } from './index';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const PICKER_RADIO = 18;
 
 /**
  * App-wide style kit: the generic @msarinc/ui base styles plus the few
@@ -187,6 +188,44 @@ export const createCommonStyles = (theme: Theme) => {
         },
         pickerClearButton: {
             padding: SPACING.xs,
+        },
+        // A labelled group of rows in one rounded card (main menu sections, data management)
+        groupLabel: {
+            ...base.sectionLabel,
+            marginBottom: SPACING.sm,
+            marginLeft: SPACING.xs,
+        },
+        groupCard: {
+            borderRadius: 16,
+            borderWidth: 1,
+            overflow: 'hidden',
+            backgroundColor: theme.cardBackground,
+            borderColor: theme.border,
+            ...SHADOW.sm,
+        },
+        // Radio circle for single-choice picker rows (VerseModelManager, TafsirSettingsSection)
+        pickerRadio: {
+            width: PICKER_RADIO,
+            height: PICKER_RADIO,
+            borderRadius: PICKER_RADIO / 2,
+            borderWidth: 2,
+            borderColor: theme.border,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        pickerRadioSelected: {
+            borderColor: theme.primary,
+        },
+        pickerRadioDot: {
+            width: PICKER_RADIO / 2,
+            height: PICKER_RADIO / 2,
+            borderRadius: PICKER_RADIO / 4,
+            backgroundColor: theme.primary,
+        },
+        // Lines under a picker row's title, lined up with the title past the radio
+        pickerRadioIndented: {
+            marginLeft: PICKER_RADIO + SPACING.sm,
+            marginTop: SPACING.xs,
         },
     });
 };

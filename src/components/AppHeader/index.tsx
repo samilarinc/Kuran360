@@ -49,6 +49,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     const { t, i18n } = useTranslation();
     const styles = useMemo(() => createStyles(theme, large, !!subtitle), [theme, large, subtitle]);
     const themeToggleLabels = {
+        system: t('themeToggle.system'),
         light: t('themeToggle.light'),
         dark: t('themeToggle.dark'),
         lightsOut: t('themeToggle.lightsOut'),
@@ -71,7 +72,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 languages={LANGUAGES}
                 onChange={(code: string) => i18n.changeLanguage(code)}
             />
-            <ThemeToggle compact labels={themeToggleLabels} />
+            <ThemeToggle compact includeSystem labels={themeToggleLabels} />
             <HeaderIconButton icon={Bug} accessibilityLabel={t('bugReport.title')} onPress={openBugReport} />
         </>
     );

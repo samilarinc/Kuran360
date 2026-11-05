@@ -43,19 +43,6 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             alignItems: 'center',
             marginLeft: SPACING.sm,
         },
-        sectionHeader: {
-            ...common.sectionLabel,
-            marginBottom: SPACING.sm,
-            marginLeft: SPACING.xs,
-        },
-        sectionCard: {
-            borderRadius: 16,
-            borderWidth: 1,
-            overflow: 'hidden',
-            backgroundColor: theme.cardBackground,
-            borderColor: theme.border,
-            ...SHADOW.sm,
-        },
         menuRowDivider: {
             borderBottomWidth: 1,
             borderBottomColor: theme.border,

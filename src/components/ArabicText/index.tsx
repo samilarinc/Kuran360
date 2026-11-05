@@ -7,10 +7,11 @@ interface ArabicTextProps {
     children: React.ReactNode;
     style?: StyleProp<TextStyle>;
     numberOfLines?: number;
+    onPress?: () => void;
 }
 
 /** Renders Arabic text using the user's selected, bundled Arabic font (settings.arabicFont). */
-export const ArabicText: React.FC<ArabicTextProps> = ({ children, style, numberOfLines }) => {
+export const ArabicText: React.FC<ArabicTextProps> = ({ children, style, numberOfLines, onPress }) => {
     const { settings } = useSettings();
     const fontOption = getFontOption(settings.arabicFont);
     const flatStyle = StyleSheet.flatten(style) ?? {};
@@ -18,7 +19,7 @@ export const ArabicText: React.FC<ArabicTextProps> = ({ children, style, numberO
     const fontFamily = getArabicFontFamily(fontOption, isBold);
 
     return (
-        <Text style={[style, { fontFamily }]} numberOfLines={numberOfLines}>
+        <Text style={[style, { fontFamily }]} numberOfLines={numberOfLines} onPress={onPress}>
             {children}
         </Text>
     );

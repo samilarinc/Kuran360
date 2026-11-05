@@ -111,6 +111,19 @@ export const createStyles = (theme: Theme) => {
       minWidth: 90,
       alignItems: 'center',
     },
+    // The verse being recited
+    playingVerse: {
+      backgroundColor: theme.primary + '26',
+      borderRadius: 8,
+    },
+    playButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: theme.primary,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     pageInput: {
       borderWidth: 1,
       borderColor: theme.border,

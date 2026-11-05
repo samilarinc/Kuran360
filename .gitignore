@@ -95,3 +95,7 @@ scripts/.cache/
 
 # Recordings are uploaded with the web deploy, not kept in git
 public/audio/
+__pycache__/
+
+# Tafsir texts built by scripts/build_tafsir.py; deployed by sync.sh, not kept in git
+public/tafsir-data/

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, Alert, Platform } from 'react-native';
+import { SafeAreaView, ScrollView, Alert } from 'react-native';
 import {
     Volume2,
     Repeat,
@@ -12,16 +12,16 @@ import {
     Hash,
     PenTool,
     Languages,
-    Settings2,
+    HardDrive,
     Highlighter,
     BellRing,
     LayoutGrid,
+    BookOpenText,
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useDataAvailability } from '@/contexts/DataAvailabilityContext';
-import { clearCachedData, loadAllVerses, ProgressCallback, getStoredDataVersion, CURRENT_VERSION } from '@/data/quranData';
+import { getStoredDataVersion } from '@/data/quranData';
 import { AppHeader } from '@/components/AppHeader';
 import { ReciterSelector } from '@/components/ReciterSelector';
 import { QuickThemeSetting } from '@/components/QuickThemeSetting';
@@ -29,15 +29,13 @@ import { CollapsibleSettingsSection } from '@/components/CollapsibleSettingsSect
 import { SettingItem } from '@/components/SettingItem';
 import { ArabicFontPicker } from '@/components/ArabicFontPicker';
 import { TranslationsSection } from '@/components/TranslationsSection';
-import { DataUpdateSection } from '@/components/DataUpdateSection';
-import { SPACING } from '@/theme';
+import { SPACING, TAFSIR_COLOR } from '@/theme';
 import { isPrayerNotificationSupported } from '@/services/prayerTimes';
 import { WidgetSettingsSection } from '@/components/WidgetSettingsSection';
+import { TafsirSettingsSection } from '@/components/TafsirSettingsSection';
 
 interface SettingsScreenProps {
     navigation: any;
-    /** Opened from the new data prompt: start downloading right away (already confirmed there) */
-    startDataUpdate?: boolean;
 }
 
 const COLORS = {
@@ -52,21 +50,22 @@ const COLORS = {
     verseNumbers: '#EC4899',
     fonts: '#14B8A6',
     translations: '#6366F1',
-    system: '#64748B',
+    tafsir: TAFSIR_COLOR,
+    dataManagement: '#64748B',
     prayerNotifications: '#14B8A6',
     widgets: '#0EA5E9',
 };
 
-export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, startDataUpdate }) => {
+export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     const { settings, updateSettings, availableTranslations } = useSettings();
     const { theme, common } = useTheme();
     const { t } = useTranslation();
-    const { refreshDataAvailability } = useDataAvailability();
     // Word roots only show up in the word translation views: without either one the switch is off and locked
     // (the saved choice is kept, so it is back as before once a view is turned on again)
     const wordViewsOff = !settings.showWordTranslations && !settings.inlineWordTranslations;
     const styles = useTheme().common;
     const THEME_TOGGLE_LABELS = {
+        system: t('settingsScreen.theme.system'),
         light: t('settingsScreen.theme.light'),
         dark: t('settingsScreen.theme.dark'),
         lightsOut: t('settingsScreen.theme.lightsOut'),
@@ -77,14 +76,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, star
         display: false,
         fonts: false,
         translations: false,
+        tafsir: false,
         widgets: false,
-        system: !!startDataUpdate,
     });
-    const [isUpdating, setIsUpdating] = useState(false);
-    const [downloadProgress, setDownloadProgress] = useState(0);
-    const [downloadStatus, setDownloadStatus] = useState('');
-    const [downloadedBytes, setDownloadedBytes] = useState(0);
-    const [totalBytes, setTotalBytes] = useState(0);
     const [dataVersion, setDataVersion] = useState<string | null>(null);
 
     React.useEffect(() => {
@@ -167,70 +161,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, star
         });
     };
 
-    const runUpdate = async () => {
-        setIsUpdating(true);
-        setDownloadProgress(0);
-        setDownloadStatus(t('settingsScreen.updateData.preparing'));
-
-        const progressCallback: ProgressCallback = (progress, status, downloaded, total) => {
-            setDownloadProgress(progress);
-            setDownloadStatus(status);
-            if (downloaded !== undefined) setDownloadedBytes(downloaded);
-            if (total !== undefined) setTotalBytes(total);
-        };
-
-        try {
-            await clearCachedData();
-            await loadAllVerses(progressCallback);
-            setIsUpdating(false);
-
-            // Logically update dataVersion state after successful update
-            setDataVersion(CURRENT_VERSION);
-
-            if (Platform.OS === 'web') {
-                setTimeout(() => {
-                    const win: any = globalThis;
-                    if (win.window?.location) win.window.location.reload();
-                }, 500);
-            } else {
-                Alert.alert(t('settingsScreen.updateData.successTitle'), t('settingsScreen.updateData.successMessage'));
-            }
-        } catch (error) {
-            console.error('Update failed:', error);
-            setIsUpdating(false);
-            // The failed update may have left no data behind; let the screens show the download prompt then
-            await refreshDataAvailability();
-            setDownloadStatus(t('settingsScreen.updateData.errorPrefix') + (error as Error).message);
-            Alert.alert(t('settingsScreen.updateData.errorTitle'), t('settingsScreen.updateData.errorMessage'));
-        }
-    };
-
-    const scrollRef = React.useRef<ScrollView>(null);
-
-    // Opened from the new data prompt on the main screen: the system section is open, show its progress
-    React.useEffect(() => {
-        if (!startDataUpdate) return;
-        runUpdate();
-        setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const handleUpdateData = () => {
-        const message = t('settingsScreen.updateData.message');
-
-        if (Platform.OS === 'web') {
-            const confirmed = (globalThis as any).confirm?.(message);
-            if (confirmed) {
-                runUpdate();
-            }
-        } else {
-            Alert.alert(t('settingsScreen.updateData.title'), message, [
-                { text: t('settingsScreen.updateData.cancel'), style: 'cancel' },
-                { text: t('settingsScreen.updateData.confirm'), style: 'destructive', onPress: runUpdate }
-            ]);
-        }
-    };
-
     return (
         <SafeAreaView style={styles.container}>
             <AppHeader
@@ -242,7 +172,6 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, star
             />
 
             <ScrollView
-                ref={scrollRef}
                 style={common.flex1}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingHorizontal: SPACING.lg, paddingBottom: SPACING.xl }}
@@ -385,6 +314,17 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, star
                     />
                 </CollapsibleSettingsSection>
 
+                <CollapsibleSettingsSection
+                    title={t('tafsir.settingsTitle')}
+                    subtitle={t('tafsir.settingsSubtitle')}
+                    icon={BookOpenText}
+                    color={COLORS.tafsir}
+                    expanded={expandedSections.tafsir}
+                    onToggle={() => toggleSection('tafsir')}
+                >
+                    <TafsirSettingsSection />
+                </CollapsibleSettingsSection>
+
                 {/* Prayer time notifications are Android only (modules/prayer-notification) */}
                 {isPrayerNotificationSupported() && (
                     <CollapsibleSettingsSection
@@ -412,23 +352,13 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation, star
                 )}
 
                 <CollapsibleSettingsSection
-                    title={t('settingsScreen.sections.systemTitle')}
-                    subtitle={t('settingsScreen.sections.systemSubtitle')}
-                    icon={Settings2}
-                    color={COLORS.system}
-                    expanded={expandedSections.system}
-                    onToggle={() => toggleSection('system')}
-                >
-                    <DataUpdateSection
-                        isUpdating={isUpdating}
-                        isUpToDate={dataVersion === CURRENT_VERSION}
-                        downloadProgress={downloadProgress}
-                        downloadStatus={downloadStatus}
-                        downloadedBytes={downloadedBytes}
-                        totalBytes={totalBytes}
-                        onUpdate={handleUpdateData}
-                    />
-                </CollapsibleSettingsSection>
+                    title={t('dataManagement.settingsTitle')}
+                    subtitle={t('dataManagement.settingsSubtitle')}
+                    icon={HardDrive}
+                    color={COLORS.dataManagement}
+                    onToggle={() => navigation.navigate('DataManagement')}
+                    link
+                />
             </ScrollView>
         </SafeAreaView>
     );

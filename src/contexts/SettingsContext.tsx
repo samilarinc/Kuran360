@@ -6,6 +6,7 @@ import { db } from '@/services/firebase';
 import { useAuth } from './AuthContext';
 import { AppSettings, SettingsContextType } from '@/types';
 import { DEFAULT_ARABIC_FONT_ID, DEFAULT_IMAGE_FONT_ID } from '@/constants/fonts';
+import { DEFAULT_TAFSIR_SOURCE } from '@/services/tafsir';
 
 const ASYNC_STORAGE_KEY = 'quran_app_settings';
 // Rapid changes (toggles, font size steps) are saved once, after they settle
@@ -24,7 +25,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     inlineWordTranslations: false,
     showWordRoots: true,
     usePaginatedView: false,
-    theme: 'light',
+    theme: 'system',
     audioTrackingEnabled: true,
     wordTrackingEnabled: true,
     selectedReciter: 'sudais',
@@ -36,6 +37,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     surahFontSize: 24,
     quranPageTranslation: '',
     verseNumberStyle: 'latin',
+    tafsirSource: DEFAULT_TAFSIR_SOURCE,
     prayerLocation: {
         id: '9541',
         cityName: 'Istanbul',

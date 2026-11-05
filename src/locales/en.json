@@ -96,7 +96,9 @@
     "duaList": "My Duas",
     "randomVerse": "Random Verse",
     "profile": "Profile",
+    "dataManagement": "Data Management",
     "allTranslations": "All Translations",
+    "tafsir": "Tafsir",
     "umrahChecklist": "Umrah Checklist",
     "umrahMenu": "Umrah Guide",
     "umrahProgress": "Where am I now?",
@@ -347,6 +349,8 @@
     "increaseFontSize": "Increase text size"
   },
   "quranPageScreen": {
+    "playPage": "Listen to the page",
+    "pause": "Pause",
     "loading": "Loading page...",
     "previousPage": "‹ Previous",
     "nextPage": "Next ›",
@@ -805,6 +809,7 @@
   "settingsScreen": {
     "title": "Settings",
     "theme": {
+      "system": "System",
       "light": "Light",
       "dark": "Dark",
       "lightsOut": "Lights Out",
@@ -888,6 +893,7 @@
       "search": "Search",
       "verseFinder": "Verse Shazam",
       "memorization": "Memorization Check",
+      "tafsir": "Tafsir",
       "quranPage": "Page View",
       "settings": "Settings",
       "profile": "Profile",
@@ -975,6 +981,17 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "November 5, 2026",
+        "bullets": [
+          "Added tafsir: read it surah by surah from Tafsir on the main menu, or jump to a verse's tafsir with the book button on the verse. Pick the source at the top of the page, and tap a verse number to go to the verse. Download it under Settings > Data Management to read it offline",
+          "Added Tafsir As-Sa'di (in Turkish) as a tafsir source: pick it under Settings > Tafsir for more detailed explanations",
+          "Added the Diyanet's Kur'an Yolu tafsir (in Turkish) as a tafsir source",
+          "Added Elmalılı Hamdi Yazır's Hak Dini Kur'an Dili tafsir (in Turkish) as a tafsir source",
+          "Listen in Page View: tap a verse to hear it, the verse being recited is highlighted and pages turn on their own; the button at the bottom plays the page from the top",
+          "Added a Data Management page to Settings: download, update or delete the Quran data and translations, tafsirs, and the speech and topic search models in one place"
+        ]
+      },
+      {
         "date": "October 21, 2026",
         "bullets": [
           "Added a Duas screen to the Prayers and Duas menu: read ready-made duas in the verse view (Arabic, transliteration and meaning), starting with the Laylat al-Qadr Qunut Dua with its recording; the part and the word being recited are followed word by word as it plays, like the verses",
@@ -987,6 +1004,12 @@
           "\"Reset\" first clears the current step's count, and a second press starts the whole tasbihat over",
           "Writing your own dhikr by voice now works on the web too: the Verse Shazam speech model types what you recite into the text field",
           "On the web, reloading a page reset the address to the home page, so a second reload opened the home page; you now stay on the page you reloaded"
+        ]
+      },
+      {
+        "date": "October 19, 2026",
+        "bullets": [
+          "Added a \"System\" theme option that follows your phone's light/dark setting; it's the default for new installs"
         ]
       },
       {
@@ -1361,10 +1384,82 @@
     "share": "Share"
   },
   "themeToggle": {
+    "system": "System",
     "light": "Light",
     "dark": "Dark",
     "lightsOut": "Lights Out",
     "accessibilityLabel": "Theme: {{current}}. Tap to switch, next: {{next}}"
+  },
+  "dataManagement": {
+    "settingsTitle": "Data Management",
+    "settingsSubtitle": "Quran data, translations, tafsirs and models: download, update, delete",
+    "used": "About {{size}} MB on this device",
+    "size": "{{size}} MB",
+    "downloaded": "Downloaded",
+    "notDownloaded": "Not downloaded",
+    "live": "Read online",
+    "download": "Download",
+    "update": "Update",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "error": "Failed: {{message}}",
+    "deleteTitle": "Delete?",
+    "deleteMessage": "{{name}} will be removed from this device. You can download it again any time.",
+    "speechNote": "Speech models power voice recognition in Verse Finder, Memorization and the Dhikr counter. Recognition runs entirely on the device.",
+    "sections": {
+      "quran": "QURAN AND TRANSLATIONS",
+      "tafsir": "TAFSIRS",
+      "speech": "SPEECH RECOGNITION MODELS",
+      "topic": "TOPIC SEARCH"
+    },
+    "quran": {
+      "title": "Quran data",
+      "description": "Arabic text, {{count}} translations, word meanings and roots. The app needs it to work.",
+      "upToDate": "Up to date (version {{version}})",
+      "updateAvailable": "New version available"
+    },
+    "topic": {
+      "title": "Topic search model",
+      "description": "Multilingual model that finds verses by meaning, used by topic search."
+    }
+  },
+  "tafsir": {
+    "surahOption": "{{number}}. {{name}}",
+    "blockVerse": "Verse {{verse}}",
+    "blockRange": "Verses {{from}}–{{to}}",
+    "surahEmpty": "This source has no tafsir for this surah.",
+    "open": "Open tafsir",
+    "verse": "{{surah}}, verse {{verse}}",
+    "verseRange": "{{surah}}, verses {{from}}–{{to}}",
+    "loadError": "Couldn't load the tafsir. Check your internet connection.",
+    "downloadHint": "To read it offline, download the tafsir under Settings > Data Management.",
+    "downloadNote": "To read tafsirs offline, download them under Settings > Data Management.",
+    "retry": "Try again",
+    "empty": "This source has no separate explanation for this verse; see the tafsir of the nearby verses.",
+    "settingsTitle": "Tafsir",
+    "settingsSubtitle": "The source the tafsir page opens with",
+    "sources": {
+      "muhtasar": {
+        "name": "Al-Mukhtasar Tafsir",
+        "description": "A short, plain explanation of every verse. Tafsir Center for Quranic Studies.",
+        "credit": "Source: Al-Mukhtasar fi Tafsir al-Quran al-Karim, Tafsir Center for Quranic Studies · QuranEnc.com"
+      },
+      "saadi": {
+        "name": "Tafsir As-Sa'di",
+        "description": "Abdurrahman As-Sa'di's detailed tafsir, in Turkish. Some verses are explained as a group.",
+        "credit": "Source: Taysir al-Karim ar-Rahman fi Tafsir Kalam al-Mannan, Abdurrahman As-Sa'di · QuranEnc.com"
+      },
+      "kuranyolu": {
+        "name": "Kur'an Yolu Tafsir (Diyanet)",
+        "description": "The Turkish Presidency of Religious Affairs' Kur'an Yolu tafsir, in Turkish. Verses are explained in thematic groups.",
+        "credit": "Source: Kur'an Yolu Türkçe Meal ve Tefsir, Diyanet İşleri Başkanlığı Yayınları · used with permission"
+      },
+      "elmalili": {
+        "name": "Hak Dini Kur'an Dili (Elmalılı)",
+        "description": "Elmalılı Muhammed Hamdi Yazır's tafsir in simplified Turkish. Long, in-depth explanations; a few verses have none.",
+        "credit": "Source: Elmalılı Muhammed Hamdi Yazır, Hak Dini Kur'an Dili (simplified)"
+      }
+    }
   },
   "wordRootModal": {
     "root": "Root",

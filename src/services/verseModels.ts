@@ -197,13 +197,17 @@ export const deleteModel = async (model: VerseModel): Promise<void> => {
     const stillUsed = new Set(
         VERSE_MODELS.filter(other => other.id !== model.id && downloaded.has(other.id)).flatMap(other => other.files),
     );
-    const unused = model.files.filter(url => !stillUsed.has(url));
+    await deleteFiles(model.files.filter(url => !stillUsed.has(url)));
+};
+
+/** Removes files from the model cache (the documents folder on Android). */
+export const deleteFiles = async (files: string[]): Promise<void> => {
     if (!isWeb) {
-        await Promise.all(unused.map(url => FileSystem.deleteAsync(getLocalPath(url), { idempotent: true })));
+        await Promise.all(files.map(url => FileSystem.deleteAsync(getLocalPath(url), { idempotent: true })));
         return;
     }
     const cache = await openCache();
-    await Promise.all(unused.map(url => cache.delete(url)));
+    await Promise.all(files.map(url => cache.delete(url)));
 };
 
 export const getSelectedModelId = async (): Promise<VerseModelId | null> => {

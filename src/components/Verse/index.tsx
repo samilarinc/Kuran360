@@ -6,7 +6,7 @@ import {
   Platform,
   LayoutChangeEvent,
 } from 'react-native';
-import { Bookmark, Library, Share2, Play, Square, BrainCircuit } from 'lucide-react-native';
+import { Bookmark, Library, Share2, Play, Square, BrainCircuit, BookOpenText } from 'lucide-react-native';
 import { Verse as VerseType, VerseShareData, WordTranslation } from '@/types';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
@@ -28,6 +28,7 @@ import { formatVerseNumber } from '@/utils/numerals';
 import { formatRoot, getSpacedArabicText, getWordSegments } from '@/utils/arabicText';
 import { createStyles } from './index.styles';
 import type { CommonStyles } from '@/theme/common.styles';
+import { TAFSIR_COLOR } from '@/theme';
 
 const BOOKMARK_COLOR = '#F43F5E';
 const ALL_TRANSLATIONS_COLOR = '#6366F1';
@@ -154,7 +155,7 @@ interface VerseProps {
   surahVerseCount?: number; // clamp end to this count
   showBookmarkButton?: boolean;
   showMemorization?: boolean;
-  navigation?: any; // Navigation prop for going to all translations screen
+  navigation?: any; // Navigation prop for going to the all translations and tafsir screens
   /** Replaces the verse number in its badge, e.g. with the surah name where the surah isn't otherwise visible */
   label?: string;
   /** false hides the bookmark, translations and share buttons; the play button stays */
@@ -334,6 +335,15 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
               onPress={() => navigation.navigate('AllTranslations', { verse })}
             >
               <Library size={18} color={ALL_TRANSLATIONS_COLOR} />
+            </TouchableOpacity>
+          )}
+          {showActions && navigation && (
+            <TouchableOpacity
+              style={[styles.iconButton, { backgroundColor: TAFSIR_COLOR + '1A', borderColor: TAFSIR_COLOR }]}
+              onPress={() => navigation.navigate('Tafsir', { surahNumber: verse.surahNumber, verseNumber: verse.number })}
+              accessibilityLabel={t('tafsir.open')}
+            >
+              <BookOpenText size={17} color={TAFSIR_COLOR} />
             </TouchableOpacity>
           )}
           {showActions && (

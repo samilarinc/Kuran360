@@ -2,6 +2,7 @@ import React, { createContext, useContext, useMemo, ReactNode } from 'react';
 import { LIGHT_COLORS, DARK_COLORS, LIGHTS_OUT_COLORS, Theme } from '@/theme';
 import { createCommonStyles, CommonStyles } from '@/theme/common.styles';
 export type { Theme, CommonStyles };
+import { useTheme as useMsarincTheme } from '@msarinc/ui';
 import { useSettings } from './SettingsContext';
 
 const PALETTES: Record<string, Theme> = {
@@ -25,10 +26,12 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const { settings, updateSettings } = useSettings();
+  const { updateSettings } = useSettings();
+  // The library resolves 'system' to light or dark from the device setting
+  const { theme: themeName } = useMsarincTheme();
 
-  const theme: Theme = PALETTES[settings.theme] ?? LIGHT_COLORS;
-  const isDarkMode = settings.theme !== 'light';
+  const theme: Theme = PALETTES[themeName] ?? LIGHT_COLORS;
+  const isDarkMode = themeName !== 'light';
   const common = useMemo(() => createCommonStyles(theme), [theme]);
 
   // Geriye dönük uyum için 2 durumlu toggle; 3'lü seçim topbar'daki ThemeToggle'da.
