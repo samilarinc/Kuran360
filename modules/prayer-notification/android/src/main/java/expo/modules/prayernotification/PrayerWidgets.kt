@@ -136,7 +136,7 @@ object PrayerWidgets {
     }
 
     // No times for today: the app hasn't sent them yet, or the year's data ran out; JS sends new ones when the app opens
-    if (times == null) cancelRefresh(context) else PrayerNotifier.scheduleScreenUpdate(context, times.state.refreshAt, refreshIntent(context))
+    if (times == null) cancelRefresh(context) else PrayerNotifier.scheduleWidgetUpdate(context, times.state.refreshAt, refreshIntent(context))
   }
 
   private fun widgetIds(context: Context, manager: AppWidgetManager, provider: Class<out AppWidgetProvider>) =

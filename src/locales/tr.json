@@ -981,6 +981,13 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "17 Kasım 2026",
+        "bullets": [
+          "Widget'taki geri sayım artık vakit girince hemen sıradaki vakte geçiyor, eksiye düşmüyor",
+          "Widget'lar koyu modda koyu renklerle görünüyor, Xiaomi/Redmi telefonlarda da rahat okunuyor"
+        ]
+      },
+      {
         "date": "5 Kasım 2026",
         "bullets": [
           "Tefsir eklendi: ana menüdeki Tefsir'den sure sure okuyabilir, ayetteki kitap butonuyla o ayetin tefsirine gidebilirsiniz. Kaynağı sayfanın üstünden seçebilir, ayet numarasına dokunarak ayete gidebilirsiniz. İsterseniz Ayarlar > Veri Yönetimi'nden indirip internetsiz okuyabilirsiniz",
