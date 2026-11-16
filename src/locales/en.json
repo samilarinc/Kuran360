@@ -981,6 +981,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "November 17, 2026",
+        "bullets": [
+          "Fixed the app closing on Android while finding a verse by voice or searching by topic"
+        ]
+      },
+      {
         "date": "November 5, 2026",
         "bullets": [
           "Added tafsir: read it surah by surah from Tafsir on the main menu, or jump to a verse's tafsir with the book button on the verse. Pick the source at the top of the page, and tap a verse number to go to the verse. Download it under Settings > Data Management to read it offline",
