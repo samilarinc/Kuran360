@@ -735,13 +735,28 @@ object PrayerNotifier {
    */
   private fun scheduleRefresh(context: Context, at: Long) = scheduleScreenUpdate(context, at, refreshIntent(context))
 
-  /** A non-wakeup alarm for something only seen on screen (the ongoing notification, the widgets); see scheduleRefresh. */
+  /** A non-wakeup alarm for the ongoing notification; see scheduleRefresh. */
   internal fun scheduleScreenUpdate(context: Context, at: Long, pending: PendingIntent) {
     val manager = alarmManager(context)
     if (canScheduleExactAlarms(context)) {
       manager.setExact(AlarmManager.RTC, at, pending)
     } else {
       manager.setWindow(AlarmManager.RTC, at, 60_000L, pending)
+    }
+  }
+
+  /**
+   * A wakeup alarm allowed in Doze, for the widgets: unlike the notification they have no foreground
+   * service keeping the app alive, so a non-wakeup alarm can be held back long after the screen comes
+   * on (app standby, Samsung/Xiaomi battery savers) while the countdown runs past zero. It fires a few
+   * times a day (prayer times, kerahat edges, midnight).
+   */
+  internal fun scheduleWidgetUpdate(context: Context, at: Long, pending: PendingIntent) {
+    val manager = alarmManager(context)
+    if (canScheduleExactAlarms(context)) {
+      manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pending)
+    } else {
+      manager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pending)
     }
   }
 }

@@ -981,6 +981,13 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "November 17, 2026",
+        "bullets": [
+          "The widget countdown now moves on to the next prayer right on time instead of counting below zero",
+          "Widgets use dark colors in dark mode and are easy to read on Xiaomi/Redmi phones too"
+        ]
+      },
+      {
         "date": "November 5, 2026",
         "bullets": [
           "Added tafsir: read it surah by surah from Tafsir on the main menu, or jump to a verse's tafsir with the book button on the verse. Pick the source at the top of the page, and tap a verse number to go to the verse. Download it under Settings > Data Management to read it offline",

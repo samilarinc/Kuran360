@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Dark mode widget colors: a dark surface with the app's green for the current prayer, instead of
+  the light green some launchers (MIUI/HyperOS) recolor on their own and leave hard to read.
+-->
+<resources>
+  <color name="widget_background">#F21B211C</color>
+  <color name="widget_text">#FFF1F5F1</color>
+  <color name="widget_text_secondary">#FFB5C7B6</color>
+  <color name="widget_text_meal">#FFDCE5DC</color>
+  <color name="widget_text_hint">#FF8FA391</color>
+  <color name="widget_divider">#33FFFFFF</color>
+  <color name="widget_cell_current">#8C2E7D32</color>
+</resources>

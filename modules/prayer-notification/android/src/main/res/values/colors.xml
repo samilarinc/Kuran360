@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home screen widget colors; values-night has the dark mode ones -->
+<resources>
+  <color name="widget_background">#E62E7D32</color>
+  <color name="widget_text">#FFFFFFFF</color>
+  <color name="widget_text_secondary">#CCFFFFFF</color>
+  <color name="widget_text_meal">#E6FFFFFF</color>
+  <color name="widget_text_hint">#99FFFFFF</color>
+  <color name="widget_divider">#33FFFFFF</color>
+  <color name="widget_cell_current">#33FFFFFF</color>
+</resources>
