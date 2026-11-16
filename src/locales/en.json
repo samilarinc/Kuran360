@@ -984,7 +984,8 @@
         "date": "November 17, 2026",
         "bullets": [
           "The widget countdown now moves on to the next prayer right on time instead of counting below zero",
-          "Widgets use dark colors in dark mode and are easy to read on Xiaomi/Redmi phones too"
+          "Widgets use dark colors in dark mode and are easy to read on Xiaomi/Redmi phones too",
+          "Fixed the app closing on Android while finding a verse by voice or searching by topic"
         ]
       },
       {

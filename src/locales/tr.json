@@ -984,7 +984,8 @@
         "date": "17 Kasım 2026",
         "bullets": [
           "Widget'taki geri sayım artık vakit girince hemen sıradaki vakte geçiyor, eksiye düşmüyor",
-          "Widget'lar koyu modda koyu renklerle görünüyor, Xiaomi/Redmi telefonlarda da rahat okunuyor"
+          "Widget'lar koyu modda koyu renklerle görünüyor, Xiaomi/Redmi telefonlarda da rahat okunuyor",
+          "Android'de sesle ayet bulma ve konu araması sırasında uygulamanın kapanması düzeltildi"
         ]
       },
       {
