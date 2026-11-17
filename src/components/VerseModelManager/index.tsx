@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { View, Text, Modal, TouchableOpacity, ScrollView, SafeAreaView, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Download, Trash2, X } from 'lucide-react-native';
@@ -8,6 +8,7 @@ import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { SPACING, Theme } from '@/theme';
 import { deleteModel, downloadModel, VERSE_MODELS, VerseModel, VerseModelId } from '@/services/verseModels';
 import { DeviceSupport, getUnsupportedReason, speechModel } from '@/services/verseFinder';
+import { DOWNLOAD_KEYS, useDownloadFinished, useDownloads } from '@/services/downloads';
 
 interface VerseModelManagerProps {
     visible: boolean;
@@ -33,26 +34,17 @@ export const VerseModelManager: React.FC<VerseModelManagerProps> = ({
     const { theme, common } = useTheme();
     const { t } = useTranslation();
     const styles = useThemedStyles(createStyles);
-    const [downloading, setDownloading] = useState<{ id: VerseModelId; progress: number } | null>(null);
-    const [error, setError] = useState<{ id: VerseModelId; message: string } | null>(null);
-    const abortRef = useRef<AbortController | null>(null);
+    const downloads = useDownloads();
+    // A download (here or on another screen) ended: the caller re-checks what's downloaded
+    useDownloadFinished(onChanged);
 
+    // Runs in the shared download store, so it keeps going after the manager or the screen closes
     const handleDownload = async (model: VerseModel) => {
-        const controller = new AbortController();
-        abortRef.current = controller;
-        setError(null);
-        setDownloading({ id: model.id, progress: 0 });
-        try {
-            await downloadModel(model, fraction => setDownloading({ id: model.id, progress: Math.round(fraction * 100) }), controller.signal);
-            // The first downloaded model becomes the selected one
-            if (!selectedId || !downloaded.has(selectedId)) onSelect(model.id);
-        } catch (e: any) {
-            if (!controller.signal.aborted) setError({ id: model.id, message: String(e?.message ?? e) });
-        } finally {
-            abortRef.current = null;
-            setDownloading(null);
-            onChanged();
-        }
+        const done = await downloads.start(DOWNLOAD_KEYS.model(model.id), (onProgress, signal) =>
+            downloadModel(model, fraction => onProgress({ progress: Math.round(fraction * 100) }), signal),
+        );
+        // The first downloaded model becomes the selected one
+        if (done && (!selectedId || !downloaded.has(selectedId))) onSelect(model.id);
     };
 
     const handleDelete = async (model: VerseModel) => {
@@ -78,7 +70,10 @@ export const VerseModelManager: React.FC<VerseModelManagerProps> = ({
                             const supported = !unsupportedReason;
                             const isDownloaded = downloaded.has(model.id);
                             const isSelected = model.id === selectedId && isDownloaded;
-                            const isDownloading = downloading?.id === model.id;
+                            const key = DOWNLOAD_KEYS.model(model.id);
+                            const progress = downloads.progressOf(key);
+                            const isDownloading = progress !== null;
+                            const error = downloads.errorOf(key);
                             const canSelect = supported && isDownloaded;
 
                             return (
@@ -105,14 +100,14 @@ export const VerseModelManager: React.FC<VerseModelManagerProps> = ({
                                     <View style={[common.pickerRadioIndented, styles.actions]}>
                                         {isDownloading ? (
                                             <>
-                                                <ProgressBar progress={downloading.progress} style={common.flex1} />
-                                                <Text style={common.smallText}>%{downloading.progress}</Text>
+                                                <ProgressBar progress={progress} style={common.flex1} />
+                                                <Text style={common.smallText}>%{progress}</Text>
                                                 <AppButton
                                                     icon={<X size={14} color={theme.primary} />}
                                                     title={t('verseFinder.models.cancel')}
                                                     variant="ghost"
                                                     size="small"
-                                                    onPress={() => abortRef.current?.abort()}
+                                                    onPress={() => downloads.cancel(key)}
                                                 />
                                             </>
                                         ) : isDownloaded ? (
@@ -134,18 +129,17 @@ export const VerseModelManager: React.FC<VerseModelManagerProps> = ({
                                             <Text style={common.smallText}>{t(`verseFinder.models.unsupported.${unsupportedReason}`)}</Text>
                                         ) : (
                                             <AppButton
-                                                icon={<Download size={14} color={downloading ? theme.textSecondary : theme.primary} />}
+                                                icon={<Download size={14} color={theme.primary} />}
                                                 title={t('verseFinder.models.download')}
                                                 variant="outline"
                                                 size="small"
                                                 onPress={() => handleDownload(model)}
-                                                disabled={!!downloading}
                                             />
                                         )}
                                     </View>
-                                    {error?.id === model.id && (
+                                    {error && (
                                         <Text style={[common.smallText, common.pickerRadioIndented, styles.errorText]}>
-                                            {t('verseFinder.models.downloadError', { message: error.message })}
+                                            {t('verseFinder.models.downloadError', { message: error })}
                                         </Text>
                                     )}
                                 </TouchableOpacity>

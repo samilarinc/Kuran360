@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { SHADOW, shadow } from '@msarinc/ui';
+import { shadow } from '@msarinc/ui';
 import { MARKER_SPACE } from '../SpokenWordMarker/index.styles';
-import { FONT_SIZES, SPACING, FAVORITE_COLOR, FAVORITE_COLOR_DARK, Theme } from '@/theme';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 import type { CommonStyles } from '@/theme/common.styles';
 
 const headerIconButton = {
@@ -10,7 +10,7 @@ const headerIconButton = {
   height: 40,
   justifyContent: 'center' as const,
   alignItems: 'center' as const,
-  borderWidth: 1.5,
+  borderWidth: StyleSheet.hairlineWidth,
 };
 
 export const createStyles = (theme: Theme, common: CommonStyles) => {
@@ -21,10 +21,12 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
     marginHorizontal: SPACING.md,
     borderRadius: 12,
     padding: SPACING.md,
-    ...SHADOW.sm,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: theme.border,
   },
+  // Quiet tinted badge: the play button is the card's one filled control
   verseNumber: {
-    backgroundColor: theme.primary,
+    backgroundColor: theme.primary + '1F',
     borderRadius: 20,
     width: 40,
     height: 40,
@@ -39,12 +41,12 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
     flexShrink: 1,
   },
   verseNumberText: {
-    color: '#FFFFFF', // Always white for good contrast
+    color: theme.iconPrimary,
     fontSize: FONT_SIZES.medium,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   playButton: {
-    backgroundColor: theme.secondary,
+    backgroundColor: theme.primary,
     borderRadius: 25,
     width: 50,
     height: 50,
@@ -136,10 +138,7 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
     writingDirection: 'rtl',
   },
   translationText: {
-    fontSize: FONT_SIZES.translation,
-    lineHeight: FONT_SIZES.translation * 1.4,
-    color: theme.text,
-    textAlign: 'left',
+    ...common.mealText,
   },
   transliterationText: {
     fontSize: FONT_SIZES.medium,
@@ -150,29 +149,26 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
   },
   translationContainer: {
     paddingVertical: SPACING.xs,
-    borderLeftWidth: 3,
-    borderLeftColor: theme.primary,
-    paddingLeft: SPACING.sm,
+    borderLeftWidth: 2,
+    borderLeftColor: theme.border,
+    paddingLeft: SPACING.md,
   },
   favoriteTranslationContainer: {
-    backgroundColor: FAVORITE_COLOR + '10', // Altın sarısı tint
-    borderLeftColor: FAVORITE_COLOR,
-    borderLeftWidth: 4,
-    borderRadius: 6,
+    backgroundColor: theme.accent + '10',
+    borderLeftColor: theme.accent,
+    borderLeftWidth: 2,
     marginVertical: 2,
   },
   translationTitle: {
     fontSize: FONT_SIZES.small,
     fontWeight: '600',
-    color: theme.primary,
+    color: theme.textSecondary,
     marginBottom: 4,
   },
   favoriteTranslationTitle: {
-    color: FAVORITE_COLOR_DARK,
-    fontWeight: '700',
+    color: theme.accent,
   },
   favoriteTranslationTextStyle: {
-    fontWeight: '500',
     color: theme.text,
   },
   wordTranslationsContainer: {
@@ -198,14 +194,15 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: theme.secondary,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: theme.border,
     paddingHorizontal: SPACING.sm,
     paddingVertical: 6,
     borderRadius: 8,
   },
   memToggleText: {
-    color: theme.headerText,
-    fontWeight: '600',
+    color: theme.iconPrimary,
+    fontWeight: '500',
   },
   memPanel: {
     backgroundColor: theme.surface,
@@ -271,6 +268,9 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
     fontWeight: '600',
     textAlign: 'center',
   },
-  iconButton: headerIconButton,
+  iconButton: {
+    ...headerIconButton,
+    borderColor: theme.border,
+  },
   });
 };

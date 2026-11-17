@@ -8,7 +8,8 @@ import { HeaderReciterButton } from '@/components/HeaderReciterButton';
 import { ReciterPickerModal } from '@/components/ReciterPickerModal';
 import { HeaderIconButton } from '@/components/HeaderIconButton';
 import { useBugReport } from '@/contexts/BugReportContext';
-import { Bug } from 'lucide-react-native';
+import { Bug, Settings } from 'lucide-react-native';
+import { useNavigationHelpers } from '@/contexts/NavigationContext';
 
 const LANGUAGES = [
     { code: 'tr', label: 'Türkçe' },
@@ -17,6 +18,9 @@ const LANGUAGES = [
 
 /** Below this width the right-side controls fold into a single slide-down button. */
 const MENU_BREAKPOINT = 640;
+// Round header buttons (HeaderIconButton and the @msarinc/ui toggles) and the gap between them
+const HEADER_BUTTON_SIZE = 36;
+const HEADER_BUTTON_GAP = 8;
 
 /** Inside the slide-down menu the controls stack vertically, so switch known ones to their narrow forms. */
 const toMenuForm = (node: React.ReactNode, menuProps: Record<string, unknown>, type: React.ElementType) =>
@@ -59,6 +63,15 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     const useMenu = width < MENU_BREAKPOINT;
     const [reciterPickerVisible, setReciterPickerVisible] = useState(false);
     const { openBugReport } = useBugReport();
+    const { goToSettings } = useNavigationHelpers();
+
+    // The side buttons are absolutely positioned, so the centered title reserves the wider side's width on both sides
+    const navButtonCount = (showBackButton ? 1 : 0) + (showHomeButton ? 1 : 0);
+    const leftInset = navButtonCount > 0 ? navButtonCount * HEADER_BUTTON_SIZE + (navButtonCount - 1) * HEADER_BUTTON_GAP + HEADER_BUTTON_GAP : 0;
+    // Folded into one menu button on narrow screens; otherwise font size (optional), reciter, language, theme, settings and bug report
+    const rightButtonCount = useMenu ? 1 : (fontSizeToggle ? 6 : 5);
+    const rightInset = rightButtonCount * (HEADER_BUTTON_SIZE + HEADER_BUTTON_GAP);
+    const sideInset = Math.max(leftInset, rightInset);
 
     const fontSizeControl = useMenu ? toMenuForm(fontSizeToggle, { vertical: true }, FontSizeToggle) : fontSizeToggle;
 
@@ -73,6 +86,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 onChange={(code: string) => i18n.changeLanguage(code)}
             />
             <ThemeToggle compact includeSystem labels={themeToggleLabels} />
+            <HeaderIconButton icon={Settings} accessibilityLabel={t('mainScreen.menu.settings')} onPress={goToSettings} />
             <HeaderIconButton icon={Bug} accessibilityLabel={t('bugReport.title')} onPress={openBugReport} />
         </>
     );
@@ -102,8 +116,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 ) : controls}
             </View>
 
-            <View style={styles.contentContainer}>
-                {title && <Text style={styles.title}>{title}</Text>}
+            <View style={[styles.contentContainer, { marginHorizontal: sideInset }]}>
+                {title && (
+                    <Text style={styles.title} numberOfLines={2}>
+                        {title}
+                    </Text>
+                )}
                 {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
                 {children}
             </View>
@@ -116,7 +134,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
 const createStyles = (theme: Theme, large: boolean, hasSubtitle: boolean) => StyleSheet.create({
     header: {
-        backgroundColor: theme.primary,
+        backgroundColor: theme.headerBackground,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: theme.border,
         paddingVertical: large ? SPACING.md : SPACING.xs,
         paddingHorizontal: SPACING.md,
         alignItems: 'center',
@@ -125,16 +145,16 @@ const createStyles = (theme: Theme, large: boolean, hasSubtitle: boolean) => Sty
         justifyContent: 'center',
     },
     title: {
-        fontSize: large ? FONT_SIZES.xxlarge : FONT_SIZES.large,
-        fontWeight: 'bold',
-        color: theme.headerText,
+        fontSize: large ? FONT_SIZES.xxlarge - 4 : FONT_SIZES.large - 2,
+        lineHeight: large ? FONT_SIZES.xxlarge + 4 : FONT_SIZES.large + 2,
+        fontWeight: '600',
+        color: theme.headerForeground,
         marginBottom: hasSubtitle ? 2 : 0,
         textAlign: 'center',
     },
     subtitle: {
         fontSize: FONT_SIZES.small,
-        color: theme.headerText,
-        opacity: 0.9,
+        color: theme.textSecondary,
         textAlign: 'center',
     },
     leftButton: {
@@ -157,6 +177,6 @@ const createStyles = (theme: Theme, large: boolean, hasSubtitle: boolean) => Sty
     },
     contentContainer: {
         alignItems: 'center',
-        paddingHorizontal: SPACING.lg,
+        alignSelf: 'stretch',
     },
 });

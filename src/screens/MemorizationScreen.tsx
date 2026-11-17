@@ -42,7 +42,7 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
     const styles = useThemedStyles(createStyles);
     // The microphone button and its hint are shared with the verse finder
     const micStyles = useThemedStyles(createFinderStyles);
-    const download = useDownloadData({ isDataAvailable, navigation });
+    const download = useDownloadData({ isDataAvailable });
     const surahs = getSurahsList();
 
     const [selection, setSelection] = useState<MemorizationSelection>({ surahNumber: 1, scope: 'single', fromVerse: 1, toVerse: 1 });

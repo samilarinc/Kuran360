@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet } from 'react-native';
+import { Download } from 'lucide-react-native';
 import { useTheme, Theme, CommonStyles, useThemedStyles } from '@/contexts/ThemeContext';
 import { DataUpdateProgress } from '../DataUpdateProgress';
 import { AppButton } from '../AppButton';
@@ -54,6 +55,7 @@ export const DownloadRequired: React.FC<DownloadRequiredProps> = ({
                 ) : (
                     <AppButton
                         title={downloadButtonLabel ?? t('download.button')}
+                        icon={<Download size={18} color={theme.headerText} />}
                         onPress={onDownloadPress}
                         variant="primary"
                         size="large"

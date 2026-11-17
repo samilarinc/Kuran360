@@ -29,7 +29,7 @@ import { CollapsibleSettingsSection } from '@/components/CollapsibleSettingsSect
 import { SettingItem } from '@/components/SettingItem';
 import { ArabicFontPicker } from '@/components/ArabicFontPicker';
 import { TranslationsSection } from '@/components/TranslationsSection';
-import { SPACING, TAFSIR_COLOR } from '@/theme';
+import { SPACING } from '@/theme';
 import { isPrayerNotificationSupported } from '@/services/prayerTimes';
 import { WidgetSettingsSection } from '@/components/WidgetSettingsSection';
 import { TafsirSettingsSection } from '@/components/TafsirSettingsSection';
@@ -38,27 +38,11 @@ interface SettingsScreenProps {
     navigation: any;
 }
 
-const COLORS = {
-    audio: '#F59E0B',
-    wordTracking: '#22C55E',
-    display: '#3B82F6',
-    transliteration: '#8B5CF6',
-    wordTranslations: '#10B981',
-    inlineWordTranslations: '#F97316',
-    wordRoots: '#84CC16',
-    paginatedView: '#0EA5E9',
-    verseNumbers: '#EC4899',
-    fonts: '#14B8A6',
-    translations: '#6366F1',
-    tafsir: TAFSIR_COLOR,
-    dataManagement: '#64748B',
-    prayerNotifications: '#14B8A6',
-    widgets: '#0EA5E9',
-};
-
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     const { settings, updateSettings, availableTranslations } = useSettings();
     const { theme, common } = useTheme();
+    // Every settings icon takes the app's ink green; the section titles already tell them apart
+    const iconColor = theme.iconPrimary;
     const { t } = useTranslation();
     // Word roots only show up in the word translation views: without either one the switch is off and locked
     // (the saved choice is kept, so it is back as before once a view is turned on again)
@@ -182,7 +166,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     title={t('settingsScreen.sections.audioTitle')}
                     subtitle={t('settingsScreen.sections.audioSubtitle')}
                     icon={Volume2}
-                    color={COLORS.audio}
+                    color={iconColor}
                     expanded={expandedSections.audio}
                     onToggle={() => toggleSection('audio')}
                 >
@@ -191,8 +175,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         description={t('settingsScreen.items.autoplayDescription')}
                         value={settings.autoplayEnabled}
                         onValueChange={(value) => updateSettings({ autoplayEnabled: value })}
-                        icon={<Repeat size={17} color={COLORS.audio} />}
-                        iconColor={COLORS.audio}
+                        icon={<Repeat size={17} color={iconColor} />}
+                        iconColor={iconColor}
                         theme={theme}
                     />
                     <SettingItem
@@ -201,8 +185,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         warning={t('settingsScreen.items.wordTrackingWarning')}
                         value={settings.wordTrackingEnabled}
                         onValueChange={(value) => updateSettings({ wordTrackingEnabled: value })}
-                        icon={<Highlighter size={17} color={COLORS.wordTracking} />}
-                        iconColor={COLORS.wordTracking}
+                        icon={<Highlighter size={17} color={iconColor} />}
+                        iconColor={iconColor}
                         theme={theme}
                     />
                     <ReciterSelector />
@@ -212,7 +196,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     title={t('settingsScreen.sections.displayTitle')}
                     subtitle={t('settingsScreen.sections.displaySubtitle')}
                     icon={Eye}
-                    color={COLORS.display}
+                    color={iconColor}
                     expanded={expandedSections.display}
                     onToggle={() => toggleSection('display')}
                 >
@@ -221,8 +205,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         description={t('settingsScreen.items.transliterationDescription')}
                         value={settings.showTransliteration}
                         onValueChange={(value) => updateSettings({ showTransliteration: value })}
-                        icon={<PenLine size={16} color={COLORS.transliteration} />}
-                        iconColor={COLORS.transliteration}
+                        icon={<PenLine size={16} color={iconColor} />}
+                        iconColor={iconColor}
                         theme={theme}
                     />
 
@@ -231,8 +215,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         description={t('settingsScreen.items.wordTranslationsDescription')}
                         value={settings.showWordTranslations}
                         onValueChange={(value) => updateSettings({ showWordTranslations: value })}
-                        icon={<Type size={16} color={COLORS.wordTranslations} />}
-                        iconColor={COLORS.wordTranslations}
+                        icon={<Type size={16} color={iconColor} />}
+                        iconColor={iconColor}
                         theme={theme}
                     />
 
@@ -242,8 +226,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         warning={t('settingsScreen.items.inlineWordTranslationsWarning')}
                         value={settings.inlineWordTranslations}
                         onValueChange={(value) => updateSettings({ inlineWordTranslations: value })}
-                        icon={<MousePointerClick size={16} color={COLORS.inlineWordTranslations} />}
-                        iconColor={COLORS.inlineWordTranslations}
+                        icon={<MousePointerClick size={16} color={iconColor} />}
+                        iconColor={iconColor}
                         theme={theme}
                     />
 
@@ -255,8 +239,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         disabled={wordViewsOff}
                         value={settings.showWordRoots && !wordViewsOff}
                         onValueChange={(value) => updateSettings({ showWordRoots: value })}
-                        icon={<Sprout size={16} color={COLORS.wordRoots} />}
-                        iconColor={COLORS.wordRoots}
+                        icon={<Sprout size={16} color={iconColor} />}
+                        iconColor={iconColor}
                         theme={theme}
                     />
 
@@ -265,8 +249,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         description={t('settingsScreen.items.paginatedViewDescription')}
                         value={settings.usePaginatedView}
                         onValueChange={(value) => updateSettings({ usePaginatedView: value })}
-                        icon={<FileText size={16} color={COLORS.paginatedView} />}
-                        iconColor={COLORS.paginatedView}
+                        icon={<FileText size={16} color={iconColor} />}
+                        iconColor={iconColor}
                         theme={theme}
                     />
 
@@ -275,8 +259,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         description={t('settingsScreen.items.arabicVerseNumbersDescription')}
                         value={settings.verseNumberStyle === 'arabic'}
                         onValueChange={(value) => updateSettings({ verseNumberStyle: value ? 'arabic' : 'latin' })}
-                        icon={<Hash size={16} color={COLORS.verseNumbers} />}
-                        iconColor={COLORS.verseNumbers}
+                        icon={<Hash size={16} color={iconColor} />}
+                        iconColor={iconColor}
                         theme={theme}
                     />
                 </CollapsibleSettingsSection>
@@ -285,7 +269,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     title={t('settingsScreen.sections.fontsTitle')}
                     subtitle={t('settingsScreen.sections.fontsSubtitle')}
                     icon={PenTool}
-                    color={COLORS.fonts}
+                    color={iconColor}
                     expanded={expandedSections.fonts}
                     onToggle={() => toggleSection('fonts')}
                 >
@@ -299,7 +283,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         favorite: `${settings.favoriteTranslation.substring(0, 20)}${settings.favoriteTranslation.length > 20 ? '...' : ''}`,
                     })}
                     icon={Languages}
-                    color={COLORS.translations}
+                    color={iconColor}
                     expanded={expandedSections.translations}
                     onToggle={() => toggleSection('translations')}
                 >
@@ -318,7 +302,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     title={t('tafsir.settingsTitle')}
                     subtitle={t('tafsir.settingsSubtitle')}
                     icon={BookOpenText}
-                    color={COLORS.tafsir}
+                    color={iconColor}
                     expanded={expandedSections.tafsir}
                     onToggle={() => toggleSection('tafsir')}
                 >
@@ -332,7 +316,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         title={t('prayerNotifications.title')}
                         subtitle={t('prayerNotifications.menuDescription')}
                         icon={BellRing}
-                        color={COLORS.prayerNotifications}
+                        color={iconColor}
                         onToggle={() => navigation.navigate('PrayerNotificationSettings')}
                     />
                 )}
@@ -343,7 +327,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                         title={t('widgets.sectionTitle')}
                         subtitle={t('widgets.sectionSubtitle')}
                         icon={LayoutGrid}
-                        color={COLORS.widgets}
+                        color={iconColor}
                         expanded={expandedSections.widgets}
                         onToggle={() => toggleSection('widgets')}
                     >
@@ -355,7 +339,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     title={t('dataManagement.settingsTitle')}
                     subtitle={t('dataManagement.settingsSubtitle')}
                     icon={HardDrive}
-                    color={COLORS.dataManagement}
+                    color={iconColor}
                     onToggle={() => navigation.navigate('DataManagement')}
                     link
                 />

@@ -262,11 +262,8 @@
   },
   "umrahMenuScreen": {
     "checklistTitle": "Checklist",
-    "checklistDescription": "Things to do before umrah",
     "progressTitle": "Where am I now?",
-    "progressDescription": "Track your tawaf and sa'y",
     "duasTitle": "Umrah Duas",
-    "duasDescription": "Duas to recite during umrah",
     "header": "Tools for Your Umrah"
   },
   "umrahProgressScreen": {
@@ -600,7 +597,7 @@
     "title": "Search by Topic",
     "downloadTitle": "Topic search model",
     "downloadDescription": "Topic search finds related verses even when the word does not appear in them. It runs on your device; for that you need to download a small language model once.",
-    "downloadButton": "📥 Download Model",
+    "downloadButton": "Download Model",
     "loadingModel": "Preparing the model…",
     "modelError": "The model could not be loaded: {{message}}",
     "retry": "Try again",
@@ -617,16 +614,10 @@
   },
   "prayerMenu": {
     "title": "Prayers and Duas",
-    "prayerTimesDescription": "See the prayer times for your location",
-    "qiblaDescription": "Find the direction of the Kaaba from where you are",
-    "duaListDescription": "Create a personal dua checklist",
-    "zikirmatikDescription": "Count your dhikr and tasbihat, or add your own",
-    "hutbeDescription": "Read the weekly Friday sermon",
     "hutbeInfoTitle": "Info",
     "hutbeInfoMessage": "The latest sermon hasn't been uploaded yet.",
     "hutbeErrorTitle": "Error",
-    "hutbeErrorMessage": "Couldn't reach the sermon file. Please try again later.",
-    "duasDescription": "Read ready-made duas in the verse view"
+    "hutbeErrorMessage": "Couldn't reach the sermon file. Please try again later."
   },
   "zikirmatik": {
     "title": "Dhikr Counter",
@@ -803,9 +794,7 @@
   "searchMenu": {
     "title": "Search",
     "classicTitle": "Classic Search",
-    "classicDescription": "Search by word or phrase in the Arabic text, transliteration and translations",
-    "topicTitle": "Search by Topic",
-    "topicDescription": "Type a topic and find related verses, even without the exact word"
+    "topicTitle": "Search by Topic"
   },
   "settingsScreen": {
     "title": "Settings",
@@ -888,6 +877,7 @@
   "mainScreen": {
     "appTitle": "The Holy Quran",
     "appSubtitle": "Digital Mushaf",
+    "resumeLabel": "Where you left off",
     "menu": {
       "surahs": "Surahs",
       "randomVerse": "Random Verse",
@@ -984,6 +974,16 @@
       {
         "date": "November 17, 2026",
         "bullets": [
+          "Translation, tafsir and model downloads keep going when you leave the page; a small badge at the bottom of every screen shows progress and opens Data management",
+          "Ayet Shazam is simpler: technical details sit behind the \"i\" button, and tapping the mic downloads the speech model if needed",
+          "The Prayers and duas, Umrah and Search menus use the same tile layout as the main menu",
+          "Settings are reachable from the top-right menu on every screen",
+          "A shorter main menu: Verse Shazam gets a large tile at the top, other tools sit in a two-column grid, Prayer Times is right on the main menu, and Profile, Settings and About are at the bottom",
+          "Translations and tafsirs use a serif typeface that reads like a book",
+          "Verse cards are calmer: single-color buttons and quieter translations",
+          "Long screen titles no longer run over the back and home buttons",
+          "The Surahs card on the main menu shows where you left off; tap it to go to that verse",
+          "New colors: ink green and gold, with a paper-toned background in light mode; menu icons are colored by section",
           "The widget countdown now moves on to the next prayer right on time instead of counting below zero",
           "Widgets use dark colors in dark mode and are easy to read on Xiaomi/Redmi phones too",
           "Fixed the app closing on Android while finding a verse by voice or searching by topic",
@@ -1520,7 +1520,7 @@
     "preview": "Play preview"
   },
   "download": {
-    "button": "📥 Download Translation Data",
+    "button": "Download Translation Data",
     "sizeHint": "This will download {{size}} MB of data.",
     "starting": "Starting download...",
     "doneReloading": "Done! Reloading the page...",
@@ -1654,6 +1654,18 @@
       "notRead": "Not read"
     }
   },
+  "downloadPill": {
+    "one": "Downloading {{item}}",
+    "many": "{{count}} downloads",
+    "percent": "{{percent}}%",
+    "failed": "Couldn't download {{item}}",
+    "items": {
+      "quran": "Quran data",
+      "topic": "topic search model",
+      "tafsir": "tafsir",
+      "model": "speech model"
+    }
+  },
   "verseFinder": {
     "title": "Verse Shazam",
     "downloadTitle": "Quran data required",
@@ -1673,7 +1685,12 @@
     "playing": "Playing…",
     "rerun": "Recognize this audio again",
     "manageModels": "Manage models",
-    "noModel": "To get started, download a speech model from \"Manage models\".",
+    "noModel": "Tap the mic; the first time, the speech model is downloaded ({{size}} MB).",
+    "details": "Technical details",
+    "modelDownload": {
+      "progress": "Downloading the speech model… {{percent}}%",
+      "error": "Couldn't download the speech model: {{message}}"
+    },
     "insecureWarning": "This page was opened over an insecure connection (http). Browsers turn off the microphone and WebGPU there; open it over https.",
     "status": {
       "title": "Status",
@@ -1681,7 +1698,7 @@
       "yes": "Yes",
       "no": "No",
       "model": "Speech model",
-      "noModel": "None selected",
+      "noModel": "Not downloaded",
       "modelStates": {
         "idle": "Not loaded",
         "loading": "Loading",

@@ -6,7 +6,7 @@ import { ShareModal } from '@/components/ShareModal';
 import { AppButton } from '@/components/AppButton';
 import { ArabicText } from '@/components/ArabicText';
 import { Badge } from '@/components/Badge';
-import { SPACING, FONT_SIZES, FAVORITE_COLOR, FAVORITE_COLOR_DARK, Theme } from '@/theme';
+import { SPACING, FONT_SIZES, Theme } from '@/theme';
 import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
 import { useSettings } from '@/contexts/SettingsContext';
 import { Verse as VerseType, VerseShareData } from '@/types';
@@ -130,7 +130,7 @@ export const AllTranslationsScreen: React.FC<AllTranslationsScreenProps> = ({ na
                                         common.flex1,
                                         isFavorite && styles.favoriteTranslationName
                                     ]}>
-                                        {isFavorite && '⭐ '}{translationName}
+                                        {translationName}
                                     </Text>
                                     <AppButton
                                         title={t('allTranslationsScreen.share')}
@@ -194,22 +194,17 @@ const createStyles = (theme: Theme, common: CommonStyles) => {
         ...shadow({ opacity: 0.1, radius: 2, offset: { width: 0, height: 1 }, elevation: 2 }),
     },
     favoriteTranslationItem: {
-        backgroundColor: FAVORITE_COLOR + '10',
-        borderLeftColor: FAVORITE_COLOR,
+        backgroundColor: theme.accent + '10',
+        borderLeftColor: theme.accent,
     },
     favoriteTranslationName: {
-        color: FAVORITE_COLOR_DARK,
+        color: theme.accent,
         fontWeight: '700',
     },
     translationText: {
-        fontSize: FONT_SIZES.medium,
-        lineHeight: FONT_SIZES.medium * 1.4,
-        color: theme.text,
-        textAlign: 'left',
+        ...common.mealText,
     },
-    favoriteTranslationText: {
-        fontWeight: '500',
-    },
+    favoriteTranslationText: {},
     emptyStateText: {
         ...common.emptyStateText,
         fontStyle: 'normal',

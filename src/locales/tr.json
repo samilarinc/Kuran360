@@ -262,11 +262,8 @@
   },
   "umrahMenuScreen": {
     "checklistTitle": "Hazırlık Listesi",
-    "checklistDescription": "Umre öncesi yapılacaklar",
     "progressTitle": "Şu an neredeyim?",
-    "progressDescription": "Tavaf ve Sa'y takibi yapın",
     "duasTitle": "Umre Duaları",
-    "duasDescription": "Umre ibadetinde okunacak dualar",
     "header": "Umre İbadetiniz İçin Araçlar"
   },
   "umrahProgressScreen": {
@@ -600,7 +597,7 @@
     "title": "Konuya Göre Ara",
     "downloadTitle": "Konu arama modeli",
     "downloadDescription": "Konuya göre arama, kelime geçmese bile ilgili ayetleri bulur. Arama cihazınızda çalışır; bunun için küçük bir anlam modelini bir kez indirmeniz gerekir.",
-    "downloadButton": "📥 Modeli İndir",
+    "downloadButton": "Modeli İndir",
     "loadingModel": "Model hazırlanıyor…",
     "modelError": "Model yüklenemedi: {{message}}",
     "retry": "Tekrar dene",
@@ -617,16 +614,10 @@
   },
   "prayerMenu": {
     "title": "Namazlar ve Dualar",
-    "prayerTimesDescription": "Bulunduğunuz yerin namaz vakitlerini görün",
-    "qiblaDescription": "Bulunduğunuz yerden Kâbe yönünü bulun",
-    "duaListDescription": "Kişisel dua çizelgesi oluşturun",
-    "zikirmatikDescription": "Zikir ve tesbihatlarınızı sayın, kendi zikrinizi ekleyin",
-    "hutbeDescription": "Haftalık cuma hutbesini okuyun",
     "hutbeInfoTitle": "Bilgi",
     "hutbeInfoMessage": "Güncel hutbe henüz yüklenmedi.",
     "hutbeErrorTitle": "Hata",
-    "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin.",
-    "duasDescription": "Hazır duaları ayet görünümüyle okuyun"
+    "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin."
   },
   "zikirmatik": {
     "title": "Zikirmatik",
@@ -803,9 +794,7 @@
   "searchMenu": {
     "title": "Arama",
     "classicTitle": "Klasik Arama",
-    "classicDescription": "Kelime veya cümleyle ara; Arapça metinde, okunuşta ve meallerde bulur",
-    "topicTitle": "Konuya Göre Ara",
-    "topicDescription": "Bir konu yaz, kelime geçmese bile ilgili ayetleri bul"
+    "topicTitle": "Konuya Göre Ara"
   },
   "settingsScreen": {
     "title": "Ayarlar",
@@ -888,6 +877,7 @@
   "mainScreen": {
     "appTitle": "Kuran-ı Kerim",
     "appSubtitle": "Dijital Mushaf",
+    "resumeLabel": "Kaldığın yer",
     "menu": {
       "surahs": "Sureler",
       "randomVerse": "Rastgele Ayet",
@@ -984,6 +974,16 @@
       {
         "date": "17 Kasım 2026",
         "bullets": [
+          "Meal, tefsir ve model indirmeleri sayfadan çıksanız da devam ediyor; her ekranın altındaki küçük işaret ilerlemeyi gösteriyor, dokununca Veri Yönetimi açılıyor",
+          "Ayet Shazam sadeleşti: teknik ayrıntılar \"i\" tuşunun arkasında, model yoksa mikrofona dokununca iniyor",
+          "Namazlar ve Dualar, Umre ve Arama menüleri de ana menü gibi kutu düzeninde",
+          "Ayarlara her ekrandan sağ üstteki menüden ulaşabilirsiniz",
+          "Ana menü daha kısa: Ayet Shazam en üstte büyük kutuda, diğer araçlar iki sütunlu kutularda, Namaz Vakitleri doğrudan ana menüde; Profil, Ayarlar ve Hakkında en altta",
+          "Mealler ve tefsirler kitap gibi okunan serif bir yazı tipiyle gösteriliyor",
+          "Ayet kartları sadeleşti: butonlar tek renk, mealler daha sakin",
+          "Uzun ekran başlıkları artık geri ve ana sayfa butonlarının üstüne binmiyor",
+          "Ana menüdeki Sureler kartında kaldığınız yer görünüyor, dokununca o ayete gidiyorsunuz",
+          "Yeni renkler: mürekkep yeşili ve yaldız, açık modda kâğıt tonu zemin; menü ikonları bölümlerine göre renkleniyor",
           "Widget'taki geri sayım artık vakit girince hemen sıradaki vakte geçiyor, eksiye düşmüyor",
           "Widget'lar koyu modda koyu renklerle görünüyor, Xiaomi/Redmi telefonlarda da rahat okunuyor",
           "Android'de sesle ayet bulma ve konu araması sırasında uygulamanın kapanması düzeltildi",
@@ -1521,7 +1521,7 @@
     "preview": "Önizleme dinle"
   },
   "download": {
-    "button": "📥 Meal Verilerini İndir",
+    "button": "Meal Verilerini İndir",
     "sizeHint": "Bu işlem {{size}}MB veri indirecektir.",
     "starting": "İndirme başlatılıyor...",
     "doneReloading": "Tamamlandı! Sayfa yenileniyor...",
@@ -1655,6 +1655,18 @@
       "notRead": "Okunmadı"
     }
   },
+  "downloadPill": {
+    "one": "{{item}} iniyor",
+    "many": "{{count}} indirme sürüyor",
+    "percent": "%{{percent}}",
+    "failed": "{{item}} indirilemedi",
+    "items": {
+      "quran": "Kur'an verisi",
+      "topic": "Konu arama modeli",
+      "tafsir": "Tefsir",
+      "model": "Ses modeli"
+    }
+  },
   "verseFinder": {
     "title": "Ayet Shazam",
     "downloadTitle": "Kur'an verisi gerekli",
@@ -1674,7 +1686,12 @@
     "playing": "Çalınıyor…",
     "rerun": "Bu sesle tekrar tanı",
     "manageModels": "Modelleri yönet",
-    "noModel": "Başlamak için \"Modelleri yönet\"ten bir ses modeli indirin.",
+    "noModel": "Mikrofona dokunun; ilk seferde ses modeli indirilir ({{size}} MB).",
+    "details": "Teknik ayrıntılar",
+    "modelDownload": {
+      "progress": "Ses modeli indiriliyor… %{{percent}}",
+      "error": "Ses modeli indirilemedi: {{message}}"
+    },
     "insecureWarning": "Sayfa güvenli olmayan bir bağlantıyla (http) açıldı. Tarayıcı bu durumda mikrofonu ve WebGPU'yu kapatır; https üzerinden açın.",
     "status": {
       "title": "Durum",
@@ -1682,7 +1699,7 @@
       "yes": "Var",
       "no": "Yok",
       "model": "Ses modeli",
-      "noModel": "Seçilmedi",
+      "noModel": "İndirilmedi",
       "modelStates": {
         "idle": "Hazır değil",
         "loading": "Yükleniyor",

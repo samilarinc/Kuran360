@@ -64,7 +64,7 @@ export const RandomVerseScreen: React.FC<RandomVerseScreenProps> = ({ navigation
         downloadedBytes,
         totalBytes,
         handleDownloadData,
-    } = useDownloadData({ isDataAvailable, navigation });
+    } = useDownloadData({ isDataAvailable });
 
     // Slide animation when a new verse comes in
     const translateX = useRef(new Animated.Value(0)).current;

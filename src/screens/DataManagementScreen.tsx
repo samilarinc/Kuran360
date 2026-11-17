@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, ScrollView, Alert, Platform, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
@@ -19,6 +19,7 @@ import { deleteModel, downloadModel, getDownloadedModels, VERSE_MODELS, VerseMod
 import { checkDeviceSupport, DeviceSupport, getUnsupportedReason, speechModel } from '@/services/verseFinder';
 import { deleteTopicModel, downloadTopicModel, isTopicModelDownloaded, TOPIC_MODEL_SIZE_MB } from '@/services/topicSearch';
 import { SPACING } from '@/theme';
+import { DOWNLOAD_KEYS, DownloadTask, useDownloadFinished, useDownloads } from '@/services/downloads';
 
 interface DataManagementScreenProps {
     navigation: any;
@@ -26,12 +27,10 @@ interface DataManagementScreenProps {
     startDataUpdate?: boolean;
 }
 
-type Job = { key: string; progress: number };
-
-const QURAN_KEY = 'quran';
-const TOPIC_KEY = 'topic';
-const tafsirKey = (edition: string) => `tafsir:${edition}`;
-const modelKey = (id: VerseModelId) => `model:${id}`;
+const QURAN_KEY = DOWNLOAD_KEYS.quran;
+const TOPIC_KEY = DOWNLOAD_KEYS.topic;
+const tafsirKey = DOWNLOAD_KEYS.tafsir;
+const modelKey = (id: VerseModelId) => DOWNLOAD_KEYS.model(id);
 
 const confirm = (title: string, message: string, confirmLabel: string, cancelLabel: string, onConfirm: () => void) => {
     if (Platform.OS === 'web') {
@@ -46,7 +45,7 @@ const confirm = (title: string, message: string, confirmLabel: string, cancelLab
 
 /**
  * Everything the app downloads, in one place: the Quran data (with the translations), the tafsirs and the speech
- * and topic search models. One download runs at a time.
+ * and topic search models. Downloads keep running after the user leaves the screen.
  */
 export const DataManagementScreen: React.FC<DataManagementScreenProps> = ({ navigation, startDataUpdate }) => {
     const { common } = useTheme();
@@ -61,9 +60,7 @@ export const DataManagementScreen: React.FC<DataManagementScreenProps> = ({ navi
     const [models, setModels] = useState<Set<VerseModelId>>(new Set());
     const [topicModel, setTopicModel] = useState(false);
     const [support, setSupport] = useState<DeviceSupport | null>(null);
-    const [job, setJob] = useState<Job | null>(null);
-    const [errors, setErrors] = useState<Record<string, string>>({});
-    const abortRef = useRef<AbortController | null>(null);
+    const downloads = useDownloads();
 
     const editions = TAFSIR_SOURCES.map(source => ({ source, edition: getEdition(source, i18n.language) }));
 
@@ -92,27 +89,18 @@ export const DataManagementScreen: React.FC<DataManagementScreenProps> = ({ navi
             .catch(() => undefined);
     }, [refresh]);
 
-    useEffect(() => () => abortRef.current?.abort(), []);
+    // A download started here or on another screen ended: re-check what's on the device
+    useDownloadFinished(refresh);
 
-    /** Runs a download with progress, one at a time; an error is shown under its item */
-    const run = async (key: string, task: (onProgress: (fraction: number) => void, signal: AbortSignal) => Promise<void>) => {
-        const controller = new AbortController();
-        abortRef.current = controller;
-        setErrors(({ [key]: _, ...rest }) => rest);
-        setJob({ key, progress: 0 });
-        try {
-            await task(fraction => setJob({ key, progress: Math.round(fraction * 100) }), controller.signal);
-        } catch (e: any) {
-            if (!controller.signal.aborted) setErrors(prev => ({ ...prev, [key]: String(e?.message ?? e) }));
-        } finally {
-            abortRef.current = null;
-            setJob(null);
-            refresh();
-        }
+    /** Starts a download in the shared store; an error is shown under its item */
+    const run = (key: string, task: (onProgress: (fraction: number) => void, signal: AbortSignal) => Promise<void>) => {
+        const shared: DownloadTask = (onProgress, signal) =>
+            task(fraction => onProgress({ progress: Math.round(fraction * 100) }), signal);
+        return downloads.start(key, shared);
     };
 
-    const progressOf = (key: string) => (job?.key === key ? job.progress : null);
-    const cancel = () => abortRef.current?.abort();
+    const progressOf = (key: string) => downloads.progressOf(key);
+    const errorOf = (key: string) => downloads.errorOf(key);
 
     // The Quran data replaces the stored copy as a whole; the web app reloads to pick it up
     const updateQuranData = () =>
@@ -198,8 +186,7 @@ export const DataManagementScreen: React.FC<DataManagementScreenProps> = ({ navi
                                     : isDataAvailable ? t('dataManagement.quran.updateAvailable') : undefined
                             }
                             progress={progressOf(QURAN_KEY)}
-                            error={errors[QURAN_KEY]}
-                            busy={!!job}
+                            error={errorOf(QURAN_KEY)}
                             onDownload={updateQuranData}
                             onUpdate={isDataAvailable && !quranUpToDate ? confirmQuranUpdate : undefined}
                             isLast
@@ -222,10 +209,9 @@ export const DataManagementScreen: React.FC<DataManagementScreenProps> = ({ navi
                                     downloaded={tafsirs.has(edition)}
                                     status={tafsirs.has(edition) ? undefined : t('dataManagement.live')}
                                     progress={progressOf(key)}
-                                    error={errors[key]}
-                                    busy={!!job}
+                                    error={errorOf(key)}
                                     onDownload={() => run(key, (onProgress, signal) => downloadEdition(edition, source.sizeMb, onProgress, signal))}
-                                    onCancel={cancel}
+                                    onCancel={() => downloads.cancel(key)}
                                     onDelete={() => confirmDelete(name, () => deleteEdition(edition))}
                                     isLast={index === editions.length - 1}
                                 />
@@ -249,10 +235,9 @@ export const DataManagementScreen: React.FC<DataManagementScreenProps> = ({ navi
                                     downloaded={models.has(model.id)}
                                     unavailableReason={unsupportedText(model.id)}
                                     progress={progressOf(key)}
-                                    error={errors[key]}
-                                    busy={!!job}
+                                    error={errorOf(key)}
                                     onDownload={() => run(key, (onProgress, signal) => downloadModel(model, onProgress, signal))}
-                                    onCancel={cancel}
+                                    onCancel={() => downloads.cancel(key)}
                                     onDelete={() =>
                                         confirmDelete(name, async () => {
                                             if (speechModel.modelId === model.id) speechModel.unload();
@@ -276,10 +261,9 @@ export const DataManagementScreen: React.FC<DataManagementScreenProps> = ({ navi
                             sizeMb={TOPIC_MODEL_SIZE_MB}
                             downloaded={topicModel}
                             progress={progressOf(TOPIC_KEY)}
-                            error={errors[TOPIC_KEY]}
-                            busy={!!job}
+                            error={errorOf(TOPIC_KEY)}
                             onDownload={() => run(TOPIC_KEY, downloadTopicModel)}
-                            onCancel={cancel}
+                            onCancel={() => downloads.cancel(TOPIC_KEY)}
                             onDelete={() => confirmDelete(t('dataManagement.topic.title'), deleteTopicModel)}
                             isLast
                         />

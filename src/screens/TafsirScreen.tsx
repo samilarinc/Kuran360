@@ -218,9 +218,7 @@ const createStyles = (theme: Theme, common: CommonStyles) => StyleSheet.create({
         color: theme.primary,
     },
     body: {
-        fontSize: FONT_SIZES.medium,
-        lineHeight: FONT_SIZES.medium * 1.6,
-        color: theme.text,
+        ...common.mealText,
     },
     credit: {
         textAlign: 'center',

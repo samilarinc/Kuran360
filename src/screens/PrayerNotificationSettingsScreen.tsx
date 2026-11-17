@@ -240,8 +240,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                         description={t('prayerTimesScreen.travelModeDescription')}
                         value={travelOn}
                         onValueChange={toggleTravelMode}
-                        icon={<Plane size={20} color="#0891B2" />}
-                        iconColor="#0891B2"
+                        icon={<Plane size={20} color={theme.accent} />}
+                        iconColor={theme.accent}
                         theme={theme}
                     />
                 </View>
@@ -322,8 +322,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                 title={t('prayerNotifications.cumaTitle')}
                                 value={settings.cuma.enabled}
                                 onValueChange={enabled => update({ ...settings, cuma: { ...settings.cuma, enabled } })}
-                                icon={<Landmark size={20} color="#14B8A6" />}
-                                iconColor="#14B8A6"
+                                icon={<Landmark size={20} color={theme.accent} />}
+                                iconColor={theme.accent}
                                 theme={theme}
                             />
                             {settings.cuma.enabled && (
@@ -345,8 +345,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                 description={t('prayerNotifications.kazaDescription')}
                                 value={settings.kaza.enabled}
                                 onValueChange={enabled => update({ ...settings, kaza: { enabled } })}
-                                icon={<CheckCircle2 size={20} color="#22C55E" />}
-                                iconColor="#22C55E"
+                                icon={<CheckCircle2 size={20} color={theme.accent} />}
+                                iconColor={theme.accent}
                                 theme={theme}
                             />
                             {settings.kaza.enabled && missed.length > 0 && (
@@ -368,8 +368,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                 title={t('prayerNotifications.ramadanTitle')}
                                 value={settings.fasting.ramadan}
                                 onValueChange={ramadan => update({ ...settings, fasting: { ...settings.fasting, ramadan } })}
-                                icon={<Moon size={20} color="#8B5CF6" />}
-                                iconColor="#8B5CF6"
+                                icon={<Moon size={20} color={theme.accent} />}
+                                iconColor={theme.accent}
                                 theme={theme}
                             />
                             <SettingItem
@@ -377,8 +377,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                 description={t('prayerNotifications.fastingModeDescription')}
                                 value={settings.fasting.mode}
                                 onValueChange={mode => update({ ...settings, fasting: { ...settings.fasting, mode } })}
-                                icon={<UtensilsCrossed size={20} color="#F97316" />}
-                                iconColor="#F97316"
+                                icon={<UtensilsCrossed size={20} color={theme.accent} />}
+                                iconColor={theme.accent}
                                 theme={theme}
                             />
                             {(settings.fasting.ramadan || settings.fasting.mode) && (
@@ -401,8 +401,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                 description={t('specialDays.settings.enabledDescription')}
                                 value={settings.specialDays.enabled}
                                 onValueChange={enabled => updateSpecialDays({ enabled })}
-                                icon={<MoonStar size={20} color="#6366F1" />}
-                                iconColor="#6366F1"
+                                icon={<MoonStar size={20} color={theme.accent} />}
+                                iconColor={theme.accent}
                                 theme={theme}
                             />
                             {settings.specialDays.enabled && (
@@ -412,8 +412,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                         description={t('specialDays.settings.kandilDescription')}
                                         value={settings.specialDays.categories.kandil}
                                         onValueChange={kandil => updateSpecialDayCategory({ kandil })}
-                                        icon={<Star size={20} color="#F59E0B" />}
-                                        iconColor="#F59E0B"
+                                        icon={<Star size={20} color={theme.accent} />}
+                                        iconColor={theme.accent}
                                         theme={theme}
                                     />
                                     <SettingItem
@@ -421,8 +421,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                         description={t('specialDays.settings.bayramDescription')}
                                         value={settings.specialDays.categories.bayram}
                                         onValueChange={bayram => updateSpecialDayCategory({ bayram })}
-                                        icon={<Sparkles size={20} color="#EC4899" />}
-                                        iconColor="#EC4899"
+                                        icon={<Sparkles size={20} color={theme.accent} />}
+                                        iconColor={theme.accent}
                                         theme={theme}
                                     />
                                     <SettingItem
@@ -430,8 +430,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                         description={t('specialDays.settings.blessedDescription')}
                                         value={settings.specialDays.categories.blessed}
                                         onValueChange={blessed => updateSpecialDayCategory({ blessed })}
-                                        icon={<CalendarClock size={20} color="#14B8A6" />}
-                                        iconColor="#14B8A6"
+                                        icon={<CalendarClock size={20} color={theme.accent} />}
+                                        iconColor={theme.accent}
                                         theme={theme}
                                     />
                                     <View style={styles.subOptions}>

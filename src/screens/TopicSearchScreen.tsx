@@ -13,6 +13,7 @@ import { SearchResultsList } from '@/components/SearchResultsList';
 import { SearchResult } from '@/components/SearchResultItem';
 import { loadSurah } from '@/data/quranData';
 import { useDownloadData } from '@/hooks/useDownloadData';
+import { DOWNLOAD_KEYS, useDownload, useDownloadFinished } from '@/services/downloads';
 import {
     downloadTopicModel,
     embeddingModel,
@@ -32,7 +33,6 @@ interface TopicSearchScreenProps {
 type ModelState =
     | { status: 'checking' }
     | { status: 'missing' }
-    | { status: 'downloading'; progress: number }
     | { status: 'loading' }
     | { status: 'ready' }
     | { status: 'error'; message: string };
@@ -46,7 +46,7 @@ export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation
     const { t } = useTranslation();
     const styles = useThemedStyles(createStyles);
     const { goToSurahVerse } = useNavigationHelpers();
-    const download = useDownloadData({ isDataAvailable, navigation });
+    const download = useDownloadData({ isDataAvailable });
 
     const [modelState, setModelState] = useState<ModelState>(() =>
         embeddingModel.ready ? { status: 'ready' } : { status: 'checking' },
@@ -56,7 +56,8 @@ export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation
     const [searching, setSearching] = useState(false);
     const [searchError, setSearchError] = useState<string | null>(null);
     const latestSearch = useRef(0);
-    const downloadAbort = useRef<AbortController | null>(null);
+    // The model download lives in the shared store: it keeps going if the user leaves the screen
+    const topicDownload = useDownload(DOWNLOAD_KEYS.topic);
 
     const loadModel = useCallback(async () => {
         if (!embeddingModel.ready) setModelState({ status: 'loading' });
@@ -75,21 +76,20 @@ export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation
             if (await isTopicModelDownloaded()) loadModel();
             else setModelState({ status: 'missing' });
         })();
-        return () => downloadAbort.current?.abort();
     }, [isDataAvailable, loadModel]);
 
-    const handleDownloadModel = async () => {
-        const controller = new AbortController();
-        downloadAbort.current = controller;
-        setModelState({ status: 'downloading', progress: 0 });
-        try {
-            await downloadTopicModel(fraction => setModelState({ status: 'downloading', progress: fraction * 100 }), controller.signal);
-            await loadModel();
-        } catch (error: any) {
-            if (controller.signal.aborted) return;
-            setModelState({ status: 'error', message: String(error?.message ?? error) });
-        }
-    };
+    // The model finished downloading, here or on the data management screen
+    useDownloadFinished(() => {
+        if (modelState.status !== 'missing') return;
+        isTopicModelDownloaded().then(downloaded => {
+            if (downloaded) loadModel();
+        });
+    });
+
+    const handleDownloadModel = () =>
+        topicDownload.start((onProgress, signal) =>
+            downloadTopicModel(fraction => onProgress({ progress: fraction * 100 }), signal),
+        );
 
     // Debounced search; a newer query makes older, slower ones drop their results
     useEffect(() => {
@@ -168,9 +168,9 @@ export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation
         );
     }
 
-    if (modelState.status === 'missing' || modelState.status === 'downloading') {
-        const downloading = modelState.status === 'downloading';
-        const progress = downloading ? modelState.progress : 0;
+    if (modelState.status === 'missing' || topicDownload.running) {
+        const downloading = topicDownload.running;
+        const progress = topicDownload.progress;
         const totalBytes = TOPIC_MODEL_SIZE_MB * 1024 * 1024;
         return (
             <SafeAreaView style={common.container}>
@@ -181,7 +181,7 @@ export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation
                     totalBytes={totalBytes}
                     downloading={downloading}
                     downloadProgress={progress}
-                    downloadStatus={t('download.downloading')}
+                    downloadStatus={topicDownload.error ? t('topicSearch.modelError', { message: topicDownload.error }) : t('download.downloading')}
                     downloadedBytes={(totalBytes * progress) / 100}
                     onDownloadPress={handleDownloadModel}
                     downloadButtonLabel={t('topicSearch.downloadButton')}

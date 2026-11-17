@@ -117,9 +117,9 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
                         {item.isPrivate && <Text style={styles.privateLabel}>{t('hatimScreen.private')}</Text>}
                     </Text>
                     {item.isCompleted ? (
-                        <Badge label={t('hatimScreen.completed')} color="#2E7D32" size="small" />
+                        <Badge label={t('hatimScreen.completed')} color={theme.primary} size="small" />
                     ) : item.isLocked ? (
-                        <Badge label={t('hatimScreen.locked')} color="#607D8B" size="small" />
+                        <Badge label={t('hatimScreen.locked')} color={theme.textSecondary} size="small" />
                     ) : null}
                 </View>
                 <Text style={styles.hatimCreator}>

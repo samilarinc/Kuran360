@@ -28,12 +28,7 @@ import { formatVerseNumber } from '@/utils/numerals';
 import { formatRoot, getSpacedArabicText, getWordSegments } from '@/utils/arabicText';
 import { createStyles } from './index.styles';
 import type { CommonStyles } from '@/theme/common.styles';
-import { TAFSIR_COLOR } from '@/theme';
 
-const BOOKMARK_COLOR = '#F43F5E';
-const ALL_TRANSLATIONS_COLOR = '#6366F1';
-const SHARE_COLOR = '#F97316';
-const PLAY_COLOR = '#10B981';
 
 // Mouse/trackpad that can hover. Touch screens (phones on web, native) open the card with a tap instead.
 const CAN_HOVER =
@@ -218,7 +213,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
             styles.translationTitle,
             isFavorite && styles.favoriteTranslationTitle
           ]}>
-            {isFavorite && '⭐ '}{translationName}:
+            {translationName}
           </Text>
           <Text style={[
             styles.translationText,
@@ -319,45 +314,44 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         <View style={common.rowGap}>
           {showActions && showBookmarkButton && user && (
             <TouchableOpacity
-              style={[styles.iconButton, { backgroundColor: BOOKMARK_COLOR + '1A', borderColor: BOOKMARK_COLOR }]}
+              style={styles.iconButton}
               onPress={handleBookmarkToggle}
             >
               <Bookmark
                 size={18}
-                color={BOOKMARK_COLOR}
-                fill={isBookmarked(verse.surahNumber, verse.number) ? BOOKMARK_COLOR : 'transparent'}
+                color={isBookmarked(verse.surahNumber, verse.number) ? theme.accent : theme.iconPrimary}
+                fill={isBookmarked(verse.surahNumber, verse.number) ? theme.accent : 'transparent'}
               />
             </TouchableOpacity>
           )}
           {showActions && navigation && (
             <TouchableOpacity
-              style={[styles.iconButton, { backgroundColor: ALL_TRANSLATIONS_COLOR + '1A', borderColor: ALL_TRANSLATIONS_COLOR }]}
+              style={styles.iconButton}
               onPress={() => navigation.navigate('AllTranslations', { verse })}
             >
-              <Library size={18} color={ALL_TRANSLATIONS_COLOR} />
+              <Library size={18} color={theme.iconPrimary} />
             </TouchableOpacity>
           )}
           {showActions && navigation && (
             <TouchableOpacity
-              style={[styles.iconButton, { backgroundColor: TAFSIR_COLOR + '1A', borderColor: TAFSIR_COLOR }]}
+              style={styles.iconButton}
               onPress={() => navigation.navigate('Tafsir', { surahNumber: verse.surahNumber, verseNumber: verse.number })}
               accessibilityLabel={t('tafsir.open')}
             >
-              <BookOpenText size={17} color={TAFSIR_COLOR} />
+              <BookOpenText size={17} color={theme.iconPrimary} />
             </TouchableOpacity>
           )}
           {showActions && (
             <TouchableOpacity
-              style={[styles.iconButton, { backgroundColor: SHARE_COLOR + '1A', borderColor: SHARE_COLOR }]}
+              style={styles.iconButton}
               onPress={() => setShareModalVisible(true)}
             >
-              <Share2 size={16} color={SHARE_COLOR} />
+              <Share2 size={16} color={theme.iconPrimary} />
             </TouchableOpacity>
           )}
           <TouchableOpacity
             style={[
               styles.playButton,
-              { backgroundColor: PLAY_COLOR },
               isPlaying && styles.playButtonActive
             ]}
             onPress={() => onPlayPress(verse)}
@@ -399,7 +393,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
           <View style={common.mtSm}>
             {!memOpen ? (
               <TouchableOpacity style={styles.memToggle} onPress={() => setMemOpen(true)}>
-                <BrainCircuit size={18} color={theme.headerText} />
+                <BrainCircuit size={18} color={theme.iconPrimary} />
                 <Text style={styles.memToggleText}>{t('verse.memorize')}</Text>
               </TouchableOpacity>
             ) : (

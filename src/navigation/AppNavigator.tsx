@@ -14,6 +14,7 @@ import { RandomVerseScreen } from '@/screens/RandomVerseScreen';
 import { AllTranslationsScreen } from '@/screens/AllTranslationsScreen';
 import { TafsirScreen } from '@/screens/TafsirScreen';
 import { DataManagementScreen } from '@/screens/DataManagementScreen';
+import { DownloadPill } from '@/components/DownloadPill';
 import { HatimScreen } from '@/screens/HatimScreen';
 import { HatimDetailScreen } from '@/screens/HatimDetailScreen';
 import { PrayerTimesScreen } from '@/screens/PrayerTimesScreen';
@@ -618,8 +619,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
   const currentRoute = navigationHistory[currentIndex];
   useEffect(() => { setCurrentScreen(currentRoute.screen); }, [currentRoute.screen, setCurrentScreen]);
-  // Only the entry screens get the shortcut; while reading it would just cover the verses
-  const showResumeButton = currentRoute.screen === 'Main' || currentRoute.screen === 'Home';
+  // Only the surah list gets the shortcut: the main menu's Surahs card has its own way back, and while reading it would just cover the verses
+  const showResumeButton = currentRoute.screen === 'Home';
 
   // Ensure the web document title is always 'Kuran360'
   useEffect(() => {
@@ -661,7 +662,13 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     },
     goToRoot: (root: string) => {
       navigateToRoute({ screen: 'RootVerses', params: { root } }, true);
-    }
+    },
+    goToSettings: () => {
+      if (currentRoute.screen !== 'Settings') navigateToRoute({ screen: 'Settings' }, true);
+    },
+    goToDataManagement: () => {
+      if (currentRoute.screen !== 'DataManagement') navigateToRoute({ screen: 'DataManagement' }, true);
+    },
   };
 
   return (
@@ -672,7 +679,15 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     >
       <NavigationProvider value={navHelpers}>
         <ForumProvider>
-          <ScreenWrapper overlay={showResumeButton ? <ResumeReadingButton /> : undefined}>
+          <ScreenWrapper
+            overlay={
+              <>
+                {showResumeButton && <ResumeReadingButton />}
+                {/* The data management page lists the same downloads itself */}
+                {currentRoute.screen !== 'DataManagement' && <DownloadPill />}
+              </>
+            }
+          >
             {currentRoute.screen === 'Main' ? (
               <MainScreen
                 onNavigate={(screen, params) => {
