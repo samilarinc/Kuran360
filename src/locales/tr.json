@@ -360,7 +360,8 @@
     "wordByWordTranslation": "Kelime Meali",
     "chooseTranslation": "Meal Seç",
     "searchTranslation": "Meal ara...",
-    "translationLabel": "Meal: {{translation}}"
+    "translationLabel": "Meal: {{translation}}",
+    "juz": "{{number}}. Cüz"
   },
   "hatimDetailScreen": {
     "loadErrorTitle": "Hata",
@@ -985,7 +986,11 @@
         "bullets": [
           "Widget'taki geri sayım artık vakit girince hemen sıradaki vakte geçiyor, eksiye düşmüyor",
           "Widget'lar koyu modda koyu renklerle görünüyor, Xiaomi/Redmi telefonlarda da rahat okunuyor",
-          "Android'de sesle ayet bulma ve konu araması sırasında uygulamanın kapanması düzeltildi"
+          "Android'de sesle ayet bulma ve konu araması sırasında uygulamanın kapanması düzeltildi",
+          "Sure dinlerken yukarı aşağı kaydırabiliyorsunuz; kaydırınca takip kapanıyor, ses çubuğundaki düğmeyle geri açılıyor",
+          "Yeni bir dinlemeye başlayınca takip her zaman açık başlıyor",
+          "Hata bildirmek için telefonu salladığınızda telefon artık titriyor",
+          "Sayfa görünümünde cüz seçip o cüzün ilk sayfasına geçebiliyorsunuz"
         ]
       },
       {

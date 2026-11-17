@@ -20,7 +20,8 @@ import { useSettings } from '@/contexts/SettingsContext';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { Verse as VerseType, WordTranslation } from '@/types';
 import { loadSurah } from '@/data/quranData';
-import { getPageForVerse, getVerseRangesForPage, TOTAL_MUSHAF_PAGES } from '@/data/pageMapping';
+import { getJuzForPage, getJuzStartPage, getPageForVerse, getVerseRangesForPage, TOTAL_JUZ, TOTAL_MUSHAF_PAGES } from '@/data/pageMapping';
+import { SelectBox, SelectBoxOption } from '@/components/SelectBox';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { formatVerseNumber } from '@/utils/numerals';
 import { getSpacedArabicText, getWordSegments } from '@/utils/arabicText';
@@ -168,6 +169,11 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
     const clamped = Math.min(Math.max(target, 1), TOTAL_MUSHAF_PAGES);
     setPageNumber(clamped);
   };
+
+  const juzOptions: SelectBoxOption<string>[] = useMemo(
+    () => Array.from({ length: TOTAL_JUZ }, (_, i) => ({ value: String(i + 1), label: t('quranPageScreen.juz', { number: i + 1 }) })),
+    [t],
+  );
 
   const handlePageInputSubmit = () => {
     const parsed = parseInt(pageInput, 10);
@@ -342,8 +348,14 @@ export const QuranPageScreen: React.FC<QuranPageScreenProps> = ({
       </View>
 
       <View style={styles.mealBar}>
+        <SelectBox
+          style={styles.juzPicker}
+          options={juzOptions}
+          value={String(getJuzForPage(pageNumber))}
+          onChange={juz => goToPage(getJuzStartPage(Number(juz)))}
+        />
         <TouchableOpacity
-          style={styles.mealButton}
+          style={[styles.mealButton, common.flex1]}
           onPress={() => setTranslationModalVisible(true)}
         >
           <Text style={common.textStrong} numberOfLines={1}>
