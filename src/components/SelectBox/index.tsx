@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Pressable, Modal, ScrollView, StyleProp, ViewStyle, StyleSheet, useWindowDimensions } from 'react-native';
 import { Check, ChevronDown } from 'lucide-react-native';
 import { SHADOW } from '@msarinc/ui';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { FONT_SIZES, RADIUS, SPACING, Theme } from '@/theme';
 
@@ -17,24 +18,35 @@ interface SelectBoxProps<T extends string> {
     style?: StyleProp<ViewStyle>;
 }
 
-type Anchor = { x: number; y: number; width: number };
+// The menu opens below the field, or above it when the field sits near the bottom of the screen
+type Anchor = { x: number; width: number; top?: number; bottom?: number; maxHeight: number };
 
 const MENU_GAP = 4;
+// Below this much room under the field, the menu opens upward if there is more room above
+const MIN_MENU_ROOM = 240;
 
 /**
- * A field showing the chosen option. Tapping it floats the options in a menu right below it, over the page, so
- * nothing below moves; tapping outside closes it.
+ * A field showing the chosen option. Tapping it floats the options in a menu right below it (above it near the
+ * bottom of the screen), over the page, so nothing below moves; tapping outside closes it.
  */
 export const SelectBox = <T extends string>({ options, value, onChange, style }: SelectBoxProps<T>) => {
     const { theme, common } = useTheme();
     const styles = useThemedStyles(createStyles);
     const { height: windowHeight } = useWindowDimensions();
+    const insets = useSafeAreaInsets();
     const fieldRef = useRef<View>(null);
     const [anchor, setAnchor] = useState<Anchor | null>(null);
     const selected = options.find(option => option.value === value);
 
     const open = () =>
-        fieldRef.current?.measureInWindow((x, y, width, height) => setAnchor({ x, y: y + height + MENU_GAP, width }));
+        fieldRef.current?.measureInWindow((x, y, width, height) => {
+            const below = y + height + MENU_GAP;
+            const roomBelow = windowHeight - below - SPACING.lg;
+            const roomAbove = y - MENU_GAP - SPACING.lg - insets.top;
+            setAnchor(roomBelow < MIN_MENU_ROOM && roomAbove > roomBelow
+                ? { x, width, bottom: windowHeight - y + MENU_GAP, maxHeight: roomAbove }
+                : { x, width, top: below, maxHeight: roomBelow });
+        });
     const close = () => setAnchor(null);
 
     return (
@@ -49,7 +61,7 @@ export const SelectBox = <T extends string>({ options, value, onChange, style }:
             <Modal visible={!!anchor} transparent animationType="fade" onRequestClose={close}>
                 <Pressable style={StyleSheet.absoluteFill} onPress={close} />
                 {anchor && (
-                    <View style={[styles.menu, { top: anchor.y, left: anchor.x, width: anchor.width, maxHeight: windowHeight - anchor.y - SPACING.lg }]}>
+                    <View style={[styles.menu, { top: anchor.top, bottom: anchor.bottom, left: anchor.x, width: anchor.width, maxHeight: anchor.maxHeight }]}>
                         <ScrollView bounces={false}>
                             {options.map(option => {
                                 const isSelected = option.value === value;

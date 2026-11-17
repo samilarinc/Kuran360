@@ -87,7 +87,7 @@ export const createStyles = (theme: Theme) => {
       backgroundColor: theme.surface,
     },
     juzPicker: {
-      width: 110,
+      width: 132,
     },
     mealButton: {
       paddingVertical: SPACING.sm,
