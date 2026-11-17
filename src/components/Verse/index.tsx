@@ -6,8 +6,8 @@ import {
   Platform,
   LayoutChangeEvent,
 } from 'react-native';
-import { Bookmark, Library, Share2, Play, Square, BrainCircuit, BookOpenText } from 'lucide-react-native';
-import { Verse as VerseType, VerseShareData, WordTranslation } from '@/types';
+import { Bookmark, Library, Play, Square, BrainCircuit, BookOpenText } from 'lucide-react-native';
+import { Verse as VerseType, WordTranslation } from '@/types';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -16,16 +16,14 @@ import { getFontOption, getArabicFontFamily } from '@/constants/fonts';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useActiveWord } from '@/hooks/useActiveWordIndex';
 import { RecitedBackdrop, SpokenWordMarker, useHiddenWordStyle } from '../SpokenWordMarker';
-import { ShareModal } from '../ShareModal';
 import { ArabicText } from '../ArabicText';
 import { WordRootModal } from '../WordRootModal';
 import { ShareService } from '@/utils/shareUtils';
 import { getSurahsList } from '@/data/quranData';
 import { useTranslation } from 'react-i18next';
-import { getSurahNameByNumber } from '@/utils/surahName';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
 import { formatVerseNumber } from '@/utils/numerals';
-import { formatRoot, getSpacedArabicText, getWordSegments } from '@/utils/arabicText';
+import { formatRoot, getWordSegments } from '@/utils/arabicText';
 import { createStyles } from './index.styles';
 import type { CommonStyles } from '@/theme/common.styles';
 
@@ -153,7 +151,7 @@ interface VerseProps {
   navigation?: any; // Navigation prop for going to the all translations and tafsir screens
   /** Replaces the verse number in its badge, e.g. with the surah name where the surah isn't otherwise visible */
   label?: string;
-  /** false hides the bookmark, translations and share buttons; the play button stays */
+  /** false hides the bookmark, translations and tafsir buttons; the play button stays */
   showActions?: boolean;
 }
 
@@ -170,7 +168,6 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   const { addBookmark, removeBookmark, isBookmarked, bookmarks } = useUserData();
   const { startMemorization, cancelMemorization } = useGlobalAudio();
   const [memOpen, setMemOpen] = useState(false);
-  const [shareModalVisible, setShareModalVisible] = useState(false);
   const [selectedWord, setSelectedWord] = useState<WordTranslation | null>(null);
   const maxEnd = useMemo(() => {
     // Cap strictly to provided surah count; if missing, default to current verse (no growth)
@@ -289,20 +286,6 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
     }
   };
 
-  // Share data için gerekli bilgileri hazırla
-  const shareData: VerseShareData = useMemo(() => {
-    const surahName = getSurahNameByNumber(t, verse.surahNumber);
-    const translation = verse.allTranslations?.[settings.favoriteTranslation] || verse.translation || '';
-
-    return {
-      arabicText: getSpacedArabicText(verse),
-      translation: translation,
-      surahName: surahName,
-      verseNumber: verse.number,
-      surahNumber: verse.surahNumber,
-    };
-  }, [verse, settings.favoriteTranslation, t]);
-
   return (
     <View style={styles.container}>
       <View style={[common.rowBetween, common.mbMd]}>
@@ -339,14 +322,6 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
               accessibilityLabel={t('tafsir.open')}
             >
               <BookOpenText size={17} color={theme.iconPrimary} />
-            </TouchableOpacity>
-          )}
-          {showActions && (
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => setShareModalVisible(true)}
-            >
-              <Share2 size={16} color={theme.iconPrimary} />
             </TouchableOpacity>
           )}
           <TouchableOpacity
@@ -484,13 +459,6 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
           </View>
         )}
       </View>
-
-      {/* Share Modal */}
-      <ShareModal
-        isVisible={shareModalVisible}
-        onClose={() => setShareModalVisible(false)}
-        verseData={shareData}
-      />
     </View>
   );
 };

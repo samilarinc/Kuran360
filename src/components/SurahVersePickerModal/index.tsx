@@ -154,7 +154,6 @@ export const SurahVersePickerModal: React.FC<SurahVersePickerModalProps> = ({
 
     const query = search.trim().toLocaleLowerCase('tr');
     const filtered = surahs.filter(s => !query || String(s.number).startsWith(query) || getSurahName(t, s).toLocaleLowerCase('tr').includes(query));
-    const count = draft.toVerse - draft.fromVerse + 1;
 
     return (
         <Modal visible={visible} animationType="slide" transparent={true} onRequestClose={onClose}>
@@ -232,13 +231,6 @@ export const SurahVersePickerModal: React.FC<SurahVersePickerModalProps> = ({
                                 <VerseStepper label={t('memorization.picker.to')} value={draft.toVerse} min={draft.fromVerse} max={verseCount} onChange={v => update({ toVerse: v })} />
                             </View>
                         )}
-
-                        <Text style={[common.smallText, common.textCenter]}>
-                            {surah ? `${getSurahName(t, surah)} · ` : ''}
-                            {draft.scope === 'single'
-                                ? t('memorization.picker.summarySingle', { verse: draft.fromVerse })
-                                : t('memorization.picker.summaryRange', { from: draft.fromVerse, to: draft.toVerse, count })}
-                        </Text>
 
                         <AppButton
                             title={confirmTitle ?? t('memorization.picker.start')}
@@ -322,7 +314,8 @@ const createStyles = (theme: Theme, common: CommonStyles) => {
             gap: SPACING.md,
         },
         stepper: {
-            flex: 1,
+            // Grows to share the row in a range, but keeps its own height in the column (flex: 1 collapses it on Android)
+            flexGrow: 1,
             alignItems: 'center',
             gap: SPACING.xs,
         },

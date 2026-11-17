@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Mic, Square, Play, RotateCcw, Boxes, TriangleAlert, ChevronLeft, ChevronRight, Eye, EyeOff, ChevronDown, Flag, Volume2, Lightbulb } from 'lucide-react-native';
+import { Mic, Square, Play, RotateCcw, Boxes, TriangleAlert, ChevronLeft, ChevronRight, Eye, EyeOff, ChevronDown, Flag, Volume2, Lightbulb, Info } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { ArabicText } from '@/components/ArabicText';
@@ -58,6 +58,8 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
     // How many of the verse's first words the hint button has shown
     const [hintCount, setHintCount] = useState(0);
     const [managerVisible, setManagerVisible] = useState(false);
+    // Speech engine details and model choice stay behind the info button
+    const [detailsVisible, setDetailsVisible] = useState(false);
     const sequential = selection.scope !== 'single';
     const current = useRef({ words, verseNumber, sequential, hintCount });
     current.current = { words, verseNumber, sequential, hintCount };
@@ -75,7 +77,7 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
     }, []);
 
     const recognizer = useSpeechRecognizer(handleTranscript);
-    const { support, activeModel, modelState, phase, elapsed, error, lastAudio, playing, canRecord, busy } = recognizer;
+    const { support, activeModel, modelState, phase, elapsed, error, lastAudio, playing, canRecord, busy, modelProgress, modelDownloadError } = recognizer;
     const audio = useGlobalAudio();
     const listening = (audio.audioState.isPlaying || audio.audioState.isLoading)
         && audio.audioState.currentVerse?.surahNumber === selection.surahNumber
@@ -214,7 +216,7 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
     const engineRows = getSpeechEngineRows(t, theme, support, activeModel, modelState);
 
     const micHint = !activeModel
-        ? t('verseFinder.noModel')
+        ? recognizer.noModelHint
         : phase === 'recording'
             ? t('verseFinder.listening', { seconds: elapsed, max: MAX_RECORDING_SECONDS })
             : phase === 'recognizing'
@@ -374,11 +376,31 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                             <Text style={[common.note, common.textCenter]}>{t('memorization.nothingHeard')}</Text>
                         )}
                         {error && <Text style={[common.note, common.textCenter]}>{error}</Text>}
-                        {modelState.status === 'error' && <Text style={[common.smallText, common.textCenter]}>{modelState.message}</Text>}
+                        <TouchableOpacity
+                            style={[micStyles.infoButton, detailsVisible && micStyles.infoButtonActive]}
+                            onPress={() => setDetailsVisible(v => !v)}
+                            accessibilityRole="button"
+                            accessibilityLabel={t('verseFinder.details')}
+                        >
+                            <Info size={18} color={detailsVisible ? theme.primary : theme.textSecondary} />
+                        </TouchableOpacity>
 
-                        <View style={common.sectionCard}>
-                            <SpeechStatusRows rows={engineRows} />
-                        </View>
+                        {detailsVisible && (
+                            <View style={common.sectionCard}>
+                                <SpeechStatusRows rows={engineRows} />
+                                {modelState.status === 'error' && <Text style={[common.smallText, common.mtSm]}>{modelState.message}</Text>}
+                                <View style={[styles.buttonRow, common.mtMd]}>
+                                    <AppButton
+                                        title={t('verseFinder.manageModels')}
+                                        icon={<Boxes size={16} color={theme.primary} />}
+                                        variant="outline"
+                                        size="small"
+                                        onPress={() => setManagerVisible(true)}
+                                        disabled={busy}
+                                    />
+                                </View>
+                            </View>
+                        )}
 
                         <View style={micStyles.micArea}>
                             <TouchableOpacity
@@ -401,6 +423,8 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                             {phase === 'recording' && (
                                 <ProgressBar progress={(elapsed / MAX_RECORDING_SECONDS) * 100} style={micStyles.recordingProgress} />
                             )}
+                            {modelProgress !== null && <ProgressBar progress={modelProgress} style={micStyles.recordingProgress} />}
+                            {modelDownloadError && <Text style={[common.smallText, common.textCenter]}>{t('verseFinder.modelDownload.error', { message: modelDownloadError })}</Text>}
                             <View style={styles.buttonRow}>
                                 {lastAudio && (
                                     <AppButton
@@ -442,14 +466,6 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                                         disabled={busy}
                                     />
                                 )}
-                                <AppButton
-                                    title={t('verseFinder.manageModels')}
-                                    icon={<Boxes size={16} color={activeModel ? theme.primary : '#FFFFFF'} />}
-                                    variant={activeModel ? 'ghost' : 'primary'}
-                                    size="small"
-                                    onPress={() => setManagerVisible(true)}
-                                    disabled={busy}
-                                />
                             </View>
                         </View>
                     </>

@@ -16,7 +16,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:textAppearance="@android:style/TextAppearance.Material.Notification.Title" />
+        android:textAppearance="@android:style/TextAppearance.Material.Notification.Title"
+        android:textColor="@color/notification_text" />
 
     <Chronometer
         android:id="@+id/prayer_countdown"
@@ -26,7 +27,8 @@
         android:maxLines="1"
         android:textAppearance="@android:style/TextAppearance.Material.Notification.Title"
         android:textSize="17sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/notification_text" />
 
     <TextView
         android:id="@+id/prayer_kerahat"
@@ -35,7 +37,7 @@
         android:layout_marginStart="8dp"
         android:maxLines="1"
         android:textAppearance="@android:style/TextAppearance.Material.Notification.Info"
-        android:textColor="#F57C00"
+        android:textColor="@color/notification_kerahat"
         android:textStyle="bold"
         android:visibility="gone" />
 
@@ -48,7 +50,8 @@
         android:ellipsize="end"
         android:gravity="end"
         android:maxLines="1"
-        android:textAppearance="@android:style/TextAppearance.Material.Notification.Info" />
+        android:textAppearance="@android:style/TextAppearance.Material.Notification.Info"
+        android:textColor="@color/notification_text_secondary" />
   </LinearLayout>
 
   <!-- Hidden unless the user chose to see the times in the collapsed notification too -->
@@ -76,7 +79,8 @@
           android:maxLines="1"
           android:textAppearance="@android:style/TextAppearance.Material.Notification"
           android:textSize="13sp"
-          android:textStyle="bold" />
+          android:textStyle="bold"
+          android:textColor="@color/notification_text" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/prayer_cell_1"
@@ -95,7 +99,8 @@
           android:maxLines="1"
           android:textAppearance="@android:style/TextAppearance.Material.Notification"
           android:textSize="13sp"
-          android:textStyle="bold" />
+          android:textStyle="bold"
+          android:textColor="@color/notification_text" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/prayer_cell_2"
@@ -114,7 +119,8 @@
           android:maxLines="1"
           android:textAppearance="@android:style/TextAppearance.Material.Notification"
           android:textSize="13sp"
-          android:textStyle="bold" />
+          android:textStyle="bold"
+          android:textColor="@color/notification_text" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/prayer_cell_3"
@@ -133,7 +139,8 @@
           android:maxLines="1"
           android:textAppearance="@android:style/TextAppearance.Material.Notification"
           android:textSize="13sp"
-          android:textStyle="bold" />
+          android:textStyle="bold"
+          android:textColor="@color/notification_text" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/prayer_cell_4"
@@ -152,7 +159,8 @@
           android:maxLines="1"
           android:textAppearance="@android:style/TextAppearance.Material.Notification"
           android:textSize="13sp"
-          android:textStyle="bold" />
+          android:textStyle="bold"
+          android:textColor="@color/notification_text" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/prayer_cell_5"
@@ -171,7 +179,8 @@
           android:maxLines="1"
           android:textAppearance="@android:style/TextAppearance.Material.Notification"
           android:textSize="13sp"
-          android:textStyle="bold" />
+          android:textStyle="bold"
+          android:textColor="@color/notification_text" />
     </LinearLayout>
   </LinearLayout>
 </LinearLayout>

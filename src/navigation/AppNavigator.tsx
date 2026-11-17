@@ -125,6 +125,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentIndexRef = useRef(0);
+  const historyRef = useRef(navigationHistory);
+  historyRef.current = navigationHistory;
   const [isLoadingRoute, setIsLoadingRoute] = useState(false);
   const [pendingRedirect, setPendingRedirect] = useState<NavigationHistoryItem | null>(null);
   const { user } = useAuth();
@@ -587,6 +589,12 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
   // Scrolling a surah updates the URL with the verse
   const updateVerseUrl = useCallback((surah: Surah, verseIndex?: number) => {
+    // Remember it in the history entry too, so coming back (from word roots, translations, tafsir…) reopens that verse.
+    // Changed in place: re-rendering the surah on every scroll would move it.
+    const entry = historyRef.current[currentIndexRef.current];
+    if (entry?.screen === 'SurahDetail' && entry.params?.surah?.number === surah.number) {
+      entry.params = { ...entry.params, verseIndex };
+    }
     replaceRouteUrl({ screen: 'SurahDetail', params: { surah, verseIndex } });
   }, [replaceRouteUrl]);
 
@@ -728,6 +736,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               />
             ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
               <SurahDetailScreen
+                // A new instance per history entry, so a link to another verse (widget, search) scrolls to it even when a surah is already open
+                key={`surah-${currentIndex}`}
                 navigation={navigation}
                 route={{ params: { surah: currentRoute.params.surah, verseIndex: currentRoute.params.verseIndex } }}
                 updateVerseUrl={updateVerseUrl}

@@ -972,6 +972,18 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "18 Kasım 2026",
+        "bullets": [
+          "Kelime kökü, tefsir veya meallerden geri dönünce okuduğunuz ayete dönülüyor, surenin başına değil",
+          "Widgettaki ayete dokununca o ayet açılıyor; ilk 50 ayetten sonrası da",
+          "Sayfa sayfa ayet görünümünde uzun ayetler yine aşağı kaydırılabiliyor",
+          "Ayet kartındaki paylaş tuşu kaldırıldı; paylaşmak için mealler ekranındaki paylaş tuşunu kullanabilirsiniz",
+          "Ezber Kontrolü sadeleşti: model ayrıntıları \"i\" tuşunun arkasında, model yoksa mikrofona dokununca iniyor",
+          "Ezber seçiminde ayet numarası alanı düzgün görünüyor; altındaki gereksiz sure yazısı kaldırıldı",
+          "Kalıcı namaz vakti bildirimi koyu modda okunaklı: yazılar ve o anki vaktin vurgusu artık koyu bildirim panelinde de net görünüyor (Xiaomi/Redmi dahil)"
+        ]
+      },
+      {
         "date": "17 Kasım 2026",
         "bullets": [
           "Meal, tefsir ve model indirmeleri sayfadan çıksanız da devam ediyor; her ekranın altındaki küçük işaret ilerlemeyi gösteriyor, dokununca Veri Yönetimi açılıyor",
@@ -1607,8 +1619,6 @@
       "verse": "Ayet",
       "from": "Başlangıç",
       "to": "Bitiş",
-      "summarySingle": "{{verse}}. ayet",
-      "summaryRange": "{{from}}–{{to}}. ayetler, {{count}} ayet",
       "start": "Başla"
     },
     "hiddenVerse": "Ayet gizli. Mikrofona dokunup ezberden okuyun.",
