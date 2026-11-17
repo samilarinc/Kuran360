@@ -133,6 +133,18 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
   useEffect(() => { currentIndexRef.current = currentIndex; }, [currentIndex]);
 
+  // A new recitation (nothing was playing before) always starts with tracking on, even if it was turned off last time
+  const hadAudioRef = useRef(!!audioState.currentVerse);
+  useEffect(() => {
+    const hasAudio = !!audioState.currentVerse;
+    if (hasAudio && !hadAudioRef.current && !settings.audioTrackingEnabled) {
+      updateSettings({ audioTrackingEnabled: true });
+    }
+    hadAudioRef.current = hasAudio;
+    // Only the start of playback matters here
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioState.currentVerse]);
+
   // Auto-disable audio tracking when navigating away from SurahDetail
   useEffect(() => {
     const currentRoute = navigationHistory[currentIndex];

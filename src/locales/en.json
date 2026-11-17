@@ -360,7 +360,8 @@
     "wordByWordTranslation": "Word-by-word Translation",
     "chooseTranslation": "Choose Translation",
     "searchTranslation": "Search translation...",
-    "translationLabel": "Translation: {{translation}}"
+    "translationLabel": "Translation: {{translation}}",
+    "juz": "Juz {{number}}"
   },
   "hatimDetailScreen": {
     "loadErrorTitle": "Error",
@@ -985,7 +986,11 @@
         "bullets": [
           "The widget countdown now moves on to the next prayer right on time instead of counting below zero",
           "Widgets use dark colors in dark mode and are easy to read on Xiaomi/Redmi phones too",
-          "Fixed the app closing on Android while finding a verse by voice or searching by topic"
+          "Fixed the app closing on Android while finding a verse by voice or searching by topic",
+          "You can scroll up and down while listening to a surah; scrolling turns tracking off, the audio bar's button turns it back on",
+          "Starting a new recitation always turns tracking on",
+          "The phone now vibrates when you shake it to report a bug",
+          "Pick a juz in page view to jump to its first page"
         ]
       },
       {

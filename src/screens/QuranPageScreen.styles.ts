@@ -79,9 +79,15 @@ export const createStyles = (theme: Theme) => {
       fontFamily: TRANSLATION_FONT_FAMILY,
     },
     mealBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: SPACING.sm,
       paddingHorizontal: SPACING.lg,
       paddingBottom: SPACING.md,
       backgroundColor: theme.surface,
+    },
+    juzPicker: {
+      width: 110,
     },
     mealButton: {
       paddingVertical: SPACING.sm,

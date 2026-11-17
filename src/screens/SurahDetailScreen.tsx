@@ -200,6 +200,14 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     setTimeout(() => setIsUserScrolling(false), 2000);
   };
 
+  // Scrolling by hand while a verse plays turns tracking off, so the list stays where the user put it instead of
+  // jumping back to the recited verse; the tracking button on the audio bar turns it back on
+  const handleScrollBeginDrag = () => {
+    if (settings.audioTrackingEnabled && audioState.isPlaying) {
+      updateSettings({ audioTrackingEnabled: false });
+    }
+  };
+
   const isVerseCurrentlyPlaying = (verse: VerseType) => {
     return audioState.currentVerse?.surahNumber === verse.surahNumber &&
       audioState.currentVerse?.number === verse.number &&
@@ -326,8 +334,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               showsVerticalScrollIndicator={false}
               onScroll={handleWebScroll}
               scrollEventThrottle={200}
-              onScrollBeginDrag={() => setIsUserScrolling(true)}
-              onMomentumScrollEnd={() => setTimeout(() => setIsUserScrolling(false), 1000)}
+              onScrollBeginDrag={handleScrollBeginDrag}
             >
               {surah.verses.map((item, index) => (
                 <View key={`${item.surahNumber}-${item.number}`} nativeID={`verse-item-${index}`}>
@@ -355,8 +362,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               windowSize={31}
               onViewableItemsChanged={onViewableItemsChanged}
               viewabilityConfig={viewabilityConfig}
-              onScrollBeginDrag={() => setIsUserScrolling(true)}
-              onMomentumScrollEnd={() => setTimeout(() => setIsUserScrolling(false), 1000)}
+              onScrollBeginDrag={handleScrollBeginDrag}
               onScrollToIndexFailed={(info) => {
                 setTimeout(() => {
                   flatListRef.current?.scrollToIndex({

@@ -1,6 +1,6 @@
+import { Vibration } from 'react-native';
 import React, { createContext, useCallback, useContext, useMemo, useRef, useState, ReactNode } from 'react';
 import { BugReportModal } from '@/components/BugReportModal';
-import * as Haptics from 'expo-haptics';
 import { useShakeDetector } from '@/hooks/useShakeDetector';
 
 type BugReportContextType = {
@@ -10,6 +10,8 @@ type BugReportContextType = {
     /** Goes up after each report sent, so lists of reports know to reload */
     submittedCount: number;
 };
+
+const SHAKE_VIBRATION_MS = 80;
 
 const BugReportContext = createContext<BugReportContextType | undefined>(undefined);
 
@@ -25,9 +27,10 @@ export const BugReportProvider: React.FC<{ children: ReactNode }> = ({ children 
         [openBugReport, setCurrentScreen, submittedCount],
     );
 
-    // A light buzz tells the user the report screen opened because of the shake
+    // A short buzz tells the user the report screen opened because of the shake. A plain vibration, not a haptic
+    // effect: Android skips haptic effects when the system's touch feedback is turned off.
     const openFromShake = useCallback(() => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+        Vibration.vibrate(SHAKE_VIBRATION_MS);
         setVisible(true);
     }, []);
     useShakeDetector(openFromShake, !visible);
