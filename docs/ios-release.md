@@ -28,6 +28,15 @@ npx eas-cli submit --platform ios --path builds/app-release.ipa
 Fallback without EAS: `npx expo prebuild -p ios --clean`, open `ios/Kuran360.xcworkspace`,
 set the team under Signing & Capabilities, Product → Archive → Distribute App → App Store Connect.
 
+## Without a Mac (Linux, EAS cloud build)
+
+`npm run build:ipa` on Linux builds on EAS's cloud Macs instead of `--local` (Node 18+, `npm ci`,
+`.env` and `npx eas-cli login` as above). The first run asks for the Apple ID login and creates the
+certificate and profiles, as on the Mac. Swift compile errors show up in the build page's
+*Run fastlane* step on expo.dev, with file and line. When it succeeds, send it to TestFlight with
+`npx eas-cli submit --platform ios --latest`, or build and submit in one go with
+`npm run build:ipa -- --auto-submit`. Testing on a device then goes through TestFlight.
+
 ## App Store Connect form
 
 - **Screenshots**: 6.9" iPhone (1320×2868) is required; iPad not needed (`supportsTablet: false`).
