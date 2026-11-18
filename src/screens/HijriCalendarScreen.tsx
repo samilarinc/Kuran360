@@ -1,335 +1,241 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-    View, SafeAreaView, PanResponder, Animated, Easing,
-    Platform, useWindowDimensions,
-} from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, PanResponder, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
+import { CalendarDays, ChevronLeft, ChevronRight, Orbit } from 'lucide-react-native';
+import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
+import type { CommonStyles } from '@/contexts/ThemeContext';
+import { Theme, SPACING, RADIUS, FONT_SIZES } from '@/theme';
+import { TRANSLATION_FONT_FAMILY_SEMIBOLD } from '@/constants/fonts';
 import { AppHeader } from '@/components/AppHeader';
-import { HijriStarsBackground } from '@/components/HijriStarsBackground';
-import { HijriBackgroundGlow } from '@/components/HijriBackgroundGlow';
-import { HijriCarousel } from '@/components/HijriCarousel';
-import { HijriSideArrows } from '@/components/HijriSideArrows';
-import { HijriHeaderPanel } from '@/components/HijriHeaderPanel';
-import { HijriInfoPanel } from '@/components/HijriInfoPanel';
-import { HijriTodayButton } from '@/components/HijriTodayButton';
-import { HijriNotesModal } from '@/components/HijriNotesModal';
-import {
-    EMERALD, LAPIS, MONTHS, WD, GM, NOTES_KEY, STARS,
-    jd2g, h2jd, hMonthLen, addHM, toAr, moonPhase, phaseLabel, getTodayH, noteKey, getSpecialDay,
-    HijriNoteEntry,
-} from '@/utils/hijriCalendar';
+import { AppButton } from '@/components/AppButton';
+import { HijriRingView } from '@/components/HijriRingView';
+import { HijriMonthGrid } from '@/components/HijriMonthGrid';
+import { HijriDayCard } from '@/components/HijriDayCard';
+import { HijriSpecialDaysList } from '@/components/HijriSpecialDaysList';
+import { useHijriNotes, hijriNoteKey } from '@/hooks/useHijriNotes';
+import { useSettings } from '@/contexts/SettingsContext';
+import { fetchPrayerTimes, findPrayerLocation } from '@/services/prayerTimes';
+import { MONTHS_AR, addHM, getSpecialDay, getTodayH, hMonthLen, hijriToDate } from '@/utils/hijriCalendar';
+import { dateLocale } from '@/utils/hijriFormat';
+
+type ViewMode = 'ring' | 'grid';
+const VIEW_MODE_KEY = 'hijri-cal-view';
+
+/** Horizontal drag that turns the month in the grid view */
+const SWIPE_DISTANCE = 50;
 
 export const HijriCalendarScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-    const { width, height } = useWindowDimensions();
-    const { isDarkMode } = useTheme();
-    const todayH = useMemo(() => getTodayH(), []);
+    const { theme } = useTheme();
+    const { t, i18n } = useTranslation();
+    const styles = useThemedStyles(createStyles);
+    const locale = dateLocale(i18n.language);
+    const { settings } = useSettings();
+    const { notes, addNote, deleteNote } = useHijriNotes();
 
-    const P = isDarkMode ? EMERALD : LAPIS;
-
-    const [viewY, setViewY] = useState(todayH.y);
-    const [viewM, setViewM] = useState(todayH.m);
-    const [selDay, setSelDay] = useState(todayH.d);
-    const [busy, setBusy] = useState(false);
-    const [notes, setNotes] = useState<Record<string, HijriNoteEntry[]>>({});
-    const [modalDay, setModalDay] = useState<number | null>(null);
-    const [draft, setDraft] = useState('');
-    const [draftFocused, setDraftFocused] = useState(false);
-    // Arabic view is hidden for now (its toggle was removed); the translations stay for later
-    const [lang] = useState<'tr' | 'ar'>('tr');
-    const { t } = useTranslation();
-
-    const dragP = useRef(new Animated.Value(0)).current;
-    const daysAnim = useRef(new Animated.Value(1)).current;
-    const starAnims = useRef(STARS.map(() => new Animated.Value(1))).current;
-    const live = useRef({ viewY, viewM, busy, selDay });
-    live.current = { viewY, viewM, busy, selDay };
-
-    // Load notes (migrates old string format → array format)
+    // Diyanet's month starts come with the prayer time data; once they load, the calendar is redrawn on them
+    const [calendarVersion, setCalendarVersion] = useState(0);
+    const locationId = settings.prayerLocation?.id;
     useEffect(() => {
-        AsyncStorage.getItem(NOTES_KEY).then(raw => {
-            if (!raw) return;
-            try {
-                const parsed = JSON.parse(raw) || {};
-                const migrated: Record<string, HijriNoteEntry[]> = {};
-                for (const [k, v] of Object.entries(parsed)) {
-                    if (typeof v === 'string') {
-                        migrated[k] = [{ id: k + '-0', text: v as string, ts: 0 }];
-                    } else if (Array.isArray(v)) {
-                        migrated[k] = v as HijriNoteEntry[];
-                    }
-                }
-                setNotes(migrated);
-            } catch { }
+        fetchPrayerTimes(findPrayerLocation(locationId)).then(() => {
+            setTodayH(getTodayH());
+            setCalendarVersion(v => v + 1);
         }).catch(() => { });
+    }, [locationId]);
+    const [todayH, setTodayH] = useState(getTodayH);
+    const today = useMemo(() => new Date(), []);
+
+    const [mode, setMode] = useState<ViewMode>('ring');
+    useEffect(() => {
+        AsyncStorage.getItem(VIEW_MODE_KEY).then(saved => { if (saved === 'grid' || saved === 'ring') setMode(saved); }).catch(() => { });
     }, []);
+    const toggleMode = () => {
+        const next: ViewMode = mode === 'ring' ? 'grid' : 'ring';
+        setMode(next);
+        AsyncStorage.setItem(VIEW_MODE_KEY, next).catch(() => { });
+    };
 
-    // Web: fonts + per-theme radial-gradient background
+    // The shown month and selected day, shared by both views
+    const [view, setView] = useState({ y: todayH.y, m: todayH.m, d: todayH.d });
+    // Today may move by a day or two once Diyanet's month starts are known
+    const shownToday = useRef(todayH);
     useEffect(() => {
-        if (Platform.OS !== 'web') return;
-        const doc: any = (globalThis as any).document;
-        if (!doc) return;
-        try {
-            if (!doc.getElementById('hijri-cal-fonts')) {
-                const link = doc.createElement('link');
-                link.id = 'hijri-cal-fonts';
-                link.rel = 'stylesheet';
-                link.href = 'https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap';
-                doc.head && doc.head.appendChild(link);
-            }
-            let style = doc.getElementById('hijri-cal-bg');
-            if (!style) {
-                style = doc.createElement('style');
-                style.id = 'hijri-cal-bg';
-                doc.head && doc.head.appendChild(style);
-            }
-            style.textContent = `#hijri-cal-root{background:${P.bgRadial} !important;}`;
-        } catch { }
-    }, [P]);
+        const was = shownToday.current;
+        shownToday.current = todayH;
+        setView(prev => (prev.y === was.y && prev.m === was.m && prev.d === was.d ? { ...todayH } : prev));
+    }, [todayH]);
+    const isCurrentMonth = view.y === todayH.y && view.m === todayH.m;
+    const isToday = isCurrentMonth && view.d === todayH.d;
 
-    // Star twinkle
-    useEffect(() => {
-        const loops = starAnims.map((a, i) =>
-            Animated.loop(Animated.sequence([
-                Animated.delay((i * 139) % 4200),
-                Animated.timing(a, { toValue: 0.08, duration: 1600 + (i * 89) % 1800, useNativeDriver: true }),
-                Animated.timing(a, { toValue: 1, duration: 1600 + (i * 97) % 1800, useNativeDriver: true }),
-            ]))
-        );
-        loops.forEach(l => l.start());
-        return () => loops.forEach(l => l.stop());
-    }, [starAnims]);
+    const goMonth = (offset: number) => setView(prev => {
+        const [y, m] = addHM(prev.y, prev.m, offset);
+        const d = y === todayH.y && m === todayH.m ? todayH.d : Math.min(prev.d, hMonthLen(y, m));
+        return { y, m, d };
+    });
+    const goToday = () => setView({ ...todayH });
+    const selectDay = (d: number) => setView(prev => ({ ...prev, d }));
 
-    // ── Sizing (vmin-proportional) ─────────────────────────────────────────────
-    const vmin = Math.min(width, height) / 100;
-    const narrow = width < 560;
-    const cx = width / 2;
-    const cy = height * (narrow ? 0.48 : 0.52);
-    const ringR = 30 * vmin;
-    const moonR = 14.5 * vmin;
-    const glyphR = 2.15 * vmin;
-    const outerR = ringR + glyphR + 6;
-
-    const panelW = Math.min(Math.max(width * 0.32, 170), 250);
-    const fTitle = Math.max(22, Math.min(36, 3.8 * vmin));
-    const fSub = Math.max(13, Math.min(17, 1.8 * vmin));
-    const fSmall = Math.max(10, Math.min(13, 1.4 * vmin));
-    const fDayNum = Math.max(30, Math.min(46, 4.2 * vmin));
-
-    const len = hMonthLen(viewY, viewM);
-
-    const gA = jd2g(h2jd(viewY, viewM, 1));
-    const gB = jd2g(h2jd(viewY, viewM, len));
-    const gregRange = gA[1] === gB[1] ? `${GM[gA[1]]} ${gA[0]}` : `${GM[gA[1]]} – ${GM[gB[1]]} ${gB[0]}`;
-
-    // ── Day geometry (center month) ───────────────────────────────────────────
-    const days = useMemo(() => {
-        const out = [];
-        for (let d = 1; d <= len; d++) {
-            const angle = ((d - 1) / len) * 2 * Math.PI;
-            const lx = ringR * Math.sin(angle);
-            const ly = -ringR * Math.cos(angle);
-            const jd = h2jd(viewY, viewM, d);
-            const ph = moonPhase(jd);
-            const shadowX = (ph.wax ? -1 : 1) * ph.illum * glyphR * 2;
-            out.push({ d, lx, ly, shadowX, illum: ph.illum });
-        }
-        return out;
-    }, [viewY, viewM, len, ringR, glyphR]);
-
-    const sidePhase = (off: number) => {
-        const [my, mm] = addHM(viewY, viewM, off);
-        const ml = hMonthLen(my, mm);
-        return moonPhase(h2jd(my, mm, Math.min(15, ml)));
-    };
-
-    // ── Selected day ──────────────────────────────────────────────────────────
-    const selD = Math.min(selDay, len);
-    const selJD = h2jd(viewY, viewM, selD);
-    const [sg0, sg1, sg2] = jd2g(selJD);
-    const wd = new Date(sg0, sg1 - 1, sg2).getDay();
-    const selPh = moonPhase(selJD);
-    const selSpecial = getSpecialDay(viewY, viewM, selD);
-    const selEv = selSpecial && { ar: selSpecial.ar, tr: t(`specialDays.names.${selSpecial.id}`) };
-
-    const isToday = viewY === todayH.y && viewM === todayH.m && selD === todayH.d;
-    const isCurrentMonth = viewY === todayH.y && viewM === todayH.m;
-
-    const goToday = () => {
-        if (live.current.busy) return;
-        if (isCurrentMonth) { setSelDay(todayH.d); return; }
-        Animated.timing(daysAnim, { toValue: 0, duration: 160, useNativeDriver: true }).start(() => {
-            setViewY(todayH.y); setViewM(todayH.m); setSelDay(todayH.d);
-            dragP.setValue(0);
-            Animated.timing(daysAnim, { toValue: 1, duration: 240, easing: Easing.out(Easing.quad), useNativeDriver: true }).start();
-        });
-    };
-
-    // ── Navigation ────────────────────────────────────────────────────────────
-    const commit = (dir: 1 | -1) => {
-        if (live.current.busy) return;
-        setBusy(true);
-        Animated.parallel([
-            Animated.timing(dragP, { toValue: dir, duration: 420, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
-            Animated.timing(daysAnim, { toValue: 0, duration: 180, useNativeDriver: true }),
-        ]).start(() => {
-            const { viewY: vy, viewM: vm } = live.current;
-            const [ny, nm] = addHM(vy, vm, dir);
-            const nlen = hMonthLen(ny, nm);
-            setViewY(ny); setViewM(nm);
-            setSelDay(ny === todayH.y && nm === todayH.m ? todayH.d : Math.min(15, nlen));
-            dragP.setValue(0);
-            Animated.timing(daysAnim, { toValue: 1, duration: 260, easing: Easing.out(Easing.quad), useNativeDriver: true }).start(() => {
-                setBusy(false);
-            });
-        });
-    };
-
-    const pan = useRef(PanResponder.create({
-        onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dx) > 8 && Math.abs(g.dx) > Math.abs(g.dy) * 1.3,
-        onPanResponderMove: (_, g) => {
-            if (live.current.busy) return;
-            dragP.setValue(Math.max(-1, Math.min(1, -g.dx / (width * 0.6))));
-        },
+    const goMonthRef = useRef(goMonth);
+    goMonthRef.current = goMonth;
+    const swipe = useRef(PanResponder.create({
+        onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dx) > 12 && Math.abs(g.dx) > Math.abs(g.dy) * 1.5,
         onPanResponderRelease: (_, g) => {
-            const p = Math.max(-1, Math.min(1, -g.dx / (width * 0.6)));
-            if (p > 0.22) commit(1);
-            else if (p < -0.22) commit(-1);
-            else Animated.spring(dragP, { toValue: 0, tension: 160, friction: 16, useNativeDriver: true }).start();
+            if (g.dx <= -SWIPE_DISTANCE) goMonthRef.current(1);
+            else if (g.dx >= SWIPE_DISTANCE) goMonthRef.current(-1);
         },
-        onPanResponderTerminate: () =>
-            Animated.spring(dragP, { toValue: 0, tension: 160, friction: 16, useNativeDriver: true }).start(),
     })).current;
 
-    // ── Day tap (select; second tap = open note) ──────────────────────────────
-    const onDayPress = (d: number) => {
-        if (d === live.current.selDay) {
-            setModalDay(d);
-            setDraft('');
-            setDraftFocused(false);
-        } else {
-            setSelDay(d);
-        }
-    };
+    const months = t('hijriCalendar.months', { returnObjects: true }) as string[];
+    const len = hMonthLen(view.y, view.m);
+    const first = hijriToDate(view.y, view.m, 1);
+    const last = hijriToDate(view.y, view.m, len);
+    const gregRange = first.getMonth() === last.getMonth()
+        ? first.toLocaleDateString(locale, { month: 'long', year: 'numeric' })
+        : `${first.toLocaleDateString(locale, { month: 'long' })} – ${last.toLocaleDateString(locale, { month: 'long', year: 'numeric' })}`;
+    const noteKey = hijriNoteKey(view.y, view.m, view.d);
 
-    const addNote = () => {
-        if (!draft.trim() || modalDay == null) return;
-        const k = noteKey(viewY, viewM, modalDay);
-        const entry: HijriNoteEntry = { id: Date.now().toString(), text: draft.trim(), ts: Date.now() };
-        const next = { ...notes, [k]: [...(notes[k] || []), entry] };
-        setNotes(next);
-        AsyncStorage.setItem(NOTES_KEY, JSON.stringify(next)).catch(() => { });
-        setDraft('');
-        setDraftFocused(false);
-    };
-
-    const deleteNote = (id: string) => {
-        if (modalDay == null) return;
-        const k = noteKey(viewY, viewM, modalDay);
-        const filtered = (notes[k] || []).filter(n => n.id !== id);
-        const next = { ...notes };
-        if (filtered.length) next[k] = filtered; else delete next[k];
-        setNotes(next);
-        AsyncStorage.setItem(NOTES_KEY, JSON.stringify(next)).catch(() => { });
-    };
-
-    const modalDayClamped = modalDay != null ? Math.min(modalDay, len) : null;
-    const modalDayNotes = modalDayClamped != null ? (notes[noteKey(viewY, viewM, modalDayClamped)] || []) : [];
+    const ToggleIcon = mode === 'ring' ? CalendarDays : Orbit;
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: P.bg }} nativeID="hijri-cal-root">
-
+        <View style={styles.container}>
             <AppHeader
-                title={lang === 'tr' ? t('hijriCalendar.title') : 'التقويم الهجري'}
+                title={t('hijriCalendar.title')}
                 showBackButton
                 onBackPress={() => navigation.goBack()}
                 showHomeButton
                 onHomePress={() => navigation.navigate('Main')}
             />
 
-            <View style={{ flex: 1, overflow: 'hidden', backgroundColor: P.bg }} {...pan.panHandlers}>
-
-                <HijriBackgroundGlow P={P} cx={cx} cy={cy} height={height} ringR={ringR} />
-                <HijriStarsBackground P={P} width={width} height={height} starAnims={starAnims} />
-
-                <HijriCarousel
-                    P={P}
-                    dragP={dragP}
-                    daysAnim={daysAnim}
-                    cx={cx}
-                    cy={cy}
-                    outerR={outerR}
-                    moonR={moonR}
-                    glyphR={glyphR}
-                    vmin={vmin}
-                    days={days}
-                    selPh={selPh}
-                    sidePhase={sidePhase}
-                    selDay={selD}
-                    isDayToday={(d) => viewY === todayH.y && viewM === todayH.m && d === todayH.d}
-                    hasEvent={(d) => !!getSpecialDay(viewY, viewM, d)}
-                    hasNote={(d) => !!(notes[noteKey(viewY, viewM, d)]?.length)}
-                    onDayPress={onDayPress}
+            {mode === 'ring' ? (
+                <HijriRingView
+                    key={calendarVersion}
+                    year={view.y}
+                    month={view.m}
+                    day={view.d}
+                    today={todayH}
+                    notes={notes}
+                    onSelectDay={selectDay}
+                    onMonthChange={goMonth}
+                    onGoToday={goToday}
+                    onAddNote={addNote}
+                    onDeleteNote={deleteNote}
                 />
+            ) : (
+                <ScrollView contentContainerStyle={styles.content}>
+                    <View style={styles.monthBar}>
+                        <TouchableOpacity style={styles.arrow} onPress={() => goMonth(-1)} accessibilityLabel={t('hijriCalendar.previousMonth')}>
+                            <ChevronLeft size={24} color={theme.iconPrimary} />
+                        </TouchableOpacity>
+                        <View style={styles.monthTitle}>
+                            <Text style={styles.monthName}>{`${months[view.m - 1]} ${view.y}`}</Text>
+                            <Text style={styles.monthArabic}>{MONTHS_AR[view.m - 1]}</Text>
+                            <Text style={styles.gregRange}>{gregRange}</Text>
+                        </View>
+                        <TouchableOpacity style={styles.arrow} onPress={() => goMonth(1)} accessibilityLabel={t('hijriCalendar.nextMonth')}>
+                            <ChevronRight size={24} color={theme.iconPrimary} />
+                        </TouchableOpacity>
+                    </View>
 
-                <HijriSideArrows P={P} onPrev={() => commit(-1)} onNext={() => commit(1)} />
+                    <View {...swipe.panHandlers}>
+                        <HijriMonthGrid
+                            key={calendarVersion}
+                            year={view.y}
+                            month={view.m}
+                            selectedDay={view.d}
+                            todayDay={isCurrentMonth ? todayH.d : undefined}
+                            hasNote={d => !!notes[hijriNoteKey(view.y, view.m, d)]?.length}
+                            onSelect={selectDay}
+                        />
+                    </View>
 
-                <HijriHeaderPanel
-                    P={P}
-                    width={panelW}
-                    monthAr={MONTHS[viewM - 1].ar}
-                    monthLabel={lang === 'tr' ? MONTHS[viewM - 1].tr : MONTHS[viewM - 1].ar}
-                    yearLabel={`${toAr(viewY)} هـ`}
-                    gregRange={gregRange}
-                    fTitle={fTitle}
-                    fSub={fSub}
-                    fSmall={fSmall}
-                />
+                    {!isToday && (
+                        <View style={styles.todayRow}>
+                            <AppButton title={t('hijriCalendar.goToToday')} onPress={goToday} variant="outline" shape="pill" size="small" />
+                        </View>
+                    )}
 
-                <HijriInfoPanel
-                    P={P}
-                    width={panelW}
-                    dayLabel={toAr(selD)}
-                    weekdayLabel={WD[wd]}
-                    monthLabel={`${MONTHS[viewM - 1].ar} ${toAr(viewY)} هـ`}
-                    phaseLabel={lang === 'ar' ? phaseLabel(selPh).ar : phaseLabel(selPh).tr}
-                    gregLabel={`${sg2} ${GM[sg1]} ${sg0}`}
-                    event={selEv}
-                    lang={lang}
-                    fDayNum={fDayNum}
-                    fSub={fSub}
-                    fSmall={fSmall}
-                />
+                    <HijriDayCard
+                        key={noteKey}
+                        year={view.y}
+                        month={view.m}
+                        day={view.d}
+                        special={getSpecialDay(view.y, view.m, view.d)}
+                        notes={notes[noteKey] || []}
+                        onAddNote={text => addNote(noteKey, text)}
+                        onDeleteNote={id => deleteNote(noteKey, id)}
+                    />
 
-                {!isToday && (
-                    <HijriTodayButton P={P} label={lang === 'tr' ? `● ${t('hijriCalendar.today')}` : '● اليوم'} onPress={goToday} />
-                )}
+                    <HijriSpecialDaysList
+                        year={view.y}
+                        today={today}
+                        onSelect={(m, d) => setView({ y: view.y, m, d })}
+                    />
+                </ScrollView>
+            )}
 
-            </View>
-
-            <HijriNotesModal
-                P={P}
-                visible={modalDay != null}
-                height={height}
-                narrow={narrow}
-                lang={lang}
-                dayLabel={modalDayClamped != null ? toAr(modalDayClamped) : ''}
-                weekdayLabel={WD[wd]}
-                monthLabel={`${MONTHS[viewM - 1].ar}  ${toAr(viewY)} هـ`}
-                phaseLabel={lang === 'ar' ? phaseLabel(selPh).ar : phaseLabel(selPh).tr}
-                gregLabel={`${sg2} ${GM[sg1]} ${sg0}`}
-                notes={modalDayNotes}
-                draft={draft}
-                draftFocused={draftFocused}
-                onChangeDraft={setDraft}
-                onFocusDraft={() => setDraftFocused(true)}
-                onBlurDraft={() => { if (!draft.trim()) setDraftFocused(false); }}
-                onAddNote={addNote}
-                onDeleteNote={deleteNote}
-                onClose={() => setModalDay(null)}
-            />
-
-        </SafeAreaView>
+            <TouchableOpacity
+                style={[styles.modeButton, mode === 'ring' && styles.modeButtonOnRing]}
+                onPress={toggleMode}
+                accessibilityRole="button"
+                accessibilityLabel={t(mode === 'ring' ? 'hijriCalendar.showGrid' : 'hijriCalendar.showRing')}
+            >
+                <ToggleIcon size={22} color={mode === 'ring' ? '#E6C570' : theme.featuredIcon} />
+            </TouchableOpacity>
+        </View>
     );
 };
+
+const createStyles = (theme: Theme, common: CommonStyles) => StyleSheet.create({
+    container: { ...common.container },
+    content: {
+        width: '100%',
+        maxWidth: 560,
+        alignSelf: 'center',
+        padding: SPACING.md,
+        // Leaves room under the last card for the floating view button
+        paddingBottom: SPACING.xl + 56,
+        gap: SPACING.md,
+    },
+    monthBar: { flexDirection: 'row', alignItems: 'center' },
+    arrow: {
+        width: 44,
+        height: 44,
+        borderRadius: RADIUS.xl,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    monthTitle: { flex: 1, alignItems: 'center' },
+    monthName: {
+        fontFamily: TRANSLATION_FONT_FAMILY_SEMIBOLD,
+        fontSize: FONT_SIZES.xlarge,
+        color: theme.text,
+        textAlign: 'center',
+    },
+    monthArabic: {
+        fontFamily: 'Amiri_400Regular',
+        fontSize: FONT_SIZES.large,
+        color: theme.accent,
+        writingDirection: 'rtl',
+    },
+    gregRange: { fontSize: FONT_SIZES.small, color: theme.textSecondary },
+    todayRow: { alignItems: 'center', marginTop: -SPACING.sm },
+    modeButton: {
+        position: 'absolute',
+        right: SPACING.md,
+        bottom: SPACING.lg,
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme.featured,
+        borderWidth: 1,
+        borderColor: theme.featuredBorder,
+        zIndex: 20,
+    },
+    // On the night sky it matches the ring's own glass panels
+    modeButtonOnRing: {
+        backgroundColor: 'rgba(6,23,15,0.74)',
+        borderColor: 'rgba(216,178,76,0.36)',
+    },
+});

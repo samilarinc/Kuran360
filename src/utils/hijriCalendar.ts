@@ -1,5 +1,3 @@
-import { Platform } from 'react-native';
-
 // ── Calendar math ─────────────────────────────────────────────────────────────
 
 export function mod(a: number, b: number) { return a - b * Math.floor(a / b); }
@@ -21,34 +19,119 @@ export function jd2g(jd: number): [number, number, number] {
     const m = Math.floor(((yd + la) * 12 + 373) / 367);
     return [y, m, (w - g2jd(y, m, 1)) + 1];
 }
-export function h2jd(y: number, m: number, d: number) {
+/** The tabular (arithmetic) Islamic calendar; only a fallback, it can be days off from Diyanet's */
+function tabularH2jd(y: number, m: number, d: number) {
     return d + Math.ceil(29.5 * (m - 1)) + (y - 1) * 354 + Math.floor((3 + 11 * y) / 30) + 1948438.5;
+}
+function tabularJd2h(jd: number): [number, number] {
+    jd = Math.floor(jd) + 0.5;
+    const y = Math.floor((30 * (jd - 1948439.5) + 10646) / 10631);
+    const m = Math.min(12, Math.ceil((jd - (29 + tabularH2jd(y, 1, 1))) / 29.5) + 1);
+    return [y, m];
+}
+
+// ── Diyanet month starts ──────────────────────────────────────────────────────
+
+/**
+ * Diyanet sets each month's first day by its own calculation, which the tabular calendar can miss
+ * by a day or two. Known first days, key `<Hijri year>-<month>`, value the Gregorian day ("yyyy-mm-dd").
+ * Bundled from Diyanet's prayer time data (2026) and its 2027 dini günler takvimi; more are learned
+ * at runtime from the prayer time data (learnMonthStarts), so each new year fills itself in.
+ */
+const monthStarts: Record<string, number> = {};
+
+const BUNDLED_MONTH_STARTS: Record<string, string> = {
+    '1447-8': '2026-01-20', '1447-9': '2026-02-19', '1447-10': '2026-03-20', '1447-11': '2026-04-18',
+    '1447-12': '2026-05-18', '1448-1': '2026-06-16', '1448-2': '2026-07-15', '1448-3': '2026-08-14',
+    '1448-4': '2026-09-12', '1448-5': '2026-10-12', '1448-6': '2026-11-10', '1448-7': '2026-12-10',
+    // From the 2027 calendar: Berat 15 Şaban = 23 Jan, Bayram 1 Şevval = 9 Mar, Kurban 10 Zilhicce = 16 May, Mevlid 12 Rebiülevvel = 14 Aug
+    '1448-8': '2027-01-09', '1448-10': '2027-03-09', '1448-12': '2027-05-07', '1449-3': '2027-08-03',
+};
+
+const monthIndex = (y: number, m: number) => y * 12 + (m - 1);
+
+const setMonthStart = (y: number, m: number, gy: number, gm: number, gd: number) => {
+    monthStarts[`${y}-${m}`] = g2jd(gy, gm, gd);
+};
+
+for (const [key, date] of Object.entries(BUNDLED_MONTH_STARTS)) {
+    const [y, m] = key.split('-').map(Number);
+    const [gy, gm, gd] = date.split('-').map(Number);
+    setMonthStart(y, m, gy, gm, gd);
+}
+
+/** Turkish month names as Diyanet writes them in the prayer time data, folded to ASCII lowercase */
+const DIYANET_MONTH_NAMES = [
+    'muharrem', 'safer', 'rebiulevvel', 'rebiulahir', 'cemaziyelevvel', 'cemaziyelahir',
+    'recep', 'saban', 'ramazan', 'sevval', 'zilkade', 'zilhicce',
+];
+const foldTurkish = (s: string) => s.toLocaleLowerCase('tr-TR')
+    .replace(/ş/g, 's').replace(/ı/g, 'i').replace(/ü/g, 'u').replace(/ö/g, 'o').replace(/ç/g, 'c').replace(/ğ/g, 'g')
+    .replace(/[âà]/g, 'a').replace(/[îì]/g, 'i').replace(/[ûù]/g, 'u');
+
+/**
+ * Learns Diyanet's month starts from prayer time days: a day whose Hijri text is "1 <month> <year>"
+ * starts that month on its Gregorian date. Returns whether anything new was learned.
+ */
+export function learnMonthStarts(days: { date: Date; hicri: string }[]) {
+    let learned = false;
+    for (const { date, hicri } of days) {
+        const match = hicri.trim().match(/^0?1\s+(.+?)\s+(\d{4})$/);
+        if (!match) continue;
+        const m = DIYANET_MONTH_NAMES.indexOf(foldTurkish(match[1]).replace(/\s+/g, '')) + 1;
+        if (!m) continue;
+        const y = Number(match[2]);
+        const jd = g2jd(date.getFullYear(), date.getMonth() + 1, date.getDate());
+        if (monthStarts[`${y}-${m}`] !== jd) {
+            monthStarts[`${y}-${m}`] = jd;
+            learned = true;
+        }
+    }
+    return learned;
+}
+
+/**
+ * Julian day of a Hijri month's first day: Diyanet's when known, otherwise the tabular date
+ * shifted by how far the tabular calendar was off at the nearest month that is known.
+ */
+function monthStartJD(y: number, m: number) {
+    const known = monthStarts[`${y}-${m}`];
+    if (known !== undefined) return known;
+    const target = monthIndex(y, m);
+    let nearest: { distance: number; shift: number } | undefined;
+    for (const [key, jd] of Object.entries(monthStarts)) {
+        const [ky, km] = key.split('-').map(Number);
+        const distance = Math.abs(monthIndex(ky, km) - target);
+        if (!nearest || distance < nearest.distance) nearest = { distance, shift: jd - tabularH2jd(ky, km, 1) };
+    }
+    // Far from any known month the drift is unknown, so the tabular date is used as is
+    const shift = nearest && nearest.distance <= 12 ? nearest.shift : 0;
+    return tabularH2jd(y, m, 1) + shift;
+}
+
+// ── Hijri ⇄ Julian day ────────────────────────────────────────────────────────
+
+export function h2jd(y: number, m: number, d: number) {
+    return monthStartJD(y, m) + d - 1;
+}
+export function hMonthLen(y: number, m: number) {
+    const [ny, nm] = addHM(y, m, 1);
+    return Math.round(monthStartJD(ny, nm) - monthStartJD(y, m));
 }
 export function jd2h(jd: number): [number, number, number] {
     jd = Math.floor(jd) + 0.5;
-    const y = Math.floor((30 * (jd - 1948439.5) + 10646) / 10631);
-    const m = Math.min(12, Math.ceil((jd - (29 + h2jd(y, 1, 1))) / 29.5) + 1);
-    return [y, m, Math.round(jd - h2jd(y, m, 1)) + 1];
-}
-export function hMonthLen(y: number, m: number) {
-    return Math.round((m === 12 ? h2jd(y + 1, 1, 1) : h2jd(y, m + 1, 1)) - h2jd(y, m, 1));
+    let [y, m] = tabularJd2h(jd);
+    while (jd < monthStartJD(y, m)) [y, m] = addHM(y, m, -1);
+    while (jd >= monthStartJD(...addHM(y, m, 1))) [y, m] = addHM(y, m, 1);
+    return [y, m, Math.round(jd - monthStartJD(y, m)) + 1];
 }
 export function addHM(y: number, m: number, off: number): [number, number] {
     const k = (m - 1) + off;
     return [y + Math.floor(k / 12), mod(k, 12) + 1];
 }
-export function toAr(n: number) { return String(Math.round(n)).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]); }
-export function moonPhase(jd: number) {
+export function moonPhase(jd: number): MoonPhaseInfo {
     const frac = mod(jd - 2451550.1, 29.530588853) / 29.530588853;
     return { illum: (1 - Math.cos(2 * Math.PI * frac)) / 2, wax: frac < 0.5 };
-}
-export function phaseLabel(p: { illum: number; wax: boolean }) {
-    const i = p.illum;
-    if (i < 0.04) return { ar: 'مُحاق', tr: 'Yeni Ay' };
-    if (i > 0.96) return { ar: 'بَدْر', tr: 'Dolunay' };
-    if (Math.abs(i - 0.5) < 0.07) return p.wax ? { ar: 'تَربيع أوّل', tr: 'İlk Dördün' } : { ar: 'تَربيع أخير', tr: 'Son Dördün' };
-    if (i < 0.5) return p.wax ? { ar: 'هِلال مُتزايد', tr: 'Büyüyen Hilal' } : { ar: 'هِلال مُتناقص', tr: 'Küçülen Hilal' };
-    return p.wax ? { ar: 'أحدَب مُتزايد', tr: 'Büyüyen Şişkin Ay' } : { ar: 'أحدَب مُتناقص', tr: 'Küçülen Şişkin Ay' };
 }
 
 export function getTodayH() {
@@ -57,20 +140,32 @@ export function getTodayH() {
     return { y, m, d };
 }
 
-export const noteKey = (y: number, m: number, d: number) => `${y}-${m}-${d}`;
+// ── Names ─────────────────────────────────────────────────────────────────────
 
-// ── Static data ───────────────────────────────────────────────────────────────
-
-export const MONTHS = [
-    { ar: 'المُحَرَّم', tr: 'Muharrem' }, { ar: 'صَفَر', tr: 'Safer' },
-    { ar: 'رَبيع الأوّل', tr: 'Rebiülevvel' }, { ar: 'رَبيع الآخِر', tr: 'Rebiülahir' },
-    { ar: 'جُمادى الأولى', tr: 'Cemaziyelevvel' }, { ar: 'جُمادى الآخِرة', tr: 'Cemaziyelahir' },
-    { ar: 'رَجَب', tr: 'Recep' }, { ar: 'شَعْبان', tr: 'Şaban' },
-    { ar: 'رَمَضان', tr: 'Ramazan' }, { ar: 'شَوّال', tr: 'Şevval' },
-    { ar: 'ذو القَعْدة', tr: 'Zilkade' }, { ar: 'ذو الحِجّة', tr: 'Zilhicce' },
+/** Arabic month names; the Turkish/English names live in the locales (hijriCalendar.months) */
+export const MONTHS_AR = [
+    'المُحَرَّم', 'صَفَر', 'رَبيع الأوّل', 'رَبيع الآخِر', 'جُمادى الأولى', 'جُمادى الآخِرة',
+    'رَجَب', 'شَعْبان', 'رَمَضان', 'شَوّال', 'ذو القَعْدة', 'ذو الحِجّة',
 ];
-export const WD = ['الأحَد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخَميس', 'الجُمعة', 'السَّبت'];
-export const GM = ['', 'Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+
+export type MoonPhaseInfo = { illum: number; wax: boolean };
+
+/** Locale key under hijriCalendar.phases for a moon phase */
+export function phaseKey(p: MoonPhaseInfo) {
+    const i = p.illum;
+    if (i < 0.04) return 'new';
+    if (i > 0.96) return 'full';
+    if (Math.abs(i - 0.5) < 0.07) return p.wax ? 'firstQuarter' : 'lastQuarter';
+    if (i < 0.5) return p.wax ? 'waxingCrescent' : 'waningCrescent';
+    return p.wax ? 'waxingGibbous' : 'waningGibbous';
+}
+
+/** Local-midnight Gregorian date of a Hijri date */
+export const hijriToDate = (y: number, m: number, d: number) => {
+    const [gy, gm, gd] = jd2g(h2jd(y, m, d));
+    return new Date(gy, gm - 1, gd);
+};
+
 // ── Special days (single source for the calendar screen and the reminders) ────
 
 export type SpecialDayId =
@@ -128,32 +223,8 @@ const localDate = ([y, m, d]: [number, number, number]) => new Date(y, m - 1, d)
 
 const shiftDays = (date: Date, days: number) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
 
-/**
- * The arithmetic Hijri calendar above can be a day off from Diyanet's (which sets month starts by
- * its own calculation), and a kandil reminder a day late is wrong. Where Diyanet's published
- * calendar is known, its date wins: key `<id>-<Hijri year>`, value the Gregorian day the calendar
- * marks (for a night, the day after the evening it starts). Extend it each year from the dini
- * günler takvimi; days not listed here fall back to the arithmetic calendar.
- * Sources: Diyanet's 2027 calendar as reported in the press, e.g. Miraç Kandili "4 Ocak 2027" is the evening of 4 Jan.
- */
-const DIYANET_DATES: Record<string, string> = {
-    'miraj-1448': '2027-01-05',
-    'berat-1448': '2027-01-23',
-    'ramadanArefe-1448': '2027-03-08',
-    'fitr-1448': '2027-03-09',
-    'tarwiyah-1448': '2027-05-14',
-    'arafah-1448': '2027-05-15',
-    'adha-1448': '2027-05-16',
-    'mawlid-1449': '2027-08-14',
-};
-
 /** Julian day number of a special day in a Hijri year */
 const specialDayJD = (def: SpecialDayDef, hy: number) => {
-    const known = DIYANET_DATES[`${def.id}-${hy}`];
-    if (known) {
-        const [y, m, d] = known.split('-').map(Number);
-        return g2jd(y, m, d);
-    }
     let jd = h2jd(hy, def.month, def.day);
     if (def.firstFriday) {
         while (localDate(jd2g(jd)).getDay() !== 5) jd += 1;
@@ -165,6 +236,24 @@ const specialDayJD = (def: SpecialDayDef, hy: number) => {
 export function getSpecialDay(hy: number, hm: number, hd: number): SpecialDayDef | undefined {
     const jd = h2jd(hy, hm, hd);
     return SPECIAL_DAYS.find(def => specialDayJD(def, hy) === jd);
+}
+
+export interface SpecialDayInYear {
+    def: SpecialDayDef;
+    /** Hijri date the calendar marks */
+    month: number;
+    day: number;
+    /** The Gregorian day the calendar marks (local midnight) */
+    date: Date;
+}
+
+/** All special days of a Hijri year, in date order (for the list on the calendar screen) */
+export function specialDaysOfYear(hy: number): SpecialDayInYear[] {
+    return SPECIAL_DAYS.map(def => {
+        const jd = specialDayJD(def, hy);
+        const [, month, day] = jd2h(jd);
+        return { def, month, day, date: localDate(jd2g(jd)) };
+    }).sort((a, b) => a.date.getTime() - b.date.getTime());
 }
 
 /** Every special day whose marked Gregorian day is in [from, to] (dates only, time ignored), in date order. */
@@ -184,47 +273,4 @@ export function specialDaysBetween(from: Date, to: Date): SpecialDayOccurrence[]
     return result.sort((a, b) => a.date.getTime() - b.date.getTime());
 }
 
-// ── Palettes (original "Midnight Emerald" dark + "Parchment Ink" light) ────────
-
-export type HijriPalette = {
-    bg: string; bgRadial: string; bgGlow: string;
-    text: string; muted: string; gold: string; goldSoft: string;
-    moonIvory: string; moonLit2: string; moonDark: string;
-    line: string; panel: string; panelBorder: string;
-    glowRGB: string; stars: boolean;
-};
-
-export const EMERALD: HijriPalette = {
-    bg: '#0c2c1f',
-    bgRadial: 'radial-gradient(125% 120% at 50% 16%, #14402e 0%, #0c2c1f 42%, #06180f 74%, #040f0a 100%)',
-    bgGlow: 'rgba(20,64,46,0.6)',
-    text: '#e8ebd2', muted: '#9cb8a6', gold: '#d8b24c', goldSoft: '#bd9a3f',
-    moonIvory: '#edefdb', moonLit2: '#fbfcf0', moonDark: '#05150d',
-    line: 'rgba(216,178,76,0.28)', panel: 'rgba(6,23,15,0.74)', panelBorder: 'rgba(216,178,76,0.36)',
-    glowRGB: '216,178,76', stars: true,
-};
-export const LAPIS: HijriPalette = {
-    bg: '#101d4a',
-    bgRadial: 'radial-gradient(125% 120% at 50% 16%, #1d2f69 0%, #122152 40%, #0a1336 72%, #060b22 100%)',
-    bgGlow: 'rgba(29,47,105,0.6)',
-    text: '#ece4cc', muted: '#9bacd4', gold: '#e6c570', goldSoft: '#cbab5e',
-    moonIvory: '#ece2c7', moonLit2: '#fbf7ec', moonDark: '#0b1535',
-    line: 'rgba(220,184,86,0.30)', panel: 'rgba(11,20,52,0.74)', panelBorder: 'rgba(220,184,86,0.38)',
-    glowRGB: '230,197,112', stars: true,
-};
-
-export const FONT = Platform.OS === 'web'
-    ? { aref: 'Aref Ruqaa', amiri: 'Amiri', cormorant: 'Cormorant Garamond' }
-    : { aref: undefined as any, amiri: undefined as any, cormorant: undefined as any };
-
-export const NOTES_KEY = 'hijri-cal-notes';
-
 export type HijriNoteEntry = { id: string; text: string; ts: number };
-
-export const P_IN = [-1, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1];
-export const STAGES = [-1, 0, 1];
-
-export const STARS = Array.from({ length: 54 }, () => ({
-    x: Math.random(), y: Math.random(),
-    r: Math.random() * 1.5 + 0.4, base: Math.random() * 0.5 + 0.2,
-}));

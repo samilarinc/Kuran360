@@ -994,7 +994,12 @@
           "Ezber seçiminde ayet numarası alanı düzgün görünüyor; altındaki gereksiz sure yazısı kaldırıldı",
           "Kalıcı namaz vakti bildirimi koyu modda okunaklı: yazılar ve o anki vaktin vurgusu artık koyu bildirim panelinde de net görünüyor (Xiaomi/Redmi dahil)",
           "Umre hazırlık listesi yenilendi: yolculuk tek bir rota olarak görünüyor, her şehirde kaç gece kalacağınız yazıyor; listeye kendi maddelerinizi ekleyip silebiliyorsunuz",
-          "Umre listesindeki otel araması artık her zaman doğru şehri açıyor"
+          "Umre listesindeki otel araması artık her zaman doğru şehri açıyor",
+          "Hicri Takvim'e ikinci görünüm: her günün ay evresi ve miladi tarihiyle takvim, notlar aynı ekranda, yılın kandil ve bayramları kalan günleriyle; sağ alttaki düğmeyle ay halkasına geçebilirsiniz",
+          "Hicri Takvim tarihleri Diyanet'le birebir aynı; önceden bir iki gün geride kalıyordu",
+          "Ay halkası seçtiğiniz günü tepeye getirecek şekilde dönüyor; kandil ve bayramlar altın haleyle parlıyor",
+          "Halkada bugünden sıradaki kandile yaldızlı bir yay ve kalan gün sayısı; kandil akşamı \"Bu gece …\" yazısı",
+          "Gün panelinde notlara açılan bir satır ve kandil gecesinin hangi akşam başladığı; bir güne basılı tutunca tarihi okunur yazıyla görünüyor"
         ]
       },
       {
@@ -1570,12 +1575,54 @@
     "error": "Hata oluştu: {{message}}"
   },
   "hijriCalendar": {
-    "title": "HİCRÎ AY TAKVİMİ",
+    "title": "Hicri Takvim",
     "today": "Bugün",
-    "addNotePlaceholder": "Yeni not ekle…",
-    "savedOnDevice": "Cihaza kaydedilir",
-    "add": "EKLE",
-    "noNotes": "Henüz not yok"
+    "goToToday": "Bugüne dön",
+    "previousMonth": "Önceki ay",
+    "nextMonth": "Sonraki ay",
+    "months": [
+      "Muharrem",
+      "Safer",
+      "Rebiülevvel",
+      "Rebiülahir",
+      "Cemaziyelevvel",
+      "Cemaziyelahir",
+      "Recep",
+      "Şaban",
+      "Ramazan",
+      "Şevval",
+      "Zilkade",
+      "Zilhicce"
+    ],
+    "phases": {
+      "new": "Yeni ay",
+      "waxingCrescent": "Büyüyen hilal",
+      "firstQuarter": "İlk dördün",
+      "waxingGibbous": "Büyüyen şişkin ay",
+      "full": "Dolunay",
+      "waningGibbous": "Küçülen şişkin ay",
+      "lastQuarter": "Son dördün",
+      "waningCrescent": "Küçülen hilal"
+    },
+    "illumination": "%{{percent}} aydınlık",
+    "nightStarts": "Gecesi {{date}} akşamı başlar",
+    "specialDaysOfYear": "{{year}} yılının mübarek gün ve geceleri",
+    "daysLeft_one": "{{count}} gün kaldı",
+    "daysLeft_other": "{{count}} gün kaldı",
+    "addNotePlaceholder": "Bu güne not ekle…",
+    "add": "Ekle",
+    "deleteNote": "Notu sil",
+    "savedOnDevice": "Notlar yalnızca bu cihazda saklanır",
+    "noNotes": "Henüz not yok",
+    "showRing": "Ay halkası görünümü",
+    "showGrid": "Takvim görünümü",
+    "tonight": "Bu gece {{name}}",
+    "todayIs": "Bugün {{name}}",
+    "noteCount_one": "{{count}} not",
+    "noteCount_other": "{{count}} not",
+    "addNote": "Not ekle",
+    "ringDaysLeft_one": "{{count}} gün",
+    "ringDaysLeft_other": "{{count}} gün"
   },
   "imageSizes": {
     "square_1080": {

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
-import { HijriPalette, FONT } from '@/utils/hijriCalendar';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { HijriPalette, RING_FONT } from '@/utils/hijriRing';
 import { HijriDayInfoRow } from '@/components/HijriDayInfoRow';
 import { SPACING } from '@/theme';
 
@@ -12,15 +12,20 @@ interface HijriInfoPanelProps {
     monthLabel: string;
     phaseLabel: string;
     gregLabel: string;
-    event: { ar: string; tr: string } | undefined;
-    lang: 'tr' | 'ar';
+    /** Name of the special day, if the selected day is one */
+    eventName?: string;
+    /** One line under the special day's name, e.g. when its night begins */
+    eventDetail?: string;
+    /** "Not ekle" or "2 not"; tapping it opens the day's notes */
+    notesLabel: string;
+    onOpenNotes: () => void;
     fDayNum: number;
     fSub: number;
     fSmall: number;
 }
 
 export const HijriInfoPanel: React.FC<HijriInfoPanelProps> = ({
-    P, width, dayLabel, weekdayLabel, monthLabel, phaseLabel, gregLabel, event, lang,
+    P, width, dayLabel, weekdayLabel, monthLabel, phaseLabel, gregLabel, eventName, eventDetail, notesLabel, onOpenNotes,
     fDayNum, fSub, fSmall,
 }) => {
     const s = useMemo(() => createStyles(P), [P]);
@@ -42,16 +47,15 @@ export const HijriInfoPanel: React.FC<HijriInfoPanelProps> = ({
                     gregLabel={gregLabel}
                     gregFontSize={fSmall}
                 />
-                {event && (
+                {eventName && (
                     <View style={s.evBox}>
-                        <Text style={[s.evAr, { fontSize: fSub }]}>
-                            {lang === 'ar' ? event.ar : event.tr}
-                        </Text>
-                        {lang === 'ar' && (
-                            <Text style={[s.evEn, { fontSize: fSmall }]}>{event.tr}</Text>
-                        )}
+                        <Text style={[s.evName, { fontSize: fSub }]}>{eventName}</Text>
+                        {eventDetail && <Text style={[s.evDetail, { fontSize: fSmall }]}>{eventDetail}</Text>}
                     </View>
                 )}
+                <TouchableOpacity style={s.notesRow} onPress={onOpenNotes} hitSlop={6} accessibilityRole="button">
+                    <Text style={[s.notesText, { fontSize: fSmall }]}>{notesLabel}</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -65,6 +69,8 @@ const createStyles = (P: HijriPalette) => StyleSheet.create({
         ...(Platform.OS === 'web' ? ({ backdropFilter: 'blur(8px)' } as any) : {}),
     },
     evBox: { marginTop: SPACING.sm, paddingTop: SPACING.sm, borderTopWidth: 1, borderTopColor: P.line, alignItems: 'center' },
-    evAr: { color: P.gold, textAlign: 'center', fontFamily: FONT.amiri },
-    evEn: { color: P.text, fontStyle: 'italic', opacity: 0.9, textAlign: 'center', marginTop: 2, fontFamily: FONT.cormorant },
+    evName: { color: P.gold, textAlign: 'center', fontFamily: RING_FONT.naskh },
+    evDetail: { color: P.muted, textAlign: 'center', marginTop: 2, fontFamily: RING_FONT.latin },
+    notesRow: { marginTop: SPACING.sm, paddingTop: SPACING.sm, borderTopWidth: 1, borderTopColor: P.line, alignItems: 'center' },
+    notesText: { color: P.goldSoft, fontFamily: RING_FONT.latin },
 });

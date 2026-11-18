@@ -8,6 +8,7 @@ import { PrayerTime } from '@/types';
 import locations from '@/data/locations.json';
 import { getDistanceKm } from '@/utils/qibla';
 import { PlannedReminder, SpecialDayReminderSettings, planSpecialDayReminders } from '@/utils/specialDayReminders';
+import { learnMonthStarts } from '@/utils/hijriCalendar';
 import { PrayerNotification, PrayerNotificationConfig, PrayerWidgetData } from '../../modules/prayer-notification';
 
 /** Prayer times data: one JSON file per location (Diyanet times), downloaded from kuran360.com and cached. */
@@ -52,6 +53,7 @@ export const fetchPrayerTimes = async (location: PrayerLocation): Promise<Prayer
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data: PrayerTime[] = await response.json();
         memoryCache.set(location.fileName, data);
+        learnHijriMonths(data);
         AsyncStorage.setItem(cacheKey, JSON.stringify(data)).catch(() => { });
         return data;
     } catch (error) {
@@ -59,12 +61,20 @@ export const fetchPrayerTimes = async (location: PrayerLocation): Promise<Prayer
         if (!stored) throw error;
         const data: PrayerTime[] = JSON.parse(stored);
         memoryCache.set(location.fileName, data);
+        learnHijriMonths(data);
         return data;
     }
 };
 
 /** The data covers one calendar year; its year is read from the Gregorian date text ("03 Ekim 2026 Cumartesi"). */
 const dataYear = (times: PrayerTime[]) => Number(times[0]?.miladi.match(/\d{4}/)?.[0]);
+
+/** Teaches the Hijri calendar Diyanet's month starts from the Hijri date of each day */
+const learnHijriMonths = (times: PrayerTime[]) => {
+    const year = dataYear(times);
+    if (!year) return;
+    learnMonthStarts(times.map(day => ({ date: new Date(year, 0, day.date_index), hicri: day.hicri })));
+};
 
 const dayOfYear = (date: Date) =>
     Math.round((Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 86400000);

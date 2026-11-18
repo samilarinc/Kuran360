@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
-import { HijriPalette, FONT } from '@/utils/hijriCalendar';
+import { HijriPalette, RING_FONT } from '@/utils/hijriRing';
 import { SPACING } from '@/theme';
 
 interface HijriHeaderPanelProps {
@@ -39,7 +39,7 @@ const createStyles = (P: HijriPalette) => StyleSheet.create({
         alignItems: 'center',
         ...(Platform.OS === 'web' ? ({ backdropFilter: 'blur(8px)' } as any) : {}),
     },
-    hAr: { fontWeight: '700', color: P.gold, marginTop: 6, fontFamily: FONT.aref, textAlign: 'center' },
-    hLa: { color: P.text, letterSpacing: 0.5, marginTop: 3, fontFamily: FONT.cormorant, textAlign: 'center' },
-    hGreg: { color: P.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginTop: 3, opacity: 0.9, fontFamily: FONT.cormorant, textAlign: 'center' },
+    hAr: { color: P.gold, marginTop: 6, fontFamily: RING_FONT.calligraphy, textAlign: 'center' },
+    hLa: { color: P.text, letterSpacing: 0.5, marginTop: 3, fontFamily: RING_FONT.latin, textAlign: 'center' },
+    hGreg: { color: P.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginTop: 3, opacity: 0.9, fontFamily: RING_FONT.latin, textAlign: 'center' },
 });

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { HijriPalette, FONT } from '@/utils/hijriCalendar';
+import { HijriPalette, RING_FONT } from '@/utils/hijriRing';
 import { SPACING, FONT_SIZES } from '@/theme';
 
 interface HijriTodayButtonProps {
@@ -26,5 +26,5 @@ const createStyles = (P: HijriPalette) => StyleSheet.create({
         paddingVertical: SPACING.sm, paddingHorizontal: SPACING.xl, zIndex: 10,
         ...(Platform.OS === 'web' ? ({ backdropFilter: 'blur(8px)' } as any) : {}),
     },
-    todayBtnTxt: { color: P.gold, fontSize: FONT_SIZES.small, letterSpacing: 1.5, fontFamily: FONT.cormorant, fontWeight: '600' },
+    todayBtnTxt: { color: P.gold, fontSize: FONT_SIZES.small, letterSpacing: 1.5, fontFamily: RING_FONT.latinBold },
 });

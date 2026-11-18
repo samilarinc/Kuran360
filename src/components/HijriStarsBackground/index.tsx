@@ -1,6 +1,6 @@
 import React from 'react';
 import { Animated } from 'react-native';
-import { HijriPalette, STARS } from '@/utils/hijriCalendar';
+import { HijriPalette, STARS } from '@/utils/hijriRing';
 
 interface HijriStarsBackgroundProps {
     P: HijriPalette;
@@ -10,8 +10,6 @@ interface HijriStarsBackgroundProps {
 }
 
 export const HijriStarsBackground: React.FC<HijriStarsBackgroundProps> = ({ P, width, height, starAnims }) => {
-    if (!P.stars) return null;
-
     return (
         <>
             {STARS.map((st, i) => (

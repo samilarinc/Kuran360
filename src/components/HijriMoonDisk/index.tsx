@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Platform } from 'react-native';
-import { HijriPalette } from '@/utils/hijriCalendar';
+import { HijriPalette } from '@/utils/hijriRing';
 
 interface HijriMoonDiskProps {
     r: number;

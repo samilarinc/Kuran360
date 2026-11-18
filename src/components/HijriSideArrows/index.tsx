@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { HijriPalette } from '@/utils/hijriCalendar';
+import { HijriPalette } from '@/utils/hijriRing';
 
 const createStyles = (P: HijriPalette) => StyleSheet.create({
     sideArrow: { position: 'absolute', top: 0, bottom: 0, width: 40, justifyContent: 'center', alignItems: 'center', zIndex: 5 },
