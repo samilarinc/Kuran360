@@ -62,6 +62,7 @@
     "loading": "Loading...",
     "playing": "Playing",
     "paused": "Paused",
+    "loadError": "Couldn't load audio",
     "play": "Play",
     "pause": "Pause",
     "stop": "Stop",
@@ -983,6 +984,12 @@
     ],
     "updatesSectionTitle": "Release Notes",
     "updates": [
+      {
+        "date": "November 19, 2026",
+        "bullets": [
+          "If verse audio can't load it's retried once; if it still fails the audio bar says so instead of silently showing \"Playing\""
+        ]
+      },
       {
         "date": "November 18, 2026",
         "bullets": [

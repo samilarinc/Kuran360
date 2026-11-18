@@ -87,7 +87,9 @@ export const GlobalAudioBar: React.FC = () => {
 
     const status = audioState.isLoading
         ? t('audioBar.loading')
-        : t(audioState.isPlaying ? 'audioBar.playing' : 'audioBar.paused');
+        : audioState.loadError
+            ? t('audioBar.loadError')
+            : t(audioState.isPlaying ? 'audioBar.playing' : 'audioBar.paused');
     const ModeIcon = currentMode.Icon;
     const TrackingIcon = settings.audioTrackingEnabled ? LocateFixed : LocateOff;
 

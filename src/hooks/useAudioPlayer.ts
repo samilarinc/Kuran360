@@ -13,6 +13,34 @@ const OVERLAP_LEAD_MS = 60;
 const OVERLAP_UNLOAD_DELAY_MS = 1000;
 // How often the player reports its position (word highlighting follows it); expo-av defaults to 500 ms
 const POSITION_UPDATE_INTERVAL_MS = 100;
+// A verse file that hasn't loaded by then counts as failed, so a stalled download can't hang playback
+const LOAD_TIMEOUT_MS = 15000;
+// A failed load is tried this many more times (after a short pause) before playback stops with an error
+const LOAD_RETRIES = 1;
+const RETRY_DELAY_MS = 1000;
+
+type SoundStatus = Parameters<typeof Audio.Sound.createAsync>[1];
+
+// createAsync with a time limit; a sound that arrives after the limit is unloaded
+const createSoundWithTimeout = (uri: string, status: SoundStatus) =>
+  new Promise<Audio.Sound>((resolve, reject) => {
+    let timedOut = false;
+    const timer = setTimeout(() => {
+      timedOut = true;
+      reject(new Error(`Audio load timed out: ${uri}`));
+    }, LOAD_TIMEOUT_MS);
+    Audio.Sound.createAsync({ uri }, status).then(
+      ({ sound }) => {
+        clearTimeout(timer);
+        if (timedOut) sound.unloadAsync().catch(() => { });
+        else resolve(sound);
+      },
+      error => {
+        clearTimeout(timer);
+        if (!timedOut) reject(error);
+      },
+    );
+  });
 
 type PositionListener = (verseId: string, positionMillis: number) => void;
 
@@ -111,8 +139,7 @@ export const useAudioPlayer = () => {
     const uri = getAudioUri(verse);
     if (preloadCache.current.has(uri)) return;
 
-    const pending = Audio.Sound.createAsync({ uri }, { shouldPlay: false })
-      .then(({ sound: preloaded }) => preloaded)
+    const pending = createSoundWithTimeout(uri, { shouldPlay: false })
       .catch(error => {
         logger.debug(`Failed to preload verse audio: ${uri} ${error}`);
         preloadCache.current.delete(uri);
@@ -324,7 +351,7 @@ export const useAudioPlayer = () => {
     try {
       // Start a new play session; invalidate previous timers/callbacks
       const myToken = ++playTokenRef.current;
-      setAudioState(prev => ({ ...prev, isLoading: true }));
+      setAudioState(prev => ({ ...prev, isLoading: true, loadError: false }));
 
       // Stop the previous sound without waiting for it; the next one starts loading right away.
       // When started early (overlap), the previous verse plays its last few ms to the end first.
@@ -353,50 +380,32 @@ export const useAudioPlayer = () => {
 
       if (newSound) {
         logger.debug(`Using preloaded audio for verse: ${audioUri}`);
-        await newSound.setStatusAsync(playbackStatus);
-      } else {
-        logger.debug(`Loading audio from: ${audioUri}`);
         try {
-          // A missing file rejects here, so no separate HEAD request is needed
-          const { sound: loadedSound } = await Audio.Sound.createAsync({ uri: audioUri }, playbackStatus);
-          newSound = loadedSound;
+          await newSound.setStatusAsync(playbackStatus);
         } catch (error) {
-          logger.debug(`Audio file not available: ${audioUri}. Using simulation mode.`);
-          // Fall back to simulation if audio loading fails
-          setAudioState(prev => ({
-            ...prev,
-            isPlaying: true,
-            isLoading: false,
-            currentVerse: verse,
-          }));
+          // The preloaded player broke while waiting (e.g. its connection dropped); load the file again
+          logger.debug(`Preloaded audio unusable, reloading: ${audioUri} ${error}`);
+          newSound.unloadAsync().catch(() => { });
+          newSound = null;
+        }
+      }
 
-          // Simulate verse duration (average 5 seconds)
-          setTimeout(async () => {
-            // Abort if a new play/stop happened
+      if (!newSound) {
+        logger.debug(`Loading audio from: ${audioUri}`);
+        // A missing file rejects here, so no separate HEAD request is needed
+        for (let attempt = 0; !newSound; attempt++) {
+          try {
+            newSound = await createSoundWithTimeout(audioUri, playbackStatus);
+          } catch (error) {
             if (myToken !== playTokenRef.current) return;
-            // Simulate the same logic as didJustFinish
-            if (memActiveRef.current) {
-              const versesArr = allVersesRef.current;
-              const targetSurah = memSurahRef.current;
-              const endNum = memEndRef.current;
-
-              if (verse.number < endNum) {
-                const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
-                if (next) {
-                  await playVerse(next);
-                  return;
-                }
-              }
+            if (attempt >= LOAD_RETRIES) {
+              logger.warn(`Audio could not be loaded: ${audioUri}`, error);
+              failPlayback(verse);
+              return;
             }
-
-            if (settingsRef.current.autoplayEnabled) {
-              playNextVerse(verse);
-            } else {
-              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-            }
-          }, 5000);
-
-          return;
+            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
+            if (myToken !== playTokenRef.current) return;
+          }
         }
         // A newer play/stop happened while this was loading
         if (myToken !== playTokenRef.current) {
@@ -577,7 +586,19 @@ export const useAudioPlayer = () => {
       // Set up status update listener
       newSound.setProgressUpdateIntervalAsync(POSITION_UPDATE_INTERVAL_MS).catch(() => { });
       newSound.setOnPlaybackStatusUpdate((status) => {
-        if (!status.isLoaded) return;
+        if (!status.isLoaded) {
+          // The player stopped with an error mid-verse (e.g. the connection dropped): stop and say so
+          // instead of staying "playing" with no sound
+          if (status.error && myToken === playTokenRef.current) {
+            logger.warn(`Audio playback error: ${audioUri}`, status.error);
+            clearEarlyTimer();
+            playTokenRef.current++;
+            newSound?.setOnPlaybackStatusUpdate(null);
+            newSound?.unloadAsync().catch(() => { });
+            failPlayback(verse);
+          }
+          return;
+        }
         positionListenersRef.current.forEach(listener => listener(verse.id, status.positionMillis || 0));
         // Position ticks alone don't touch audioState (nothing reads it; see subscribeToPosition)
         setAudioState(prev => {
@@ -612,16 +633,24 @@ export const useAudioPlayer = () => {
 
     } catch (error) {
       console.error('Error playing audio:', error);
-      setAudioState(prev => ({ ...prev, isLoading: false }));
-
-      // Fall back to simulation if audio loading fails
-      setAudioState(prev => ({
-        ...prev,
-        currentVerse: verse,
-        isPlaying: true,
-        isLoading: false,
-      }));
+      failPlayback(verse);
     }
+  };
+
+  // Stops on a verse whose audio couldn't play and flags it; the audio bar shows the error and its
+  // play button tries again. Nothing advances, so autoplay can't skip through verses in silence.
+  const failPlayback = (verse: VerseType) => {
+    soundRef.current = null;
+    setSound(null);
+    setAudioState(prev => ({
+      ...prev,
+      currentVerse: verse,
+      isPlaying: false,
+      isLoading: false,
+      loadError: true,
+      duration: 0,
+      position: 0,
+    }));
   };
 
   const pause = async () => {
@@ -662,6 +691,7 @@ export const useAudioPlayer = () => {
         duration: 0,
         position: 0,
         isLoading: false,
+        loadError: false,
       });
     } catch (error) {
       console.error('Error stopping audio:', error);
@@ -683,6 +713,9 @@ export const useAudioPlayer = () => {
   const togglePlayPause = async () => {
     if (audioState.isPlaying) {
       await pause();
+    } else if (audioState.currentVerse && !soundRef.current && !audioState.isLoading) {
+      // Nothing loaded for this verse (its audio failed): try it again
+      await playVerse(audioState.currentVerse);
     } else if (audioState.currentVerse) {
       await resume();
     }

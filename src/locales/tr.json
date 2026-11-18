@@ -62,6 +62,7 @@
     "loading": "Yükleniyor...",
     "playing": "Çalıyor",
     "paused": "Duraklatıldı",
+    "loadError": "Ses yüklenemedi",
     "play": "Oynat",
     "pause": "Duraklat",
     "stop": "Durdur",
@@ -983,6 +984,12 @@
     ],
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
+      {
+        "date": "19 Kasım 2026",
+        "bullets": [
+          "Ayet sesi yüklenemezse bir kez daha deneniyor; yine olmazsa ses çubuğunda yazıyor, sessizce \"Çalıyor\" görünmüyor"
+        ]
+      },
       {
         "date": "18 Kasım 2026",
         "bullets": [
