@@ -70,6 +70,7 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
+    "@bacons/apple-targets": "~4.0.7",
     "@expo/cli": "^0.24.20",
     "@react-native-community/cli": "^19.1.1",
     "@react-native-community/cli-platform-android": "19.1.1",

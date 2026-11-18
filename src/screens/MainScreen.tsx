@@ -31,8 +31,12 @@ import { useUserData } from '@/contexts/UserDataContext';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { Platform } from 'react-native';
+import { QuranSpeech } from '../../modules/quran-speech';
 import { isDataUpdateAvailable } from '@/data/quranData';
 import { createStyles } from './MainScreen.styles';
+
+/** Speech recognition and topic search: in the browser, or natively where modules/quran-speech is built in (Android, iOS) */
+const hasSpeech = Platform.OS === 'web' || QuranSpeech !== null;
 import { MenuTileGrid, type MenuTile } from '@/components/MenuTileGrid';
 
 
@@ -78,17 +82,17 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onNavigate }) => {
         {
             title: t('mainScreen.sections.quran'),
             items: [
-                // Speech recognition runs in the browser (WebGPU/WASM) or natively on Android (modules/quran-speech), not on iOS yet
-                ...(Platform.OS === 'web' || Platform.OS === 'android'
+                // Speech recognition runs in the browser (WebGPU/WASM) or natively (modules/quran-speech) on Android and iOS
+                ...(hasSpeech
                     ? [{
                         id: 'verse-finder', title: t('mainScreen.menu.verseFinder'),
                         Icon: AudioLines, color: theme.iconPrimary, featured: true, onPress: () => onNavigate('VerseFinder'),
                     }]
                     : []),
                 { id: 'random-verse', title: t('mainScreen.menu.randomVerse'), Icon: Sparkles, color: theme.iconPrimary, onPress: () => onNavigate('RandomVerse') },
-                // Topic search runs in the browser or natively on Android (modules/quran-speech); on iOS the search button opens the classic search directly
-                { id: 'search', title: t('mainScreen.menu.search'), Icon: Search, color: theme.iconPrimary, onPress: () => onNavigate(Platform.OS === 'web' || Platform.OS === 'android' ? 'SearchMenu' : 'Search') },
-                ...(Platform.OS === 'web' || Platform.OS === 'android'
+                // Topic search runs in the browser or natively (modules/quran-speech); without it the search button opens the classic search directly
+                { id: 'search', title: t('mainScreen.menu.search'), Icon: Search, color: theme.iconPrimary, onPress: () => onNavigate(hasSpeech ? 'SearchMenu' : 'Search') },
+                ...(hasSpeech
                     ? [
                         { id: 'memorization', title: t('mainScreen.menu.memorization'), Icon: Brain, color: theme.iconPrimary, onPress: () => onNavigate('Memorization') },
                     ]

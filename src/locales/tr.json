@@ -984,6 +984,7 @@
         "date": "18 Kasım 2026",
         "bullets": [
           "iPhone desteği: Apple ile giriş, profilden hesap silme, herkese açık hatimleri bildirme ve oluşturanını engelleme",
+          "iPhone'da vakit bildirimleri, Kıldım/Kılmadım ile kaza takibi, kendi bildirim sesleriniz ve ana ekran widget'ları; Ayet Shazam, Ezber Kontrolü, konu araması ve zikirde sesle sayma da iPhone'da",
           "Kelime kökü, tefsir veya meallerden geri dönünce okuduğunuz ayete dönülüyor, surenin başına değil",
           "Widgettaki ayete dokununca o ayet açılıyor; ilk 50 ayetten sonrası da",
           "Sayfa sayfa ayet görünümünde uzun ayetler yine aşağı kaydırılabiliyor",
@@ -1853,7 +1854,8 @@
     "ongoingUntil": "{{label}} vaktine",
     "collapsedTimesTitle": "Kapalıyken vakitleri de göster",
     "locationNote": "Bildirimler seçili konuma göre gelir: {{location}}.",
-    "androidOnly": "Bildirimler şimdilik yalnızca Android uygulamasında var.",
+    "appOnly": "Bildirimler yalnızca Android ve iPhone uygulamalarında var.",
+    "iosSoundNote": "iPhone bildirim seslerinin yalnızca ilk 30 saniyesini çalar; eklediğiniz ses bu yüzden ilk 30 saniyesiyle kaydedilir.",
     "permissionTitle": "Bildirim izni gerekli",
     "permissionMessage": "Bildirimleri gösterebilmek için uygulamaya bildirim izni vermeniz gerekiyor.",
     "exactAlarmTitle": "Tam vaktinde gelsin",

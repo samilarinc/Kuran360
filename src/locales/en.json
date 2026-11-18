@@ -984,6 +984,7 @@
         "date": "November 18, 2026",
         "bullets": [
           "iPhone support: Sign in with Apple, account deletion from the profile, reporting public hatims and blocking their creator",
+          "On iPhone: prayer time alerts, kaza tracking with Prayed/Not prayed, your own alert sounds and home screen widgets; Verse Shazam, the memorization check, topic search and dhikr voice counting work there too",
           "Coming back from a word root, tafsir or translations returns to the verse you were reading, not the start of the surah",
           "Tapping the verse on the widget opens that verse, including verses past the first 50",
           "Long verses scroll again in the one-verse-per-page view",
@@ -1852,7 +1853,8 @@
     "ongoingUntil": "Until {{label}}",
     "collapsedTimesTitle": "Show times when collapsed",
     "locationNote": "Notifications follow the selected location: {{location}}.",
-    "androidOnly": "Notifications are only available in the Android app for now.",
+    "appOnly": "Notifications are only available in the Android and iPhone apps.",
+    "iosSoundNote": "iPhone plays only the first 30 seconds of a notification sound, so an added sound is saved with its first 30 seconds.",
     "permissionTitle": "Notification permission needed",
     "permissionMessage": "Allow notifications for the app to show them.",
     "exactAlarmTitle": "Arrive right on time",

@@ -309,7 +309,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     <TafsirSettingsSection />
                 </CollapsibleSettingsSection>
 
-                {/* Prayer time notifications are Android only (modules/prayer-notification) */}
+                {/* Prayer time notifications need the native module (modules/prayer-notification): Android and iOS */}
                 {isPrayerNotificationSupported() && (
                     <CollapsibleSettingsSection
                         link
@@ -321,7 +321,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     />
                 )}
 
-                {/* Home screen widgets are Android only, like the notifications (same native module) */}
+                {/* Home screen widgets come from the same native module as the notifications */}
                 {isPrayerNotificationSupported() && (
                     <CollapsibleSettingsSection
                         title={t('widgets.sectionTitle')}

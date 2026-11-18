@@ -83,6 +83,12 @@ export default ({ config }) => ({
         // iPhone layout only for now; on iPad it runs in iPhone mode (no iPad screenshots or multitasking orientations needed)
         supportsTablet: false,
         usesAppleSignIn: true,
+        entitlements: {
+            // Shared with the home screen widgets (targets/PrayerWidgets), which read the times and verses from it
+            "com.apple.security.application-groups": ["group.com.kuran360"],
+            // Prayer alerts still show during Focus (interruptionLevel timeSensitive in modules/prayer-notification/ios)
+            "com.apple.developer.usernotifications.time-sensitive": true,
+        },
         infoPlist: {
             CFBundleDevelopmentRegion: "tr",
             CFBundleAllowMixedLocalizations: true,
@@ -150,6 +156,8 @@ export default ({ config }) => ({
     plugins: [
         "expo-asset",
         "expo-apple-authentication",
+        // The home screen widgets' WidgetKit extension, from targets/PrayerWidgets
+        "@bacons/apple-targets",
         withReleaseSigningConfig,
         withReleaseMinify
     ],
