@@ -987,7 +987,8 @@
       {
         "date": "November 19, 2026",
         "bullets": [
-          "If verse audio can't load it's retried once; if it still fails the audio bar says so instead of silently showing \"Playing\""
+          "If verse audio can't load it's retried once; if it still fails the audio bar says so instead of silently showing \"Playing\"",
+          "Opening a verse near the end of a long surah from the widget or a link now lands on that verse (e.g. Baqarah 280 no longer opens around verse 70)"
         ]
       },
       {

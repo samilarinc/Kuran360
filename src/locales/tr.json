@@ -987,7 +987,8 @@
       {
         "date": "19 Kasım 2026",
         "bullets": [
-          "Ayet sesi yüklenemezse bir kez daha deneniyor; yine olmazsa ses çubuğunda yazıyor, sessizce \"Çalıyor\" görünmüyor"
+          "Ayet sesi yüklenemezse bir kez daha deneniyor; yine olmazsa ses çubuğunda yazıyor, sessizce \"Çalıyor\" görünmüyor",
+          "Widget'tan ya da bağlantıdan uzun bir surenin sonlarındaki bir ayete gidince artık doğru ayet açılıyor (ör. Bakara 280 yerine 70 civarı açılmıyor)"
         ]
       },
       {
