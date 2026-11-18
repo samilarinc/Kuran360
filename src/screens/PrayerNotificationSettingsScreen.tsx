@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Audio } from 'expo-av';
-import { View, Text, ScrollView, TouchableOpacity, Alert, AppState } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert, AppState, Platform } from 'react-native';
 import { AlarmClock, BellOff, BellRing, CalendarClock, CheckCircle2, ChevronDown, Landmark, Moon, MoonStar, Music, Plane, Play, Plus, Sparkles, Square, Star, Trash2, UtensilsCrossed } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
@@ -32,6 +32,7 @@ import {
     hasAnyNotification,
     hasNotificationPermission,
     importAlertSound,
+    isOngoingNotificationSupported,
     isPrayerNotificationSupported,
     isTravelModeOn,
     openExactAlarmSettings,
@@ -248,7 +249,7 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
 
                 {!supported && (
                     <View style={common.card}>
-                        <Text style={[common.text, common.textCenter]}>{t('prayerNotifications.androidOnly')}</Text>
+                        <Text style={[common.text, common.textCenter]}>{t('prayerNotifications.appOnly')}</Text>
                     </View>
                 )}
 
@@ -473,28 +474,37 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                             </TouchableOpacity>
                         </View>
 
-                        <Text style={styles.sectionTitle}>{t('prayerNotifications.ongoingSectionTitle')}</Text>
-                        <View style={styles.card}>
-                            <SettingItem
-                                title={t('prayerNotifications.ongoingTitle')}
-                                description={t('prayerNotifications.ongoingDescription')}
-                                value={settings.ongoing}
-                                onValueChange={value => update({ ...settings, ongoing: value })}
-                                icon={<BellRing size={20} color={theme.primary} />}
-                                iconColor={theme.primary}
-                                theme={theme}
-                            />
-                            {settings.ongoing && (
-                                <SettingItem
-                                    title={t('prayerNotifications.collapsedTimesTitle')}
-                                    value={settings.collapsedTimes}
-                                    onValueChange={value => update({ ...settings, collapsedTimes: value })}
-                                    icon={<CalendarClock size={20} color={theme.primary} />}
-                                    iconColor={theme.primary}
-                                    theme={theme}
-                                />
-                            )}
-                        </View>
+                        {Platform.OS === 'ios' && (
+                            <Text style={[common.footerText, common.mtSm]}>{t('prayerNotifications.iosSoundNote')}</Text>
+                        )}
+
+                        {/* The ongoing countdown: a notification on Android, a Live Activity on iOS (which has no collapsed view) */}
+                        {isOngoingNotificationSupported() && (
+                            <>
+                                <Text style={styles.sectionTitle}>{t('prayerNotifications.ongoingSectionTitle')}</Text>
+                                <View style={styles.card}>
+                                    <SettingItem
+                                        title={t(Platform.OS === 'ios' ? 'prayerNotifications.ongoingTitleIos' : 'prayerNotifications.ongoingTitle')}
+                                        description={t(Platform.OS === 'ios' ? 'prayerNotifications.ongoingDescriptionIos' : 'prayerNotifications.ongoingDescription')}
+                                        value={settings.ongoing}
+                                        onValueChange={value => update({ ...settings, ongoing: value })}
+                                        icon={<BellRing size={20} color={theme.primary} />}
+                                        iconColor={theme.primary}
+                                        theme={theme}
+                                    />
+                                    {settings.ongoing && Platform.OS === 'android' && (
+                                        <SettingItem
+                                            title={t('prayerNotifications.collapsedTimesTitle')}
+                                            value={settings.collapsedTimes}
+                                            onValueChange={value => update({ ...settings, collapsedTimes: value })}
+                                            icon={<CalendarClock size={20} color={theme.primary} />}
+                                            iconColor={theme.primary}
+                                            theme={theme}
+                                        />
+                                    )}
+                                </View>
+                            </>
+                        )}
 
                         <Text style={[common.footerText, common.mtSm]}>
                             {t('prayerNotifications.locationNote', { location: formatLocationName(location) })}

@@ -139,7 +139,16 @@
     "bugReports": "Hata Raporları",
     "bugReportsSubtitle": "Kullanıcıların gönderdiği raporlar (yalnızca admin)",
     "myBugReports": "Hata Raporlarım",
-    "myBugReportsSubtitle": "Gönderdiğiniz raporlar ve durumları"
+    "myBugReportsSubtitle": "Gönderdiğiniz raporlar ve durumları",
+    "deleteAccount": "Hesabı Sil",
+    "deleteAccountTitle": "Hesabı sil",
+    "deleteAccountConfirm": "Hesabın ve sunucudaki tüm verilerin (profil, favoriler, ayarlar, gelen dua istekleri, oluşturduğun hatimler) kalıcı olarak silinecek. Bu işlem geri alınamaz.",
+    "deleteAccountDoneTitle": "Hesap silindi",
+    "deleteAccountDoneMessage": "Hesabın ve verilerin silindi.",
+    "deleteAccountReauthTitle": "Yeniden giriş gerekli",
+    "deleteAccountReauthMessage": "Güvenlik için önce tekrar giriş yapman gerekiyor. Giriş yaptıktan sonra \"Hesabı Sil\"e yeniden dokun.",
+    "deleteAccountErrorMessage": "Hesap silinirken bir hata oluştu. Lütfen tekrar dene.",
+    "signInAgain": "Tekrar giriş yap"
   },
   "prayerTimesScreen": {
     "permissionDeniedTitle": "İzin Reddedildi",
@@ -988,12 +997,16 @@
         "date": "19 Kasım 2026",
         "bullets": [
           "Ayet sesi yüklenemezse bir kez daha deneniyor; yine olmazsa ses çubuğunda yazıyor, sessizce \"Çalıyor\" görünmüyor",
-          "Widget'tan ya da bağlantıdan uzun bir surenin sonlarındaki bir ayete gidince artık doğru ayet açılıyor (ör. Bakara 280 yerine 70 civarı açılmıyor)"
+          "Widget'tan ya da bağlantıdan uzun bir surenin sonlarındaki bir ayete gidince artık doğru ayet açılıyor (ör. Bakara 280 yerine 70 civarı açılmıyor)",
+          "iPhone'da vakit sayacı kilit ekranında ve Dynamic Island'da: Vakit bildirimleri ayarlarından \"Kilit ekranında geri sayım\"ı açın",
+          "iPhone'da sessiz moddayken de Kur'an tilaveti ve zikir sesleri çalıyor; ekran kilitlense de tilavet devam ediyor"
         ]
       },
       {
         "date": "18 Kasım 2026",
         "bullets": [
+          "iPhone desteği: Apple ile giriş, profilden hesap silme, herkese açık hatimleri bildirme ve oluşturanını engelleme",
+          "iPhone'da vakit bildirimleri, Kıldım/Kılmadım ile kaza takibi, kendi bildirim sesleriniz ve ana ekran widget'ları; Ayet Shazam, Ezber Kontrolü, konu araması ve zikirde sesle sayma da iPhone'da",
           "Kelime kökü, tefsir veya meallerden geri dönünce okuduğunuz ayete dönülüyor, surenin başına değil",
           "Widgettaki ayete dokununca o ayet açılıyor; ilk 50 ayetten sonrası da",
           "Sayfa sayfa ayet görünümünde uzun ayetler yine aşağı kaydırılabiliyor",
@@ -1909,10 +1922,13 @@
     "off": "Yok",
     "ongoingTitle": "Kalıcı bildirim",
     "ongoingDescription": "Sonraki vakte kalan süre bildirim panelinde hep görünür.",
+    "ongoingTitleIos": "Kilit ekranında geri sayım",
+    "ongoingDescriptionIos": "Sonraki vakte kalan süre kilit ekranında ve Dynamic Island'da görünür. iPhone bunu en fazla 8 saat gösterir; uygulamayı açtığınızda yenilenir.",
     "ongoingUntil": "{{label}} vaktine",
     "collapsedTimesTitle": "Kapalıyken vakitleri de göster",
     "locationNote": "Bildirimler seçili konuma göre gelir: {{location}}.",
-    "androidOnly": "Bildirimler şimdilik yalnızca Android uygulamasında var.",
+    "appOnly": "Bildirimler yalnızca Android ve iPhone uygulamalarında var.",
+    "iosSoundNote": "iPhone bildirim seslerinin yalnızca ilk 30 saniyesini çalar; eklediğiniz ses bu yüzden ilk 30 saniyesiyle kaydedilir.",
     "permissionTitle": "Bildirim izni gerekli",
     "permissionMessage": "Bildirimleri gösterebilmek için uygulamaya bildirim izni vermeniz gerekiyor.",
     "exactAlarmTitle": "Tam vaktinde gelsin",
@@ -2029,5 +2045,18 @@
         ]
       }
     }
+  },
+  "moderation": {
+    "rulesTitle": "Topluluk kuralları",
+    "rulesMessage": "Herkese açık hatimleri tüm kullanıcılar görür. Hakaret, nefret söylemi, müstehcen, yanıltıcı veya rahatsız edici içeriğe izin verilmez. Kurallara uymayan içerikler kaldırılır ve sahiplerinin hesapları kapatılabilir.",
+    "rulesAccept": "Kabul ediyorum",
+    "report": "Bildir",
+    "menuTitle": "Bu hatim",
+    "menuMessage": "Uygunsuz içeriği bize bildirebilir veya oluşturanın hatimlerini artık görmemek için engelleyebilirsin.",
+    "block": "{{name}} adlı kişiyi engelle",
+    "reportConfirm": "Bu hatim uygunsuz içerik olarak bildirilsin mi?",
+    "reportedTitle": "Teşekkürler",
+    "reportedMessage": "Bildirimin bize ulaştı; 24 saat içinde inceleyip gerekirse içeriği kaldıracağız.",
+    "reportError": "Bildirim gönderilemedi. Lütfen tekrar dene."
   }
 }

@@ -1,6 +1,10 @@
 {
-  "platforms": ["android"],
+  "platforms": ["android", "apple"],
   "android": {
     "modules": ["expo.modules.prayernotification.PrayerNotificationModule"]
+  },
+  "apple": {
+    "modules": ["PrayerNotificationModule"],
+    "appDelegateSubscribers": ["PrayerNotificationAppDelegate"]
   }
 }

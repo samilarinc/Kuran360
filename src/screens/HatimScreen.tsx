@@ -9,7 +9,8 @@ import {
     Modal,
     SafeAreaView,
     Platform,
-    Switch
+    Switch,
+    Alert
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +22,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { ProgressBar } from '@/components/ProgressBar';
 import { Badge } from '@/components/Badge';
 import { LoadingView } from '@/components/LoadingView';
+import { acceptCommunityRules, getBlockedUsers, hasAcceptedCommunityRules } from '@/services/moderation';
 import { createStyles } from './HatimScreen.styles';
 
 interface HatimScreenProps {
@@ -47,8 +49,9 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
     const fetchHatims = useCallback(async () => {
         try {
             setLoading(true);
-            const data = await HatimService.getHatims(user?.uid);
-            setHatims(data);
+            const [data, blocked] = await Promise.all([HatimService.getHatims(user?.uid), getBlockedUsers()]);
+            // Hatims of users blocked on this device are hidden
+            setHatims(data.filter(h => !blocked.includes(h.creatorId)));
         } catch (error) {
             console.error('Error fetching hatims:', error);
         } finally {
@@ -78,6 +81,23 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
         } finally {
             setCreating(false);
         }
+    };
+
+    // Public hatims are seen by everyone: the community rules are accepted once before the first one
+    const openCreateModal = async () => {
+        if (await hasAcceptedCommunityRules()) {
+            setModalVisible(true);
+            return;
+        }
+        const accept = () => acceptCommunityRules().finally(() => setModalVisible(true));
+        if (Platform.OS === 'web') {
+            if ((globalThis as any).confirm?.(t('moderation.rulesMessage'))) accept();
+            return;
+        }
+        Alert.alert(t('moderation.rulesTitle'), t('moderation.rulesMessage'), [
+            { text: t('hatimDetailScreen.cancel'), style: 'cancel' },
+            { text: t('moderation.rulesAccept'), onPress: accept },
+        ]);
     };
 
     const onDateChange = (event: any, selectedDate?: Date) => {
@@ -327,7 +347,7 @@ export const HatimScreen: React.FC<HatimScreenProps> = ({ navigation }) => {
             </Modal>
             <TouchableOpacity
                 style={styles.fab}
-                onPress={() => setModalVisible(true)}
+                onPress={openCreateModal}
             >
                 <Text style={styles.fabIcon}>+</Text>
             </TouchableOpacity>

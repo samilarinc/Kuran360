@@ -281,7 +281,7 @@ export const checkTravelLocation = async (currentId: string | undefined): Promis
     return result.location.id !== currentId ? result.location : null;
 };
 
-// --- Notifications (Android): alerts at prayer times and the ongoing countdown ---
+// --- Notifications (Android and iOS): alerts at prayer times and, on Android, the ongoing countdown ---
 
 export const isPrayerNotificationSupported = () => PrayerNotification !== null;
 
@@ -480,8 +480,12 @@ export const syncPrayerNotifications = async (location: PrayerLocation, t: TFunc
     await PrayerNotification.start(JSON.stringify(buildNotificationConfig(timesData, t, settings, buildSpecialDayReminders(times, settings, t, language))));
 };
 
-/** Android 13+ asks before an app may post notifications. */
+/** The ongoing countdown: a notification on Android, a Live Activity (lock screen, Dynamic Island) on iOS. */
+export const isOngoingNotificationSupported = () => (Platform.OS === 'android' || Platform.OS === 'ios') && PrayerNotification !== null;
+
+/** iOS and Android 13+ ask before an app may post notifications. */
 export const requestNotificationPermission = async () => {
+    if (Platform.OS === 'ios') return (await PrayerNotification?.requestPermission?.()) ?? false;
     if (Platform.OS !== 'android' || Platform.Version < 33) return true;
     const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
     return result === PermissionsAndroid.RESULTS.GRANTED;
@@ -498,8 +502,14 @@ export const importAlertSound = async (): Promise<{ name: string; label: string 
     return { name, label: file.name };
 };
 
-/** Local file of a sound in the library (importSound copies them to filesDir/prayer_sounds), for playing a preview */
-export const alertSoundUri = (name: string) => `${FileSystem.documentDirectory}prayer_sounds/${name}`;
+/**
+ * Local file of a sound in the library, for playing a preview: importSound copies them to filesDir/prayer_sounds
+ * on Android and to Library/Sounds (the only folder iOS plays notification sounds from) on iOS.
+ */
+export const alertSoundUri = (name: string) =>
+    Platform.OS === 'ios'
+        ? `${FileSystem.documentDirectory?.replace(/Documents\/$/, '')}Library/Sounds/${name}`
+        : `${FileSystem.documentDirectory}prayer_sounds/${name}`;
 
 export const deleteAlertSound = (name: string) => PrayerNotification?.deleteSound(name);
 
@@ -510,8 +520,10 @@ export const getMissedPrayers = () =>
         return { date, index: Number(index) };
     });
 
-export const hasNotificationPermission = async () =>
-    Platform.OS !== 'android' || Platform.Version < 33 || PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+export const hasNotificationPermission = async () => {
+    if (Platform.OS === 'ios') return (await PrayerNotification?.hasPermission?.()) ?? false;
+    return Platform.OS !== 'android' || Platform.Version < 33 || PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+};
 
 export const canScheduleExactAlarms = () => PrayerNotification?.canScheduleExactAlarms() ?? true;
 
