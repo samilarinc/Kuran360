@@ -88,6 +88,10 @@ Then test on a real iPhone (notifications, the microphone and widgets need a dev
   for the same audio and query: the preprocessing is a line-by-line port, but the microphone path
   (AVAudioConverter instead of Android's resampler) can differ slightly.
 
+- **Audio**: with the ring/silent switch on silent, a recitation, dhikr sounds and the alert sound
+  preview still play; a recitation keeps going (and moves on to the next verse) with the screen locked
+  and the app in the background, and pauses for a phone call. After Verse Shazam or the memorization
+  check has used the microphone, recitations play from the speaker again, not the earpiece.
 - **Live Activity** (iOS 16.2+): turn on *Kilit ekranında geri sayım*; the countdown shows on the lock
   screen and in the Dynamic Island (iPhone 14 Pro and later). When the next prayer time comes, it counts
   down to the one after without opening the app. Reopening the app after 30 minutes replaces it with a

@@ -96,6 +96,8 @@ export default ({ config }) => ({
             ITSAppUsesNonExemptEncryption: false,
             // The prayer countdown Live Activity (modules/prayer-notification/ios/PrayerLiveActivity.swift)
             NSSupportsLiveActivities: true,
+            // Recitations keep playing with the screen locked (src/services/audioMode.ts)
+            UIBackgroundModes: ["audio"],
             // English texts are in src/locales/native/en.json (see `locales` below)
             NSLocationWhenInUseUsageDescription: "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",
             NSLocationAlwaysAndWhenInUseUsageDescription: "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",
