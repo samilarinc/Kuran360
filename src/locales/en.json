@@ -138,7 +138,16 @@
     "bugReports": "Bug Reports",
     "bugReportsSubtitle": "Reports sent by users (admin only)",
     "myBugReports": "My Bug Reports",
-    "myBugReportsSubtitle": "Reports you've sent and their status"
+    "myBugReportsSubtitle": "Reports you've sent and their status",
+    "deleteAccount": "Delete Account",
+    "deleteAccountTitle": "Delete account",
+    "deleteAccountConfirm": "Your account and all your data on the server (profile, favorites, settings, received dua requests, hatims you created) will be deleted permanently. This cannot be undone.",
+    "deleteAccountDoneTitle": "Account deleted",
+    "deleteAccountDoneMessage": "Your account and data have been deleted.",
+    "deleteAccountReauthTitle": "Sign in again",
+    "deleteAccountReauthMessage": "For security, please sign in again first. After signing in, tap \"Delete Account\" again.",
+    "deleteAccountErrorMessage": "Something went wrong while deleting your account. Please try again.",
+    "signInAgain": "Sign in again"
   },
   "prayerTimesScreen": {
     "permissionDeniedTitle": "Permission Denied",
@@ -974,6 +983,7 @@
       {
         "date": "November 18, 2026",
         "bullets": [
+          "iPhone support: Sign in with Apple, account deletion from the profile, reporting public hatims and blocking their creator",
           "Coming back from a word root, tafsir or translations returns to the verse you were reading, not the start of the surah",
           "Tapping the verse on the widget opens that verse, including verses past the first 50",
           "Long verses scroll again in the one-verse-per-page view",
@@ -1959,5 +1969,18 @@
         ]
       }
     }
+  },
+  "moderation": {
+    "rulesTitle": "Community rules",
+    "rulesMessage": "Public hatims are visible to all users. Insults, hate speech, sexual, misleading or offensive content is not allowed. Content that breaks these rules is removed and its owner's account may be closed.",
+    "rulesAccept": "I agree",
+    "report": "Report",
+    "menuTitle": "This hatim",
+    "menuMessage": "You can report inappropriate content to us, or block its creator to stop seeing their hatims.",
+    "block": "Block {{name}}",
+    "reportConfirm": "Report this hatim as inappropriate?",
+    "reportedTitle": "Thank you",
+    "reportedMessage": "We received your report and will review it within 24 hours, removing the content if needed.",
+    "reportError": "The report could not be sent. Please try again."
   }
 }

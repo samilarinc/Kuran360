@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, Image, ScrollView, TextInput, Alert } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, Image, ScrollView, TextInput, Alert, Platform } from 'react-native';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { useTranslation } from 'react-i18next';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
@@ -13,9 +14,13 @@ import { SPACING } from '@/theme';
 import { createStyles } from './ProfileScreen.styles';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-    const { user, userProfile, signOutUser, updateDisplayName, signInWithGoogle } = useAuth();
+    const {
+        user, userProfile, signOutUser, updateDisplayName, signInWithGoogle, signInWithApple,
+        appleSignInAvailable, googleSignInAvailable, deleteAccount,
+    } = useAuth();
+    const [isDeleting, setIsDeleting] = useState(false);
     const { bookmarks, lastRead, removeBookmark } = useUserData();
-    const { theme, common } = useTheme();
+    const { theme, common, isDarkMode } = useTheme();
     const { t, i18n } = useTranslation();
     const styles = useThemedStyles(createStyles);
     const [isEditingName, setIsEditingName] = useState(false);
@@ -49,6 +54,37 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
         } finally {
             setIsUpdating(false);
         }
+    };
+
+    const runDeleteAccount = async () => {
+        setIsDeleting(true);
+        try {
+            const result = await deleteAccount();
+            if (result === 'deleted') {
+                Alert.alert(t('profileScreen.deleteAccountDoneTitle'), t('profileScreen.deleteAccountDoneMessage'));
+            } else if (result === 'reauth') {
+                Alert.alert(t('profileScreen.deleteAccountReauthTitle'), t('profileScreen.deleteAccountReauthMessage'), [
+                    { text: t('profileScreen.cancel'), style: 'cancel' },
+                    { text: t('profileScreen.signInAgain'), onPress: signInWithGoogle },
+                ]);
+            }
+        } catch (error) {
+            console.error('Error deleting account:', error);
+            Alert.alert(t('profileScreen.nameEmptyTitle'), t('profileScreen.deleteAccountErrorMessage'));
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    const handleDeleteAccount = () => {
+        if (Platform.OS === 'web') {
+            if ((globalThis as any).confirm?.(t('profileScreen.deleteAccountConfirm'))) runDeleteAccount();
+            return;
+        }
+        Alert.alert(t('profileScreen.deleteAccountTitle'), t('profileScreen.deleteAccountConfirm'), [
+            { text: t('profileScreen.cancel'), style: 'cancel' },
+            { text: t('profileScreen.deleteAccount'), style: 'destructive', onPress: runDeleteAccount },
+        ]);
     };
 
     const handleCancelEdit = () => {
@@ -192,6 +228,15 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                                 size="medium"
                                 style={{ marginTop: SPACING.lg }}
                             />
+                            <AppButton
+                                title={t('profileScreen.deleteAccount')}
+                                onPress={handleDeleteAccount}
+                                variant="ghost"
+                                size="small"
+                                loading={isDeleting}
+                                disabled={isDeleting}
+                                style={common.mtMd}
+                            />
                         </View>
 
                         <MenuListRow
@@ -235,13 +280,26 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                 ) : (
                     <View style={common.sectionCard}>
                         <Text style={[styles.email, common.mbMd]}>{t('profileScreen.notSignedIn')}</Text>
-                        <AppButton
-                            title={t('profileScreen.signInWithGoogle')}
-                            onPress={signInWithGoogle}
-                            variant="primary"
-                            size="medium"
-                            style={{ backgroundColor: '#DB4437' }}
-                        />
+                        {appleSignInAvailable && (
+                            <AppleAuthentication.AppleAuthenticationButton
+                                buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+                                buttonStyle={isDarkMode
+                                    ? AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
+                                    : AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+                                cornerRadius={8}
+                                style={styles.appleButton}
+                                onPress={signInWithApple}
+                            />
+                        )}
+                        {googleSignInAvailable && (
+                            <AppButton
+                                title={t('profileScreen.signInWithGoogle')}
+                                onPress={signInWithGoogle}
+                                variant="primary"
+                                size="medium"
+                                style={{ backgroundColor: '#DB4437' }}
+                            />
+                        )}
                     </View>
                 )}
             </ScrollView >

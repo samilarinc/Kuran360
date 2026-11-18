@@ -6,6 +6,7 @@ import type { CommonStyles } from '@/contexts/ThemeContext';
 export const createStyles = (theme: Theme, common: CommonStyles) => {
     return StyleSheet.create({
         avatar: { width: 64, height: 64, borderRadius: 32, marginRight: SPACING.md },
+        appleButton: { height: 44, width: '100%', marginBottom: SPACING.sm },
         avatarFallback: { backgroundColor: theme.primary + '20', alignItems: 'center', justifyContent: 'center' },
         avatarInitials: { fontSize: 24, color: theme.primary, fontWeight: '700' },
         name: { fontSize: FONT_SIZES.large, color: theme.text, fontWeight: '600', flex: 1 },

@@ -138,7 +138,16 @@
     "bugReports": "Hata Raporları",
     "bugReportsSubtitle": "Kullanıcıların gönderdiği raporlar (yalnızca admin)",
     "myBugReports": "Hata Raporlarım",
-    "myBugReportsSubtitle": "Gönderdiğiniz raporlar ve durumları"
+    "myBugReportsSubtitle": "Gönderdiğiniz raporlar ve durumları",
+    "deleteAccount": "Hesabı Sil",
+    "deleteAccountTitle": "Hesabı sil",
+    "deleteAccountConfirm": "Hesabın ve sunucudaki tüm verilerin (profil, favoriler, ayarlar, gelen dua istekleri, oluşturduğun hatimler) kalıcı olarak silinecek. Bu işlem geri alınamaz.",
+    "deleteAccountDoneTitle": "Hesap silindi",
+    "deleteAccountDoneMessage": "Hesabın ve verilerin silindi.",
+    "deleteAccountReauthTitle": "Yeniden giriş gerekli",
+    "deleteAccountReauthMessage": "Güvenlik için önce tekrar giriş yapman gerekiyor. Giriş yaptıktan sonra \"Hesabı Sil\"e yeniden dokun.",
+    "deleteAccountErrorMessage": "Hesap silinirken bir hata oluştu. Lütfen tekrar dene.",
+    "signInAgain": "Tekrar giriş yap"
   },
   "prayerTimesScreen": {
     "permissionDeniedTitle": "İzin Reddedildi",
@@ -974,6 +983,7 @@
       {
         "date": "18 Kasım 2026",
         "bullets": [
+          "iPhone desteği: Apple ile giriş, profilden hesap silme, herkese açık hatimleri bildirme ve oluşturanını engelleme",
           "Kelime kökü, tefsir veya meallerden geri dönünce okuduğunuz ayete dönülüyor, surenin başına değil",
           "Widgettaki ayete dokununca o ayet açılıyor; ilk 50 ayetten sonrası da",
           "Sayfa sayfa ayet görünümünde uzun ayetler yine aşağı kaydırılabiliyor",
@@ -1960,5 +1970,18 @@
         ]
       }
     }
+  },
+  "moderation": {
+    "rulesTitle": "Topluluk kuralları",
+    "rulesMessage": "Herkese açık hatimleri tüm kullanıcılar görür. Hakaret, nefret söylemi, müstehcen, yanıltıcı veya rahatsız edici içeriğe izin verilmez. Kurallara uymayan içerikler kaldırılır ve sahiplerinin hesapları kapatılabilir.",
+    "rulesAccept": "Kabul ediyorum",
+    "report": "Bildir",
+    "menuTitle": "Bu hatim",
+    "menuMessage": "Uygunsuz içeriği bize bildirebilir veya oluşturanın hatimlerini artık görmemek için engelleyebilirsin.",
+    "block": "{{name}} adlı kişiyi engelle",
+    "reportConfirm": "Bu hatim uygunsuz içerik olarak bildirilsin mi?",
+    "reportedTitle": "Teşekkürler",
+    "reportedMessage": "Bildirimin bize ulaştı; 24 saat içinde inceleyip gerekirse içeriği kaldıracağız.",
+    "reportError": "Bildirim gönderilemedi. Lütfen tekrar dene."
   }
 }
