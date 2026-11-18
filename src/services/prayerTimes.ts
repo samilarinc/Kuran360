@@ -470,8 +470,8 @@ export const syncPrayerNotifications = async (location: PrayerLocation, t: TFunc
     await PrayerNotification.start(JSON.stringify(buildNotificationConfig(timesData, t, settings, buildSpecialDayReminders(times, settings, t, language))));
 };
 
-/** The ongoing countdown notification is Android only; iOS shows the countdown in its widgets instead. */
-export const isOngoingNotificationSupported = () => Platform.OS === 'android' && PrayerNotification !== null;
+/** The ongoing countdown: a notification on Android, a Live Activity (lock screen, Dynamic Island) on iOS. */
+export const isOngoingNotificationSupported = () => (Platform.OS === 'android' || Platform.OS === 'ios') && PrayerNotification !== null;
 
 /** iOS and Android 13+ ask before an app may post notifications. */
 export const requestNotificationPermission = async () => {

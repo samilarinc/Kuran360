@@ -13,6 +13,8 @@ Pod::Spec.new do |s|
 
   s.dependency 'ExpoModulesCore'
   s.frameworks = 'UserNotifications', 'WidgetKit', 'AVFoundation'
+  # Live Activities are iOS 16.1+; weak, so the app still launches on iOS 15
+  s.weak_frameworks = 'ActivityKit'
 
   s.pod_target_xcconfig = {
     'DEFINES_MODULE' => 'YES',

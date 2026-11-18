@@ -88,7 +88,13 @@ Then test on a real iPhone (notifications, the microphone and widgets need a dev
   for the same audio and query: the preprocessing is a line-by-line port, but the microphone path
   (AVAudioConverter instead of Android's resampler) can differ slightly.
 
-Not on iOS: the ongoing countdown notification (its settings are hidden; the widgets show the countdown).
+- **Live Activity** (iOS 16.2+): turn on *Kilit ekranında geri sayım*; the countdown shows on the lock
+  screen and in the Dynamic Island (iPhone 14 Pro and later). When the next prayer time comes, it counts
+  down to the one after without opening the app. Reopening the app after 30 minutes replaces it with a
+  fresh one (iOS ends one after 8 hours); turning the setting off removes it.
+
+Not on iOS: a lasting ongoing notification. The ongoing setting shows the Live Activity instead, and its
+"show times when collapsed" option is hidden.
 
 Reports sent from hatims land in the Firestore `contentReports` collection; the report message
 promises a review within 24 hours.

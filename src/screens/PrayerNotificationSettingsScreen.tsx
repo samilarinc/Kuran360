@@ -478,21 +478,21 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                             <Text style={[common.footerText, common.mtSm]}>{t('prayerNotifications.iosSoundNote')}</Text>
                         )}
 
-                        {/* The ongoing countdown notification is Android only; on iOS the widgets show the countdown */}
+                        {/* The ongoing countdown: a notification on Android, a Live Activity on iOS (which has no collapsed view) */}
                         {isOngoingNotificationSupported() && (
                             <>
                                 <Text style={styles.sectionTitle}>{t('prayerNotifications.ongoingSectionTitle')}</Text>
                                 <View style={styles.card}>
                                     <SettingItem
-                                        title={t('prayerNotifications.ongoingTitle')}
-                                        description={t('prayerNotifications.ongoingDescription')}
+                                        title={t(Platform.OS === 'ios' ? 'prayerNotifications.ongoingTitleIos' : 'prayerNotifications.ongoingTitle')}
+                                        description={t(Platform.OS === 'ios' ? 'prayerNotifications.ongoingDescriptionIos' : 'prayerNotifications.ongoingDescription')}
                                         value={settings.ongoing}
                                         onValueChange={value => update({ ...settings, ongoing: value })}
                                         icon={<BellRing size={20} color={theme.primary} />}
                                         iconColor={theme.primary}
                                         theme={theme}
                                     />
-                                    {settings.ongoing && (
+                                    {settings.ongoing && Platform.OS === 'android' && (
                                         <SettingItem
                                             title={t('prayerNotifications.collapsedTimesTitle')}
                                             value={settings.collapsedTimes}

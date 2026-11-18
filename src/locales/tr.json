@@ -981,6 +981,12 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "19 Kasım 2026",
+        "bullets": [
+          "iPhone'da vakit sayacı kilit ekranında ve Dynamic Island'da: Vakit bildirimleri ayarlarından \"Kilit ekranında geri sayım\"ı açın"
+        ]
+      },
+      {
         "date": "18 Kasım 2026",
         "bullets": [
           "iPhone desteği: Apple ile giriş, profilden hesap silme, herkese açık hatimleri bildirme ve oluşturanını engelleme",
@@ -1851,6 +1857,8 @@
     "off": "Yok",
     "ongoingTitle": "Kalıcı bildirim",
     "ongoingDescription": "Sonraki vakte kalan süre bildirim panelinde hep görünür.",
+    "ongoingTitleIos": "Kilit ekranında geri sayım",
+    "ongoingDescriptionIos": "Sonraki vakte kalan süre kilit ekranında ve Dynamic Island'da görünür. iPhone bunu en fazla 8 saat gösterir; uygulamayı açtığınızda yenilenir.",
     "ongoingUntil": "{{label}} vaktine",
     "collapsedTimesTitle": "Kapalıyken vakitleri de göster",
     "locationNote": "Bildirimler seçili konuma göre gelir: {{location}}.",

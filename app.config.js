@@ -94,6 +94,8 @@ export default ({ config }) => ({
             CFBundleAllowMixedLocalizations: true,
             // Only HTTPS via the system stack: exempt, so App Store Connect skips the export compliance question
             ITSAppUsesNonExemptEncryption: false,
+            // The prayer countdown Live Activity (modules/prayer-notification/ios/PrayerLiveActivity.swift)
+            NSSupportsLiveActivities: true,
             // English texts are in src/locales/native/en.json (see `locales` below)
             NSLocationWhenInUseUsageDescription: "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",
             NSLocationAlwaysAndWhenInUseUsageDescription: "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",

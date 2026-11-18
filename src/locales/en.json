@@ -981,6 +981,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "November 19, 2026",
+        "bullets": [
+          "On iPhone, the prayer countdown on the lock screen and in the Dynamic Island: turn on \"Countdown on the lock screen\" in the prayer notification settings"
+        ]
+      },
+      {
         "date": "November 18, 2026",
         "bullets": [
           "iPhone support: Sign in with Apple, account deletion from the profile, reporting public hatims and blocking their creator",
@@ -1850,6 +1856,8 @@
     "off": "None",
     "ongoingTitle": "Persistent notification",
     "ongoingDescription": "Time left until the next prayer stays in the notification shade.",
+    "ongoingTitleIos": "Countdown on the lock screen",
+    "ongoingDescriptionIos": "Time left until the next prayer shows on the lock screen and in the Dynamic Island. iPhone shows it for up to 8 hours; it is renewed when you open the app.",
     "ongoingUntil": "Until {{label}}",
     "collapsedTimesTitle": "Show times when collapsed",
     "locationNote": "Notifications follow the selected location: {{location}}.",

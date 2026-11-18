@@ -43,8 +43,8 @@ private struct Alert {
  * Prayer time alerts on iOS: a port of the alert half of PrayerNotifier.kt. Android fires one alarm
  * at a time and builds each alert when it is due; iOS can't run code at a set time, so the nearest
  * MAX_PENDING alerts are scheduled ahead as local notifications and topped up whenever the config
- * changes, a kaza button is answered or the app becomes active. The ongoing countdown notification
- * has no iOS equivalent (the home screen widgets show the countdown instead).
+ * changes, a kaza button is answered or the app becomes active. iOS has no ongoing notification; the
+ * ongoing setting shows the countdown as a Live Activity instead (PrayerLiveActivity), synced at the same times.
  */
 final class PrayerNotifier {
   static let shared = PrayerNotifier()
@@ -97,7 +97,9 @@ final class PrayerNotifier {
     let pending = await center.pendingNotificationRequests()
     let ours = pending.map(\.identifier).filter { $0.hasPrefix(PRAYER_ID_PREFIX) }
     if !ours.isEmpty { center.removePendingNotificationRequests(withIdentifiers: ours) }
-    guard let config = loadConfig() else { return }
+    let config = loadConfig()
+    await PrayerLiveActivity.sync(config)
+    guard let config else { return }
     await registerCategories(config, center)
     let now = PrayerTime.nowMillis()
     for alert in upcomingAlerts(config, now) {

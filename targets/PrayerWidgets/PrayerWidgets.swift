@@ -420,5 +420,6 @@ struct PrayerWidgetsBundle: WidgetBundle {
     TimesWidget()
     VerseWidget()
     CombinedWidget()
+    PrayerLiveActivityWidget()
   }
 }

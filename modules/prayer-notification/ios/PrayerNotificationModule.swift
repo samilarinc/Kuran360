@@ -4,8 +4,9 @@ import UserNotifications
 /**
  * The iOS side of modules/prayer-notification (see index.ts): prayer alerts as scheduled local
  * notifications (PrayerNotifier), the user's alert sounds (PrayerSounds) and the home screen widgets'
- * data (PrayerWidgetStore). There is no ongoing countdown notification on iOS, so isActive is always
- * false, and alarms need no permission, so canScheduleExactAlarms is always true.
+ * data (PrayerWidgetStore). There is no ongoing countdown notification on iOS (the ongoing setting
+ * shows a Live Activity, PrayerLiveActivity), so isActive is always false, and alarms need no
+ * permission, so canScheduleExactAlarms is always true.
  */
 public class PrayerNotificationModule: Module {
   public func definition() -> ModuleDefinition {
