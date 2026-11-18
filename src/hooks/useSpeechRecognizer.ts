@@ -11,6 +11,8 @@ import {
     startRecording,
 } from '@/services/verseFinder';
 import {
+    DEFAULT_MODEL_ID,
+    downloadModel,
     getDownloadedModels,
     getSelectedModelId,
     getVerseModel,
@@ -18,6 +20,7 @@ import {
     VERSE_MODELS,
     VerseModelId,
 } from '@/services/verseModels';
+import { DOWNLOAD_KEYS, useDownload, useDownloadFinished } from '@/services/downloads';
 
 export type ModelState =
     | { status: 'idle' }
@@ -45,6 +48,9 @@ export const useSpeechRecognizer = (onTranscript: (text: string) => void | Promi
     const [error, setError] = useState<string | null>(null);
     const [lastAudio, setLastAudio] = useState<Float32Array | null>(null);
     const [playing, setPlaying] = useState(false);
+    // The default model, downloaded by the mic when nothing is on the device yet
+    const defaultModelDownload = useDownload(DOWNLOAD_KEYS.model(DEFAULT_MODEL_ID));
+    const modelProgress = defaultModelDownload.progressOrNull;
     const recordingRef = useRef<Recording | null>(null);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const onTranscriptRef = useRef(onTranscript);
@@ -70,9 +76,9 @@ export const useSpeechRecognizer = (onTranscript: (text: string) => void | Promi
             ]);
             setSupport(deviceSupport);
             setDownloaded(available);
-            // Fall back to the first usable downloaded model if the saved one is gone
+            // The saved model if it's still usable, otherwise the default
             const usable = VERSE_MODELS.filter(m => available.has(m.id) && isModelSupported(m, deviceSupport));
-            setSelectedId(saved && usable.some(m => m.id === saved) ? saved : usable[0]?.id ?? saved);
+            setSelectedId(saved && usable.some(m => m.id === saved) ? saved : DEFAULT_MODEL_ID);
         })();
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);
@@ -80,10 +86,20 @@ export const useSpeechRecognizer = (onTranscript: (text: string) => void | Promi
         };
     }, []);
 
+    // A download finished, here or on another screen: pick up the new model
+    useDownloadFinished(refreshDownloaded);
+
     // Reflect a model that's no longer loaded (switched or deleted in the manager)
     useEffect(() => {
         if (speechModel.modelId !== activeModel?.id) setModelState({ status: 'idle' });
     }, [activeModel?.id, downloaded]);
+
+    const { start: startDefaultDownload } = defaultModelDownload;
+    const downloadDefaultModel = useCallback(() => {
+        startDefaultDownload((onProgress, signal) =>
+            downloadModel(getVerseModel(DEFAULT_MODEL_ID), fraction => onProgress({ progress: Math.round(fraction * 100) }), signal),
+        );
+    }, [startDefaultDownload]);
 
     const loadModel = useCallback(async () => {
         const model = activeModelRef.current;
@@ -128,6 +144,11 @@ export const useSpeechRecognizer = (onTranscript: (text: string) => void | Promi
             return;
         }
         if (phase === 'recognizing') return;
+        // Without a model the mic downloads the default one first
+        if (!activeModelRef.current) {
+            downloadDefaultModel();
+            return;
+        }
         setError(null);
         try {
             recordingRef.current = await startRecording();
@@ -145,7 +166,7 @@ export const useSpeechRecognizer = (onTranscript: (text: string) => void | Promi
             setElapsed(seconds);
             if (seconds >= MAX_RECORDING_SECONDS) stopRecording();
         }, 250);
-    }, [phase, stopRecording, loadModel, t]);
+    }, [phase, stopRecording, loadModel, downloadDefaultModel, t]);
 
     const play = useCallback(async () => {
         if (!lastAudio || playing) return;
@@ -180,7 +201,15 @@ export const useSpeechRecognizer = (onTranscript: (text: string) => void | Promi
         error,
         lastAudio,
         playing,
-        canRecord: !!support?.microphone && support.worker && !!activeModel,
+        // Without a model the mic downloads it first
+        canRecord: !!support?.microphone && support.worker && modelProgress === null,
+        /** 0–100 while the default model downloads, otherwise null */
+        modelProgress,
+        modelDownloadError: defaultModelDownload.error,
+        /** Mic hint while there's no model: the download's progress, or what tapping the mic will download */
+        noModelHint: modelProgress !== null
+            ? t('verseFinder.modelDownload.progress', { percent: modelProgress })
+            : t('verseFinder.noModel', { size: getVerseModel(DEFAULT_MODEL_ID).sizeMb }),
         busy: phase === 'recording' || phase === 'recognizing' || modelState.status === 'loading',
         toggleRecording,
         play,

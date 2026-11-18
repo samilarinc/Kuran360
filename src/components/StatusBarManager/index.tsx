@@ -7,8 +7,8 @@ export const StatusBarManager: React.FC = () => {
 
   return (
     <StatusBar
-      barStyle={isDarkMode ? "light-content" : "light-content"}
-      backgroundColor={theme.primary}
+      barStyle={isDarkMode ? "light-content" : "dark-content"}
+      backgroundColor={theme.headerBackground}
       translucent={false}
     />
   );

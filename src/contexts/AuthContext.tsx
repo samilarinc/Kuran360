@@ -7,9 +7,17 @@ import {
     signOut,
     onAuthStateChanged,
     GoogleAuthProvider,
+    OAuthProvider,
     signInWithCredential,
+    reauthenticateWithCredential,
+    reauthenticateWithPopup,
+    revokeAccessToken,
+    deleteUser,
     updateProfile
 } from 'firebase/auth';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import * as Crypto from 'expo-crypto';
+import { deleteUserData } from '@/services/account';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import * as AuthSession from 'expo-auth-session';
@@ -30,6 +38,12 @@ type AuthContextType = {
     user: User | null;
     loading: boolean;
     signInWithGoogle: () => Promise<void>;
+    /** Sign in with Apple, offered on iOS next to Google (App Store guideline 4.8) */
+    signInWithApple: () => Promise<void>;
+    appleSignInAvailable: boolean;
+    googleSignInAvailable: boolean;
+    /** Deletes the user's data and account; 'reauth' when Firebase wants a fresh sign-in first */
+    deleteAccount: () => Promise<'deleted' | 'reauth' | 'cancelled'>;
     signOutUser: () => Promise<void>;
     updateDisplayName: (newDisplayName: string) => Promise<void>;
     userProfile: UserProfile | null;
@@ -102,14 +116,28 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     const googleConfig = getGoogleConfig();
+    const iosReversedClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_REVERSED_CLIENT_ID;
+    // Without a client ID for this platform useAuthRequest throws on render; hide the button instead of crashing
+    const googleSignInAvailable = Platform.select({
+        ios: !!googleConfig.iosClientId,
+        android: !!googleConfig.androidClientId,
+        default: true,
+    });
     const config = {
         ...googleConfig,
-        androidClientId: googleConfig.androidClientId,
-        redirectUri: AuthSession.makeRedirectUri({
-            scheme: 'com.kuran360',
-            preferLocalhost: true,
-        }),
+        iosClientId: googleConfig.iosClientId || 'unconfigured',
+        androidClientId: googleConfig.androidClientId || 'unconfigured',
+        redirectUri: Platform.OS === 'ios' && iosReversedClientId
+            ? `${iosReversedClientId}:/oauthredirect`
+            : AuthSession.makeRedirectUri({
+                scheme: 'com.kuran360',
+                preferLocalhost: true,
+            }),
     };
+    const [appleSignInAvailable, setAppleSignInAvailable] = useState(false);
+    useEffect(() => {
+        if (Platform.OS === 'ios') AppleAuthentication.isAvailableAsync().then(setAppleSignInAvailable).catch(() => { });
+    }, []);
 
     const [_request, response, promptAsync] = Google.useAuthRequest(config);
 
@@ -186,8 +214,78 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         await signOut(auth);
     };
 
+    /** Asks Apple for a sign-in; returns the Firebase credential and the one-time authorization code (null if cancelled). */
+    const requestAppleCredential = async () => {
+        const rawNonce = Crypto.randomUUID();
+        const hashedNonce = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, rawNonce);
+        try {
+            const apple = await AppleAuthentication.signInAsync({
+                requestedScopes: [
+                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                    AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                ],
+                nonce: hashedNonce,
+            });
+            if (!apple.identityToken) throw new Error('Apple returned no identity token');
+            const credential = new OAuthProvider('apple.com').credential({ idToken: apple.identityToken, rawNonce });
+            return { credential, apple };
+        } catch (error: any) {
+            if (error?.code === 'ERR_REQUEST_CANCELED') return null;
+            throw error;
+        }
+    };
+
+    const signInWithApple = async () => {
+        try {
+            const result = await requestAppleCredential();
+            if (!result) return;
+            const { user: signedIn } = await signInWithCredential(auth, result.credential);
+            // Apple sends the name only on the first sign-in
+            const name = [result.apple.fullName?.givenName, result.apple.fullName?.familyName].filter(Boolean).join(' ');
+            if (name && !signedIn.displayName) {
+                await updateProfile(signedIn, { displayName: name });
+                // The profile may already have been created without the name (onAuthStateChanged fires first)
+                await setDoc(doc(db, 'users', signedIn.uid, 'profile', 'info'), { displayName: name, updatedAt: Date.now() }, { merge: true });
+                await setDoc(doc(db, 'users', signedIn.uid, 'profile', 'public'), { displayName: name }, { merge: true });
+                queryClient.invalidateQueries({ queryKey: ['userProfile', signedIn.uid] });
+            }
+        } catch (error) {
+            console.error('Error signing in with Apple:', error);
+        }
+    };
+
+    const deleteAccount = async (): Promise<'deleted' | 'reauth' | 'cancelled'> => {
+        const current = auth.currentUser;
+        if (!current) return 'cancelled';
+        const isApple = current.providerData.some(p => p.providerId === 'apple.com');
+        if (isApple && Platform.OS === 'ios') {
+            // Fresh Apple sign-in: satisfies Firebase's recent-login check and gives the code to revoke the Apple token
+            const result = await requestAppleCredential();
+            if (!result) return 'cancelled';
+            await reauthenticateWithCredential(current, result.credential);
+            if (result.apple.authorizationCode) {
+                await revokeAccessToken(auth, result.apple.authorizationCode).catch(e => console.error('Error revoking Apple token:', e));
+            }
+        } else if (Platform.OS === 'web') {
+            await reauthenticateWithPopup(current, googleProvider);
+        } else {
+            // Native Google sign-in comes back through a redirect, so ask for a fresh sign-in when the last one is old
+            const lastSignIn = Date.parse(current.metadata.lastSignInTime ?? '');
+            if (!(Date.now() - lastSignIn < 4 * 60 * 1000)) return 'reauth';
+        }
+        await deleteUserData(current.uid);
+        try {
+            await deleteUser(current);
+        } catch (error: any) {
+            if (error?.code === 'auth/requires-recent-login') return 'reauth';
+            throw error;
+        }
+        queryClient.clear();
+        return 'deleted';
+    };
+
     return (
-        <AuthContext.Provider value={{ user, userProfile, loading, signInWithGoogle, signOutUser, updateDisplayName }}>
+        <AuthContext.Provider value={{ user, userProfile, loading, signInWithGoogle, signInWithApple, appleSignInAvailable, googleSignInAvailable, deleteAccount, signOutUser, updateDisplayName }}>
             {children}
         </AuthContext.Provider>
     );

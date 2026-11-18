@@ -24,7 +24,7 @@ interface QuranSpeechModule {
     embed(text: string): Promise<number[]>;
 }
 
-/** Android only; null elsewhere. */
+/** Android and iOS (see android/ and ios/); null on the web. */
 export const QuranSpeech = requireOptionalNativeModule<QuranSpeechModule>('QuranSpeech');
 
 /** Copies natively held samples into a Float32Array. */

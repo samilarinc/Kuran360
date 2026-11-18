@@ -3,7 +3,7 @@ import { Alert, Platform, SafeAreaView, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { BookHeart, CircleDot, HandHeart, Landmark, Navigation2, Scroll } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
-import { MenuListRow } from '@/components/MenuListRow';
+import { MenuTileGrid, type MenuTile } from '@/components/MenuTileGrid';
 import { useTheme } from '@/contexts/ThemeContext';
 
 interface PrayerMenuScreenProps {
@@ -11,7 +11,7 @@ interface PrayerMenuScreenProps {
 }
 
 export const PrayerMenuScreen: React.FC<PrayerMenuScreenProps> = ({ navigation }) => {
-    const { common } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
 
     const handleHutbePress = async () => {
@@ -31,53 +31,47 @@ export const PrayerMenuScreen: React.FC<PrayerMenuScreenProps> = ({ navigation }
         }
     };
 
-    const menuItems = [
+    const menuItems: MenuTile[] = [
         {
             id: 'prayer-times',
             title: t('mainScreen.menu.prayerTimes'),
-            description: t('prayerMenu.prayerTimesDescription'),
             Icon: Landmark,
-            color: '#14B8A6',
+            color: theme.accent,
             onPress: () => navigation.navigate('PrayerTimes'),
         },
         {
             id: 'qibla',
             title: t('mainScreen.menu.qibla'),
-            description: t('prayerMenu.qiblaDescription'),
             Icon: Navigation2,
-            color: '#0891B2',
+            color: theme.accent,
             onPress: () => navigation.navigate('Qibla'),
         },
         {
             id: 'duas',
             title: t('duas.title'),
-            description: t('prayerMenu.duasDescription'),
             Icon: BookHeart,
-            color: '#0EA5E9',
+            color: theme.accent,
             onPress: () => navigation.navigate('Duas'),
         },
         {
             id: 'dua-list',
             title: t('mainScreen.menu.duaList'),
-            description: t('prayerMenu.duaListDescription'),
             Icon: HandHeart,
-            color: '#558B2F',
+            color: theme.accent,
             onPress: () => navigation.navigate('DuaList'),
         },
         {
             id: 'zikirmatik',
             title: t('mainScreen.menu.zikirmatik'),
-            description: t('prayerMenu.zikirmatikDescription'),
             Icon: CircleDot,
-            color: '#7C3AED',
+            color: theme.accent,
             onPress: () => navigation.navigate('Zikirmatik'),
         },
         {
             id: 'hutbe',
             title: t('mainScreen.menu.hutbe'),
-            description: t('prayerMenu.hutbeDescription'),
             Icon: Scroll,
-            color: '#F97316',
+            color: theme.accent,
             onPress: handleHutbePress,
         },
     ];
@@ -92,17 +86,7 @@ export const PrayerMenuScreen: React.FC<PrayerMenuScreenProps> = ({ navigation }
                 onHomePress={() => navigation.navigate('Main')}
             />
             <ScrollView style={common.flex1} contentContainerStyle={common.listContent}>
-                {menuItems.map(item => (
-                    <MenuListRow
-                        key={item.id}
-                        variant="card"
-                        icon={<item.Icon size={26} color={item.color} />}
-                        iconColor={item.color + '15'}
-                        title={item.title}
-                        subtitle={item.description}
-                        onPress={item.onPress}
-                    />
-                ))}
+                <MenuTileGrid items={menuItems} />
             </ScrollView>
         </SafeAreaView>
     );

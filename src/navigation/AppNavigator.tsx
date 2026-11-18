@@ -14,6 +14,7 @@ import { RandomVerseScreen } from '@/screens/RandomVerseScreen';
 import { AllTranslationsScreen } from '@/screens/AllTranslationsScreen';
 import { TafsirScreen } from '@/screens/TafsirScreen';
 import { DataManagementScreen } from '@/screens/DataManagementScreen';
+import { DownloadPill } from '@/components/DownloadPill';
 import { HatimScreen } from '@/screens/HatimScreen';
 import { HatimDetailScreen } from '@/screens/HatimDetailScreen';
 import { PrayerTimesScreen } from '@/screens/PrayerTimesScreen';
@@ -124,6 +125,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentIndexRef = useRef(0);
+  const historyRef = useRef(navigationHistory);
+  historyRef.current = navigationHistory;
   const [isLoadingRoute, setIsLoadingRoute] = useState(false);
   const [pendingRedirect, setPendingRedirect] = useState<NavigationHistoryItem | null>(null);
   const { user } = useAuth();
@@ -586,6 +589,12 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
   // Scrolling a surah updates the URL with the verse
   const updateVerseUrl = useCallback((surah: Surah, verseIndex?: number) => {
+    // Remember it in the history entry too, so coming back (from word roots, translations, tafsir…) reopens that verse.
+    // Changed in place: re-rendering the surah on every scroll would move it.
+    const entry = historyRef.current[currentIndexRef.current];
+    if (entry?.screen === 'SurahDetail' && entry.params?.surah?.number === surah.number) {
+      entry.params = { ...entry.params, verseIndex };
+    }
     replaceRouteUrl({ screen: 'SurahDetail', params: { surah, verseIndex } });
   }, [replaceRouteUrl]);
 
@@ -618,8 +627,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
   const currentRoute = navigationHistory[currentIndex];
   useEffect(() => { setCurrentScreen(currentRoute.screen); }, [currentRoute.screen, setCurrentScreen]);
-  // Only the entry screens get the shortcut; while reading it would just cover the verses
-  const showResumeButton = currentRoute.screen === 'Main' || currentRoute.screen === 'Home';
+  // Only the surah list gets the shortcut: the main menu's Surahs card has its own way back, and while reading it would just cover the verses
+  const showResumeButton = currentRoute.screen === 'Home';
 
   // Ensure the web document title is always 'Kuran360'
   useEffect(() => {
@@ -661,7 +670,13 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     },
     goToRoot: (root: string) => {
       navigateToRoute({ screen: 'RootVerses', params: { root } }, true);
-    }
+    },
+    goToSettings: () => {
+      if (currentRoute.screen !== 'Settings') navigateToRoute({ screen: 'Settings' }, true);
+    },
+    goToDataManagement: () => {
+      if (currentRoute.screen !== 'DataManagement') navigateToRoute({ screen: 'DataManagement' }, true);
+    },
   };
 
   return (
@@ -672,7 +687,15 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     >
       <NavigationProvider value={navHelpers}>
         <ForumProvider>
-          <ScreenWrapper overlay={showResumeButton ? <ResumeReadingButton /> : undefined}>
+          <ScreenWrapper
+            overlay={
+              <>
+                {showResumeButton && <ResumeReadingButton />}
+                {/* The data management page lists the same downloads itself */}
+                {currentRoute.screen !== 'DataManagement' && <DownloadPill />}
+              </>
+            }
+          >
             {currentRoute.screen === 'Main' ? (
               <MainScreen
                 onNavigate={(screen, params) => {
@@ -713,6 +736,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               />
             ) : currentRoute.screen === 'SurahDetail' && currentRoute.params?.surah ? (
               <SurahDetailScreen
+                // A new instance per history entry, so a link to another verse (widget, search) scrolls to it even when a surah is already open
+                key={`surah-${currentIndex}`}
                 navigation={navigation}
                 route={{ params: { surah: currentRoute.params.surah, verseIndex: currentRoute.params.verseIndex } }}
                 updateVerseUrl={updateVerseUrl}

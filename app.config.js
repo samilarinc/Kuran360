@@ -68,7 +68,8 @@ export default ({ config }) => ({
     orientation: "portrait",
     icon: "./public/favicon.png",
     userInterfaceStyle: "automatic",
-    scheme: process.env.APP_SCHEME || "kuran360",
+    // The reversed iOS client ID lets Google sign-in redirect back to the app on iOS
+    scheme: [process.env.APP_SCHEME || "kuran360", process.env.EXPO_PUBLIC_GOOGLE_IOS_REVERSED_CLIENT_ID].filter(Boolean),
     splash: {
         image: "./public/favicon.png",
         resizeMode: "contain",
@@ -78,7 +79,46 @@ export default ({ config }) => ({
         "**/*"
     ],
     ios: {
-        supportsTablet: true
+        bundleIdentifier: "com.kuran360",
+        // iPhone layout only for now; on iPad it runs in iPhone mode (no iPad screenshots or multitasking orientations needed)
+        supportsTablet: false,
+        usesAppleSignIn: true,
+        entitlements: {
+            // Shared with the home screen widgets (targets/PrayerWidgets), which read the times and verses from it
+            "com.apple.security.application-groups": ["group.com.kuran360"],
+            // Prayer alerts still show during Focus (interruptionLevel timeSensitive in modules/prayer-notification/ios)
+            "com.apple.developer.usernotifications.time-sensitive": true,
+        },
+        infoPlist: {
+            CFBundleDevelopmentRegion: "tr",
+            CFBundleAllowMixedLocalizations: true,
+            // Only HTTPS via the system stack: exempt, so App Store Connect skips the export compliance question
+            ITSAppUsesNonExemptEncryption: false,
+            // The prayer countdown Live Activity (modules/prayer-notification/ios/PrayerLiveActivity.swift)
+            NSSupportsLiveActivities: true,
+            // Recitations keep playing with the screen locked (src/services/audioMode.ts)
+            UIBackgroundModes: ["audio"],
+            // English texts are in src/locales/native/en.json (see `locales` below)
+            NSLocationWhenInUseUsageDescription: "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",
+            NSLocationAlwaysAndWhenInUseUsageDescription: "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",
+            NSMicrophoneUsageDescription: "Okuduğun ayeti tanımak ve zikirleri sesle saymak için mikrofon kullanılır.",
+            NSMotionUsageDescription: "Hata bildirmek için telefonu sallamayı algılamak amacıyla hareket sensörü kullanılır.",
+            NSPhotoLibraryAddUsageDescription: "Paylaştığın ayet görsellerini fotoğraflarına kaydetmek için kullanılır.",
+        },
+        // Required-reason APIs used by React Native, AsyncStorage and the Expo modules
+        privacyManifests: {
+            NSPrivacyAccessedAPITypes: [
+                { NSPrivacyAccessedAPIType: "NSPrivacyAccessedAPICategoryUserDefaults", NSPrivacyAccessedAPITypeReasons: ["CA92.1"] },
+                { NSPrivacyAccessedAPIType: "NSPrivacyAccessedAPICategoryFileTimestamp", NSPrivacyAccessedAPITypeReasons: ["C617.1"] },
+                { NSPrivacyAccessedAPIType: "NSPrivacyAccessedAPICategorySystemBootTime", NSPrivacyAccessedAPITypeReasons: ["35F9.1"] },
+                { NSPrivacyAccessedAPIType: "NSPrivacyAccessedAPICategoryDiskSpace", NSPrivacyAccessedAPITypeReasons: ["E174.1"] },
+            ],
+        },
+    },
+    // Localized iOS permission texts (InfoPlist.strings)
+    locales: {
+        tr: "./src/locales/native/tr.json",
+        en: "./src/locales/native/en.json",
     },
     android: {
         adaptiveIcon: {
@@ -119,6 +159,9 @@ export default ({ config }) => ({
     },
     plugins: [
         "expo-asset",
+        "expo-apple-authentication",
+        // The home screen widgets' WidgetKit extension, from targets/PrayerWidgets
+        "@bacons/apple-targets",
         withReleaseSigningConfig,
         withReleaseMinify
     ],

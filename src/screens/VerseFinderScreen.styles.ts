@@ -29,6 +29,21 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             fontFamily: 'monospace',
             marginTop: 2,
         },
+        // Opens the technical details (engine status, model choice)
+        infoButton: {
+            alignSelf: 'flex-end',
+            width: 36,
+            height: 36,
+            borderRadius: 18,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderWidth: StyleSheet.hairlineWidth,
+            borderColor: theme.border,
+            backgroundColor: theme.cardBackground,
+        },
+        infoButtonActive: {
+            borderColor: theme.primary,
+        },
         buttonRow: {
             ...common.rowWrap,
             gap: SPACING.sm,

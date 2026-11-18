@@ -51,7 +51,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
         downloadedBytes,
         totalBytes,
         handleDownloadData,
-    } = useDownloadData({ isDataAvailable, navigation });
+    } = useDownloadData({ isDataAvailable });
 
     // Search history cache key
     const SEARCH_HISTORY_KEY = 'quran_search_history';

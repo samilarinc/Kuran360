@@ -72,9 +72,9 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         flex: 1,
         overflow: 'hidden', // Prevent content from showing outside bounds during animation
     },
+    // Width is set in the component, to cover the verses rendered on the strip
     animatedContainer: {
         flex: 1,
-        width: '100%',
     },
     verseSlot: {
         position: 'absolute',

@@ -138,7 +138,16 @@
     "bugReports": "Hata Raporları",
     "bugReportsSubtitle": "Kullanıcıların gönderdiği raporlar (yalnızca admin)",
     "myBugReports": "Hata Raporlarım",
-    "myBugReportsSubtitle": "Gönderdiğiniz raporlar ve durumları"
+    "myBugReportsSubtitle": "Gönderdiğiniz raporlar ve durumları",
+    "deleteAccount": "Hesabı Sil",
+    "deleteAccountTitle": "Hesabı sil",
+    "deleteAccountConfirm": "Hesabın ve sunucudaki tüm verilerin (profil, favoriler, ayarlar, gelen dua istekleri, oluşturduğun hatimler) kalıcı olarak silinecek. Bu işlem geri alınamaz.",
+    "deleteAccountDoneTitle": "Hesap silindi",
+    "deleteAccountDoneMessage": "Hesabın ve verilerin silindi.",
+    "deleteAccountReauthTitle": "Yeniden giriş gerekli",
+    "deleteAccountReauthMessage": "Güvenlik için önce tekrar giriş yapman gerekiyor. Giriş yaptıktan sonra \"Hesabı Sil\"e yeniden dokun.",
+    "deleteAccountErrorMessage": "Hesap silinirken bir hata oluştu. Lütfen tekrar dene.",
+    "signInAgain": "Tekrar giriş yap"
   },
   "prayerTimesScreen": {
     "permissionDeniedTitle": "İzin Reddedildi",
@@ -262,11 +271,8 @@
   },
   "umrahMenuScreen": {
     "checklistTitle": "Hazırlık Listesi",
-    "checklistDescription": "Umre öncesi yapılacaklar",
     "progressTitle": "Şu an neredeyim?",
-    "progressDescription": "Tavaf ve Sa'y takibi yapın",
     "duasTitle": "Umre Duaları",
-    "duasDescription": "Umre ibadetinde okunacak dualar",
     "header": "Umre İbadetiniz İçin Araçlar"
   },
   "umrahProgressScreen": {
@@ -600,7 +606,7 @@
     "title": "Konuya Göre Ara",
     "downloadTitle": "Konu arama modeli",
     "downloadDescription": "Konuya göre arama, kelime geçmese bile ilgili ayetleri bulur. Arama cihazınızda çalışır; bunun için küçük bir anlam modelini bir kez indirmeniz gerekir.",
-    "downloadButton": "📥 Modeli İndir",
+    "downloadButton": "Modeli İndir",
     "loadingModel": "Model hazırlanıyor…",
     "modelError": "Model yüklenemedi: {{message}}",
     "retry": "Tekrar dene",
@@ -617,16 +623,10 @@
   },
   "prayerMenu": {
     "title": "Namazlar ve Dualar",
-    "prayerTimesDescription": "Bulunduğunuz yerin namaz vakitlerini görün",
-    "qiblaDescription": "Bulunduğunuz yerden Kâbe yönünü bulun",
-    "duaListDescription": "Kişisel dua çizelgesi oluşturun",
-    "zikirmatikDescription": "Zikir ve tesbihatlarınızı sayın, kendi zikrinizi ekleyin",
-    "hutbeDescription": "Haftalık cuma hutbesini okuyun",
     "hutbeInfoTitle": "Bilgi",
     "hutbeInfoMessage": "Güncel hutbe henüz yüklenmedi.",
     "hutbeErrorTitle": "Hata",
-    "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin.",
-    "duasDescription": "Hazır duaları ayet görünümüyle okuyun"
+    "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin."
   },
   "zikirmatik": {
     "title": "Zikirmatik",
@@ -803,9 +803,7 @@
   "searchMenu": {
     "title": "Arama",
     "classicTitle": "Klasik Arama",
-    "classicDescription": "Kelime veya cümleyle ara; Arapça metinde, okunuşta ve meallerde bulur",
-    "topicTitle": "Konuya Göre Ara",
-    "topicDescription": "Bir konu yaz, kelime geçmese bile ilgili ayetleri bul"
+    "topicTitle": "Konuya Göre Ara"
   },
   "settingsScreen": {
     "title": "Ayarlar",
@@ -888,6 +886,7 @@
   "mainScreen": {
     "appTitle": "Kuran-ı Kerim",
     "appSubtitle": "Dijital Mushaf",
+    "resumeLabel": "Kaldığın yer",
     "menu": {
       "surahs": "Sureler",
       "randomVerse": "Rastgele Ayet",
@@ -982,8 +981,39 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "19 Kasım 2026",
+        "bullets": [
+          "iPhone'da vakit sayacı kilit ekranında ve Dynamic Island'da: Vakit bildirimleri ayarlarından \"Kilit ekranında geri sayım\"ı açın",
+          "iPhone'da sessiz moddayken de Kur'an tilaveti ve zikir sesleri çalıyor; ekran kilitlense de tilavet devam ediyor"
+        ]
+      },
+      {
+        "date": "18 Kasım 2026",
+        "bullets": [
+          "iPhone desteği: Apple ile giriş, profilden hesap silme, herkese açık hatimleri bildirme ve oluşturanını engelleme",
+          "iPhone'da vakit bildirimleri, Kıldım/Kılmadım ile kaza takibi, kendi bildirim sesleriniz ve ana ekran widget'ları; Ayet Shazam, Ezber Kontrolü, konu araması ve zikirde sesle sayma da iPhone'da",
+          "Kelime kökü, tefsir veya meallerden geri dönünce okuduğunuz ayete dönülüyor, surenin başına değil",
+          "Widgettaki ayete dokununca o ayet açılıyor; ilk 50 ayetten sonrası da",
+          "Sayfa sayfa ayet görünümünde uzun ayetler yine aşağı kaydırılabiliyor",
+          "Ayet kartındaki paylaş tuşu kaldırıldı; paylaşmak için mealler ekranındaki paylaş tuşunu kullanabilirsiniz",
+          "Ezber Kontrolü sadeleşti: model ayrıntıları \"i\" tuşunun arkasında, model yoksa mikrofona dokununca iniyor",
+          "Ezber seçiminde ayet numarası alanı düzgün görünüyor; altındaki gereksiz sure yazısı kaldırıldı",
+          "Kalıcı namaz vakti bildirimi koyu modda okunaklı: yazılar ve o anki vaktin vurgusu artık koyu bildirim panelinde de net görünüyor (Xiaomi/Redmi dahil)"
+        ]
+      },
+      {
         "date": "17 Kasım 2026",
         "bullets": [
+          "Meal, tefsir ve model indirmeleri sayfadan çıksanız da devam ediyor; her ekranın altındaki küçük işaret ilerlemeyi gösteriyor, dokununca Veri Yönetimi açılıyor",
+          "Ayet Shazam sadeleşti: teknik ayrıntılar \"i\" tuşunun arkasında, model yoksa mikrofona dokununca iniyor",
+          "Namazlar ve Dualar, Umre ve Arama menüleri de ana menü gibi kutu düzeninde",
+          "Ayarlara her ekrandan sağ üstteki menüden ulaşabilirsiniz",
+          "Ana menü daha kısa: Ayet Shazam en üstte büyük kutuda, diğer araçlar iki sütunlu kutularda, Namaz Vakitleri doğrudan ana menüde; Profil, Ayarlar ve Hakkında en altta",
+          "Mealler ve tefsirler kitap gibi okunan serif bir yazı tipiyle gösteriliyor",
+          "Ayet kartları sadeleşti: butonlar tek renk, mealler daha sakin",
+          "Uzun ekran başlıkları artık geri ve ana sayfa butonlarının üstüne binmiyor",
+          "Ana menüdeki Sureler kartında kaldığınız yer görünüyor, dokununca o ayete gidiyorsunuz",
+          "Yeni renkler: mürekkep yeşili ve yaldız, açık modda kâğıt tonu zemin; menü ikonları bölümlerine göre renkleniyor",
           "Widget'taki geri sayım artık vakit girince hemen sıradaki vakte geçiyor, eksiye düşmüyor",
           "Widget'lar koyu modda koyu renklerle görünüyor, Xiaomi/Redmi telefonlarda da rahat okunuyor",
           "Android'de sesle ayet bulma ve konu araması sırasında uygulamanın kapanması düzeltildi",
@@ -1521,7 +1551,7 @@
     "preview": "Önizleme dinle"
   },
   "download": {
-    "button": "📥 Meal Verilerini İndir",
+    "button": "Meal Verilerini İndir",
     "sizeHint": "Bu işlem {{size}}MB veri indirecektir.",
     "starting": "İndirme başlatılıyor...",
     "doneReloading": "Tamamlandı! Sayfa yenileniyor...",
@@ -1607,8 +1637,6 @@
       "verse": "Ayet",
       "from": "Başlangıç",
       "to": "Bitiş",
-      "summarySingle": "{{verse}}. ayet",
-      "summaryRange": "{{from}}–{{to}}. ayetler, {{count}} ayet",
       "start": "Başla"
     },
     "hiddenVerse": "Ayet gizli. Mikrofona dokunup ezberden okuyun.",
@@ -1655,6 +1683,18 @@
       "notRead": "Okunmadı"
     }
   },
+  "downloadPill": {
+    "one": "{{item}} iniyor",
+    "many": "{{count}} indirme sürüyor",
+    "percent": "%{{percent}}",
+    "failed": "{{item}} indirilemedi",
+    "items": {
+      "quran": "Kur'an verisi",
+      "topic": "Konu arama modeli",
+      "tafsir": "Tefsir",
+      "model": "Ses modeli"
+    }
+  },
   "verseFinder": {
     "title": "Ayet Shazam",
     "downloadTitle": "Kur'an verisi gerekli",
@@ -1674,7 +1714,12 @@
     "playing": "Çalınıyor…",
     "rerun": "Bu sesle tekrar tanı",
     "manageModels": "Modelleri yönet",
-    "noModel": "Başlamak için \"Modelleri yönet\"ten bir ses modeli indirin.",
+    "noModel": "Mikrofona dokunun; ilk seferde ses modeli indirilir ({{size}} MB).",
+    "details": "Teknik ayrıntılar",
+    "modelDownload": {
+      "progress": "Ses modeli indiriliyor… %{{percent}}",
+      "error": "Ses modeli indirilemedi: {{message}}"
+    },
     "insecureWarning": "Sayfa güvenli olmayan bir bağlantıyla (http) açıldı. Tarayıcı bu durumda mikrofonu ve WebGPU'yu kapatır; https üzerinden açın.",
     "status": {
       "title": "Durum",
@@ -1682,7 +1727,7 @@
       "yes": "Var",
       "no": "Yok",
       "model": "Ses modeli",
-      "noModel": "Seçilmedi",
+      "noModel": "İndirilmedi",
       "modelStates": {
         "idle": "Hazır değil",
         "loading": "Yükleniyor",
@@ -1813,10 +1858,13 @@
     "off": "Yok",
     "ongoingTitle": "Kalıcı bildirim",
     "ongoingDescription": "Sonraki vakte kalan süre bildirim panelinde hep görünür.",
+    "ongoingTitleIos": "Kilit ekranında geri sayım",
+    "ongoingDescriptionIos": "Sonraki vakte kalan süre kilit ekranında ve Dynamic Island'da görünür. iPhone bunu en fazla 8 saat gösterir; uygulamayı açtığınızda yenilenir.",
     "ongoingUntil": "{{label}} vaktine",
     "collapsedTimesTitle": "Kapalıyken vakitleri de göster",
     "locationNote": "Bildirimler seçili konuma göre gelir: {{location}}.",
-    "androidOnly": "Bildirimler şimdilik yalnızca Android uygulamasında var.",
+    "appOnly": "Bildirimler yalnızca Android ve iPhone uygulamalarında var.",
+    "iosSoundNote": "iPhone bildirim seslerinin yalnızca ilk 30 saniyesini çalar; eklediğiniz ses bu yüzden ilk 30 saniyesiyle kaydedilir.",
     "permissionTitle": "Bildirim izni gerekli",
     "permissionMessage": "Bildirimleri gösterebilmek için uygulamaya bildirim izni vermeniz gerekiyor.",
     "exactAlarmTitle": "Tam vaktinde gelsin",
@@ -1933,5 +1981,18 @@
         ]
       }
     }
+  },
+  "moderation": {
+    "rulesTitle": "Topluluk kuralları",
+    "rulesMessage": "Herkese açık hatimleri tüm kullanıcılar görür. Hakaret, nefret söylemi, müstehcen, yanıltıcı veya rahatsız edici içeriğe izin verilmez. Kurallara uymayan içerikler kaldırılır ve sahiplerinin hesapları kapatılabilir.",
+    "rulesAccept": "Kabul ediyorum",
+    "report": "Bildir",
+    "menuTitle": "Bu hatim",
+    "menuMessage": "Uygunsuz içeriği bize bildirebilir veya oluşturanın hatimlerini artık görmemek için engelleyebilirsin.",
+    "block": "{{name}} adlı kişiyi engelle",
+    "reportConfirm": "Bu hatim uygunsuz içerik olarak bildirilsin mi?",
+    "reportedTitle": "Teşekkürler",
+    "reportedMessage": "Bildirimin bize ulaştı; 24 saat içinde inceleyip gerekirse içeriği kaldıracağız.",
+    "reportError": "Bildirim gönderilemedi. Lütfen tekrar dene."
   }
 }

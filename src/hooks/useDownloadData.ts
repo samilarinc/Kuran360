@@ -3,19 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import { isDataCached, loadAllVerses, ProgressCallback, VERSES_URL } from '@/data/quranData';
 import { useDataAvailability } from '@/contexts/DataAvailabilityContext';
+import { DOWNLOAD_KEYS, useDownload } from '@/services/downloads';
 
 interface UseDownloadDataOptions {
     isDataAvailable: boolean;
-    navigation: { navigate: (screen: 'Main') => void };
 }
 
-export const useDownloadData = ({ isDataAvailable, navigation }: UseDownloadDataOptions) => {
+export const useDownloadData = ({ isDataAvailable }: UseDownloadDataOptions) => {
     const { t } = useTranslation();
     const { refreshDataAvailability } = useDataAvailability();
-    const [downloading, setDownloading] = useState(false);
-    const [downloadProgress, setDownloadProgress] = useState(0);
-    const [downloadStatus, setDownloadStatus] = useState('');
-    const [downloadedBytes, setDownloadedBytes] = useState(0);
+    const download = useDownload(DOWNLOAD_KEYS.quran);
     const [totalBytes, setTotalBytes] = useState(0);
 
     useEffect(() => {
@@ -36,51 +33,29 @@ export const useDownloadData = ({ isDataAvailable, navigation }: UseDownloadData
         }
     }, [isDataAvailable]);
 
-    const handleDownloadData = async () => {
-        setDownloading(true);
-        setDownloadProgress(0);
-        setDownloadStatus(t('download.starting'));
-
-        const progressCallback: ProgressCallback = (progress, status, downloaded, total) => {
-            setDownloadProgress(progress);
-            setDownloadStatus(status);
-            if (downloaded !== undefined) setDownloadedBytes(downloaded);
-            if (total !== undefined) setTotalBytes(total);
-        };
-
-        try {
+    // Runs in the shared download store, so it keeps going when the user leaves the screen
+    const handleDownloadData = () =>
+        download.start(async onProgress => {
+            onProgress({ progress: 0, status: t('download.starting') });
+            const progressCallback: ProgressCallback = (progress, status, downloaded, total) =>
+                onProgress({ progress, status, downloadedBytes: downloaded, totalBytes: total });
             await loadAllVerses(progressCallback);
-            const isCached = await isDataCached();
-            if (isCached) {
-                setDownloadStatus(t('download.doneReloading'));
-                if (Platform.OS === 'web') {
-                    setTimeout(() => {
-                        const globalObj = globalThis as any;
-                        if (globalObj.window?.location) {
-                            globalObj.window.location.reload();
-                        }
-                    }, 500);
-                } else {
-                    setTimeout(async () => {
-                        await refreshDataAvailability();
-                        navigation.navigate('Main');
-                    }, 500);
-                }
+            if (!(await isDataCached())) throw new Error(t('download.failed'));
+            onProgress({ progress: 100, status: t('download.doneReloading') });
+            if (Platform.OS === 'web') {
+                setTimeout(() => (globalThis as any).window?.location?.reload(), 500);
+            } else {
+                // The screens that needed the data show it once it's available
+                await refreshDataAvailability();
             }
-        } catch (error) {
-            console.error('Download failed:', error);
-            setDownloadStatus(t('download.failed'));
-        } finally {
-            setDownloading(false);
-        }
-    };
+        });
 
     return {
-        downloading,
-        downloadProgress,
-        downloadStatus,
-        downloadedBytes,
-        totalBytes,
+        downloading: download.running,
+        downloadProgress: download.progress,
+        downloadStatus: download.error ? t('download.failed') : download.status ?? '',
+        downloadedBytes: download.downloadedBytes ?? 0,
+        totalBytes: download.totalBytes || totalBytes,
         handleDownloadData,
     };
 };

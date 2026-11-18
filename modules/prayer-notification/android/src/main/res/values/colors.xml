@@ -8,4 +8,9 @@
   <color name="widget_text_hint">#99FFFFFF</color>
   <color name="widget_divider">#33FFFFFF</color>
   <color name="widget_cell_current">#33FFFFFF</color>
+  <!-- Ongoing prayer times notification, for the light shade -->
+  <color name="notification_text">#DE000000</color>
+  <color name="notification_text_secondary">#8A000000</color>
+  <color name="notification_kerahat">#FFE65100</color>
+  <color name="notification_cell_current">#332E7D32</color>
 </resources>

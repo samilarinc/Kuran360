@@ -3,7 +3,7 @@ import { View, Text, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ListChecks, Navigation, BookHeart } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
-import { MenuListRow } from '@/components/MenuListRow';
+import { MenuTileGrid, type MenuTile } from '@/components/MenuTileGrid';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
@@ -12,32 +12,31 @@ interface UmrahMenuScreenProps {
 }
 
 export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) => {
-    const { common } = useTheme();
+    const { theme, common } = useTheme();
     const { t } = useTranslation();
 
-    const menuItems = [
+    const menuItems: MenuTile[] = [
         {
             id: 'umrah-checklist',
+            // Headline item, full width above the other two
+            featured: true,
             title: t('umrahMenuScreen.checklistTitle'),
-            description: t('umrahMenuScreen.checklistDescription'),
             Icon: ListChecks,
-            color: '#1565C0',
+            color: theme.accent,
             onPress: () => navigation.navigate('UmrahChecklist'),
         },
         {
             id: 'umrah-progress',
             title: t('umrahMenuScreen.progressTitle'),
-            description: t('umrahMenuScreen.progressDescription'),
             Icon: Navigation,
-            color: '#8E24AA',
+            color: theme.accent,
             onPress: () => navigation.navigate('UmrahProgress'),
         },
         {
             id: 'umrah-duas',
             title: t('umrahMenuScreen.duasTitle'),
-            description: t('umrahMenuScreen.duasDescription'),
             Icon: BookHeart,
-            color: '#C2185B',
+            color: theme.accent,
             onPress: () => navigation.navigate('UmrahDuas'),
         },
     ];
@@ -60,17 +59,7 @@ export const UmrahMenuScreen: React.FC<UmrahMenuScreenProps> = ({ navigation }) 
                     </Text>
                 </View>
 
-                {menuItems.map((item) => (
-                    <MenuListRow
-                        key={item.id}
-                        variant="card"
-                        icon={<item.Icon size={26} color={item.color} />}
-                        iconColor={item.color + '15'}
-                        title={item.title}
-                        subtitle={item.description}
-                        onPress={item.onPress}
-                    />
-                ))}
+                <MenuTileGrid items={menuItems} />
 
             </ScrollView>
         </SafeAreaView>

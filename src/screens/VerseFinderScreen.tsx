@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Mic, Square, Play, RotateCcw, Boxes, TriangleAlert, FileUp } from 'lucide-react-native';
+import { Mic, Square, Play, RotateCcw, Boxes, TriangleAlert, FileUp, Info } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { ArabicText } from '@/components/ArabicText';
@@ -34,6 +34,8 @@ import {
     startRecording,
 } from '@/services/verseFinder';
 import {
+    DEFAULT_MODEL_ID,
+    downloadModel,
     getDownloadedModels,
     getSelectedModelId,
     getVerseModel,
@@ -41,6 +43,7 @@ import {
     VERSE_MODELS,
     VerseModelId,
 } from '@/services/verseModels';
+import { DOWNLOAD_KEYS, useDownload, useDownloadFinished } from '@/services/downloads';
 import { createStyles } from './VerseFinderScreen.styles';
 
 interface VerseFinderScreenProps {
@@ -74,7 +77,7 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     const { t } = useTranslation();
     const styles = useThemedStyles(createStyles);
     const { goToSurahVerse } = useNavigationHelpers();
-    const download = useDownloadData({ isDataAvailable, navigation });
+    const download = useDownloadData({ isDataAvailable });
 
     const [support, setSupport] = useState<DeviceSupport | null>(null);
     const [downloaded, setDownloaded] = useState<Set<VerseModelId>>(new Set());
@@ -93,6 +96,12 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     const [playing, setPlaying] = useState(false);
     const [gpuHelpVisible, setGpuHelpVisible] = useState(false);
     const [fileTruncated, setFileTruncated] = useState(false);
+    // Engine status, model choice and recording tools stay behind the info button
+    const [detailsVisible, setDetailsVisible] = useState(false);
+    // The default model's download lives in the shared store: it keeps going if the user leaves the screen
+    const defaultModelDownload = useDownload(DOWNLOAD_KEYS.model(DEFAULT_MODEL_ID));
+    const modelProgress = defaultModelDownload.progressOrNull;
+    const modelDownloadError = defaultModelDownload.error;
     const recordingRef = useRef<Recording | null>(null);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -106,6 +115,8 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     const refreshDownloaded = useCallback(async () => {
         setDownloaded(await getDownloadedModels());
     }, []);
+    // A model download ended, here or on another screen
+    useDownloadFinished(refreshDownloaded);
 
     useEffect(() => {
         (async () => {
@@ -116,9 +127,9 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
             ]);
             setSupport(deviceSupport);
             setDownloaded(available);
-            // Fall back to the first usable downloaded model if the saved one is gone
+            // A model picked under the details stays in use while it's downloaded; otherwise FastConformer
             const usable = VERSE_MODELS.filter(m => available.has(m.id) && isModelSupported(m, deviceSupport));
-            setSelectedId(saved && usable.some(m => m.id === saved) ? saved : usable[0]?.id ?? saved);
+            setSelectedId(saved && usable.some(m => m.id === saved) ? saved : DEFAULT_MODEL_ID);
         })();
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);
@@ -205,6 +216,10 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
             return;
         }
         if (phase === 'recognizing') return;
+        if (!activeModel) {
+            handleDownloadModel();
+            return;
+        }
         setError(null);
         setTranscript('');
         setResults([]);
@@ -248,6 +263,12 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
         setInferenceMs(null);
     };
 
+    // Downloads the default model in place, without opening the model manager
+    const handleDownloadModel = () =>
+        defaultModelDownload.start((onProgress, signal) =>
+            downloadModel(getVerseModel(DEFAULT_MODEL_ID), fraction => onProgress({ progress: Math.round(fraction * 100) }), signal),
+        );
+
     const handlePlay = async () => {
         if (!lastAudio || playing) return;
         setPlaying(true);
@@ -286,7 +307,8 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
         );
     }
 
-    const canRecord = !!support?.microphone && support.worker && !!activeModel;
+    // Without a model the mic downloads it first
+    const canRecord = !!support?.microphone && support.worker && modelProgress === null;
     const busy = phase === 'recording' || phase === 'recognizing' || modelState.status === 'loading';
     const ok = theme.success;
     const warn = theme.warning;
@@ -315,7 +337,9 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     ];
 
     const micHint = !activeModel
-        ? t('verseFinder.noModel')
+        ? modelProgress !== null
+            ? t('verseFinder.modelDownload.progress', { percent: modelProgress })
+            : t('verseFinder.noModel', { size: getVerseModel(DEFAULT_MODEL_ID).sizeMb })
         : phase === 'recording'
             ? t('verseFinder.listening', { seconds: elapsed, max: MAX_RECORDING_SECONDS })
             : phase === 'recognizing'
@@ -333,61 +357,72 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
                     </View>
                 )}
 
-                <View style={common.sectionCard}>
-                    <Text style={[common.sectionLabel, common.mbSm]}>{t('verseFinder.status.title')}</Text>
-                    <SpeechStatusRows rows={statusRows} />
-                    {(support?.webgpu === 'noAdapter' || support?.softwareGpu) && (
-                        <>
-                            <TouchableOpacity onPress={() => setGpuHelpVisible(v => !v)} style={common.mtSm}>
-                                <Text style={common.textAccent}>{t(gpuHelpVisible ? 'verseFinder.gpuHelp.hide' : 'verseFinder.gpuHelp.show')}</Text>
-                            </TouchableOpacity>
-                            {gpuHelpVisible && (
-                                <View style={styles.helpBox}>
-                                    <Text style={common.text}>{t('verseFinder.gpuHelp.intro')}</Text>
-                                    {GPU_FLAGS.map((flag, i) => (
-                                        <View key={flag} style={common.mtSm}>
-                                            <Text style={common.text}>{t(`verseFinder.gpuHelp.step${i + 1}`)}</Text>
-                                            <Text style={styles.flagText} selectable>{flag}</Text>
-                                        </View>
-                                    ))}
-                                    <Text style={[common.text, common.mtSm]}>{t('verseFinder.gpuHelp.relaunch', { step: GPU_FLAGS.length + 1 })}</Text>
-                                    <Text style={[common.smallText, common.mtSm]}>{t('verseFinder.gpuHelp.note')}</Text>
-                                </View>
-                            )}
-                        </>
-                    )}
-                    {modelState.status === 'error' && <Text style={[common.smallText, common.mtSm]}>{modelState.message}</Text>}
-                    <View style={[styles.buttonRow, common.mtMd]}>
-                        <AppButton
-                            title={t('verseFinder.manageModels')}
-                            icon={<Boxes size={16} color={activeModel ? theme.primary : '#FFFFFF'} />}
-                            variant={activeModel ? 'outline' : 'primary'}
-                            size="small"
-                            onPress={() => setManagerVisible(true)}
-                            disabled={busy}
-                        />
-                        {lastAudio && (
+                <TouchableOpacity
+                    style={[styles.infoButton, detailsVisible && styles.infoButtonActive]}
+                    onPress={() => setDetailsVisible(v => !v)}
+                    accessibilityRole="button"
+                    accessibilityLabel={t('verseFinder.details')}
+                >
+                    <Info size={18} color={detailsVisible ? theme.primary : theme.textSecondary} />
+                </TouchableOpacity>
+
+                {detailsVisible && (
+                    <View style={common.sectionCard}>
+                        <Text style={[common.sectionLabel, common.mbSm]}>{t('verseFinder.status.title')}</Text>
+                        <SpeechStatusRows rows={statusRows} />
+                        {(support?.webgpu === 'noAdapter' || support?.softwareGpu) && (
                             <>
-                                <AppButton
-                                    title={playing ? t('verseFinder.playing') : t('verseFinder.playRecording')}
-                                    icon={<Play size={16} color={theme.primary} />}
-                                    variant="outline"
-                                    size="small"
-                                    onPress={handlePlay}
-                                    disabled={playing || phase === 'recording'}
-                                />
-                                <AppButton
-                                    title={t('verseFinder.rerun')}
-                                    icon={<RotateCcw size={16} color={theme.primary} />}
-                                    variant="outline"
-                                    size="small"
-                                    onPress={() => recognizeAudio(lastAudio)}
-                                    disabled={busy || !activeModel}
-                                />
+                                <TouchableOpacity onPress={() => setGpuHelpVisible(v => !v)} style={common.mtSm}>
+                                    <Text style={common.textAccent}>{t(gpuHelpVisible ? 'verseFinder.gpuHelp.hide' : 'verseFinder.gpuHelp.show')}</Text>
+                                </TouchableOpacity>
+                                {gpuHelpVisible && (
+                                    <View style={styles.helpBox}>
+                                        <Text style={common.text}>{t('verseFinder.gpuHelp.intro')}</Text>
+                                        {GPU_FLAGS.map((flag, i) => (
+                                            <View key={flag} style={common.mtSm}>
+                                                <Text style={common.text}>{t(`verseFinder.gpuHelp.step${i + 1}`)}</Text>
+                                                <Text style={styles.flagText} selectable>{flag}</Text>
+                                            </View>
+                                        ))}
+                                        <Text style={[common.text, common.mtSm]}>{t('verseFinder.gpuHelp.relaunch', { step: GPU_FLAGS.length + 1 })}</Text>
+                                        <Text style={[common.smallText, common.mtSm]}>{t('verseFinder.gpuHelp.note')}</Text>
+                                    </View>
+                                )}
                             </>
                         )}
+                        {modelState.status === 'error' && <Text style={[common.smallText, common.mtSm]}>{modelState.message}</Text>}
+                        <View style={[styles.buttonRow, common.mtMd]}>
+                            <AppButton
+                                title={t('verseFinder.manageModels')}
+                                icon={<Boxes size={16} color={activeModel ? theme.primary : '#FFFFFF'} />}
+                                variant={activeModel ? 'outline' : 'primary'}
+                                size="small"
+                                onPress={() => setManagerVisible(true)}
+                                disabled={busy}
+                            />
+                            {lastAudio && (
+                                <>
+                                    <AppButton
+                                        title={playing ? t('verseFinder.playing') : t('verseFinder.playRecording')}
+                                        icon={<Play size={16} color={theme.primary} />}
+                                        variant="outline"
+                                        size="small"
+                                        onPress={handlePlay}
+                                        disabled={playing || phase === 'recording'}
+                                    />
+                                    <AppButton
+                                        title={t('verseFinder.rerun')}
+                                        icon={<RotateCcw size={16} color={theme.primary} />}
+                                        variant="outline"
+                                        size="small"
+                                        onPress={() => recognizeAudio(lastAudio)}
+                                        disabled={busy || !activeModel}
+                                    />
+                                </>
+                            )}
+                        </View>
                     </View>
-                </View>
+                )}
 
                 <View style={styles.micArea}>
                     <TouchableOpacity
@@ -405,6 +440,8 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
                     {phase === 'recording' && (
                         <ProgressBar progress={(elapsed / MAX_RECORDING_SECONDS) * 100} style={styles.recordingProgress} />
                     )}
+                    {modelProgress !== null && <ProgressBar progress={modelProgress} style={styles.recordingProgress} />}
+                    {modelDownloadError && <Text style={[common.smallText, common.textCenter]}>{t('verseFinder.modelDownload.error', { message: modelDownloadError })}</Text>}
                     <AppButton
                         title={t('verseFinder.pickFile')}
                         icon={<FileUp size={16} color={theme.primary} />}

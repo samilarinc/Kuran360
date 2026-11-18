@@ -347,7 +347,9 @@ export const PaginatedVerseView: React.FC<PaginatedVerseViewProps> = React.memo(
                 <Animated.View
                     style={[
                         styles.animatedContainer,
-                        { transform: [{ translateX }] }
+                        // Wide enough to hold every rendered verse: Android only passes a touch to views inside
+                        // their parent's bounds, so a verse past the strip's width couldn't be scrolled
+                        { width: (currentVerseIndex + 2) * screenWidth, transform: [{ translateX }] }
                     ]}
                 >
                     {/* Previous, current and next verse, each at its own fixed spot on the strip */}

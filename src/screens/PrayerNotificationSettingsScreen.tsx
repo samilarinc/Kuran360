@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Audio } from 'expo-av';
-import { View, Text, ScrollView, TouchableOpacity, Alert, AppState } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert, AppState, Platform } from 'react-native';
 import { AlarmClock, BellOff, BellRing, CalendarClock, CheckCircle2, ChevronDown, Landmark, Moon, MoonStar, Music, Plane, Play, Plus, Sparkles, Square, Star, Trash2, UtensilsCrossed } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
@@ -32,6 +32,7 @@ import {
     hasAnyNotification,
     hasNotificationPermission,
     importAlertSound,
+    isOngoingNotificationSupported,
     isPrayerNotificationSupported,
     isTravelModeOn,
     openExactAlarmSettings,
@@ -240,15 +241,15 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                         description={t('prayerTimesScreen.travelModeDescription')}
                         value={travelOn}
                         onValueChange={toggleTravelMode}
-                        icon={<Plane size={20} color="#0891B2" />}
-                        iconColor="#0891B2"
+                        icon={<Plane size={20} color={theme.accent} />}
+                        iconColor={theme.accent}
                         theme={theme}
                     />
                 </View>
 
                 {!supported && (
                     <View style={common.card}>
-                        <Text style={[common.text, common.textCenter]}>{t('prayerNotifications.androidOnly')}</Text>
+                        <Text style={[common.text, common.textCenter]}>{t('prayerNotifications.appOnly')}</Text>
                     </View>
                 )}
 
@@ -322,8 +323,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                 title={t('prayerNotifications.cumaTitle')}
                                 value={settings.cuma.enabled}
                                 onValueChange={enabled => update({ ...settings, cuma: { ...settings.cuma, enabled } })}
-                                icon={<Landmark size={20} color="#14B8A6" />}
-                                iconColor="#14B8A6"
+                                icon={<Landmark size={20} color={theme.accent} />}
+                                iconColor={theme.accent}
                                 theme={theme}
                             />
                             {settings.cuma.enabled && (
@@ -345,8 +346,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                 description={t('prayerNotifications.kazaDescription')}
                                 value={settings.kaza.enabled}
                                 onValueChange={enabled => update({ ...settings, kaza: { enabled } })}
-                                icon={<CheckCircle2 size={20} color="#22C55E" />}
-                                iconColor="#22C55E"
+                                icon={<CheckCircle2 size={20} color={theme.accent} />}
+                                iconColor={theme.accent}
                                 theme={theme}
                             />
                             {settings.kaza.enabled && missed.length > 0 && (
@@ -368,8 +369,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                 title={t('prayerNotifications.ramadanTitle')}
                                 value={settings.fasting.ramadan}
                                 onValueChange={ramadan => update({ ...settings, fasting: { ...settings.fasting, ramadan } })}
-                                icon={<Moon size={20} color="#8B5CF6" />}
-                                iconColor="#8B5CF6"
+                                icon={<Moon size={20} color={theme.accent} />}
+                                iconColor={theme.accent}
                                 theme={theme}
                             />
                             <SettingItem
@@ -377,8 +378,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                 description={t('prayerNotifications.fastingModeDescription')}
                                 value={settings.fasting.mode}
                                 onValueChange={mode => update({ ...settings, fasting: { ...settings.fasting, mode } })}
-                                icon={<UtensilsCrossed size={20} color="#F97316" />}
-                                iconColor="#F97316"
+                                icon={<UtensilsCrossed size={20} color={theme.accent} />}
+                                iconColor={theme.accent}
                                 theme={theme}
                             />
                             {(settings.fasting.ramadan || settings.fasting.mode) && (
@@ -401,8 +402,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                 description={t('specialDays.settings.enabledDescription')}
                                 value={settings.specialDays.enabled}
                                 onValueChange={enabled => updateSpecialDays({ enabled })}
-                                icon={<MoonStar size={20} color="#6366F1" />}
-                                iconColor="#6366F1"
+                                icon={<MoonStar size={20} color={theme.accent} />}
+                                iconColor={theme.accent}
                                 theme={theme}
                             />
                             {settings.specialDays.enabled && (
@@ -412,8 +413,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                         description={t('specialDays.settings.kandilDescription')}
                                         value={settings.specialDays.categories.kandil}
                                         onValueChange={kandil => updateSpecialDayCategory({ kandil })}
-                                        icon={<Star size={20} color="#F59E0B" />}
-                                        iconColor="#F59E0B"
+                                        icon={<Star size={20} color={theme.accent} />}
+                                        iconColor={theme.accent}
                                         theme={theme}
                                     />
                                     <SettingItem
@@ -421,8 +422,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                         description={t('specialDays.settings.bayramDescription')}
                                         value={settings.specialDays.categories.bayram}
                                         onValueChange={bayram => updateSpecialDayCategory({ bayram })}
-                                        icon={<Sparkles size={20} color="#EC4899" />}
-                                        iconColor="#EC4899"
+                                        icon={<Sparkles size={20} color={theme.accent} />}
+                                        iconColor={theme.accent}
                                         theme={theme}
                                     />
                                     <SettingItem
@@ -430,8 +431,8 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                                         description={t('specialDays.settings.blessedDescription')}
                                         value={settings.specialDays.categories.blessed}
                                         onValueChange={blessed => updateSpecialDayCategory({ blessed })}
-                                        icon={<CalendarClock size={20} color="#14B8A6" />}
-                                        iconColor="#14B8A6"
+                                        icon={<CalendarClock size={20} color={theme.accent} />}
+                                        iconColor={theme.accent}
                                         theme={theme}
                                     />
                                     <View style={styles.subOptions}>
@@ -473,28 +474,37 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
                             </TouchableOpacity>
                         </View>
 
-                        <Text style={styles.sectionTitle}>{t('prayerNotifications.ongoingSectionTitle')}</Text>
-                        <View style={styles.card}>
-                            <SettingItem
-                                title={t('prayerNotifications.ongoingTitle')}
-                                description={t('prayerNotifications.ongoingDescription')}
-                                value={settings.ongoing}
-                                onValueChange={value => update({ ...settings, ongoing: value })}
-                                icon={<BellRing size={20} color={theme.primary} />}
-                                iconColor={theme.primary}
-                                theme={theme}
-                            />
-                            {settings.ongoing && (
-                                <SettingItem
-                                    title={t('prayerNotifications.collapsedTimesTitle')}
-                                    value={settings.collapsedTimes}
-                                    onValueChange={value => update({ ...settings, collapsedTimes: value })}
-                                    icon={<CalendarClock size={20} color={theme.primary} />}
-                                    iconColor={theme.primary}
-                                    theme={theme}
-                                />
-                            )}
-                        </View>
+                        {Platform.OS === 'ios' && (
+                            <Text style={[common.footerText, common.mtSm]}>{t('prayerNotifications.iosSoundNote')}</Text>
+                        )}
+
+                        {/* The ongoing countdown: a notification on Android, a Live Activity on iOS (which has no collapsed view) */}
+                        {isOngoingNotificationSupported() && (
+                            <>
+                                <Text style={styles.sectionTitle}>{t('prayerNotifications.ongoingSectionTitle')}</Text>
+                                <View style={styles.card}>
+                                    <SettingItem
+                                        title={t(Platform.OS === 'ios' ? 'prayerNotifications.ongoingTitleIos' : 'prayerNotifications.ongoingTitle')}
+                                        description={t(Platform.OS === 'ios' ? 'prayerNotifications.ongoingDescriptionIos' : 'prayerNotifications.ongoingDescription')}
+                                        value={settings.ongoing}
+                                        onValueChange={value => update({ ...settings, ongoing: value })}
+                                        icon={<BellRing size={20} color={theme.primary} />}
+                                        iconColor={theme.primary}
+                                        theme={theme}
+                                    />
+                                    {settings.ongoing && Platform.OS === 'android' && (
+                                        <SettingItem
+                                            title={t('prayerNotifications.collapsedTimesTitle')}
+                                            value={settings.collapsedTimes}
+                                            onValueChange={value => update({ ...settings, collapsedTimes: value })}
+                                            icon={<CalendarClock size={20} color={theme.primary} />}
+                                            iconColor={theme.primary}
+                                            theme={theme}
+                                        />
+                                    )}
+                                </View>
+                            </>
+                        )}
 
                         <Text style={[common.footerText, common.mtSm]}>
                             {t('prayerNotifications.locationNote', { location: formatLocationName(location) })}

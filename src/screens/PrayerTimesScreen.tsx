@@ -178,7 +178,7 @@ export const PrayerTimesScreen: React.FC<{ navigation: any }> = ({ navigation })
                                 disabled={locating}
                                 icon={locating ? <ActivityIndicator size="small" color="#FFF" /> : <LocateFixed size={20} color="#FFF" />}
                             />
-                            {/* Prayer time notifications are Android only (modules/prayer-notification) */}
+                            {/* Prayer time notifications need the native module (modules/prayer-notification): Android and iOS */}
                             {isPrayerNotificationSupported() && (
                                 <AppButton
                                     onPress={() => navigation.navigate('PrayerNotificationSettings')}

@@ -5,6 +5,9 @@ type NavigationHelpers = {
     // replace swaps the current history entry instead of pushing a new one
     goToSurahVerse: (surahNumber: number, verseIndex: number, replace?: boolean) => Promise<void>;
     goToRoot: (root: string) => void;
+    // Opens settings from the header on any screen (does nothing when already there)
+    goToSettings: () => void;
+    goToDataManagement: () => void;
 };
 
 const NavigationContext = createContext<NavigationHelpers | null>(null);

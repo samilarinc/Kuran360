@@ -11,4 +11,9 @@
   <color name="widget_text_hint">#FF8FA391</color>
   <color name="widget_divider">#33FFFFFF</color>
   <color name="widget_cell_current">#8C2E7D32</color>
+  <!-- Ongoing prayer times notification, for the dark shade (MIUI/HyperOS recolors fixed light-theme colors poorly) -->
+  <color name="notification_text">#FFF1F5F1</color>
+  <color name="notification_text_secondary">#FFB5C7B6</color>
+  <color name="notification_kerahat">#FFFFB74D</color>
+  <color name="notification_cell_current">#8C2E7D32</color>
 </resources>

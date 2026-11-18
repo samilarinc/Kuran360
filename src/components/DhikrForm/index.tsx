@@ -81,7 +81,7 @@ const DhikrVoiceInput: React.FC<{ onHeard: (text: string) => void }> = ({ onHear
     const { support, activeModel, modelState, phase, elapsed, error, canRecord, busy } = recognizer;
 
     const hint = !activeModel
-        ? t('verseFinder.noModel')
+        ? recognizer.noModelHint
         : phase === 'recording'
             ? t('verseFinder.listening', { seconds: elapsed, max: MAX_RECORDING_SECONDS })
             : phase === 'recognizing'

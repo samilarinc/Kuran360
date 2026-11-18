@@ -101,3 +101,6 @@ scripts/.cache/
 /ios
 msarinc-common/node_modules/
 msarinc-common/apps/
+
+# Claude Code worktrees and session files
+/.claude/

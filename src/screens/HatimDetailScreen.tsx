@@ -13,6 +13,7 @@ import { HatimStatsCard } from '@/components/HatimStatsCard';
 import { HatimPartsGrid } from '@/components/HatimPartsGrid';
 import { PartActionModal } from '@/components/PartActionModal';
 import { HatimEditModal } from '@/components/HatimEditModal';
+import { blockUser, reportContent } from '@/services/moderation';
 
 interface HatimDetailScreenProps {
     navigation: any;
@@ -292,6 +293,36 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
         );
     };
 
+    // Report the hatim or block its creator (App Store guideline 1.2); not offered on your own hatims
+    const report = async () => {
+        if (!hatim) return;
+        try {
+            await reportContent({ type: 'hatim', id: hatim.id, ownerId: hatim.creatorId, title: hatim.title });
+            Alert.alert(t('moderation.reportedTitle'), t('moderation.reportedMessage'));
+        } catch (error) {
+            console.error('Error reporting hatim:', error);
+            Alert.alert(t('hatimDetailScreen.loadErrorTitle'), t('moderation.reportError'));
+        }
+    };
+
+    const block = async () => {
+        if (!hatim) return;
+        await blockUser(hatim.creatorId);
+        navigation.goBack();
+    };
+
+    const openReportMenu = () => {
+        if (Platform.OS === 'web') {
+            if ((globalThis as any).confirm?.(t('moderation.reportConfirm'))) report();
+            return;
+        }
+        Alert.alert(t('moderation.menuTitle'), t('moderation.menuMessage'), [
+            { text: t('moderation.report'), onPress: report },
+            { text: t('moderation.block', { name: hatim?.creatorName ?? '' }), style: 'destructive', onPress: block },
+            { text: t('hatimDetailScreen.cancel'), style: 'cancel' },
+        ]);
+    };
+
     if (loading) {
         return (
             <SafeAreaView style={styles.container}>
@@ -343,6 +374,16 @@ export const HatimDetailScreen: React.FC<HatimDetailScreenProps> = ({ navigation
                     <AppButton
                         title={t('hatimDetailScreen.edit')}
                         onPress={openEditModal}
+                        variant="translucent"
+                        shape="pill"
+                        size="small"
+                        style={{ marginLeft: SPACING.xs }}
+                    />
+                )}
+                {hatim.creatorId !== user?.uid && (
+                    <AppButton
+                        title={t('moderation.report')}
+                        onPress={openReportMenu}
                         variant="translucent"
                         shape="pill"
                         size="small"

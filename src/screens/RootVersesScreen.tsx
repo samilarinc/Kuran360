@@ -32,7 +32,7 @@ export const RootVersesScreen: React.FC<RootVersesScreenProps> = ({ navigation, 
     const [wordCount, setWordCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-    const download = useDownloadData({ isDataAvailable, navigation });
+    const download = useDownloadData({ isDataAvailable });
 
     useEffect(() => {
         if (!isDataAvailable) {

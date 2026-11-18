@@ -36,7 +36,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     downloadedBytes,
     totalBytes: totalBytesFromDownload,
     handleDownloadData,
-  } = useDownloadData({ isDataAvailable, navigation });
+  } = useDownloadData({ isDataAvailable });
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter surahs based on search query

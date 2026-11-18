@@ -138,7 +138,16 @@
     "bugReports": "Bug Reports",
     "bugReportsSubtitle": "Reports sent by users (admin only)",
     "myBugReports": "My Bug Reports",
-    "myBugReportsSubtitle": "Reports you've sent and their status"
+    "myBugReportsSubtitle": "Reports you've sent and their status",
+    "deleteAccount": "Delete Account",
+    "deleteAccountTitle": "Delete account",
+    "deleteAccountConfirm": "Your account and all your data on the server (profile, favorites, settings, received dua requests, hatims you created) will be deleted permanently. This cannot be undone.",
+    "deleteAccountDoneTitle": "Account deleted",
+    "deleteAccountDoneMessage": "Your account and data have been deleted.",
+    "deleteAccountReauthTitle": "Sign in again",
+    "deleteAccountReauthMessage": "For security, please sign in again first. After signing in, tap \"Delete Account\" again.",
+    "deleteAccountErrorMessage": "Something went wrong while deleting your account. Please try again.",
+    "signInAgain": "Sign in again"
   },
   "prayerTimesScreen": {
     "permissionDeniedTitle": "Permission Denied",
@@ -262,11 +271,8 @@
   },
   "umrahMenuScreen": {
     "checklistTitle": "Checklist",
-    "checklistDescription": "Things to do before umrah",
     "progressTitle": "Where am I now?",
-    "progressDescription": "Track your tawaf and sa'y",
     "duasTitle": "Umrah Duas",
-    "duasDescription": "Duas to recite during umrah",
     "header": "Tools for Your Umrah"
   },
   "umrahProgressScreen": {
@@ -600,7 +606,7 @@
     "title": "Search by Topic",
     "downloadTitle": "Topic search model",
     "downloadDescription": "Topic search finds related verses even when the word does not appear in them. It runs on your device; for that you need to download a small language model once.",
-    "downloadButton": "📥 Download Model",
+    "downloadButton": "Download Model",
     "loadingModel": "Preparing the model…",
     "modelError": "The model could not be loaded: {{message}}",
     "retry": "Try again",
@@ -617,16 +623,10 @@
   },
   "prayerMenu": {
     "title": "Prayers and Duas",
-    "prayerTimesDescription": "See the prayer times for your location",
-    "qiblaDescription": "Find the direction of the Kaaba from where you are",
-    "duaListDescription": "Create a personal dua checklist",
-    "zikirmatikDescription": "Count your dhikr and tasbihat, or add your own",
-    "hutbeDescription": "Read the weekly Friday sermon",
     "hutbeInfoTitle": "Info",
     "hutbeInfoMessage": "The latest sermon hasn't been uploaded yet.",
     "hutbeErrorTitle": "Error",
-    "hutbeErrorMessage": "Couldn't reach the sermon file. Please try again later.",
-    "duasDescription": "Read ready-made duas in the verse view"
+    "hutbeErrorMessage": "Couldn't reach the sermon file. Please try again later."
   },
   "zikirmatik": {
     "title": "Dhikr Counter",
@@ -803,9 +803,7 @@
   "searchMenu": {
     "title": "Search",
     "classicTitle": "Classic Search",
-    "classicDescription": "Search by word or phrase in the Arabic text, transliteration and translations",
-    "topicTitle": "Search by Topic",
-    "topicDescription": "Type a topic and find related verses, even without the exact word"
+    "topicTitle": "Search by Topic"
   },
   "settingsScreen": {
     "title": "Settings",
@@ -888,6 +886,7 @@
   "mainScreen": {
     "appTitle": "The Holy Quran",
     "appSubtitle": "Digital Mushaf",
+    "resumeLabel": "Where you left off",
     "menu": {
       "surahs": "Surahs",
       "randomVerse": "Random Verse",
@@ -982,8 +981,39 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "November 19, 2026",
+        "bullets": [
+          "On iPhone, the prayer countdown on the lock screen and in the Dynamic Island: turn on \"Countdown on the lock screen\" in the prayer notification settings",
+          "On iPhone, recitations and dhikr sounds play with the silent switch on too, and recitation keeps going when the screen locks"
+        ]
+      },
+      {
+        "date": "November 18, 2026",
+        "bullets": [
+          "iPhone support: Sign in with Apple, account deletion from the profile, reporting public hatims and blocking their creator",
+          "On iPhone: prayer time alerts, kaza tracking with Prayed/Not prayed, your own alert sounds and home screen widgets; Verse Shazam, the memorization check, topic search and dhikr voice counting work there too",
+          "Coming back from a word root, tafsir or translations returns to the verse you were reading, not the start of the surah",
+          "Tapping the verse on the widget opens that verse, including verses past the first 50",
+          "Long verses scroll again in the one-verse-per-page view",
+          "The share button is gone from verse cards; share from the translations screen instead",
+          "Memorization check is simpler: model details sit behind the \"i\" button, and tapping the mic downloads the speech model if needed",
+          "The verse number field in the memorization picker displays properly; the redundant surah line under it is gone",
+          "The ongoing prayer times notification is readable in dark mode: text and the current prayer highlight stay clear on a dark notification shade, including on Xiaomi/Redmi"
+        ]
+      },
+      {
         "date": "November 17, 2026",
         "bullets": [
+          "Translation, tafsir and model downloads keep going when you leave the page; a small badge at the bottom of every screen shows progress and opens Data management",
+          "Ayet Shazam is simpler: technical details sit behind the \"i\" button, and tapping the mic downloads the speech model if needed",
+          "The Prayers and duas, Umrah and Search menus use the same tile layout as the main menu",
+          "Settings are reachable from the top-right menu on every screen",
+          "A shorter main menu: Verse Shazam gets a large tile at the top, other tools sit in a two-column grid, Prayer Times is right on the main menu, and Profile, Settings and About are at the bottom",
+          "Translations and tafsirs use a serif typeface that reads like a book",
+          "Verse cards are calmer: single-color buttons and quieter translations",
+          "Long screen titles no longer run over the back and home buttons",
+          "The Surahs card on the main menu shows where you left off; tap it to go to that verse",
+          "New colors: ink green and gold, with a paper-toned background in light mode; menu icons are colored by section",
           "The widget countdown now moves on to the next prayer right on time instead of counting below zero",
           "Widgets use dark colors in dark mode and are easy to read on Xiaomi/Redmi phones too",
           "Fixed the app closing on Android while finding a verse by voice or searching by topic",
@@ -1520,7 +1550,7 @@
     "preview": "Play preview"
   },
   "download": {
-    "button": "📥 Download Translation Data",
+    "button": "Download Translation Data",
     "sizeHint": "This will download {{size}} MB of data.",
     "starting": "Starting download...",
     "doneReloading": "Done! Reloading the page...",
@@ -1606,8 +1636,6 @@
       "verse": "Verse",
       "from": "From",
       "to": "To",
-      "summarySingle": "Verse {{verse}}",
-      "summaryRange": "Verses {{from}}–{{to}}, {{count}} verses",
       "start": "Start"
     },
     "hiddenVerse": "The verse is hidden. Tap the microphone and recite it from memory.",
@@ -1654,6 +1682,18 @@
       "notRead": "Not read"
     }
   },
+  "downloadPill": {
+    "one": "Downloading {{item}}",
+    "many": "{{count}} downloads",
+    "percent": "{{percent}}%",
+    "failed": "Couldn't download {{item}}",
+    "items": {
+      "quran": "Quran data",
+      "topic": "topic search model",
+      "tafsir": "tafsir",
+      "model": "speech model"
+    }
+  },
   "verseFinder": {
     "title": "Verse Shazam",
     "downloadTitle": "Quran data required",
@@ -1673,7 +1713,12 @@
     "playing": "Playing…",
     "rerun": "Recognize this audio again",
     "manageModels": "Manage models",
-    "noModel": "To get started, download a speech model from \"Manage models\".",
+    "noModel": "Tap the mic; the first time, the speech model is downloaded ({{size}} MB).",
+    "details": "Technical details",
+    "modelDownload": {
+      "progress": "Downloading the speech model… {{percent}}%",
+      "error": "Couldn't download the speech model: {{message}}"
+    },
     "insecureWarning": "This page was opened over an insecure connection (http). Browsers turn off the microphone and WebGPU there; open it over https.",
     "status": {
       "title": "Status",
@@ -1681,7 +1726,7 @@
       "yes": "Yes",
       "no": "No",
       "model": "Speech model",
-      "noModel": "None selected",
+      "noModel": "Not downloaded",
       "modelStates": {
         "idle": "Not loaded",
         "loading": "Loading",
@@ -1812,10 +1857,13 @@
     "off": "None",
     "ongoingTitle": "Persistent notification",
     "ongoingDescription": "Time left until the next prayer stays in the notification shade.",
+    "ongoingTitleIos": "Countdown on the lock screen",
+    "ongoingDescriptionIos": "Time left until the next prayer shows on the lock screen and in the Dynamic Island. iPhone shows it for up to 8 hours; it is renewed when you open the app.",
     "ongoingUntil": "Until {{label}}",
     "collapsedTimesTitle": "Show times when collapsed",
     "locationNote": "Notifications follow the selected location: {{location}}.",
-    "androidOnly": "Notifications are only available in the Android app for now.",
+    "appOnly": "Notifications are only available in the Android and iPhone apps.",
+    "iosSoundNote": "iPhone plays only the first 30 seconds of a notification sound, so an added sound is saved with its first 30 seconds.",
     "permissionTitle": "Notification permission needed",
     "permissionMessage": "Allow notifications for the app to show them.",
     "exactAlarmTitle": "Arrive right on time",
@@ -1932,5 +1980,18 @@
         ]
       }
     }
+  },
+  "moderation": {
+    "rulesTitle": "Community rules",
+    "rulesMessage": "Public hatims are visible to all users. Insults, hate speech, sexual, misleading or offensive content is not allowed. Content that breaks these rules is removed and its owner's account may be closed.",
+    "rulesAccept": "I agree",
+    "report": "Report",
+    "menuTitle": "This hatim",
+    "menuMessage": "You can report inappropriate content to us, or block its creator to stop seeing their hatims.",
+    "block": "Block {{name}}",
+    "reportConfirm": "Report this hatim as inappropriate?",
+    "reportedTitle": "Thank you",
+    "reportedMessage": "We received your report and will review it within 24 hours, removing the content if needed.",
+    "reportError": "The report could not be sent. Please try again."
   }
 }

@@ -1,0 +1,1 @@
+../../modules/prayer-notification/ios/PrayerActivityAttributes.swift

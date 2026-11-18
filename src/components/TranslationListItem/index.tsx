@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Check, Star } from 'lucide-react-native';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
-import { FONT_SIZES, SPACING, FAVORITE_COLOR, FAVORITE_COLOR_DARK, Theme } from '@/theme';
+import { FONT_SIZES, SPACING, Theme } from '@/theme';
 
 interface TranslationListItemProps {
     translationName: string;
@@ -94,8 +94,8 @@ const createStyles = (theme: Theme) => StyleSheet.create({
         borderColor: theme.primary,
     },
     favoriteTranslationItem: {
-        backgroundColor: FAVORITE_COLOR + '15',
-        borderColor: FAVORITE_COLOR,
+        backgroundColor: theme.accent + '15',
+        borderColor: theme.accent,
         borderWidth: 2,
     },
     translationText: {
@@ -109,7 +109,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
         fontWeight: '600',
     },
     favoriteTranslationText: {
-        color: FAVORITE_COLOR_DARK,
+        color: theme.accent,
         fontWeight: '700',
     },
     favoriteButton: {

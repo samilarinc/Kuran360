@@ -1,6 +1,7 @@
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 import { createBaseStyles, SHADOW } from '@msarinc/ui';
 import { SPACING, FONT_SIZES, RADIUS, Theme } from './index';
+import { TRANSLATION_FONT_FAMILY } from '@/constants/fonts';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const PICKER_RADIO = 18;
@@ -49,6 +50,15 @@ export const createCommonStyles = (theme: Theme) => {
             color: theme.text,
             fontWeight: '600',
             writingDirection: 'rtl',
+        },
+        // Translation ("meal") and tafsir body text: a reading serif, so the human-language text reads as a book next to the Arabic.
+        // No fontWeight: the serif is bundled in fixed weights, and Android drops a custom family when asked for another weight.
+        mealText: {
+            fontFamily: TRANSLATION_FONT_FAMILY,
+            fontSize: FONT_SIZES.translation + 1,
+            lineHeight: (FONT_SIZES.translation + 1) * 1.6,
+            color: theme.text,
+            textAlign: 'left',
         },
         // Word-by-word translation chips (Verse, QuranPageScreen)
         wordItem: {

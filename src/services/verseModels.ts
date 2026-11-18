@@ -75,6 +75,9 @@ const isWeb = Platform.OS === 'web';
 /** Whisper runs through Transformers.js in the browser; Android runs FastConformer natively. */
 export const VERSE_MODELS: VerseModel[] = isWeb ? ALL_MODELS : ALL_MODELS.filter(model => model.worker === 'fastconformer');
 
+/** The model the verse finder uses unless another one is picked under its technical details */
+export const DEFAULT_MODEL_ID: VerseModelId = 'fastconformer';
+
 export const getVerseModel = (id: VerseModelId): VerseModel =>
     VERSE_MODELS.find(model => model.id === id) ?? VERSE_MODELS[0];
 

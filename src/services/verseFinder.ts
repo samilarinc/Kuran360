@@ -261,8 +261,11 @@ export interface Recording {
 }
 
 const startRecordingNative = async (): Promise<Recording> => {
-    const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
-    if (granted !== PermissionsAndroid.RESULTS.GRANTED) throw new Error('Microphone permission denied');
+    // On iOS the native module asks for the microphone itself
+    if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) throw new Error('Microphone permission denied');
+    }
     await QuranSpeech!.startRecording();
     return {
         stop: async () => takeSamples(await QuranSpeech!.stopRecording()),

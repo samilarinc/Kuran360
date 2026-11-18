@@ -52,6 +52,9 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   const { addToLastRead } = useUserData();
   const { audioState, playVerse, stop, setVersesForAutoplay } = useGlobalAudio();
   const flatListRef = useRef<FlatList>(null);
+  const webScrollRef = useRef<ScrollView>(null);
+  // Attempts to reach a verse that wasn't rendered yet (see onScrollToIndexFailed)
+  const scrollRetries = useRef(0);
   const initialScrollDone = useRef(false);
   const { goToSurahVerse } = useNavigationHelpers();
   // Surah of the last verse audio played, to tell autoplay moving on from the user opening another surah
@@ -123,9 +126,11 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
   // Scroll to bookmark/verse index on load (non-paginated view)
   useEffect(() => {
     const targetIndex = route.params.verseIndex;
-    if (targetIndex === undefined || targetIndex === 0 || settings.usePaginatedView || initialScrollDone.current) return;
+    if (settings.usePaginatedView || initialScrollDone.current) return;
     if (surah.verses.length === 0) return;
+    // Only on load: the index changes later as the reader scrolls, and that must not move the list
     initialScrollDone.current = true;
+    if (targetIndex === undefined || targetIndex === 0) return;
     const timer = setTimeout(() => {
       if (Platform.OS === 'web') {
         // Web: all items already in DOM via ScrollView, scrollIntoView works directly
@@ -227,30 +232,25 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
     setCurrentPaginatedIndex(verseIndex);
   }, [updateVerseUrl, surah]);
 
-  // Handle viewable items change to update URL
+  // Tracks the first verse on screen (native list); the effect below records it
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0 && typeof viewableItems[0].index === 'number') {
       setVisibleVerseIndex(viewableItems[0].index);
     }
-    if (viewableItems.length > 0 && updateVerseUrl && !settings.usePaginatedView) {
-      const firstVisibleItem = viewableItems[0];
-      if (firstVisibleItem && firstVisibleItem.item) {
-        const verseIndex = surah.verses.findIndex(
-          v => v.surahNumber === firstVisibleItem.item.surahNumber &&
-            v.number === firstVisibleItem.item.number
-        );
-        if (verseIndex !== -1) {
-          updateVerseUrl(surah, verseIndex);
-        }
-      }
-    }
   }).current;
+
+  // The list's position goes into the URL and the history entry, so coming back reopens the verse being read
+  useEffect(() => {
+    if (settings.usePaginatedView || !updateVerseUrl || surah.verses.length === 0) return;
+    updateVerseUrl(surah, visibleVerseIndex);
+  }, [visibleVerseIndex, settings.usePaginatedView, updateVerseUrl, surah]);
 
   // Web renders every verse in a plain ScrollView (no viewability callbacks), so find the first
   // verse still below the top edge of the scroll area by binary search over the verse elements
-  const handleWebScroll = useCallback((event: any) => {
+  const handleWebScroll = useCallback(() => {
     if (Platform.OS !== 'web' || typeof document === 'undefined') return;
-    const container = event.target as HTMLElement | null;
+    // react-native-web's scroll event carries no target; the DOM node comes from the ScrollView
+    const container = (webScrollRef.current as any)?.getScrollableNode?.() as HTMLElement | null;
     if (!container?.getBoundingClientRect) return;
     const topEdge = container.getBoundingClientRect().top;
     let low = 0;
@@ -330,6 +330,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
             // Web: ScrollView renders all items immediately — no virtualization,
             // so scrollIntoView works reliably for bookmark navigation
             <ScrollView
+              ref={webScrollRef}
               contentContainerStyle={common.pbXl}
               showsVerticalScrollIndicator={false}
               onScroll={handleWebScroll}
@@ -364,6 +365,11 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               viewabilityConfig={viewabilityConfig}
               onScrollBeginDrag={handleScrollBeginDrag}
               onScrollToIndexFailed={(info) => {
+                // The verse isn't rendered yet: jump near it by the average height, which renders it, then land on it.
+                // Retrying the same index alone kept failing for verses past the first batch and left the list at the top.
+                flatListRef.current?.scrollToOffset({ offset: info.averageItemLength * info.index, animated: false });
+                if (scrollRetries.current >= 5) return;
+                scrollRetries.current++;
                 setTimeout(() => {
                   flatListRef.current?.scrollToIndex({
                     index: Math.min(info.index, surah.verses.length - 1),

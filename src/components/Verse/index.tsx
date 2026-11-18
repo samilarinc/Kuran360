@@ -6,8 +6,8 @@ import {
   Platform,
   LayoutChangeEvent,
 } from 'react-native';
-import { Bookmark, Library, Share2, Play, Square, BrainCircuit, BookOpenText } from 'lucide-react-native';
-import { Verse as VerseType, VerseShareData, WordTranslation } from '@/types';
+import { Bookmark, Library, Play, Square, BrainCircuit, BookOpenText } from 'lucide-react-native';
+import { Verse as VerseType, WordTranslation } from '@/types';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -16,24 +16,17 @@ import { getFontOption, getArabicFontFamily } from '@/constants/fonts';
 import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useActiveWord } from '@/hooks/useActiveWordIndex';
 import { RecitedBackdrop, SpokenWordMarker, useHiddenWordStyle } from '../SpokenWordMarker';
-import { ShareModal } from '../ShareModal';
 import { ArabicText } from '../ArabicText';
 import { WordRootModal } from '../WordRootModal';
 import { ShareService } from '@/utils/shareUtils';
 import { getSurahsList } from '@/data/quranData';
 import { useTranslation } from 'react-i18next';
-import { getSurahNameByNumber } from '@/utils/surahName';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
 import { formatVerseNumber } from '@/utils/numerals';
-import { formatRoot, getSpacedArabicText, getWordSegments } from '@/utils/arabicText';
+import { formatRoot, getWordSegments } from '@/utils/arabicText';
 import { createStyles } from './index.styles';
 import type { CommonStyles } from '@/theme/common.styles';
-import { TAFSIR_COLOR } from '@/theme';
 
-const BOOKMARK_COLOR = '#F43F5E';
-const ALL_TRANSLATIONS_COLOR = '#6366F1';
-const SHARE_COLOR = '#F97316';
-const PLAY_COLOR = '#10B981';
 
 // Mouse/trackpad that can hover. Touch screens (phones on web, native) open the card with a tap instead.
 const CAN_HOVER =
@@ -158,7 +151,7 @@ interface VerseProps {
   navigation?: any; // Navigation prop for going to the all translations and tafsir screens
   /** Replaces the verse number in its badge, e.g. with the surah name where the surah isn't otherwise visible */
   label?: string;
-  /** false hides the bookmark, translations and share buttons; the play button stays */
+  /** false hides the bookmark, translations and tafsir buttons; the play button stays */
   showActions?: boolean;
 }
 
@@ -175,7 +168,6 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
   const { addBookmark, removeBookmark, isBookmarked, bookmarks } = useUserData();
   const { startMemorization, cancelMemorization } = useGlobalAudio();
   const [memOpen, setMemOpen] = useState(false);
-  const [shareModalVisible, setShareModalVisible] = useState(false);
   const [selectedWord, setSelectedWord] = useState<WordTranslation | null>(null);
   const maxEnd = useMemo(() => {
     // Cap strictly to provided surah count; if missing, default to current verse (no growth)
@@ -218,7 +210,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
             styles.translationTitle,
             isFavorite && styles.favoriteTranslationTitle
           ]}>
-            {isFavorite && '⭐ '}{translationName}:
+            {translationName}
           </Text>
           <Text style={[
             styles.translationText,
@@ -294,20 +286,6 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
     }
   };
 
-  // Share data için gerekli bilgileri hazırla
-  const shareData: VerseShareData = useMemo(() => {
-    const surahName = getSurahNameByNumber(t, verse.surahNumber);
-    const translation = verse.allTranslations?.[settings.favoriteTranslation] || verse.translation || '';
-
-    return {
-      arabicText: getSpacedArabicText(verse),
-      translation: translation,
-      surahName: surahName,
-      verseNumber: verse.number,
-      surahNumber: verse.surahNumber,
-    };
-  }, [verse, settings.favoriteTranslation, t]);
-
   return (
     <View style={styles.container}>
       <View style={[common.rowBetween, common.mbMd]}>
@@ -319,45 +297,36 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
         <View style={common.rowGap}>
           {showActions && showBookmarkButton && user && (
             <TouchableOpacity
-              style={[styles.iconButton, { backgroundColor: BOOKMARK_COLOR + '1A', borderColor: BOOKMARK_COLOR }]}
+              style={styles.iconButton}
               onPress={handleBookmarkToggle}
             >
               <Bookmark
                 size={18}
-                color={BOOKMARK_COLOR}
-                fill={isBookmarked(verse.surahNumber, verse.number) ? BOOKMARK_COLOR : 'transparent'}
+                color={isBookmarked(verse.surahNumber, verse.number) ? theme.accent : theme.iconPrimary}
+                fill={isBookmarked(verse.surahNumber, verse.number) ? theme.accent : 'transparent'}
               />
             </TouchableOpacity>
           )}
           {showActions && navigation && (
             <TouchableOpacity
-              style={[styles.iconButton, { backgroundColor: ALL_TRANSLATIONS_COLOR + '1A', borderColor: ALL_TRANSLATIONS_COLOR }]}
+              style={styles.iconButton}
               onPress={() => navigation.navigate('AllTranslations', { verse })}
             >
-              <Library size={18} color={ALL_TRANSLATIONS_COLOR} />
+              <Library size={18} color={theme.iconPrimary} />
             </TouchableOpacity>
           )}
           {showActions && navigation && (
             <TouchableOpacity
-              style={[styles.iconButton, { backgroundColor: TAFSIR_COLOR + '1A', borderColor: TAFSIR_COLOR }]}
+              style={styles.iconButton}
               onPress={() => navigation.navigate('Tafsir', { surahNumber: verse.surahNumber, verseNumber: verse.number })}
               accessibilityLabel={t('tafsir.open')}
             >
-              <BookOpenText size={17} color={TAFSIR_COLOR} />
-            </TouchableOpacity>
-          )}
-          {showActions && (
-            <TouchableOpacity
-              style={[styles.iconButton, { backgroundColor: SHARE_COLOR + '1A', borderColor: SHARE_COLOR }]}
-              onPress={() => setShareModalVisible(true)}
-            >
-              <Share2 size={16} color={SHARE_COLOR} />
+              <BookOpenText size={17} color={theme.iconPrimary} />
             </TouchableOpacity>
           )}
           <TouchableOpacity
             style={[
               styles.playButton,
-              { backgroundColor: PLAY_COLOR },
               isPlaying && styles.playButtonActive
             ]}
             onPress={() => onPlayPress(verse)}
@@ -399,7 +368,7 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
           <View style={common.mtSm}>
             {!memOpen ? (
               <TouchableOpacity style={styles.memToggle} onPress={() => setMemOpen(true)}>
-                <BrainCircuit size={18} color={theme.headerText} />
+                <BrainCircuit size={18} color={theme.iconPrimary} />
                 <Text style={styles.memToggleText}>{t('verse.memorize')}</Text>
               </TouchableOpacity>
             ) : (
@@ -490,13 +459,6 @@ export const Verse: React.FC<VerseProps> = ({ verse, isPlaying, onPlayPress, sur
           </View>
         )}
       </View>
-
-      {/* Share Modal */}
-      <ShareModal
-        isVisible={shareModalVisible}
-        onClose={() => setShareModalVisible(false)}
-        verseData={shareData}
-      />
     </View>
   );
 };
