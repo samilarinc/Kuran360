@@ -35,6 +35,20 @@ export const createStyles = (theme: Theme, common: CommonStyles) => {
             alignItems: 'center',
             gap: 2,
         },
+        // The auto-advance switch, under the verse navigation
+        autoRow: {
+            ...common.row,
+            gap: SPACING.sm,
+            marginTop: SPACING.md,
+            paddingTop: SPACING.md,
+            borderTopWidth: 1,
+            borderTopColor: theme.border,
+        },
+        // "Flawless, moving on" with the button that stays on this verse
+        autoNotice: {
+            ...common.rowBetween,
+            gap: SPACING.sm,
+        },
         // Listen and show/hide above the verse, apart from the text below
         verseActions: {
             ...common.rowBetween,

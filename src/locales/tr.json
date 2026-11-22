@@ -994,6 +994,14 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "23 Kasım 2026",
+        "bullets": [
+          "Ezber kontrolünde otomatik ilerleme: ayeti hatasız okuyunca sonraki ayete kendiliğinden geçer, isterseniz kapatabilirsiniz",
+          "Ezber kontrolünde ayetler arasında kaydırarak geçebilirsiniz; sağa kaydırınca sonraki ayet gelir",
+          "Ezber kontrolü kaldığınız sure, ayet ve okuma sonuçlarıyla açılıyor"
+        ]
+      },
+      {
         "date": "22 Kasım 2026",
         "bullets": [
           "Android'de bazen hiç çalmayan tilavet ve zikir sesleri düzeldi; ekran kilitlense veya uygulamadan çıkılsa da tilavet devam ediyor",
@@ -1730,6 +1738,7 @@
     "nothingHeard": "Ses anlaşılamadı. Biraz daha yüksek ve net okumayı deneyin.",
     "retry": "Tekrar dene",
     "nextVerse": "Sonraki ayet",
+    "previousVerse": "Önceki ayet",
     "legend": {
       "ok": "Doğru ({{count}})",
       "wrong": "Yanlış ({{count}})",
@@ -1739,6 +1748,10 @@
     "progress": "{{read}} / {{count}} ayet okundu",
     "autoAdvance": "Hatasız! Sonraki ayete geçiliyor…",
     "autoFinish": "Hatasız! Özet hazırlanıyor…",
+    "autoAdvanceSwitch": "Otomatik ilerle",
+    "autoAdvanceSwitchHint": "Ayeti hatasız okuyunca sonrakine geçer",
+    "stay": "Bu ayette kal",
+    "swipeHint": "Ayetler arasında kaydırarak geçebilirsiniz; sağa kaydırınca sonraki ayet gelir.",
     "showSummary": "Özeti gör",
     "finish": "Bitir",
     "scope": {

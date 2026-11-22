@@ -19,6 +19,8 @@ interface AppButtonProps {
     loading?: boolean;
     style?: StyleProp<ViewStyle>;
     textStyle?: StyleProp<TextStyle>;
+    /** Read by screen readers; needed for icon-only buttons */
+    accessibilityLabel?: string;
 }
 
 export const AppButton: React.FC<AppButtonProps> = ({
@@ -28,6 +30,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
     size = 'medium',
     shape = 'default',
     icon,
+    accessibilityLabel,
     iconPosition = 'left',
     disabled = false,
     loading = false,
@@ -74,6 +77,8 @@ export const AppButton: React.FC<AppButtonProps> = ({
             onPress={onPress}
             disabled={disabled || loading}
             activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel={accessibilityLabel ?? title}
         >
             {loading ? (
                 <ActivityIndicator size="small" color={variant === 'outline' || variant === 'ghost' ? theme.primary : '#FFFFFF'} />
