@@ -1405,7 +1405,10 @@
       {
         "date": "November 23, 2026",
         "bullets": [
-          "Asma ul-Husna page: the 99 names of Allah in Arabic, with reading and meaning; search them and tap a name to see it large (in the Prayers and Duas menu)"
+          "Asma ul-Husna page: the 99 names of Allah in Arabic, with reading and meaning; search them and tap a name to see it large (in the Prayers and Duas menu)",
+          "Memorization check auto-advance: a flawless read moves on to the next verse by itself; you can turn it off",
+          "Swipe between verses in the memorization check; swiping right brings the next verse",
+          "The memorization check reopens where you left off, with your surah, verse and results"
         ]
       },
       {
@@ -2144,6 +2147,7 @@
     "nothingHeard": "Couldn't make out any speech. Try reciting a bit louder and clearer.",
     "retry": "Try again",
     "nextVerse": "Next verse",
+    "previousVerse": "Previous verse",
     "legend": {
       "ok": "Correct ({{count}})",
       "wrong": "Misread ({{count}})",
@@ -2153,6 +2157,10 @@
     "progress": "{{read}} / {{count}} verses read",
     "autoAdvance": "Flawless! Moving to the next verse…",
     "autoFinish": "Flawless! Preparing the summary…",
+    "autoAdvanceSwitch": "Auto-advance",
+    "autoAdvanceSwitchHint": "Moves to the next verse after a flawless read",
+    "stay": "Stay on this verse",
+    "swipeHint": "Swipe to move between verses; swiping right brings the next verse.",
     "showSummary": "See summary",
     "finish": "Finish",
     "scope": {

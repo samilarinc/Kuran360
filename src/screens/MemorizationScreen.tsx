@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Mic, Square, Play, RotateCcw, Boxes, TriangleAlert, ChevronLeft, ChevronRight, Eye, EyeOff, ChevronDown, Flag, Volume2, Lightbulb, Info } from 'lucide-react-native';
+import { Mic, Square, Play, RotateCcw, Boxes, TriangleAlert, ChevronLeft, ChevronRight, Eye, EyeOff, ChevronDown, Flag, Volume2, Lightbulb, Info, ChevronsLeft } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
 import { ArabicText } from '@/components/ArabicText';
 import { DownloadRequired } from '@/components/DownloadRequired';
 import { MemorizationAttempt, MemorizationSummary } from '@/components/MemorizationSummary';
 import { ProgressBar } from '@/components/ProgressBar';
+import { ModernSwitch } from '@/components/ModernSwitch';
+import { VerseSwipeStage } from '@/components/VerseSwipeStage';
 import { LETTER_WRONG_COLOR, RecitedVerse } from '@/components/RecitedVerse';
 import { MemorizationSelection, SurahVersePickerModal } from '@/components/SurahVersePickerModal';
 import { VerseModelManager } from '@/components/VerseModelManager';
@@ -22,6 +24,7 @@ import { getWordSegments } from '@/utils/arabicText';
 import { checkRecitation, isFlawless, WordStatus } from '@/utils/recitationCheck';
 import { toSkeleton } from '@/utils/verseMatcher';
 import { MAX_RECORDING_SECONDS } from '@/services/verseFinder';
+import { loadMemorizationSession, saveMemorizationSession } from '@/services/memorizationSession';
 import { createStyles as createFinderStyles } from './VerseFinderScreen.styles';
 import { createStyles } from './MemorizationScreen.styles';
 
@@ -30,7 +33,7 @@ interface MemorizationScreenProps {
     isDataAvailable: boolean;
 }
 
-/** How long a correctly read verse stays on screen before a sequential session moves on. */
+/** How long a correctly read verse stays on screen before auto-advance moves on. */
 const AUTO_ADVANCE_MS = 1500;
 
 const versesOf = (selection: MemorizationSelection): number[] =>
@@ -51,7 +54,12 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
     const [queue, setQueue] = useState<number[]>([]);
     const [attempts, setAttempts] = useState<Record<number, MemorizationAttempt>>({});
     const [finished, setFinished] = useState(false);
+    // A flawless read is about to move on (the countdown is running)
     const [autoAdvance, setAutoAdvance] = useState(false);
+    // The user's switch: move on by itself after a flawless read
+    const [autoAdvanceEnabled, setAutoAdvanceEnabled] = useState(true);
+    // The saved session is loaded before anything is shown or saved
+    const [restored, setRestored] = useState(false);
     const [pickerVisible, setPickerVisible] = useState(false);
     const [words, setWords] = useState<string[]>([]);
     const [revealed, setRevealed] = useState(false);
@@ -61,11 +69,31 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
     // Speech engine details and model choice stay behind the info button
     const [detailsVisible, setDetailsVisible] = useState(false);
     const sequential = selection.scope !== 'single';
-    const current = useRef({ words, verseNumber, sequential, hintCount });
-    current.current = { words, verseNumber, sequential, hintCount };
+    const surahVerseCount = surahs.find(s => s.number === selection.surahNumber)?.verseCount ?? 0;
+    const current = useRef({ words, verseNumber, sequential, hintCount, autoAdvanceEnabled, surahVerseCount });
+    current.current = { words, verseNumber, sequential, hintCount, autoAdvanceEnabled, surahVerseCount };
+
+    useEffect(() => {
+        loadMemorizationSession().then(saved => {
+            if (saved?.selection && saved.verseNumber) {
+                setSelection(saved.selection);
+                setVerseNumber(saved.verseNumber);
+                setQueue(saved.queue ?? []);
+                setAttempts(saved.attempts ?? {});
+                setFinished(!!saved.finished);
+            }
+            if (typeof saved?.autoAdvance === 'boolean') setAutoAdvanceEnabled(saved.autoAdvance);
+            setRestored(true);
+        });
+    }, []);
+
+    useEffect(() => {
+        if (!restored) return;
+        saveMemorizationSession({ selection, verseNumber, queue, attempts, finished, autoAdvance: autoAdvanceEnabled });
+    }, [restored, selection, verseNumber, queue, attempts, finished, autoAdvanceEnabled]);
 
     const handleTranscript = useCallback((text: string) => {
-        const { words: verseWords, verseNumber: verse, sequential: inSession, hintCount: hints } = current.current;
+        const { words: verseWords, verseNumber: verse, sequential: inSession, hintCount: hints, autoAdvanceEnabled: auto, surahVerseCount: lastVerse } = current.current;
         // Nothing usable was heard (silence, noise): there's nothing to mark
         if (toSkeleton(text).length === 0) {
             setAttempts(({ [verse]: _, ...rest }) => rest);
@@ -73,7 +101,8 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
         }
         const result = checkRecitation(verseWords, text);
         setAttempts(previous => ({ ...previous, [verse]: { result, transcript: text, hints } }));
-        if (inSession && isFlawless(result)) setAutoAdvance(true);
+        // A single verse moves on to the next verse of the surah; a session to its next verse or the summary
+        if (auto && isFlawless(result) && (inSession || verse < lastVerse)) setAutoAdvance(true);
     }, []);
 
     const recognizer = useSpeechRecognizer(handleTranscript);
@@ -136,8 +165,12 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
         recognizer.reset();
     };
 
-    /** The next verse of the session after this one, or the summary after the last. */
+    /** The next verse of the session after this one, or the summary after the last; the surah's next verse for a single verse. */
     const advance = () => {
+        if (!sequential) {
+            goToVerse(verseNumber + 1);
+            return;
+        }
         const next = queue.find(verse => verse > verseNumber);
         if (next) goToVerse(next);
         else finish();
@@ -167,6 +200,11 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
         recognizer.reset();
     };
 
+    const toggleAutoAdvance = (enabled: boolean) => {
+        setAutoAdvanceEnabled(enabled);
+        if (!enabled) setAutoAdvance(false);
+    };
+
     const header = (
         <AppHeader
             title={t('memorization.title')}
@@ -176,6 +214,8 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
             onHomePress={() => navigation.navigate('Main')}
         />
     );
+
+    if (!restored) return <SafeAreaView style={common.container}>{header}</SafeAreaView>;
 
     if (!isDataAvailable) {
         return (
@@ -238,13 +278,15 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
             {!finished && (
                 <>
                     <View style={styles.navRow}>
+                        {/* Mushaf direction, like the swipe: the next verse lies to the left */}
                         <AppButton
                             icon={<ChevronLeft size={20} color={theme.primary} />}
                             variant="outline"
                             shape="circle"
                             size="small"
-                            onPress={() => goToVerse(verseNumber - 1)}
-                            disabled={busy || verseNumber <= firstVerse}
+                            onPress={() => goToVerse(verseNumber + 1)}
+                            disabled={busy || verseNumber >= lastVerse}
+                            accessibilityLabel={t('memorization.nextVerse')}
                         />
                         <View style={styles.navCenter}>
                             <Text style={common.title}>{t('memorization.verseOf', { verse: verseNumber, count: verseCount })}</Text>
@@ -257,11 +299,20 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                             variant="outline"
                             shape="circle"
                             size="small"
-                            onPress={() => goToVerse(verseNumber + 1)}
-                            disabled={busy || verseNumber >= lastVerse}
+                            onPress={() => goToVerse(verseNumber - 1)}
+                            disabled={busy || verseNumber <= firstVerse}
+                            accessibilityLabel={t('memorization.previousVerse')}
                         />
                     </View>
                     {sequential && <ProgressBar progress={(readCount / sessionVerses.length) * 100} height={6} />}
+                    <View style={styles.autoRow}>
+                        <ChevronsLeft size={20} color={theme.accent} />
+                        <View style={common.flex1}>
+                            <Text style={common.text}>{t('memorization.autoAdvanceSwitch')}</Text>
+                            <Text style={common.smallText}>{t('memorization.autoAdvanceSwitchHint')}</Text>
+                        </View>
+                        <ModernSwitch value={autoAdvanceEnabled} onValueChange={toggleAutoAdvance} theme={theme} />
+                    </View>
                 </>
             )}
         </View>
@@ -295,7 +346,16 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                     />
                 ) : (
                     <>
-                        <View style={common.sectionCard}>
+                        <VerseSwipeStage
+                            style={common.sectionCard}
+                            pageKey={verseNumber}
+                            canNext={verseNumber < lastVerse}
+                            canPrevious={verseNumber > firstVerse}
+                            onNext={() => goToVerse(verseNumber + 1)}
+                            onPrevious={() => goToVerse(verseNumber - 1)}
+                            disabled={busy}
+                            countdownMs={autoAdvance ? AUTO_ADVANCE_MS : null}
+                        >
                             <View style={styles.verseActions}>
                                 <AppButton
                                     title={t(listening ? 'memorization.stopListening' : 'memorization.listen')}
@@ -350,9 +410,12 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                                     {words.slice(0, hintCount).join(' ')}{hintCount < words.length ? ' …' : ''}
                                 </ArabicText>
                             ) : (
-                                <Text style={styles.hiddenVerse}>{t('memorization.hiddenVerse')}</Text>
+                                <>
+                                    <Text style={styles.hiddenVerse}>{t('memorization.hiddenVerse')}</Text>
+                                    <Text style={[common.note, common.textCenter]}>{t('memorization.swipeHint')}</Text>
+                                </>
                             )}
-                        </View>
+                        </VerseSwipeStage>
 
                         {result && attempt && (
                             <View style={common.sectionCard}>
@@ -363,9 +426,17 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                                         : t('memorization.summary', { wrong: count('wrong'), missed: count('missed') })}
                                 </Text>
                                 {autoAdvance && (
-                                    <Text style={[common.textAccent, common.mtSm]}>
-                                        {t(isLastInSession ? 'memorization.autoFinish' : 'memorization.autoAdvance')}
-                                    </Text>
+                                    <View style={[styles.autoNotice, common.mtSm]}>
+                                        <Text style={[common.textAccent, common.flex1]}>
+                                            {t(sequential && isLastInSession ? 'memorization.autoFinish' : 'memorization.autoAdvance')}
+                                        </Text>
+                                        <AppButton
+                                            title={t('memorization.stay')}
+                                            variant="ghost"
+                                            size="small"
+                                            onPress={() => setAutoAdvance(false)}
+                                        />
+                                    </View>
                                 )}
                                 <Text style={[common.sectionLabel, common.mtMd, common.mbXs]}>{t('verseFinder.heard')}</Text>
                                 <ArabicText style={styles.transcript}>{attempt.transcript}</ArabicText>
@@ -449,8 +520,7 @@ export const MemorizationScreen: React.FC<MemorizationScreenProps> = ({ navigati
                                 {result && !autoAdvance && (sequential || verseNumber < verseCount) && (
                                     <AppButton
                                         title={t(sequential && isLastInSession ? 'memorization.showSummary' : 'memorization.nextVerse')}
-                                        icon={<ChevronRight size={16} color="#FFFFFF" />}
-                                        iconPosition="right"
+                                        icon={<ChevronLeft size={16} color={theme.headerText} />}
                                         size="small"
                                         onPress={sequential ? advance : () => goToVerse(verseNumber + 1)}
                                         disabled={busy}
