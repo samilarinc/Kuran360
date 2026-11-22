@@ -99,3 +99,10 @@ __pycache__/
 
 # Tafsir texts built by scripts/build_tafsir.py; deployed by sync.sh, not kept in git
 public/tafsir-data/
+
+# Local Claude Code state
+.claude/worktrees/
+.claude/settings.local.json
+
+# App review video, uploaded to the server by hand
+public/app-review-demo.mp4

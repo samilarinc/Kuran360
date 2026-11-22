@@ -138,7 +138,16 @@
     "bugReports": "Hata Raporları",
     "bugReportsSubtitle": "Kullanıcıların gönderdiği raporlar (yalnızca admin)",
     "myBugReports": "Hata Raporlarım",
-    "myBugReportsSubtitle": "Gönderdiğiniz raporlar ve durumları"
+    "myBugReportsSubtitle": "Gönderdiğiniz raporlar ve durumları",
+    "deleteAccount": "Hesabı Sil",
+    "deleteAccountTitle": "Hesabı sil",
+    "deleteAccountConfirm": "Hesabın ve sunucudaki tüm verilerin (profil, favoriler, ayarlar, gelen dua istekleri, oluşturduğun hatimler) kalıcı olarak silinecek. Bu işlem geri alınamaz.",
+    "deleteAccountDoneTitle": "Hesap silindi",
+    "deleteAccountDoneMessage": "Hesabın ve verilerin silindi.",
+    "deleteAccountReauthTitle": "Yeniden giriş gerekli",
+    "deleteAccountReauthMessage": "Güvenlik için önce tekrar giriş yapman gerekiyor. Giriş yaptıktan sonra \"Hesabı Sil\"e yeniden dokun.",
+    "deleteAccountErrorMessage": "Hesap silinirken bir hata oluştu. Lütfen tekrar dene.",
+    "signInAgain": "Tekrar giriş yap"
   },
   "prayerTimesScreen": {
     "permissionDeniedTitle": "İzin Reddedildi",
@@ -984,8 +993,15 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "20 Kasım 2026",
+        "bullets": [
+          "Bildirimdeki geri sayım, vakit girdiğinde telefon uykudayken bile hemen bir sonraki vakte geçiyor; sıfırı geçip ileri saymıyor"
+        ]
+      },
+      {
         "date": "18 Kasım 2026",
         "bullets": [
+          "iPhone desteği: Apple ile giriş, profilden hesap silme, herkese açık hatimleri bildirme ve oluşturanını engelleme",
           "Kelime kökü, tefsir veya meallerden geri dönünce okuduğunuz ayete dönülüyor, surenin başına değil",
           "Widgettaki ayete dokununca o ayet açılıyor; ilk 50 ayetten sonrası da",
           "Sayfa sayfa ayet görünümünde uzun ayetler yine aşağı kaydırılabiliyor",
@@ -993,13 +1009,13 @@
           "Ezber Kontrolü sadeleşti: model ayrıntıları \"i\" tuşunun arkasında, model yoksa mikrofona dokununca iniyor",
           "Ezber seçiminde ayet numarası alanı düzgün görünüyor; altındaki gereksiz sure yazısı kaldırıldı",
           "Kalıcı namaz vakti bildirimi koyu modda okunaklı: yazılar ve o anki vaktin vurgusu artık koyu bildirim panelinde de net görünüyor (Xiaomi/Redmi dahil)",
-          "Umre hazırlık listesi yenilendi: yolculuk tek bir rota olarak görünüyor, her şehirde kaç gece kalacağınız yazıyor; listeye kendi maddelerinizi ekleyip silebiliyorsunuz",
-          "Umre listesindeki otel araması artık her zaman doğru şehri açıyor",
           "Hicri Takvim'e ikinci görünüm: her günün ay evresi ve miladi tarihiyle takvim, notlar aynı ekranda, yılın kandil ve bayramları kalan günleriyle; sağ alttaki düğmeyle ay halkasına geçebilirsiniz",
           "Hicri Takvim tarihleri Diyanet'le birebir aynı; önceden bir iki gün geride kalıyordu",
           "Ay halkası seçtiğiniz günü tepeye getirecek şekilde dönüyor; kandil ve bayramlar altın haleyle parlıyor",
           "Halkada bugünden sıradaki kandile yaldızlı bir yay ve kalan gün sayısı; kandil akşamı \"Bu gece …\" yazısı",
-          "Gün panelinde notlara açılan bir satır ve kandil gecesinin hangi akşam başladığı; bir güne basılı tutunca tarihi okunur yazıyla görünüyor"
+          "Gün panelinde notlara açılan bir satır ve kandil gecesinin hangi akşam başladığı; bir güne basılı tutunca tarihi okunur yazıyla görünüyor",
+          "Umre hazırlık listesi yenilendi: yolculuk tek bir rota olarak görünüyor, her şehirde kaç gece kalacağınız yazıyor; listeye kendi maddelerinizi ekleyip silebiliyorsunuz",
+          "Umre listesindeki otel araması artık her zaman doğru şehri açıyor"
         ]
       },
       {
@@ -2021,5 +2037,18 @@
         ]
       }
     }
+  },
+  "moderation": {
+    "rulesTitle": "Topluluk kuralları",
+    "rulesMessage": "Herkese açık hatimleri tüm kullanıcılar görür. Hakaret, nefret söylemi, müstehcen, yanıltıcı veya rahatsız edici içeriğe izin verilmez. Kurallara uymayan içerikler kaldırılır ve sahiplerinin hesapları kapatılabilir.",
+    "rulesAccept": "Kabul ediyorum",
+    "report": "Bildir",
+    "menuTitle": "Bu hatim",
+    "menuMessage": "Uygunsuz içeriği bize bildirebilir veya oluşturanın hatimlerini artık görmemek için engelleyebilirsin.",
+    "block": "{{name}} adlı kişiyi engelle",
+    "reportConfirm": "Bu hatim uygunsuz içerik olarak bildirilsin mi?",
+    "reportedTitle": "Teşekkürler",
+    "reportedMessage": "Bildirimin bize ulaştı; 24 saat içinde inceleyip gerekirse içeriği kaldıracağız.",
+    "reportError": "Bildirim gönderilemedi. Lütfen tekrar dene."
   }
 }

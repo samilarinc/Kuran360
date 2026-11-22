@@ -138,7 +138,16 @@
     "bugReports": "Bug Reports",
     "bugReportsSubtitle": "Reports sent by users (admin only)",
     "myBugReports": "My Bug Reports",
-    "myBugReportsSubtitle": "Reports you've sent and their status"
+    "myBugReportsSubtitle": "Reports you've sent and their status",
+    "deleteAccount": "Delete Account",
+    "deleteAccountTitle": "Delete account",
+    "deleteAccountConfirm": "Your account and all your data on the server (profile, favorites, settings, received dua requests, hatims you created) will be deleted permanently. This cannot be undone.",
+    "deleteAccountDoneTitle": "Account deleted",
+    "deleteAccountDoneMessage": "Your account and data have been deleted.",
+    "deleteAccountReauthTitle": "Sign in again",
+    "deleteAccountReauthMessage": "For security, please sign in again first. After signing in, tap \"Delete Account\" again.",
+    "deleteAccountErrorMessage": "Something went wrong while deleting your account. Please try again.",
+    "signInAgain": "Sign in again"
   },
   "prayerTimesScreen": {
     "permissionDeniedTitle": "Permission Denied",
@@ -984,8 +993,15 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "November 20, 2026",
+        "bullets": [
+          "The countdown in the notification moves on to the next prayer right when the time comes, even while the phone sleeps, instead of running past zero"
+        ]
+      },
+      {
         "date": "November 18, 2026",
         "bullets": [
+          "iPhone support: Sign in with Apple, account deletion from the profile, reporting public hatims and blocking their creator",
           "Coming back from a word root, tafsir or translations returns to the verse you were reading, not the start of the surah",
           "Tapping the verse on the widget opens that verse, including verses past the first 50",
           "Long verses scroll again in the one-verse-per-page view",
@@ -993,13 +1009,13 @@
           "Memorization check is simpler: model details sit behind the \"i\" button, and tapping the mic downloads the speech model if needed",
           "The verse number field in the memorization picker displays properly; the redundant surah line under it is gone",
           "The ongoing prayer times notification is readable in dark mode: text and the current prayer highlight stay clear on a dark notification shade, including on Xiaomi/Redmi",
-          "The Umrah checklist is redesigned: your trip shows as one route with nights per city, and you can add and delete your own items",
-          "Hotel search on the Umrah checklist always opens the right city",
           "Hijri Calendar has a second view: a month grid with each day's moon phase and Gregorian date, notes on the same screen, and the year's kandils and holidays with days remaining; switch to the moon ring with the button at the bottom right",
           "Hijri Calendar dates now match Diyanet exactly; before they could be a day or two behind",
           "The moon ring turns to bring the selected day to the top; kandils and holidays glow with a gold halo",
           "A gilded arc on the ring from today to the next kandil with the days left; on a kandil evening it says \"Tonight is …\"",
-          "The day panel has a line that opens your notes and shows on which evening a kandil night begins; press and hold a day to read its date in plain digits"
+          "The day panel has a line that opens your notes and shows on which evening a kandil night begins; press and hold a day to read its date in plain digits",
+          "The Umrah checklist is redesigned: your trip shows as one route with nights per city, and you can add and delete your own items",
+          "Hotel search on the Umrah checklist always opens the right city"
         ]
       },
       {
@@ -2020,5 +2036,18 @@
         ]
       }
     }
+  },
+  "moderation": {
+    "rulesTitle": "Community rules",
+    "rulesMessage": "Public hatims are visible to all users. Insults, hate speech, sexual, misleading or offensive content is not allowed. Content that breaks these rules is removed and its owner's account may be closed.",
+    "rulesAccept": "I agree",
+    "report": "Report",
+    "menuTitle": "This hatim",
+    "menuMessage": "You can report inappropriate content to us, or block its creator to stop seeing their hatims.",
+    "block": "Block {{name}}",
+    "reportConfirm": "Report this hatim as inappropriate?",
+    "reportedTitle": "Thank you",
+    "reportedMessage": "We received your report and will review it within 24 hours, removing the content if needed.",
+    "reportError": "The report could not be sent. Please try again."
   }
 }
