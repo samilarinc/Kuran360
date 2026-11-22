@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { LayoutChangeEvent, Linking, SafeAreaView, ScrollView, StyleProp, Text, TextStyle, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { ExternalLink, HandHeart } from 'lucide-react-native';
+import { BookOpenText, ExternalLink, HandHeart } from 'lucide-react-native';
 import { AppButton } from '@/components/AppButton';
 import { FontSizeToggle } from '@msarinc/ui';
 import { AppHeader } from '@/components/AppHeader';
@@ -14,6 +14,7 @@ import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { Dua, DUAS, partAtTime } from '@/data/duas';
+import { QURAN_DUAS } from '@/data/quranDuas';
 import type { ActiveWord } from '@/hooks/useActiveWordIndex';
 import { useDhikrAudio } from '@/hooks/useDhikrAudio';
 import { formatVerseNumber } from '@/utils/numerals';
@@ -66,6 +67,14 @@ export const DuasScreen: React.FC<DuasScreenProps> = ({ navigation, duaId }) => 
                 onHomePress={() => navigation.navigate('Main')}
             />
             <ScrollView contentContainerStyle={common.listContent}>
+                <MenuListRow
+                    variant="card"
+                    icon={<BookOpenText size={26} color={theme.primary} />}
+                    iconColor={theme.primary + '15'}
+                    title={t('quranDuas.title')}
+                    subtitle={t('quranDuas.rowSubtitle', { count: QURAN_DUAS.length })}
+                    onPress={() => navigation.navigate('QuranDuas')}
+                />
                 {DUAS.map(item => (
                     <MenuListRow
                         key={item.id}

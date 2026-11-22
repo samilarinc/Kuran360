@@ -36,6 +36,7 @@ import { TopicSearchScreen } from '@/screens/TopicSearchScreen';
 import { MemorizationScreen } from '@/screens/MemorizationScreen';
 import { ZikirmatikScreen } from '@/screens/ZikirmatikScreen';
 import { DuasScreen } from '@/screens/DuasScreen';
+import { QuranDuasScreen } from '@/screens/QuranDuasScreen';
 import { RootVersesScreen } from '@/screens/RootVersesScreen';
 import { BugReportsScreen } from '@/screens/BugReportsScreen';
 import { ForumProvider } from '@/contexts/ForumContext';
@@ -96,12 +97,13 @@ export type RootStackParamList = {
   Memorization: undefined;
   Zikirmatik: undefined;
   Duas: { duaId?: string } | undefined;
+  QuranDuas: undefined;
   RootVerses: { root: string };
   BugReports: undefined;
 };
 
 type NavigationHistoryItem = {
-  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'Duas' | 'RootVerses' | 'BugReports' | 'Tafsir' | 'DataManagement';
+  screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'Duas' | 'QuranDuas' | 'RootVerses' | 'BugReports' | 'Tafsir' | 'DataManagement';
   params?: {
     surah?: Surah;
     verseIndex?: number;
@@ -225,6 +227,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
         return '/zikirmatik';
       case 'Duas':
         return route.params?.duaId ? `/duas/${route.params.duaId}` : '/duas';
+      case 'QuranDuas':
+        return '/quran-duas';
       case 'RootVerses':
         return `/root/${rootToSlug(route.params?.root ?? '')}`;
       case 'BugReports':
@@ -355,6 +359,10 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
 
     if (pathname === '/zikirmatik') {
       return { screen: 'Zikirmatik' };
+    }
+
+    if (pathname === '/quran-duas') {
+      return { screen: 'QuranDuas' };
     }
 
     const duaMatch = pathname.match(/^\/duas(?:\/([^/]+))?$/);
@@ -522,7 +530,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
   }, [user, pendingRedirect, navigateToRoute]);
 
   const navigation = useMemo(() => ({
-    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'Duas' | 'RootVerses' | 'BugReports' | 'Tafsir' | 'DataManagement', params?: any) => {
+    navigate: (screen: 'Main' | 'Home' | 'SurahDetail' | 'Settings' | 'Search' | 'SearchMenu' | 'PrayerMenu' | 'TopicSearch' | 'About' | 'Profile' | 'Forum' | 'ForumThread' | 'RandomVerse' | 'AllTranslations' | 'Hatim' | 'HatimDetail' | 'PrayerTimes' | 'PrayerNotificationSettings' | 'Qibla' | 'Hutbe' | 'UmrahMenu' | 'UmrahProgress' | 'DuaList' | 'UmrahDuas' | 'UmrahChecklist' | 'DuaRequest' | 'HijriCalendar' | 'QuranPage' | 'VerseFinder' | 'Memorization' | 'Zikirmatik' | 'Duas' | 'QuranDuas' | 'RootVerses' | 'BugReports' | 'Tafsir' | 'DataManagement', params?: any) => {
       const route: NavigationHistoryItem = { screen, params };
 
       // Auth protection for Hatim screens
@@ -782,6 +790,8 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
               <ZikirmatikScreen navigation={navigation} />
             ) : currentRoute.screen === 'Duas' ? (
               <DuasScreen navigation={navigation} duaId={currentRoute.params?.duaId} />
+            ) : currentRoute.screen === 'QuranDuas' ? (
+              <QuranDuasScreen navigation={navigation} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'RootVerses' && currentRoute.params?.root ? (
               <RootVersesScreen navigation={navigation} root={currentRoute.params.root} isDataAvailable={isDataAvailable} />
             ) : currentRoute.screen === 'BugReports' ? (
