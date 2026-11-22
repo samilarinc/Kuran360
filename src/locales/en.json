@@ -1524,6 +1524,7 @@
       {
         "date": "November 23, 2026",
         "bullets": [
+          "Cleaner filters in Duas in the Quran: pick the grouping at the top and a person or topic from a list that slides up",
           "The Duas page uses the same tile layout as the main menu",
           "Asma ul-Husna page (in the Prayers and Duas menu): the 99 names as calligraphy plaques, with a name of the day and search; Allah's attributes are there too, each with a verse",
           "Memorization check auto-advance: a flawless read moves on to the next verse by itself; you can turn it off",
@@ -2610,8 +2611,16 @@
     "loading": "Loading the dua verses...",
     "downloadTitle": "Quran data required",
     "downloadDescription": "To show the dua verses with their Arabic and translation, download the Quran text first.",
-    "summary": "{{duas}} duas in {{verses}} verses of the Quran. Tap a verse to open it in the reader.",
-    "all": "All",
+    "orderNote": "{{duas}} duas in {{verses}} verses, from al-Fatiha to an-Nas",
+    "allPeople": "All people",
+    "allTopics": "All topics",
+    "pickPerson": "Choose a person",
+    "pickTopic": "Choose a topic",
+    "prophets": "Prophets",
+    "othersGroup": "Others",
+    "close": "Close",
+    "duaCount_one": "{{count}} dua",
+    "duaCount_other": "{{count}} duas",
     "verseLabel": "{{surah}} {{verse}}",
     "openHint": "Opens the verse in the reader",
     "modes": {

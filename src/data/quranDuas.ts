@@ -38,6 +38,9 @@ export const DUA_PEOPLE: DuaPerson[] = [
     'believers', 'angels', 'imranWife', 'asiye', 'belkis', 'disciples', 'talutArmy', 'magicians', 'caveYouths', 'others',
 ];
 
+/** The prophets among DUA_PEOPLE; the person picker lists them apart from everyone else. */
+export const DUA_PROPHETS: DuaPerson[] = DUA_PEOPLE.slice(0, DUA_PEOPLE.indexOf('muhammad') + 1);
+
 export const DUA_TOPICS: DuaTopic[] = [
     'forgiveness', 'guidance', 'knowledge', 'family', 'distress', 'victory', 'patience',
     'goodness', 'hereafter', 'gratitude', 'refuge', 'trust', 'praise',

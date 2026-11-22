@@ -237,6 +237,71 @@ export const createCommonStyles = (theme: Theme) => {
             marginLeft: PICKER_RADIO + SPACING.sm,
             marginTop: SPACING.xs,
         },
+
+        // Full-width segmented control: the chosen segment is filled ink green with a gilded rule under its label
+        segmented: {
+            flexDirection: 'row',
+            padding: 3,
+            gap: 3,
+            borderRadius: RADIUS.md,
+            borderWidth: 1,
+            borderColor: theme.border,
+            backgroundColor: theme.cardBackground,
+        },
+        segment: {
+            flex: 1,
+            minHeight: 40,
+            paddingHorizontal: SPACING.sm,
+            borderRadius: RADIUS.sm,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        segmentActive: {
+            backgroundColor: theme.featured,
+        },
+        segmentText: {
+            fontSize: FONT_SIZES.small,
+            fontWeight: '600',
+            textAlign: 'center',
+            color: theme.textSecondary,
+        },
+        segmentTextActive: {
+            color: theme.featuredText,
+        },
+        segmentGilding: {
+            position: 'absolute',
+            bottom: 5,
+            width: 18,
+            height: 2,
+            borderRadius: 1,
+            backgroundColor: theme.featuredIcon,
+        },
+
+        // Bottom sheet: slides up from the bottom edge, for choosing from a longer list
+        sheetOverlay: {
+            flex: 1,
+            justifyContent: 'flex-end',
+            backgroundColor: 'rgba(0,0,0,0.45)',
+        },
+        sheetContainer: {
+            maxHeight: screenHeight * 0.8,
+            width: '100%',
+            maxWidth: 560,
+            alignSelf: 'center',
+            backgroundColor: theme.cardBackground,
+            borderTopLeftRadius: RADIUS.lg,
+            borderTopRightRadius: RADIUS.lg,
+            paddingBottom: SPACING.lg,
+            ...SHADOW.md,
+        },
+        sheetHandle: {
+            alignSelf: 'center',
+            width: 36,
+            height: 4,
+            borderRadius: 2,
+            marginTop: SPACING.sm,
+            backgroundColor: theme.border,
+        },
     });
 };
 

@@ -1524,6 +1524,7 @@
       {
         "date": "23 Kasım 2026",
         "bullets": [
+          "Kur'an'daki Dualar'da filtreler sadeleşti: gruplamayı üstteki seçiciden, kişi ya da konuyu alttan açılan listeden seçin",
           "Dualar sayfası da ana menü gibi kutucuk düzeninde",
           "Esmaül Hüsna sayfası (Namazlar ve Dualar menüsünde): 99 isim hat levhası görünümünde, günün ismi ve arama ile; Allah'ın sıfatları da ilgili ayetleriyle burada",
           "Ezber kontrolünde otomatik ilerleme: ayeti hatasız okuyunca sonraki ayete kendiliğinden geçer, isterseniz kapatabilirsiniz",
@@ -2611,8 +2612,16 @@
     "loading": "Dua ayetleri yükleniyor...",
     "downloadTitle": "Kur'an verisi gerekli",
     "downloadDescription": "Dua ayetlerini Arapçası ve mealiyle gösterebilmek için önce Kur'an metnini indirmeniz gerekiyor.",
-    "summary": "Kur'an'da {{duas}} dua, {{verses}} ayet. Bir ayete dokunarak okuma ekranında açın.",
-    "all": "Hepsi",
+    "orderNote": "Fâtiha'dan Nâs'a {{duas}} dua, {{verses}} ayet",
+    "allPeople": "Bütün kişiler",
+    "allTopics": "Bütün konular",
+    "pickPerson": "Kişi seçin",
+    "pickTopic": "Konu seçin",
+    "prophets": "Peygamberler",
+    "othersGroup": "Diğerleri",
+    "close": "Kapat",
+    "duaCount_one": "{{count}} dua",
+    "duaCount_other": "{{count}} dua",
     "verseLabel": "{{surah}} {{verse}}",
     "openHint": "Ayeti okuma ekranında açar",
     "modes": {
