@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Destek — Kuran360</title>
+<style>
+  :root {
+    --green: #2E7D32;
+    --green-dark: #1B5E20;
+    --bg: #FAFAF7;
+    --text: #1F2A20;
+    --muted: #5B6B5D;
+    --card: #FFFFFF;
+    --border: #E3E8E2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121712;
+      --text: #EAEFE9;
+      --muted: #A3AFA4;
+      --card: #1A211A;
+      --border: #2A332A;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.65;
+  }
+  header {
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: #fff;
+    padding: 2.5rem 1.25rem 2rem;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 0.35rem;
+    font-size: 1.6rem;
+  }
+  header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+  }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  h2 {
+    font-size: 1.1rem;
+    color: var(--green);
+    margin-top: 0;
+  }
+  @media (prefers-color-scheme: dark) {
+    h2 { color: #7BC47F; }
+  }
+  p, li { color: var(--text); font-size: 0.97rem; }
+  ul { padding-inline-start: 1.25rem; margin: 0.5rem 0; }
+  li { margin-bottom: 0.4rem; }
+  .muted { color: var(--muted); font-size: 0.88rem; }
+  a { color: var(--green); }
+  @media (prefers-color-scheme: dark) { a { color: #7BC47F; } }
+  footer {
+    text-align: center;
+    padding: 1rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Kuran360 Destek</h1>
+  <p>Yardım, sık sorulan sorular ve iletişim</p>
+</header>
+<main>
+
+  <div class="card">
+    <h2>Bize Ulaşın</h2>
+    <p>Soru, öneri ve sorunlarınız için <a href="mailto:msamilarinc@gmail.com">msamilarinc@gmail.com</a> adresine yazabilirsiniz. Genellikle birkaç gün içinde dönüş yapıyoruz.</p>
+    <p>Uygulamada bir hata görürseniz, uygulama içindeki <strong>Hata Bildir</strong> seçeneğini kullanmanız sorunu çözmemizi kolaylaştırır; cihaz ve sürüm bilgisi bildirime kendiliğinden eklenir.</p>
+  </div>
+
+  <div class="card">
+    <h2>Sık Sorulan Sorular</h2>
+    <p><strong>Giriş yapmak zorunlu mu?</strong><br>Hayır. Kur'an, meal, tefsir, namaz vakitleri ve diğer özelliklerin çoğu girişsiz çalışır. Giriş yalnızca forum, dua istekleri, hatim ve verilerinizi cihazlar arasında eşitlemek için gerekir. Google veya Apple hesabınızla giriş yapabilirsiniz.</p>
+    <p><strong>Hesabımı nasıl silerim?</strong><br>Uygulamada <strong>Profil → Hesabı Sil</strong> adımlarını izleyin. Hesabınız ve sunucudaki verileriniz kalıcı olarak silinir. Uygulamaya erişemiyorsanız yukarıdaki adrese yazın, silme işlemini biz yapalım. Ayrıntılar için <a href="/privacy.html">gizlilik politikasına</a> bakın.</p>
+    <p><strong>Uygunsuz bir içeriği nasıl bildiririm?</strong><br>Hatim sayfasındaki menüden <strong>Bildir</strong> seçeneğini kullanın; şikayetler 24 saat içinde incelenir. Aynı menüden içeriğin sahibini engelleyerek içeriklerini bir daha görmemeyi de seçebilirsiniz.</p>
+    <p><strong>Namaz vakitleri yanlış görünüyor.</strong><br>Vakitler Diyanet takvimine göre, seçtiğiniz şehir ve ilçeye göre gösterilir. Konum izni verdiyseniz doğru ilçenin seçildiğini kontrol edin ya da şehri elle seçin.</p>
+    <p><strong>iPhone'da namaz bildirimleri ve ana ekran araçları neden yok?</strong><br>Namaz vakti bildirimleri, ana ekran araçları (widget), ayet tanıma ve ezber kontrolü şimdilik yalnızca Android'de var. iOS sürümüne eklemek için çalışıyoruz.</p>
+  </div>
+
+  <div class="card">
+    <h2>English</h2>
+    <p>For questions or problems, email <a href="mailto:msamilarinc@gmail.com">msamilarinc@gmail.com</a> or use <strong>Report a Bug</strong> inside the app. Signing in (with Google or Apple) is optional. You can delete your account at any time under <strong>Profile → Delete Account</strong>. Inappropriate content can be reported (<strong>Report</strong>) and its author blocked from the hatim menu; reports are reviewed within 24 hours. See our <a href="/privacy.html">privacy policy</a>.</p>
+  </div>
+
+</main>
+<footer>
+  <p class="muted"><a href="/">Kuran360</a> &middot; <a href="/privacy.html">Gizlilik Politikası</a></p>
+</footer>
+</body>
+</html>

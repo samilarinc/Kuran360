@@ -83,7 +83,7 @@
 <body>
 <header>
   <h1>Kuran360 Gizlilik Politikası</h1>
-  <p>Son güncelleme: 30 Temmuz 2026</p>
+  <p>Son güncelleme: 22 Kasım 2026</p>
 </header>
 <main>
 
@@ -95,9 +95,12 @@
   <div class="card">
     <h2>2. Topladığımız Veriler</h2>
     <ul>
-      <li><strong>Hesap bilgileri:</strong> Google ile giriş yaptığınızda, Firebase Authentication üzerinden adınız, e-posta adresiniz ve profil fotoğrafınız alınır.</li>
-      <li><strong>Kullanıcı içerikleri:</strong> Forumda paylaştığınız gönderiler, dua istekleri, hatim katılımlarınız ve profilinizde girdiğiniz bilgiler Firebase Cloud Firestore'da saklanır.</li>
+      <li><strong>Hesap bilgileri:</strong> Giriş yapmak isteğe bağlıdır. Google veya Apple ile giriş yaptığınızda, Firebase Authentication üzerinden adınız, e-posta adresiniz ve (varsa) profil fotoğrafınız alınır. Apple ile girişte e-postanızı gizlemeyi seçerseniz yalnızca Apple'ın verdiği yönlendirme adresini görürüz.</li>
+      <li><strong>Kullanıcı içerikleri:</strong> Forumda paylaştığınız gönderiler, dua istekleri, oluşturduğunuz veya katıldığınız hatimler, eşitlenen favori ve ayarlarınız ile profilinizde girdiğiniz bilgiler Firebase Cloud Firestore'da saklanır.</li>
+      <li><strong>Hata bildirimleri:</strong> Uygulama içinden hata bildirdiğinizde yazdığınız mesaj, girdiğiniz ad ve e-posta, cihaz modeli, işletim sistemi ve uygulama sürümü, uygulama ayarlarınız ve son uygulama kayıtları gönderilir. Bunlar yalnızca sorunu çözmek için kullanılır.</li>
+      <li><strong>Şikayetler:</strong> Bir içeriği şikayet ettiğinizde şikayet edilen içerik, sahibinin kimliği ve sizin kullanıcı kimliğiniz incelenmek üzere kaydedilir.</li>
       <li><strong>Konum bilgisi:</strong> Namaz vakitlerini ve kıble yönünü hesaplayabilmek için, izin verirseniz cihazınızın konumu alınır. Şehir/ilçe adını bulmak amacıyla bu konum OpenStreetMap (Nominatim) servisine gönderilir; tarafımızca sunucularda saklanmaz.</li>
+      <li><strong>Mikrofon:</strong> Ayet tanıma, ezber kontrolü ve sesli zikir özellikleri mikrofonu yalnızca siz başlattığınızda kullanır. Ses kaydı cihazınızda işlenir, hiçbir sunucuya gönderilmez ve saklanmaz.</li>
       <li><strong>Cihazda saklanan veriler:</strong> Kur'an metni, ses dosyaları ve uygulama ayarlarınız çevrimdışı kullanım için cihazınızda (yerel depolama) tutulur, sunucuya gönderilmez.</li>
     </ul>
   </div>
@@ -108,53 +111,60 @@
       <li>Hesabınızı oluşturmak ve oturum açmanızı sağlamak</li>
       <li>Forum, dua istekleri ve hatim gibi topluluk özelliklerini sunmak</li>
       <li>Bulunduğunuz konuma göre namaz vakitlerini ve kıble yönünü hesaplamak</li>
+      <li>Şikayet edilen içerikleri incelemek ve topluluk kurallarını uygulamak</li>
       <li>Uygulamayı iyileştirmek ve teknik sorunları çözmek</li>
     </ul>
   </div>
 
   <div class="card">
     <h2>4. Üçüncü Taraf Servisler</h2>
-    <p>Uygulama aşağıdaki üçüncü taraf servisleri kullanır; bu servislerin kendi gizlilik politikaları geçerlidir:</p>
+    <p>Uygulama aşağıdaki üçüncü taraf servisleri kullanır; bu servislerin kendi gizlilik politikaları geçerlidir. Uygulamada reklam veya kullanıcı takibi (tracking) yoktur.</p>
     <ul>
       <li><strong>Google Firebase</strong> (Authentication, Cloud Firestore) — hesap ve içerik verileri için</li>
-      <li><strong>Google Sign-In</strong> — oturum açma için</li>
+      <li><strong>Google Sign-In</strong> ve <strong>Sign in with Apple</strong> — oturum açma için</li>
       <li><strong>OpenStreetMap Nominatim</strong> — konumdan şehir/ilçe adı bulmak için</li>
     </ul>
   </div>
 
   <div class="card">
     <h2>5. Veri Paylaşımı</h2>
-    <p>Verilerinizi üçüncü taraflara satmıyoruz. Forumda paylaştığınız içerikler (kullanıcı adınız ve gönderileriniz) diğer kullanıcılar tarafından görülebilir; bunun dışındaki kişisel verileriniz yalnızca yukarıda belirtilen servis sağlayıcılarla, hizmeti sunabilmek için paylaşılır.</p>
+    <p>Verilerinizi üçüncü taraflara satmıyoruz. Forumda paylaştığınız içerikler ile herkese açık hatimler (kullanıcı adınız, gönderileriniz, hatim başlığı ve aldığınız cüzler) diğer kullanıcılar tarafından görülebilir; bunun dışındaki kişisel verileriniz yalnızca yukarıda belirtilen servis sağlayıcılarla, hizmeti sunabilmek için paylaşılır.</p>
   </div>
 
   <div class="card">
-    <h2>6. Veri Güvenliği</h2>
+    <h2>6. Topluluk Kuralları, Şikayet ve Engelleme</h2>
+    <p>Herkese açık içerik paylaşmadan önce topluluk kurallarını kabul etmeniz istenir. Uygunsuz bulduğunuz bir içeriği uygulama içinden şikayet edebilir, sahibini engelleyebilirsiniz. Engellediğiniz kullanıcıların listesi yalnızca cihazınızda tutulur. Şikayetler 24 saat içinde incelenir; kurallara uymayan içerik kaldırılır ve sahibinin hesabı kapatılabilir.</p>
+  </div>
+
+  <div class="card">
+    <h2>7. Veri Güvenliği</h2>
     <p>Verileriniz, Firebase'in sağladığı endüstri standardı güvenlik önlemleriyle korunur. Buna rağmen internet üzerinden hiçbir aktarım yönteminin %100 güvenli olmadığını unutmayın.</p>
   </div>
 
   <div class="card">
-    <h2>7. Verilerin Saklanması ve Silinmesi</h2>
-    <p>Hesabınız ve ilişkili verileriniz, hesabınızı silene veya silinmesini talep edene kadar saklanır. Hesabınızın ve verilerinizin silinmesini istemek için aşağıdaki e-posta adresinden bizimle iletişime geçebilirsiniz.</p>
+    <h2>8. Verilerin Saklanması ve Silinmesi</h2>
+    <p>Hesabınız ve ilişkili verileriniz, hesabınızı silene kadar saklanır. Hesabınızı uygulama içinden istediğiniz zaman silebilirsiniz: <strong>Profil → Hesabı Sil</strong>. Bu işlem hesabınızı ve sunucudaki profilinizi, eşitlenen favori ve ayarlarınızı, size gelen dua isteklerini ve oluşturduğunuz hatimleri kalıcı olarak siler; geri alınamaz.</p>
+    <p>Forum gönderileriniz, başkalarının hatimlerinde aldığınız cüzlerde görünen adınız ve gönderdiğiniz hata bildirimleri hesap silindikten sonra kalabilir. Bunların da silinmesini isterseniz ya da uygulamaya erişemiyorsanız aşağıdaki e-posta adresinden bize yazmanız yeterlidir. Cihazınızdaki veriler uygulamayı kaldırdığınızda silinir.</p>
   </div>
 
   <div class="card">
-    <h2>8. Çocukların Gizliliği</h2>
+    <h2>9. Çocukların Gizliliği</h2>
     <p>Uygulama 13 yaş altı çocuklardan bilerek kişisel veri toplamaz. Böyle bir durumun farkına varırsak ilgili veriyi derhal sileriz.</p>
   </div>
 
   <div class="card">
-    <h2>9. Haklarınız</h2>
+    <h2>10. Haklarınız</h2>
     <p>Verilerinize erişme, düzeltme veya silinmesini talep etme hakkına sahipsiniz. Bu haklarınızı kullanmak için bizimle iletişime geçmeniz yeterlidir.</p>
   </div>
 
   <div class="card">
-    <h2>10. Politika Değişiklikleri</h2>
+    <h2>11. Politika Değişiklikleri</h2>
     <p>Bu gizlilik politikası zaman zaman güncellenebilir. Önemli değişiklikler bu sayfada yayımlanacaktır.</p>
   </div>
 
   <div class="card">
-    <h2>11. İletişim</h2>
-    <p>Sorularınız için bize <a href="mailto:msamilarinc@gmail.com">msamilarinc@gmail.com</a> adresinden ulaşabilirsiniz.</p>
+    <h2>12. İletişim</h2>
+    <p>Sorularınız için bize <a href="mailto:msamilarinc@gmail.com">msamilarinc@gmail.com</a> adresinden ulaşabilirsiniz. Yardım ve sık sorulan sorular için <a href="/support.html">destek sayfasına</a> bakabilirsiniz.</p>
   </div>
 
 </main>
