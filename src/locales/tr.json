@@ -641,6 +641,415 @@
     "hutbeErrorTitle": "Hata",
     "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin."
   },
+  "esmaulHusna": {
+    "title": "Esmaül Hüsna",
+    "intro": "Allah'ın en güzel isimleri: Tirmizî rivayetindeki 99 isim. Bir isme dokunarak anlamını açın.",
+    "searchPlaceholder": "İsim, anlam veya sıra no. ara",
+    "noResults": "Bu aramayla eşleşen isim yok. Farklı bir kelime deneyin.",
+    "counter": "{{number}} / {{total}}",
+    "previous": "Önceki",
+    "next": "Sonraki",
+    "close": "Kapat",
+    "source": "Sıralama ve okunuşlar Diyanet İşleri Başkanlığı'nın Esmaül Hüsna listesine göredir; anlamlar özetlenmiştir.",
+    "names": {
+      "1": {
+        "name": "Allah",
+        "meaning": "Bütün güzel isim ve sıfatları kendinde toplayan, ibadete layık tek varlık"
+      },
+      "2": {
+        "name": "er-Rahmân",
+        "meaning": "Dünyada bütün yarattıklarına sınırsız merhamet eden"
+      },
+      "3": {
+        "name": "er-Rahîm",
+        "meaning": "Rahmeti her şeyi kuşatan"
+      },
+      "4": {
+        "name": "el-Melik",
+        "meaning": "Bütün varlıkların gerçek sahibi ve hükümdarı"
+      },
+      "5": {
+        "name": "el-Kuddûs",
+        "meaning": "Her türlü eksiklikten uzak, tertemiz olan"
+      },
+      "6": {
+        "name": "es-Selâm",
+        "meaning": "Esenlik veren, her türlü kusur ve yok oluştan uzak olan"
+      },
+      "7": {
+        "name": "el-Mü’min",
+        "meaning": "Kullarına güven veren, sözüne güvenilen"
+      },
+      "8": {
+        "name": "el-Müheymin",
+        "meaning": "Her şeyi gözetip koruyan ve yöneten"
+      },
+      "9": {
+        "name": "el-Azîz",
+        "meaning": "Mağlup edilemeyen, her şeye galip olan"
+      },
+      "10": {
+        "name": "el-Cebbâr",
+        "meaning": "Dilediğini mutlaka yerine getiren"
+      },
+      "11": {
+        "name": "el-Mütekebbir",
+        "meaning": "Büyüklükte eşi olmayan, yüceliğini gösteren"
+      },
+      "12": {
+        "name": "el-Hâlik",
+        "meaning": "Her şeyi bir ölçüye göre yaratan"
+      },
+      "13": {
+        "name": "el-Bâri’",
+        "meaning": "Her şeyi örneksiz ve kusursuz var eden"
+      },
+      "14": {
+        "name": "el-Musavvir",
+        "meaning": "Varlıklara şekil ve suret veren"
+      },
+      "15": {
+        "name": "el-Gaffâr",
+        "meaning": "Günahları örten, çokça bağışlayan"
+      },
+      "16": {
+        "name": "el-Kahhâr",
+        "meaning": "Her şeye üstün gelen, her şeyin boyun eğdiği"
+      },
+      "17": {
+        "name": "el-Vehhâb",
+        "meaning": "Karşılık beklemeden bol bol bağışlayan"
+      },
+      "18": {
+        "name": "er-Rezzâk",
+        "meaning": "Maddi ve manevi bütün rızkı veren"
+      },
+      "19": {
+        "name": "el-Fettâh",
+        "meaning": "Hayır kapılarını açan, adaletle hükmeden"
+      },
+      "20": {
+        "name": "el-Alîm",
+        "meaning": "Her şeyi bilen"
+      },
+      "21": {
+        "name": "el-Kâbız",
+        "meaning": "Rızkı dilediğine ölçülü veren, ruhları alan"
+      },
+      "22": {
+        "name": "el-Bâsıt",
+        "meaning": "Rızkı genişleten, bolluk veren"
+      },
+      "23": {
+        "name": "el-Hâfıd",
+        "meaning": "Zalimleri ve inkârcıları alçaltan"
+      },
+      "24": {
+        "name": "er-Râfi`",
+        "meaning": "Müminleri yükselten, şerefli kılan"
+      },
+      "25": {
+        "name": "el-Muizz",
+        "meaning": "Dilediğini aziz kılan, izzet veren"
+      },
+      "26": {
+        "name": "el-Müzill",
+        "meaning": "Dilediğini zillete düşüren"
+      },
+      "27": {
+        "name": "es-Semî`",
+        "meaning": "Her şeyi işiten"
+      },
+      "28": {
+        "name": "el-Basîr",
+        "meaning": "Her şeyi gören"
+      },
+      "29": {
+        "name": "el-Hakem",
+        "meaning": "Son hükmü veren, hakkı batıldan ayıran"
+      },
+      "30": {
+        "name": "el-Adl",
+        "meaning": "Mutlak adil, her şeyi yerli yerince yapan"
+      },
+      "31": {
+        "name": "el-Latîf",
+        "meaning": "En gizli şeyleri bilen, kullarına lütufla davranan"
+      },
+      "32": {
+        "name": "el-Habîr",
+        "meaning": "Her şeyin içyüzünden haberdar olan"
+      },
+      "33": {
+        "name": "el-Halîm",
+        "meaning": "Cezalandırmada acele etmeyen, yumuşak davranan"
+      },
+      "34": {
+        "name": "el-Azîm",
+        "meaning": "Zatı ve sıfatları bakımından pek yüce"
+      },
+      "35": {
+        "name": "el-Gafûr",
+        "meaning": "Çok bağışlayan, affeden"
+      },
+      "36": {
+        "name": "eş-Şekûr",
+        "meaning": "Güzel amellere bol karşılık veren"
+      },
+      "37": {
+        "name": "el-Aliyy",
+        "meaning": "Yücelikte eşi ve üstü olmayan"
+      },
+      "38": {
+        "name": "el-Kebîr",
+        "meaning": "Büyüklüğü akılla kavranamayan"
+      },
+      "39": {
+        "name": "el-Hafîz",
+        "meaning": "Her şeyi koruyan, kâinatı dengede tutan"
+      },
+      "40": {
+        "name": "el-Mukît",
+        "meaning": "Canlıların gıdasını ve gücünü veren"
+      },
+      "41": {
+        "name": "el-Hasîb",
+        "meaning": "Hesaba çeken, her şeyin sonucunu bilen"
+      },
+      "42": {
+        "name": "el-Celîl",
+        "meaning": "Ululuğu sınırsız ve benzersiz olan"
+      },
+      "43": {
+        "name": "el-Kerîm",
+        "meaning": "Cömertliği ve ikramı bol olan"
+      },
+      "44": {
+        "name": "er-Rakîb",
+        "meaning": "Her şeyi gözetip denetleyen"
+      },
+      "45": {
+        "name": "el-Mücîb",
+        "meaning": "Dualara karşılık veren"
+      },
+      "46": {
+        "name": "el-Vâsi`",
+        "meaning": "İlmi, rahmeti ve kudreti her şeyi kuşatan"
+      },
+      "47": {
+        "name": "el-Hakîm",
+        "meaning": "Her işi, emri ve yasağı hikmetli olan"
+      },
+      "48": {
+        "name": "el-Vedûd",
+        "meaning": "Müminleri seven ve onlarca sevilen"
+      },
+      "49": {
+        "name": "el-Mecîd",
+        "meaning": "Şanı yüce, lütfu ve keremi bol olan"
+      },
+      "50": {
+        "name": "el-Bâis",
+        "meaning": "Ölüleri dirilten, peygamberler gönderen"
+      },
+      "51": {
+        "name": "eş-Şehîd",
+        "meaning": "Her şeye şahit olan, hiçbir şey kendisinden gizli kalmayan"
+      },
+      "52": {
+        "name": "el-Hakk",
+        "meaning": "Varlığı gerçek ve değişmez olan"
+      },
+      "53": {
+        "name": "el-Vekîl",
+        "meaning": "Kendisine güvenilip dayanılan"
+      },
+      "54": {
+        "name": "el-Kavî",
+        "meaning": "Gücü her şeye yeten"
+      },
+      "55": {
+        "name": "el-Metîn",
+        "meaning": "Hiçbir zaafı olmayan, sarsılmaz güç sahibi"
+      },
+      "56": {
+        "name": "el-Velî",
+        "meaning": "Müminlerin dostu ve yardımcısı"
+      },
+      "57": {
+        "name": "el-Hamîd",
+        "meaning": "Her türlü övgüye layık olan"
+      },
+      "58": {
+        "name": "el-Muhsî",
+        "meaning": "Her şeyin sayısını ve ölçüsünü bilen"
+      },
+      "59": {
+        "name": "el-Mübdi’",
+        "meaning": "Her şeyi yoktan ilk defa yaratan"
+      },
+      "60": {
+        "name": "el-Muîd",
+        "meaning": "Ölümden sonra yeniden yaratan"
+      },
+      "61": {
+        "name": "el-Muhyî",
+        "meaning": "Hayat veren, dirilten"
+      },
+      "62": {
+        "name": "el-Mümît",
+        "meaning": "Ölümü yaratan, canları alan"
+      },
+      "63": {
+        "name": "el-Hayy",
+        "meaning": "Daima diri olan, ölümsüz"
+      },
+      "64": {
+        "name": "el-Kayyûm",
+        "meaning": "Kendi kendine var olan, her şeyi ayakta tutan"
+      },
+      "65": {
+        "name": "el-Vâcid",
+        "meaning": "Hiçbir şeye muhtaç olmayan, dilediğini bulan"
+      },
+      "66": {
+        "name": "el-Mâcid",
+        "meaning": "Şanı yüce, cömertliği sonsuz olan"
+      },
+      "67": {
+        "name": "el-Vâhid",
+        "meaning": "Zatında ve sıfatlarında tek, ortağı olmayan"
+      },
+      "68": {
+        "name": "es-Samed",
+        "meaning": "Herkesin muhtaç olduğu, kendisi hiçbir şeye muhtaç olmayan"
+      },
+      "69": {
+        "name": "el-Kâdir",
+        "meaning": "Her şeye gücü yeten"
+      },
+      "70": {
+        "name": "el-Muktedir",
+        "meaning": "Kudretinin sınırı olmayan"
+      },
+      "71": {
+        "name": "el-Mukaddim",
+        "meaning": "Dilediğini hikmetle öne alan"
+      },
+      "72": {
+        "name": "el-Muahhir",
+        "meaning": "Dilediğini hikmetle geri bırakan"
+      },
+      "73": {
+        "name": "el-Evvel",
+        "meaning": "Başlangıcı olmayan"
+      },
+      "74": {
+        "name": "el-Âhir",
+        "meaning": "Sonu olmayan"
+      },
+      "75": {
+        "name": "ez-Zâhir",
+        "meaning": "Varlığı delilleriyle apaçık olan"
+      },
+      "76": {
+        "name": "el-Bâtın",
+        "meaning": "Zatı gizli olan, her sırrı bilen"
+      },
+      "77": {
+        "name": "el-Vâlî",
+        "meaning": "Kâinatı yöneten, her ihtiyacını üstlenen"
+      },
+      "78": {
+        "name": "el-Müteâlî",
+        "meaning": "Her türlü noksanlıktan uzak, pek yüce"
+      },
+      "79": {
+        "name": "el-Berr",
+        "meaning": "İyiliği bol olan"
+      },
+      "80": {
+        "name": "et-Tevvâb",
+        "meaning": "Tövbeleri kabul eden"
+      },
+      "81": {
+        "name": "el-Müntakım",
+        "meaning": "Zalimleri hak ettikleri şekilde cezalandıran"
+      },
+      "82": {
+        "name": "el-Afüvv",
+        "meaning": "Affı çok olan, günahları silen"
+      },
+      "83": {
+        "name": "er-Raûf",
+        "meaning": "Çok şefkatli ve merhametli"
+      },
+      "84": {
+        "name": "Mâlikü’l-mülk",
+        "meaning": "Mülkün gerçek sahibi, bütün varlığı yöneten"
+      },
+      "85": {
+        "name": "Zü’l-celâli ve’l-ikrâm",
+        "meaning": "Sonsuz ululuk ve ikram sahibi"
+      },
+      "86": {
+        "name": "el-Muksit",
+        "meaning": "Adaleti yerine getiren, hakkaniyetle hükmeden"
+      },
+      "87": {
+        "name": "el-Câmi`",
+        "meaning": "Bütün yaratılmışları dünyada ve ahirette bir araya getiren"
+      },
+      "88": {
+        "name": "el-Ganî",
+        "meaning": "Hiçbir şeye muhtaç olmayan"
+      },
+      "89": {
+        "name": "el-Muğnî",
+        "meaning": "Dilediğini zengin kılan, ihtiyaçtan kurtaran"
+      },
+      "90": {
+        "name": "el-Mâni`",
+        "meaning": "Hikmetiyle dilediğine engel olan"
+      },
+      "91": {
+        "name": "ed-Dârr",
+        "meaning": "Hikmetiyle zarar ve elem verenleri de yaratan"
+      },
+      "92": {
+        "name": "en-Nâfi`",
+        "meaning": "Fayda ve hayır veren"
+      },
+      "93": {
+        "name": "en-Nûr",
+        "meaning": "Her şeyi aydınlatan, kalplere iman nuru veren"
+      },
+      "94": {
+        "name": "el-Hâdî",
+        "meaning": "Doğru yolu gösteren"
+      },
+      "95": {
+        "name": "el-Bedî`",
+        "meaning": "Örneksiz ve eşsiz yaratan"
+      },
+      "96": {
+        "name": "el-Bâkî",
+        "meaning": "Varlığı sonsuz olan"
+      },
+      "97": {
+        "name": "el-Vâris",
+        "meaning": "Her şey yok olduktan sonra kalan gerçek sahip"
+      },
+      "98": {
+        "name": "er-Reşîd",
+        "meaning": "Doğru yola ileten, her işi isabetli olan"
+      },
+      "99": {
+        "name": "es-Sabûr",
+        "meaning": "Cezalandırmada acele etmeyen, çok sabırlı"
+      }
+    }
+  },
   "zikirmatik": {
     "title": "Zikirmatik",
     "sections": {
@@ -993,6 +1402,12 @@
     ],
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
+      {
+        "date": "23 Kasım 2026",
+        "bullets": [
+          "Esmaül Hüsna sayfası: Allah'ın 99 ismi Arapça yazılışı, okunuşu ve anlamıyla; arayabilir, isme dokunup büyük görebilirsiniz (Namazlar ve Dualar menüsünde)"
+        ]
+      },
       {
         "date": "22 Kasım 2026",
         "bullets": [

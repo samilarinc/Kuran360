@@ -641,6 +641,415 @@
     "hutbeErrorTitle": "Error",
     "hutbeErrorMessage": "Couldn't reach the sermon file. Please try again later."
   },
+  "esmaulHusna": {
+    "title": "Asma ul-Husna",
+    "intro": "The most beautiful names of Allah: the 99 names in the narration of Tirmidhi. Tap a name to see its meaning.",
+    "searchPlaceholder": "Search by name, meaning or number",
+    "noResults": "No name matches this search. Try a different word.",
+    "counter": "{{number}} / {{total}}",
+    "previous": "Previous",
+    "next": "Next",
+    "close": "Close",
+    "source": "Order and readings follow the Asma ul-Husna list of Turkey's Presidency of Religious Affairs (Diyanet); meanings are summarized.",
+    "names": {
+      "1": {
+        "name": "Allah",
+        "meaning": "The one true God, worthy of worship, who holds every perfect attribute"
+      },
+      "2": {
+        "name": "Ar-Rahmān",
+        "meaning": "The Most Compassionate, boundless in mercy toward all creation"
+      },
+      "3": {
+        "name": "Ar-Rahīm",
+        "meaning": "The Most Merciful, whose mercy embraces everything"
+      },
+      "4": {
+        "name": "Al-Malik",
+        "meaning": "The King, true owner and ruler of all that exists"
+      },
+      "5": {
+        "name": "Al-Quddūs",
+        "meaning": "The Holy, free of every flaw"
+      },
+      "6": {
+        "name": "As-Salām",
+        "meaning": "The Source of Peace, who grants safety"
+      },
+      "7": {
+        "name": "Al-Mu’min",
+        "meaning": "The Giver of Security, whose word is trusted"
+      },
+      "8": {
+        "name": "Al-Muhaymin",
+        "meaning": "The Guardian who watches over all things"
+      },
+      "9": {
+        "name": "Al-‘Azīz",
+        "meaning": "The Mighty, never overcome"
+      },
+      "10": {
+        "name": "Al-Jabbār",
+        "meaning": "The Compeller, whose will always prevails"
+      },
+      "11": {
+        "name": "Al-Mutakabbir",
+        "meaning": "The Supreme, matchless in greatness"
+      },
+      "12": {
+        "name": "Al-Khāliq",
+        "meaning": "The Creator, who makes all things in due measure"
+      },
+      "13": {
+        "name": "Al-Bāri’",
+        "meaning": "The Maker, who brings into being without a model"
+      },
+      "14": {
+        "name": "Al-Musawwir",
+        "meaning": "The Fashioner, who gives each thing its form"
+      },
+      "15": {
+        "name": "Al-Ghaffār",
+        "meaning": "The Ever-Forgiving, who covers faults"
+      },
+      "16": {
+        "name": "Al-Qahhār",
+        "meaning": "The Subduer, to whom all submits"
+      },
+      "17": {
+        "name": "Al-Wahhāb",
+        "meaning": "The Bestower, who gives freely without return"
+      },
+      "18": {
+        "name": "Ar-Razzāq",
+        "meaning": "The Provider of all sustenance"
+      },
+      "19": {
+        "name": "Al-Fattāh",
+        "meaning": "The Opener, who opens the doors of good"
+      },
+      "20": {
+        "name": "Al-‘Alīm",
+        "meaning": "The All-Knowing"
+      },
+      "21": {
+        "name": "Al-Qābid",
+        "meaning": "The Withholder, who measures out provision"
+      },
+      "22": {
+        "name": "Al-Bāsit",
+        "meaning": "The Expander, who gives in abundance"
+      },
+      "23": {
+        "name": "Al-Khāfid",
+        "meaning": "The Abaser of the arrogant and unjust"
+      },
+      "24": {
+        "name": "Ar-Rāfi‘",
+        "meaning": "The Exalter, who raises the faithful"
+      },
+      "25": {
+        "name": "Al-Mu‘izz",
+        "meaning": "The Giver of Honor"
+      },
+      "26": {
+        "name": "Al-Mudhill",
+        "meaning": "The Humbler, who lowers whom He wills"
+      },
+      "27": {
+        "name": "As-Samī‘",
+        "meaning": "The All-Hearing"
+      },
+      "28": {
+        "name": "Al-Basīr",
+        "meaning": "The All-Seeing"
+      },
+      "29": {
+        "name": "Al-Hakam",
+        "meaning": "The Judge, whose ruling is final"
+      },
+      "30": {
+        "name": "Al-‘Adl",
+        "meaning": "The Just, who puts everything in its rightful place"
+      },
+      "31": {
+        "name": "Al-Latīf",
+        "meaning": "The Subtle and Kind, aware of the finest details"
+      },
+      "32": {
+        "name": "Al-Khabīr",
+        "meaning": "The All-Aware of what is hidden and open"
+      },
+      "33": {
+        "name": "Al-Halīm",
+        "meaning": "The Forbearing, never hasty to punish"
+      },
+      "34": {
+        "name": "Al-‘Azīm",
+        "meaning": "The Magnificent in essence and attributes"
+      },
+      "35": {
+        "name": "Al-Ghafūr",
+        "meaning": "The All-Forgiving"
+      },
+      "36": {
+        "name": "Ash-Shakūr",
+        "meaning": "The Appreciative, who rewards good deeds generously"
+      },
+      "37": {
+        "name": "Al-‘Aliyy",
+        "meaning": "The Most High, with none above Him"
+      },
+      "38": {
+        "name": "Al-Kabīr",
+        "meaning": "The Most Great, beyond comprehension"
+      },
+      "39": {
+        "name": "Al-Hafīz",
+        "meaning": "The Preserver who keeps the universe in balance"
+      },
+      "40": {
+        "name": "Al-Muqīt",
+        "meaning": "The Nourisher who gives food and strength"
+      },
+      "41": {
+        "name": "Al-Hasīb",
+        "meaning": "The Reckoner, who takes account of all"
+      },
+      "42": {
+        "name": "Al-Jalīl",
+        "meaning": "The Majestic, beyond compare"
+      },
+      "43": {
+        "name": "Al-Karīm",
+        "meaning": "The Generous, abundant in giving"
+      },
+      "44": {
+        "name": "Ar-Raqīb",
+        "meaning": "The Watchful over all affairs"
+      },
+      "45": {
+        "name": "Al-Mujīb",
+        "meaning": "The Responsive, who answers prayers"
+      },
+      "46": {
+        "name": "Al-Wāsi‘",
+        "meaning": "The All-Encompassing in knowledge and mercy"
+      },
+      "47": {
+        "name": "Al-Hakīm",
+        "meaning": "The Wise in every act and command"
+      },
+      "48": {
+        "name": "Al-Wadūd",
+        "meaning": "The Loving, who loves the faithful and is loved by them"
+      },
+      "49": {
+        "name": "Al-Majīd",
+        "meaning": "The Glorious, rich in grace"
+      },
+      "50": {
+        "name": "Al-Bā‘ith",
+        "meaning": "The Resurrector, who also sent the prophets"
+      },
+      "51": {
+        "name": "Ash-Shahīd",
+        "meaning": "The Witness, from whom nothing is hidden"
+      },
+      "52": {
+        "name": "Al-Haqq",
+        "meaning": "The Truth, whose being is real and unchanging"
+      },
+      "53": {
+        "name": "Al-Wakīl",
+        "meaning": "The Trustee on whom all rely"
+      },
+      "54": {
+        "name": "Al-Qawiyy",
+        "meaning": "The Strong, whose power suffices for all"
+      },
+      "55": {
+        "name": "Al-Matīn",
+        "meaning": "The Firm, without any weakness"
+      },
+      "56": {
+        "name": "Al-Waliyy",
+        "meaning": "The Protecting Friend of the faithful"
+      },
+      "57": {
+        "name": "Al-Hamīd",
+        "meaning": "The Praiseworthy"
+      },
+      "58": {
+        "name": "Al-Muhsī",
+        "meaning": "The Counter, who knows the number of all things"
+      },
+      "59": {
+        "name": "Al-Mubdi’",
+        "meaning": "The Originator, who first brings forth"
+      },
+      "60": {
+        "name": "Al-Mu‘īd",
+        "meaning": "The Restorer, who brings back after death"
+      },
+      "61": {
+        "name": "Al-Muhyī",
+        "meaning": "The Giver of Life"
+      },
+      "62": {
+        "name": "Al-Mumīt",
+        "meaning": "The Bringer of Death"
+      },
+      "63": {
+        "name": "Al-Hayy",
+        "meaning": "The Ever-Living"
+      },
+      "64": {
+        "name": "Al-Qayyūm",
+        "meaning": "The Self-Subsisting, who sustains all"
+      },
+      "65": {
+        "name": "Al-Wājid",
+        "meaning": "The Finder, who lacks nothing"
+      },
+      "66": {
+        "name": "Al-Mājid",
+        "meaning": "The Noble, endless in generosity"
+      },
+      "67": {
+        "name": "Al-Wāhid",
+        "meaning": "The One, without partner"
+      },
+      "68": {
+        "name": "As-Samad",
+        "meaning": "The Eternal Refuge, needed by all and needing none"
+      },
+      "69": {
+        "name": "Al-Qādir",
+        "meaning": "The Able, with power over all things"
+      },
+      "70": {
+        "name": "Al-Muqtadir",
+        "meaning": "The All-Powerful, whose might has no limit"
+      },
+      "71": {
+        "name": "Al-Muqaddim",
+        "meaning": "The Expediter, who brings forward as He wills"
+      },
+      "72": {
+        "name": "Al-Mu’akhkhir",
+        "meaning": "The Delayer, who holds back as He wills"
+      },
+      "73": {
+        "name": "Al-Awwal",
+        "meaning": "The First, without beginning"
+      },
+      "74": {
+        "name": "Al-Ākhir",
+        "meaning": "The Last, without end"
+      },
+      "75": {
+        "name": "Az-Zāhir",
+        "meaning": "The Manifest, evident through His signs"
+      },
+      "76": {
+        "name": "Al-Bātin",
+        "meaning": "The Hidden, who knows every secret"
+      },
+      "77": {
+        "name": "Al-Wālī",
+        "meaning": "The Governor, who manages all that exists"
+      },
+      "78": {
+        "name": "Al-Muta‘ālī",
+        "meaning": "The Supremely Exalted"
+      },
+      "79": {
+        "name": "Al-Barr",
+        "meaning": "The Source of all goodness"
+      },
+      "80": {
+        "name": "At-Tawwāb",
+        "meaning": "The Accepter of repentance"
+      },
+      "81": {
+        "name": "Al-Muntaqim",
+        "meaning": "The Avenger, who requites wrongdoers justly"
+      },
+      "82": {
+        "name": "Al-‘Afuww",
+        "meaning": "The Pardoner, who erases sins"
+      },
+      "83": {
+        "name": "Ar-Ra’ūf",
+        "meaning": "The Most Kind and Compassionate"
+      },
+      "84": {
+        "name": "Mālik al-Mulk",
+        "meaning": "Owner of all sovereignty"
+      },
+      "85": {
+        "name": "Dhul-Jalāli wal-Ikrām",
+        "meaning": "Lord of majesty and honor"
+      },
+      "86": {
+        "name": "Al-Muqsit",
+        "meaning": "The Equitable, who judges fairly"
+      },
+      "87": {
+        "name": "Al-Jāmi‘",
+        "meaning": "The Gatherer of all creation"
+      },
+      "88": {
+        "name": "Al-Ghanī",
+        "meaning": "The Self-Sufficient"
+      },
+      "89": {
+        "name": "Al-Mughnī",
+        "meaning": "The Enricher"
+      },
+      "90": {
+        "name": "Al-Māni‘",
+        "meaning": "The Preventer, who withholds by wisdom"
+      },
+      "91": {
+        "name": "Ad-Dārr",
+        "meaning": "The Distresser, who creates hardship by wisdom"
+      },
+      "92": {
+        "name": "An-Nāfi‘",
+        "meaning": "The Benefactor, source of all benefit"
+      },
+      "93": {
+        "name": "An-Nūr",
+        "meaning": "The Light, who illuminates hearts"
+      },
+      "94": {
+        "name": "Al-Hādī",
+        "meaning": "The Guide to the right path"
+      },
+      "95": {
+        "name": "Al-Badī‘",
+        "meaning": "The Incomparable Originator"
+      },
+      "96": {
+        "name": "Al-Bāqī",
+        "meaning": "The Everlasting"
+      },
+      "97": {
+        "name": "Al-Wārith",
+        "meaning": "The Inheritor, who remains when all else perishes"
+      },
+      "98": {
+        "name": "Ar-Rashīd",
+        "meaning": "The Guide, whose every act is right"
+      },
+      "99": {
+        "name": "As-Sabūr",
+        "meaning": "The Patient, who gives respite"
+      }
+    }
+  },
   "zikirmatik": {
     "title": "Dhikr Counter",
     "sections": {
@@ -993,6 +1402,12 @@
     ],
     "updatesSectionTitle": "Release Notes",
     "updates": [
+      {
+        "date": "November 23, 2026",
+        "bullets": [
+          "Asma ul-Husna page: the 99 names of Allah in Arabic, with reading and meaning; search them and tap a name to see it large (in the Prayers and Duas menu)"
+        ]
+      },
       {
         "date": "November 22, 2026",
         "bullets": [
