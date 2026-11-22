@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Audio, AVPlaybackStatus } from 'expo-av';
 import logger from '@/utils/logger';
+import {
+    AudioPlayer, PlayerStatus, loadPlayer, onStatus, releasePlayer, showOnLockScreen,
+} from '@/services/audioPlayer';
 
 const POSITION_UPDATE_INTERVAL_MS = 250;
+const LOAD_TIMEOUT_MS = 15000;
 
 export interface DhikrAudioState {
     isPlaying: boolean;
@@ -11,6 +14,12 @@ export interface DhikrAudioState {
     /** Seconds */
     position: number;
     duration: number;
+}
+
+/** Shows the recording in the media notification / lock screen while it plays */
+export interface DhikrLockScreen {
+    title: string;
+    artist?: string;
 }
 
 const IDLE: DhikrAudioState = { isPlaying: false, isLoading: false, failed: false, position: 0, duration: 0 };
@@ -24,14 +33,17 @@ export const useDhikrAudio = (
     rate: number,
     onPosition: (seconds: number) => void,
     onFinish: () => void,
+    lockScreen?: DhikrLockScreen,
 ) => {
     const [state, setState] = useState<DhikrAudioState>(IDLE);
-    const soundRef = useRef<Audio.Sound | null>(null);
-    const loadingRef = useRef<Promise<Audio.Sound | null> | null>(null);
+    const soundRef = useRef<AudioPlayer | null>(null);
+    const loadingRef = useRef<Promise<AudioPlayer | null> | null>(null);
     const callbacksRef = useRef({ onPosition, onFinish });
     callbacksRef.current = { onPosition, onFinish };
     const rateRef = useRef(rate);
     rateRef.current = rate;
+    const lockScreenRef = useRef(lockScreen);
+    lockScreenRef.current = lockScreen;
 
     useEffect(() => {
         setState(IDLE);
@@ -39,38 +51,56 @@ export const useDhikrAudio = (
             const loading = loadingRef.current;
             soundRef.current = null;
             loadingRef.current = null;
-            loading?.then(sound => sound?.unloadAsync()).catch(() => { });
+            loading?.then(sound => {
+                try { sound?.clearLockScreenControls(); } catch { }
+                releasePlayer(sound);
+            }).catch(() => { });
         };
     }, [url]);
 
     useEffect(() => {
-        soundRef.current?.setRateAsync(rate, true).catch(() => { });
+        try { soundRef.current?.setPlaybackRate(rate); } catch { }
     }, [rate]);
 
-    const handleStatus = useCallback((status: AVPlaybackStatus) => {
+    // Android reports the end more than once; report it once per play-through
+    const finishedRef = useRef(false);
+
+    const handleStatus = useCallback((status: PlayerStatus) => {
+        if (status.error) {
+            logger.error('Dhikr audio failed', status.error);
+            setState(prev => ({ ...prev, isPlaying: false, isLoading: false, failed: true }));
+            return;
+        }
         if (!status.isLoaded) return;
-        const position = status.positionMillis / 1000;
+        const position = status.currentTime;
         setState(prev => ({
             ...prev,
-            isPlaying: status.isPlaying,
+            isPlaying: status.playing,
             isLoading: false,
             position,
-            duration: (status.durationMillis ?? 0) / 1000,
+            duration: status.duration,
         }));
-        if (status.isPlaying) callbacksRef.current.onPosition(position);
-        if (status.didJustFinish) callbacksRef.current.onFinish();
+        if (status.playing) callbacksRef.current.onPosition(position);
+        if (status.didJustFinish && !finishedRef.current) {
+            finishedRef.current = true;
+            callbacksRef.current.onFinish();
+        }
     }, []);
 
     const load = useCallback(() => {
         if (!url) return Promise.resolve(null);
         if (!loadingRef.current) {
             setState(prev => ({ ...prev, isLoading: true, failed: false }));
-            loadingRef.current = Audio.Sound.createAsync(
-                { uri: url },
-                { progressUpdateIntervalMillis: POSITION_UPDATE_INTERVAL_MS, rate: rateRef.current, shouldCorrectPitch: true },
-                handleStatus,
-            )
-                .then(({ sound }) => (soundRef.current = sound))
+            loadingRef.current = loadPlayer(url, {
+                timeoutMs: LOAD_TIMEOUT_MS,
+                updateIntervalMs: POSITION_UPDATE_INTERVAL_MS,
+                rate: rateRef.current,
+            })
+                .then(sound => {
+                    onStatus(sound, handleStatus);
+                    soundRef.current = sound;
+                    return sound;
+                })
                 .catch(error => {
                     logger.error('Dhikr audio failed to load', error);
                     loadingRef.current = null;
@@ -85,17 +115,21 @@ export const useDhikrAudio = (
     const play = useCallback(async (fromSeconds?: number) => {
         const sound = await load();
         if (!sound) return;
-        if (fromSeconds !== undefined) await sound.setPositionAsync(fromSeconds * 1000);
-        await sound.playAsync();
+        if (fromSeconds !== undefined) await sound.seekTo(fromSeconds);
+        finishedRef.current = false;
+        sound.play();
+        const info = lockScreenRef.current;
+        if (info) showOnLockScreen(sound, info.title, info.artist);
     }, [load]);
 
     const pause = useCallback(async () => {
-        await soundRef.current?.pauseAsync();
+        soundRef.current?.pause();
     }, []);
 
     /** Moves to `seconds` if the recording is loaded; it keeps playing or stays paused. */
     const seek = useCallback(async (seconds: number) => {
-        await soundRef.current?.setPositionAsync(seconds * 1000);
+        finishedRef.current = false;
+        await soundRef.current?.seekTo(seconds);
     }, []);
 
     return { state, play, pause, seek };

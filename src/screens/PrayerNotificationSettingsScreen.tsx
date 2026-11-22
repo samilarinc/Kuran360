@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Audio } from 'expo-av';
+import { AudioPlayer, createPlayer, onStatus, releasePlayer } from '@/services/audioPlayer';
 import { View, Text, ScrollView, TouchableOpacity, Alert, AppState, Platform } from 'react-native';
 import { AlarmClock, BellOff, BellRing, CalendarClock, CheckCircle2, ChevronDown, Landmark, Moon, MoonStar, Music, Plane, Play, Plus, Sparkles, Square, Star, Trash2, UtensilsCrossed } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
@@ -83,13 +83,13 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
     const [missed] = useState(getMissedPrayers);
     /** Sound from "Seslerim" being previewed */
     const [playing, setPlaying] = useState<string | null>(null);
-    const previewRef = useRef<Audio.Sound | null>(null);
+    const previewRef = useRef<AudioPlayer | null>(null);
 
     const stopPreview = useCallback(async () => {
         const sound = previewRef.current;
         previewRef.current = null;
         setPlaying(null);
-        await sound?.unloadAsync().catch(() => { });
+        releasePlayer(sound);
     }, []);
 
     useEffect(() => () => { stopPreview(); }, [stopPreview]);
@@ -99,12 +99,13 @@ export const PrayerNotificationSettingsScreen: React.FC<{ navigation: any }> = (
         await stopPreview();
         if (wasPlaying) return;
         try {
-            const { sound } = await Audio.Sound.createAsync({ uri: alertSoundUri(name) }, { shouldPlay: true });
+            const sound = createPlayer(alertSoundUri(name));
             previewRef.current = sound;
             setPlaying(name);
-            sound.setOnPlaybackStatusUpdate(status => {
-                if (status.isLoaded && status.didJustFinish && previewRef.current === sound) stopPreview();
+            onStatus(sound, status => {
+                if ((status.didJustFinish || status.error) && previewRef.current === sound) stopPreview();
             });
+            sound.play();
         } catch (error) {
             console.error('Error playing alert sound:', error);
         }

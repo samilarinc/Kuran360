@@ -1,27 +1,25 @@
 import { Platform } from 'react-native';
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
+import { setAudioModeAsync } from 'expo-audio';
 
 /**
- * Keep a recitation or dhikr going when the screen locks or the app goes to the background, and pause
- * other apps' audio while ours plays.
+ * Keep a recitation or dhikr going when the screen locks or the app goes to the background, play with
+ * the iPhone's silent switch on, and pause other apps' audio while ours plays.
  *
- * Android: this also keeps expo-av from refusing audio focus after the activity was destroyed while the
- * process lived on (the prayer foreground service keeps it alive). expo-av drops its lifecycle listener in
- * onHostDestroy while it still thinks the app is paused, so without staysActiveInBackground every play
- * after reopening failed with "This experience is currently in the background".
- *
- * iOS needs UIBackgroundModes audio in app.config.js for background playback.
+ * Recitations and duas also show in the media notification / lock screen while they play
+ * (src/services/audioPlayer.ts); on Android that notification's foreground service keeps them going.
+ * iOS needs UIBackgroundModes audio in app.config.js. The speech module (modules/quran-speech) switches
+ * the session to recording itself while it listens; expo-audio applies this mode again when it plays.
  */
 export const configureAudioMode = async () => {
     if (Platform.OS === 'web') return;
     try {
-        await Audio.setAudioModeAsync({
-            staysActiveInBackground: true,
-            playsInSilentModeIOS: true,
-            interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-            interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
-            shouldDuckAndroid: false,
-            allowsRecordingIOS: false,
+        await setAudioModeAsync({
+            shouldPlayInBackground: true,
+            playsInSilentMode: true,
+            interruptionMode: 'doNotMix',
+            interruptionModeAndroid: 'doNotMix',
+            allowsRecording: false,
+            shouldRouteThroughEarpiece: false,
         });
     } catch (error) {
         console.warn('Failed to set audio mode:', error);

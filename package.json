@@ -15,7 +15,8 @@
     "build:apk": "scripts/build_apk.sh",
     "build:aab": "scripts/build_aab.sh",
     "build:ipa": "scripts/build_ipa.sh",
-    "android:run": "scripts/run_android.sh"
+    "android:run": "scripts/run_android.sh",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@expo-google-fonts/amiri": "^0.4.1",
@@ -40,8 +41,8 @@
     "@tanstack/react-query": "^5.101.4",
     "expo": "~54.0.30",
     "expo-apple-authentication": "~8.0.8",
+    "expo-audio": "~1.1.1",
     "expo-auth-session": "^7.0.10",
-    "expo-av": "~16.0.8",
     "expo-crypto": "~15.0.9",
     "expo-document-picker": "~14.0.8",
     "expo-file-system": "~19.0.24",
@@ -81,6 +82,7 @@
     "@react-native/typescript-config": "0.80.2",
     "@types/react": "~19.1.10",
     "eslint": "^8.19.0",
+    "patch-package": "^8.0.1",
     "prettier": "2.8.8",
     "typescript": "~5.9.2"
   },
@@ -118,5 +120,14 @@
     "arrowParens": "avoid",
     "singleQuote": true,
     "trailingComma": "all"
+  },
+  "expo": {
+    "autolinking": {
+      "android": {
+        "buildFromSource": [
+          "expo-audio"
+        ]
+      }
+    }
   }
 }

@@ -996,7 +996,8 @@
       {
         "date": "November 22, 2026",
         "bullets": [
-          "Fixed recitations and dhikr sounds sometimes not playing on Android; recitation now keeps going when the screen locks or you leave the app"
+          "Fixed recitations and dhikr sounds sometimes not playing on Android; recitation now keeps going when the screen locks or you leave the app",
+          "While a recitation or dua plays, the notification and lock screen show the surah, verse and reciter, with pause and previous/next verse buttons"
         ]
       },
       {

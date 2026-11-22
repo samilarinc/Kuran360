@@ -1,0 +1,303 @@
+diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioPlayer.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioPlayer.kt
+index 320062e..64df8f6 100644
+--- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioPlayer.kt
++++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioPlayer.kt
+@@ -167,6 +167,13 @@ class AudioPlayer(
+         sendPlayerUpdate()
+       }
+     }
++
++    // Kuran360 patch: report load/playback errors (e.g. a missing file), which expo-audio otherwise drops
++    override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
++      playerScope.launch {
++        sendPlayerUpdate(mapOf("error" to (error.message ?: error.errorCodeName)))
++      }
++    }
+   })
+ 
+   fun setSamplingEnabled(enabled: Boolean) {
+diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt
+index 04486e2..b781ada 100644
+--- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt
++++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt
+@@ -43,8 +43,9 @@ class AudioControlsService : MediaSessionService() {
+   private val scope = CoroutineScope(Dispatchers.IO)
+   private var currentArtworkUrl: URL? = null
+   private var currentArtwork: Bitmap? = null
+-  private val notificationId: Int
+-    get() = currentPlayer?.hashCode() ?: CHANNEL_ID.hashCode()
++  // Kuran360 patch: one id for every player, so moving the session to the next verse's player
++  // updates the notification in place instead of removing and re-posting it
++  private val notificationId: Int = CHANNEL_ID.hashCode()
+ 
+   private var playbackListener: Player.Listener? = null
+ 
+@@ -94,7 +95,8 @@ class AudioControlsService : MediaSessionService() {
+         notificationManager.createNotificationChannel(
+           NotificationChannel(
+             CHANNEL_ID,
+-            CHANNEL_ID,
++            // Kuran360 patch: a readable channel name in the system notification settings
++            if (java.util.Locale.getDefault().language == "tr") "Tilavet" else "Recitation",
+             NotificationManager.IMPORTANCE_LOW
+           )
+         )
+@@ -112,11 +114,25 @@ class AudioControlsService : MediaSessionService() {
+     )
+   }
+ 
++  // Kuran360 patch: the app's own status bar icon when it has one
++  private fun smallIconRes(): Int {
++    val res = resources.getIdentifier("ic_stat_prayer", "drawable", packageName)
++    return if (res != 0) res else androidx.media3.session.R.drawable.media3_icon_circular_play
++  }
++
++  // Kuran360 patch: previous/next buttons are passed to JS as a "lockScreenCommand" event on the active player
++  fun emitCommand(command: String) {
++    val player = currentPlayer ?: return
++    Handler(Looper.getMainLooper()).post {
++      player.emit("lockScreenCommand", mapOf("command" to command))
++    }
++  }
++
+   private fun buildNotification(): Notification? {
+     val session = mediaSession ?: return null
+ 
+     val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+-      .setSmallIcon(androidx.media3.session.R.drawable.media3_icon_circular_play)
++      .setSmallIcon(smallIconRes())
+       .setContentTitle(currentMetadata?.title ?: "\u200E")
+       .setContentText(currentMetadata?.artist)
+       .setSubText(currentMetadata?.albumTitle)
+@@ -139,10 +155,10 @@ class AudioControlsService : MediaSessionService() {
+     // Add seek backward button if enabled
+     if (currentOptions?.showSeekBackward == true) {
+       customLayout.add(
+-        CommandButton.Builder(CommandButton.ICON_SKIP_BACK)
+-          .setDisplayName("Seek Backward")
++        CommandButton.Builder(CommandButton.ICON_PREVIOUS)
++          .setDisplayName("Previous")
+           .setEnabled(true)
+-          .setSessionCommand(SessionCommand(ACTION_SEEK_BACKWARD, Bundle.EMPTY))
++          .setSessionCommand(SessionCommand(ACTION_PREVIOUS, Bundle.EMPTY))
+           .build()
+       )
+     }
+@@ -159,10 +175,10 @@ class AudioControlsService : MediaSessionService() {
+     // Add seek forward button if enabled
+     if (currentOptions?.showSeekForward == true) {
+       customLayout.add(
+-        CommandButton.Builder(CommandButton.ICON_SKIP_FORWARD)
+-          .setDisplayName("Seek Forward")
++        CommandButton.Builder(CommandButton.ICON_NEXT)
++          .setDisplayName("Next")
+           .setEnabled(true)
+-          .setSessionCommand(SessionCommand(ACTION_SEEK_FORWARD, Bundle.EMPTY))
++          .setSessionCommand(SessionCommand(ACTION_NEXT, Bundle.EMPTY))
+           .build()
+       )
+     }
+@@ -175,14 +191,20 @@ class AudioControlsService : MediaSessionService() {
+     val notification = buildNotification() ?: return
+ 
+     if (startInForeground) {
+-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+-        startForeground(
+-          notificationId,
+-          notification,
+-          ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+-        )
+-      } else {
+-        startForeground(notificationId, notification)
++      // Kuran360 patch: Android 12+ refuses startForeground from the background unless media is playing
++      // (e.g. between two verses); post the notification instead of crashing, Media3 promotes it once playing
++      try {
++        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
++          startForeground(
++            notificationId,
++            notification,
++            ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
++          )
++        } else {
++          startForeground(notificationId, notification)
++        }
++      } catch (e: Exception) {
++        notificationManager.notify(notificationId, notification)
+       }
+     } else {
+       notificationManager.notify(notificationId, notification)
+@@ -205,7 +227,8 @@ class AudioControlsService : MediaSessionService() {
+     }
+     playbackListener = null
+     currentPlayer?.isActiveForLockScreen = false
+-    hideNotification()
++    // Kuran360 patch: keep the notification when another player takes over (next verse)
++    if (player == null) hideNotification()
+ 
+     currentPlayer = player
+     currentMetadata = metadata
+@@ -220,14 +243,20 @@ class AudioControlsService : MediaSessionService() {
+     player?.isActiveForLockScreen = true
+ 
+     if (player != null) {
+-      mediaSession?.release()
++      // Kuran360 patch: move the existing session to the new player instead of rebuilding it
++      val existing = mediaSession
++      if (existing != null && existing.player.applicationLooper == player.ref.applicationLooper) {
++        existing.player = player.ref
++      } else {
++        mediaSession?.release()
+ 
+-      val session = MediaSession.Builder(this, player.ref)
+-        .setCallback(AudioMediaSessionCallback())
+-        .build()
++        val session = MediaSession.Builder(this, player.ref)
++          .setCallback(AudioMediaSessionCallback())
++          .build()
+ 
+-      addSession(session)
+-      mediaSession = session
++        addSession(session)
++        mediaSession = session
++      }
+ 
+       // Set initial custom layout
+       updateSessionCustomLayout(player.ref.isPlaying)
+@@ -342,6 +371,9 @@ class AudioControlsService : MediaSessionService() {
+ 
+     const val SEEK_INTERVAL_MS = 10000L
+ 
++    const val ACTION_PREVIOUS = "expo.modules.audio.action.PREVIOUS"
++    const val ACTION_NEXT = "expo.modules.audio.action.NEXT"
++
+     private var pendingPlayer: AudioPlayer? = null
+     private var pendingMetadata: Metadata? = null
+     private var pendingOptions: AudioLockScreenOptions? = null
+diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioMediaSessionCallback.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioMediaSessionCallback.kt
+index 839aaef..159c920 100644
+--- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioMediaSessionCallback.kt
++++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioMediaSessionCallback.kt
+@@ -35,6 +35,8 @@ class AudioMediaSessionCallback : MediaSession.Callback {
+           MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS.buildUpon()
+             .add(SessionCommand(AudioControlsService.ACTION_SEEK_BACKWARD, Bundle.EMPTY))
+             .add(SessionCommand(AudioControlsService.ACTION_SEEK_FORWARD, Bundle.EMPTY))
++            .add(SessionCommand(AudioControlsService.ACTION_PREVIOUS, Bundle.EMPTY))
++            .add(SessionCommand(AudioControlsService.ACTION_NEXT, Bundle.EMPTY))
+             .build()
+         )
+         .build()
+@@ -56,6 +58,9 @@ class AudioMediaSessionCallback : MediaSession.Callback {
+       AudioControlsService.ACTION_SEEK_BACKWARD -> {
+         session.player.seekTo(session.player.currentPosition - AudioControlsService.SEEK_INTERVAL_MS)
+       }
++      // Kuran360 patch
++      AudioControlsService.ACTION_PREVIOUS -> AudioControlsService.getInstance()?.emitCommand("previous")
++      AudioControlsService.ACTION_NEXT -> AudioControlsService.getInstance()?.emitCommand("next")
+     }
+     return super.onCustomCommand(session, controller, command, args)
+   }
+diff --git a/node_modules/expo-audio/ios/AudioPlayer.swift b/node_modules/expo-audio/ios/AudioPlayer.swift
+index 1dbce09..a575cfc 100644
+--- a/node_modules/expo-audio/ios/AudioPlayer.swift
++++ b/node_modules/expo-audio/ios/AudioPlayer.swift
+@@ -150,6 +150,12 @@ public class AudioPlayer: SharedRef<AVPlayer> {
+         guard let self, let status else {
+           return
+         }
++        // Kuran360 patch: report load errors (e.g. a missing file), which expo-audio otherwise drops
++        if status == .failed {
++          self.updateStatus(with: [
++            "error": self.ref.currentItem?.error?.localizedDescription ?? "failed"
++          ])
++        }
+         if status == .readyToPlay {
+           self.updateStatus(with: [
+             "isLoaded": true
+diff --git a/node_modules/expo-audio/ios/MediaController.swift b/node_modules/expo-audio/ios/MediaController.swift
+index 2dd3fb2..93deeb6 100644
+--- a/node_modules/expo-audio/ios/MediaController.swift
++++ b/node_modules/expo-audio/ios/MediaController.swift
+@@ -130,6 +130,10 @@ class MediaController {
+   }
+ 
+   private func enableRemoteCommands(options: LockScreenOptions?) {
++    // Kuran360 patch: this runs for every player that takes over (each verse); drop the earlier
++    // targets first so one tap doesn't toggle or skip several times
++    removeAllTargets()
++
+     remoteCommandCenter.playCommand.addTarget { [weak self] _ in
+       guard let player = self?.activePlayer else {
+         return .commandFailed
+@@ -173,31 +177,20 @@ class MediaController {
+       return .success
+     }
+ 
+-    remoteCommandCenter.skipForwardCommand.preferredIntervals = [10.0]
+-    remoteCommandCenter.skipForwardCommand.addTarget { [weak self] event in
+-      guard let player = self?.activePlayer,
+-      let event = event as? MPSkipIntervalCommandEvent else {
++    // Kuran360 patch: previous/next verse instead of 10 s skips, handled in JS via "lockScreenCommand"
++    remoteCommandCenter.nextTrackCommand.addTarget { [weak self] _ in
++      guard let player = self?.activePlayer else {
+         return .commandFailed
+       }
+-
+-      let currentTime = player.ref.currentTime()
+-      let seekTime = currentTime + CMTime(seconds: event.interval, preferredTimescale: 1)
+-      player.ref.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero)
+-
++      player.emit(event: "lockScreenCommand", arguments: ["command": "next"])
+       return .success
+     }
+ 
+-    remoteCommandCenter.skipBackwardCommand.preferredIntervals = [10.0]
+-    remoteCommandCenter.skipBackwardCommand.addTarget { [weak self] event in
+-      guard let player = self?.activePlayer,
+-      let event = event as? MPSkipIntervalCommandEvent else {
++    remoteCommandCenter.previousTrackCommand.addTarget { [weak self] _ in
++      guard let player = self?.activePlayer else {
+         return .commandFailed
+       }
+-
+-      let currentTime = player.ref.currentTime()
+-      let seekTime = currentTime - CMTime(seconds: event.interval, preferredTimescale: 1)
+-      player.ref.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero)
+-
++      player.emit(event: "lockScreenCommand", arguments: ["command": "previous"])
+       return .success
+     }
+ 
+@@ -205,8 +198,21 @@ class MediaController {
+     remoteCommandCenter.pauseCommand.isEnabled = true
+     remoteCommandCenter.togglePlayPauseCommand.isEnabled = true
+     remoteCommandCenter.changePlaybackPositionCommand.isEnabled = true
+-    remoteCommandCenter.skipForwardCommand.isEnabled = options?.showSeekForward ?? false
+-    remoteCommandCenter.skipBackwardCommand.isEnabled = options?.showSeekBackward ?? false
++    remoteCommandCenter.skipForwardCommand.isEnabled = false
++    remoteCommandCenter.skipBackwardCommand.isEnabled = false
++    remoteCommandCenter.nextTrackCommand.isEnabled = options?.showSeekForward ?? false
++    remoteCommandCenter.previousTrackCommand.isEnabled = options?.showSeekBackward ?? false
++  }
++
++  private func removeAllTargets() {
++    remoteCommandCenter.playCommand.removeTarget(nil)
++    remoteCommandCenter.pauseCommand.removeTarget(nil)
++    remoteCommandCenter.togglePlayPauseCommand.removeTarget(nil)
++    remoteCommandCenter.changePlaybackPositionCommand.removeTarget(nil)
++    remoteCommandCenter.skipForwardCommand.removeTarget(nil)
++    remoteCommandCenter.skipBackwardCommand.removeTarget(nil)
++    remoteCommandCenter.nextTrackCommand.removeTarget(nil)
++    remoteCommandCenter.previousTrackCommand.removeTarget(nil)
+   }
+ 
+   private func disableRemoteCommands() {
+@@ -216,6 +222,9 @@ class MediaController {
+     remoteCommandCenter.changePlaybackPositionCommand.isEnabled = false
+     remoteCommandCenter.skipForwardCommand.isEnabled = false
+     remoteCommandCenter.skipBackwardCommand.isEnabled = false
++    remoteCommandCenter.nextTrackCommand.isEnabled = false
++    remoteCommandCenter.previousTrackCommand.isEnabled = false
++    removeAllTargets()
+ 
+     // Remove event targets
+     remoteCommandCenter.playCommand.removeTarget(self);

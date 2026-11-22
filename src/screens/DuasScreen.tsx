@@ -101,7 +101,10 @@ const DuaReader: React.FC<{ dua: Dua; onBack: () => void; onHome: () => void }> 
     ];
 
     // Back to the start once it ends, which also clears the highlights
-    const player = useDhikrAudio(dua.audio?.url ?? null, rate, () => { }, () => player.seek(0));
+    const player = useDhikrAudio(dua.audio?.url ?? null, rate, () => { }, () => player.seek(0), {
+        title: t(`duas.items.${dua.id}.title`),
+        artist: dua.audio?.reciter,
+    });
     const activePart = player.state.duration > 0 ? partAtTime(dua, player.state.position) : -1;
 
     // Word-by-word highlighting, like the verses of reciters with word timings

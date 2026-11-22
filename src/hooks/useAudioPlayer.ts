@@ -1,17 +1,21 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Audio } from 'expo-av';
+import { useTranslation } from 'react-i18next';
 import { Verse as VerseType, AudioState } from '@/types';
 import { loadSurah } from '@/data/quranData';
 import { useSettings } from '@/contexts/SettingsContext';
 import logger from '@/utils/logger';
 import { getVerseAudioUrl } from '@/utils/audioUrls';
+import { getSurahNameByNumber } from '@/utils/surahName';
+import {
+  AudioPlayer, LockScreenCommand, PlayerStatus, loadPlayer, onLockScreenCommand, onStatus, releasePlayer, showOnLockScreen,
+} from '@/services/audioPlayer';
 
 // Next verse starts this long before the current one ends. Every file opens with ~35 ms of
 // silence, so the overlap only covers the player's own start-up latency.
 const OVERLAP_LEAD_MS = 60;
 // How long the previous sound may keep playing its tail before it is unloaded
 const OVERLAP_UNLOAD_DELAY_MS = 1000;
-// How often the player reports its position (word highlighting follows it); expo-av defaults to 500 ms
+// How often the player reports its position (word highlighting follows it)
 const POSITION_UPDATE_INTERVAL_MS = 100;
 // A verse file that hasn't loaded by then counts as failed, so a stalled download can't hang playback
 const LOAD_TIMEOUT_MS = 15000;
@@ -19,33 +23,17 @@ const LOAD_TIMEOUT_MS = 15000;
 const LOAD_RETRIES = 1;
 const RETRY_DELAY_MS = 1000;
 
-type SoundStatus = Parameters<typeof Audio.Sound.createAsync>[1];
+// "Previous" restarts the verse when it has played longer than this, otherwise goes to the verse before
+const RESTART_THRESHOLD_SECONDS = 3;
 
-// createAsync with a time limit; a sound that arrives after the limit is unloaded
-const createSoundWithTimeout = (uri: string, status: SoundStatus) =>
-  new Promise<Audio.Sound>((resolve, reject) => {
-    let timedOut = false;
-    const timer = setTimeout(() => {
-      timedOut = true;
-      reject(new Error(`Audio load timed out: ${uri}`));
-    }, LOAD_TIMEOUT_MS);
-    Audio.Sound.createAsync({ uri }, status).then(
-      ({ sound }) => {
-        clearTimeout(timer);
-        if (timedOut) sound.unloadAsync().catch(() => { });
-        else resolve(sound);
-      },
-      error => {
-        clearTimeout(timer);
-        if (!timedOut) reject(error);
-      },
-    );
-  });
+const createSoundWithTimeout = (uri: string, rate?: number) =>
+  loadPlayer(uri, { timeoutMs: LOAD_TIMEOUT_MS, updateIntervalMs: POSITION_UPDATE_INTERVAL_MS, rate });
 
 type PositionListener = (verseId: string, positionMillis: number) => void;
 
 export const useAudioPlayer = () => {
   const { settings, availableReciters } = useSettings();
+  const { t } = useTranslation();
   const settingsRef = useRef(settings);
   const [audioState, setAudioState] = useState<AudioState>({
     isPlaying: false,
@@ -54,7 +42,7 @@ export const useAudioPlayer = () => {
     position: 0,
     isLoading: false,
   });
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const [sound, setSound] = useState<AudioPlayer | null>(null);
   const [_allVerses, setAllVerses] = useState<VerseType[]>([]);
   // Keep a ref in sync with allVerses to avoid stale closures inside audio callbacks
   const allVersesRef = useRef<VerseType[]>([]);
@@ -64,12 +52,20 @@ export const useAudioPlayer = () => {
   const playTokenRef = useRef(0);
 
   // Current sound as a ref, so audio callbacks never see a stale `sound` state
-  const soundRef = useRef<Audio.Sound | null>(null);
+  const soundRef = useRef<AudioPlayer | null>(null);
+  // Status / lock screen listeners of the current sound, removed when another sound takes over
+  const detachRef = useRef<(() => void) | null>(null);
+  // Lets replayVerse start the current sound's finish handling over
+  const rearmRef = useRef<(() => void) | null>(null);
+  // Verse of the current sound, for the media notification's previous/next buttons
+  const currentVerseRef = useRef<VerseType | null>(null);
+  // Latest previous/next handler; the notification listener calls it through this ref
+  const lockCommandRef = useRef<(command: LockScreenCommand) => void>(() => { });
   // Set while the next verse is started just before the current one ends (see OVERLAP_LEAD_MS)
   const overlapNextRef = useRef(false);
   // Upcoming verse audio, keyed by URI (so a reciter change never hits a stale entry).
   // Promises, so a transition can wait for an in-flight preload instead of downloading again.
-  const preloadCache = useRef<Map<string, Promise<Audio.Sound | null>>>(new Map());
+  const preloadCache = useRef<Map<string, Promise<AudioPlayer | null>>>(new Map());
 
   // Position ticks go straight to subscribers instead of through audioState, so only the
   // components that follow the recitation re-render ten times a second
@@ -101,7 +97,7 @@ export const useAudioPlayer = () => {
     if (sound) {
       const timeoutId = setTimeout(async () => {
         try {
-          await sound.setRateAsync(settings.playbackRate, true);
+          sound.setPlaybackRate(settings.playbackRate);
         } catch (error) {
           console.error('Error updating playback rate:', error);
         }
@@ -116,14 +112,17 @@ export const useAudioPlayer = () => {
   }, [sound]);
 
   // Sounds are unloaded explicitly in playVerse/stop (an overlapping tail must be allowed to finish)
-  useEffect(() => () => { soundRef.current?.unloadAsync().catch(() => { }); }, []);
+  useEffect(() => () => {
+    detachRef.current?.();
+    releasePlayer(soundRef.current);
+  }, []);
 
   // Clean up preloaded audio cache
   useEffect(() => {
     const cache = preloadCache.current;
     return () => {
       // Clean up all preloaded sounds on unmount
-      cache.forEach(pending => pending.then(s => s?.unloadAsync()).catch(() => { }));
+      cache.forEach(pending => pending.then(releasePlayer).catch(() => { }));
       cache.clear();
     };
   }, []);
@@ -139,7 +138,7 @@ export const useAudioPlayer = () => {
     const uri = getAudioUri(verse);
     if (preloadCache.current.has(uri)) return;
 
-    const pending = createSoundWithTimeout(uri, { shouldPlay: false })
+    const pending = createSoundWithTimeout(uri)
       .catch(error => {
         logger.debug(`Failed to preload verse audio: ${uri} ${error}`);
         preloadCache.current.delete(uri);
@@ -151,13 +150,13 @@ export const useAudioPlayer = () => {
     // Keep only a few recent entries
     if (preloadCache.current.size > 3) {
       const oldestKey = preloadCache.current.keys().next().value as string;
-      preloadCache.current.get(oldestKey)?.then(s => s?.unloadAsync()).catch(() => { });
+      preloadCache.current.get(oldestKey)?.then(releasePlayer).catch(() => { });
       preloadCache.current.delete(oldestKey);
     }
   };
 
   // Takes a preloaded (or still loading) sound out of the cache; null on a miss
-  const takePreloaded = async (verse: VerseType): Promise<Audio.Sound | null> => {
+  const takePreloaded = async (verse: VerseType): Promise<AudioPlayer | null> => {
     const uri = getAudioUri(verse);
     const pending = preloadCache.current.get(uri);
     if (!pending) return null;
@@ -217,7 +216,9 @@ export const useAudioPlayer = () => {
     const current = soundRef.current;
     if (!current) return playVerse(verse);
     try {
-      await current.replayAsync();
+      rearmRef.current?.();
+      await current.seekTo(0);
+      current.play();
       preloadUpcoming(verse);
     } catch {
       await playVerse(verse);
@@ -355,281 +356,313 @@ export const useAudioPlayer = () => {
 
       // Stop the previous sound without waiting for it; the next one starts loading right away.
       // When started early (overlap), the previous verse plays its last few ms to the end first.
+      // It is released only once this one has taken over the media notification (or this one fails),
+      // so the notification and its foreground service stay up between verses.
       const overlap = overlapNextRef.current;
       overlapNextRef.current = false;
       const previous = soundRef.current;
-      if (previous) {
-        previous.setOnPlaybackStatusUpdate(null);
-        if (overlap) {
-          setTimeout(() => { previous.unloadAsync().catch(() => { }); }, OVERLAP_UNLOAD_DELAY_MS);
-        } else {
-          previous.unloadAsync().catch(() => { });
-        }
-        soundRef.current = null;
-      }
+      detachRef.current?.();
+      detachRef.current = null;
+      rearmRef.current = null;
+      if (previous && !overlap) previous.pause();
+      soundRef.current = null;
+      let previousReleased = !previous;
+      const releasePrevious = () => {
+        if (previousReleased) return;
+        previousReleased = true;
+        if (overlap) setTimeout(() => releasePlayer(previous), OVERLAP_UNLOAD_DELAY_MS);
+        else releasePlayer(previous);
+      };
 
-      const audioUri = getAudioUri(verse);
-      const playbackStatus = { shouldPlay: true, rate: settingsRef.current.playbackRate, shouldCorrectPitch: true };
+      try {
+        const audioUri = getAudioUri(verse);
+        const rate = settingsRef.current.playbackRate;
 
-      // Preloaded (or still preloading) sound for this verse, if any
-      let newSound = await takePreloaded(verse);
-      if (myToken !== playTokenRef.current) {
-        newSound?.unloadAsync().catch(() => { });
-        return;
-      }
-
-      if (newSound) {
-        logger.debug(`Using preloaded audio for verse: ${audioUri}`);
-        try {
-          await newSound.setStatusAsync(playbackStatus);
-        } catch (error) {
-          // The preloaded player broke while waiting (e.g. its connection dropped); load the file again
-          logger.debug(`Preloaded audio unusable, reloading: ${audioUri} ${error}`);
-          newSound.unloadAsync().catch(() => { });
-          newSound = null;
-        }
-      }
-
-      if (!newSound) {
-        logger.debug(`Loading audio from: ${audioUri}`);
-        // A missing file rejects here, so no separate HEAD request is needed
-        for (let attempt = 0; !newSound; attempt++) {
-          try {
-            newSound = await createSoundWithTimeout(audioUri, playbackStatus);
-          } catch (error) {
-            if (myToken !== playTokenRef.current) return;
-            if (attempt >= LOAD_RETRIES) {
-              logger.warn(`Audio could not be loaded: ${audioUri}`, error);
-              failPlayback(verse);
-              return;
-            }
-            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
-            if (myToken !== playTokenRef.current) return;
-          }
-        }
-        // A newer play/stop happened while this was loading
+        // Preloaded (or still preloading) sound for this verse, if any
+        let newSound = await takePreloaded(verse);
         if (myToken !== playTokenRef.current) {
-          newSound.unloadAsync().catch(() => { });
+          releasePlayer(newSound);
           return;
         }
-      }
 
-      soundRef.current = newSound;
-      setSound(newSound);
+        if (newSound) {
+          logger.debug(`Using preloaded audio for verse: ${audioUri}`);
+          try {
+            newSound.setPlaybackRate(rate);
+            newSound.play();
+          } catch (error) {
+            // The preloaded player broke while waiting (e.g. its connection dropped); load the file again
+            logger.debug(`Preloaded audio unusable, reloading: ${audioUri} ${error}`);
+            releasePlayer(newSound);
+            newSound = null;
+          }
+        }
 
-      // Starts the next verse OVERLAP_LEAD_MS before this one ends, so there is no audible gap.
-      // A timer (re-synced on every status update) avoids needing very frequent status updates.
-      let startedEarly = false;
-      let earlyTimer: ReturnType<typeof setTimeout> | null = null;
-      const clearEarlyTimer = () => {
-        if (earlyTimer) clearTimeout(earlyTimer);
-        earlyTimer = null;
-      };
-      const startNextEarly = () => {
-        earlyTimer = null;
-        if (startedEarly || myToken !== playTokenRef.current) return;
-        // Only for a different verse; repeats replay this same sound after it finishes
-        const upcoming = getUpcomingVerse(verse);
-        if (!upcoming || upcoming.id === verse.id) return;
-        startedEarly = true;
-        overlapNextRef.current = true;
-        handleFinished().finally(() => { overlapNextRef.current = false; });
-      };
-
-      // Everything below reads refs, so it can run the moment playback ends (or just before)
-      const handleFinished = async () => {
-        // Abort if a new play/stop happened
-        if (myToken !== playTokenRef.current) return;
-        // Memorization mode overrides normal autoplay/play mode
-        if (memActiveRef.current) {
-          const versesArr = allVersesRef.current;
-          const targetSurah = memSurahRef.current;
-          const startNum = memStartRef.current;
-          const endNum = memEndRef.current;
-          const mode = memModeRef.current;
-
-          // If we somehow left the target surah, cancel memorization
-          if (!targetSurah || verse.surahNumber !== targetSurah) {
-            memActiveRef.current = false;
-            memCyclesDoneRef.current = 0;
-            memCurrentVerseRepeatsRef.current = 0;
-            setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+        if (!newSound) {
+          logger.debug(`Loading audio from: ${audioUri}`);
+          // A missing file rejects here, so no separate HEAD request is needed
+          for (let attempt = 0; !newSound; attempt++) {
+            try {
+              newSound = await createSoundWithTimeout(audioUri, rate);
+            } catch (error) {
+              if (myToken !== playTokenRef.current) return;
+              if (attempt >= LOAD_RETRIES) {
+                logger.warn(`Audio could not be loaded: ${audioUri}`, error);
+                failPlayback(verse);
+                return;
+              }
+              await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
+              if (myToken !== playTokenRef.current) return;
+            }
+          }
+          // A newer play/stop happened while this was loading
+          if (myToken !== playTokenRef.current) {
+            releasePlayer(newSound);
             return;
           }
+          newSound.play();
+        }
 
-          if (mode === 'individual') {
-            // New mode: repeat each verse individually
-            const currentRepeats = memCurrentVerseRepeatsRef.current + 1;
+        soundRef.current = newSound;
+        currentVerseRef.current = verse;
+        setSound(newSound);
 
-            if (currentRepeats < memCyclesTotalRef.current) {
-              // Repeat the same verse
-              memCurrentVerseRepeatsRef.current = currentRepeats;
-              await replayVerse(verse);
-              return;
-            } else {
-              // Move to next verse
+        // Media notification / lock screen: takes over from the previous verse's sound, then that one goes
+        const reciterName = availableReciters.find(r => r.id === settingsRef.current.selectedReciter)?.name;
+        showOnLockScreen(newSound, `${getSurahNameByNumber(t, verse.surahNumber)} ${verse.number}`, reciterName);
+        releasePrevious();
+
+        // Starts the next verse OVERLAP_LEAD_MS before this one ends, so there is no audible gap.
+        // A timer (re-synced on every status update) avoids needing very frequent status updates.
+        let startedEarly = false;
+        let earlyTimer: ReturnType<typeof setTimeout> | null = null;
+        const clearEarlyTimer = () => {
+          if (earlyTimer) clearTimeout(earlyTimer);
+          earlyTimer = null;
+        };
+        const startNextEarly = () => {
+          earlyTimer = null;
+          if (startedEarly || myToken !== playTokenRef.current) return;
+          // Only for a different verse; repeats replay this same sound after it finishes
+          const upcoming = getUpcomingVerse(verse);
+          if (!upcoming || upcoming.id === verse.id) return;
+          startedEarly = true;
+          overlapNextRef.current = true;
+          handleFinished().finally(() => { overlapNextRef.current = false; });
+        };
+
+        // Everything below reads refs, so it can run the moment playback ends (or just before)
+        const handleFinished = async () => {
+          // Abort if a new play/stop happened
+          if (myToken !== playTokenRef.current) return;
+          // Memorization mode overrides normal autoplay/play mode
+          if (memActiveRef.current) {
+            const versesArr = allVersesRef.current;
+            const targetSurah = memSurahRef.current;
+            const startNum = memStartRef.current;
+            const endNum = memEndRef.current;
+            const mode = memModeRef.current;
+
+            // If we somehow left the target surah, cancel memorization
+            if (!targetSurah || verse.surahNumber !== targetSurah) {
+              memActiveRef.current = false;
+              memCyclesDoneRef.current = 0;
               memCurrentVerseRepeatsRef.current = 0;
+              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+              return;
+            }
 
+            if (mode === 'individual') {
+              // New mode: repeat each verse individually
+              const currentRepeats = memCurrentVerseRepeatsRef.current + 1;
+
+              if (currentRepeats < memCyclesTotalRef.current) {
+                // Repeat the same verse
+                memCurrentVerseRepeatsRef.current = currentRepeats;
+                await replayVerse(verse);
+                return;
+              } else {
+                // Move to next verse
+                memCurrentVerseRepeatsRef.current = 0;
+
+                if (verse.number < endNum) {
+                  const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
+                  if (next) {
+                    await playVerse(next);
+                    return;
+                  }
+                }
+
+                // Finished all verses in range
+                memActiveRef.current = false;
+                memCyclesDoneRef.current = 0;
+                memCurrentVerseRepeatsRef.current = 0;
+                setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                return;
+              }
+            } else {
+              // Original mode: repeat whole range
+              // Move to next verse within range
               if (verse.number < endNum) {
                 const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
                 if (next) {
                   await playVerse(next);
                   return;
                 }
-              }
-
-              // Finished all verses in range
-              memActiveRef.current = false;
-              memCyclesDoneRef.current = 0;
-              memCurrentVerseRepeatsRef.current = 0;
-              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-              return;
-            }
-          } else {
-            // Original mode: repeat whole range
-            // Move to next verse within range
-            if (verse.number < endNum) {
-              const next = versesArr.find(v => v.surahNumber === targetSurah && v.number === verse.number + 1);
-              if (next) {
-                await playVerse(next);
+                // If next not found, cancel memorization gracefully
+                memActiveRef.current = false;
+                setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
                 return;
               }
-              // If next not found, cancel memorization gracefully
-              memActiveRef.current = false;
-              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-              return;
-            }
 
-            // Finished the end of the range; either loop the whole range or stop
-            const cyclesDone = memCyclesDoneRef.current + 1;
-            if (cyclesDone < Math.max(1, memCyclesTotalRef.current)) {
-              memCyclesDoneRef.current = cyclesDone;
-              const startVerse = versesArr.find(v => v.surahNumber === targetSurah && v.number === startNum);
-              if (startVerse) {
-                await playVerse(startVerse);
+              // Finished the end of the range; either loop the whole range or stop
+              const cyclesDone = memCyclesDoneRef.current + 1;
+              if (cyclesDone < Math.max(1, memCyclesTotalRef.current)) {
+                memCyclesDoneRef.current = cyclesDone;
+                const startVerse = versesArr.find(v => v.surahNumber === targetSurah && v.number === startNum);
+                if (startVerse) {
+                  await playVerse(startVerse);
+                  return;
+                }
+                // Start not found; cancel
+                memActiveRef.current = false;
+                memCyclesDoneRef.current = 0;
+                setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                return;
+              } else {
+                // All cycles completed
+                memActiveRef.current = false;
+                memCyclesDoneRef.current = 0;
+                setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
                 return;
               }
-              // Start not found; cancel
-              memActiveRef.current = false;
-              memCyclesDoneRef.current = 0;
-              setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-              return;
+            }
+          }
+
+          const mode = settingsRef.current.audioPlayMode;
+
+          // Loop current verse immediately
+          if (mode === 'loopVerse') {
+            await replayVerse(verse);
+            return;
+          }
+
+          // Determine if this was the last verse of current surah buffer
+          const versesArr = allVersesRef.current;
+          const idx = versesArr.findIndex(v => v.id === verse.id);
+          const isLastVerse = idx !== -1 && idx === versesArr.length - 1;
+
+          if (!isLastVerse) {
+            // Not last verse: follow autoplay toggle for next-verse behavior
+            if (settingsRef.current.autoplayEnabled) {
+              playNextVerse(verse);
             } else {
-              // All cycles completed
-              memActiveRef.current = false;
-              memCyclesDoneRef.current = 0;
               setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-              return;
             }
+            return;
           }
-        }
 
-        const mode = settingsRef.current.audioPlayMode;
-
-        // Loop current verse immediately
-        if (mode === 'loopVerse') {
-          await replayVerse(verse);
-          return;
-        }
-
-        // Determine if this was the last verse of current surah buffer
-        const versesArr = allVersesRef.current;
-        const idx = versesArr.findIndex(v => v.id === verse.id);
-        const isLastVerse = idx !== -1 && idx === versesArr.length - 1;
-
-        if (!isLastVerse) {
-          // Not last verse: follow autoplay toggle for next-verse behavior
-          if (settingsRef.current.autoplayEnabled) {
-            playNextVerse(verse);
-          } else {
-            setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+          // End-of-surah behavior: ignore autoplay flag and follow play mode
+          if (mode === 'loopSurah') {
+            const first = versesArr[0];
+            if (first) await playVerse(first);
+            else setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+            return;
           }
-          return;
-        }
 
-        // End-of-surah behavior: ignore autoplay flag and follow play mode
-        if (mode === 'loopSurah') {
-          const first = versesArr[0];
-          if (first) await playVerse(first);
-          else setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-          return;
-        }
-
-        if (mode === 'nextSurah') {
-          try {
-            const nextSurah = verse.surahNumber + 1;
-            if (nextSurah <= 114) {
-              const loaded = await loadSurah(nextSurah);
-              if (loaded && loaded.verses.length > 0) {
-                // CRITICAL: Update allVerses BEFORE playing to avoid index -1 lookup
-                setAllVerses(loaded.verses);
-                allVersesRef.current = loaded.verses;
-                logger.debug('Updated allVerses to next surah in finish handler, length:', loaded.verses.length);
-                await playVerse(loaded.verses[0]);
+          if (mode === 'nextSurah') {
+            try {
+              const nextSurah = verse.surahNumber + 1;
+              if (nextSurah <= 114) {
+                const loaded = await loadSurah(nextSurah);
+                if (loaded && loaded.verses.length > 0) {
+                  // CRITICAL: Update allVerses BEFORE playing to avoid index -1 lookup
+                  setAllVerses(loaded.verses);
+                  allVersesRef.current = loaded.verses;
+                  logger.debug('Updated allVerses to next surah in finish handler, length:', loaded.verses.length);
+                  await playVerse(loaded.verses[0]);
+                } else {
+                  setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+                }
               } else {
                 setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
               }
-            } else {
+            } catch (e) {
+              console.error('Error loading next surah on finish:', e);
               setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
             }
-          } catch (e) {
-            console.error('Error loading next surah on finish:', e);
-            setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+            return;
           }
-          return;
-        }
 
-        // stopAtEnd or unknown mode
-        setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
-      };
+          // stopAtEnd or unknown mode
+          setAudioState(prev => ({ ...prev, isPlaying: false, currentVerse: null }));
+        };
 
-      // Set up status update listener
-      newSound.setProgressUpdateIntervalAsync(POSITION_UPDATE_INTERVAL_MS).catch(() => { });
-      newSound.setOnPlaybackStatusUpdate((status) => {
-        if (!status.isLoaded) {
-          // The player stopped with an error mid-verse (e.g. the connection dropped): stop and say so
-          // instead of staying "playing" with no sound
-          if (status.error && myToken === playTokenRef.current) {
+        // Android reports the end more than once (state change and playing change); handle it once
+        let finishHandled = false;
+        rearmRef.current = () => {
+          finishHandled = false;
+          startedEarly = false;
+        };
+        const player = newSound;
+        const statusSubscription = onStatus(player, (status: PlayerStatus) => {
+          if (myToken !== playTokenRef.current) return;
+          if (status.error) {
+            // The player stopped with an error mid-verse (e.g. the connection dropped): stop and say so
+            // instead of staying "playing" with no sound
             logger.warn(`Audio playback error: ${audioUri}`, status.error);
             clearEarlyTimer();
             playTokenRef.current++;
-            newSound?.setOnPlaybackStatusUpdate(null);
-            newSound?.unloadAsync().catch(() => { });
+            detachRef.current?.();
+            detachRef.current = null;
+            player.clearLockScreenControls();
+            releasePlayer(player);
             failPlayback(verse);
+            return;
           }
-          return;
-        }
-        positionListenersRef.current.forEach(listener => listener(verse.id, status.positionMillis || 0));
-        // Position ticks alone don't touch audioState (nothing reads it; see subscribeToPosition)
-        setAudioState(prev => {
-          const isPlaying = status.isPlaying || false;
-          const duration = status.durationMillis || 0;
-          if (prev.isPlaying === isPlaying && prev.duration === duration && !prev.isLoading) return prev;
-          return { ...prev, isPlaying, duration, position: status.positionMillis || 0, isLoading: false };
+          const positionMillis = (status.currentTime || 0) * 1000;
+          const durationMillis = (status.duration || 0) * 1000;
+          positionListenersRef.current.forEach(listener => listener(verse.id, positionMillis));
+          // Position ticks alone don't touch audioState (nothing reads it; see subscribeToPosition)
+          setAudioState(prev => {
+            const isPlaying = status.playing || false;
+            if (prev.isPlaying === isPlaying && prev.duration === durationMillis && !prev.isLoading) return prev;
+            return { ...prev, isPlaying, duration: durationMillis, position: positionMillis, isLoading: false };
+          });
+
+          clearEarlyTimer();
+          if (status.didJustFinish) {
+            if (finishHandled) return;
+            finishHandled = true;
+            if (!startedEarly) handleFinished();
+            return;
+          }
+          if (status.playing && durationMillis) {
+            const remainingMs = (durationMillis - positionMillis) / (status.playbackRate || 1);
+            earlyTimer = setTimeout(startNextEarly, Math.max(0, remainingMs - OVERLAP_LEAD_MS));
+          }
         });
+        const commandSubscription = onLockScreenCommand(player, command => lockCommandRef.current(command));
+        detachRef.current = () => {
+          clearEarlyTimer();
+          statusSubscription.remove();
+          commandSubscription.remove();
+        };
 
-        clearEarlyTimer();
-        if (status.didJustFinish) {
-          if (!startedEarly) handleFinished();
-          return;
-        }
-        if (status.isPlaying && status.durationMillis) {
-          const remainingMs = (status.durationMillis - status.positionMillis) / (status.rate || 1);
-          earlyTimer = setTimeout(startNextEarly, Math.max(0, remainingMs - OVERLAP_LEAD_MS));
-        }
-      });
+        setAudioState(prev => ({
+          ...prev,
+          currentVerse: verse,
+          isPlaying: true,
+          isLoading: false,
+        }));
 
-      setAudioState(prev => ({
-        ...prev,
-        currentVerse: verse,
-        isPlaying: true,
-        isLoading: false,
-      }));
+        logger.debug(`Successfully loaded and playing verse: ${verse.id}`);
 
-      logger.debug(`Successfully loaded and playing verse: ${verse.id}`);
-
-      // Start downloading whatever plays next while this verse plays
-      preloadUpcoming(verse);
+        // Start downloading whatever plays next while this verse plays
+        preloadUpcoming(verse);
+      } finally {
+        releasePrevious();
+      }
 
     } catch (error) {
       console.error('Error playing audio:', error);
@@ -637,10 +670,67 @@ export const useAudioPlayer = () => {
     }
   };
 
+  // Media notification / lock screen buttons. "Next" goes to the following verse (the next surah after
+  // the last one); "previous" restarts the verse, or goes to the one before when it has just started.
+  // In memorization they stay within the range.
+  lockCommandRef.current = (command: LockScreenCommand) => {
+    const verse = currentVerseRef.current;
+    const current = soundRef.current;
+    if (!verse) return;
+    const versesArr = allVersesRef.current;
+    const inSurah = (num: number) => versesArr.find(v => v.surahNumber === verse.surahNumber && v.number === num);
+
+    if (command === 'previous') {
+      const playedSeconds = current?.currentTime ?? 0;
+      const atRangeStart = memActiveRef.current && verse.number <= memStartRef.current;
+      const before = atRangeStart ? undefined : inSurah(verse.number - 1);
+      if (playedSeconds > RESTART_THRESHOLD_SECONDS || !before) {
+        rearmRef.current?.();
+        current?.seekTo(0).then(() => current.play()).catch(() => { });
+        return;
+      }
+      memCurrentVerseRepeatsRef.current = 0;
+      playVerse(before);
+      return;
+    }
+
+    if (memActiveRef.current) {
+      memCurrentVerseRepeatsRef.current = 0;
+      const next = verse.number < memEndRef.current ? inSurah(verse.number + 1) : inSurah(memStartRef.current);
+      if (next) playVerse(next);
+      return;
+    }
+    const next = inSurah(verse.number + 1);
+    if (next) {
+      playVerse(next);
+      return;
+    }
+    if (verse.surahNumber >= 114) return;
+    const myToken = playTokenRef.current;
+    pendingSurahRef.current = verse.surahNumber + 1;
+    loadSurah(verse.surahNumber + 1)
+      .then(loaded => {
+        pendingSurahRef.current = null;
+        if (!loaded?.verses.length || myToken !== playTokenRef.current) return;
+        setAllVerses(loaded.verses);
+        allVersesRef.current = loaded.verses;
+        playVerse(loaded.verses[0]);
+      })
+      .catch(() => { pendingSurahRef.current = null; });
+  };
+
+  // Recitation over (end of the surah or range): take it off the notification and lock screen
+  useEffect(() => {
+    if (!audioState.currentVerse) {
+      try { soundRef.current?.clearLockScreenControls(); } catch { }
+    }
+  }, [audioState.currentVerse]);
+
   // Stops on a verse whose audio couldn't play and flags it; the audio bar shows the error and its
   // play button tries again. Nothing advances, so autoplay can't skip through verses in silence.
   const failPlayback = (verse: VerseType) => {
     soundRef.current = null;
+    currentVerseRef.current = null;
     setSound(null);
     setAudioState(prev => ({
       ...prev,
@@ -655,7 +745,7 @@ export const useAudioPlayer = () => {
 
   const pause = async () => {
     try {
-      await soundRef.current?.pauseAsync();
+      soundRef.current?.pause();
       setAudioState(prev => ({ ...prev, isPlaying: false }));
     } catch (error) {
       console.error('Error pausing audio:', error);
@@ -664,7 +754,7 @@ export const useAudioPlayer = () => {
 
   const resume = async () => {
     try {
-      await soundRef.current?.playAsync();
+      soundRef.current?.play();
       setAudioState(prev => ({ ...prev, isPlaying: true }));
     } catch (error) {
       console.error('Error resuming audio:', error);
@@ -679,11 +769,14 @@ export const useAudioPlayer = () => {
       if (current) {
         soundRef.current = null;
         // Detach status updates first to avoid stray updates
-        try { current.setOnPlaybackStatusUpdate(null); } catch { }
-        try { await current.stopAsync(); } catch { }
-        try { await current.unloadAsync(); } catch { }
+        detachRef.current?.();
+        detachRef.current = null;
+        rearmRef.current = null;
+        try { current.clearLockScreenControls(); } catch { }
+        releasePlayer(current);
         setSound(null);
       }
+      currentVerseRef.current = null;
       pendingSurahRef.current = null;
       setAudioState({
         isPlaying: false,
@@ -724,7 +817,7 @@ export const useAudioPlayer = () => {
   const changePlaybackRate = async (rate: number) => {
     if (soundRef.current) {
       try {
-        await soundRef.current.setRateAsync(rate, true);
+        soundRef.current.setPlaybackRate(rate);
         logger.debug(`Playback rate changed to: ${rate}x`);
       } catch (error) {
         console.error('Error changing playback rate:', error);
@@ -840,10 +933,8 @@ export const useAudioPlayer = () => {
       setAudioState(prev => ({ ...prev, isLoading: true, currentVerse: verse }));
 
       // Create and play the preview sound
-      const { sound: previewSound } = await Audio.Sound.createAsync(
-        { uri: audioUri },
-        { shouldPlay: true, rate: settings.playbackRate }
-      );
+      const previewSound = await createSoundWithTimeout(audioUri, settings.playbackRate);
+      previewSound.play();
 
       soundRef.current = previewSound;
       setSound(previewSound);
@@ -855,10 +946,10 @@ export const useAudioPlayer = () => {
       }));
 
       // Set up playback status update for preview
-      previewSound.setOnPlaybackStatusUpdate((status) => {
-        if (!status.isLoaded) return;
-
+      const previewSubscription = onStatus(previewSound, (status) => {
         if (status.didJustFinish) {
+          previewSubscription.remove();
+          detachRef.current = null;
           // Preview finished, reset state
           setAudioState(prev => ({
             ...prev,
@@ -866,16 +957,18 @@ export const useAudioPlayer = () => {
             currentVerse: null,
             position: 0,
           }));
-          previewSound.unloadAsync();
+          releasePlayer(previewSound);
+          soundRef.current = null;
           setSound(null);
         } else {
           setAudioState(prev => ({
             ...prev,
-            position: status.positionMillis || 0,
-            duration: status.durationMillis || 0,
+            position: (status.currentTime || 0) * 1000,
+            duration: (status.duration || 0) * 1000,
           }));
         }
       });
+      detachRef.current = () => previewSubscription.remove();
 
     } catch (error) {
       console.error('Error playing preview:', error);
