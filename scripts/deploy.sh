@@ -36,7 +36,11 @@ fi
 if [ "$ENVIRONMENT" = "dev" ]; then
   git fetch origin --quiet
   BUILD_DIR="$(mktemp -d "${TMPDIR:-/tmp}/kuran360-deploy-XXXXXX")"
-  cleanup() { git -C "$MAIN" worktree remove --force "$BUILD_DIR" >/dev/null 2>&1 || rm -rf "$BUILD_DIR"; }
+  cleanup() {
+    # Keep failed browser tests' traces and page snapshots where they can be looked at
+    if [ -d "$BUILD_DIR/test-results" ]; then rm -rf "$MAIN/test-results"; cp -r "$BUILD_DIR/test-results" "$MAIN/test-results"; fi
+    git -C "$MAIN" worktree remove --force "$BUILD_DIR" >/dev/null 2>&1 || rm -rf "$BUILD_DIR"
+  }
   trap cleanup EXIT
   git worktree add --detach --quiet "$BUILD_DIR" "$REF"
   echo "Building $REF ($(git -C "$BUILD_DIR" log -1 --format='%h %s' | cut -c1-80))"

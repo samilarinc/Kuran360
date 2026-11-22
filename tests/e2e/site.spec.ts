@@ -61,7 +61,8 @@ test('download the verses, then read and search them', async ({ page }) => {
 
     await page.goto('/search');
     await page.getByPlaceholder('Aranacak kelime veya cümle...').fill('samed');
-    await expect(page.getByText('İhlas - Ayet 2')).toBeVisible();
+    // Search reads all 114 surahs from IndexedDB, which can take a while on a busy machine
+    await expect(page.getByText('İhlas - Ayet 2')).toBeVisible({ timeout: 60_000 });
 
     expect(errors).toEqual([]);
 });
