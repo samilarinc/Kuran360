@@ -156,6 +156,15 @@ internal class State(
  * can rebuild everything after a reboot without starting the app.
  */
 object PrayerNotifier {
+  /** When the notification on screen goes stale (its countdown reaches zero or kerahat changes). */
+  @Volatile
+  private var shownRefreshAt = Long.MAX_VALUE
+
+  /** Rebuilds the notification if its refresh alarm hasn't come yet, e.g. when the screen turns on. */
+  fun refreshIfStale(context: Context) {
+    if (System.currentTimeMillis() >= shownRefreshAt) refresh(context)
+  }
+
   fun start(context: Context, configJson: String) {
     parseConfig(configJson) // reject a bad config before replacing the stored one
     prefs(context).edit().putString(KEY_CONFIG, configJson).apply()
@@ -199,6 +208,7 @@ object PrayerNotifier {
     val state = computeState(config, now) ?: return null
     ensureOngoingChannel(context)
     scheduleRefresh(context, state.refreshAt)
+    shownRefreshAt = state.refreshAt
     return buildNotification(context, config, state, now)
   }
 
@@ -728,30 +738,16 @@ object PrayerNotifier {
     return PendingIntent.getBroadcast(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
   }
 
-  /**
-   * Non-wakeup alarm: while the screen is off nobody sees the notification, so it is rebuilt when
-   * the device wakes up instead of waking it. Exact when the user allows it, otherwise the system
-   * may deliver it a few minutes late.
-   */
+  /** Rebuilds the ongoing notification at `at`; see scheduleScreenUpdate. */
   private fun scheduleRefresh(context: Context, at: Long) = scheduleScreenUpdate(context, at, refreshIntent(context))
 
-  /** A non-wakeup alarm for the ongoing notification; see scheduleRefresh. */
-  internal fun scheduleScreenUpdate(context: Context, at: Long, pending: PendingIntent) {
-    val manager = alarmManager(context)
-    if (canScheduleExactAlarms(context)) {
-      manager.setExact(AlarmManager.RTC, at, pending)
-    } else {
-      manager.setWindow(AlarmManager.RTC, at, 60_000L, pending)
-    }
-  }
-
   /**
-   * A wakeup alarm allowed in Doze, for the widgets: unlike the notification they have no foreground
-   * service keeping the app alive, so a non-wakeup alarm can be held back long after the screen comes
-   * on (app standby, Samsung/Xiaomi battery savers) while the countdown runs past zero. It fires a few
-   * times a day (prayer times, kerahat edges, midnight).
+   * A wakeup alarm allowed in Doze, for the ongoing notification and the widgets. A non-wakeup
+   * alarm is held back while the device sleeps and can stay held back long after the screen comes
+   * on (app standby, Samsung/Xiaomi battery savers), so the countdown runs past zero and counts up
+   * again. It fires only a few times a day (prayer times, kerahat edges, midnight).
    */
-  internal fun scheduleWidgetUpdate(context: Context, at: Long, pending: PendingIntent) {
+  internal fun scheduleScreenUpdate(context: Context, at: Long, pending: PendingIntent) {
     val manager = alarmManager(context)
     if (canScheduleExactAlarms(context)) {
       manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pending)
