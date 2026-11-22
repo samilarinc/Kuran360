@@ -106,3 +106,7 @@ public/tafsir-data/
 
 # App review video, uploaded to the server by hand
 public/app-review-demo.mp4
+
+# Test output
+test-results/
+playwright-report/
