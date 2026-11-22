@@ -1524,6 +1524,7 @@
       {
         "date": "November 23, 2026",
         "bullets": [
+          "The Duas page uses the same tile layout as the main menu",
           "Asma ul-Husna page (in the Prayers and Duas menu): the 99 names as calligraphy plaques, with a name of the day and search; Allah's attributes are there too, each with a verse",
           "Memorization check auto-advance: a flawless read moves on to the next verse by itself; you can turn it off",
           "Swipe between verses in the memorization check; swiping right brings the next verse",
@@ -2602,12 +2603,10 @@
           "May Allah send blessings upon our master Muhammad, his family and all his companions."
         ]
       }
-    },
-    "duaListSubtitle": "Your list of things to pray for, for yourself and for others"
+    }
   },
   "quranDuas": {
     "title": "Duas in the Quran",
-    "rowSubtitle": "The {{count}} duas of the prophets and believers in the Quran, with Arabic and translation",
     "loading": "Loading the dua verses...",
     "downloadTitle": "Quran data required",
     "downloadDescription": "To show the dua verses with their Arabic and translation, download the Quran text first.",

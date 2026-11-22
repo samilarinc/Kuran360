@@ -6,7 +6,7 @@ import { AppButton } from '@/components/AppButton';
 import { FontSizeToggle } from '@msarinc/ui';
 import { AppHeader } from '@/components/AppHeader';
 import { DhikrAudioBar } from '@/components/DhikrAudioBar';
-import { MenuListRow } from '@/components/MenuListRow';
+import { MenuTileGrid, type MenuTile } from '@/components/MenuTileGrid';
 import { RecitedBackdrop, SpokenWordMarker, useHiddenWordStyle } from '@/components/SpokenWordMarker';
 import { createStyles as createVerseStyles } from '@/components/Verse/index.styles';
 import { getArabicFontFamily, getFontOption, SURAH_FONT_SIZE } from '@/constants/fonts';
@@ -14,7 +14,6 @@ import { useGlobalAudio } from '@/contexts/AudioContext';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { Dua, DUAS, partAtTime } from '@/data/duas';
-import { QURAN_DUAS } from '@/data/quranDuas';
 import type { ActiveWord } from '@/hooks/useActiveWordIndex';
 import { useDhikrAudio } from '@/hooks/useDhikrAudio';
 import { formatVerseNumber } from '@/utils/numerals';
@@ -57,6 +56,31 @@ export const DuasScreen: React.FC<DuasScreenProps> = ({ navigation, duaId }) => 
 
     if (dua) return <DuaReader dua={dua} onBack={() => navigation.goBack()} onHome={() => navigation.navigate('Main')} />;
 
+    // Same tile grid as the main menu and its submenus
+    const menuItems: MenuTile[] = [
+        {
+            id: 'quran-duas',
+            title: t('quranDuas.title'),
+            Icon: BookOpenText,
+            color: theme.accent,
+            onPress: () => navigation.navigate('QuranDuas'),
+        },
+        {
+            id: 'dua-list',
+            title: t('mainScreen.menu.duaList'),
+            Icon: ListChecks,
+            color: theme.accent,
+            onPress: () => navigation.navigate('DuaList'),
+        },
+        ...DUAS.map(item => ({
+            id: item.id,
+            title: t(`duas.items.${item.id}.title`),
+            Icon: HandHeart,
+            color: theme.accent,
+            onPress: () => navigation.navigate('Duas', { duaId: item.id }),
+        })),
+    ];
+
     return (
         <SafeAreaView style={common.container}>
             <AppHeader
@@ -66,34 +90,8 @@ export const DuasScreen: React.FC<DuasScreenProps> = ({ navigation, duaId }) => 
                 showHomeButton
                 onHomePress={() => navigation.navigate('Main')}
             />
-            <ScrollView contentContainerStyle={common.listContent}>
-                <MenuListRow
-                    variant="card"
-                    icon={<BookOpenText size={26} color={theme.primary} />}
-                    iconColor={theme.primary + '15'}
-                    title={t('quranDuas.title')}
-                    subtitle={t('quranDuas.rowSubtitle', { count: QURAN_DUAS.length })}
-                    onPress={() => navigation.navigate('QuranDuas')}
-                />
-                <MenuListRow
-                    variant="card"
-                    icon={<ListChecks size={26} color={theme.primary} />}
-                    iconColor={theme.primary + '15'}
-                    title={t('mainScreen.menu.duaList')}
-                    subtitle={t('duas.duaListSubtitle')}
-                    onPress={() => navigation.navigate('DuaList')}
-                />
-                {DUAS.map(item => (
-                    <MenuListRow
-                        key={item.id}
-                        variant="card"
-                        icon={<HandHeart size={26} color={theme.primary} />}
-                        iconColor={theme.primary + '15'}
-                        title={t(`duas.items.${item.id}.title`)}
-                        subtitle={t(`duas.items.${item.id}.description`)}
-                        onPress={() => navigation.navigate('Duas', { duaId: item.id })}
-                    />
-                ))}
+            <ScrollView style={common.flex1} contentContainerStyle={common.listContent}>
+                <MenuTileGrid items={menuItems} />
             </ScrollView>
         </SafeAreaView>
     );

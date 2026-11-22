@@ -1524,6 +1524,7 @@
       {
         "date": "23 Kasım 2026",
         "bullets": [
+          "Dualar sayfası da ana menü gibi kutucuk düzeninde",
           "Esmaül Hüsna sayfası (Namazlar ve Dualar menüsünde): 99 isim hat levhası görünümünde, günün ismi ve arama ile; Allah'ın sıfatları da ilgili ayetleriyle burada",
           "Ezber kontrolünde otomatik ilerleme: ayeti hatasız okuyunca sonraki ayete kendiliğinden geçer, isterseniz kapatabilirsiniz",
           "Ezber kontrolünde ayetler arasında kaydırarak geçebilirsiniz; sağa kaydırınca sonraki ayet gelir",
@@ -2603,12 +2604,10 @@
           "Allah, efendimiz Muhammed'e, ailesine ve bütün ashabına salât eylesin."
         ]
       }
-    },
-    "duaListSubtitle": "Kendiniz ve başkaları için dua edeceğiniz konuların listesi"
+    }
   },
   "quranDuas": {
     "title": "Kur'an'daki Dualar",
-    "rowSubtitle": "Peygamberlerin ve müminlerin Kur'an'daki {{count}} duası, Arapçası ve mealiyle",
     "loading": "Dua ayetleri yükleniyor...",
     "downloadTitle": "Kur'an verisi gerekli",
     "downloadDescription": "Dua ayetlerini Arapçası ve mealiyle gösterebilmek için önce Kur'an metnini indirmeniz gerekiyor.",
