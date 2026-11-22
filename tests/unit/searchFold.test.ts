@@ -49,3 +49,26 @@ describe('Esmaül Hüsna data', () => {
         }
     });
 });
+
+describe('Divine attributes data', () => {
+    it('has a name, meaning and valid verse for each attribute, and texts for each group', () => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const { ATTRIBUTE_GROUPS, DIVINE_ATTRIBUTES } = require('../../src/data/divineAttributes');
+        expect(DIVINE_ATTRIBUTES.filter((a: any) => a.group === 'zati')).toHaveLength(6);
+        expect(DIVINE_ATTRIBUTES.filter((a: any) => a.group === 'subuti')).toHaveLength(8);
+        for (const locale of [tr, en]) {
+            const attributes = (locale as any).esmaulHusna.attributes;
+            for (const group of ATTRIBUTE_GROUPS) {
+                expect(attributes.groups[group]?.title).toBeTruthy();
+                expect(attributes.groups[group]?.description).toBeTruthy();
+            }
+            for (const { id, verse } of DIVINE_ATTRIBUTES) {
+                expect(attributes.items[id]?.name).toBeTruthy();
+                expect(attributes.items[id]?.meaning).toBeTruthy();
+                expect(verse.surah).toBeGreaterThanOrEqual(1);
+                expect(verse.surah).toBeLessThanOrEqual(114);
+                expect(verse.verse).toBeGreaterThanOrEqual(1);
+            }
+        }
+    });
+});

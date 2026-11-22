@@ -642,8 +642,127 @@
     "hutbeErrorMessage": "Couldn't reach the sermon file. Please try again later."
   },
   "esmaulHusna": {
+    "tabs": {
+      "names": "Names",
+      "attributes": "Attributes"
+    },
+    "nameOfDay": "Name of the day",
+    "openVerse": "Open verse",
+    "verseRef": "{{surah}} {{verse}}",
+    "attributesIntro": "Allah's attributes describe how we come to know Him. Tap an attribute to see its explanation and a verse that mentions it.",
+    "attributesSource": "Grouped as in the common classification of the ilmihal books; explanations are summarized.",
+    "swipeHint": "Swipe to see the others",
+    "attributes": {
+      "groups": {
+        "zati": {
+          "title": "Essential attributes",
+          "description": "Six attributes that belong to Allah alone and are found in nothing created."
+        },
+        "subuti": {
+          "title": "Affirmative attributes",
+          "description": "Eight eternal attributes that describe Allah's perfection."
+        },
+        "fiili": {
+          "title": "Attributes of action",
+          "description": "How Takwīn shows itself in creation; a few of them are listed here."
+        },
+        "haberi": {
+          "title": "Attributes from revelation",
+          "description": "Attributes stated in the Quran and hadith, accepted without likening them to created things."
+        }
+      },
+      "items": {
+        "vucud": {
+          "name": "Wujūd (Existence)",
+          "meaning": "Allah exists; His existence is from His own essence, not from anything else."
+        },
+        "kidem": {
+          "name": "Qidam (Pre-eternity)",
+          "meaning": "Allah's existence has no beginning; He is pre-eternal."
+        },
+        "beka": {
+          "name": "Baqā (Permanence)",
+          "meaning": "Allah's existence has no end; He is everlasting."
+        },
+        "vahdaniyyet": {
+          "name": "Wahdāniyya (Oneness)",
+          "meaning": "Allah is one in His essence, attributes and acts, with no partner or equal."
+        },
+        "muhalefet": {
+          "name": "Mukhālafa lil-hawādith (Unlikeness)",
+          "meaning": "Allah resembles nothing that is created."
+        },
+        "kiyam": {
+          "name": "Qiyām bi-nafsihi (Self-subsistence)",
+          "meaning": "Allah needs nothing in order to exist; He exists by Himself."
+        },
+        "hayat": {
+          "name": "Hayāt (Life)",
+          "meaning": "Allah is living; His life has no beginning and no end."
+        },
+        "ilim": {
+          "name": "'Ilm (Knowledge)",
+          "meaning": "Allah knows everything, past and future, hidden and open."
+        },
+        "semi": {
+          "name": "Sam' (Hearing)",
+          "meaning": "Allah hears everything, without depending on any means."
+        },
+        "basar": {
+          "name": "Basar (Sight)",
+          "meaning": "Allah sees everything; nothing is hidden from Him."
+        },
+        "irade": {
+          "name": "Irāda (Will)",
+          "meaning": "Allah does what He wills as He wills; all that happens happens by His will."
+        },
+        "kudret": {
+          "name": "Qudra (Power)",
+          "meaning": "Allah has power over all things."
+        },
+        "kelam": {
+          "name": "Kalām (Speech)",
+          "meaning": "Allah speaks; the Quran and the other revealed books are His speech."
+        },
+        "tekvin": {
+          "name": "Takwīn (Bringing into being)",
+          "meaning": "Allah creates from nothing; when He says \"Be\" to a thing, it is."
+        },
+        "halk": {
+          "name": "Khalq (Creating)",
+          "meaning": "It is Allah who creates all things."
+        },
+        "rizk": {
+          "name": "Tarzīq (Providing)",
+          "meaning": "It is Allah who provides for every living being."
+        },
+        "ihya": {
+          "name": "Ihyā (Giving life)",
+          "meaning": "It is Allah who gives life and who will raise the dead."
+        },
+        "imate": {
+          "name": "Imāta (Causing death)",
+          "meaning": "It is Allah who created death and takes the soul when its term comes."
+        },
+        "magfiret": {
+          "name": "Maghfira (Forgiving)",
+          "meaning": "It is Allah who forgives the sins of His servants."
+        },
+        "vech": {
+          "name": "Wajh (Face)",
+          "meaning": "The Quran speaks of Allah's \"Face\"; it is accepted without likening it to created things, and its nature is known to Allah."
+        },
+        "yed": {
+          "name": "Yad (Hand)",
+          "meaning": "The Quran speaks of Allah's \"Hand\"; it is not thought of as a limb and is accepted without likening it to created things."
+        },
+        "istiva": {
+          "name": "Istiwā (Rising over the Throne)",
+          "meaning": "The Quran says Allah rose over the Throne; it is not likened to settling in a place, and its manner is known to Allah."
+        }
+      }
+    },
     "title": "Asma ul-Husna",
-    "intro": "The most beautiful names of Allah: the 99 names in the narration of Tirmidhi. Tap a name to see its meaning.",
     "searchPlaceholder": "Search by name, meaning or number",
     "noResults": "No name matches this search. Try a different word.",
     "counter": "{{number}} / {{total}}",
@@ -1053,12 +1172,12 @@
   "zikirmatik": {
     "title": "Dhikr Counter",
     "sections": {
-      "tesbihat": "TASBIHAT",
-      "counts": "DHIKR COUNTS",
-      "custom": "MY DHIKR"
+      "tesbihat": "Tasbihat",
+      "counts": "Dhikr counts",
+      "custom": "My dhikr"
     },
     "newDhikr": "Add new dhikr",
-    "customDescription": "Your own dhikr · {{count}} times",
+    "customDescription": "Your own dhikr",
     "completed": "Completed",
     "inProgress": "In progress · {{percent}}%",
     "step": "Step {{current}} of {{total}}",
@@ -1119,28 +1238,28 @@
         "description": "Salaten Tuncina, tasbihat, salawat, the Names and the closing dua; step by step"
       },
       "tevhid100": {
-        "name": "Kalimat al-Tawhid (100)",
-        "description": "La ilaha illallah · 100 times"
+        "name": "Kalimat al-Tawhid",
+        "description": "La ilaha illallah"
       },
       "istigfar100": {
-        "name": "Astaghfirullah (100)",
-        "description": "Astaghfirullah · 100 times"
+        "name": "Astaghfirullah",
+        "description": "Istighfar"
       },
       "salavat100": {
-        "name": "Salawat (100)",
-        "description": "Allahumma salli ala Sayyidina Muhammad · 100 times"
+        "name": "Salawat",
+        "description": "Allahumma salli ala Sayyidina Muhammad"
       },
       "havqala100": {
-        "name": "La hawla wa la quwwata illa billah (100)",
-        "description": "Hawqala · 100 times"
+        "name": "La hawla wa la quwwata illa billah",
+        "description": "Hawqala"
       },
       "tevhid500": {
-        "name": "Kalimat al-Tawhid (500)",
-        "description": "La ilaha illallah · 500 times"
+        "name": "Kalimat al-Tawhid",
+        "description": "La ilaha illallah"
       },
       "tevhid1000": {
-        "name": "Kalimat al-Tawhid (1000)",
-        "description": "La ilaha illallah · 1000 times"
+        "name": "Kalimat al-Tawhid",
+        "description": "La ilaha illallah"
       }
     },
     "texts": {
@@ -1405,11 +1524,12 @@
       {
         "date": "November 23, 2026",
         "bullets": [
-          "Asma ul-Husna page: the 99 names of Allah in Arabic, with reading and meaning; search them and tap a name to see it large (in the Prayers and Duas menu)",
+          "Asma ul-Husna page (in the Prayers and Duas menu): the 99 names as calligraphy plaques, with a name of the day and search; Allah's attributes are there too, each with a verse",
           "Memorization check auto-advance: a flawless read moves on to the next verse by itself; you can turn it off",
           "Swipe between verses in the memorization check; swiping right brings the next verse",
           "The memorization check reopens where you left off, with your surah, verse and results",
-          "Going to a verse from search, topic search, Verse Shazam or a root page and coming back keeps your search, results and scroll position"
+          "Going to a verse from search, topic search, Verse Shazam or a root page and coming back keeps your search, results and scroll position",
+          "Refreshed dhikr counter: a tidier list, a gold ring that fills as you count, and a step strip for tasbihat"
         ]
       },
       {

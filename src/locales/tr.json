@@ -642,8 +642,127 @@
     "hutbeErrorMessage": "Hutbe dosyasına ulaşılamadı. Lütfen daha sonra tekrar deneyin."
   },
   "esmaulHusna": {
+    "tabs": {
+      "names": "İsimler",
+      "attributes": "Sıfatlar"
+    },
+    "nameOfDay": "Günün ismi",
+    "openVerse": "Ayeti aç",
+    "verseRef": "{{surah}} {{verse}}",
+    "attributesIntro": "Allah'ın sıfatları, O'nu nasıl tanıdığımızı anlatır. Her sıfata dokunarak açıklamasını ve ilgili ayeti görün.",
+    "attributesSource": "Sınıflandırma ilmihal kitaplarındaki yaygın tasnife göredir; açıklamalar özetlenmiştir.",
+    "swipeHint": "Kaydırarak diğerlerine geçin",
+    "attributes": {
+      "groups": {
+        "zati": {
+          "title": "Zâtî sıfatlar",
+          "description": "Yalnız Allah'a ait olan, hiçbir yaratılmışta bulunmayan altı sıfat."
+        },
+        "subuti": {
+          "title": "Sübûtî sıfatlar",
+          "description": "Allah'ın kemalini bildiren, ezelî ve ebedî sekiz sıfat."
+        },
+        "fiili": {
+          "title": "Fiilî sıfatlar",
+          "description": "Tekvîn sıfatının yaratılmışlara yönelik tecellileri; burada birkaçı yer alıyor."
+        },
+        "haberi": {
+          "title": "Haberî sıfatlar",
+          "description": "Kur'an ve hadiste bildirilen, yaratılmışlara benzetilmeden kabul edilen sıfatlar."
+        }
+      },
+      "items": {
+        "vucud": {
+          "name": "Vücûd",
+          "meaning": "Allah vardır; varlığı başkasından değil, kendi zatındandır."
+        },
+        "kidem": {
+          "name": "Kıdem",
+          "meaning": "Allah'ın varlığının başlangıcı yoktur; O ezelîdir."
+        },
+        "beka": {
+          "name": "Bekâ",
+          "meaning": "Allah'ın varlığının sonu yoktur; O ebedîdir."
+        },
+        "vahdaniyyet": {
+          "name": "Vahdâniyyet",
+          "meaning": "Allah zatında, sıfatlarında ve fiillerinde birdir; ortağı ve benzeri yoktur."
+        },
+        "muhalefet": {
+          "name": "Muhâlefetün li'l-havâdis",
+          "meaning": "Allah yaratılmış hiçbir şeye benzemez."
+        },
+        "kiyam": {
+          "name": "Kıyâm bi-nefsihî",
+          "meaning": "Allah var olmak için hiçbir şeye muhtaç değildir; kendi zatıyla vardır."
+        },
+        "hayat": {
+          "name": "Hayat",
+          "meaning": "Allah diridir; hayatı ezelî ve ebedîdir."
+        },
+        "ilim": {
+          "name": "İlim",
+          "meaning": "Allah olmuş ve olacak, gizli ve açık her şeyi bilir."
+        },
+        "semi": {
+          "name": "Semî'",
+          "meaning": "Allah her şeyi işitir; işitmesi bir araca bağlı değildir."
+        },
+        "basar": {
+          "name": "Basar",
+          "meaning": "Allah her şeyi görür; hiçbir şey O'ndan gizli kalmaz."
+        },
+        "irade": {
+          "name": "İrâde",
+          "meaning": "Allah dilediğini dilediği gibi yapar; olan her şey O'nun dilemesiyle olur."
+        },
+        "kudret": {
+          "name": "Kudret",
+          "meaning": "Allah'ın gücü her şeye yeter."
+        },
+        "kelam": {
+          "name": "Kelâm",
+          "meaning": "Allah konuşur; Kur'an ve diğer ilahi kitaplar O'nun kelamıdır."
+        },
+        "tekvin": {
+          "name": "Tekvîn",
+          "meaning": "Allah yaratır, yoktan var eder; bir şeye \"ol\" dediğinde o şey olur."
+        },
+        "halk": {
+          "name": "Halk",
+          "meaning": "Her şeyi yaratan Allah'tır."
+        },
+        "rizk": {
+          "name": "Terzîk",
+          "meaning": "Bütün canlıların rızkını veren Allah'tır."
+        },
+        "ihya": {
+          "name": "İhyâ",
+          "meaning": "Hayat veren ve ölüleri yeniden diriltecek olan Allah'tır."
+        },
+        "imate": {
+          "name": "İmâte",
+          "meaning": "Ölümü yaratan ve eceli gelenin canını alan Allah'tır."
+        },
+        "magfiret": {
+          "name": "Mağfiret",
+          "meaning": "Kullarının günahlarını bağışlayan Allah'tır."
+        },
+        "vech": {
+          "name": "Vech",
+          "meaning": "Kur'an'da Allah'ın \"vechi\" bildirilir; yaratılmışların yüzüne benzetilmeden kabul edilir, mahiyetini Allah bilir."
+        },
+        "yed": {
+          "name": "Yed",
+          "meaning": "Kur'an'da Allah'ın \"eli\" bildirilir; bir organ gibi düşünülmez, yaratılmışlara benzetilmeden kabul edilir."
+        },
+        "istiva": {
+          "name": "İstivâ",
+          "meaning": "Kur'an'da Allah'ın arşa istivâ ettiği bildirilir; mekâna yerleşmeye benzetilmez, keyfiyetini Allah bilir."
+        }
+      }
+    },
     "title": "Esmaül Hüsna",
-    "intro": "Allah'ın en güzel isimleri: Tirmizî rivayetindeki 99 isim. Bir isme dokunarak anlamını açın.",
     "searchPlaceholder": "İsim, anlam veya sıra no. ara",
     "noResults": "Bu aramayla eşleşen isim yok. Farklı bir kelime deneyin.",
     "counter": "{{number}} / {{total}}",
@@ -1053,12 +1172,12 @@
   "zikirmatik": {
     "title": "Zikirmatik",
     "sections": {
-      "tesbihat": "TESBİHATLAR",
-      "counts": "ZİKİR SAYILARI",
-      "custom": "KENDİ ZİKİRLERİM"
+      "tesbihat": "Tesbihatlar",
+      "counts": "Zikir sayıları",
+      "custom": "Kendi zikirlerim"
     },
     "newDhikr": "Yeni zikir ekle",
-    "customDescription": "Kendi zikriniz · {{count}} defa",
+    "customDescription": "Kendi zikriniz",
     "completed": "Tamamlandı",
     "inProgress": "Devam ediyor · %{{percent}}",
     "step": "Adım {{current}} / {{total}}",
@@ -1119,28 +1238,28 @@
         "description": "Salâten Tüncînâ, tesbihler, salavatlar, esma ve son dua; adım adım"
       },
       "tevhid100": {
-        "name": "Kelime-i Tevhid (100)",
-        "description": "Lâ ilâhe illallâh · 100 defa"
+        "name": "Kelime-i Tevhid",
+        "description": "Lâ ilâhe illallâh"
       },
       "istigfar100": {
-        "name": "Estağfirullah (100)",
-        "description": "Estağfirullah · 100 defa"
+        "name": "Estağfirullah",
+        "description": "İstiğfar"
       },
       "salavat100": {
-        "name": "Salavat (100)",
-        "description": "Allâhümme salli alâ Seyyidinâ Muhammed · 100 defa"
+        "name": "Salavat",
+        "description": "Allâhümme salli alâ Seyyidinâ Muhammed"
       },
       "havqala100": {
-        "name": "Lâ havle ve lâ kuvvete illâ billâh (100)",
-        "description": "Havkale · 100 defa"
+        "name": "Lâ havle ve lâ kuvvete illâ billâh",
+        "description": "Havkale"
       },
       "tevhid500": {
-        "name": "Kelime-i Tevhid (500)",
-        "description": "Lâ ilâhe illallâh · 500 defa"
+        "name": "Kelime-i Tevhid",
+        "description": "Lâ ilâhe illallâh"
       },
       "tevhid1000": {
-        "name": "Kelime-i Tevhid (1000)",
-        "description": "Lâ ilâhe illallâh · 1000 defa"
+        "name": "Kelime-i Tevhid",
+        "description": "Lâ ilâhe illallâh"
       }
     },
     "texts": {
@@ -1405,11 +1524,12 @@
       {
         "date": "23 Kasım 2026",
         "bullets": [
-          "Esmaül Hüsna sayfası: Allah'ın 99 ismi Arapça yazılışı, okunuşu ve anlamıyla; arayabilir, isme dokunup büyük görebilirsiniz (Namazlar ve Dualar menüsünde)",
+          "Esmaül Hüsna sayfası (Namazlar ve Dualar menüsünde): 99 isim hat levhası görünümünde, günün ismi ve arama ile; Allah'ın sıfatları da ilgili ayetleriyle burada",
           "Ezber kontrolünde otomatik ilerleme: ayeti hatasız okuyunca sonraki ayete kendiliğinden geçer, isterseniz kapatabilirsiniz",
           "Ezber kontrolünde ayetler arasında kaydırarak geçebilirsiniz; sağa kaydırınca sonraki ayet gelir",
           "Ezber kontrolü kaldığınız sure, ayet ve okuma sonuçlarıyla açılıyor",
-          "Aramadan, konu aramasından, Ayet Shazam'dan veya kök sayfasından bir ayete gidip geri dönünce arama, sonuçlar ve kaldığınız yer olduğu gibi duruyor"
+          "Aramadan, konu aramasından, Ayet Shazam'dan veya kök sayfasından bir ayete gidip geri dönünce arama, sonuçlar ve kaldığınız yer olduğu gibi duruyor",
+          "Zikirmatik yenilendi: daha derli toplu liste, sayıyla dolan altın halkalı sayaç ve tesbihatta adım şeridi"
         ]
       },
       {

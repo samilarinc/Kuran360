@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Alert, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Alert, Platform, Animated, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import {
-    BookOpen, CheckCircle2, ChevronLeft, ChevronRight, CircleDot, ListChecks, PenLine, Plus, Repeat, RotateCcw, Target, Trash2, Undo2,
+    BookOpen, CheckCircle2, ChevronLeft, ChevronRight, CircleDot, Plus, RotateCcw, Target, Trash2, Undo2,
 } from 'lucide-react-native';
 import { AppHeader } from '@/components/AppHeader';
 import { AppButton } from '@/components/AppButton';
@@ -12,8 +12,7 @@ import { DhikrForm } from '@/components/DhikrForm';
 import { DhikrAudioBar } from '@/components/DhikrAudioBar';
 import { DhikrTargetPicker } from '@/components/DhikrTargetPicker';
 import { LoadingView } from '@/components/LoadingView';
-import { MenuListRow } from '@/components/MenuListRow';
-import { ProgressBar } from '@/components/ProgressBar';
+import { ProgressRing } from '@/components/ProgressRing';
 import { SearchFilterPill } from '@/components/SearchFilterPill';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
@@ -40,17 +39,11 @@ import {
     undo,
     ZikirmatikState,
 } from '@/services/zikirmatik';
-import { createStyles } from './ZikirmatikScreen.styles';
+import { createStyles, RING_STROKE, TAP_RING } from './ZikirmatikScreen.styles';
 
 interface ZikirmatikScreenProps {
     navigation: any;
 }
-
-const PRESET_ICONS: Record<string, React.ComponentType<{ size?: number; color?: string }>> = {
-    [FREE_COUNTER_ID]: CircleDot,
-    postPrayer: ListChecks,
-    kucukTesbihat: BookOpen,
-};
 
 export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }) => {
     const { theme, common } = useTheme();
@@ -65,6 +58,10 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
     const [targetOpen, setTargetOpen] = useState(false);
     // Tapping can outrun re-rendering, so taps build on the latest state held here
     const stateRef = useRef(state);
+    // The counter bead sinks a little while pressed
+    const pressScale = useRef(new Animated.Value(1)).current;
+    const pressTo = (toValue: number) =>
+        Animated.spring(pressScale, { toValue, useNativeDriver: Platform.OS !== 'web', speed: 40, bounciness: 6 }).start();
 
     useEffect(() => {
         loadState().then(saved => {
@@ -216,33 +213,92 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
         ]);
     };
 
-    const renderRow = (id: string) => {
+    /** Right side of a list row: done, how far along, or the target count. */
+    const renderRowStatus = (id: string) => {
         const rowPreset = resolvePreset(id, state);
         if (!rowPreset) return null;
         const rowProgress = state.progress[id];
+        if (rowProgress?.done) return <CheckCircle2 size={22} color={theme.success} />;
         const fraction = rowProgress ? getProgressFraction(rowPreset, rowProgress) : 0;
-        const isCustom = id.startsWith(CUSTOM_PREFIX);
-        const Icon = isCustom ? PenLine : PRESET_ICONS[id] ?? Repeat;
+        if (fraction > 0) {
+            return (
+                <ProgressRing progress={fraction * 100} size={34} strokeWidth={3}>
+                    <Text style={styles.rowPercent}>{Math.floor(fraction * 100)}</Text>
+                </ProgressRing>
+            );
+        }
         const total = rowPreset.steps.length === 1 ? rowPreset.steps[0].count : undefined;
-        const subtitle = isCustom
-            ? t('zikirmatik.customDescription', { count: total })
-            : t(`zikirmatik.presets.${id}.description`);
-        const caption = rowProgress?.done
-            ? t('zikirmatik.completed')
-            : fraction > 0
-                ? t('zikirmatik.inProgress', { percent: Math.floor(fraction * 100) })
-                : undefined;
+        return total
+            ? <Text style={styles.rowCount}>{total}</Text>
+            : <ChevronRight size={20} color={theme.textSecondary} />;
+    };
+
+    const rowStatusLabel = (id: string) => {
+        const rowPreset = resolvePreset(id, state);
+        const rowProgress = state.progress[id];
+        if (!rowPreset || !rowProgress) return '';
+        if (rowProgress.done) return t('zikirmatik.completed');
+        const percent = Math.floor(getProgressFraction(rowPreset, rowProgress) * 100);
+        return percent > 0 ? t('zikirmatik.inProgress', { percent }) : '';
+    };
+
+    const renderGroup = (ids: string[], footer?: React.ReactNode) => (
+        <View style={styles.group}>
+            {ids.map((id, index) => {
+                const isCustom = id.startsWith(CUSTOM_PREFIX);
+                const subtitle = isCustom ? t('zikirmatik.customDescription') : t(`zikirmatik.presets.${id}.description`);
+                return (
+                    <React.Fragment key={id}>
+                        {index > 0 && <View style={styles.rowDivider} />}
+                        <TouchableOpacity
+                            style={styles.row}
+                            onPress={() => open(id)}
+                            activeOpacity={0.6}
+                            accessibilityRole="button"
+                            accessibilityLabel={[getName(id), subtitle, rowStatusLabel(id)].filter(Boolean).join(', ')}
+                        >
+                            <View style={styles.rowText}>
+                                <Text style={styles.rowTitle} numberOfLines={2}>{getName(id)}</Text>
+                                <Text style={styles.rowSubtitle} numberOfLines={1}>{subtitle}</Text>
+                            </View>
+                            {renderRowStatus(id)}
+                        </TouchableOpacity>
+                    </React.Fragment>
+                );
+            })}
+            {footer && (
+                <>
+                    {ids.length > 0 && <View style={styles.rowDivider} />}
+                    {footer}
+                </>
+            )}
+        </View>
+    );
+
+    const renderFeatured = () => {
+        const freeProgress = state.progress[FREE_COUNTER_ID];
+        const freePreset = resolvePreset(FREE_COUNTER_ID, state);
+        const freeTarget = freePreset?.steps[0].count ?? 0;
         return (
-            <MenuListRow
-                key={id}
-                variant="card"
-                icon={<Icon size={26} color={theme.primary} />}
-                iconColor={theme.primary + '15'}
-                title={getName(id)}
-                subtitle={subtitle}
-                caption={caption}
-                onPress={() => open(id)}
-            />
+            <TouchableOpacity
+                style={styles.featured}
+                onPress={() => open(FREE_COUNTER_ID)}
+                activeOpacity={0.8}
+                accessibilityRole="button"
+            >
+                <View style={styles.featuredIcon}>
+                    <CircleDot size={24} color={theme.featuredIcon} />
+                </View>
+                <View style={styles.featuredText}>
+                    <Text style={styles.featuredTitle}>{getName(FREE_COUNTER_ID)}</Text>
+                    <Text style={styles.featuredSubtitle}>{t(`zikirmatik.presets.${FREE_COUNTER_ID}.description`)}</Text>
+                </View>
+                {freeProgress && freeProgress.count > 0 && !freeProgress.done ? (
+                    <Text style={styles.featuredCount}>{freeProgress.count} / {freeTarget}</Text>
+                ) : (
+                    <ChevronRight size={22} color={theme.featuredMuted} />
+                )}
+            </TouchableOpacity>
         );
     };
 
@@ -277,19 +333,19 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                     onHomePress={() => navigation.navigate('Main')}
                 />
                 <ScrollView contentContainerStyle={styles.listContent}>
-                    {renderRow(FREE_COUNTER_ID)}
-                    <Text style={styles.sectionLabel}>{t('zikirmatik.sections.tesbihat')}</Text>
-                    {DHIKR_PRESETS.filter(p => p.id === 'postPrayer' || p.id === 'kucukTesbihat').map(p => renderRow(p.id))}
-                    <Text style={styles.sectionLabel}>{t('zikirmatik.sections.counts')}</Text>
-                    {DHIKR_PRESETS.filter(p => p.adjustableTarget && p.id !== FREE_COUNTER_ID).map(p => renderRow(p.id))}
-                    <Text style={styles.sectionLabel}>{t('zikirmatik.sections.custom')}</Text>
-                    {state.custom.map(c => renderRow(CUSTOM_PREFIX + c.id))}
-                    <AppButton
-                        title={t('zikirmatik.newDhikr')}
-                        icon={<Plus size={18} color={theme.primary} />}
-                        variant="outline"
-                        onPress={() => setCreating(true)}
-                    />
+                    {renderFeatured()}
+                    <Text style={styles.sectionTitle} accessibilityRole="header">{t('zikirmatik.sections.tesbihat')}</Text>
+                    {renderGroup(DHIKR_PRESETS.filter(p => p.id === 'postPrayer' || p.id === 'kucukTesbihat').map(p => p.id))}
+                    <Text style={styles.sectionTitle} accessibilityRole="header">{t('zikirmatik.sections.counts')}</Text>
+                    {renderGroup(DHIKR_PRESETS.filter(p => p.adjustableTarget && p.id !== FREE_COUNTER_ID).map(p => p.id))}
+                    <Text style={styles.sectionTitle} accessibilityRole="header">{t('zikirmatik.sections.custom')}</Text>
+                    {renderGroup(
+                        state.custom.map(c => CUSTOM_PREFIX + c.id),
+                        <TouchableOpacity style={styles.row} onPress={() => setCreating(true)} activeOpacity={0.6} accessibilityRole="button">
+                            <Plus size={20} color={theme.primary} />
+                            <Text style={[styles.addRowTitle, common.flex1]}>{t('zikirmatik.newDhikr')}</Text>
+                        </TouchableOpacity>,
+                    )}
                 </ScrollView>
             </SafeAreaView>
         );
@@ -316,6 +372,27 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
     const locked = player.state.isPlaying;
     const overall = getProgressFraction(preset, progress) * 100;
 
+    const stepTotal = preset.steps.length;
+    const stepNumber = Math.min(progress.step + 1, stepTotal);
+    // Previous/next flank the counter on multi-step presets
+    const sideButton = (direction: 'previous' | 'next') => {
+        if (!multiStep) return null;
+        const isPrevious = direction === 'previous';
+        const disabled = locked || (isPrevious && progress.step === 0);
+        const Icon = isPrevious ? ChevronLeft : ChevronRight;
+        return (
+            <TouchableOpacity
+                style={[styles.sideButton, disabled && common.disabled]}
+                onPress={() => moveTo(isPrevious ? previous(progress) : advance(preset, progress))}
+                disabled={disabled}
+                accessibilityRole="button"
+                accessibilityLabel={t(`zikirmatik.${direction}`)}
+            >
+                <Icon size={22} color={theme.primary} />
+            </TouchableOpacity>
+        );
+    };
+
     return (
         <SafeAreaView style={common.container}>
             <AppHeader
@@ -326,27 +403,43 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                 onHomePress={() => navigation.navigate('Main')}
             />
             <View style={styles.counterContainer}>
-                {hasBothScripts && (
-                    <View style={styles.textModeRow}>
-                        {(['arabic', 'transliteration'] as const).map(mode => (
-                            <SearchFilterPill
-                                key={mode}
-                                label={t(`zikirmatik.textMode.${mode}`)}
-                                selected={state.textMode === mode}
-                                onPress={() => commit({ ...stateRef.current, textMode: mode })}
-                            />
-                        ))}
+                {(multiStep || hasBothScripts) && (
+                    <View style={styles.topRow}>
+                        {multiStep && (
+                            <Text style={styles.stepCaption}>
+                                {t('zikirmatik.step', { current: stepNumber, total: stepTotal })}
+                            </Text>
+                        )}
+                        {hasBothScripts && (
+                            <View style={styles.textModeRow}>
+                                {(['arabic', 'transliteration'] as const).map(mode => (
+                                    <SearchFilterPill
+                                        key={mode}
+                                        label={t(`zikirmatik.textMode.${mode}`)}
+                                        selected={state.textMode === mode}
+                                        onPress={() => commit({ ...stateRef.current, textMode: mode })}
+                                    />
+                                ))}
+                            </View>
+                        )}
                     </View>
                 )}
                 {multiStep && (
-                    <View>
-                        <View style={styles.stepRow}>
-                            <Text style={common.smallText}>
-                                {t('zikirmatik.step', { current: Math.min(progress.step + 1, preset.steps.length), total: preset.steps.length })}
-                            </Text>
-                            <Text style={common.smallText}>%{Math.floor(overall)}</Text>
-                        </View>
-                        <ProgressBar progress={overall} style={common.mtSm} />
+                    <View
+                        style={styles.segments}
+                        accessibilityRole="progressbar"
+                        accessibilityValue={{ min: 0, max: 100, now: Math.floor(overall) }}
+                    >
+                        {preset.steps.map((s, index) => (
+                            <View
+                                key={s.id + index}
+                                style={[
+                                    styles.segment,
+                                    (progress.done || index < progress.step) && styles.segmentDone,
+                                    !progress.done && index === progress.step && styles.segmentCurrent,
+                                ]}
+                            />
+                        ))}
                     </View>
                 )}
                 {showPlayer && (
@@ -366,8 +459,16 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                     </Text>
                 )}
 
-                <ScrollView style={common.flex1} contentContainerStyle={styles.textScroll} showsVerticalScrollIndicator={false}>
-                    <View style={styles.textCard}>
+                {progress.done ? (
+                    <View style={[common.flex1, styles.textScroll]}>
+                        <CheckCircle2 size={44} color={theme.accent} />
+                        <Text style={styles.doneTitle}>{t('zikirmatik.doneTitle')}</Text>
+                        <Text style={styles.doneText}>
+                            {multiStep ? t('zikirmatik.doneSequence') : t('zikirmatik.doneCount', { count: target })}
+                        </Text>
+                    </View>
+                ) : (
+                    <ScrollView style={common.flex1} contentContainerStyle={styles.textScroll} showsVerticalScrollIndicator={false}>
                         {showArabic && <ArabicText style={styles.arabic}>{shown.arabic}</ArabicText>}
                         {transliteration && <Text style={styles.transliteration}>{transliteration}</Text>}
                         {meaning ? <Text style={styles.meaning}>{meaning}</Text> : null}
@@ -381,69 +482,55 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                                 onPress={() => goToSurahVerse(step.verse!.surah, step.verse!.verseIndex)}
                             />
                         )}
-                        {!hasText && <Text style={common.note}>{t('zikirmatik.noText')}</Text>}
-                    </View>
-                </ScrollView>
+                        {!hasText && <Text style={styles.placeholder}>{t('zikirmatik.noText')}</Text>}
+                    </ScrollView>
+                )}
 
                 <View style={styles.controls}>
                     {progress.done ? (
-                        <View style={styles.doneCard}>
-                            <CheckCircle2 size={40} color={theme.success} />
-                            <Text style={styles.doneTitle}>{t('zikirmatik.doneTitle')}</Text>
-                            <Text style={common.smallText}>
-                                {multiStep ? t('zikirmatik.doneSequence') : t('zikirmatik.doneCount', { count: target })}
-                            </Text>
-                            <View style={styles.buttonRow}>
-                                <AppButton
-                                    title={t('zikirmatik.restart')}
-                                    icon={<RotateCcw size={16} color="#FFFFFF" />}
-                                    onPress={() => moveTo(EMPTY_PROGRESS)}
-                                />
-                                <AppButton title={t('zikirmatik.backToList')} variant="outline" onPress={closePreset} />
-                            </View>
+                        <View style={styles.buttonRow}>
+                            <AppButton
+                                title={t('zikirmatik.restart')}
+                                icon={<RotateCcw size={16} color="#FFFFFF" />}
+                                onPress={() => moveTo(EMPTY_PROGRESS)}
+                            />
+                            <AppButton title={t('zikirmatik.backToList')} variant="outline" onPress={closePreset} />
                         </View>
                     ) : target > 0 ? (
                         <>
-                            {preset.adjustableTarget && (
-                                <>
-                                    <View style={styles.targetRow}>
-                                        <AppButton
-                                            title={t('zikirmatik.target', { count: target })}
-                                            icon={<Target size={14} color={theme.primary} />}
-                                            variant="ghost"
-                                            size="small"
-                                            onPress={() => setTargetOpen(open => !open)}
-                                        />
-                                    </View>
-                                    {targetOpen && <DhikrTargetPicker value={target} onChange={handleTargetChange} />}
-                                </>
+                            <View style={styles.tapRow}>
+                                {sideButton('previous') ?? <View style={styles.sideButtonPlaceholder} />}
+                                <ProgressRing
+                                    progress={(progress.count / target) * 100}
+                                    size={TAP_RING}
+                                    strokeWidth={RING_STROKE}
+                                >
+                                    <Animated.View style={{ transform: [{ scale: pressScale }] }}>
+                                        <Pressable
+                                            style={[styles.tapButton, locked && common.disabled]}
+                                            onPress={handleTap}
+                                            onPressIn={() => pressTo(0.95)}
+                                            onPressOut={() => pressTo(1)}
+                                            disabled={locked}
+                                            accessibilityRole="button"
+                                            accessibilityLabel={t('zikirmatik.tapToCount')}
+                                            accessibilityValue={{ text: `${progress.count} / ${target}` }}
+                                        >
+                                            <Text style={styles.tapCount}>{progress.count}</Text>
+                                            <Text style={styles.tapTarget}>/ {target}</Text>
+                                        </Pressable>
+                                    </Animated.View>
+                                </ProgressRing>
+                                {sideButton('next') ?? <View style={styles.sideButtonPlaceholder} />}
+                            </View>
+                            {preset.adjustableTarget && targetOpen && (
+                                <DhikrTargetPicker value={target} onChange={handleTargetChange} />
                             )}
-                            <TouchableOpacity
-                                style={[styles.tapButton, locked && common.disabled]}
-                                onPress={handleTap}
-                                disabled={locked}
-                                activeOpacity={0.85}
-                                accessibilityLabel={t('zikirmatik.tapToCount')}
-                            >
-                                <Text style={styles.tapCount}>{progress.count}</Text>
-                                <Text style={styles.tapTarget}>/ {target}</Text>
-                            </TouchableOpacity>
-                            <ProgressBar progress={(progress.count / target) * 100} style={{ alignSelf: 'stretch' }} />
-                            <View style={styles.buttonRow}>
-                                {multiStep && (
-                                    <AppButton
-                                        title={t('zikirmatik.previous')}
-                                        icon={<ChevronLeft size={16} color={theme.primary} />}
-                                        variant="ghost"
-                                        size="small"
-                                        onPress={() => moveTo(previous(progress))}
-                                        disabled={locked || progress.step === 0}
-                                    />
-                                )}
+                            <View style={styles.actionRow}>
                                 <AppButton
                                     title={t('zikirmatik.undo')}
                                     icon={<Undo2 size={16} color={theme.primary} />}
-                                    variant="outline"
+                                    variant="ghost"
                                     size="small"
                                     onPress={() => setProgress(activeId, undo(preset, progress))}
                                     disabled={locked || progress.count === 0}
@@ -451,20 +538,18 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                                 <AppButton
                                     title={t('zikirmatik.reset')}
                                     icon={<RotateCcw size={16} color={theme.primary} />}
-                                    variant="outline"
+                                    variant="ghost"
                                     size="small"
                                     onPress={() => moveTo(reset(progress))}
                                     disabled={locked || atStart}
                                 />
-                                {multiStep && (
+                                {preset.adjustableTarget && (
                                     <AppButton
-                                        title={t('zikirmatik.next')}
-                                        icon={<ChevronRight size={16} color={theme.primary} />}
-                                        iconPosition="right"
+                                        title={t('zikirmatik.target', { count: target })}
+                                        icon={<Target size={16} color={theme.primary} />}
                                         variant="ghost"
                                         size="small"
-                                        onPress={() => moveTo(advance(preset, progress))}
-                                        disabled={locked}
+                                        onPress={() => setTargetOpen(open => !open)}
                                     />
                                 )}
                             </View>
@@ -489,7 +574,7 @@ export const ZikirmatikScreen: React.FC<ZikirmatikScreenProps> = ({ navigation }
                             />
                         </View>
                     )}
-                    {locked && <Text style={common.smallText}>{t('zikirmatik.audio.locked')}</Text>}
+                    {locked && <Text style={styles.lockedText}>{t('zikirmatik.audio.locked')}</Text>}
                     {isCustomActive && (
                         <AppButton
                             title={t('zikirmatik.deleteDhikr')}
