@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { LayoutChangeEvent, Linking, SafeAreaView, ScrollView, StyleProp, Text, TextStyle, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { BookOpenText, ExternalLink, HandHeart } from 'lucide-react-native';
+import { BookOpenText, ExternalLink, HandHeart, ListChecks } from 'lucide-react-native';
 import { AppButton } from '@/components/AppButton';
 import { FontSizeToggle } from '@msarinc/ui';
 import { AppHeader } from '@/components/AppHeader';
@@ -74,6 +74,14 @@ export const DuasScreen: React.FC<DuasScreenProps> = ({ navigation, duaId }) => 
                     title={t('quranDuas.title')}
                     subtitle={t('quranDuas.rowSubtitle', { count: QURAN_DUAS.length })}
                     onPress={() => navigation.navigate('QuranDuas')}
+                />
+                <MenuListRow
+                    variant="card"
+                    icon={<ListChecks size={26} color={theme.primary} />}
+                    iconColor={theme.primary + '15'}
+                    title={t('mainScreen.menu.duaList')}
+                    subtitle={t('duas.duaListSubtitle')}
+                    onPress={() => navigation.navigate('DuaList')}
                 />
                 {DUAS.map(item => (
                     <MenuListRow

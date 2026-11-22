@@ -996,7 +996,8 @@
       {
         "date": "November 23, 2026",
         "bullets": [
-          "Duas in the Quran page: the duas of the prophets and believers in the Quran, with Arabic and translation; filter by person or topic and tap a verse to open it in the reader (on the Duas page)"
+          "Duas in the Quran page: the duas of the prophets and believers in the Quran, with Arabic and translation; filter by person or topic and tap a verse to open it in the reader (on the Duas page)",
+          "My Dua List now opens from the Duas page"
         ]
       },
       {
@@ -2062,7 +2063,8 @@
           "May Allah send blessings upon our master Muhammad, his family and all his companions."
         ]
       }
-    }
+    },
+    "duaListSubtitle": "Your list of things to pray for, for yourself and for others"
   },
   "quranDuas": {
     "title": "Duas in the Quran",

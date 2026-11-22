@@ -996,7 +996,8 @@
       {
         "date": "23 Kasım 2026",
         "bullets": [
-          "Kur'an'daki Dualar sayfası: peygamberlerin ve müminlerin Kur'an'daki duaları Arapçası ve mealiyle; kişiye ya da konuya göre süzebilir, ayete dokunup okuma ekranında açabilirsiniz (Dualar sayfasında)"
+          "Kur'an'daki Dualar sayfası: peygamberlerin ve müminlerin Kur'an'daki duaları Arapçası ve mealiyle; kişiye ya da konuya göre süzebilir, ayete dokunup okuma ekranında açabilirsiniz (Dualar sayfasında)",
+          "Dua Listem artık Dualar sayfasının içinde"
         ]
       },
       {
@@ -2063,7 +2064,8 @@
           "Allah, efendimiz Muhammed'e, ailesine ve bütün ashabına salât eylesin."
         ]
       }
-    }
+    },
+    "duaListSubtitle": "Kendiniz ve başkaları için dua edeceğiniz konuların listesi"
   },
   "quranDuas": {
     "title": "Kur'an'daki Dualar",
