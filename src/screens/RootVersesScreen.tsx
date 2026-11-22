@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useIsRestoredScreen, useScreenScroll, useScreenState } from '@/hooks/useScreenState';
 import { SafeAreaView, ScrollView, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
@@ -31,8 +32,11 @@ export const RootVersesScreen: React.FC<RootVersesScreenProps> = ({ navigation, 
     const [results, setResults] = useState<SearchResult[]>([]);
     const [wordCount, setWordCount] = useState(0);
     const [loading, setLoading] = useState(true);
-    const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+    const [visibleCount, setVisibleCount] = useScreenState('visibleCount', PAGE_SIZE);
     const download = useDownloadData({ isDataAvailable });
+    // Back from a verse: keep the "show more" pages that were open
+    const keepVisibleCount = useRef(useIsRestoredScreen());
+    const scroll = useScreenScroll();
 
     useEffect(() => {
         if (!isDataAvailable) {
@@ -41,7 +45,8 @@ export const RootVersesScreen: React.FC<RootVersesScreenProps> = ({ navigation, 
         }
         let cancelled = false;
         setLoading(true);
-        setVisibleCount(PAGE_SIZE);
+        if (keepVisibleCount.current) keepVisibleCount.current = false;
+        else setVisibleCount(PAGE_SIZE);
 
         const findVerses = async () => {
             const found: SearchResult[] = [];
@@ -100,6 +105,7 @@ export const RootVersesScreen: React.FC<RootVersesScreenProps> = ({ navigation, 
                 <LoadingView text={t('rootVerses.loading')} />
             ) : (
                 <ScrollView
+                    {...scroll}
                     style={common.contentLarge}
                     contentContainerStyle={common.listContent}
                     showsVerticalScrollIndicator={false}

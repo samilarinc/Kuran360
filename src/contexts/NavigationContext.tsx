@@ -8,6 +8,8 @@ type NavigationHelpers = {
     // Opens settings from the header on any screen (does nothing when already there)
     goToSettings: () => void;
     goToDataManagement: () => void;
+    /** The history entry on screen; screens keep their state per entry (see useScreenState) */
+    currentEntry: object;
 };
 
 const NavigationContext = createContext<NavigationHelpers | null>(null);

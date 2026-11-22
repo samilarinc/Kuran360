@@ -685,6 +685,7 @@ export const AppNavigator: React.FC<{ isDataAvailable: boolean }> = ({ isDataAva
     goToDataManagement: () => {
       if (currentRoute.screen !== 'DataManagement') navigateToRoute({ screen: 'DataManagement' }, true);
     },
+    currentEntry: currentRoute,
   };
 
   return (
