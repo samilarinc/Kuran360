@@ -135,6 +135,8 @@
     "lastReadTitle": "Recently Read ({{count}})",
     "noLastRead": "No verses read yet.",
     "notSignedIn": "Not signed in.",
+    "signInTitle": "Sign in to your account",
+    "signInText": "Your favorites, recently read verses and settings are saved to your account and come with you when you sign in on another device.",
     "signInWithGoogle": "Sign in with Google",
     "bugReports": "Bug Reports",
     "bugReportsSubtitle": "Reports sent by users (admin only)",
@@ -1524,6 +1526,7 @@
       {
         "date": "November 23, 2026",
         "bullets": [
+          "A refreshed sign-in area on the Profile page: it says what signing in gives you, with a clean Google button and logo",
           "Cleaner filters in Duas in the Quran: pick the grouping at the top and a person or topic from a list that slides up",
           "The Duas page uses the same tile layout as the main menu",
           "Asma ul-Husna page (in the Prayers and Duas menu): the 99 names as calligraphy plaques, with a name of the day and search; Allah's attributes are there too, each with a verse",

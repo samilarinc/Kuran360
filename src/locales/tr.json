@@ -135,6 +135,8 @@
     "lastReadTitle": "Son Okuduklarım ({{count}})",
     "noLastRead": "Henüz okunmuş ayet bulunmuyor.",
     "notSignedIn": "Oturum açılmamış.",
+    "signInTitle": "Hesabınla giriş yap",
+    "signInText": "Favorilerin, son okuduğun ayetler ve ayarların hesabına kaydedilir; başka cihazda giriş yapınca hepsi seninle gelir.",
     "signInWithGoogle": "Google ile Giriş Yap",
     "bugReports": "Hata Raporları",
     "bugReportsSubtitle": "Kullanıcıların gönderdiği raporlar (yalnızca admin)",
@@ -1524,6 +1526,7 @@
       {
         "date": "23 Kasım 2026",
         "bullets": [
+          "Profil sayfasındaki giriş alanı yenilendi: girişin ne sağladığı yazıyor, Google butonu sade ve logolu",
           "Kur'an'daki Dualar'da filtreler sadeleşti: gruplamayı üstteki seçiciden, kişi ya da konuyu alttan açılan listeden seçin",
           "Dualar sayfası da ana menü gibi kutucuk düzeninde",
           "Esmaül Hüsna sayfası (Namazlar ve Dualar menüsünde): 99 isim hat levhası görünümünde, günün ismi ve arama ile; Allah'ın sıfatları da ilgili ayetleriyle burada",

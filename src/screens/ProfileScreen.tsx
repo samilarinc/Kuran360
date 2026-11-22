@@ -9,8 +9,9 @@ import { useUserData } from '@/contexts/UserDataContext';
 import { useTheme, useThemedStyles } from '@/contexts/ThemeContext';
 import { MenuListRow } from '@/components/MenuListRow';
 import { isAdminUid } from '@/constants/admin';
-import { Bug } from 'lucide-react-native';
-import { SPACING } from '@/theme';
+import { Bug, CloudUpload } from 'lucide-react-native';
+import { GoogleLogo } from '@/components/GoogleLogo';
+import { RADIUS, SPACING } from '@/theme';
 import { createStyles } from './ProfileScreen.styles';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
@@ -278,28 +279,36 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
                         </View>
                     </>
                 ) : (
-                    <View style={common.sectionCard}>
-                        <Text style={[styles.email, common.mbMd]}>{t('profileScreen.notSignedIn')}</Text>
-                        {appleSignInAvailable && (
-                            <AppleAuthentication.AppleAuthenticationButton
-                                buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-                                buttonStyle={isDarkMode
-                                    ? AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
-                                    : AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-                                cornerRadius={8}
-                                style={styles.appleButton}
-                                onPress={signInWithApple}
-                            />
-                        )}
-                        {googleSignInAvailable && (
-                            <AppButton
-                                title={t('profileScreen.signInWithGoogle')}
-                                onPress={signInWithGoogle}
-                                variant="primary"
-                                size="medium"
-                                style={{ backgroundColor: '#DB4437' }}
-                            />
-                        )}
+                    <View style={[common.sectionCard, styles.signInCard]}>
+                        <View style={styles.signInIcon}>
+                            <CloudUpload size={26} color={theme.featuredIcon} />
+                        </View>
+                        <Text style={styles.signInTitle}>{t('profileScreen.signInTitle')}</Text>
+                        <Text style={styles.signInText}>{t('profileScreen.signInText')}</Text>
+                        <View style={styles.signInButtons}>
+                            {appleSignInAvailable && (
+                                <AppleAuthentication.AppleAuthenticationButton
+                                    buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+                                    buttonStyle={isDarkMode
+                                        ? AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
+                                        : AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+                                    cornerRadius={RADIUS.md}
+                                    style={styles.appleButton}
+                                    onPress={signInWithApple}
+                                />
+                            )}
+                            {googleSignInAvailable && (
+                                <TouchableOpacity
+                                    style={styles.googleButton}
+                                    onPress={signInWithGoogle}
+                                    activeOpacity={0.8}
+                                    accessibilityRole="button"
+                                >
+                                    <GoogleLogo size={18} />
+                                    <Text style={styles.googleButtonText}>{t('profileScreen.signInWithGoogle')}</Text>
+                                </TouchableOpacity>
+                            )}
+                        </View>
                     </View>
                 )}
             </ScrollView >
