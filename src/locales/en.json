@@ -994,6 +994,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "November 23, 2026",
+        "bullets": [
+          "Going to a verse from search, topic search, Verse Shazam or a root page and coming back keeps your search, results and scroll position"
+        ]
+      },
+      {
         "date": "November 22, 2026",
         "bullets": [
           "Fixed recitations and dhikr sounds sometimes not playing on Android; recitation now keeps going when the screen locks or you leave the app",

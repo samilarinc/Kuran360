@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useIsRestoredScreen, useScreenScroll, useScreenState } from '@/hooks/useScreenState';
 import { SafeAreaView, ScrollView, Alert, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
@@ -31,19 +32,22 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
     const styles = useThemedStyles(createStyles);
     const navHelpers = useNavigationHelpers();
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [searchScope, setSearchScope] = useState<SearchScope>('everywhere');
-    const [selectedTranslation, setSelectedTranslation] = useState(settings.favoriteTranslation);
-    const [surahFilter, setSurahFilter] = useState<SurahFilter>('all');
-    const [selectedSurah, setSelectedSurah] = useState<number | null>(null);
-    const [showSpecificSurah, setShowSpecificSurah] = useState(false);
+    const [searchQuery, setSearchQuery] = useScreenState('searchQuery', '');
+    const [searchScope, setSearchScope] = useScreenState<SearchScope>('searchScope', 'everywhere');
+    const [selectedTranslation, setSelectedTranslation] = useScreenState('selectedTranslation', settings.favoriteTranslation);
+    const [surahFilter, setSurahFilter] = useScreenState<SurahFilter>('surahFilter', 'all');
+    const [selectedSurah, setSelectedSurah] = useScreenState<number | null>('selectedSurah', null);
+    const [showSpecificSurah, setShowSpecificSurah] = useScreenState('showSpecificSurah', false);
     const [showTranslationDropdown, setShowTranslationDropdown] = useState(false);
-    const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+    const [searchResults, setSearchResults] = useScreenState<SearchResult[]>('searchResults', []);
     const [isSearching, setIsSearching] = useState(false);
-    const [expandedFilters, setExpandedFilters] = useState(false);
-    const [useFuzzySearch, setUseFuzzySearch] = useState(false);
+    const [expandedFilters, setExpandedFilters] = useScreenState('expandedFilters', false);
+    const [useFuzzySearch, setUseFuzzySearch] = useScreenState('useFuzzySearch', false);
     const [searchHistory, setSearchHistory] = useState<string[]>([]);
     const [showHistory, setShowHistory] = useState(false);
+    // Back from a verse: the kept results are shown as they were, without searching again
+    const skipRestoredSearch = useRef(useIsRestoredScreen());
+    const scroll = useScreenScroll();
     const {
         downloading,
         downloadProgress,
@@ -192,6 +196,10 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
 
     // Debounced search
     useEffect(() => {
+        if (skipRestoredSearch.current) {
+            skipRestoredSearch.current = false;
+            return;
+        }
         if (!isDataAvailable) {
             setSearchResults([]);
             setIsSearching(false);
@@ -355,6 +363,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({ navigation, isDataAv
             />
 
             <ScrollView
+                {...scroll}
                 style={common.contentLarge}
                 contentContainerStyle={common.listContent}
                 keyboardShouldPersistTaps="handled"

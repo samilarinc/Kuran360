@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useScreenScroll, useScreenState } from '@/hooks/useScreenState';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Mic, Square, Play, RotateCcw, Boxes, TriangleAlert, FileUp, Info } from 'lucide-react-native';
@@ -86,16 +87,16 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     const [modelState, setModelState] = useState<ModelState>(() =>
         speechModel.ready ? { status: 'ready' } : { status: 'idle' },
     );
-    const [phase, setPhase] = useState<Phase>('idle');
+    const [phase, setPhase] = useScreenState<Phase>('phase', 'idle');
     const [elapsed, setElapsed] = useState(0);
-    const [error, setError] = useState<string | null>(null);
-    const [transcript, setTranscript] = useState('');
-    const [inferenceMs, setInferenceMs] = useState<number | null>(null);
-    const [results, setResults] = useState<ResultItem[]>([]);
-    const [lastAudio, setLastAudio] = useState<Float32Array | null>(null);
+    const [error, setError] = useScreenState<string | null>('error', null);
+    const [transcript, setTranscript] = useScreenState('transcript', '');
+    const [inferenceMs, setInferenceMs] = useScreenState<number | null>('inferenceMs', null);
+    const [results, setResults] = useScreenState<ResultItem[]>('results', []);
+    const [lastAudio, setLastAudio] = useScreenState<Float32Array | null>('lastAudio', null);
     const [playing, setPlaying] = useState(false);
     const [gpuHelpVisible, setGpuHelpVisible] = useState(false);
-    const [fileTruncated, setFileTruncated] = useState(false);
+    const [fileTruncated, setFileTruncated] = useScreenState('fileTruncated', false);
     // Engine status, model choice and recording tools stay behind the info button
     const [detailsVisible, setDetailsVisible] = useState(false);
     // The default model's download lives in the shared store: it keeps going if the user leaves the screen
@@ -103,6 +104,12 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     const modelProgress = defaultModelDownload.progressOrNull;
     const modelDownloadError = defaultModelDownload.error;
     const recordingRef = useRef<Recording | null>(null);
+    const scroll = useScreenScroll();
+    // A recording or check cut short by leaving the screen doesn't come back half done
+    useEffect(() => {
+        if (phase === 'recording' || phase === 'recognizing') setPhase(transcript ? 'done' : 'idle');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     // The model the mic uses: the selected one, if it's downloaded and runs on this device
@@ -349,7 +356,7 @@ export const VerseFinderScreen: React.FC<VerseFinderScreenProps> = ({ navigation
     return (
         <SafeAreaView style={common.container}>
             {header}
-            <ScrollView contentContainerStyle={styles.content}>
+            <ScrollView {...scroll} contentContainerStyle={styles.content}>
                 {support && !support.secureContext && (
                     <View style={[common.sectionCard, styles.warningCard]}>
                         <TriangleAlert size={20} color={theme.warning} />

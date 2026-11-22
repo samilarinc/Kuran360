@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useIsRestoredScreen, useScreenScroll, useScreenState } from '@/hooks/useScreenState';
 import { SafeAreaView, ScrollView, Text, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/contexts/SettingsContext';
@@ -51,11 +52,14 @@ export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation
     const [modelState, setModelState] = useState<ModelState>(() =>
         embeddingModel.ready ? { status: 'ready' } : { status: 'checking' },
     );
-    const [query, setQuery] = useState('');
-    const [results, setResults] = useState<SearchResult[]>([]);
+    const [query, setQuery] = useScreenState('query', '');
+    const [results, setResults] = useScreenState<SearchResult[]>('results', []);
     const [searching, setSearching] = useState(false);
     const [searchError, setSearchError] = useState<string | null>(null);
     const latestSearch = useRef(0);
+    // Back from a verse: the kept results are shown as they were, without searching again
+    const skipRestoredSearch = useRef(useIsRestoredScreen());
+    const scroll = useScreenScroll();
     // The model download lives in the shared store: it keeps going if the user leaves the screen
     const topicDownload = useDownload(DOWNLOAD_KEYS.topic);
 
@@ -94,6 +98,10 @@ export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation
     // Debounced search; a newer query makes older, slower ones drop their results
     useEffect(() => {
         if (modelState.status !== 'ready') return;
+        if (skipRestoredSearch.current) {
+            skipRestoredSearch.current = false;
+            return;
+        }
         const text = query.trim();
         if (text.length < 2) {
             latestSearch.current++;
@@ -214,6 +222,7 @@ export const TopicSearchScreen: React.FC<TopicSearchScreenProps> = ({ navigation
         <SafeAreaView style={common.container}>
             {header}
             <ScrollView
+                {...scroll}
                 style={common.contentLarge}
                 contentContainerStyle={common.listContent}
                 keyboardShouldPersistTaps="handled"

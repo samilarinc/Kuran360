@@ -994,6 +994,12 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "23 Kasım 2026",
+        "bullets": [
+          "Aramadan, konu aramasından, Ayet Shazam'dan veya kök sayfasından bir ayete gidip geri dönünce arama, sonuçlar ve kaldığınız yer olduğu gibi duruyor"
+        ]
+      },
+      {
         "date": "22 Kasım 2026",
         "bullets": [
           "Android'de bazen hiç çalmayan tilavet ve zikir sesleri düzeldi; ekran kilitlense veya uygulamadan çıkılsa da tilavet devam ediyor",
