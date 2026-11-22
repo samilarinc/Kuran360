@@ -1,8 +1,10 @@
 {
-  "CFBundleDisplayName": "Kuran360",
-  "NSLocationWhenInUseUsageDescription": "Your location is used to show prayer times and the qibla direction where you are.",
-  "NSLocationAlwaysAndWhenInUseUsageDescription": "Your location is used to show prayer times and the qibla direction where you are.",
-  "NSMicrophoneUsageDescription": "The microphone is used to recognize the verse you recite and to count dhikr by voice.",
-  "NSMotionUsageDescription": "Motion data is used to detect a shake so you can report a bug.",
-  "NSPhotoLibraryAddUsageDescription": "Used to save the verse images you share to your photos."
+  "ios": {
+    "CFBundleDisplayName": "Kuran360",
+    "NSLocationWhenInUseUsageDescription": "Your location is used to show prayer times and the qibla direction where you are.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Your location is used to show prayer times and the qibla direction where you are.",
+    "NSMicrophoneUsageDescription": "The microphone is used to recognize the verse you recite and to count dhikr by voice.",
+    "NSMotionUsageDescription": "Motion data is used to detect a shake so you can report a bug.",
+    "NSPhotoLibraryAddUsageDescription": "Used to save the verse images you share to your photos."
+  }
 }

@@ -1,8 +1,10 @@
 {
-  "CFBundleDisplayName": "Kuran360",
-  "NSLocationWhenInUseUsageDescription": "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",
-  "NSLocationAlwaysAndWhenInUseUsageDescription": "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",
-  "NSMicrophoneUsageDescription": "Okuduğun ayeti tanımak ve zikirleri sesle saymak için mikrofon kullanılır.",
-  "NSMotionUsageDescription": "Hata bildirmek için telefonu sallamayı algılamak amacıyla hareket sensörü kullanılır.",
-  "NSPhotoLibraryAddUsageDescription": "Paylaştığın ayet görsellerini fotoğraflarına kaydetmek için kullanılır."
+  "ios": {
+    "CFBundleDisplayName": "Kuran360",
+    "NSLocationWhenInUseUsageDescription": "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",
+    "NSMicrophoneUsageDescription": "Okuduğun ayeti tanımak ve zikirleri sesle saymak için mikrofon kullanılır.",
+    "NSMotionUsageDescription": "Hata bildirmek için telefonu sallamayı algılamak amacıyla hareket sensörü kullanılır.",
+    "NSPhotoLibraryAddUsageDescription": "Paylaştığın ayet görsellerini fotoğraflarına kaydetmek için kullanılır."
+  }
 }

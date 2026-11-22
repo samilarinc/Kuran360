@@ -115,7 +115,8 @@ export default ({ config }) => ({
             ],
         },
     },
-    // Localized iOS permission texts (InfoPlist.strings)
+    // Localized iOS permission texts (InfoPlist.strings). They sit under an "ios" key in the files, so
+    // Android gets no strings.xml from them (release lint rejects translations without a default)
     locales: {
         tr: "./src/locales/native/tr.json",
         en: "./src/locales/native/en.json",
