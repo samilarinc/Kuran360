@@ -40,6 +40,8 @@ export interface AudioState {
   duration: number;
   position: number;
   isLoading: boolean;
+  /** The current verse's audio could not be loaded or stopped with an error (network, server) */
+  loadError?: boolean;
 }
 
 export interface QuranData {

@@ -83,11 +83,21 @@ export default ({ config }) => ({
         // iPhone layout only for now; on iPad it runs in iPhone mode (no iPad screenshots or multitasking orientations needed)
         supportsTablet: false,
         usesAppleSignIn: true,
+        entitlements: {
+            // Shared with the home screen widgets (targets/PrayerWidgets), which read the times and verses from it
+            "com.apple.security.application-groups": ["group.com.kuran360"],
+            // Prayer alerts still show during Focus (interruptionLevel timeSensitive in modules/prayer-notification/ios)
+            "com.apple.developer.usernotifications.time-sensitive": true,
+        },
         infoPlist: {
             CFBundleDevelopmentRegion: "tr",
             CFBundleAllowMixedLocalizations: true,
             // Only HTTPS via the system stack: exempt, so App Store Connect skips the export compliance question
             ITSAppUsesNonExemptEncryption: false,
+            // The prayer countdown Live Activity (modules/prayer-notification/ios/PrayerLiveActivity.swift)
+            NSSupportsLiveActivities: true,
+            // Recitations keep playing with the screen locked (src/services/audioMode.ts)
+            UIBackgroundModes: ["audio"],
             // English texts are in src/locales/native/en.json (see `locales` below)
             NSLocationWhenInUseUsageDescription: "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",
             NSLocationAlwaysAndWhenInUseUsageDescription: "Bulunduğun yerin namaz vakitlerini ve kıble yönünü göstermek için konumun kullanılır.",
@@ -150,6 +160,8 @@ export default ({ config }) => ({
     plugins: [
         "expo-asset",
         "expo-apple-authentication",
+        // The home screen widgets' WidgetKit extension, from targets/PrayerWidgets
+        "@bacons/apple-targets",
         withReleaseSigningConfig,
         withReleaseMinify
     ],

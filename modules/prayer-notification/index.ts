@@ -53,9 +53,9 @@ interface PrayerNotificationModule {
     setWidgetData(json: string): Promise<void>;
     /** Stores the verses for the verse widgets (a PrayerWidgetVerses) and updates them */
     setWidgetVerses(json: string): Promise<void>;
-    /** Whether the ongoing notification is on */
+    /** Whether the ongoing notification is on (always false on iOS, which has none) */
     isActive(): boolean;
-    /** Copies a picked audio file into the sound library; returns the name to use as a prayer's `sound` */
+    /** Copies a picked audio file into the sound library (on iOS converted to caf and cut to 30 seconds); returns the name to use as a prayer's `sound` */
     importSound(uri: string, extension: string): Promise<string>;
     deleteSound(name: string): void;
     /** The kaza list: prayers answered "Kılmadım" and not made up, as "yyyy-MM-dd:index" */
@@ -63,6 +63,10 @@ interface PrayerNotificationModule {
     makeUpPrayer(date: string, index: number): void;
     canScheduleExactAlarms(): boolean;
     openExactAlarmSettings(): void;
+    /** iOS only: asks for permission to show alerts (the system asks once; later calls return the answer) */
+    requestPermission?(): Promise<boolean>;
+    /** iOS only: whether alerts may be shown */
+    hasPermission?(): Promise<boolean>;
 }
 
 /** What the home screen widgets need: the times part of PrayerNotificationConfig. */
@@ -78,5 +82,9 @@ export interface PrayerWidgetVerses {
     verses: { surah: number; verse: number; ref: string; arabic: string; meal: string }[];
 }
 
-/** Android only; null elsewhere. */
+/**
+ * Android and iOS; null on the web. On iOS alerts are scheduled local notifications (at most 64 ahead,
+ * topped up on start and whenever the app becomes active), there is no ongoing notification (isActive is
+ * always false) and the widgets are a WidgetKit extension (targets/PrayerWidgets).
+ */
 export const PrayerNotification = requireOptionalNativeModule<PrayerNotificationModule>('PrayerNotification');

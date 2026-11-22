@@ -62,6 +62,7 @@
     "loading": "Yükleniyor...",
     "playing": "Çalıyor",
     "paused": "Duraklatıldı",
+    "loadError": "Ses yüklenemedi",
     "play": "Oynat",
     "pause": "Duraklat",
     "stop": "Durdur",
@@ -1005,9 +1006,19 @@
         ]
       },
       {
+        "date": "19 Kasım 2026",
+        "bullets": [
+          "Ayet sesi yüklenemezse bir kez daha deneniyor; yine olmazsa ses çubuğunda yazıyor, sessizce \"Çalıyor\" görünmüyor",
+          "Widget'tan ya da bağlantıdan uzun bir surenin sonlarındaki bir ayete gidince artık doğru ayet açılıyor (ör. Bakara 280 yerine 70 civarı açılmıyor)",
+          "iPhone'da vakit sayacı kilit ekranında ve Dynamic Island'da: Vakit bildirimleri ayarlarından \"Kilit ekranında geri sayım\"ı açın",
+          "iPhone'da sessiz moddayken de Kur'an tilaveti ve zikir sesleri çalıyor; ekran kilitlense de tilavet devam ediyor"
+        ]
+      },
+      {
         "date": "18 Kasım 2026",
         "bullets": [
           "iPhone desteği: Apple ile giriş, profilden hesap silme, herkese açık hatimleri bildirme ve oluşturanını engelleme",
+          "iPhone'da vakit bildirimleri, Kıldım/Kılmadım ile kaza takibi, kendi bildirim sesleriniz ve ana ekran widget'ları; Ayet Shazam, Ezber Kontrolü, konu araması ve zikirde sesle sayma da iPhone'da",
           "Kelime kökü, tefsir veya meallerden geri dönünce okuduğunuz ayete dönülüyor, surenin başına değil",
           "Widgettaki ayete dokununca o ayet açılıyor; ilk 50 ayetten sonrası da",
           "Sayfa sayfa ayet görünümünde uzun ayetler yine aşağı kaydırılabiliyor",
@@ -1923,10 +1934,13 @@
     "off": "Yok",
     "ongoingTitle": "Kalıcı bildirim",
     "ongoingDescription": "Sonraki vakte kalan süre bildirim panelinde hep görünür.",
+    "ongoingTitleIos": "Kilit ekranında geri sayım",
+    "ongoingDescriptionIos": "Sonraki vakte kalan süre kilit ekranında ve Dynamic Island'da görünür. iPhone bunu en fazla 8 saat gösterir; uygulamayı açtığınızda yenilenir.",
     "ongoingUntil": "{{label}} vaktine",
     "collapsedTimesTitle": "Kapalıyken vakitleri de göster",
     "locationNote": "Bildirimler seçili konuma göre gelir: {{location}}.",
-    "androidOnly": "Bildirimler şimdilik yalnızca Android uygulamasında var.",
+    "appOnly": "Bildirimler yalnızca Android ve iPhone uygulamalarında var.",
+    "iosSoundNote": "iPhone bildirim seslerinin yalnızca ilk 30 saniyesini çalar; eklediğiniz ses bu yüzden ilk 30 saniyesiyle kaydedilir.",
     "permissionTitle": "Bildirim izni gerekli",
     "permissionMessage": "Bildirimleri gösterebilmek için uygulamaya bildirim izni vermeniz gerekiyor.",
     "exactAlarmTitle": "Tam vaktinde gelsin",

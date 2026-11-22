@@ -62,6 +62,7 @@
     "loading": "Loading...",
     "playing": "Playing",
     "paused": "Paused",
+    "loadError": "Couldn't load audio",
     "play": "Play",
     "pause": "Pause",
     "stop": "Stop",
@@ -1005,9 +1006,19 @@
         ]
       },
       {
+        "date": "November 19, 2026",
+        "bullets": [
+          "If verse audio can't load it's retried once; if it still fails the audio bar says so instead of silently showing \"Playing\"",
+          "Opening a verse near the end of a long surah from the widget or a link now lands on that verse (e.g. Baqarah 280 no longer opens around verse 70)",
+          "On iPhone, the prayer countdown on the lock screen and in the Dynamic Island: turn on \"Countdown on the lock screen\" in the prayer notification settings",
+          "On iPhone, recitations and dhikr sounds play with the silent switch on too, and recitation keeps going when the screen locks"
+        ]
+      },
+      {
         "date": "November 18, 2026",
         "bullets": [
           "iPhone support: Sign in with Apple, account deletion from the profile, reporting public hatims and blocking their creator",
+          "On iPhone: prayer time alerts, kaza tracking with Prayed/Not prayed, your own alert sounds and home screen widgets; Verse Shazam, the memorization check, topic search and dhikr voice counting work there too",
           "Coming back from a word root, tafsir or translations returns to the verse you were reading, not the start of the surah",
           "Tapping the verse on the widget opens that verse, including verses past the first 50",
           "Long verses scroll again in the one-verse-per-page view",
@@ -1922,10 +1933,13 @@
     "off": "None",
     "ongoingTitle": "Persistent notification",
     "ongoingDescription": "Time left until the next prayer stays in the notification shade.",
+    "ongoingTitleIos": "Countdown on the lock screen",
+    "ongoingDescriptionIos": "Time left until the next prayer shows on the lock screen and in the Dynamic Island. iPhone shows it for up to 8 hours; it is renewed when you open the app.",
     "ongoingUntil": "Until {{label}}",
     "collapsedTimesTitle": "Show times when collapsed",
     "locationNote": "Notifications follow the selected location: {{location}}.",
-    "androidOnly": "Notifications are only available in the Android app for now.",
+    "appOnly": "Notifications are only available in the Android and iPhone apps.",
+    "iosSoundNote": "iPhone plays only the first 30 seconds of a notification sound, so an added sound is saved with its first 30 seconds.",
     "permissionTitle": "Notification permission needed",
     "permissionMessage": "Allow notifications for the app to show them.",
     "exactAlarmTitle": "Arrive right on time",

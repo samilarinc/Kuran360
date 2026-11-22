@@ -137,6 +137,7 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
         (typeof document !== 'undefined') &&
           document.getElementById(`verse-item-${targetIndex}`)?.scrollIntoView({ block: 'start' });
       } else {
+        scrollRetries.current = 0;
         flatListRef.current?.scrollToIndex({
           index: Math.min(targetIndex, surah.verses.length - 1),
           animated: false,
@@ -365,18 +366,24 @@ export const SurahDetailScreen: React.FC<SurahDetailScreenProps> = ({
               viewabilityConfig={viewabilityConfig}
               onScrollBeginDrag={handleScrollBeginDrag}
               onScrollToIndexFailed={(info) => {
-                // The verse isn't rendered yet: jump near it by the average height, which renders it, then land on it.
-                // Retrying the same index alone kept failing for verses past the first batch and left the list at the top.
-                flatListRef.current?.scrollToOffset({ offset: info.averageItemLength * info.index, animated: false });
-                if (scrollRetries.current >= 5) return;
+                // The verse isn't measured yet. Jumping by the average height overshot or fell short on surahs whose
+                // verses grow longer (Bakara 2:280 landed near 2:70), so walk forward instead: land on the furthest
+                // verse measured so far, which renders the next stretch, then try the target again.
+                if (scrollRetries.current >= 60) return;
                 scrollRetries.current++;
+                const reached = info.highestMeasuredFrameIndex;
+                if (reached >= 0) {
+                  flatListRef.current?.scrollToIndex({ index: reached, animated: false, viewPosition: 0 });
+                } else {
+                  flatListRef.current?.scrollToOffset({ offset: info.averageItemLength * info.index, animated: false });
+                }
                 setTimeout(() => {
                   flatListRef.current?.scrollToIndex({
                     index: Math.min(info.index, surah.verses.length - 1),
                     animated: false,
                     viewPosition: 0,
                   });
-                }, 100);
+                }, 150);
               }}
             />
           )}
