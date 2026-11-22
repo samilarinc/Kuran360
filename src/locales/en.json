@@ -993,6 +993,12 @@
     "updatesSectionTitle": "Release Notes",
     "updates": [
       {
+        "date": "November 22, 2026",
+        "bullets": [
+          "Fixed recitations and dhikr sounds sometimes not playing on Android; recitation now keeps going when the screen locks or you leave the app"
+        ]
+      },
+      {
         "date": "November 20, 2026",
         "bullets": [
           "The countdown in the notification moves on to the next prayer right when the time comes, even while the phone sleeps, instead of running past zero"

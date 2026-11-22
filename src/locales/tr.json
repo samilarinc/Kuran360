@@ -993,6 +993,12 @@
     "updatesSectionTitle": "Güncelleme Notları",
     "updates": [
       {
+        "date": "22 Kasım 2026",
+        "bullets": [
+          "Android'de bazen hiç çalmayan tilavet ve zikir sesleri düzeldi; ekran kilitlense veya uygulamadan çıkılsa da tilavet devam ediyor"
+        ]
+      },
+      {
         "date": "20 Kasım 2026",
         "bullets": [
           "Bildirimdeki geri sayım, vakit girdiğinde telefon uykudayken bile hemen bir sonraki vakte geçiyor; sıfırı geçip ileri saymıyor"

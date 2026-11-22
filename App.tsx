@@ -21,6 +21,7 @@ import { LIGHT_COLORS as COLORS, LIBRARY_PALETTES } from './src/theme';
 import { hasAnyData } from './src/data/quranData';
 import { BUNDLED_FONTS } from './src/constants/fonts';
 import { Platform } from 'react-native';
+import { configureAudioMode } from './src/services/audioMode';
 
 installLogBuffer();
 
@@ -52,6 +53,7 @@ const App: React.FC = () => {
     };
 
     checkDataAvailability();
+    configureAudioMode();
   }, []);
 
   // Web-only: keep document title pinned to 'Kuran360'
