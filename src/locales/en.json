@@ -1526,6 +1526,8 @@
       {
         "date": "November 23, 2026",
         "bullets": [
+          "New tafsir: Mawdudi's Tafhim al-Qur'an, with surah introductions and notes on the verses",
+          "New tafsir: Ömer Nasuhi Bilmen's Kur'ân-ı Kerîm'in Türkçe Meâl-i Âlîsi ve Tefsiri, explaining each verse, with surah introductions",
           "A refreshed sign-in area on the Profile page: it says what signing in gives you, with a clean Google button and logo",
           "Cleaner filters in Duas in the Quran: pick the grouping at the top and a person or topic from a list that slides up",
           "The Duas page uses the same tile layout as the main menu",
@@ -2082,6 +2084,41 @@
         "name": "Hak Dini Kur'an Dili (Elmalılı)",
         "description": "Elmalılı Muhammed Hamdi Yazır's tafsir in simplified Turkish. Long, in-depth explanations; a few verses have none.",
         "credit": "Source: Elmalılı Muhammed Hamdi Yazır, Hak Dini Kur'an Dili (simplified)"
+      },
+      "bilmen": {
+        "name": "Ömer Nasuhi Bilmen Tefsiri",
+        "description": "Ömer Nasuhi Bilmen's tafsir in simplified Turkish, explaining every verse on its own. With surah introductions; a few verses have none.",
+        "credit": "Source: Ömer Nasuhi Bilmen, Kur'ân-ı Kerîm'in Türkçe Meâl-i Âlîsi ve Tefsiri (simplified by H. Vanlıoğlu, F. Kalender), Kitap Kalbi Yayıncılık"
+      },
+      "tefhim": {
+        "name": "Tafhim al-Qur'an (Mawdudi)",
+        "description": "Abul A'la Mawdudi's Tafhim al-Qur'an in Turkish. With surah introductions and verse-by-verse notes; not every verse is explained.",
+        "credit": "Source: Abul A'la Mawdudi, Tafhim al-Qur'an (Turkish translation), islam-tr.net"
+      },
+      "saadiArabic": {
+        "name": "Tafsir as-Sa'di (Arabic)",
+        "description": "The Arabic original of as-Sa'di's tafsir.",
+        "credit": "Source: Taysir al-Karim ar-Rahman fi Tafsir Kalam al-Mannan, Abd ar-Rahman as-Sa'di · QuranEnc.com"
+      },
+      "celaleyn": {
+        "name": "Tafsir al-Jalalayn",
+        "description": "The short classical tafsir of Jalal ad-Din al-Mahalli and Jalal ad-Din as-Suyuti, explaining the verses word by word. In English.",
+        "credit": "Source: Tafsir al-Jalalayn, al-Mahalli and as-Suyuti · Quran.com / QUL"
+      },
+      "ibnkesir": {
+        "name": "Tafsir Ibn Kathir",
+        "description": "Ibn Kathir's classical tafsir, explaining verses through other verses and hadith. Abridged English translation.",
+        "credit": "Source: Tafsir al-Qur'an al-'Azim, Ibn Kathir (abridged) · Quran.com / QUL"
+      },
+      "taberi": {
+        "name": "Jami' al-Bayan, at-Tabari (Arabic)",
+        "description": "At-Tabari's tafsir, the earliest great collection of the Companions' and Successors' explanations. Very detailed; Arabic original.",
+        "credit": "Source: Jami' al-Bayan 'an Ta'wil Ay al-Qur'an, Ibn Jarir at-Tabari · Quran.com / QUL"
+      },
+      "kurtubi": {
+        "name": "Al-Jami' li-Ahkam al-Qur'an, al-Qurtubi (Arabic)",
+        "description": "Al-Qurtubi's tafsir, focused on the legal rulings in the verses. Very detailed; Arabic original.",
+        "credit": "Source: al-Jami' li-Ahkam al-Qur'an, al-Qurtubi · Quran.com / QUL"
       }
     }
   },

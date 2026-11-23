@@ -8,7 +8,9 @@ import * as FileSystem from 'expo-file-system/legacy';
  * A block may explain a range of verses (from..to); the block covering the tapped verse is shown.
  */
 
-export type TafsirSourceId = 'muhtasar' | 'saadi' | 'kuranyolu' | 'elmalili';
+export type TafsirSourceId =
+    | 'muhtasar' | 'saadi' | 'kuranyolu' | 'elmalili' | 'bilmen' | 'tefhim'
+    | 'saadiArabic' | 'celaleyn' | 'ibnkesir' | 'taberi' | 'kurtubi';
 export type TafsirLanguage = 'tr' | 'en';
 
 export interface TafsirSource {
@@ -45,7 +47,57 @@ export const TAFSIR_SOURCES: TafsirSource[] = [
         editions: { tr: 'elmalili-tr' },
         sizeMb: 10,
     },
+    {
+        id: 'bilmen',
+        editions: { tr: 'bilmen-tr' },
+        sizeMb: 8,
+    },
+    {
+        id: 'tefhim',
+        editions: { tr: 'tefhim-tr' },
+        sizeMb: 7,
+    },
 ];
+
+/**
+ * The classical tafsirs in their Arabic original (Celâleyn and İbn Kesîr also in English), built but not offered
+ * until their use is cleared: their data stays out of the web build too.
+ */
+export const PENDING_TAFSIR_SOURCES: TafsirSource[] = [
+    {
+        id: 'saadiArabic',
+        editions: { tr: 'saadi-ar' },
+        sizeMb: 6,
+        sourceUrl: 'https://quranenc.com',
+    },
+    {
+        id: 'celaleyn',
+        editions: { tr: 'celaleyn-ar', en: 'celaleyn-en' },
+        sizeMb: 3,
+        sourceUrl: 'https://qul.tarteel.ai',
+    },
+    {
+        id: 'ibnkesir',
+        editions: { tr: 'ibnkesir-ar', en: 'ibnkesir-en' },
+        sizeMb: 23,
+        sourceUrl: 'https://qul.tarteel.ai',
+    },
+    {
+        id: 'taberi',
+        editions: { tr: 'taberi-ar' },
+        sizeMb: 30,
+        sourceUrl: 'https://qul.tarteel.ai',
+    },
+    {
+        id: 'kurtubi',
+        editions: { tr: 'kurtubi-ar' },
+        sizeMb: 31,
+        sourceUrl: 'https://qul.tarteel.ai',
+    },
+];
+
+/** Edition ids end in their language; Arabic ones are shown right to left in an Arabic font. */
+export const isArabicEdition = (edition: string): boolean => edition.endsWith('-ar');
 
 export const DEFAULT_TAFSIR_SOURCE: TafsirSourceId = 'muhtasar';
 

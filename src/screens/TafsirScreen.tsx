@@ -7,7 +7,8 @@ import { SelectBox } from '@/components/SelectBox';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useNavigationHelpers } from '@/contexts/NavigationContext';
 import { useTheme, useThemedStyles, CommonStyles } from '@/contexts/ThemeContext';
-import { getEdition, getSurahTafsir, getTafsirSource, TAFSIR_SOURCES, TafsirBlock, TafsirSourceId } from '@/services/tafsir';
+import { getEdition, getSurahTafsir, getTafsirSource, isArabicEdition, TAFSIR_SOURCES, TafsirBlock, TafsirSourceId } from '@/services/tafsir';
+import { ArabicText } from '@/components/ArabicText';
 import { getSurahsList } from '@/data/quranData';
 import { getSurahNameByNumber } from '@/utils/surahName';
 import { SPACING, FONT_SIZES, Theme } from '@/theme';
@@ -109,7 +110,9 @@ export const TafsirScreen: React.FC<TafsirScreenProps> = ({ navigation, surahNum
                 </Text>
                 <ChevronRight size={14} color={theme.primary} strokeWidth={3} />
             </TouchableOpacity>
-            <Text style={styles.body} selectable>{item.text}</Text>
+            {isArabicEdition(edition)
+                ? <ArabicText style={styles.bodyArabic} selectable>{item.text}</ArabicText>
+                : <Text style={styles.body} selectable>{item.text}</Text>}
         </View>
     );
 
@@ -219,6 +222,14 @@ const createStyles = (theme: Theme, common: CommonStyles) => StyleSheet.create({
     },
     body: {
         ...common.mealText,
+    },
+    // An Arabic tafsir: prose rather than verse, so smaller than the verse text and without its bold weight
+    bodyArabic: {
+        fontSize: FONT_SIZES.arabic - 4,
+        lineHeight: (FONT_SIZES.arabic - 4) * 1.8,
+        textAlign: 'right',
+        writingDirection: 'rtl',
+        color: theme.text,
     },
     credit: {
         textAlign: 'center',

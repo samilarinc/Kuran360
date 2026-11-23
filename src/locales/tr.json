@@ -1526,6 +1526,8 @@
       {
         "date": "23 Kasım 2026",
         "bullets": [
+          "Yeni tefsir: Mevdûdî'nin Tefhîmu'l-Kur'ân'ı, sure girişleri ve ayetlere bağlı notlarıyla",
+          "Yeni tefsir: Ömer Nasuhi Bilmen'in Kur'ân-ı Kerîm'in Türkçe Meâl-i Âlîsi ve Tefsiri, her ayet için ayrı açıklama ve sure girişleriyle",
           "Profil sayfasındaki giriş alanı yenilendi: girişin ne sağladığı yazıyor, Google butonu sade ve logolu",
           "Kur'an'daki Dualar'da filtreler sadeleşti: gruplamayı üstteki seçiciden, kişi ya da konuyu alttan açılan listeden seçin",
           "Dualar sayfası da ana menü gibi kutucuk düzeninde",
@@ -2083,6 +2085,41 @@
         "name": "Hak Dini Kur'an Dili (Elmalılı)",
         "description": "Elmalılı Muhammed Hamdi Yazır'ın tefsirinin sadeleştirilmiş hali. Uzun ve derinlikli açıklamalar; bazı ayetlerin tefsiri eksik.",
         "credit": "Kaynak: Elmalılı Muhammed Hamdi Yazır, Hak Dini Kur'an Dili (sadeleştirilmiş)"
+      },
+      "bilmen": {
+        "name": "Ömer Nasuhi Bilmen Tefsiri",
+        "description": "Ömer Nasuhi Bilmen'in her ayeti tek tek açıklayan tefsirinin sadeleştirilmiş baskısı. Sure girişleriyle; birkaç ayetin açıklaması eksik.",
+        "credit": "Kaynak: Ömer Nasuhi Bilmen, Kur'ân-ı Kerîm'in Türkçe Meâl-i Âlîsi ve Tefsiri (sadeleştiren: H. Vanlıoğlu, F. Kalender), Kitap Kalbi Yayıncılık"
+      },
+      "tefhim": {
+        "name": "Tefhîmu'l-Kur'ân (Mevdûdî)",
+        "description": "Ebu'l A'lâ Mevdûdî'nin Tefhîmu'l-Kur'ân tefsiri. Sure girişleri ve ayet ayet notlarla; her ayetin açıklaması yoktur.",
+        "credit": "Kaynak: Ebu'l A'lâ Mevdûdî, Tefhîmu'l-Kur'ân (Türkçe tercümesi), islam-tr.net"
+      },
+      "saadiArabic": {
+        "name": "Tefsîru's-Sa'dî (Arapça)",
+        "description": "Sa'dî tefsirinin Arapça aslı.",
+        "credit": "Kaynak: Teysîru'l-Kerîmi'r-Rahmân fî Tefsîri Kelâmi'l-Mennân, Abdurrahman es-Sa'dî · QuranEnc.com"
+      },
+      "celaleyn": {
+        "name": "Tefsîru'l-Celâleyn (Arapça)",
+        "description": "Celâleddîn el-Mahallî ve Celâleddîn es-Suyûtî'nin kısa, kelime kelime açıklayan klasik tefsiri. Arapça aslı.",
+        "credit": "Kaynak: Tefsîru'l-Celâleyn, el-Mahallî ve es-Suyûtî · Quran.com / QUL"
+      },
+      "ibnkesir": {
+        "name": "Tefsîru İbn Kesîr (Arapça)",
+        "description": "İbn Kesîr'in ayetleri ayetler ve hadislerle açıklayan klasik tefsiri. Arapça aslı.",
+        "credit": "Kaynak: Tefsîru'l-Kur'âni'l-Azîm, İbn Kesîr · Quran.com / QUL"
+      },
+      "taberi": {
+        "name": "Câmiu'l-Beyân, Taberî (Arapça)",
+        "description": "Taberî'nin sahabe ve tâbiîn rivayetlerini toplayan en eski büyük tefsiri. Çok ayrıntılı; Arapça aslı.",
+        "credit": "Kaynak: Câmiu'l-Beyân an Te'vîli Âyi'l-Kur'ân, İbn Cerîr et-Taberî · Quran.com / QUL"
+      },
+      "kurtubi": {
+        "name": "el-Câmi' li-Ahkâmi'l-Kur'ân, Kurtubî (Arapça)",
+        "description": "Kurtubî'nin ayetlerin fıkhi hükümlerine ağırlık veren tefsiri. Çok ayrıntılı; Arapça aslı.",
+        "credit": "Kaynak: el-Câmi' li-Ahkâmi'l-Kur'ân, el-Kurtubî · Quran.com / QUL"
       }
     }
   },
